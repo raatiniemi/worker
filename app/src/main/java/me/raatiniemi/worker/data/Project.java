@@ -8,11 +8,15 @@ public class Project
 
     private String mDescription;
 
-    public Project(long id, String name, String description)
+    public Project(long id, String name)
+    {
+        setId(id);
+        setName(name);
+    }
+
+    private void setId(long id)
     {
         mId = id;
-        mName = name;
-        mDescription = description;
     }
 
     public long getId()
@@ -20,9 +24,19 @@ public class Project
         return mId;
     }
 
+    private void setName(String name)
+    {
+        mName = name;
+    }
+
     public String getName()
     {
         return mName;
+    }
+
+    public void setDescription(String description)
+    {
+        mDescription = description;
     }
 
     public String getDescription()
