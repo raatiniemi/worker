@@ -16,7 +16,7 @@ public class ProjectDataSource extends BaseDataSource
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_DESCRIPTION = "description";
 
-    public static final String CREATE_TABLE_PROJECT =
+    public static final String CREATE_TABLE =
         "CREATE TABLE " + TABLE_NAME + " ( " +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_NAME + " TEXT NOT NULL, " +
