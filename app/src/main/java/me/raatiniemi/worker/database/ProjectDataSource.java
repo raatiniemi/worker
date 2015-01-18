@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.database;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 
 import me.raatiniemi.worker.data.Project;
 
-public class ProjectDataSource
+public class ProjectDataSource extends BaseDataSource
 {
     private static final String TABLE_NAME = "project";
 
@@ -22,14 +23,8 @@ public class ProjectDataSource
             COLUMN_DESCRIPTION + " TEXT NULL " +
         ");";
 
-    protected Helper mHelper;
-
-    protected SQLiteDatabase mDatabase;
-
-    public ProjectDataSource(Helper helper)
-    {
-        mHelper = helper;
-        mDatabase = mHelper.getWritableDatabase();
+    public ProjectDataSource(Context context) {
+        super(Helper.getInstance(context));
     }
 
     public ArrayList<Project> getProjects()
