@@ -52,10 +52,10 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
 
         // Populate the data into the template view.
         viewHolder.name.setText(project.getName());
+        viewHolder.description.setText(project.getDescription());
 
         // TODO: Set the actual values.
         viewHolder.time.setText(null);
-        viewHolder.description.setText(null);
 
         return convertView;
     }
