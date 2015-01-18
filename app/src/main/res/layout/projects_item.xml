@@ -38,12 +38,24 @@
             android:layout_marginLeft="@dimen/projects_item_time_margin_start"
             android:layout_marginStart="@dimen/projects_item_time_margin_start" />
 
+        <TextView
+            android:id="@+id/project_description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder_projects_item_project_description"
+            android:layout_below="@+id/project_name"
+            android:layout_marginTop="@dimen/projects_item_description_margin_top"
+            android:layout_alignLeft="@+id/project_name"
+            android:layout_alignStart="@+id/project_name"
+            android:layout_alignRight="@+id/project_time"
+            android:layout_alignEnd="@+id/project_time" />
+
         <com.cengalabs.flatui.views.FlatButton
             android:id="@+id/project_clock_inout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/projects_item_project_clock_in"
-            android:layout_below="@+id/project_name"
+            android:layout_below="@+id/project_description"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/projects_item_clock_inout_margin_top"

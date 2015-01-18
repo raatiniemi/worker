@@ -2,6 +2,7 @@
 <resources>
     <string name="placeholder_projects_item_project_name">Project name</string>
     <string name="placeholder_projects_item_project_time">24h 25m</string>
+    <string name="placeholder_projects_item_project_description">Project description</string>
     <string name="placeholder_projects_item_project_clocked_in_since">Since 07:45</string>
 
     <string name="projects_item_project_clock_in">Clock in</string>
@@ -12,6 +13,8 @@
     <dimen name="projects_item_padding_vertical">20dp</dimen>
 
     <dimen name="projects_item_time_margin_start">20dp</dimen>
+
+    <dimen name="projects_item_description_margin_top">5dp</dimen>
 
     <dimen name="projects_item_clock_inout_margin_top">15dp</dimen>
 
