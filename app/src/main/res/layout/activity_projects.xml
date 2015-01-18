@@ -2,5 +2,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="me.raatiniemi.worker.ProjectsActivity">
+    tools:context="me.raatiniemi.worker.ui.ProjectsActivity">
 </RelativeLayout>

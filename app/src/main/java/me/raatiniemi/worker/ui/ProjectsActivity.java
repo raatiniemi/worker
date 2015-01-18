@@ -1,7 +1,9 @@
-package me.raatiniemi.worker;
+package me.raatiniemi.worker.ui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+
+import me.raatiniemi.worker.R;
 
 public class ProjectsActivity extends ActionBarActivity
 {
