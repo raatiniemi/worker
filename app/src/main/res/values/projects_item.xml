@@ -16,7 +16,7 @@
 
     <dimen name="projects_item_description_margin_top">5dp</dimen>
 
-    <dimen name="projects_item_clock_inout_margin_top">15dp</dimen>
+    <dimen name="projects_item_clock_activity_margin_top">15dp</dimen>
 
     <dimen name="projects_item_clocked_in_margin_start">15dp</dimen>
 </resources>
