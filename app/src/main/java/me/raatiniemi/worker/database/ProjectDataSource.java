@@ -1,6 +1,11 @@
 package me.raatiniemi.worker.database;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+
+import me.raatiniemi.worker.data.Project;
 
 public class ProjectDataSource
 {
@@ -25,5 +30,29 @@ public class ProjectDataSource
     {
         mHelper = helper;
         mDatabase = mHelper.getWritableDatabase();
+    }
+
+    public ArrayList<Project> getProjects()
+    {
+        ArrayList<Project> projects = new ArrayList<>();
+        String[] columns = new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION};
+
+        Cursor cursor = mDatabase.query(TABLE_NAME, columns, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                long id = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
+                String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+
+                Project project = new Project(id, name);
+                project.setDescription(description);
+
+                // TODO: Retrieve the registered time for the specified interval (day, week, month).
+
+                projects.add(project);
+            } while (cursor.moveToNext());
+        }
+
+        return projects;
     }
 }
