@@ -21,7 +21,8 @@ public class ProjectDataSource
 
     protected SQLiteDatabase mDatabase;
 
-    public ProjectDataSource(Helper helper) {
+    public ProjectDataSource(Helper helper)
+    {
         mHelper = helper;
         mDatabase = mHelper.getWritableDatabase();
     }
