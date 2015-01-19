@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -34,5 +35,21 @@ public class ProjectsActivity extends ActionBarActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.projects_activity_actions, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem)
+    {
+        switch (menuItem.getItemId()) {
+            case R.id.action_create_new_project:
+                openCreateNewProject();
+                return true;
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
+
+    public void openCreateNewProject()
+    {
+        // TODO: Open the create new project dialog.
     }
 }
