@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Worker</string>
-
-    <string name="projects_activity_actions_create_new_project">Create new project</string>
 </resources>
