@@ -2,6 +2,8 @@ package me.raatiniemi.worker.ui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -24,5 +26,12 @@ public class ProjectsActivity extends ActionBarActivity
         ProjectsAdapter adapter = new ProjectsAdapter(this, projects);
         ListView listView = (ListView) findViewById(R.id.projects_listview);
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.projects_activity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
