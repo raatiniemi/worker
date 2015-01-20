@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.ui;
 
+import android.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectsAdapter;
 import me.raatiniemi.worker.data.Project;
+import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectsActivity extends ActionBarActivity
 {
@@ -50,6 +52,7 @@ public class ProjectsActivity extends ActionBarActivity
 
     public void openCreateNewProject()
     {
-        // TODO: Open the create new project dialog.
+        DialogFragment newProject = new NewProjectFragment();
+        newProject.show(getFragmentManager().beginTransaction(), "fragment_new_project");
     }
 }

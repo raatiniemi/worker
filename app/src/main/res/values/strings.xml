@@ -12,4 +12,9 @@
     <string name="projects_item_project_clock_in">Clock in</string>
     <string name="projects_item_project_clock_out">Clock out</string>
     <string name="projects_item_project_clock_out_at">Clock out at&#8230;</string>
+
+    <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
+    <string name="fragment_new_project_name_hint">Project name&#8230;</string>
+    <string name="fragment_new_project_cancel">Cancel</string>
+    <string name="fragment_new_project_create">Create</string>
 </resources>
