@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="projects_item_padding_horizontal">25dp</dimen>
+    <dimen name="projects_item_padding_vertical">20dp</dimen>
+
+    <dimen name="projects_item_time_margin_start">20dp</dimen>
+
+    <dimen name="projects_item_description_margin_top">5dp</dimen>
+
+    <dimen name="projects_item_clock_activity_margin_top">15dp</dimen>
+
+    <dimen name="projects_item_clocked_in_margin_start">15dp</dimen>
+</resources>
