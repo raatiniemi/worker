@@ -1,10 +1,14 @@
 package me.raatiniemi.worker.ui.fragment;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.cengalabs.flatui.views.FlatButton;
 
@@ -35,7 +39,7 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
     {
         switch (view.getId()) {
             case R.id.fragment_new_project_create:
-                createNewProject(view);
+                createNewProject();
                 break;
             case R.id.fragment_new_project_cancel:
                 dismiss();
@@ -43,8 +47,48 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
-    private void createNewProject(View view)
+    private void createNewProject()
     {
-        // TODO: Implement creation of new projects.
+        try {
+            // Retrieve the supplied project name from the text field.
+            EditText textField = (EditText) getView().findViewById(R.id.fragment_new_project_name);
+            String projectName = textField.getText().toString();
+
+            // Check that the user actually supplied a project name.
+            if (projectName.length() == 0) {
+                // No project name supplied, display error message to user.
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.fragment_new_project_create_without_name_title)
+                        .setMessage(R.string.fragment_new_project_create_without_name_description)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Do nothing...
+                            }
+                        })
+                        .show();
+
+                // Exit method, no need to go further.
+                return;
+            }
+
+            // TODO: Implement check for unique project name.
+            // TODO: Create new project and reload the projects activity.
+            Log.d("NewProjectFragment", "Creating project: "+ projectName);
+
+            // We are finished with the project creation,
+            // we now have to dismiss the dialog.
+            dismiss();
+        } catch (NullPointerException e) {
+            // Was unable to find the EditText component, display error message to the user.
+            new AlertDialog.Builder(getActivity())
+                .setTitle(getString(R.string.fragment_new_project_null_pointer_exception_title))
+                .setMessage(getString(R.string.fragment_new_project_null_pointer_exception_description))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing...
+                    }
+                })
+                .show();
+        }
     }
 }
