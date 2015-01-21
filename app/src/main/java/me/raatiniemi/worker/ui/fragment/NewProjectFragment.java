@@ -13,7 +13,8 @@ import me.raatiniemi.worker.R;
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
 {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         getDialog().setTitle("Create new project");
 
         View view = inflater.inflate(R.layout.fragment_new_project, container, false);
