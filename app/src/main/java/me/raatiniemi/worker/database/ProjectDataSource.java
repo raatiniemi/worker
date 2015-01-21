@@ -50,4 +50,22 @@ public class ProjectDataSource extends BaseDataSource
 
         return projects;
     }
+
+    public Project findProjectById(long id)
+    {
+        // TODO: Implement 'findProjectByName'.
+        return null;
+    }
+
+    public Project findProjectByName(String projectName)
+    {
+        // TODO: Implement 'findProjectByName'.
+        return null;
+    }
+
+    public Project createNewProject(String projectName)
+    {
+        // TODO: Implement 'createNewProject'.
+        return null;
+    }
 }
