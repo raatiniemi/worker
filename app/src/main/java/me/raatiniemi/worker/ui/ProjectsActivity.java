@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectsAdapter;
 import me.raatiniemi.worker.data.Project;
+import me.raatiniemi.worker.database.ProjectDataSource;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectsActivity extends ActionBarActivity
@@ -23,8 +24,9 @@ public class ProjectsActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects);
 
-        // TODO: Retrieve saved projects.
-        ArrayList<Project> projects = new ArrayList<>();
+        // Retrieve the saved projects.
+        ProjectDataSource dataSource = new ProjectDataSource(this);
+        ArrayList<Project> projects = dataSource.getProjects();
 
         ProjectsAdapter adapter = new ProjectsAdapter(this, projects);
         ListView listView = (ListView) findViewById(R.id.projects_listview);
