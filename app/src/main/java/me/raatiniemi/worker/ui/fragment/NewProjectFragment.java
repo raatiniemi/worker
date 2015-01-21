@@ -13,6 +13,8 @@ import android.widget.EditText;
 import com.cengalabs.flatui.views.FlatButton;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.data.Project;
+import me.raatiniemi.worker.database.ProjectDataSource;
 
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
 {
@@ -71,7 +73,26 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
                 return;
             }
 
-            // TODO: Implement check for unique project name.
+            ProjectDataSource dataSource = new ProjectDataSource(getActivity());
+
+            // Check if a project with the supplied name already exists.
+            Project project = dataSource.findProjectByName(projectName);
+            if (project != null) {
+                // Project name already exists, display error message to user.
+                new AlertDialog.Builder(getActivity())
+                    .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
+                    .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing...
+                        }
+                    })
+                    .show();
+
+                // Exit method, no need to go further.
+                return;
+            }
+
             // TODO: Create new project and reload the projects activity.
             Log.d("NewProjectFragment", "Creating project: "+ projectName);
 

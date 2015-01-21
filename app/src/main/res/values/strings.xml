@@ -19,6 +19,8 @@
     <string name="fragment_new_project_create">Create</string>
     <string name="fragment_new_project_create_without_name_title">No project name supplied</string>
     <string name="fragment_new_project_create_without_name_description">You have to supply a project name when creating a new project.\n\nNote, the name have to be unique.</string>
+    <string name="fragment_new_project_create_project_already_exists_title">Project name already exists</string>
+    <string name="fragment_new_project_create_project_already_exists_description">A project with that name already exists, every project must have a unique name.</string>
     <string name="fragment_new_project_null_pointer_exception_title">Unable to find text view</string>
     <string name="fragment_new_project_null_pointer_exception_description">An internal error occurred when the layout handler was trying to get the project name.</string>
 </resources>
