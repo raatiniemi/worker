@@ -72,20 +72,20 @@ public class ProjectDataSource extends BaseDataSource
         return project;
     }
 
-    public Project findProjectByName(String projectName)
+    public Project findProjectByName(String name)
     {
-        String[] columns = new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION};
+        String[] columns = new String[]{COLUMN_ID, COLUMN_DESCRIPTION};
 
         String selection = COLUMN_NAME + "=?";
-        String[] selectionArgs = new String[]{projectName};
+        String[] selectionArgs = new String[]{name};
 
         Cursor row = mDatabase.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
         if (!row.moveToFirst()) {
+            Log.d("findProjectById", "No project exists with name: "+ name);
             return null;
         }
 
         long id = row.getLong(row.getColumnIndex(COLUMN_ID));
-        String name = row.getString(row.getColumnIndex(COLUMN_NAME));
         String description = row.getString(row.getColumnIndex(COLUMN_DESCRIPTION));
 
         Project project = new Project(id, name);
