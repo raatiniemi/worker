@@ -82,7 +82,7 @@ public class ProjectDataSource extends BaseDataSource
 
         Cursor row = mDatabase.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
         if (!row.moveToFirst()) {
-            Log.d("findProjectById", "No project exists with name: "+ name);
+            Log.d("findProjectByName", "No project exists with name: "+ name);
             return null;
         }
 
