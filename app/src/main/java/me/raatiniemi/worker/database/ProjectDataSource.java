@@ -58,8 +58,24 @@ public class ProjectDataSource extends BaseDataSource
 
     public Project findProjectByName(String projectName)
     {
-        // TODO: Implement 'findProjectByName'.
-        return null;
+        String[] columns = new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION};
+
+        String selection = COLUMN_NAME + "=?";
+        String[] selectionArgs = new String[]{projectName};
+
+        Cursor row = mDatabase.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        if (!row.moveToFirst()) {
+            return null;
+        }
+
+        long id = row.getLong(row.getColumnIndex(COLUMN_ID));
+        String name = row.getString(row.getColumnIndex(COLUMN_NAME));
+        String description = row.getString(row.getColumnIndex(COLUMN_DESCRIPTION));
+
+        Project project = new Project(id, name);
+        project.setDescription(description);
+
+        return project;
     }
 
     public Project createNewProject(String projectName)
