@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -94,9 +95,18 @@ public class ProjectDataSource extends BaseDataSource
         return project;
     }
 
-    public Project createNewProject(String projectName)
+    public Project createNewProject(String name)
     {
-        // TODO: Implement 'createNewProject'.
-        return null;
+        if (null != findProjectByName(name)) {
+            Log.d("ProjectDataSource", "Project with name '"+ name +"' already exists");
+            return null;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+
+        // Insert the new project name and retrieve the data.
+        long id = mDatabase.insert(TABLE_NAME, null, values);
+        return findProjectById(id);
     }
 }
