@@ -28,6 +28,7 @@ public class Helper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
+        db.execSQL(ProjectDataSource.CREATE_TABLE);
     }
 
     @Override
