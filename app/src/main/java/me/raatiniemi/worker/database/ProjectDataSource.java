@@ -2,6 +2,7 @@ package me.raatiniemi.worker.database;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -52,8 +53,23 @@ public class ProjectDataSource extends BaseDataSource
 
     public Project findProjectById(long id)
     {
-        // TODO: Implement 'findProjectByName'.
-        return null;
+        String[] columns = new String[]{COLUMN_NAME, COLUMN_DESCRIPTION};
+
+        String selection = COLUMN_ID +"="+ id;
+
+        Cursor row = mDatabase.query(TABLE_NAME, columns, selection, null, null, null, null);
+        if (!row.moveToFirst()) {
+            Log.d("findProjectById", "No project exists with id: "+ id);
+            return null;
+        }
+
+        String name = row.getString(row.getColumnIndex(COLUMN_NAME));
+        String description = row.getString(row.getColumnIndex(COLUMN_DESCRIPTION));
+
+        Project project = new Project(id, name);
+        project.setDescription(description);
+
+        return project;
     }
 
     public Project findProjectByName(String projectName)
