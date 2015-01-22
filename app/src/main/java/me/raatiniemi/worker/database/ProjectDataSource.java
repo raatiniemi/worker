@@ -83,7 +83,7 @@ public class ProjectDataSource extends BaseDataSource
 
         Cursor row = mDatabase.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
         if (!row.moveToFirst()) {
-            Log.d("findProjectByName", "No project exists with name: "+ name);
+            Log.i("findProjectByName", "No project exists with name: "+ name);
             return null;
         }
 
@@ -99,7 +99,7 @@ public class ProjectDataSource extends BaseDataSource
     public Project createNewProject(String name) throws ProjectAlreadyExistsException
     {
         if (null != findProjectByName(name)) {
-            Log.d("ProjectDataSource", "Project with name '"+ name +"' already exists");
+            Log.i("ProjectDataSource", "Project with name '"+ name +"' already exists");
             throw new ProjectAlreadyExistsException();
         }
 
