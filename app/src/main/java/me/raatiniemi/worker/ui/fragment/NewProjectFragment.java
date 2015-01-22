@@ -137,14 +137,14 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
         } catch (NullPointerException e) {
             // Was unable to find the EditText component, display error message to the user.
             new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.fragment_new_project_null_pointer_exception_title))
-                .setMessage(getString(R.string.fragment_new_project_null_pointer_exception_description))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
+                    .setTitle(getString(R.string.fragment_new_project_null_pointer_exception_title))
+                    .setMessage(getString(R.string.fragment_new_project_null_pointer_exception_description))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing...
+                        }
+                    })
+                    .show();
         }
     }
 }
