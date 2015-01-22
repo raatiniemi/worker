@@ -17,6 +17,7 @@ import me.raatiniemi.worker.database.ProjectDataSource;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectsActivity extends ActionBarActivity
+    implements NewProjectFragment.OnCreateProjectListener
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -56,5 +57,10 @@ public class ProjectsActivity extends ActionBarActivity
     {
         DialogFragment newProject = new NewProjectFragment();
         newProject.show(getFragmentManager().beginTransaction(), "fragment_new_project");
+    }
+
+    public void onCreateProject(Project project)
+    {
+        // TODO: Add project to ArrayList and notify the adapter.
     }
 }

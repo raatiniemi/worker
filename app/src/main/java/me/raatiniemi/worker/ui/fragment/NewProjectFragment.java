@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.ui.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -18,6 +19,41 @@ import me.raatiniemi.worker.database.ProjectDataSource;
 
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
 {
+    private OnCreateProjectListener mCallback;
+
+    public interface OnCreateProjectListener
+    {
+        public void onCreateProject(Project project);
+    }
+
+    @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+
+        try {
+            mCallback = (OnCreateProjectListener) activity;
+        } catch (ClassCastException e) {
+            Log.e("onAttach", activity.toString() +" do not implement OnCreateProjectListener");
+
+            // We're unable to use the activity since it do not implement
+            // the 'OnCreateProjectListener', display error message to user.
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(getString(R.string.fragment_new_project_class_cast_exception_title))
+                    .setMessage(getString(R.string.fragment_new_project_class_cast_exception_description))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing...
+                        }
+                    })
+                    .show();
+
+            // Dismiss the dialog since we are unable
+            // to properly create projects with it.
+            dismiss();
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
