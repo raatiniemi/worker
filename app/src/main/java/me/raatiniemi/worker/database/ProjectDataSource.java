@@ -3,6 +3,7 @@ package me.raatiniemi.worker.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.data.Project;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 
-public class ProjectDataSource extends BaseDataSource
+public class ProjectDataSource
 {
     private static final String TABLE_NAME = "project";
 
@@ -25,8 +26,19 @@ public class ProjectDataSource extends BaseDataSource
             COLUMN_DESCRIPTION + " TEXT NULL " +
         ");";
 
-    public ProjectDataSource(Context context) {
-        super(Helper.getInstance(context));
+    protected Helper mHelper;
+
+    protected SQLiteDatabase mDatabase;
+
+    public ProjectDataSource(Helper helper)
+    {
+        mHelper = helper;
+        mDatabase = mHelper.getWritableDatabase();
+    }
+
+    public ProjectDataSource(Context context)
+    {
+        this(Helper.getInstance(context));
     }
 
     public ArrayList<Project> getProjects()
