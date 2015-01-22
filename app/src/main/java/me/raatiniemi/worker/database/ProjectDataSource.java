@@ -8,6 +8,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.data.Project;
+import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 
 public class ProjectDataSource extends BaseDataSource
 {
@@ -95,11 +96,11 @@ public class ProjectDataSource extends BaseDataSource
         return project;
     }
 
-    public Project createNewProject(String name)
+    public Project createNewProject(String name) throws ProjectAlreadyExistsException
     {
         if (null != findProjectByName(name)) {
             Log.d("ProjectDataSource", "Project with name '"+ name +"' already exists");
-            return null;
+            throw new ProjectAlreadyExistsException();
         }
 
         ContentValues values = new ContentValues();

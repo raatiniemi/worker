@@ -16,6 +16,7 @@ import com.cengalabs.flatui.views.FlatButton;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.Project;
 import me.raatiniemi.worker.database.ProjectDataSource;
+import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
 {
@@ -109,13 +110,21 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
                 return;
             }
 
-            ProjectDataSource dataSource = new ProjectDataSource(getActivity());
+            Log.d("createNewProject", "Attempt to create new project with name: " + projectName);
 
-            // Check if a project with the supplied name already exists.
-            Project project = dataSource.findProjectByName(projectName);
-            if (project != null) {
-                // Project name already exists, display error message to user.
-                new AlertDialog.Builder(getActivity())
+            // Attempt to create the new project with supplied name.
+            ProjectDataSource dataSource = new ProjectDataSource(getActivity());
+            Project project = dataSource.createNewProject(projectName);
+
+            // Replay that the project have been created to the activity.
+            mCallback.onCreateProject(project);
+
+            // We are finished with the project creation,
+            // we now have to dismiss the dialog.
+            dismiss();
+        } catch (ProjectAlreadyExistsException e) {
+            // Project name already exists, display error message to user.
+            new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
                     .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -124,21 +133,6 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
                         }
                     })
                     .show();
-
-                // Exit method, no need to go further.
-                return;
-            }
-
-            // Attempt to create the new project with supplied name.
-            Log.d("createNewProject", "Attempt to create new project with name: "+ projectName);
-            project = dataSource.createNewProject(projectName);
-
-            // Replay that the project have been created to the activity.
-            mCallback.onCreateProject(project);
-
-            // We are finished with the project creation,
-            // we now have to dismiss the dialog.
-            dismiss();
         } catch (NullPointerException e) {
             // Was unable to find the EditText component, display error message to the user.
             new AlertDialog.Builder(getActivity())
