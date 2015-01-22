@@ -54,6 +54,14 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
         viewHolder.name.setText(project.getName());
         viewHolder.description.setText(project.getDescription());
 
+        // If the description is empty the the
+        // description field should be hidden.
+        int visibility = View.VISIBLE;
+        if (viewHolder.description.getText().length() == 0) {
+            visibility = View.GONE;
+        }
+        viewHolder.description.setVisibility(visibility);
+
         // TODO: Set the actual values.
         viewHolder.time.setText(null);
 
