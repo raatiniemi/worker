@@ -16,6 +16,7 @@ import com.cengalabs.flatui.views.FlatButton;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.Project;
 import me.raatiniemi.worker.database.ProjectDataSource;
+import me.raatiniemi.worker.exception.NamelessProjectException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
@@ -95,19 +96,8 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
 
             // Check that the user actually supplied a project name.
             if (projectName.length() == 0) {
-                // No project name supplied, display error message to user.
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(R.string.fragment_new_project_create_without_name_title)
-                        .setMessage(R.string.fragment_new_project_create_without_name_description)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Do nothing...
-                            }
-                        })
-                        .show();
-
-                // Exit method, no need to go further.
-                return;
+                Log.e("createNewProject", "No project name have been supplied");
+                throw new NamelessProjectException();
             }
 
             Log.d("createNewProject", "Attempt to create new project with name: " + projectName);
@@ -122,6 +112,17 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
             // We are finished with the project creation,
             // we now have to dismiss the dialog.
             dismiss();
+        } catch (NamelessProjectException e) {
+            // No project name supplied, display error message to user.
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.fragment_new_project_create_without_name_title)
+                    .setMessage(R.string.fragment_new_project_create_without_name_description)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing...
+                        }
+                    })
+                    .show();
         } catch (ProjectAlreadyExistsException e) {
             // Project name already exists, display error message to user.
             new AlertDialog.Builder(getActivity())
