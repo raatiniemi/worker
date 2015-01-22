@@ -131,9 +131,10 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
 
             // Attempt to create the new project with supplied name.
             Log.d("createNewProject", "Attempt to create new project with name: "+ projectName);
-            dataSource.createNewProject(projectName);
+            project = dataSource.createNewProject(projectName);
 
-            // TODO: Relay data update to the project activity.
+            // Replay that the project have been created to the activity.
+            mCallback.onCreateProject(project);
 
             // We are finished with the project creation,
             // we now have to dismiss the dialog.

@@ -19,17 +19,20 @@ import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 public class ProjectsActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener
 {
+    private ArrayList<Project> projects;
+
+    private ProjectsAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects);
 
-        // Retrieve the saved projects.
         ProjectDataSource dataSource = new ProjectDataSource(this);
-        ArrayList<Project> projects = dataSource.getProjects();
+        projects = dataSource.getProjects();
 
-        ProjectsAdapter adapter = new ProjectsAdapter(this, projects);
+        adapter = new ProjectsAdapter(this, projects);
         ListView listView = (ListView) findViewById(R.id.projects_listview);
         listView.setAdapter(adapter);
     }
@@ -61,6 +64,9 @@ public class ProjectsActivity extends ActionBarActivity
 
     public void onCreateProject(Project project)
     {
-        // TODO: Add project to ArrayList and notify the adapter.
+        // Add the project to the list of available projects
+        // and notify the adapter that the data has changed.
+        projects.add(project);
+        adapter.notifyDataSetChanged();
     }
 }
