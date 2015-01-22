@@ -8,7 +8,8 @@ public class BaseDataSource
 
     protected SQLiteDatabase mDatabase;
 
-    public BaseDataSource(Helper helper) {
+    public BaseDataSource(Helper helper)
+    {
         mHelper = helper;
         mDatabase = mHelper.getWritableDatabase();
     }
