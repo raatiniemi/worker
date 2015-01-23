@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -13,17 +14,22 @@ import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 
 public class ProjectDataSource
 {
-    private static final String TABLE_NAME = "project";
+    public interface Structure extends BaseColumns
+    {
+        public static final String TABLE_NAME = "project";
 
-    private static final String COLUMN_ID = "id";
-    private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_ID = "id";
+
+        public static final String COLUMN_NAME = "name";
+
+        public static final String COLUMN_DESCRIPTION = "description";
+    }
 
     public static final String CREATE_TABLE =
-        "CREATE TABLE " + TABLE_NAME + " ( " +
-            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_NAME + " TEXT NOT NULL, " +
-            COLUMN_DESCRIPTION + " TEXT NULL " +
+        "CREATE TABLE " + Structure.TABLE_NAME + " ( " +
+            Structure.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            Structure.COLUMN_NAME + " TEXT NOT NULL, " +
+            Structure.COLUMN_DESCRIPTION + " TEXT NULL " +
         ");";
 
     protected Helper mHelper;
@@ -44,14 +50,18 @@ public class ProjectDataSource
     public ArrayList<Project> getProjects()
     {
         ArrayList<Project> projects = new ArrayList<>();
-        String[] columns = new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_DESCRIPTION};
+        String[] columns = new String[]{
+            Structure.COLUMN_ID,
+            Structure.COLUMN_NAME,
+            Structure.COLUMN_DESCRIPTION
+        };
 
-        Cursor cursor = mDatabase.query(TABLE_NAME, columns, null, null, null, null, null);
+        Cursor cursor = mDatabase.query(Structure.TABLE_NAME, columns, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                long id = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
-                String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
-                String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
+                long id = cursor.getLong(cursor.getColumnIndex(Structure.COLUMN_ID));
+                String name = cursor.getString(cursor.getColumnIndex(Structure.COLUMN_NAME));
+                String description = cursor.getString(cursor.getColumnIndex(Structure.COLUMN_DESCRIPTION));
 
                 Project project = new Project(id, name);
                 project.setDescription(description);
@@ -67,18 +77,21 @@ public class ProjectDataSource
 
     public Project findProjectById(long id)
     {
-        String[] columns = new String[]{COLUMN_NAME, COLUMN_DESCRIPTION};
+        String[] columns = new String[]{
+            Structure.COLUMN_NAME,
+            Structure.COLUMN_DESCRIPTION
+        };
 
-        String selection = COLUMN_ID +"="+ id;
+        String selection = Structure.COLUMN_ID +"="+ id;
 
-        Cursor row = mDatabase.query(TABLE_NAME, columns, selection, null, null, null, null);
+        Cursor row = mDatabase.query(Structure.TABLE_NAME, columns, selection, null, null, null, null);
         if (!row.moveToFirst()) {
             Log.d("findProjectById", "No project exists with id: "+ id);
             return null;
         }
 
-        String name = row.getString(row.getColumnIndex(COLUMN_NAME));
-        String description = row.getString(row.getColumnIndex(COLUMN_DESCRIPTION));
+        String name = row.getString(row.getColumnIndex(Structure.COLUMN_NAME));
+        String description = row.getString(row.getColumnIndex(Structure.COLUMN_DESCRIPTION));
 
         Project project = new Project(id, name);
         project.setDescription(description);
@@ -88,19 +101,22 @@ public class ProjectDataSource
 
     public Project findProjectByName(String name)
     {
-        String[] columns = new String[]{COLUMN_ID, COLUMN_DESCRIPTION};
+        String[] columns = new String[]{
+            Structure.COLUMN_ID,
+            Structure.COLUMN_DESCRIPTION
+        };
 
-        String selection = COLUMN_NAME + "=?";
+        String selection = Structure.COLUMN_NAME + "=?";
         String[] selectionArgs = new String[]{name};
 
-        Cursor row = mDatabase.query(TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+        Cursor row = mDatabase.query(Structure.TABLE_NAME, columns, selection, selectionArgs, null, null, null);
         if (!row.moveToFirst()) {
             Log.i("findProjectByName", "No project exists with name: "+ name);
             return null;
         }
 
-        long id = row.getLong(row.getColumnIndex(COLUMN_ID));
-        String description = row.getString(row.getColumnIndex(COLUMN_DESCRIPTION));
+        long id = row.getLong(row.getColumnIndex(Structure.COLUMN_ID));
+        String description = row.getString(row.getColumnIndex(Structure.COLUMN_DESCRIPTION));
 
         Project project = new Project(id, name);
         project.setDescription(description);
@@ -116,10 +132,10 @@ public class ProjectDataSource
         }
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, name);
+        values.put(Structure.COLUMN_NAME, name);
 
         // Insert the new project name and retrieve the data.
-        long id = mDatabase.insert(TABLE_NAME, null, values);
+        long id = mDatabase.insert(Structure.TABLE_NAME, null, values);
         return findProjectById(id);
     }
 }
