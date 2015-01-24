@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.Project;
+import me.raatiniemi.worker.database.TimeDataSource;
 
 public class ProjectsAdapter extends ArrayAdapter<Project>
 {
@@ -33,7 +34,7 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
     public View getView(int position, View convertView, ViewGroup parent)
     {
         // Get the project item for the row.
-        Project project = getItem(position);
+        final Project project = getItem(position);
 
         // Check if an existing view is being reused,
         // otherwise inflate the view.
@@ -73,6 +74,17 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
         }
 
         viewHolder.clockActivity.setText(getContext().getResources().getString(activity));
+        viewHolder.clockActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimeDataSource time = new TimeDataSource(getContext());
+                time.startTimerForProject(project.getId());
+
+                // TODO: Add time object to project.
+                // TODO: Notify the adapter of a data change.
+                // TODO: Handle clock out.
+            }
+        });
 
         return convertView;
     }
