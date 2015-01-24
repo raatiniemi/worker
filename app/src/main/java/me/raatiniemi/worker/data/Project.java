@@ -63,7 +63,7 @@ public class Project
         long totalTime = 0;
 
         ArrayList<Time> time = getTime();
-        if (!time.isEmpty()) {
+        if (time != null && !time.isEmpty()) {
             for (Time item: time) {
                 totalTime += item.getTime();
             }
@@ -79,7 +79,7 @@ public class Project
     {
         boolean active = false;
 
-        if (!getTime().isEmpty()) {
+        if (getTime() != null && !getTime().isEmpty()) {
             // Retrieve the last element of the time array and check if the
             // item is active, hence defines if the project is active.
             Time time = getTime().get(getTime().size() - 1);
