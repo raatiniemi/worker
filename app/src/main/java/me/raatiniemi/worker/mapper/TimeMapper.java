@@ -10,18 +10,18 @@ public class TimeMapper extends AbstractMapper
 {
     private static final String TABLE_NAME = "time";
 
-    private interface Columns extends BaseColumns
+    private interface Columns
     {
-        public static final String PROJECT_ID = "project_id";
+        String PROJECT_ID = "project_id";
 
-        public static final String START = "start";
+        String START = "start";
 
-        public static final String STOP = "stop";
+        String STOP = "stop";
     }
 
     public static final String CREATE_TABLE =
         "CREATE TABLE " + TABLE_NAME + " ( " +
-            Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Columns.PROJECT_ID + " INTEGER NOT NULL, " +
             Columns.START + " INTEGER NOT NULL, " +
             Columns.STOP + " INTEGER NULL " +
