@@ -59,8 +59,9 @@ public class TimeDataSource
 
         // TODO: Retrieve time with support for interval, day, week, and month.
         String selection = Structure.COLUMN_PROJECT_ID +"="+ project_id;
+        String orderBy = Structure.COLUMN_TIME_START + " DESC";
 
-        Cursor cursor = mDatabase.query(Structure.TABLE_NAME, columns, selection, null, null, null, null);
+        Cursor cursor = mDatabase.query(Structure.TABLE_NAME, columns, selection, null, null, null, orderBy);
         if (cursor.moveToFirst()) {
             do {
                 // Populate the time item with its data.
