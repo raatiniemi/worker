@@ -29,6 +29,7 @@ public class Helper extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db)
     {
         db.execSQL(ProjectDataSource.CREATE_TABLE);
+        db.execSQL(TimeDataSource.CREATE_TABLE);
     }
 
     @Override
