@@ -52,6 +52,7 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
 
         // Populate the data into the template view.
         viewHolder.name.setText(project.getName());
+        viewHolder.time.setText(project.summarizeTime());
         viewHolder.description.setText(project.getDescription());
 
         // If the description is empty the the
@@ -61,9 +62,6 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
             visibility = View.GONE;
         }
         viewHolder.description.setVisibility(visibility);
-
-        // TODO: Set the actual values.
-        viewHolder.time.setText(null);
 
         return convertView;
     }
