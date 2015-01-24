@@ -17,6 +17,7 @@ public class ProjectMapper extends AbstractMapper
         "CREATE TABLE " + TABLE_NAME + " ( " +
             Columns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Columns.NAME + " TEXT NOT NULL, " +
-            Columns.DESCRIPTION + " TEXT NULL " +
+            Columns.DESCRIPTION + " TEXT NULL, " +
+            "UNIQUE (" + Columns.NAME + ") ON CONFLICT ROLLBACK" +
         ");";
 }
