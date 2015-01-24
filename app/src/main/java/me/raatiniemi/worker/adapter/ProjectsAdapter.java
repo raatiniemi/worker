@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.cengalabs.flatui.views.FlatButton;
+
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
@@ -19,6 +21,7 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
         TextView name;
         TextView time;
         TextView description;
+        FlatButton clockActivity;
     }
 
     public ProjectsAdapter(Context context, ArrayList<Project> projects)
@@ -44,6 +47,7 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
             viewHolder.name = (TextView) convertView.findViewById(R.id.project_name);
             viewHolder.time = (TextView) convertView.findViewById(R.id.project_time);
             viewHolder.description = (TextView) convertView.findViewById(R.id.project_description);
+            viewHolder.clockActivity = (FlatButton) convertView.findViewById(R.id.project_clock_activity);
 
             convertView.setTag(viewHolder);
         } else {
@@ -62,6 +66,13 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
             visibility = View.GONE;
         }
         viewHolder.description.setVisibility(visibility);
+
+        int activity = R.string.projects_item_project_clock_in;
+        if (project.isActive()) {
+            activity = R.string.projects_item_project_clock_out;
+        }
+
+        viewHolder.clockActivity.setText(getContext().getResources().getString(activity));
 
         return convertView;
     }
