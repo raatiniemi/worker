@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.mapper;
 
+import android.content.Context;
 import android.provider.BaseColumns;
 
 public class TimeMapper extends AbstractMapper
@@ -22,4 +23,9 @@ public class TimeMapper extends AbstractMapper
             Columns.START + " INTEGER NOT NULL, " +
             Columns.STOP + " INTEGER NULL " +
         ");";
+
+    public TimeMapper(Context context)
+    {
+        super(context);
+    }
 }

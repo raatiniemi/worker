@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.mapper;
 
+import android.content.Context;
 import android.provider.BaseColumns;
 
 public class ProjectMapper extends AbstractMapper
@@ -20,4 +21,12 @@ public class ProjectMapper extends AbstractMapper
             Columns.DESCRIPTION + " TEXT NULL, " +
             "UNIQUE (" + Columns.NAME + ") ON CONFLICT ROLLBACK" +
         ");";
+
+    private TimeMapper mTimeMapper;
+
+    public ProjectMapper(Context context, TimeMapper timeMapper)
+    {
+        super(context);
+        mTimeMapper = timeMapper;
+    }
 }
