@@ -1,8 +1,13 @@
 package me.raatiniemi.worker.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+
+import java.util.ArrayList;
+
+import me.raatiniemi.worker.data.Time;
 
 public class TimeDataSource
 {
@@ -40,5 +45,35 @@ public class TimeDataSource
     public TimeDataSource(Context context)
     {
         this(Helper.getInstance(context));
+    }
+
+    public ArrayList<Time> getTimeByProjectId(long project_id)
+    {
+        ArrayList<Time> time = new ArrayList<>();
+        String[] columns = new String[]{
+            Structure.COLUMN_ID,
+            Structure.COLUMN_PROJECT_ID,
+            Structure.COLUMN_TIME_START,
+            Structure.COLUMN_TIME_STOP
+        };
+
+        // TODO: Retrieve time with support for interval, day, week, and month.
+        String selection = Structure.COLUMN_PROJECT_ID +"="+ project_id;
+
+        Cursor cursor = mDatabase.query(Structure.TABLE_NAME, columns, selection, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                // Populate the time item with its data.
+                Time item = new Time();
+                item.setId(cursor.getLong(cursor.getColumnIndex(Structure.COLUMN_ID)));
+                item.setProjectId(cursor.getLong(cursor.getColumnIndex(Structure.COLUMN_PROJECT_ID)));
+                item.setStart(cursor.getLong(cursor.getColumnIndex(Structure.COLUMN_TIME_START)));
+                item.setStop(cursor.getLong(cursor.getColumnIndex(Structure.COLUMN_TIME_STOP)));
+
+                time.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        return time;
     }
 }
