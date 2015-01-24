@@ -65,9 +65,7 @@ public class Project
         ArrayList<Time> time = getTime();
         if (!time.isEmpty()) {
             for (Time item: time) {
-                if (!item.isActive()) {
-                    totalTime += item.getStop() - item.getStart();
-                }
+                totalTime += item.getTime();
             }
         }
 

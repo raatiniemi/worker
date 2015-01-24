@@ -74,4 +74,15 @@ public class Time
     {
         return getStop() == null;
     }
+
+    public long getTime()
+    {
+        long time = 0;
+
+        if (!isActive()) {
+            time = getStop() - getStart();
+        }
+
+        return time;
+    }
 }
