@@ -72,7 +72,7 @@ public class Time
 
     public boolean isActive()
     {
-        return getStop() == null;
+        return getStop() == 0;
     }
 
     public long getTime()
