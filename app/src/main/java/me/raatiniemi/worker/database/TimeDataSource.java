@@ -28,8 +28,8 @@ public class TimeDataSource
         "CREATE TABLE " + Structure.TABLE_NAME + " ( " +
             Structure.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Structure.COLUMN_PROJECT_ID + " INTEGER NOT NULL, " +
-            Structure.COLUMN_TIME_START + " INTEGER NOT NULL, " +
-            Structure.COLUMN_TIME_STOP + " INTEGER NOT NULL " +
+            Structure.COLUMN_TIME_START + " INTEGER NULL, " +
+            Structure.COLUMN_TIME_STOP + " INTEGER NULL " +
         ");";
 
     protected Helper mHelper;
