@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.data.Project;
+import me.raatiniemi.worker.data.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 
 public class ProjectDataSource
@@ -56,6 +57,8 @@ public class ProjectDataSource
             Structure.COLUMN_DESCRIPTION
         };
 
+        TimeDataSource timeDataSource = new TimeDataSource(mHelper);
+
         Cursor cursor = mDatabase.query(Structure.TABLE_NAME, columns, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -67,6 +70,8 @@ public class ProjectDataSource
                 project.setDescription(description);
 
                 // TODO: Retrieve the registered time for the specified interval (day, week, month).
+                ArrayList<Time> time = timeDataSource.getTimeByProjectId(project.getId());
+                project.setTime(time);
 
                 projects.add(project);
             } while (cursor.moveToNext());
