@@ -76,4 +76,18 @@ public class Project
 
         return String.format("%dh %dm", hours, minutes);
     }
+
+    public boolean isActive()
+    {
+        boolean active = false;
+
+        if (!getTime().isEmpty()) {
+            // Retrieve the last element of the time array and check if the
+            // item is active, hence defines if the project is active.
+            Time time = getTime().get(getTime().size() - 1);
+            active = time.isActive();
+        }
+
+        return active;
+    }
 }
