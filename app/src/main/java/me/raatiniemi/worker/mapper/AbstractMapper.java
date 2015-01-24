@@ -1,11 +1,13 @@
 package me.raatiniemi.worker.mapper;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import me.raatiniemi.worker.database.Helper;
+import me.raatiniemi.worker.domain.DomainObject;
 
-public class AbstractMapper
+abstract public class AbstractMapper
 {
     protected Helper mHelper;
 
@@ -21,4 +23,6 @@ public class AbstractMapper
     {
         this(Helper.getInstance(context));
     }
+
+    abstract protected DomainObject load(Cursor resultSet);
 }

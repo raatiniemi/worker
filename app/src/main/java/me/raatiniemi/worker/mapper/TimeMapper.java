@@ -1,7 +1,10 @@
 package me.raatiniemi.worker.mapper;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.provider.BaseColumns;
+
+import me.raatiniemi.worker.domain.DomainObject;
 
 public class TimeMapper extends AbstractMapper
 {
@@ -27,5 +30,11 @@ public class TimeMapper extends AbstractMapper
     public TimeMapper(Context context)
     {
         super(context);
+    }
+
+    protected DomainObject load(Cursor resultSet)
+    {
+        // TODO: Implement load for time mapper.
+        return null;
     }
 }
