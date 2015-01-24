@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.data;
 
+import java.util.ArrayList;
+
 public class Project
 {
     private long mId;
@@ -7,6 +9,8 @@ public class Project
     private String mName;
 
     private String mDescription;
+
+    private ArrayList<Time> mTime;
 
     public Project(long id, String name)
     {
@@ -42,5 +46,34 @@ public class Project
     public String getDescription()
     {
         return mDescription;
+    }
+
+    public void setTime(ArrayList<Time> time)
+    {
+        mTime = time;
+    }
+
+    public ArrayList<Time> getTime()
+    {
+        return mTime;
+    }
+
+    public String summarizeTime()
+    {
+        long totalTime = 0;
+
+        ArrayList<Time> time = getTime();
+        if (!time.isEmpty()) {
+            for (Time item: time) {
+                if (!item.isActive()) {
+                    totalTime += item.getStop() - item.getStart();
+                }
+            }
+        }
+
+        long hours = totalTime / (60 * 60 * 1000) % 24;
+        long minutes = totalTime / (60 * 1000) % 60;
+
+        return String.format("%dh %dm", hours, minutes);
     }
 }
