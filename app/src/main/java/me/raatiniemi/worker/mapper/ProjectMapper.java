@@ -77,4 +77,17 @@ public class ProjectMapper extends AbstractMapper
 
         return result;
     }
+
+    public Project find(String name)
+    {
+        String selection = Columns.NAME + "=?";
+        String[] selectionArgs = new String[]{name};
+
+        Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
+        if (!row.moveToFirst()) {
+            return null;
+        }
+
+        return (Project) load(row);
+    }
 }
