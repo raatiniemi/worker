@@ -92,21 +92,21 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
         try {
             // Retrieve the supplied project name from the text field.
             EditText textField = (EditText) getView().findViewById(R.id.fragment_new_project_name);
-            String projectName = textField.getText().toString();
+            String name = textField.getText().toString();
 
             // Check that the user actually supplied a project name.
-            if (projectName.length() == 0) {
+            if (name.length() == 0) {
                 Log.e("createNewProject", "No project name have been supplied");
                 throw new NamelessProjectException();
             }
 
-            Log.d("createNewProject", "Attempt to create new project with name: " + projectName);
+            Log.d("createNewProject", "Attempt to create new project with name: " + name);
 
             // Attempt to create the new project with supplied name.
             ProjectMapper projectMapper = new ProjectMapper(getActivity());
 
             // Create the project without an actual id.
-            Project project = new Project(null, projectName);
+            Project project = new Project(null, name);
             project = projectMapper.insert(project);
 
             // Replay that the project have been created to the activity.
