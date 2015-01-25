@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
 
-public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder>
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>
 {
     private ArrayList<Project> mProjects;
 
-    public ProjectsAdapter(ArrayList<Project> projects)
+    public ProjectAdapter(ArrayList<Project> projects)
     {
         mProjects = projects;
     }
