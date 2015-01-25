@@ -2,16 +2,16 @@ package me.raatiniemi.worker.ui;
 
 import android.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.adapter.ProjectsAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
@@ -20,8 +20,6 @@ public class ProjectsActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener
 {
     private ArrayList<Project> projects;
-
-    private ProjectsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,9 +30,13 @@ public class ProjectsActivity extends ActionBarActivity
         ProjectMapper projectMapper = new ProjectMapper(this, null);
         projects = projectMapper.getProjects();
 
-        adapter = new ProjectsAdapter(this, projects);
-        ListView listView = (ListView) findViewById(R.id.projects_listview);
-        listView.setAdapter(adapter);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        manager.setOrientation(LinearLayoutManager.VERTICAL);
+
+        RecyclerView projectsView = (RecyclerView) findViewById(R.id.projects);
+        projectsView.setLayoutManager(manager);
+
+        // TODO: Handle the data adapter.
     }
 
     @Override
@@ -67,6 +69,6 @@ public class ProjectsActivity extends ActionBarActivity
         // Add the project to the list of available projects
         // and notify the adapter that the data has changed.
         projects.add(project);
-        adapter.notifyDataSetChanged();
+        // TODO: Update the recycler view.
     }
 }
