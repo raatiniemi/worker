@@ -50,4 +50,15 @@ public class Time extends DomainObject
     {
         return getStop() == 0;
     }
+
+    public long getTime()
+    {
+        long time = 0;
+
+        if (!isActive()) {
+            time = getStop() - getStart();
+        }
+
+        return time;
+    }
 }
