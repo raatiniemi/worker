@@ -1,10 +1,9 @@
 package me.raatiniemi.worker.adapter;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cengalabs.flatui.views.FlatButton;
@@ -14,74 +13,63 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
 
-public class ProjectsAdapter extends ArrayAdapter<Project>
+public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder>
 {
-    private static class ViewHolder
-    {
-        TextView name;
-        TextView time;
-        TextView description;
-        FlatButton clockActivity;
-    }
+    private ArrayList<Project> mProjects;
 
-    public ProjectsAdapter(Context context, ArrayList<Project> projects)
+    public ProjectsAdapter(ArrayList<Project> projects)
     {
-        super(context, R.layout.projects_item, projects);
+        mProjects = projects;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public int getItemCount()
     {
-        // Get the project item for the row.
-        final Project project = getItem(position);
+        return mProjects.size();
+    }
 
-        // Check if an existing view is being reused,
-        // otherwise inflate the view.
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.projects_item, parent, false);
+    @Override
+    public void onBindViewHolder(ProjectViewHolder projectViewHolder, int index)
+    {
+        Project project = mProjects.get(index);
 
-            // Initialize the view holder and retrieve the view components.
-            viewHolder = new ViewHolder();
-            viewHolder.name = (TextView) convertView.findViewById(R.id.project_name);
-            viewHolder.time = (TextView) convertView.findViewById(R.id.project_time);
-            viewHolder.description = (TextView) convertView.findViewById(R.id.project_description);
-            viewHolder.clockActivity = (FlatButton) convertView.findViewById(R.id.project_clock_activity);
+        projectViewHolder.mName.setText(project.getName());
+        projectViewHolder.mTime.setText(project.summarizeTime());
+        projectViewHolder.mDescription.setText(project.getDescription());
 
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        // Populate the data into the template view.
-        viewHolder.name.setText(project.getName());
-        viewHolder.time.setText(project.summarizeTime());
-        viewHolder.description.setText(project.getDescription());
-
-        // If the description is empty the the
-        // description field should be hidden.
+        // If the project description is empty
+        // the view should be hidden.
         int visibility = View.VISIBLE;
-        if (viewHolder.description.getText().length() == 0) {
-            visibility = View.GONE;
+        if (projectViewHolder.mDescription.getText().length() == 0) {
+            visibility = View.INVISIBLE;
         }
-        viewHolder.description.setVisibility(visibility);
+        projectViewHolder.mDescription.setVisibility(visibility);
+    }
 
-        int activity = R.string.projects_item_project_clock_in;
-        if (project.isActive()) {
-            activity = R.string.projects_item_project_clock_out;
+    @Override
+    public ProjectViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
+    {
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View projectView = inflater.inflate(R.layout.projects_item, viewGroup, false);
+
+        return new ProjectViewHolder(projectView);
+    }
+
+    public static class ProjectViewHolder extends RecyclerView.ViewHolder
+    {
+        protected TextView mName;
+        protected TextView mTime;
+        protected TextView mDescription;
+        protected FlatButton mClockActivity;
+
+        public ProjectViewHolder(View view)
+        {
+            super(view);
+
+            mName = (TextView) view.findViewById(R.id.project_name);
+            mTime = (TextView) view.findViewById(R.id.project_time);
+            mDescription = (TextView) view.findViewById(R.id.project_description);
+            mClockActivity = (FlatButton) view.findViewById(R.id.project_clock_activity);
         }
-
-        viewHolder.clockActivity.setText(getContext().getResources().getString(activity));
-        viewHolder.clockActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO: Add time object to project.
-                // TODO: Notify the adapter of a data change.
-                // TODO: Handle clock out.
-            }
-        });
-
-        return convertView;
     }
 }

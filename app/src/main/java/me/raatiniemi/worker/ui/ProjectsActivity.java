@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.adapter.ProjectsAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
@@ -27,16 +28,17 @@ public class ProjectsActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects);
 
-        ProjectMapper projectMapper = new ProjectMapper(this, null);
-        projects = projectMapper.getProjects();
-
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
         RecyclerView projectsView = (RecyclerView) findViewById(R.id.projects);
         projectsView.setLayoutManager(manager);
 
-        // TODO: Handle the data adapter.
+        ProjectMapper projectMapper = new ProjectMapper(this, null);
+        projects = projectMapper.getProjects();
+
+        ProjectsAdapter projectsAdapter = new ProjectsAdapter(projects);
+        projectsView.setAdapter(projectsAdapter);
     }
 
     @Override
