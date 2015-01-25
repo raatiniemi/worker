@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
-import me.raatiniemi.worker.database.TimeDataSource;
 
 public class ProjectsAdapter extends ArrayAdapter<Project>
 {
@@ -77,9 +76,6 @@ public class ProjectsAdapter extends ArrayAdapter<Project>
         viewHolder.clockActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimeDataSource time = new TimeDataSource(getContext());
-                time.startTimerForProject(project.getId());
-
                 // TODO: Add time object to project.
                 // TODO: Notify the adapter of a data change.
                 // TODO: Handle clock out.
