@@ -4,7 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
+import java.util.ArrayList;
+
 import me.raatiniemi.worker.domain.DomainObject;
+import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.Time;
 
 public class TimeMapper extends AbstractMapper
 {
@@ -49,7 +53,32 @@ public class TimeMapper extends AbstractMapper
 
     protected DomainObject load(Cursor row)
     {
-        // TODO: Implement load for time mapper.
-        return null;
+        long id = row.getLong(row.getColumnIndex(BaseColumns._ID));
+        long projectId = row.getLong(row.getColumnIndex(Columns.PROJECT_ID));
+        long start = row.getLong(row.getColumnIndex(Columns.START));
+        long stop = row.getLong(row.getColumnIndex(Columns.STOP));
+
+        return new Time(id, projectId, start, stop);
+    }
+
+    public ArrayList<Time> findTimeByProject(Project project)
+    {
+        ArrayList<Time> result = new ArrayList<>();
+
+        // Check that the project actually exists, i.e. it has an value for id.
+        if (project != null && project.getId() != null) {
+            String selection = Columns.PROJECT_ID + "=" + project.getId();
+            String orderBy = Columns.START + " DESC";
+
+            Cursor rows = mDatabase.query(getTable(), getColumns(), selection, null, null, null, orderBy);
+            if (rows.moveToFirst()) {
+                do {
+                    Time time = (Time) load(rows);
+                    result.add(time);
+                } while (rows.moveToNext());
+            }
+        }
+
+        return result;
     }
 }
