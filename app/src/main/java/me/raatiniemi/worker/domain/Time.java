@@ -45,4 +45,9 @@ public class Time extends DomainObject
     {
         return mStop;
     }
+
+    public boolean isActive()
+    {
+        return getStop() == 0;
+    }
 }
