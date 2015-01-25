@@ -39,8 +39,12 @@ public class TimeMapper extends AbstractMapper
 
     protected String[] getColumns()
     {
-        // TODO: Implement getColumns for time mapper.
-        return null;
+        return new String[]{
+            BaseColumns._ID,
+            Columns.PROJECT_ID,
+            Columns.START,
+            Columns.STOP
+        };
     }
 
     protected DomainObject load(Cursor row)
