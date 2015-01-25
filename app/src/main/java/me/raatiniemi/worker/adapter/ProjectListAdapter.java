@@ -13,12 +13,19 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
 
-public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ProjectViewHolder>
+public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ProjectViewHolder> implements View.OnClickListener
 {
+    public interface OnProjectActivityChangeListener
+    {
+        public void onProjectActivityToggle(Project project, int index);
+    }
+
+    private OnProjectActivityChangeListener mActivityCallback;
     private ArrayList<Project> mProjects;
 
-    public ProjectListAdapter(ArrayList<Project> projects)
+    public ProjectListAdapter(OnProjectActivityChangeListener activityCallback, ArrayList<Project> projects)
     {
+        mActivityCallback = activityCallback;
         mProjects = projects;
     }
 
@@ -44,6 +51,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             visibility = View.INVISIBLE;
         }
         projectViewHolder.mDescription.setVisibility(visibility);
+
+        // Set row index and the click listener.
+        projectViewHolder.mClockActivity.setTag(index);
+        projectViewHolder.mClockActivity.setOnClickListener(this);
     }
 
     @Override
@@ -53,6 +64,22 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         View projectView = inflater.inflate(R.layout.project_list_item, viewGroup, false);
 
         return new ProjectViewHolder(projectView);
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId()) {
+            case R.id.project_clock_activity:
+                // Retrieve the index from the view and
+                // get the project based on the index.
+                int index = (int) view.getTag();
+                Project project = mProjects.get(index);
+
+                // Toggle the project activity.
+                mActivityCallback.onProjectActivityToggle(project, index);
+                break;
+        }
     }
 
     public void addProject(Project project)

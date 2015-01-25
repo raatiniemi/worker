@@ -19,7 +19,7 @@ import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectListActivity extends ActionBarActivity
-    implements NewProjectFragment.OnCreateProjectListener
+    implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectActivityChangeListener
 {
     private ProjectListAdapter mAdapter;
 
@@ -35,11 +35,14 @@ public class ProjectListActivity extends ActionBarActivity
         RecyclerView projectsView = (RecyclerView) findViewById(R.id.project_list);
         projectsView.setLayoutManager(manager);
 
+        // Instantiate the data mapper for time and project.
         TimeMapper timeMapper = new TimeMapper(this);
         ProjectMapper projectMapper = new ProjectMapper(this, timeMapper);
+
+        // Retrieve the available projects from the project data mapper.
         ArrayList<Project> projects = projectMapper.getProjects();
 
-        mAdapter = new ProjectListAdapter(projects);
+        mAdapter = new ProjectListAdapter(this, projects);
         projectsView.setAdapter(mAdapter);
     }
 
@@ -73,5 +76,10 @@ public class ProjectListActivity extends ActionBarActivity
         // Add the project to the list of available projects
         // and notify the adapter that the data has changed.
         mAdapter.addProject(project);
+    }
+
+    public void onProjectActivityToggle(Project project, int index)
+    {
+        // TODO: Handle toggle project activity.
     }
 }
