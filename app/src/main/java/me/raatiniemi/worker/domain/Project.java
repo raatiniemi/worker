@@ -34,8 +34,26 @@ public class Project extends DomainObject
 
     public String summarizeTime()
     {
-        // TODO: Implement the summarizeTime method for the Project domain object.
-        return "0h 0m";
+        // Total time in number of seconds.
+        long total = 0;
+
+        // TODO: Retrieve the time for the project.
+
+        // Calculate the number of hours and minutes based
+        // on the total number of seconds.
+        long hours = (total / (60 * 60) % 24);
+        long minutes = (total / 60 % 60);
+
+        // If the number of seconds is at >= 30 we should add an extra minute
+        // to the minutes, i.e. round up the minutes if they have passed 50%.
+        //
+        // Otherwise, total time of 49 seconds will still display 0m and not 1m.
+        long seconds = (total % 60);
+        if (seconds >= 30) {
+            minutes += 1;
+        }
+
+        return String.format("%dh %dm", hours, minutes);
     }
 
     public boolean isActive()
