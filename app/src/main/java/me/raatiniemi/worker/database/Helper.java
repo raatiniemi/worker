@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.mapper.TimeMapper;
+
 public class Helper extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "worker";
@@ -28,8 +31,8 @@ public class Helper extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL(ProjectDataSource.CREATE_TABLE);
-        db.execSQL(TimeDataSource.CREATE_TABLE);
+        db.execSQL(ProjectMapper.CREATE_TABLE);
+        db.execSQL(TimeMapper.CREATE_TABLE);
     }
 
     @Override
