@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import me.raatiniemi.worker.domain.DomainObject;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 
 public class ProjectMapper extends AbstractMapper
@@ -30,9 +31,12 @@ public class ProjectMapper extends AbstractMapper
             "UNIQUE (" + Columns.NAME + ") ON CONFLICT ROLLBACK" +
         ");";
 
-    public ProjectMapper(Context context)
+    private TimeMapper mTimeMapper;
+
+    public ProjectMapper(Context context, TimeMapper timeMapper)
     {
         super(context);
+        mTimeMapper = timeMapper;
     }
 
 

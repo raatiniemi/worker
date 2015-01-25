@@ -18,6 +18,7 @@ import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.exception.NamelessProjectException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.mapper.TimeMapper;
 
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
 {
@@ -103,7 +104,8 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
             Log.d("createNewProject", "Attempt to create new project with name: " + name);
 
             // Attempt to create the new project with supplied name.
-            ProjectMapper projectMapper = new ProjectMapper(getActivity());
+            TimeMapper timeMapper = new TimeMapper(getActivity());
+            ProjectMapper projectMapper = new ProjectMapper(getActivity(), timeMapper);
 
             // Create the project without an actual id.
             Project project = new Project(null, name);

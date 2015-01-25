@@ -15,6 +15,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectListActivity extends ActionBarActivity
@@ -34,7 +35,8 @@ public class ProjectListActivity extends ActionBarActivity
         RecyclerView projectsView = (RecyclerView) findViewById(R.id.project_list);
         projectsView.setLayoutManager(manager);
 
-        ProjectMapper projectMapper = new ProjectMapper(this);
+        TimeMapper timeMapper = new TimeMapper(this);
+        ProjectMapper projectMapper = new ProjectMapper(this, timeMapper);
         ArrayList<Project> projects = projectMapper.getProjects();
 
         mAdapter = new ProjectAdapter(projects);
