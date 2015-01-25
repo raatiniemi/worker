@@ -31,4 +31,10 @@ public class Project extends DomainObject
     {
         return mDescription;
     }
+
+    public boolean isActive()
+    {
+        // TODO: Implement the isActive method for the Project domain object.
+        return false;
+    }
 }
