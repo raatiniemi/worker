@@ -14,10 +14,10 @@ import android.widget.EditText;
 import com.cengalabs.flatui.views.FlatButton;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.Project;
-import me.raatiniemi.worker.database.ProjectDataSource;
+import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.exception.NamelessProjectException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
+import me.raatiniemi.worker.mapper.ProjectMapper;
 
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
 {
@@ -103,8 +103,11 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
             Log.d("createNewProject", "Attempt to create new project with name: " + projectName);
 
             // Attempt to create the new project with supplied name.
-            ProjectDataSource dataSource = new ProjectDataSource(getActivity());
-            Project project = dataSource.createNewProject(projectName);
+            ProjectMapper projectMapper = new ProjectMapper(getActivity(), null);
+
+            // Create the project without an actual id.
+            Project project = new Project(null, projectName);
+            project = projectMapper.insert(project);
 
             // Replay that the project have been created to the activity.
             mCallback.onCreateProject(project);

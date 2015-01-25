@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectsAdapter;
-import me.raatiniemi.worker.data.Project;
-import me.raatiniemi.worker.database.ProjectDataSource;
+import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectsActivity extends ActionBarActivity
@@ -29,8 +29,8 @@ public class ProjectsActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects);
 
-        ProjectDataSource dataSource = new ProjectDataSource(this);
-        projects = dataSource.getProjects();
+        ProjectMapper projectMapper = new ProjectMapper(this, null);
+        projects = projectMapper.getProjects();
 
         adapter = new ProjectsAdapter(this, projects);
         ListView listView = (ListView) findViewById(R.id.projects_listview);

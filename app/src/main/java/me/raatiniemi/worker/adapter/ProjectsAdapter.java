@@ -12,7 +12,7 @@ import com.cengalabs.flatui.views.FlatButton;
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.Project;
+import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.database.TimeDataSource;
 
 public class ProjectsAdapter extends ArrayAdapter<Project>
