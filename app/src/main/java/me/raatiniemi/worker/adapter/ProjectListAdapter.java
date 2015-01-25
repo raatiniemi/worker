@@ -57,8 +57,12 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     public void addProject(Project project)
     {
+        // Retrieve the number of elements before adding the project,
+        // hence getting the index of the new project.
         int index = mProjects.size();
         mProjects.add(project);
+
+        // Notify the adapter that the project have been inserted.
         notifyItemInserted(index);
     }
 
