@@ -83,7 +83,15 @@ public class Project extends DomainObject
 
     public boolean isActive()
     {
-        // TODO: Implement the isActive method for the Project domain object.
-        return false;
+        boolean active = false;
+
+        if (getTime() != null && !getTime().isEmpty()) {
+            // Retrieve the last element of the time array and check if the
+            // item is active, hence defines if the project is active.
+            Time time = getTime().get(getTime().size() - 1);
+            active = time.isActive();
+        }
+
+        return active;
     }
 }
