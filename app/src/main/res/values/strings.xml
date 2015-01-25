@@ -2,16 +2,16 @@
 <resources>
     <string name="app_name">Worker</string>
 
-    <string name="projects_activity_actions_create_new_project">Create new project</string>
+    <string name="project_list_activity_actions_create_new_project">Create new project</string>
 
-    <string name="placeholder_projects_item_project_name">Project name</string>
-    <string name="placeholder_projects_item_project_time">24h 25m</string>
-    <string name="placeholder_projects_item_project_description">Project description</string>
-    <string name="placeholder_projects_item_project_clocked_in_since">Since 07:45</string>
+    <string name="placeholder_project_list_item_project_name">Project name</string>
+    <string name="placeholder_project_list_item_project_time">24h 25m</string>
+    <string name="placeholder_project_list_item_project_description">Project description</string>
+    <string name="placeholder_project_list_item_project_clocked_in_since">Since 07:45</string>
 
-    <string name="projects_item_project_clock_in">Clock in</string>
-    <string name="projects_item_project_clock_out">Clock out</string>
-    <string name="projects_item_project_clock_out_at">Clock out at&#8230;</string>
+    <string name="project_list_item_project_clock_in">Clock in</string>
+    <string name="project_list_item_project_clock_out">Clock out</string>
+    <string name="project_list_item_project_clock_out_at">Clock out at&#8230;</string>
 
     <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
     <string name="fragment_new_project_name_hint">Project name&#8230;</string>

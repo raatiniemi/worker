@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:flatui="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/projects_item_cardview"
+    android:id="@+id/project_list_item_cardview"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/projects_item_cardview_margin_vertical"
-    android:layout_marginBottom="@dimen/projects_item_cardview_margin_vertical"
-    android:layout_marginLeft="@dimen/projects_item_cardview_margin_horizontal"
-    android:layout_marginRight="@dimen/projects_item_cardview_margin_horizontal">
+    android:layout_marginTop="@dimen/project_list_item_cardview_margin_vertical"
+    android:layout_marginBottom="@dimen/project_list_item_cardview_margin_vertical"
+    android:layout_marginLeft="@dimen/project_list_item_cardview_margin_horizontal"
+    android:layout_marginRight="@dimen/project_list_item_cardview_margin_horizontal">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/projects_item_padding_horizontal"
-        android:paddingTop="@dimen/projects_item_padding_vertical"
-        android:paddingRight="@dimen/projects_item_padding_horizontal"
-        android:paddingBottom="@dimen/projects_item_padding_vertical"
-        android:id="@+id/projects_item">
+        android:paddingLeft="@dimen/project_list_item_padding_horizontal"
+        android:paddingTop="@dimen/project_list_item_padding_vertical"
+        android:paddingRight="@dimen/project_list_item_padding_horizontal"
+        android:paddingBottom="@dimen/project_list_item_padding_vertical"
+        android:id="@+id/project_list_item">
 
         <TextView
             android:id="@+id/project_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder_projects_item_project_name"
+            android:text="@string/placeholder_project_list_item_project_name"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -33,22 +33,22 @@
             android:id="@+id/project_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder_projects_item_project_time"
+            android:text="@string/placeholder_project_list_item_project_time"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/project_name"
             android:layout_alignBottom="@+id/project_name"
-            android:layout_marginLeft="@dimen/projects_item_time_margin_start"
-            android:layout_marginStart="@dimen/projects_item_time_margin_start" />
+            android:layout_marginLeft="@dimen/project_list_item_time_margin_start"
+            android:layout_marginStart="@dimen/project_list_item_time_margin_start" />
 
         <TextView
             android:id="@+id/project_description"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder_projects_item_project_description"
+            android:text="@string/placeholder_project_list_item_project_description"
             android:layout_below="@+id/project_name"
-            android:layout_marginTop="@dimen/projects_item_description_margin_top"
+            android:layout_marginTop="@dimen/project_list_item_description_margin_top"
             android:layout_alignLeft="@+id/project_name"
             android:layout_alignStart="@+id/project_name"
             android:layout_alignRight="@+id/project_time"
@@ -58,11 +58,11 @@
             android:id="@+id/project_clock_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/projects_item_project_clock_in"
+            android:text="@string/project_list_item_project_clock_in"
             android:layout_below="@+id/project_description"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="@dimen/projects_item_clock_activity_margin_top"
+            android:layout_marginTop="@dimen/project_list_item_clock_activity_margin_top"
             flatui:fl_blockButtonEffectHeight="3dp"
             flatui:fl_theme="@array/grass" />
 
@@ -75,14 +75,14 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/project_clock_activity"
-            android:layout_marginLeft="@dimen/projects_item_clocked_in_margin_start"
-            android:layout_marginStart="@dimen/projects_item_clocked_in_margin_start"
+            android:layout_marginLeft="@dimen/project_list_item_clocked_in_margin_start"
+            android:layout_marginStart="@dimen/project_list_item_clocked_in_margin_start"
             android:visibility="invisible">
             <TextView
                 android:id="@+id/project_clocked_in_since"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_projects_item_project_clocked_in_since"
+                android:text="@string/placeholder_project_list_item_project_clocked_in_since"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
@@ -90,7 +90,7 @@
                 android:id="@+id/project_clock_out_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/projects_item_project_clock_out_at"
+                android:text="@string/project_list_item_project_clock_out_at"
                 android:layout_below="@+id/project_clocked_in_since"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"

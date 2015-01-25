@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/projects"
+        android:id="@+id/project_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/projects_item_cardview_margin_vertical"
-        android:paddingBottom="@dimen/projects_item_cardview_margin_vertical" />
+        android:paddingTop="@dimen/project_list_item_cardview_margin_vertical"
+        android:paddingBottom="@dimen/project_list_item_cardview_margin_vertical" />
 </RelativeLayout>

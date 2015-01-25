@@ -2,6 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="me.raatiniemi.worker.ui.ProjectsActivity">
-    <include layout="@layout/projects" />
+    tools:context="me.raatiniemi.worker.ui.ProjectListActivity">
+    <include layout="@layout/project_list" />
 </RelativeLayout>

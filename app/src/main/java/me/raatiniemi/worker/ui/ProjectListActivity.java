@@ -17,7 +17,7 @@ import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
-public class ProjectsActivity extends ActionBarActivity
+public class ProjectListActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener
 {
     private ArrayList<Project> projects;
@@ -26,12 +26,12 @@ public class ProjectsActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_projects);
+        setContentView(R.layout.activity_project_list);
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        RecyclerView projectsView = (RecyclerView) findViewById(R.id.projects);
+        RecyclerView projectsView = (RecyclerView) findViewById(R.id.project_list);
         projectsView.setLayoutManager(manager);
 
         ProjectMapper projectMapper = new ProjectMapper(this, null);
@@ -45,7 +45,7 @@ public class ProjectsActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.projects_activity_actions, menu);
+        inflater.inflate(R.menu.project_list_activity_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
