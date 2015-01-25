@@ -34,7 +34,7 @@ public class ProjectListActivity extends ActionBarActivity
         RecyclerView projectsView = (RecyclerView) findViewById(R.id.project_list);
         projectsView.setLayoutManager(manager);
 
-        ProjectMapper projectMapper = new ProjectMapper(this, null);
+        ProjectMapper projectMapper = new ProjectMapper(this);
         projects = projectMapper.getProjects();
 
         ProjectAdapter projectAdapter = new ProjectAdapter(projects);

@@ -103,7 +103,7 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
             Log.d("createNewProject", "Attempt to create new project with name: " + projectName);
 
             // Attempt to create the new project with supplied name.
-            ProjectMapper projectMapper = new ProjectMapper(getActivity(), null);
+            ProjectMapper projectMapper = new ProjectMapper(getActivity());
 
             // Create the project without an actual id.
             Project project = new Project(null, projectName);

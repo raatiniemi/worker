@@ -30,12 +30,9 @@ public class ProjectMapper extends AbstractMapper
             "UNIQUE (" + Columns.NAME + ") ON CONFLICT ROLLBACK" +
         ");";
 
-    private TimeMapper mTimeMapper;
-
-    public ProjectMapper(Context context, TimeMapper timeMapper)
+    public ProjectMapper(Context context)
     {
         super(context);
-        mTimeMapper = timeMapper;
     }
 
 
