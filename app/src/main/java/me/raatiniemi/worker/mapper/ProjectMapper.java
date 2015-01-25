@@ -63,6 +63,13 @@ public class ProjectMapper extends AbstractMapper
         Project project = new Project(id, name);
         project.setDescription(description);
 
+        if (null != mTimeMapper) {
+            ArrayList<Time> time = mTimeMapper.findTimeByProject(project);
+            for (Time item: time) {
+                project.addTime(item);
+            }
+        }
+
         return project;
     }
 
