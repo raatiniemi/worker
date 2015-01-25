@@ -3,6 +3,7 @@ package me.raatiniemi.worker.mapper;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 
 import me.raatiniemi.worker.database.Helper;
 import me.raatiniemi.worker.domain.DomainObject;
@@ -29,4 +30,16 @@ abstract public class AbstractMapper
     abstract protected String[] getColumns();
 
     abstract protected DomainObject load(Cursor row);
+
+    public DomainObject find(long id)
+    {
+        String selection = BaseColumns._ID + "=" + id;
+
+        Cursor row = mDatabase.query(getTable(), getColumns(), selection, null, null, null, null, null);
+        if (!row.moveToFirst()) {
+            return null;
+        }
+
+        return load(row);
+    }
 }
