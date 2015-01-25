@@ -32,6 +32,12 @@ public class Project extends DomainObject
         return mDescription;
     }
 
+    public String summarizeTime()
+    {
+        // TODO: Implement the summarizeTime method for the Project domain object.
+        return "0h 0m";
+    }
+
     public boolean isActive()
     {
         // TODO: Implement the isActive method for the Project domain object.
