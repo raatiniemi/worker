@@ -3,7 +3,11 @@
     xmlns:flatui="http://schemas.android.com/apk/res-auto"
     android:id="@+id/projects_item_cardview"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/projects_item_cardview_margin_vertical"
+    android:layout_marginBottom="@dimen/projects_item_cardview_margin_vertical"
+    android:layout_marginLeft="@dimen/projects_item_cardview_margin_horizontal"
+    android:layout_marginRight="@dimen/projects_item_cardview_margin_horizontal">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
