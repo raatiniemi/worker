@@ -20,7 +20,7 @@ import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 public class ProjectListActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener
 {
-    private ArrayList<Project> projects;
+    private ProjectAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,10 +35,10 @@ public class ProjectListActivity extends ActionBarActivity
         projectsView.setLayoutManager(manager);
 
         ProjectMapper projectMapper = new ProjectMapper(this);
-        projects = projectMapper.getProjects();
+        ArrayList<Project> projects = projectMapper.getProjects();
 
-        ProjectAdapter projectAdapter = new ProjectAdapter(projects);
-        projectsView.setAdapter(projectAdapter);
+        mAdapter = new ProjectAdapter(projects);
+        projectsView.setAdapter(mAdapter);
     }
 
     @Override
@@ -70,7 +70,6 @@ public class ProjectListActivity extends ActionBarActivity
     {
         // Add the project to the list of available projects
         // and notify the adapter that the data has changed.
-        projects.add(project);
-        // TODO: Update the recycler view.
+        mAdapter.addProject(project);
     }
 }

@@ -55,6 +55,13 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         return new ProjectViewHolder(projectView);
     }
 
+    public void addProject(Project project)
+    {
+        int index = mProjects.size();
+        mProjects.add(project);
+        notifyItemInserted(index);
+    }
+
     public static class ProjectViewHolder extends RecyclerView.ViewHolder
     {
         protected TextView mName;
