@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.adapter.ProjectAdapter;
+import me.raatiniemi.worker.adapter.ProjectListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
@@ -21,7 +21,7 @@ import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 public class ProjectListActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener
 {
-    private ProjectAdapter mAdapter;
+    private ProjectListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,7 +39,7 @@ public class ProjectListActivity extends ActionBarActivity
         ProjectMapper projectMapper = new ProjectMapper(this, timeMapper);
         ArrayList<Project> projects = projectMapper.getProjects();
 
-        mAdapter = new ProjectAdapter(projects);
+        mAdapter = new ProjectListAdapter(projects);
         projectsView.setAdapter(mAdapter);
     }
 
