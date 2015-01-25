@@ -36,6 +36,15 @@ public class ProjectMapper extends AbstractMapper
         mTimeMapper = timeMapper;
     }
 
+    protected String[] getColumns()
+    {
+        return new String[]{
+            BaseColumns._ID,
+            Columns.NAME,
+            Columns.DESCRIPTION
+        };
+    }
+
     protected DomainObject load(Cursor row)
     {
         long id = row.getLong(row.getColumnIndex(BaseColumns._ID));
@@ -52,13 +61,7 @@ public class ProjectMapper extends AbstractMapper
     {
         ArrayList<Project> result = new ArrayList<>();
 
-        String[] columns = new String[]{
-            BaseColumns._ID,
-            Columns.NAME,
-            Columns.DESCRIPTION
-        };
-
-        Cursor rows = mDatabase.query(TABLE_NAME, columns, null, null, null, null, null);
+        Cursor rows = mDatabase.query(TABLE_NAME, getColumns(), null, null, null, null, null);
         if (rows.moveToFirst()) {
             do {
                 Project project = (Project) load(rows);

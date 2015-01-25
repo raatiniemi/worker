@@ -32,6 +32,12 @@ public class TimeMapper extends AbstractMapper
         super(context);
     }
 
+    protected String[] getColumns()
+    {
+        // TODO: Implement getColumns for time mapper.
+        return null;
+    }
+
     protected DomainObject load(Cursor row)
     {
         // TODO: Implement load for time mapper.
