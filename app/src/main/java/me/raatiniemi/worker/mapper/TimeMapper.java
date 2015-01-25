@@ -32,6 +32,11 @@ public class TimeMapper extends AbstractMapper
         super(context);
     }
 
+    protected String getTable()
+    {
+        return TABLE_NAME;
+    }
+
     protected String[] getColumns()
     {
         // TODO: Implement getColumns for time mapper.
