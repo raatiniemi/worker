@@ -1,15 +1,20 @@
 package me.raatiniemi.worker.domain;
 
+import java.util.ArrayList;
+
 public class Project extends DomainObject
 {
     private String mName;
 
     private String mDescription;
 
+    private ArrayList<Time> mTime;
+
     public Project(Long id, String name)
     {
         super(id);
         setName(name);
+        setTime(new ArrayList<Time>());
     }
 
     public void setName(String name)
@@ -32,12 +37,32 @@ public class Project extends DomainObject
         return mDescription;
     }
 
+    private void setTime(ArrayList<Time> time)
+    {
+        mTime = time;
+    }
+
+    public ArrayList<Time> getTime()
+    {
+        return mTime;
+    }
+
+    public void addTime(Time time)
+    {
+        getTime().add(time);
+    }
+
     public String summarizeTime()
     {
         // Total time in number of seconds.
         long total = 0;
 
-        // TODO: Retrieve the time for the project.
+        ArrayList<Time> time = getTime();
+        if (null != time && time.isEmpty()) {
+            for (Time item: time) {
+                total += item.getTime();
+            }
+        }
 
         // Calculate the number of hours and minutes based
         // on the total number of seconds.
