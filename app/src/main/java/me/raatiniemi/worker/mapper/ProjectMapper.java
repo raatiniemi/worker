@@ -33,7 +33,7 @@ public class ProjectMapper extends AbstractMapper
         mTimeMapper = timeMapper;
     }
 
-    protected DomainObject load(Cursor resultSet)
+    protected DomainObject load(Cursor row)
     {
         // TODO: Implement load for project mapper.
         return null;

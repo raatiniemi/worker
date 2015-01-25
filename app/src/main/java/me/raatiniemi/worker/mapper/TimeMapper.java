@@ -32,7 +32,7 @@ public class TimeMapper extends AbstractMapper
         super(context);
     }
 
-    protected DomainObject load(Cursor resultSet)
+    protected DomainObject load(Cursor row)
     {
         // TODO: Implement load for time mapper.
         return null;

@@ -24,5 +24,5 @@ abstract public class AbstractMapper
         this(Helper.getInstance(context));
     }
 
-    abstract protected DomainObject load(Cursor resultSet);
+    abstract protected DomainObject load(Cursor row);
 }
