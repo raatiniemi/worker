@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.mapper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.BaseColumns;
@@ -80,5 +81,18 @@ public class TimeMapper extends AbstractMapper
         }
 
         return result;
+    }
+
+    public Time insert(Time time)
+    {
+        // TODO: Check if timer is already active for project, throw exception.
+
+        ContentValues values = new ContentValues();
+        values.put(Columns.PROJECT_ID, time.getProjectId());
+        values.put(Columns.START, time.getStart());
+        values.put(Columns.STOP, time.getStop());
+
+        long id = mDatabase.insert(getTable(), null, values);
+        return (Time) find(id);
     }
 }
