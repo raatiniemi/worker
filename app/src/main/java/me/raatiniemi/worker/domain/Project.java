@@ -92,6 +92,18 @@ public class Project extends DomainObject
         return time.get(time.size() - 1);
     }
 
+    public Time clockOut()
+    {
+        if (!isActive()) {
+            return null;
+        }
+
+        Time time = getLastTime();
+        time.clockOut();
+
+        return time;
+    }
+
     public boolean isActive()
     {
         boolean active = false;
