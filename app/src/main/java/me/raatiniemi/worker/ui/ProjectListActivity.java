@@ -21,6 +21,10 @@ import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 public class ProjectListActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectActivityChangeListener
 {
+    private TimeMapper mTimeMapper;
+
+    private ProjectMapper mProjectMapper;
+
     private ProjectListAdapter mAdapter;
 
     @Override
@@ -36,11 +40,11 @@ public class ProjectListActivity extends ActionBarActivity
         projectsView.setLayoutManager(manager);
 
         // Instantiate the data mapper for time and project.
-        TimeMapper timeMapper = new TimeMapper(this);
-        ProjectMapper projectMapper = new ProjectMapper(this, timeMapper);
+        mTimeMapper = new TimeMapper(this);
+        mProjectMapper = new ProjectMapper(this, mTimeMapper);
 
         // Retrieve the available projects from the project data mapper.
-        ArrayList<Project> projects = projectMapper.getProjects();
+        ArrayList<Project> projects = mProjectMapper.getProjects();
 
         mAdapter = new ProjectListAdapter(this, projects);
         projectsView.setAdapter(mAdapter);
