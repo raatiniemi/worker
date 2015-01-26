@@ -50,7 +50,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // the view should be hidden.
         int visibility = View.VISIBLE;
         if (projectViewHolder.mDescription.getText().length() == 0) {
-            visibility = View.INVISIBLE;
+            visibility = View.GONE;
         }
         projectViewHolder.mDescription.setVisibility(visibility);
 
@@ -62,7 +62,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // for the clock activity view should be altered, and
         // visibility for the clocked in view.
         int clockActivityId = R.string.project_list_item_project_clock_in;
-        int clockedInVisibility = View.INVISIBLE;
+        int clockedInVisibility = View.GONE;
         if (project.isActive()) {
             clockActivityId = R.string.project_list_item_project_clock_out;
             clockedInVisibility = View.VISIBLE;
