@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.domain;
 
+import java.util.Date;
+
 public class Time extends DomainObject
 {
     private long mProjectId;
@@ -44,6 +46,13 @@ public class Time extends DomainObject
     public Long getStop()
     {
         return mStop;
+    }
+
+    public void clockOut()
+    {
+        if (isActive()) {
+            setStop((new Date()).getTime());
+        }
     }
 
     public boolean isActive()
