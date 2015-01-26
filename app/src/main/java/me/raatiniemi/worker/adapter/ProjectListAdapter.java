@@ -11,6 +11,7 @@ import com.cengalabs.flatui.views.FlatButton;
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ProjectViewHolder> implements View.OnClickListener
@@ -55,6 +56,17 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // Set row index and the click listener.
         projectViewHolder.mClockActivity.setTag(index);
         projectViewHolder.mClockActivity.setOnClickListener(this);
+
+        // Depending on whether the project is active the text
+        // for the clock activity view should be altered.
+        int clockActivityId = R.string.project_list_item_project_clock_in;
+        if (project.isActive()) {
+            clockActivityId = R.string.project_list_item_project_clock_out;
+        }
+
+        // Retrieve the string from the resources and update the view.
+        String clockActivity = Worker.getContext().getResources().getString(clockActivityId);
+        projectViewHolder.mClockActivity.setText(clockActivity);
     }
 
     @Override
