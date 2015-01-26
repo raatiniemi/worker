@@ -81,14 +81,25 @@ public class Project extends DomainObject
         return String.format("%dh %dm", hours, minutes);
     }
 
+    private Time getLastTime()
+    {
+        ArrayList<Time> time = getTime();
+
+        if (time == null || time.isEmpty()) {
+            return null;
+        }
+
+        return time.get(time.size() - 1);
+    }
+
     public boolean isActive()
     {
         boolean active = false;
 
-        if (getTime() != null && !getTime().isEmpty()) {
-            // Retrieve the last element of the time array and check if the
-            // item is active, hence defines if the project is active.
-            Time time = getTime().get(getTime().size() - 1);
+        // Retrieve the last element of the time array and check if the
+        // item is active, hence defines if the project is active.
+        Time time = getLastTime();
+        if (time != null) {
             active = time.isActive();
         }
 
