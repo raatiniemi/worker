@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectListAdapter;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
@@ -84,6 +85,23 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void onProjectActivityToggle(Project project, int index)
     {
-        // TODO: Handle toggle project activity.
+        Time time;
+
+        // Depending on whether the project is active,
+        // it either have to clock out or clock in.
+        if (project.isActive()) {
+            // Clock out project.
+            time = project.clockOut();
+            mTimeMapper.update(time);
+        } else {
+            // Initialize the Time domain object with the project id,
+            // the constructor takes care of the start and stop.
+            time = new Time(project.getId());
+            mTimeMapper.insert(time);
+        }
+
+        // Retrieve the updated project and send it to the adapter.
+        project = (Project) mProjectMapper.find(project.getId());
+        mAdapter.updateProject(project, index);
     }
 }
