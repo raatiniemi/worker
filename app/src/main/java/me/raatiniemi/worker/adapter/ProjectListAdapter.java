@@ -93,6 +93,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         notifyItemInserted(index);
     }
 
+    public void updateProject(Project project, int index)
+    {
+        mProjects.set(index, project);
+
+        notifyItemChanged(index);
+    }
+
     public static class ProjectViewHolder extends RecyclerView.ViewHolder
     {
         protected TextView mName;
