@@ -95,4 +95,16 @@ public class TimeMapper extends AbstractMapper
         long id = mDatabase.insert(getTable(), null, values);
         return (Time) find(id);
     }
+
+    public Time update(Time time)
+    {
+        ContentValues values = new ContentValues();
+        values.put(Columns.START, time.getStart());
+        values.put(Columns.STOP, time.getStop());
+
+        String where = BaseColumns._ID + "=" + time.getId();
+
+        mDatabase.update(getTable(), values, where, null);
+        return (Time) find(time.getId());
+    }
 }
