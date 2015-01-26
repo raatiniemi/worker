@@ -18,6 +18,11 @@ public class Time extends DomainObject
         setStop(stop);
     }
 
+    public Time(Long projectId)
+    {
+        this(null, projectId, (new Date()).getTime(), (long) 0);
+    }
+
     private void setProjectId(Long projectId)
     {
         mProjectId = projectId;
