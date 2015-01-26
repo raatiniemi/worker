@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cengalabs.flatui.views.FlatButton;
@@ -58,15 +59,23 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         projectViewHolder.mClockActivity.setOnClickListener(this);
 
         // Depending on whether the project is active the text
-        // for the clock activity view should be altered.
+        // for the clock activity view should be altered, and
+        // visibility for the clocked in view.
         int clockActivityId = R.string.project_list_item_project_clock_in;
+        int clockedInVisibility = View.INVISIBLE;
         if (project.isActive()) {
             clockActivityId = R.string.project_list_item_project_clock_out;
+            clockedInVisibility = View.VISIBLE;
+
+            // TODO: Modify the clocked in timestamp.
         }
 
         // Retrieve the string from the resources and update the view.
         String clockActivity = Worker.getContext().getResources().getString(clockActivityId);
         projectViewHolder.mClockActivity.setText(clockActivity);
+
+        // Set the visibility for the clocked in view.
+        projectViewHolder.mClockedIn.setVisibility(clockedInVisibility);
     }
 
     @Override
@@ -118,6 +127,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         protected TextView mTime;
         protected TextView mDescription;
         protected FlatButton mClockActivity;
+        protected RelativeLayout mClockedIn;
 
         public ProjectViewHolder(View view)
         {
@@ -127,6 +137,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             mTime = (TextView) view.findViewById(R.id.project_time);
             mDescription = (TextView) view.findViewById(R.id.project_description);
             mClockActivity = (FlatButton) view.findViewById(R.id.project_clock_activity);
+            mClockedIn = (RelativeLayout) view.findViewById(R.id.project_clocked_in);
         }
     }
 }
