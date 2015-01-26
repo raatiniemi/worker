@@ -58,7 +58,7 @@ public class Project extends DomainObject
         long total = 0;
 
         ArrayList<Time> time = getTime();
-        if (null != time && time.isEmpty()) {
+        if (null != time && !time.isEmpty()) {
             for (Time item: time) {
                 total += item.getTime();
             }
