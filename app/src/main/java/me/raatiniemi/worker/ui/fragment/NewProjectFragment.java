@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.cengalabs.flatui.views.FlatButton;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.exception.NamelessProjectException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
@@ -113,6 +115,9 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
 
             // Replay that the project have been created to the activity.
             mCallback.onCreateProject(project);
+
+            String message = "Project '" + name + "' have been created";
+            Toast.makeText(Worker.getContext(), message, Toast.LENGTH_SHORT).show();
 
             // We are finished with the project creation,
             // we now have to dismiss the dialog.
