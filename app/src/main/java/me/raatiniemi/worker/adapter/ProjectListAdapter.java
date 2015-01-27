@@ -42,14 +42,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     {
         Project project = mProjects.get(index);
 
-        projectViewHolder.mName.setText(project.getName());
-        projectViewHolder.mTime.setText(project.summarizeTime());
-        projectViewHolder.mDescription.setText(project.getDescription());
+        projectViewHolder.setName(project.getName());
+        projectViewHolder.setTime(project.summarizeTime());
+        projectViewHolder.setDescription(project.getDescription());
 
-        // If the project description is empty
-        // the view should be hidden.
+        // If the project description is empty the view should be hidden.
         int visibility = View.VISIBLE;
-        if (projectViewHolder.mDescription.getText().length() == 0) {
+        if (project.getDescription() == null || project.getDescription().isEmpty()) {
             visibility = View.GONE;
         }
         projectViewHolder.mDescription.setVisibility(visibility);
@@ -144,6 +143,21 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             mClockActivity = (FlatButton) view.findViewById(R.id.project_clock_activity);
             mClockedIn = (RelativeLayout) view.findViewById(R.id.project_clocked_in);
             mClockedInSince = (TextView) view.findViewById(R.id.project_clocked_in_since);
+        }
+
+        public void setName(String name)
+        {
+            mName.setText(name);
+        }
+
+        public void setTime(String time)
+        {
+            mTime.setText(time);
+        }
+
+        public void setDescription(String description)
+        {
+            mDescription.setText(description);
         }
     }
 }
