@@ -1,6 +1,8 @@
 package me.raatiniemi.worker.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Project extends DomainObject
 {
@@ -90,6 +92,29 @@ public class Project extends DomainObject
         }
 
         return time.get(time.size() - 1);
+    }
+
+    public String getClockedInSince()
+    {
+        if (!isActive()) {
+            return null;
+        }
+
+        // TODO: Handle if the time session overlap days.
+        // The timestamp should include the date it was
+        // checked in, e.g. 21 May 1:06PM.
+
+        // Retrieve the last time, i.e. the active time session.
+        //
+        // TODO: Revert from using seconds to milliseconds.
+        // It will be easier to handle since the Date object
+        // is working with milliseconds, and not seconds.
+        Time time = getLastTime();
+        Date date = new Date(time.getStart()*1000);
+
+        // Format the timestamp with hours and minutes.
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        return format.format(date);
     }
 
     public Time clockOut()
