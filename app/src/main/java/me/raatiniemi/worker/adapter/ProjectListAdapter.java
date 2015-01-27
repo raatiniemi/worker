@@ -76,7 +76,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         projectViewHolder.mClockedIn.setVisibility(clockedInVisibility);
 
         // Retrieve the time that the active session was clocked in.
-        projectViewHolder.mClockedInSince.setText(project.getClockedInSince());
+        int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
+        String clockedInSince = Worker.getContext().getResources().getString(clockedInSinceId);
+        clockedInSince = String.format(clockedInSince, project.getClockedInSince());
+        projectViewHolder.mClockedInSince.setText(clockedInSince);
     }
 
     @Override
