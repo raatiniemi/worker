@@ -66,6 +66,9 @@ public class Project extends DomainObject
             }
         }
 
+        // Convert milliseconds to seconds.
+        total = total / 1000;
+
         // Calculate the number of hours and minutes based
         // on the total number of seconds.
         long hours = (total / (60 * 60) % 24);
@@ -105,12 +108,8 @@ public class Project extends DomainObject
         // checked in, e.g. 21 May 1:06PM.
 
         // Retrieve the last time, i.e. the active time session.
-        //
-        // TODO: Revert from using seconds to milliseconds.
-        // It will be easier to handle since the Date object
-        // is working with milliseconds, and not seconds.
         Time time = getActiveTime();
-        Date date = new Date(time.getStart()*1000);
+        Date date = new Date(time.getStart());
 
         // Format the timestamp with hours and minutes.
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");

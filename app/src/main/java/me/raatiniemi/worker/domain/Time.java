@@ -20,7 +20,7 @@ public class Time extends DomainObject
 
     public Time(Long projectId)
     {
-        this(null, projectId, ((new Date()).getTime() / 1000), (long) 0);
+        this(null, projectId, (new Date()).getTime(), (long) 0);
     }
 
     private void setProjectId(Long projectId)
@@ -56,7 +56,7 @@ public class Time extends DomainObject
     public void clockOut()
     {
         if (isActive()) {
-            setStop(((new Date()).getTime() / 1000));
+            setStop((new Date()).getTime());
         }
     }
 
