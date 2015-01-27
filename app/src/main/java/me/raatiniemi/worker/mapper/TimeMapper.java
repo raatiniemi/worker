@@ -29,7 +29,7 @@ public class TimeMapper extends AbstractMapper
             BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Columns.PROJECT_ID + " INTEGER NOT NULL, " +
             Columns.START + " INTEGER NOT NULL, " +
-            Columns.STOP + " INTEGER NULL " +
+            Columns.STOP + " INTEGER DEFAULT 0 " +
         ");";
 
     public TimeMapper(Context context)
