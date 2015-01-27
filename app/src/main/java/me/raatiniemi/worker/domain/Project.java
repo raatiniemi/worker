@@ -83,7 +83,7 @@ public class Project extends DomainObject
         return String.format("%dh %dm", hours, minutes);
     }
 
-    private Time getLastTime()
+    private Time getActiveTime()
     {
         ArrayList<Time> time = getTime();
 
@@ -109,7 +109,7 @@ public class Project extends DomainObject
         // TODO: Revert from using seconds to milliseconds.
         // It will be easier to handle since the Date object
         // is working with milliseconds, and not seconds.
-        Time time = getLastTime();
+        Time time = getActiveTime();
         Date date = new Date(time.getStart()*1000);
 
         // Format the timestamp with hours and minutes.
@@ -123,7 +123,7 @@ public class Project extends DomainObject
             return null;
         }
 
-        Time time = getLastTime();
+        Time time = getActiveTime();
         time.clockOut();
 
         return time;
@@ -135,7 +135,7 @@ public class Project extends DomainObject
 
         // Retrieve the last element of the time array and check if the
         // item is active, hence defines if the project is active.
-        Time time = getLastTime();
+        Time time = getActiveTime();
         if (time != null) {
             active = time.isActive();
         }
