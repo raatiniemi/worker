@@ -66,8 +66,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         if (project.isActive()) {
             clockActivityId = R.string.project_list_item_project_clock_out;
             clockedInVisibility = View.VISIBLE;
-
-            // TODO: Modify the clocked in timestamp.
         }
 
         // Retrieve the string from the resources and update the view.
@@ -76,6 +74,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         // Set the visibility for the clocked in view.
         projectViewHolder.mClockedIn.setVisibility(clockedInVisibility);
+
+        // Retrieve the time that the active session was clocked in.
+        projectViewHolder.mClockedInSince.setText(project.getClockedInSince());
     }
 
     @Override
@@ -128,6 +129,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         protected TextView mDescription;
         protected FlatButton mClockActivity;
         protected RelativeLayout mClockedIn;
+        protected TextView mClockedInSince;
 
         public ProjectViewHolder(View view)
         {
@@ -138,6 +140,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             mDescription = (TextView) view.findViewById(R.id.project_description);
             mClockActivity = (FlatButton) view.findViewById(R.id.project_clock_activity);
             mClockedIn = (RelativeLayout) view.findViewById(R.id.project_clocked_in);
+            mClockedInSince = (TextView) view.findViewById(R.id.project_clocked_in_since);
         }
     }
 }
