@@ -41,8 +41,8 @@ public class ProjectListActivity extends ActionBarActivity
         projectsView.setLayoutManager(manager);
 
         // Instantiate the data mapper for time and project.
-        mTimeMapper = new TimeMapper(this);
-        mProjectMapper = new ProjectMapper(this, mTimeMapper);
+        mTimeMapper = new TimeMapper();
+        mProjectMapper = new ProjectMapper(mTimeMapper);
 
         // Retrieve the available projects from the project data mapper.
         ArrayList<Project> projects = mProjectMapper.getProjects();

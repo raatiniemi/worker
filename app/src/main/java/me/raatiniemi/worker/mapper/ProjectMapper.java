@@ -1,7 +1,6 @@
 package me.raatiniemi.worker.mapper;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
@@ -33,9 +32,10 @@ public class ProjectMapper extends AbstractMapper
 
     private TimeMapper mTimeMapper;
 
-    public ProjectMapper(Context context, TimeMapper timeMapper)
+    public ProjectMapper(TimeMapper timeMapper)
     {
-        super(context);
+        super();
+
         mTimeMapper = timeMapper;
     }
 

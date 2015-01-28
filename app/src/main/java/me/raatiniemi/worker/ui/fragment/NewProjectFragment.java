@@ -106,8 +106,8 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
             Log.d("createNewProject", "Attempt to create new project with name: " + name);
 
             // Attempt to create the new project with supplied name.
-            TimeMapper timeMapper = new TimeMapper(getActivity());
-            ProjectMapper projectMapper = new ProjectMapper(getActivity(), timeMapper);
+            TimeMapper timeMapper = new TimeMapper();
+            ProjectMapper projectMapper = new ProjectMapper(timeMapper);
 
             // Create the project, and insert it to the database.
             Project project = new Project(name);

@@ -32,9 +32,9 @@ public class TimeMapper extends AbstractMapper
             Columns.STOP + " INTEGER DEFAULT 0 " +
         ");";
 
-    public TimeMapper(Context context)
+    public TimeMapper()
     {
-        super(context);
+        super();
     }
 
     protected String getTable()

@@ -1,6 +1,5 @@
 package me.raatiniemi.worker.mapper;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
@@ -20,7 +19,7 @@ abstract public class AbstractMapper
         mDatabase = mHelper.getWritableDatabase();
     }
 
-    public AbstractMapper(Context context)
+    public AbstractMapper()
     {
         this(Helper.getInstance());
     }
