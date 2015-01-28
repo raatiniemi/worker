@@ -10,9 +10,10 @@ public class Time extends DomainObject
 
     private long mStop;
 
-    public Time(Long id, Long projectId, Long start, Long stop)
+    public Time(Long id, long projectId, long start, long stop)
     {
         super(id);
+
         setProjectId(projectId);
         setStart(start);
         setStop(stop);
@@ -23,32 +24,32 @@ public class Time extends DomainObject
         this(null, projectId, (new Date()).getTime(), (long) 0);
     }
 
-    private void setProjectId(Long projectId)
+    private void setProjectId(long projectId)
     {
         mProjectId = projectId;
     }
 
-    public Long getProjectId()
+    public long getProjectId()
     {
         return mProjectId;
     }
 
-    public void setStart(Long start)
+    public void setStart(long start)
     {
         mStart = start;
     }
 
-    public Long getStart()
+    public long getStart()
     {
         return mStart;
     }
 
-    public void setStop(Long stop)
+    public void setStop(long stop)
     {
         mStop = stop;
     }
 
-    public Long getStop()
+    public long getStop()
     {
         return mStop;
     }
