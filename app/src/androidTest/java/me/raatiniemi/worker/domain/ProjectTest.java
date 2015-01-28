@@ -53,7 +53,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testSummarizeSingleTime()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 0, (long) 60000));
+        project.addTime(new Time(null, project.getId(), 0, 60000));
 
         assertEquals("0h 1m", project.summarizeTime());
     }
@@ -68,8 +68,8 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testSummarizeTimeWithActiveTime()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 0, (long) 60000));
-        project.addTime(new Time(null, project.getId(), (long) 60000, (long) 0));
+        project.addTime(new Time(null, project.getId(), 0, 60000));
+        project.addTime(new Time(null, project.getId(), 60000, 0));
 
         assertEquals("0h 1m", project.summarizeTime());
     }
@@ -77,8 +77,8 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testSummarizeTimeWithRoundUp()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 0, (long) 60000));
-        project.addTime(new Time(null, project.getId(), (long) 60000, (long) 90000));
+        project.addTime(new Time(null, project.getId(), 0, 60000));
+        project.addTime(new Time(null, project.getId(), 60000, 90000));
 
         assertEquals("0h 2m", project.summarizeTime());
     }
@@ -86,8 +86,8 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testSummarizeTimeWithRoundDown()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 0, (long) 60000));
-        project.addTime(new Time(null, project.getId(), (long) 60000, (long) 89000));
+        project.addTime(new Time(null, project.getId(), 0, 60000));
+        project.addTime(new Time(null, project.getId(), 60000, 89000));
 
         assertEquals("0h 1m", project.summarizeTime());
     }
@@ -95,8 +95,8 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testSummarizeTimeWithHours()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 3600000, (long) 7200000));
-        project.addTime(new Time(null, project.getId(), (long) 7200000, (long) 9000000));
+        project.addTime(new Time(null, project.getId(), 3600000, 7200000));
+        project.addTime(new Time(null, project.getId(), 7200000, 9000000));
 
         assertEquals("1h 30m", project.summarizeTime());
     }
@@ -104,7 +104,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testClockOut()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 60000, (long) 0));
+        project.addTime(new Time(null, project.getId(), 60000, 0));
 
         assertTrue(project.clockOut() != null);
     }
@@ -112,7 +112,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testClockOutWithoutActiveTime()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 60000, (long) 120000));
+        project.addTime(new Time(null, project.getId(), 60000, 120000));
 
         assertTrue(project.clockOut() == null);
     }
@@ -127,7 +127,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testIsActiveWithActiveTime()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 60000, (long) 0));
+        project.addTime(new Time(null, project.getId(), 60000, 0));
 
         assertTrue(project.isActive());
     }
@@ -135,7 +135,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
     public void testIsActiveWithoutActiveTime()
     {
         Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), (long) 60000, (long) 120000));
+        project.addTime(new Time(null, project.getId(), 60000, 120000));
 
         assertFalse(project.isActive());
     }
