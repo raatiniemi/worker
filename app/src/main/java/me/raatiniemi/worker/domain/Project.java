@@ -12,11 +12,26 @@ public class Project extends DomainObject
 
     private ArrayList<Time> mTime;
 
+    /**
+     * Initialize an existing project.
+     * @param id Id for the project.
+     * @param name Name of the project.
+     */
     public Project(Long id, String name)
     {
         super(id);
+
         setName(name);
         setTime(new ArrayList<Time>());
+    }
+
+    /**
+     * Initialize a new project without an id.
+     * @param name Name of the project.
+     */
+    public Project(String name)
+    {
+        this(null, name);
     }
 
     public void setName(String name)

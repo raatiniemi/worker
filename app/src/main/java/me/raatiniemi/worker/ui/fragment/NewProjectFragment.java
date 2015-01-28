@@ -109,8 +109,8 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
             TimeMapper timeMapper = new TimeMapper(getActivity());
             ProjectMapper projectMapper = new ProjectMapper(getActivity(), timeMapper);
 
-            // Create the project without an actual id.
-            Project project = new Project(null, name);
+            // Create the project, and insert it to the database.
+            Project project = new Project(name);
             project = projectMapper.insert(project);
 
             // Replay that the project have been created to the activity.
