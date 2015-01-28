@@ -22,7 +22,7 @@ abstract public class AbstractMapper
 
     public AbstractMapper(Context context)
     {
-        this(Helper.getInstance(context));
+        this(Helper.getInstance());
     }
 
     abstract protected String getTable();

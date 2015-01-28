@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 
@@ -15,10 +16,10 @@ public class Helper extends SQLiteOpenHelper
 
     private static Helper mHelper;
 
-    public static synchronized Helper getInstance(Context context)
+    public static synchronized Helper getInstance()
     {
         if ( mHelper == null ) {
-            mHelper = new Helper(context);
+            mHelper = new Helper(Worker.getContext());
         }
         return mHelper;
     }
