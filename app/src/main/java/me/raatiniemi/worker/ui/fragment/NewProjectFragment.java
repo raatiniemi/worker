@@ -19,6 +19,7 @@ import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.exception.NamelessProjectException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
+import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 
@@ -106,8 +107,7 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
             Log.d("createNewProject", "Attempt to create new project with name: " + name);
 
             // Attempt to create the new project with supplied name.
-            TimeMapper timeMapper = new TimeMapper();
-            ProjectMapper projectMapper = new ProjectMapper(timeMapper);
+            ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
 
             // Create the project, and insert it to the database.
             Project project = new Project(name);

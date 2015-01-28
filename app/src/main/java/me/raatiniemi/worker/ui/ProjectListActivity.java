@@ -15,6 +15,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
@@ -22,10 +23,6 @@ import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 public class ProjectListActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectActivityChangeListener
 {
-    private TimeMapper mTimeMapper;
-
-    private ProjectMapper mProjectMapper;
-
     private ProjectListAdapter mAdapter;
 
     @Override
@@ -41,11 +38,10 @@ public class ProjectListActivity extends ActionBarActivity
         projectsView.setLayoutManager(manager);
 
         // Instantiate the data mapper for time and project.
-        mTimeMapper = new TimeMapper();
-        mProjectMapper = new ProjectMapper(mTimeMapper);
+        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
 
         // Retrieve the available projects from the project data mapper.
-        ArrayList<Project> projects = mProjectMapper.getProjects();
+        ArrayList<Project> projects = projectMapper.getProjects();
 
         mAdapter = new ProjectListAdapter(this, projects);
         projectsView.setAdapter(mAdapter);
@@ -85,6 +81,9 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void onProjectActivityToggle(Project project, int index)
     {
+        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
+        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
+
         Time time;
 
         // Depending on whether the project is active,
@@ -92,16 +91,16 @@ public class ProjectListActivity extends ActionBarActivity
         if (project.isActive()) {
             // Clock out project.
             time = project.clockOut();
-            mTimeMapper.update(time);
+            timeMapper.update(time);
         } else {
             // Initialize the Time domain object with the project id,
             // the constructor takes care of the start and stop.
             time = new Time(project.getId());
-            mTimeMapper.insert(time);
+            timeMapper.insert(time);
         }
 
         // Retrieve the updated project and send it to the adapter.
-        project = (Project) mProjectMapper.find(project.getId());
+        project = (Project) projectMapper.find(project.getId());
         mAdapter.updateProject(project, index);
     }
 }
