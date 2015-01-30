@@ -21,7 +21,7 @@ import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectListActivity extends ActionBarActivity
-    implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectActivityChangeListener
+    implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectListListener
 {
     private ProjectListAdapter mAdapter;
 

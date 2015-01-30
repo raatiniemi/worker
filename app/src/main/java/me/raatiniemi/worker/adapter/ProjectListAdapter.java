@@ -18,15 +18,15 @@ import me.raatiniemi.worker.domain.Project;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ProjectViewHolder> implements View.OnClickListener
 {
-    public interface OnProjectActivityChangeListener
+    public interface OnProjectListListener
     {
         public void onProjectActivityToggle(Project project, int index);
     }
 
-    private OnProjectActivityChangeListener mActivityCallback;
+    private OnProjectListListener mActivityCallback;
     private ArrayList<Project> mProjects;
 
-    public ProjectListAdapter(OnProjectActivityChangeListener activityCallback, ArrayList<Project> projects)
+    public ProjectListAdapter(OnProjectListListener activityCallback, ArrayList<Project> projects)
     {
         mActivityCallback = activityCallback;
         mProjects = projects;
