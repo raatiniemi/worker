@@ -1,6 +1,7 @@
 package me.raatiniemi.worker.ui;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,8 @@ import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 public class ProjectListActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectListListener
 {
+    public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
+
     private ProjectListAdapter mAdapter;
 
     @Override
@@ -106,6 +109,9 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void onProjectOpen(Project project)
     {
-        // TODO: Open the ProjectActivity.
+        // Open the ProjectActivity.
+        Intent intent = new Intent(this, ProjectActivity.class);
+        intent.putExtra(ProjectListActivity.MESSAGE_PROJECT_ID, project.getId());
+        startActivity(intent);
     }
 }
