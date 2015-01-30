@@ -45,6 +45,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     {
         Project project = mProjects.get(index);
 
+        // Add the on click listener for the card view.
+        // Will open the single project activity.
+        projectViewHolder.itemView.setOnClickListener(this);
+        projectViewHolder.itemView.setTag(index);
+
         projectViewHolder.getName().setText(project.getName());
         projectViewHolder.getTime().setText(project.summarizeTime());
         projectViewHolder.getDescription().setText(project.getDescription());
@@ -99,15 +104,17 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     @Override
     public void onClick(View view)
     {
+        // Retrieve the index from the view and
+        // get the project based on the index.
+        int index = (int) view.getTag();
+        Project project = mProjects.get(index);
+
         switch (view.getId()) {
             case R.id.project_clock_activity:
-                // Retrieve the index from the view and
-                // get the project based on the index.
-                int index = (int) view.getTag();
-                Project project = mProjects.get(index);
-
-                // Toggle the project activity.
                 mActivityCallback.onProjectActivityToggle(project, index);
+                break;
+            case R.id.project_list_item_cardview:
+                mActivityCallback.onProjectOpen(project);
                 break;
         }
     }
