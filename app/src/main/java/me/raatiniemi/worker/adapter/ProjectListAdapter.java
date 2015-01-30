@@ -51,7 +51,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         if (project.getDescription() == null || project.getDescription().isEmpty()) {
             visibility = View.GONE;
         }
-        projectViewHolder.mDescription.setVisibility(visibility);
+        projectViewHolder.getDescription().setVisibility(visibility);
 
         // Set row index and the click listener.
         projectViewHolder.mClockActivity.setTag(index);
