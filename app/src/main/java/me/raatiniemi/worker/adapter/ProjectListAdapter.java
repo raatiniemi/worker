@@ -54,8 +54,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         projectViewHolder.getDescription().setVisibility(visibility);
 
         // Set row index and the click listener.
-        projectViewHolder.mClockActivity.setTag(index);
-        projectViewHolder.mClockActivity.setOnClickListener(this);
+        projectViewHolder.getClockActivity().setTag(index);
+        projectViewHolder.getClockActivity().setOnClickListener(this);
 
         // Depending on whether the project is active the text
         // for the clock activity view should be altered, and
@@ -69,7 +69,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         // Retrieve the string from the resources and update the view.
         String clockActivity = Worker.getContext().getResources().getString(clockActivityId);
-        projectViewHolder.mClockActivity.setText(clockActivity);
+        projectViewHolder.getClockActivity().setText(clockActivity);
 
         // Set the visibility for the clocked in view.
         projectViewHolder.mClockedIn.setVisibility(clockedInVisibility);
@@ -140,7 +140,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             setName((TextView) view.findViewById(R.id.project_name));
             setTime((TextView) view.findViewById(R.id.project_time));
             setDescription((TextView) view.findViewById(R.id.project_description));
-            mClockActivity = (FlatButton) view.findViewById(R.id.project_clock_activity);
+            setClockActivity((FlatButton) view.findViewById(R.id.project_clock_activity));
             mClockedIn = (RelativeLayout) view.findViewById(R.id.project_clocked_in);
             mClockedInSince = (TextView) view.findViewById(R.id.project_clocked_in_since);
         }
@@ -173,6 +173,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public TextView getDescription()
         {
             return mDescription;
+        }
+
+        public void setClockActivity(FlatButton clockActivity)
+        {
+            mClockActivity = clockActivity;
+        }
+
+        public FlatButton getClockActivity()
+        {
+            return mClockActivity;
         }
     }
 }
