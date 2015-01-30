@@ -43,7 +43,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         Project project = mProjects.get(index);
 
         projectViewHolder.getName().setText(project.getName());
-        projectViewHolder.setTime(project.summarizeTime());
+        projectViewHolder.getTime().setText(project.summarizeTime());
         projectViewHolder.setDescription(project.getDescription());
 
         // If the project description is empty the view should be hidden.
@@ -138,7 +138,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             super(view);
 
             setName((TextView) view.findViewById(R.id.project_name));
-            mTime = (TextView) view.findViewById(R.id.project_time);
+            setTime((TextView) view.findViewById(R.id.project_time));
             mDescription = (TextView) view.findViewById(R.id.project_description);
             mClockActivity = (FlatButton) view.findViewById(R.id.project_clock_activity);
             mClockedIn = (RelativeLayout) view.findViewById(R.id.project_clocked_in);
@@ -155,9 +155,14 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             return mName;
         }
 
-        public void setTime(String time)
+        public void setTime(TextView time)
         {
-            mTime.setText(time);
+            mTime = time;
+        }
+
+        public TextView getTime()
+        {
+            return mTime;
         }
 
         public void setDescription(String description)
