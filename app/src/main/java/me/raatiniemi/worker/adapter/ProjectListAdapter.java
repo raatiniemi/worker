@@ -78,7 +78,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
         String clockedInSince = Worker.getContext().getResources().getString(clockedInSinceId);
         clockedInSince = String.format(clockedInSince, project.getClockedInSince());
-        projectViewHolder.mClockedInSince.setText(clockedInSince);
+        projectViewHolder.getClockedInSince().setText(clockedInSince);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             setDescription((TextView) view.findViewById(R.id.project_description));
             setClockActivity((FlatButton) view.findViewById(R.id.project_clock_activity));
             setClockedIn((RelativeLayout) view.findViewById(R.id.project_clocked_in));
-            mClockedInSince = (TextView) view.findViewById(R.id.project_clocked_in_since);
+            setClockedInSince((TextView) view.findViewById(R.id.project_clocked_in_since));
         }
 
         public void setName(TextView name)
@@ -193,6 +193,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public RelativeLayout getClockedIn()
         {
             return mClockedIn;
+        }
+
+        public void setClockedInSince(TextView clockedInSince)
+        {
+            mClockedInSince = clockedInSince;
+        }
+
+        public TextView getClockedInSince()
+        {
+            return mClockedInSince;
         }
     }
 }
