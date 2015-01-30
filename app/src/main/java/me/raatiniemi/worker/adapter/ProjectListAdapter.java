@@ -42,7 +42,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     {
         Project project = mProjects.get(index);
 
-        projectViewHolder.setName(project.getName());
+        projectViewHolder.getName().setText(project.getName());
         projectViewHolder.setTime(project.summarizeTime());
         projectViewHolder.setDescription(project.getDescription());
 
@@ -137,7 +137,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         {
             super(view);
 
-            mName = (TextView) view.findViewById(R.id.project_name);
+            setName((TextView) view.findViewById(R.id.project_name));
             mTime = (TextView) view.findViewById(R.id.project_time);
             mDescription = (TextView) view.findViewById(R.id.project_description);
             mClockActivity = (FlatButton) view.findViewById(R.id.project_clock_activity);
@@ -145,9 +145,14 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             mClockedInSince = (TextView) view.findViewById(R.id.project_clocked_in_since);
         }
 
-        public void setName(String name)
+        public void setName(TextView name)
         {
-            mName.setText(name);
+            mName = name;
+        }
+
+        public TextView getName()
+        {
+            return mName;
         }
 
         public void setTime(String time)
