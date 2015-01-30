@@ -21,6 +21,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public interface OnProjectListListener
     {
         public void onProjectActivityToggle(Project project, int index);
+
+        public void onProjectOpen(Project project);
     }
 
     private OnProjectListListener mActivityCallback;

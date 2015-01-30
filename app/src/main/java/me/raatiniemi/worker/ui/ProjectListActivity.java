@@ -103,4 +103,9 @@ public class ProjectListActivity extends ActionBarActivity
         project = (Project) projectMapper.find(project.getId());
         mAdapter.updateProject(project, index);
     }
+
+    public void onProjectOpen(Project project)
+    {
+        // TODO: Open the ProjectActivity.
+    }
 }
