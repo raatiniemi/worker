@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.adapter;
 
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,8 +68,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             clockedInVisibility = View.VISIBLE;
         }
 
+        // Retrieve the resource instance.
+        Resources resources = Worker.getContext().getResources();
+
         // Retrieve the string from the resources and update the view.
-        String clockActivity = Worker.getContext().getResources().getString(clockActivityId);
+        String clockActivity = resources.getString(clockActivityId);
         projectViewHolder.getClockActivity().setText(clockActivity);
 
         // Set the visibility for the clocked in view.
@@ -76,7 +80,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         // Retrieve the time that the active session was clocked in.
         int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
-        String clockedInSince = Worker.getContext().getResources().getString(clockedInSinceId);
+        String clockedInSince = resources.getString(clockedInSinceId);
         clockedInSince = String.format(clockedInSince, project.getClockedInSince());
         projectViewHolder.getClockedInSince().setText(clockedInSince);
     }
