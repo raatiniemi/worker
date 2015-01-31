@@ -6,7 +6,7 @@
 
         <activity
             android:name=".ui.ProjectListActivity"
-            android:label="@string/app_name">
+            android:label="@string/project_list_activity_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
