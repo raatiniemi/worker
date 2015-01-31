@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/project_time_list_item_date"
-        android:text="2015-01-30" />
+        android:text="@string/placeholder_project_time_list_item_date" />
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -24,7 +24,7 @@
             android:id="@+id/project_time_list_item_start"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
-            android:text="07:30" />
+            android:text="@string/placeholder_project_time_list_item_start" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,14 +33,14 @@
             android:layout_toEndOf="@+id/project_time_list_item_start"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
-            android:text="09:30" />
+            android:text="@string/placeholder_project_time_list_item_stop" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/project_time_list_item_summarize"
             android:layout_toRightOf="@+id/project_time_list_item_stop"
             android:layout_toEndOf="@+id/project_time_list_item_stop"
-            android:text="2h 0m"
+            android:text="@string/placeholder_project_time_list_item_summarize"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:gravity="end|right"
