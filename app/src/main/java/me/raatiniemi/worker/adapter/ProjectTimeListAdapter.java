@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -42,9 +43,49 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
 
     public static class TimeViewHolder extends RecyclerView.ViewHolder
     {
+        private TextView mStart;
+
+        private TextView mStop;
+
+        private TextView mSummarize;
+
         public TimeViewHolder(View view)
         {
             super(view);
+
+            setStart((TextView) view.findViewById(R.id.project_time_list_item_start));
+            setStop((TextView) view.findViewById(R.id.project_time_list_item_stop));
+            setSummarize((TextView) view.findViewById(R.id.project_time_list_item_summarize));
+        }
+
+        private void setStart(TextView start)
+        {
+            mStart = start;
+        }
+
+        public TextView getStart()
+        {
+            return mStart;
+        }
+
+        private void setStop(TextView stop)
+        {
+            mStop = stop;
+        }
+
+        public TextView getStop()
+        {
+            return mStop;
+        }
+
+        private void setSummarize(TextView summarize)
+        {
+            mSummarize = summarize;
+        }
+
+        public TextView getSummarize()
+        {
+            return mSummarize;
         }
     }
 }
