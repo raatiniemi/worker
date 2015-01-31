@@ -18,6 +18,8 @@
             android:id="@+id/project_time_list_item_start"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:text="07:30" />
         <TextView
             android:layout_width="wrap_content"
@@ -25,6 +27,8 @@
             android:id="@+id/project_time_list_item_stop"
             android:layout_toRightOf="@+id/project_time_list_item_start"
             android:layout_toEndOf="@+id/project_time_list_item_start"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:text="09:30" />
         <TextView
             android:layout_width="fill_parent"
@@ -35,6 +39,8 @@
             android:text="2h 0m"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:gravity="end|right"/>
+            android:gravity="end|right"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp" />
     </RelativeLayout>
 </LinearLayout>
