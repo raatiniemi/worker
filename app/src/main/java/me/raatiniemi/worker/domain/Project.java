@@ -71,6 +71,8 @@ public class Project extends DomainObject
 
     public String summarizeTime()
     {
+        // TODO: Migrate to date interval handler.
+
         // Total time in number of seconds.
         long total = 0;
 

@@ -79,6 +79,8 @@ public class Time extends DomainObject
 
     public String summarizeTime()
     {
+        // TODO: Migrate to date interval handler.
+
         // total time in number of seconds.
         long total = getTime();
 
