@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Time;
@@ -29,7 +31,22 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     @Override
     public void onBindViewHolder(TimeViewHolder timeViewHolder, int index)
     {
-        // TODO: Implement onBindViewHolder for the ProjectTimeListAdapter.
+        Time time = mTime.get(index);
+
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+
+        Date start = new Date(time.getStart());
+        timeViewHolder.getStart().setText(format.format(start));
+
+        if (time.isActive()) {
+            timeViewHolder.getStop().setText(null);
+            timeViewHolder.getSummarize().setText(null);
+        } else {
+            Date stop = new Date(time.getStop());
+
+            timeViewHolder.getStop().setText(format.format(stop));
+            timeViewHolder.getSummarize().setText(time.summarizeTime());
+        }
     }
 
     @Override
