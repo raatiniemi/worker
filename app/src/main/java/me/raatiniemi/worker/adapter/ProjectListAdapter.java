@@ -92,6 +92,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         String clockedInSince = resources.getString(clockedInSinceId);
         clockedInSince = String.format(clockedInSince, project.getClockedInSince());
         projectViewHolder.getClockedInSince().setText(clockedInSince);
+
+        // Add the onClickListener to the "Clock out at" item.
+        projectViewHolder.getClockOutAt().setOnClickListener(this);
+        projectViewHolder.getClockOutAt().setTag(index);
     }
 
     @Override
@@ -114,6 +118,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         switch (view.getId()) {
             case R.id.project_clock_activity:
                 mActivityCallback.onProjectActivityToggle(project, index);
+                break;
+            case R.id.project_clock_out_at:
+                mActivityCallback.onProjectClockOutAt(project, index);
                 break;
             case R.id.project_list_item_cardview:
                 mActivityCallback.onProjectOpen(project);
@@ -147,6 +154,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         protected FlatButton mClockActivity;
         protected RelativeLayout mClockedIn;
         protected TextView mClockedInSince;
+        protected TextView mClockOutAt;
 
         public ProjectViewHolder(View view)
         {
@@ -158,6 +166,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             setClockActivity((FlatButton) view.findViewById(R.id.project_clock_activity));
             setClockedIn((RelativeLayout) view.findViewById(R.id.project_clocked_in));
             setClockedInSince((TextView) view.findViewById(R.id.project_clocked_in_since));
+            setClockOutAt((TextView) view.findViewById(R.id.project_clock_out_at));
         }
 
         public void setName(TextView name)
@@ -218,6 +227,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public TextView getClockedInSince()
         {
             return mClockedInSince;
+        }
+
+        public void setClockOutAt(TextView clockOutAt)
+        {
+            mClockOutAt = clockOutAt;
+        }
+
+        public TextView getClockOutAt()
+        {
+            return mClockOutAt;
         }
     }
 }
