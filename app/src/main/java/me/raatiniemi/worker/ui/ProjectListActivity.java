@@ -107,6 +107,11 @@ public class ProjectListActivity extends ActionBarActivity
         mAdapter.updateProject(project, index);
     }
 
+    public void onProjectClockOutAt(Project project, int index)
+    {
+        // TODO: Open date/time picker.
+    }
+
     public void onProjectOpen(Project project)
     {
         // Open the ProjectActivity.
