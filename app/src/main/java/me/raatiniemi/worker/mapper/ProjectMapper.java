@@ -39,7 +39,6 @@ public class ProjectMapper extends AbstractMapper
         mTimeMapper = timeMapper;
     }
 
-
     protected String getTable()
     {
         return TABLE_NAME;
