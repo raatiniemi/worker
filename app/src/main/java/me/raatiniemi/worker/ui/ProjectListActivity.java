@@ -1,6 +1,7 @@
 package me.raatiniemi.worker.ui;
 
 import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
+import me.raatiniemi.worker.ui.fragment.ClockOutAtFragment;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectListActivity extends ActionBarActivity
@@ -109,7 +111,12 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void onProjectClockOutAt(Project project, int index)
     {
-        // TODO: Open date/time picker.
+        // Instantiate the "Clock out at"-fragment.
+        ClockOutAtFragment clockOutAtFragment = new ClockOutAtFragment();
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(clockOutAtFragment, "fragment_clock_out_at");
+        fragmentTransaction.commit();
     }
 
     public void onProjectOpen(Project project)
