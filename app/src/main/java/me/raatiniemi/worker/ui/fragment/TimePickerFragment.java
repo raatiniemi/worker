@@ -5,12 +5,34 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener
+public class TimePickerFragment extends DialogFragment
 {
+    /**
+     * The "OnTimeSetListener" for the TimePickerDialog.
+     */
+    private TimePickerDialog.OnTimeSetListener mOnTimeSetListener;
+
+    /**
+     * Set the "OnTimeSetListener" for the TimePickerDialog.
+     * @param listener "OnTimeSetListener" for the TimePickerDialog.
+     */
+    public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener)
+    {
+        mOnTimeSetListener = listener;
+    }
+
+    /**
+     * Get the "OnTimeSetListener" for the TimePickerDialog.
+     * @return "OnTimeSetListener" for the TimePickerDialog.
+     */
+    public TimePickerDialog.OnTimeSetListener getOnTimeSetListener()
+    {
+        return mOnTimeSetListener;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -18,11 +40,6 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
-        return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
-    }
-
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-    {
-        // TODO: Handle the supplied time.
+        return new TimePickerDialog(getActivity(), getOnTimeSetListener(), hour, minute, DateFormat.is24HourFormat(getActivity()));
     }
 }
