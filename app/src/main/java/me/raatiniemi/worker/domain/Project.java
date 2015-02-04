@@ -107,6 +107,8 @@ public class Project extends DomainObject
         long hours = (total / (60 * 60) % 24);
         long minutes = (total / 60 % 60);
 
+        // TODO: If hours have passed 24, then the time "resets".
+
         // If the number of seconds is at >= 30 we should add an extra minute
         // to the minutes, i.e. round up the minutes if they have passed 50%.
         //
