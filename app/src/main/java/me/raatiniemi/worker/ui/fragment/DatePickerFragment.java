@@ -8,8 +8,31 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
+public class DatePickerFragment extends DialogFragment
 {
+    /**
+     * The "OnDateSetListener" for the DatePickerDialog.
+     */
+    private DatePickerDialog.OnDateSetListener mOnDateSetListener;
+
+    /**
+     * Set the "OnDateSetListener" for the DatePickerDialog.
+     * @param listener "OnDateSetListener" for the DatePickerDialog.
+     */
+    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener)
+    {
+        mOnDateSetListener = listener;
+    }
+
+    /**
+     * Get the "OnDateSetListener" for the DatePickerDialog.
+     * @return "OnDateSetListener" for the DatePickerDialog.
+     */
+    public DatePickerDialog.OnDateSetListener getOnDateSetListener()
+    {
+        return mOnDateSetListener;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -18,15 +41,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), this, year, month, day);
-    }
-
-    public void onDateSet(DatePicker view, int year, int month, int day)
-    {
-        // Increment the given month by one, since it's zero based,
-        // e.g. January is 0 and December is 11.
-        month++;
-
-        // TODO: Handle the supplied date.
+        return new DatePickerDialog(getActivity(), getOnDateSetListener(), year, month, day);
     }
 }
