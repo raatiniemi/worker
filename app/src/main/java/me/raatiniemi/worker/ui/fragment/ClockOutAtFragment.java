@@ -7,13 +7,20 @@ import android.os.Bundle;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import java.util.Calendar;
+
 public class ClockOutAtFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
 {
+    private Calendar mCalendar;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        // Retrieve an instance for the calendar.
+        mCalendar = Calendar.getInstance();
 
         // Initialize the "DatePicker"-fragment.
         DatePickerFragment datePickerFragment = new DatePickerFragment();
@@ -23,7 +30,8 @@ public class ClockOutAtFragment extends Fragment
 
     public void onDateSet(DatePicker view, int year, int month, int day)
     {
-        // TODO: Handle the input data.
+        // Change the year, month, and day to the calendar.
+        mCalendar.set(year, month, day);
 
         // Initialize the "TimePicker"-fragment.
         TimePickerFragment timePickerFragment = new TimePickerFragment();
@@ -33,6 +41,9 @@ public class ClockOutAtFragment extends Fragment
 
     public void onTimeSet(TimePicker view, int hour, int minute)
     {
-        // TODO: Handle the input data.
+        mCalendar.set(Calendar.HOUR, hour);
+        mCalendar.set(Calendar.MINUTE, minute);
+
+        // TODO: Send the calendar back to the activity.
     }
 }
