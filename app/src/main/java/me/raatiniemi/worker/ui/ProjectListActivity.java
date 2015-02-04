@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectListAdapter;
@@ -24,7 +25,7 @@ import me.raatiniemi.worker.ui.fragment.ClockOutAtFragment;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectListActivity extends ActionBarActivity
-    implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectListListener
+    implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectListListener, ClockOutAtFragment.OnClockOutAtListener
 {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
@@ -125,5 +126,10 @@ public class ProjectListActivity extends ActionBarActivity
         Intent intent = new Intent(this, ProjectActivity.class);
         intent.putExtra(ProjectListActivity.MESSAGE_PROJECT_ID, project.getId());
         startActivity(intent);
+    }
+
+    public void onClockOutAt(Calendar calendar)
+    {
+        // TODO: Clock out the project.
     }
 }

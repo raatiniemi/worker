@@ -1,9 +1,11 @@
 package me.raatiniemi.worker.ui.fragment;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -22,17 +24,34 @@ public class ClockOutAtFragment extends Fragment
     }
 
     @Override
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+
+        try {
+            mCallback = (OnClockOutAtListener) activity;
+        } catch (ClassCastException e) {
+            Log.e("onAttach", activity.toString() +" do not implement OnClockOutAtListener");
+
+            // TODO: Error message to the user, and dismiss the fragment.
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        // Retrieve an instance for the calendar.
-        mCalendar = Calendar.getInstance();
+        // Only show the date picker dialog if we have a valid callback.
+        if (mCallback != null) {
+            // Retrieve an instance for the calendar.
+            mCalendar = Calendar.getInstance();
 
-        // Initialize the "DatePicker"-fragment.
-        DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.setOnDateSetListener(this);
-        datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_out_date_picker");
+            // Initialize the "DatePicker"-fragment.
+            DatePickerFragment datePickerFragment = new DatePickerFragment();
+            datePickerFragment.setOnDateSetListener(this);
+            datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_out_date_picker");
+        }
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day)
@@ -51,6 +70,7 @@ public class ClockOutAtFragment extends Fragment
         mCalendar.set(Calendar.HOUR, hour);
         mCalendar.set(Calendar.MINUTE, minute);
 
-        // TODO: Send the calendar back to the activity.
+        // Send the calendar back to the activity.
+        mCallback.onClockOutAt(mCalendar);
     }
 }
