@@ -12,7 +12,14 @@ import java.util.Calendar;
 public class ClockOutAtFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
 {
+    private OnClockOutAtListener mCallback;
+
     private Calendar mCalendar;
+
+    public interface OnClockOutAtListener
+    {
+        public void onClockOutAt(Calendar calendar);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
