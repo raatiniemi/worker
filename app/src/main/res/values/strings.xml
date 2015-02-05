@@ -13,6 +13,7 @@
     <string name="project_list_item_project_clocked_in_since">Since %s</string>
     <string name="project_list_item_project_clock_in">Clock in</string>
     <string name="project_list_item_project_clock_out">Clock out</string>
+    <string name="project_list_item_project_clock_in_at">Clock in at&#8230;</string>
     <string name="project_list_item_project_clock_out_at">Clock out at&#8230;</string>
 
     <string name="placeholder_project_time_list_item_date">2015-01-30</string>
