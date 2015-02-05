@@ -71,10 +71,12 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // for the clock activity view should be altered, and
         // visibility for the clocked activity view.
         int clockActivityToggleId = R.string.project_list_item_project_clock_in;
-        int clockedActivityVisibility = View.GONE;
+        int clockActivityAtId = R.string.project_list_item_project_clock_in_at;
+        int clockedInSinceVisibility = View.GONE;
         if (project.isActive()) {
             clockActivityToggleId = R.string.project_list_item_project_clock_out;
-            clockedActivityVisibility = View.VISIBLE;
+            clockActivityAtId = R.string.project_list_item_project_clock_out_at;
+            clockedInSinceVisibility = View.VISIBLE;
         }
 
         // Retrieve the resource instance.
@@ -84,16 +86,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         String clockActivityToggle = resources.getString(clockActivityToggleId);
         projectViewHolder.getClockActivityToggle().setText(clockActivityToggle);
 
-        // Set the visibility for the clocked activity view.
-        projectViewHolder.getClockedActivity().setVisibility(clockedActivityVisibility);
-
         // Retrieve the time that the active session was clocked in.
         int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
         String clockedInSince = resources.getString(clockedInSinceId);
         clockedInSince = String.format(clockedInSince, project.getClockedInSince());
         projectViewHolder.getClockedInSince().setText(clockedInSince);
+        projectViewHolder.getClockedInSince().setVisibility(clockedInSinceVisibility);
 
         // Add the onClickListener to the "Clock [in|out] at..." item.
+        String clockActivityAt = resources.getString(clockActivityAtId);
+        projectViewHolder.getClockActivityAt().setText(clockActivityAt);
         projectViewHolder.getClockActivityAt().setOnClickListener(this);
         projectViewHolder.getClockActivityAt().setTag(index);
     }

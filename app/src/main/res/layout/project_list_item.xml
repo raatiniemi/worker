@@ -76,8 +76,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/project_clock_activity_toggle"
             android:layout_marginLeft="@dimen/project_list_item_clocked_activity_margin_start"
-            android:layout_marginStart="@dimen/project_list_item_clocked_activity_margin_start"
-            android:visibility="invisible">
+            android:layout_marginStart="@dimen/project_list_item_clocked_activity_margin_start">
             <TextView
                 android:id="@+id/project_clocked_in_since"
                 android:layout_width="wrap_content"
@@ -85,12 +84,13 @@
                 android:text="@string/placeholder_project_list_item_project_clocked_in_since"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                android:visibility="gone" />
             <TextView
                 android:id="@+id/project_clock_activity_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/project_list_item_project_clock_out_at"
+                android:text="@string/project_list_item_project_clock_in_at"
                 android:layout_below="@+id/project_clocked_in_since"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
