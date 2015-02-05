@@ -67,7 +67,7 @@
             flatui:fl_theme="@array/grass" />
 
         <RelativeLayout
-            android:id="@+id/project_clocked_in"
+            android:id="@+id/project_clocked_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/project_clock_activity_toggle"
@@ -75,8 +75,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/project_clock_activity_toggle"
-            android:layout_marginLeft="@dimen/project_list_item_clocked_in_margin_start"
-            android:layout_marginStart="@dimen/project_list_item_clocked_in_margin_start"
+            android:layout_marginLeft="@dimen/project_list_item_clocked_activity_margin_start"
+            android:layout_marginStart="@dimen/project_list_item_clocked_activity_margin_start"
             android:visibility="invisible">
             <TextView
                 android:id="@+id/project_clocked_in_since"

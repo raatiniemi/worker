@@ -12,7 +12,7 @@
 
     <dimen name="project_list_item_clock_activity_toggle_margin_top">15dp</dimen>
 
-    <dimen name="project_list_item_clocked_in_margin_start">15dp</dimen>
+    <dimen name="project_list_item_clocked_activity_margin_start">15dp</dimen>
 
     <dimen name="fragment_new_project_padding_start">25dp</dimen>
     <dimen name="fragment_new_project_padding_end">25dp</dimen>
