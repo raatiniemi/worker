@@ -122,7 +122,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             case R.id.project_clock_out_at:
                 mActivityCallback.onProjectClockOutAt(project, index);
                 break;
-            case R.id.project_list_item_cardview:
+            case R.id.project_list_item_card_view:
                 mActivityCallback.onProjectOpen(project);
                 break;
         }
