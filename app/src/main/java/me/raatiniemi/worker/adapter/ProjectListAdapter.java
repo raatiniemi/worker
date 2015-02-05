@@ -64,16 +64,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         projectViewHolder.getDescription().setVisibility(visibility);
 
         // Set row index and the click listener.
-        projectViewHolder.getClockActivity().setTag(index);
-        projectViewHolder.getClockActivity().setOnClickListener(this);
+        projectViewHolder.getClockActivityToggle().setTag(index);
+        projectViewHolder.getClockActivityToggle().setOnClickListener(this);
 
         // Depending on whether the project is active the text
         // for the clock activity view should be altered, and
         // visibility for the clocked in view.
-        int clockActivityId = R.string.project_list_item_project_clock_in;
+        int clockActivityToggleId = R.string.project_list_item_project_clock_in;
         int clockedInVisibility = View.GONE;
         if (project.isActive()) {
-            clockActivityId = R.string.project_list_item_project_clock_out;
+            clockActivityToggleId = R.string.project_list_item_project_clock_out;
             clockedInVisibility = View.VISIBLE;
         }
 
@@ -81,8 +81,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         Resources resources = Worker.getContext().getResources();
 
         // Retrieve the string from the resources and update the view.
-        String clockActivity = resources.getString(clockActivityId);
-        projectViewHolder.getClockActivity().setText(clockActivity);
+        String clockActivityToggle = resources.getString(clockActivityToggleId);
+        projectViewHolder.getClockActivityToggle().setText(clockActivityToggle);
 
         // Set the visibility for the clocked in view.
         projectViewHolder.getClockedIn().setVisibility(clockedInVisibility);
@@ -116,7 +116,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         Project project = mProjects.get(index);
 
         switch (view.getId()) {
-            case R.id.project_clock_activity:
+            case R.id.project_clock_activity_toggle:
                 mActivityCallback.onProjectActivityToggle(project, index);
                 break;
             case R.id.project_clock_out_at:
@@ -151,7 +151,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         protected TextView mName;
         protected TextView mTime;
         protected TextView mDescription;
-        protected FlatButton mClockActivity;
+        protected FlatButton mClockActivityToggle;
         protected RelativeLayout mClockedIn;
         protected TextView mClockedInSince;
         protected TextView mClockOutAt;
@@ -163,7 +163,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             setName((TextView) view.findViewById(R.id.project_name));
             setTime((TextView) view.findViewById(R.id.project_time));
             setDescription((TextView) view.findViewById(R.id.project_description));
-            setClockActivity((FlatButton) view.findViewById(R.id.project_clock_activity));
+            setClockActivityToggle((FlatButton) view.findViewById(R.id.project_clock_activity_toggle));
             setClockedIn((RelativeLayout) view.findViewById(R.id.project_clocked_in));
             setClockedInSince((TextView) view.findViewById(R.id.project_clocked_in_since));
             setClockOutAt((TextView) view.findViewById(R.id.project_clock_out_at));
@@ -199,14 +199,14 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             return mDescription;
         }
 
-        public void setClockActivity(FlatButton clockActivity)
+        public void setClockActivityToggle(FlatButton clockActivityToggle)
         {
-            mClockActivity = clockActivity;
+            mClockActivityToggle = clockActivityToggle;
         }
 
-        public FlatButton getClockActivity()
+        public FlatButton getClockActivityToggle()
         {
-            return mClockActivity;
+            return mClockActivityToggle;
         }
 
         public void setClockedIn(RelativeLayout clockedIn)

@@ -55,14 +55,14 @@
             android:layout_alignEnd="@+id/project_time" />
 
         <com.cengalabs.flatui.views.FlatButton
-            android:id="@+id/project_clock_activity"
+            android:id="@+id/project_clock_activity_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/project_list_item_project_clock_in"
             android:layout_below="@+id/project_description"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="@dimen/project_list_item_clock_activity_margin_top"
+            android:layout_marginTop="@dimen/project_list_item_clock_activity_toggle_margin_top"
             flatui:fl_blockButtonEffectHeight="3dp"
             flatui:fl_theme="@array/grass" />
 
@@ -70,11 +70,11 @@
             android:id="@+id/project_clocked_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/project_clock_activity"
-            android:layout_toEndOf="@+id/project_clock_activity"
+            android:layout_toRightOf="@+id/project_clock_activity_toggle"
+            android:layout_toEndOf="@+id/project_clock_activity_toggle"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/project_clock_activity"
+            android:layout_alignBottom="@+id/project_clock_activity_toggle"
             android:layout_marginLeft="@dimen/project_list_item_clocked_in_margin_start"
             android:layout_marginStart="@dimen/project_list_item_clocked_in_margin_start"
             android:visibility="invisible">
