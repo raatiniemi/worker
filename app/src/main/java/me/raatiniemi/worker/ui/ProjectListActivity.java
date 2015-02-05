@@ -110,7 +110,7 @@ public class ProjectListActivity extends ActionBarActivity
         mAdapter.updateProject(project, index);
     }
 
-    public void onProjectClockOutAt(Project project, int index)
+    public void onProjectClockActivityAt(Project project, int index)
     {
         // Instantiate the "Clock out at"-fragment.
         ClockOutAtFragment clockOutAtFragment = new ClockOutAtFragment();

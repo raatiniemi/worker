@@ -22,7 +22,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     {
         public void onProjectActivityToggle(Project project, int index);
 
-        public void onProjectClockOutAt(Project project, int index);
+        public void onProjectClockActivityAt(Project project, int index);
 
         public void onProjectOpen(Project project);
     }
@@ -93,9 +93,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         clockedInSince = String.format(clockedInSince, project.getClockedInSince());
         projectViewHolder.getClockedInSince().setText(clockedInSince);
 
-        // Add the onClickListener to the "Clock out at" item.
-        projectViewHolder.getClockOutAt().setOnClickListener(this);
-        projectViewHolder.getClockOutAt().setTag(index);
+        // Add the onClickListener to the "Clock [in|out] at..." item.
+        projectViewHolder.getClockActivityAt().setOnClickListener(this);
+        projectViewHolder.getClockActivityAt().setTag(index);
     }
 
     @Override
@@ -119,8 +119,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             case R.id.project_clock_activity_toggle:
                 mActivityCallback.onProjectActivityToggle(project, index);
                 break;
-            case R.id.project_clock_out_at:
-                mActivityCallback.onProjectClockOutAt(project, index);
+            case R.id.project_clock_activity_at:
+                mActivityCallback.onProjectClockActivityAt(project, index);
                 break;
             case R.id.project_list_item_card_view:
                 mActivityCallback.onProjectOpen(project);
@@ -154,7 +154,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         protected FlatButton mClockActivityToggle;
         protected RelativeLayout mClockedActivity;
         protected TextView mClockedInSince;
-        protected TextView mClockOutAt;
+        protected TextView mClockActivityAt;
 
         public ProjectViewHolder(View view)
         {
@@ -166,7 +166,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             setClockActivityToggle((FlatButton) view.findViewById(R.id.project_clock_activity_toggle));
             setClockedActivity((RelativeLayout) view.findViewById(R.id.project_clocked_activity));
             setClockedInSince((TextView) view.findViewById(R.id.project_clocked_in_since));
-            setClockOutAt((TextView) view.findViewById(R.id.project_clock_out_at));
+            setClockActivityAt((TextView) view.findViewById(R.id.project_clock_activity_at));
         }
 
         public void setName(TextView name)
@@ -229,14 +229,14 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             return mClockedInSince;
         }
 
-        public void setClockOutAt(TextView clockOutAt)
+        public void setClockActivityAt(TextView clockActivityAt)
         {
-            mClockOutAt = clockOutAt;
+            mClockActivityAt = clockActivityAt;
         }
 
-        public TextView getClockOutAt()
+        public TextView getClockActivityAt()
         {
-            return mClockOutAt;
+            return mClockActivityAt;
         }
     }
 }
