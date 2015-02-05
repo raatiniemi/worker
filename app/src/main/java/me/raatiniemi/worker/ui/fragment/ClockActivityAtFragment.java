@@ -11,16 +11,16 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-public class ClockOutAtFragment extends Fragment
+public class ClockActivityAtFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
 {
-    private OnClockOutAtListener mCallback;
+    private OnClockActivityAtListener mCallback;
 
     private Calendar mCalendar;
 
-    public interface OnClockOutAtListener
+    public interface OnClockActivityAtListener
     {
-        public void onClockOutAt(Calendar calendar);
+        public void onClockActivityAt(Calendar calendar);
     }
 
     @Override
@@ -29,9 +29,9 @@ public class ClockOutAtFragment extends Fragment
         super.onAttach(activity);
 
         try {
-            mCallback = (OnClockOutAtListener) activity;
+            mCallback = (OnClockActivityAtListener) activity;
         } catch (ClassCastException e) {
-            Log.e("onAttach", activity.toString() +" do not implement OnClockOutAtListener");
+            Log.e("onAttach", activity.toString() +" do not implement OnClockActivityAtListener");
 
             // TODO: Error message to the user, and dismiss the fragment.
         }
@@ -50,7 +50,7 @@ public class ClockOutAtFragment extends Fragment
             // Initialize the "DatePicker"-fragment.
             DatePickerFragment datePickerFragment = new DatePickerFragment();
             datePickerFragment.setOnDateSetListener(this);
-            datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_out_date_picker");
+            datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_date_picker");
         }
     }
 
@@ -62,7 +62,7 @@ public class ClockOutAtFragment extends Fragment
         // Initialize the "TimePicker"-fragment.
         TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.setOnTimeSetListener(this);
-        timePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_out_date_picker");
+        timePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_time_picker");
     }
 
     public void onTimeSet(TimePicker view, int hour, int minute)
@@ -71,6 +71,6 @@ public class ClockOutAtFragment extends Fragment
         mCalendar.set(Calendar.MINUTE, minute);
 
         // Send the calendar back to the activity.
-        mCallback.onClockOutAt(mCalendar);
+        mCallback.onClockActivityAt(mCalendar);
     }
 }

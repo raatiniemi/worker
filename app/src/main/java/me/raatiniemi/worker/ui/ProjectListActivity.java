@@ -21,11 +21,11 @@ import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
-import me.raatiniemi.worker.ui.fragment.ClockOutAtFragment;
+import me.raatiniemi.worker.ui.fragment.ClockActivityAtFragment;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectListActivity extends ActionBarActivity
-    implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectListListener, ClockOutAtFragment.OnClockOutAtListener
+    implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectListListener, ClockActivityAtFragment.OnClockActivityAtListener
 {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
@@ -112,11 +112,11 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void onProjectClockActivityAt(Project project, int index)
     {
-        // Instantiate the "Clock out at"-fragment.
-        ClockOutAtFragment clockOutAtFragment = new ClockOutAtFragment();
+        // Instantiate the "Clock [in|out] at..."-fragment.
+        ClockActivityAtFragment clockActivityAtFragment = new ClockActivityAtFragment();
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(clockOutAtFragment, "fragment_clock_out_at");
+        fragmentTransaction.add(clockActivityAtFragment, "fragment_clock_activity_at");
         fragmentTransaction.commit();
     }
 
@@ -128,7 +128,7 @@ public class ProjectListActivity extends ActionBarActivity
         startActivity(intent);
     }
 
-    public void onClockOutAt(Calendar calendar)
+    public void onClockActivityAt(Calendar calendar)
     {
         // TODO: Clock out the project.
     }
