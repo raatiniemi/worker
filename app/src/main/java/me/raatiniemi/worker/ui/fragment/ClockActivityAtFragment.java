@@ -11,9 +11,21 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import me.raatiniemi.worker.domain.Project;
+
 public class ClockActivityAtFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
 {
+    /**
+     * Name of the key for the project argument.
+     */
+    private static final String ARGUMENT_PROJECT = "_project";
+
+    /**
+     * Name of the key for the row index argument.
+     */
+    private static final String ARGUMENT_INDEX = "_index";
+
     private OnClockActivityAtListener mCallback;
 
     private Calendar mCalendar;
@@ -21,6 +33,25 @@ public class ClockActivityAtFragment extends Fragment
     public interface OnClockActivityAtListener
     {
         public void onClockActivityAt(Calendar calendar);
+    }
+
+    /**
+     * Create a new instance with the project and adapter row index.
+     * @param project Project to clock in or out.
+     * @param index Row index from the adapter.
+     * @return New instance of the clock activity at fragment.
+     */
+    public static ClockActivityAtFragment newInstance(Project project, int index)
+    {
+        ClockActivityAtFragment fragment = new ClockActivityAtFragment();
+
+        // Set the project and adapter row index as arguments to the fragment.
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(ARGUMENT_PROJECT, project);
+        arguments.putInt(ARGUMENT_INDEX, index);
+        fragment.setArguments(arguments);
+
+        return fragment;
     }
 
     @Override
