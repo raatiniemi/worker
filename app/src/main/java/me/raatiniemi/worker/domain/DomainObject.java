@@ -1,9 +1,11 @@
 package me.raatiniemi.worker.domain;
 
+import java.io.Serializable;
+
 /**
  * Base class for the domain objects.
  */
-public class DomainObject
+public class DomainObject implements Serializable
 {
     /**
      * Id for the domain object.
