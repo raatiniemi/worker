@@ -28,6 +28,16 @@ public class ClockActivityAtFragment extends Fragment
 
     private OnClockActivityAtListener mCallback;
 
+    /**
+     * Project to clock in or out.
+     */
+    private Project mProject;
+
+    /**
+     * Row index from the adapter.
+     */
+    private int mIndex;
+
     private Calendar mCalendar;
 
     public interface OnClockActivityAtListener
@@ -63,11 +73,20 @@ public class ClockActivityAtFragment extends Fragment
             mCallback = (OnClockActivityAtListener) activity;
             mCalendar = Calendar.getInstance();
 
+            // Retrieve the project and row index from the arguments.
+            Bundle arguments = getArguments();
+            if (!arguments.containsKey(ARGUMENT_PROJECT)) {
+                // TODO: Handle ClockActivityAtFragment without project.
+            }
+            mProject = (Project) arguments.getSerializable(ARGUMENT_PROJECT);
+            mIndex = arguments.getInt(ARGUMENT_INDEX, -1);
+
             // Initialize the "DatePicker"-fragment.
             DatePickerFragment datePickerFragment = new DatePickerFragment();
             datePickerFragment.setOnDateSetListener(this);
             datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_date_picker");
         } catch (ClassCastException e) {
+            // TODO: Correct message depending on which type cast failed.
             Log.e("onAttach", activity.toString() +" do not implement OnClockActivityAtListener");
 
             // TODO: Error message to the user, and dismiss the fragment.
