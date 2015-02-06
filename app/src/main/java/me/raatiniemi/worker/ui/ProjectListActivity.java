@@ -128,7 +128,7 @@ public class ProjectListActivity extends ActionBarActivity
         startActivity(intent);
     }
 
-    public void onClockActivityAt(Calendar calendar)
+    public void onClockActivityAt(Project project, int index)
     {
         // TODO: Clock out the project.
     }

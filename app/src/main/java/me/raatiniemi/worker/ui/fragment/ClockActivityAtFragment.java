@@ -42,7 +42,7 @@ public class ClockActivityAtFragment extends Fragment
 
     public interface OnClockActivityAtListener
     {
-        public void onClockActivityAt(Calendar calendar);
+        public void onClockActivityAt(Project project, int index);
     }
 
     /**
@@ -110,6 +110,6 @@ public class ClockActivityAtFragment extends Fragment
         mCalendar.set(Calendar.MINUTE, minute);
 
         // Send the calendar back to the activity.
-        mCallback.onClockActivityAt(mCalendar);
+        mCallback.onClockActivityAt(mProject, mIndex);
     }
 }
