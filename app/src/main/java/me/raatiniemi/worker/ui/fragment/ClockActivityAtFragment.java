@@ -61,27 +61,16 @@ public class ClockActivityAtFragment extends Fragment
 
         try {
             mCallback = (OnClockActivityAtListener) activity;
-        } catch (ClassCastException e) {
-            Log.e("onAttach", activity.toString() +" do not implement OnClockActivityAtListener");
-
-            // TODO: Error message to the user, and dismiss the fragment.
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-
-        // Only show the date picker dialog if we have a valid callback.
-        if (mCallback != null) {
-            // Retrieve an instance for the calendar.
             mCalendar = Calendar.getInstance();
 
             // Initialize the "DatePicker"-fragment.
             DatePickerFragment datePickerFragment = new DatePickerFragment();
             datePickerFragment.setOnDateSetListener(this);
             datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_date_picker");
+        } catch (ClassCastException e) {
+            Log.e("onAttach", activity.toString() +" do not implement OnClockActivityAtListener");
+
+            // TODO: Error message to the user, and dismiss the fragment.
         }
     }
 
