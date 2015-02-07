@@ -12,7 +12,6 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import me.raatiniemi.worker.domain.Project;
-import me.raatiniemi.worker.domain.Time;
 
 public class ClockActivityAtFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
