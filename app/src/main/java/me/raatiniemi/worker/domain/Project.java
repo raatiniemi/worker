@@ -181,8 +181,8 @@ public class Project extends DomainObject
     }
 
     /**
-     * Clock out the active project at a given date and time, if project is not active nothing happens.
-     * @param date Date and time for when to checkout the project.
+     * Clock out project at a given date and time, if project is not active nothing happens.
+     * @param date Date and time for when to clock out the project.
      * @return The clocked out time domain object, or null if project is not active.
      */
     public Time clockOutAt(Date date)
