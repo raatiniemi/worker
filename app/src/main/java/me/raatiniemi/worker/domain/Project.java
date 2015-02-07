@@ -163,6 +163,24 @@ public class Project extends DomainObject
     }
 
     /**
+     * Clock in project at a given date and time, if project is active nothing happens.
+     * @param date Date and time for when to clock in the project.
+     * @return The clocked time domain object, or null if project is active.
+     */
+    public Time clockInAt(Date date)
+    {
+        // If the project is already active, no need to clock in.
+        if (isActive()) {
+            return null;
+        }
+
+        Time time = new Time(this.getId());
+        time.clockInAt(date);
+
+        return time;
+    }
+
+    /**
      * Clock out the active project at a given date and time, if project is not active nothing happens.
      * @param date Date and time for when to checkout the project.
      * @return The clocked out time domain object, or null if project is not active.
