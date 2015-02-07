@@ -12,6 +12,7 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.Time;
 
 public class ClockActivityAtFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
@@ -42,7 +43,7 @@ public class ClockActivityAtFragment extends Fragment
 
     public interface OnClockActivityAtListener
     {
-        public void onClockActivityAt(Project project, int index);
+        public void onClockActivityAt(Time Time, int index);
     }
 
     /**
@@ -109,7 +110,6 @@ public class ClockActivityAtFragment extends Fragment
         mCalendar.set(Calendar.HOUR, hour);
         mCalendar.set(Calendar.MINUTE, minute);
 
-        // Send the calendar back to the activity.
-        mCallback.onClockActivityAt(mProject, mIndex);
+        // TODO: Send the time back to the activity.
     }
 }
