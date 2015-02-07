@@ -130,6 +130,21 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void onClockActivityAt(Project project, Calendar calendar, int index)
     {
-        // TODO: Clock out the project.
+        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
+        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
+
+        Time time;
+
+        if (project.isActive()) {
+            time = project.clockOutAt(calendar.getTime());
+            timeMapper.update(time);
+        } else {
+            time = project.clockInAt(calendar.getTime());
+            time.clockInAt(calendar.getTime());
+            timeMapper.insert(time);
+        }
+
+        project = (Project) projectMapper.find(project.getId());
+        mAdapter.updateProject(project, index);
     }
 }
