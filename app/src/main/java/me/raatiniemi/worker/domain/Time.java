@@ -56,16 +56,12 @@ public class Time extends DomainObject
 
     public void clockInAt(Date date)
     {
-        if (!isActive()) {
-            setStart(date.getTime());
-        }
+        setStart(date.getTime());
     }
 
     public void clockOutAt(Date date)
     {
-        if (isActive()) {
-            setStop(date.getTime());
-        }
+        setStop(date.getTime());
     }
 
     public void clockOut()
