@@ -54,6 +54,13 @@ public class Time extends DomainObject
         return mStop;
     }
 
+    public void clockInAt(Date date)
+    {
+        if (!isActive()) {
+            setStart(date.getTime());
+        }
+    }
+
     public void clockOutAt(Date date)
     {
         if (isActive()) {
