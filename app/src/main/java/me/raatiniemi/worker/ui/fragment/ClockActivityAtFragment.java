@@ -43,7 +43,7 @@ public class ClockActivityAtFragment extends Fragment
 
     public interface OnClockActivityAtListener
     {
-        public void onClockActivityAt(Time Time, int index);
+        public void onClockActivityAt(Project project, Calendar calendar, int index);
     }
 
     /**
