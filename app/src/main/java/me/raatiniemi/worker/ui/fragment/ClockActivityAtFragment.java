@@ -110,6 +110,7 @@ public class ClockActivityAtFragment extends Fragment
         mCalendar.set(Calendar.HOUR, hour);
         mCalendar.set(Calendar.MINUTE, minute);
 
-        // TODO: Send the time back to the activity.
+        // Send the project, calendar, and row index back to the activity.
+        mCallback.onClockActivityAt(mProject, mCalendar, mIndex);
     }
 }
