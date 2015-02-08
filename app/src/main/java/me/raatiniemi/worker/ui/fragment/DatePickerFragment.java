@@ -74,6 +74,7 @@ public class DatePickerFragment extends DialogFragment
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        // TODO: If project is clocked in, set minimum date.
         return new DatePickerDialog(getActivity(), getOnDateSetListener(), year, month, day);
     }
 }

@@ -74,6 +74,7 @@ public class TimePickerFragment extends DialogFragment
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
+        // TODO: If project is clocked in, set minimum time.
         return new TimePickerDialog(getActivity(), getOnTimeSetListener(), hour, minute, DateFormat.is24HourFormat(getActivity()));
     }
 }
