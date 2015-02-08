@@ -1,7 +1,6 @@
 package me.raatiniemi.worker.mapper;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
