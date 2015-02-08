@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import me.raatiniemi.worker.exception.DomainException;
+
 public class Project extends DomainObject
 {
     private String mName;
@@ -146,7 +148,7 @@ public class Project extends DomainObject
      * @param date Date and time for when to clock in the project.
      * @return The clocked time domain object, or null if project is active.
      */
-    public Time clockInAt(Date date)
+    public Time clockInAt(Date date) throws DomainException
     {
         // If the project is already active, no need to clock in.
         if (isActive()) {
@@ -164,7 +166,7 @@ public class Project extends DomainObject
      * @param date Date and time for when to clock out the project.
      * @return The clocked out time domain object, or null if project is not active.
      */
-    public Time clockOutAt(Date date)
+    public Time clockOutAt(Date date) throws DomainException
     {
         if (!isActive()) {
             return null;
@@ -180,7 +182,7 @@ public class Project extends DomainObject
      * Clock out the active project, if the project is not active nothing happens.
      * @return The clocked out time domain object, or null if project is not active.
      */
-    public Time clockOut()
+    public Time clockOut() throws DomainException
     {
         return clockOutAt(new Date());
     }

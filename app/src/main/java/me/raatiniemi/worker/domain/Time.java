@@ -2,6 +2,8 @@ package me.raatiniemi.worker.domain;
 
 import java.util.Date;
 
+import me.raatiniemi.worker.exception.DomainException;
+
 public class Time extends DomainObject
 {
     private long mProjectId;
@@ -10,16 +12,19 @@ public class Time extends DomainObject
 
     private long mStop;
 
-    public Time(Long id, long projectId, long start, long stop)
+    public Time(Long id, long projectId, long start, long stop) throws DomainException
     {
         super(id);
 
         setProjectId(projectId);
         setStart(start);
-        setStop(stop);
+
+        if (stop > 0) {
+            setStop(stop);
+        }
     }
 
-    public Time(Long projectId)
+    public Time(Long projectId) throws DomainException
     {
         this(null, projectId, (new Date()).getTime(), (long) 0);
     }
@@ -44,8 +49,12 @@ public class Time extends DomainObject
         return mStart;
     }
 
-    public void setStop(long stop)
+    public void setStop(long stop) throws DomainException
     {
+        if (stop < getStart()) {
+            throw new DomainException();
+        }
+
         mStop = stop;
     }
 
@@ -59,7 +68,7 @@ public class Time extends DomainObject
         setStart(date.getTime());
     }
 
-    public void clockOutAt(Date date)
+    public void clockOutAt(Date date) throws DomainException
     {
         setStop(date.getTime());
     }

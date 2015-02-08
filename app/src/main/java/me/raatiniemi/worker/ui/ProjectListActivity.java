@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
@@ -116,20 +118,24 @@ public class ProjectListActivity extends ActionBarActivity
 
     private void update(Project project, Date date, int index)
     {
-        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
+        try {
+            ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
+            TimeMapper timeMapper = MapperRegistry.getTimeMapper();
 
-        Time time;
+            Time time;
 
-        if (project.isActive()) {
-            time = project.clockOutAt(date);
-            timeMapper.update(time);
-        } else {
-            time = project.clockInAt(date);
-            timeMapper.insert(time);
+            if (project.isActive()) {
+                time = project.clockOutAt(date);
+                timeMapper.update(time);
+            } else {
+                time = project.clockInAt(date);
+                timeMapper.insert(time);
+            }
+
+            project = (Project) projectMapper.find(project.getId());
+            mAdapter.updateProject(project, index);
+        } catch (DomainException e) {
+            // TODO: Handle thrown DomainException.
         }
-
-        project = (Project) projectMapper.find(project.getId());
-        mAdapter.updateProject(project, index);
     }
 }

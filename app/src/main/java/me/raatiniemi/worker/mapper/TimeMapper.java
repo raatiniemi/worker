@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.domain.DomainObject;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.exception.DomainException;
 
 public class TimeMapper extends AbstractMapper
 {
@@ -58,7 +59,12 @@ public class TimeMapper extends AbstractMapper
         long start = row.getLong(row.getColumnIndex(Columns.START));
         long stop = row.getLong(row.getColumnIndex(Columns.STOP));
 
-        return new Time(id, projectId, start, stop);
+        try {
+            return new Time(id, projectId, start, stop);
+        } catch (DomainException e) {
+            // TODO: Handle DomainException properly.
+            return null;
+        }
     }
 
     public ArrayList<Time> findTimeByProject(Project project)
@@ -74,7 +80,9 @@ public class TimeMapper extends AbstractMapper
             if (rows.moveToFirst()) {
                 do {
                     Time time = (Time) load(rows);
-                    result.add(time);
+                    if (time != null) {
+                        result.add(time);
+                    }
                 } while (rows.moveToNext());
             }
         }
