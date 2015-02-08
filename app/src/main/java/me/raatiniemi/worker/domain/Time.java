@@ -64,11 +64,6 @@ public class Time extends DomainObject
         setStop(date.getTime());
     }
 
-    public void clockOut()
-    {
-        clockOutAt(new Date());
-    }
-
     public boolean isActive()
     {
         return getStop() == 0;
