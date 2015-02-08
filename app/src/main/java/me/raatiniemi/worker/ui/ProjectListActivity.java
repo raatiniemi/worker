@@ -116,14 +116,23 @@ public class ProjectListActivity extends ActionBarActivity
         update(project, calendar.getTime(), index);
     }
 
+    /**
+     * Update clock activity for the project.
+     * @param project Project to update clock activity.
+     * @param date Date to use for the clock activity.
+     * @param index Row index to update the adapter.
+     */
     private void update(Project project, Date date, int index)
     {
         try {
+            // Retrieve the project and time data mappers.
             ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
             TimeMapper timeMapper = MapperRegistry.getTimeMapper();
 
             Time time;
 
+            // Depending on whether the project is active,
+            // we're going to clock out or clock in.
             if (project.isActive()) {
                 time = project.clockOutAt(date);
                 timeMapper.update(time);
@@ -132,6 +141,7 @@ public class ProjectListActivity extends ActionBarActivity
                 timeMapper.insert(time);
             }
 
+            // Retrieve the updated project from the data mapper.
             project = (Project) projectMapper.find(project.getId());
             mAdapter.updateProject(project, index);
         } catch (DomainException e) {
