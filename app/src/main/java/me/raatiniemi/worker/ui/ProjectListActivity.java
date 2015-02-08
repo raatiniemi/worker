@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectListAdapter;
@@ -87,27 +88,7 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void onProjectActivityToggle(Project project, int index)
     {
-        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-
-        Time time;
-
-        // Depending on whether the project is active,
-        // it either have to clock out or clock in.
-        if (project.isActive()) {
-            // Clock out project.
-            time = project.clockOut();
-            timeMapper.update(time);
-        } else {
-            // Initialize the Time domain object with the project id,
-            // the constructor takes care of the start and stop.
-            time = new Time(project.getId());
-            timeMapper.insert(time);
-        }
-
-        // Retrieve the updated project and send it to the adapter.
-        project = (Project) projectMapper.find(project.getId());
-        mAdapter.updateProject(project, index);
+        update(project, new Date(), index);
     }
 
     public void onProjectClockActivityAt(Project project, int index)
@@ -130,17 +111,21 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void onClockActivityAt(Project project, Calendar calendar, int index)
     {
+        update(project, calendar.getTime(), index);
+    }
+
+    private void update(Project project, Date date, int index)
+    {
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
 
         Time time;
 
         if (project.isActive()) {
-            time = project.clockOutAt(calendar.getTime());
+            time = project.clockOutAt(date);
             timeMapper.update(time);
         } else {
-            time = project.clockInAt(calendar.getTime());
-            time.clockInAt(calendar.getTime());
+            time = project.clockInAt(date);
             timeMapper.insert(time);
         }
 
