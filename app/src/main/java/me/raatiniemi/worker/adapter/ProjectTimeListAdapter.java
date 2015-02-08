@@ -12,6 +12,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.util.DateIntervalFormatter;
 
 public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeListAdapter.TimeViewHolder>
 {
@@ -44,8 +45,11 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         } else {
             Date stop = new Date(time.getStop());
 
+            DateIntervalFormatter formatter = new DateIntervalFormatter();
+            String summarize = formatter.format(time.getTime());
+
             timeViewHolder.getStop().setText(format.format(stop));
-            timeViewHolder.getSummarize().setText(time.summarizeTime());
+            timeViewHolder.getSummarize().setText(summarize);
         }
     }
 

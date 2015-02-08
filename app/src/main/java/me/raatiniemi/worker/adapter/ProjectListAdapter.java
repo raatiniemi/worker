@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.util.DateIntervalFormatter;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ProjectViewHolder> implements View.OnClickListener
 {
@@ -52,8 +53,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         projectViewHolder.itemView.setOnClickListener(this);
         projectViewHolder.itemView.setTag(index);
 
+        DateIntervalFormatter formatter = new DateIntervalFormatter();
+        String summarize = formatter.format(project.summarizeTime());
+
         projectViewHolder.getName().setText(project.getName());
-        projectViewHolder.getTime().setText(project.summarizeTime());
+        projectViewHolder.getTime().setText(summarize);
         projectViewHolder.getDescription().setText(project.getDescription());
 
         // If the project description is empty the view should be hidden.

@@ -84,31 +84,4 @@ public class Time extends DomainObject
 
         return time;
     }
-
-    public String summarizeTime()
-    {
-        // TODO: Migrate to date interval handler.
-
-        // total time in number of seconds.
-        long total = getTime();
-
-        // Convert milliseconds to seconds.
-        total = total / 1000;
-
-        // Calculate the number of hours and minutes based
-        // on the total number of seconds.
-        long hours = (total / (60 * 60) % 24);
-        long minutes = (total / 60 % 60);
-
-        // If the number of seconds is at >= 30 we should add an extra minute
-        // to the minutes, i.e. round up the minutes if they have passed 50%.
-        //
-        // Otherwise, total time of 49 seconds will still display 0m and not 1m.
-        long seconds = (total % 60);
-        if (seconds >= 30) {
-            minutes += 1;
-        }
-
-        return String.format("%dh %dm", hours, minutes);
-    }
 }
