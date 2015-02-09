@@ -1,7 +1,9 @@
 package me.raatiniemi.worker.ui;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -145,7 +147,15 @@ public class ProjectListActivity extends ActionBarActivity
             project = (Project) projectMapper.find(project.getId());
             mAdapter.updateProject(project, index);
         } catch (DomainException e) {
-            // TODO: Handle thrown DomainException.
+            new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.project_list_item_project_clock_out_before_clock_in_title))
+                .setMessage(getString(R.string.project_list_item_project_clock_out_before_clock_in_description))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing...
+                    }
+                })
+                .show();
         }
     }
 }
