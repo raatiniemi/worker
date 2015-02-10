@@ -7,12 +7,24 @@ import java.util.Date;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
 
+/**
+ * Domain object for the Project.
+ */
 public class Project extends DomainObject
 {
+    /**
+     * Name for the project.
+     */
     private String mName;
 
+    /**
+     * Description for the project.
+     */
     private String mDescription;
 
+    /**
+     * Time registered for the project.
+     */
     private ArrayList<Time> mTime;
 
     /**
@@ -73,21 +85,37 @@ public class Project extends DomainObject
         return mDescription;
     }
 
+    /**
+     * Setter for the project time.
+     * @param time Project time.
+     */
     private void setTime(ArrayList<Time> time)
     {
         mTime = time;
     }
 
+    /**
+     * Getter for the project time.
+     * @return Project time.
+     */
     public ArrayList<Time> getTime()
     {
         return mTime;
     }
 
+    /**
+     * Add additional time for the project.
+     * @param time Time to add to the project.
+     */
     public void addTime(Time time)
     {
         getTime().add(time);
     }
 
+    /**
+     * Summarize the time for the project.
+     * @return Registered time in number of seconds.
+     */
     public long summarizeTime()
     {
         // Total time in number of seconds.
@@ -95,6 +123,8 @@ public class Project extends DomainObject
 
         ArrayList<Time> time = getTime();
         if (null != time && !time.isEmpty()) {
+            // Iterate of the registered time and
+            // retrieve the time interval.
             for (Time item: time) {
                 total += item.getTime();
             }
