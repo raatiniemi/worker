@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.exception.domain.ClockActivityException;
 
 public class Project extends DomainObject
 {
@@ -150,11 +151,13 @@ public class Project extends DomainObject
      */
     public Time clockInAt(Date date) throws DomainException
     {
-        // If the project is already active, no need to clock in.
+        // If the project is already active, we can't clock in.
         if (isActive()) {
-            return null;
+            throw new ClockActivityException("Unable to clock in, project is already active");
         }
 
+        // Instantiate the Time domain object with the project
+        // and clock in with the supplied date.
         Time time = new Time(this.getId());
         time.clockInAt(date);
 
@@ -168,10 +171,13 @@ public class Project extends DomainObject
      */
     public Time clockOutAt(Date date) throws DomainException
     {
+        // If the project is not active, we can't clock out.
         if (!isActive()) {
-            return null;
+            throw new ClockActivityException("Unable to clock out, project is not active");
         }
 
+        // Retrieve the active Time domain object,
+        // and clock out with the supplied date.
         Time time = getActiveTime();
         time.clockOutAt(date);
 
