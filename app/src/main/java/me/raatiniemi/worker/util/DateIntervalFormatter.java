@@ -12,7 +12,11 @@ public class DateIntervalFormatter
         long hours = (interval / (60 * 60) % 24);
         long minutes = (interval / 60 % 60);
 
-        // TODO: If hours have passed 24, then the time "resets".
+        // Check if the interval has passed 24 hours.
+        long days = (interval / (60 * 60 * 24));
+        if (days > 0) {
+            hours += (days * 24);
+        }
 
         // If the number of seconds is at >= 30 we should add an extra minute
         // to the minutes, i.e. round up the minutes if they have passed 50%.
