@@ -3,6 +3,9 @@ package me.raatiniemi.worker.domain;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
+import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.exception.domain.ClockActivityException;
+
 public class ProjectTest extends ApplicationTestCase<Application>
 {
     public ProjectTest()
@@ -43,101 +46,149 @@ public class ProjectTest extends ApplicationTestCase<Application>
 
     public void testAddTime()
     {
-        Project project = new Project((long) 1, "Foo");
+        try {
+            Project project = new Project((long) 1, "Foo");
 
-        assertTrue(project.getTime().size() == 0);
-        project.addTime(new Time(project.getId()));
-        assertTrue(project.getTime().size() == 1);
+            assertTrue(project.getTime().size() == 0);
+            project.addTime(new Time(project.getId()));
+            assertTrue(project.getTime().size() == 1);
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testSummarizeSingleTime()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 0, 60000));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 0, 60000));
 
-        assertEquals("0h 1m", project.summarizeTime());
+            assertEquals((long) 60000, project.summarizeTime());
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testSummarizeWithoutTime()
     {
         Project project = new Project((long) 1, "Foo");
 
-        assertEquals("0h 0m", project.summarizeTime());
+        assertEquals((long) 0, project.summarizeTime());
     }
 
     public void testSummarizeTimeWithActiveTime()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 0, 60000));
-        project.addTime(new Time(null, project.getId(), 60000, 0));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 0, 60000));
+            project.addTime(new Time(null, project.getId(), 60000, 0));
 
-        assertEquals("0h 1m", project.summarizeTime());
+            assertEquals((long) 60000, project.summarizeTime());
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testSummarizeTimeWithRoundUp()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 0, 60000));
-        project.addTime(new Time(null, project.getId(), 60000, 90000));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 0, 60000));
+            project.addTime(new Time(null, project.getId(), 60000, 90000));
 
-        assertEquals("0h 2m", project.summarizeTime());
+            assertEquals((long) 90000, project.summarizeTime());
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testSummarizeTimeWithRoundDown()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 0, 60000));
-        project.addTime(new Time(null, project.getId(), 60000, 89000));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 0, 60000));
+            project.addTime(new Time(null, project.getId(), 60000, 89000));
 
-        assertEquals("0h 1m", project.summarizeTime());
+            assertEquals((long) 89000, project.summarizeTime());
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testSummarizeTimeWithHours()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 3600000, 7200000));
-        project.addTime(new Time(null, project.getId(), 7200000, 9000000));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 3600000, 7200000));
+            project.addTime(new Time(null, project.getId(), 7200000, 9000000));
 
-        assertEquals("1h 30m", project.summarizeTime());
+            assertEquals((long) 5400000, project.summarizeTime());
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testClockOut()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 60000, 0));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 60000, 0));
 
-        assertTrue(project.clockOut() != null);
+            assertTrue(project.clockOut() != null);
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testClockOutWithoutActiveTime()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 60000, 120000));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 60000, 120000));
 
-        assertTrue(project.clockOut() == null);
+            assertTrue(project.clockOut() == null);
+        } catch (ClockActivityException e) {
+            assertTrue(true);
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testClockOutWithoutTime()
     {
-        Project project = new Project((long) 1, "Foo");
+        try {
+            Project project = new Project((long) 1, "Foo");
 
-        assertTrue(project.clockOut() == null);
+            project.clockOut();
+        } catch (ClockActivityException e) {
+            assertTrue(true);
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testIsActiveWithActiveTime()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 60000, 0));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 60000, 0));
 
-        assertTrue(project.isActive());
+            assertTrue(project.isActive());
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testIsActiveWithoutActiveTime()
     {
-        Project project = new Project((long) 1, "Foo");
-        project.addTime(new Time(null, project.getId(), 60000, 120000));
+        try {
+            Project project = new Project((long) 1, "Foo");
+            project.addTime(new Time(null, project.getId(), 60000, 120000));
 
-        assertFalse(project.isActive());
+            assertFalse(project.isActive());
+        } catch (DomainException e) {
+            assertFalse(true);
+        }
     }
 
     public void testIsActiveWithoutTime()
