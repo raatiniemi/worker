@@ -114,7 +114,7 @@ public class Project extends DomainObject
 
     /**
      * Summarize the time for the project.
-     * @return Registered time in number of seconds.
+     * @return Registered time in number of milliseconds.
      */
     public long summarizeTime()
     {
