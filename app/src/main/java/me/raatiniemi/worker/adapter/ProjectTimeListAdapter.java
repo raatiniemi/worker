@@ -34,6 +34,11 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     {
         Time time = mTime.get(index);
 
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date = new Date(time.getStart());
+        timeViewHolder.getDate().setText(dateFormatter.format(date));
+
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 
         Date start = new Date(time.getStart());
@@ -64,6 +69,8 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
 
     public static class TimeViewHolder extends RecyclerView.ViewHolder
     {
+        private TextView mDate;
+
         private TextView mStart;
 
         private TextView mStop;
@@ -74,9 +81,20 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         {
             super(view);
 
+            setDate((TextView) view.findViewById(R.id.project_time_list_item_date));
             setStart((TextView) view.findViewById(R.id.project_time_list_item_start));
             setStop((TextView) view.findViewById(R.id.project_time_list_item_stop));
             setSummarize((TextView) view.findViewById(R.id.project_time_list_item_summarize));
+        }
+
+        private void setDate(TextView date)
+        {
+            mDate = date;
+        }
+
+        public TextView getDate()
+        {
+            return mDate;
         }
 
         private void setStart(TextView start)
