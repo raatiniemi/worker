@@ -20,6 +20,8 @@ public class ProjectMapper extends AbstractMapper
         String NAME = "name";
 
         String DESCRIPTION = "description";
+
+        String ARCHIVED = "archived";
     }
 
     public static final String CREATE_TABLE =
@@ -27,6 +29,7 @@ public class ProjectMapper extends AbstractMapper
             BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Columns.NAME + " TEXT NOT NULL, " +
             Columns.DESCRIPTION + " TEXT NULL, " +
+            Columns.ARCHIVED + " INTEGER DEFAULT 0, " +
             "UNIQUE (" + Columns.NAME + ") ON CONFLICT ROLLBACK" +
         ");";
 
