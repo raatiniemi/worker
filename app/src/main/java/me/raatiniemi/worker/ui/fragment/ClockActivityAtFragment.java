@@ -106,7 +106,7 @@ public class ClockActivityAtFragment extends Fragment
 
     public void onTimeSet(TimePicker view, int hour, int minute)
     {
-        mCalendar.set(Calendar.HOUR, hour);
+        mCalendar.set(Calendar.HOUR_OF_DAY, hour);
         mCalendar.set(Calendar.MINUTE, minute);
 
         // Send the project, calendar, and row index back to the activity.
