@@ -1,7 +1,15 @@
 package me.raatiniemi.worker.util;
 
+/**
+ * Format time interval.
+ */
 public class DateIntervalFormatter
 {
+    /**
+     * Format the interval with hours and minutes.
+     * @param interval Interval to format in milliseconds.
+     * @return Interval formatted with hours and minutes.
+     */
     public String format(long interval)
     {
         // Convert milliseconds to seconds.
