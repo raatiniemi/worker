@@ -113,6 +113,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         return new ProjectViewHolder(projectView);
     }
 
+    public Project getItemAt(int index)
+    {
+        return mProjects.get(index);
+    }
+
     @Override
     public void onClick(View view)
     {
