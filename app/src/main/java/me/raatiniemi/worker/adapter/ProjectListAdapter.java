@@ -44,32 +44,32 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ProjectViewHolder projectViewHolder, int index)
+    public void onBindViewHolder(ProjectViewHolder holder, int index)
     {
         Project project = mProjects.get(index);
 
         // Add the on click listener for the card view.
         // Will open the single project activity.
-        projectViewHolder.itemView.setOnClickListener(this);
-        projectViewHolder.itemView.setTag(index);
+        holder.itemView.setOnClickListener(this);
+        holder.itemView.setTag(index);
 
         DateIntervalFormatter formatter = new DateIntervalFormatter();
         String summarize = formatter.format(project.summarizeTime());
 
-        projectViewHolder.getName().setText(project.getName());
-        projectViewHolder.getTime().setText(summarize);
-        projectViewHolder.getDescription().setText(project.getDescription());
+        holder.getName().setText(project.getName());
+        holder.getTime().setText(summarize);
+        holder.getDescription().setText(project.getDescription());
 
         // If the project description is empty the view should be hidden.
         int visibility = View.VISIBLE;
         if (project.getDescription() == null || project.getDescription().isEmpty()) {
             visibility = View.GONE;
         }
-        projectViewHolder.getDescription().setVisibility(visibility);
+        holder.getDescription().setVisibility(visibility);
 
         // Set row index and the click listener.
-        projectViewHolder.getClockActivityToggle().setTag(index);
-        projectViewHolder.getClockActivityToggle().setOnClickListener(this);
+        holder.getClockActivityToggle().setTag(index);
+        holder.getClockActivityToggle().setOnClickListener(this);
 
         // Depending on whether the project is active the text
         // for the clock activity view should be altered, and
@@ -88,20 +88,20 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         // Retrieve the string from the resources and update the view.
         String clockActivityToggle = resources.getString(clockActivityToggleId);
-        projectViewHolder.getClockActivityToggle().setText(clockActivityToggle);
+        holder.getClockActivityToggle().setText(clockActivityToggle);
 
         // Retrieve the time that the active session was clocked in.
         int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
         String clockedInSince = resources.getString(clockedInSinceId);
         clockedInSince = String.format(clockedInSince, project.getClockedInSince());
-        projectViewHolder.getClockedInSince().setText(clockedInSince);
-        projectViewHolder.getClockedInSince().setVisibility(clockedInSinceVisibility);
+        holder.getClockedInSince().setText(clockedInSince);
+        holder.getClockedInSince().setVisibility(clockedInSinceVisibility);
 
         // Add the onClickListener to the "Clock [in|out] at..." item.
         String clockActivityAt = resources.getString(clockActivityAtId);
-        projectViewHolder.getClockActivityAt().setText(clockActivityAt);
-        projectViewHolder.getClockActivityAt().setOnClickListener(this);
-        projectViewHolder.getClockActivityAt().setTag(index);
+        holder.getClockActivityAt().setText(clockActivityAt);
+        holder.getClockActivityAt().setOnClickListener(this);
+        holder.getClockActivityAt().setTag(index);
     }
 
     @Override
