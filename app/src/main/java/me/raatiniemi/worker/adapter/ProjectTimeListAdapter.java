@@ -30,31 +30,31 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     }
 
     @Override
-    public void onBindViewHolder(TimeViewHolder timeViewHolder, int index)
+    public void onBindViewHolder(TimeViewHolder holder, int index)
     {
         Time time = mTime.get(index);
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
         Date date = new Date(time.getStart());
-        timeViewHolder.getDate().setText(dateFormatter.format(date));
+        holder.getDate().setText(dateFormatter.format(date));
 
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 
         Date start = new Date(time.getStart());
-        timeViewHolder.getStart().setText(format.format(start));
+        holder.getStart().setText(format.format(start));
 
         if (time.isActive()) {
-            timeViewHolder.getStop().setText(null);
-            timeViewHolder.getSummarize().setText(null);
+            holder.getStop().setText(null);
+            holder.getSummarize().setText(null);
         } else {
             Date stop = new Date(time.getStop());
 
             DateIntervalFormatter formatter = new DateIntervalFormatter();
             String summarize = formatter.format(time.getTime());
 
-            timeViewHolder.getStop().setText(format.format(stop));
-            timeViewHolder.getSummarize().setText(summarize);
+            holder.getStop().setText(format.format(stop));
+            holder.getSummarize().setText(summarize);
         }
     }
 
