@@ -67,6 +67,11 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         return new TimeViewHolder(timeView);
     }
 
+    public Time getItemAt(int index)
+    {
+        return mTime.get(index);
+    }
+
     public static class TimeViewHolder extends RecyclerView.ViewHolder
     {
         private TextView mDate;
