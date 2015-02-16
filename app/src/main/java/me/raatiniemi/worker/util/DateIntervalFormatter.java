@@ -35,6 +35,13 @@ public class DateIntervalFormatter
             minutes++;
         }
 
+        // If the minutes reaches 60, we have to reset
+        // the minutes and increment the hours.
+        if (minutes == 60) {
+            minutes = 0;
+            hours++;
+        }
+
         return String.format("%dh %dm", hours, minutes);
     }
 }

@@ -65,4 +65,12 @@ public class DateIntervalFormatterTest extends ApplicationTestCase<Application>
 
         assertEquals("56h 25m", value);
     }
+
+    public void testFormat59m40s()
+    {
+        DateIntervalFormatter dateInterval = new DateIntervalFormatter();
+        String value = dateInterval.format(3580000);
+
+        assertEquals("1h 0m", value);
+    }
 }
