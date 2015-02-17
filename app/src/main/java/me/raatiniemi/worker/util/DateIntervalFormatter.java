@@ -17,8 +17,19 @@ public class DateIntervalFormatter
     }
 
     /**
+     * Format interval with hours and minutes.
+     * @param hours Hours to apply to the format.
+     * @param minutes Minutes to apply to the format.
+     * @return Interval formatted with hours and minutes.
+     */
+    private String hoursMinutes(long hours, long minutes)
+    {
+        return String.format("%dh %dm", hours, minutes);
+    }
+
+    /**
      * Format the interval with given format type.
-     * @param interval Interval to format in milliseconds.
+     * @param interval Interval in milliseconds to format.
      * @param type Type of format to use.
      * @return Interval formatted with given type.
      */
@@ -26,23 +37,6 @@ public class DateIntervalFormatter
     {
         String format;
 
-        // Determined what kind of format type to use.
-        switch (type) {
-            case HOURS_MINUTES:
-            default:
-                format = format(interval);
-        }
-
-        return format;
-    }
-
-    /**
-     * Format the interval with hours and minutes.
-     * @param interval Interval to format in milliseconds.
-     * @return Interval formatted with hours and minutes.
-     */
-    public String format(long interval)
-    {
         // Convert milliseconds to seconds.
         interval = interval / 1000;
 
@@ -73,6 +67,23 @@ public class DateIntervalFormatter
             hours++;
         }
 
-        return String.format("%dh %dm", hours, minutes);
+        // Determined what kind of format type to use.
+        switch (type) {
+            case HOURS_MINUTES:
+            default:
+                format = hoursMinutes(hours, minutes);
+        }
+
+        return format;
+    }
+
+    /**
+     * Format the interval with the default format type.
+     * @param interval Interval in milliseconds to format.
+     * @return Interval formatted with the default format type.
+     */
+    public String format(long interval)
+    {
+        return format(interval, Type.HOURS_MINUTES);
     }
 }
