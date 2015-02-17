@@ -6,6 +6,37 @@ package me.raatiniemi.worker.util;
 public class DateIntervalFormatter
 {
     /**
+     * Available format types.
+     */
+    public static enum Type
+    {
+        /**
+         * Format the interval with hours and minutes, e.g. "5h 12m".
+         */
+        HOURS_MINUTES
+    }
+
+    /**
+     * Format the interval with given format type.
+     * @param interval Interval to format in milliseconds.
+     * @param type Type of format to use.
+     * @return Interval formatted with given type.
+     */
+    public String format(long interval, Type type)
+    {
+        String format;
+
+        // Determined what kind of format type to use.
+        switch (type) {
+            case HOURS_MINUTES:
+            default:
+                format = format(interval);
+        }
+
+        return format;
+    }
+
+    /**
      * Format the interval with hours and minutes.
      * @param interval Interval to format in milliseconds.
      * @return Interval formatted with hours and minutes.
