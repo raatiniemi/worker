@@ -11,9 +11,25 @@ public class DateIntervalFormatter
     public static enum Type
     {
         /**
+         * Format the interval with fractal hours, e.g. "8.25" for 8 hours and 15 minutes.
+         */
+        FRACTAL_HOURS,
+
+        /**
          * Format the interval with hours and minutes, e.g. "5h 12m".
          */
         HOURS_MINUTES
+    }
+
+    /**
+     * Format the interval with fractal hours, e.g. "8.25" for 8 hours and 15 minutes.
+     * @param hours Hours to apply to the format.
+     * @param minutes Minutes to apply to the format.
+     * @return Interval formatted with fractal hours.
+     */
+    private String fractalHours(long hours, long minutes)
+    {
+        return String.format("%d.%d", hours, (long) 0);
     }
 
     /**
@@ -69,6 +85,9 @@ public class DateIntervalFormatter
 
         // Determined what kind of format type to use.
         switch (type) {
+            case FRACTAL_HOURS:
+                format = fractalHours(hours, minutes);
+                break;
             case HOURS_MINUTES:
             default:
                 format = hoursMinutes(hours, minutes);
