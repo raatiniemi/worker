@@ -23,6 +23,11 @@ public class Project extends DomainObject
     private String mDescription;
 
     /**
+     * Flag for archived project.
+     */
+    private Long mArchived;
+
+    /**
      * Time registered for the project.
      */
     private ArrayList<Time> mTime;
@@ -83,6 +88,24 @@ public class Project extends DomainObject
     public String getDescription()
     {
         return mDescription;
+    }
+
+    /**
+     * Set the flag for archived project.
+     * @param archived Flag for archived project.
+     */
+    public void setArchived(Long archived)
+    {
+        mArchived = archived;
+    }
+
+    /**
+     * Retrieve the flag for archived project.
+     * @return Flag for archived project.
+     */
+    public Long getArchived()
+    {
+        return mArchived;
     }
 
     /**
