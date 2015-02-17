@@ -52,7 +52,8 @@ public class ProjectMapper extends AbstractMapper
         return new String[]{
             BaseColumns._ID,
             Columns.NAME,
-            Columns.DESCRIPTION
+            Columns.DESCRIPTION,
+            Columns.ARCHIVED
         };
     }
 
@@ -61,9 +62,11 @@ public class ProjectMapper extends AbstractMapper
         long id = row.getLong(row.getColumnIndex(BaseColumns._ID));
         String name = row.getString(row.getColumnIndex(Columns.NAME));
         String description = row.getString(row.getColumnIndex(Columns.DESCRIPTION));
+        long archived = row.getLong(row.getColumnIndex(Columns.ARCHIVED));
 
         Project project = new Project(id, name);
         project.setDescription(description);
+        project.setArchived(archived);
 
         if (null != mTimeMapper) {
             ArrayList<Time> time = mTimeMapper.findTimeByProject(project);
