@@ -73,4 +73,12 @@ public class DateIntervalFormatterTest extends ApplicationTestCase<Application>
 
         assertEquals("1h 0m", value);
     }
+
+    public void testFormatFractalHours1m()
+    {
+        DateIntervalFormatter dateInterval = new DateIntervalFormatter();
+        String value = dateInterval.format(3600000, DateIntervalFormatter.Type.FRACTAL_HOURS);
+
+        assertEquals("1.0", value);
+    }
 }
