@@ -14,7 +14,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.util.DateIntervalFormatter;
 
-public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeListAdapter.TimeViewHolder>
+public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeListAdapter.ItemViewHolder>
 {
     private ArrayList<Time> mTime;
 
@@ -30,7 +30,7 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     }
 
     @Override
-    public void onBindViewHolder(TimeViewHolder holder, int index)
+    public void onBindViewHolder(ItemViewHolder holder, int index)
     {
         Time time = mTime.get(index);
 
@@ -59,12 +59,12 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     }
 
     @Override
-    public TimeViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
+    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
     {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View timeView = inflater.inflate(R.layout.project_time_list_item, viewGroup, false);
 
-        return new TimeViewHolder(timeView);
+        return new ItemViewHolder(timeView);
     }
 
     public Time getItemAt(int index)
@@ -72,7 +72,7 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         return mTime.get(index);
     }
 
-    public static class TimeViewHolder extends RecyclerView.ViewHolder
+    protected static class ItemViewHolder extends RecyclerView.ViewHolder
     {
         private TextView mDate;
 
@@ -82,7 +82,7 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
 
         private TextView mSummarize;
 
-        public TimeViewHolder(View view)
+        public ItemViewHolder(View view)
         {
             super(view);
 
