@@ -74,50 +74,50 @@ public class DateIntervalFormatterTest extends ApplicationTestCase<Application>
         assertEquals("1h 0m", value);
     }
 
-    public void testFormatFractalHours15m()
+    public void testFormatFractionHours15m()
     {
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
-        String value = dateInterval.format(900000, DateIntervalFormatter.Type.FRACTAL_HOURS);
+        String value = dateInterval.format(900000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
         assertEquals("0.25", value);
     }
 
-    public void testFormatFractalHours1h()
+    public void testFormatFractionHours1h()
     {
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
-        String value = dateInterval.format(3600000, DateIntervalFormatter.Type.FRACTAL_HOURS);
+        String value = dateInterval.format(3600000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
         assertEquals("1.0", value);
     }
 
-    public void testFormatFractalHours1h15m()
+    public void testFormatFractionHours1h15m()
     {
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
-        String value = dateInterval.format(4500000, DateIntervalFormatter.Type.FRACTAL_HOURS);
+        String value = dateInterval.format(4500000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
         assertEquals("1.25", value);
     }
 
-    public void testFormatFractalHours1h59m35s()
+    public void testFormatFractionHours1h59m35s()
     {
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
-        String value = dateInterval.format(7175000, DateIntervalFormatter.Type.FRACTAL_HOURS);
+        String value = dateInterval.format(7175000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
         assertEquals("2.0", value);
     }
 
-    public void testFormatFractalHours30h()
+    public void testFormatFractionHours30h()
     {
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
-        String value = dateInterval.format(108000000, DateIntervalFormatter.Type.FRACTAL_HOURS);
+        String value = dateInterval.format(108000000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
         assertEquals("30.0", value);
     }
 
-    public void testFormatFractalHours56h25m()
+    public void testFormatFractionHours56h25m()
     {
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
-        String value = dateInterval.format(203100000, DateIntervalFormatter.Type.FRACTAL_HOURS);
+        String value = dateInterval.format(203100000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
         // TODO: Fix issue, should be 56.42 (41,666666667)
         assertEquals("56.42", value);
