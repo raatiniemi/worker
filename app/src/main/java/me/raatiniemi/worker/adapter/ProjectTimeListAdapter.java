@@ -66,9 +66,9 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
     {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View timeView = inflater.inflate(R.layout.project_time_list_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.project_time_list_item, viewGroup, false);
 
-        return new ItemViewHolder(timeView);
+        return new ItemViewHolder(view);
     }
 
     public Time getItemAt(int index)
