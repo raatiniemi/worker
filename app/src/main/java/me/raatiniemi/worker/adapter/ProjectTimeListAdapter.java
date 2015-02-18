@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.adapter;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,13 @@ import me.raatiniemi.worker.util.DateIntervalFormatter;
 
 public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeListAdapter.ItemViewHolder>
 {
+    private Activity mContext;
+
     private ArrayList<Time> mTime;
 
-    public ProjectTimeListAdapter(ArrayList<Time> time)
+    public ProjectTimeListAdapter(Activity context, ArrayList<Time> time)
     {
+        mContext = context;
         mTime = time;
     }
 

@@ -43,7 +43,7 @@ public class ProjectActivity extends ActionBarActivity
         // Set the activity title to the project name.
         setTitle(project.getName());
 
-        ProjectTimeListAdapter adapter = new ProjectTimeListAdapter(project.getTime());
+        ProjectTimeListAdapter adapter = new ProjectTimeListAdapter(this, project.getTime());
         timeView.setAdapter(adapter);
     }
 }
