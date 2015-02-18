@@ -73,6 +73,7 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     }
 
     protected static class ItemViewHolder extends RecyclerView.ViewHolder
+        implements View.OnLongClickListener
     {
         private TextView mDate;
 
@@ -90,6 +91,9 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
             setStart((TextView) view.findViewById(R.id.project_time_list_item_start));
             setStop((TextView) view.findViewById(R.id.project_time_list_item_stop));
             setSummarize((TextView) view.findViewById(R.id.project_time_list_item_summarize));
+
+            // Set the long click listener for the view holder.
+            view.setOnLongClickListener(this);
         }
 
         private void setDate(TextView date)
@@ -130,6 +134,12 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         public TextView getSummarize()
         {
             return mSummarize;
+        }
+
+        @Override public boolean onLongClick(View view)
+        {
+            // TODO: Handle the on long click.
+            return true;
         }
     }
 }
