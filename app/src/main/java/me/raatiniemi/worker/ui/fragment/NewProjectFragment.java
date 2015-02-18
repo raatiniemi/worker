@@ -25,15 +25,24 @@ import me.raatiniemi.worker.mapper.TimeMapper;
 
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
 {
-    private OnCreateProjectListener mCallback;
-
+    /**
+     * Public interface for the "OnCreateProjectListener".
+     */
     public interface OnCreateProjectListener
     {
+        /**
+         * When a new project have been created the project is sent to this method.
+         * @param project The newly created project.
+         */
         public void onCreateProject(Project project);
     }
 
-    @Override
-    public void onAttach(Activity activity)
+    /**
+     * Callback handler for the "OnCreateProjectListener".
+     */
+    private OnCreateProjectListener mCallback;
+
+    @Override public void onAttach(Activity activity)
     {
         super.onAttach(activity);
 
@@ -60,8 +69,7 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         getDialog().setTitle("Create new project");
 
@@ -78,9 +86,14 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
         return view;
     }
 
-    @Override
-    public void onClick(View view)
+    /**
+     * Callback handler for buttons within the view.
+     * @param view Tapped view.
+     */
+    @Override public void onClick(View view)
     {
+        // Depending on which view was clicked we are either
+        // going to create a new project or just cancel.
         switch (view.getId()) {
             case R.id.fragment_new_project_create:
                 createNewProject();
@@ -91,6 +104,9 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
+    /**
+     * Create a new project.
+     */
     private void createNewProject()
     {
         try {
