@@ -17,7 +17,7 @@ import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.util.DateIntervalFormatter;
 
-public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ProjectViewHolder> implements View.OnClickListener
+public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ItemViewHolder> implements View.OnClickListener
 {
     public interface OnProjectListListener
     {
@@ -44,7 +44,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ProjectViewHolder holder, int index)
+    public void onBindViewHolder(ItemViewHolder holder, int index)
     {
         Project project = mProjects.get(index);
 
@@ -105,12 +105,12 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
 
     @Override
-    public ProjectViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
+    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
     {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.project_list_item, viewGroup, false);
 
-        return new ProjectViewHolder(view);
+        return new ItemViewHolder(view);
     }
 
     public Project getItemAt(int index)
@@ -157,7 +157,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         notifyItemChanged(index);
     }
 
-    public static class ProjectViewHolder extends RecyclerView.ViewHolder
+    public static class ItemViewHolder extends RecyclerView.ViewHolder
     {
         protected TextView mName;
         protected TextView mTime;
@@ -167,7 +167,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         protected TextView mClockedInSince;
         protected TextView mClockActivityAt;
 
-        public ProjectViewHolder(View view)
+        public ItemViewHolder(View view)
         {
             super(view);
 
