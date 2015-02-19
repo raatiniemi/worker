@@ -88,4 +88,21 @@ public class Time extends DomainObject
 
         return time;
     }
+
+    /**
+     * Calculate the interval difference between start and stop. If time is
+     * active the current time should be used, this way we can calculate the
+     * elapsed time from when the time was clocked in.
+     * @return Interval in milliseconds.
+     */
+    public long getInterval()
+    {
+        long stop = getStop();
+
+        if (isActive()) {
+            stop = (new Date()).getTime();
+        }
+
+        return stop - getStart();
+    }
 }
