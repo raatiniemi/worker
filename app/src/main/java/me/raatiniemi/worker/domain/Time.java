@@ -73,11 +73,19 @@ public class Time extends DomainObject
         setStop(date.getTime());
     }
 
+    /**
+     * Check whether the time is active.
+     * @return True if time is active, otherwise false.
+     */
     public boolean isActive()
     {
         return getStop() == 0;
     }
 
+    /**
+     * Retrieve the time in milliseconds between start and stop, or zero if time is active.
+     * @return Time in milliseconds between start and stop.
+     */
     public long getTime()
     {
         long time = 0;
