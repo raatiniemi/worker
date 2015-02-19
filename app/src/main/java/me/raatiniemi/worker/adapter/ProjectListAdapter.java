@@ -108,9 +108,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public ProjectViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
     {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View projectView = inflater.inflate(R.layout.project_list_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.project_list_item, viewGroup, false);
 
-        return new ProjectViewHolder(projectView);
+        return new ProjectViewHolder(view);
     }
 
     public Project getItemAt(int index)
