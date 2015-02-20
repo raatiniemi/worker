@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui;
+package me.raatiniemi.worker.renderers;
 
 import android.view.ViewGroup;
 
