@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public abstract class RenderViewHolder extends RecyclerView.ViewHolder
+public abstract class RenderViewHolder<T> extends RecyclerView.ViewHolder
 {
     private Context context;
 
@@ -19,4 +19,6 @@ public abstract class RenderViewHolder extends RecyclerView.ViewHolder
     {
         return this.context;
     }
+
+    public abstract void onBindView(T item);
 }
