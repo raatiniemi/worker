@@ -5,7 +5,7 @@
         android:icon="@drawable/ic_launcher" android:theme="@style/AppTheme" android:name=".application.Worker">
 
         <activity
-            android:name=".ui.ProjectListActivity"
+            android:name=".ui.activity.ProjectListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -14,12 +14,12 @@
         </activity>
 
         <activity
-            android:name=".ui.ProjectActivity"
+            android:name=".ui.activity.ProjectActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".ui.ProjectActivity">
+            android:parentActivityName=".ui.activity.ProjectActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.ProjectActivity" />
+                android:value=".ui.activity.ProjectActivity" />
         </activity>
 
     </application>
