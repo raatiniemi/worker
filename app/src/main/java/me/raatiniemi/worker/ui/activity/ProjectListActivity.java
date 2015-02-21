@@ -143,7 +143,7 @@ public class ProjectListActivity extends ActionBarActivity
             }
 
             // Retrieve the updated project from the data mapper.
-            project = (Project) projectMapper.find(project.getId());
+            project = projectMapper.find(project.getId());
             mAdapter.updateProject(project, index);
         } catch (DomainException e) {
             new AlertDialog.Builder(this)

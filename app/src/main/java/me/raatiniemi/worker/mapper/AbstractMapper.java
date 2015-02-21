@@ -10,7 +10,7 @@ import me.raatiniemi.worker.domain.DomainObject;
 /**
  * Abstract class for the data mappers.
  */
-abstract public class AbstractMapper
+abstract public class AbstractMapper<T extends DomainObject>
 {
     /**
      * Instance for the database helper.
@@ -57,14 +57,14 @@ abstract public class AbstractMapper
      * @param row Database cursor.
      * @return DomainObject from the data mapper.
      */
-    abstract protected DomainObject load(Cursor row);
+    abstract protected T load(Cursor row);
 
     /**
      * Retrieve a row from the database with supplied id.
      * @param id Id for the row to retrieve.
      * @return Row from the database with id matching the supplied value.
      */
-    public DomainObject find(long id)
+    public T find(long id)
     {
         String selection = BaseColumns._ID + "=" + id;
 

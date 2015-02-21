@@ -11,7 +11,7 @@ import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 
-public class ProjectMapper extends AbstractMapper
+public class ProjectMapper extends AbstractMapper<Project>
 {
     private static final String TABLE_NAME = "project";
 
@@ -57,7 +57,7 @@ public class ProjectMapper extends AbstractMapper
         };
     }
 
-    protected DomainObject load(Cursor row)
+    protected Project load(Cursor row)
     {
         long id = row.getLong(row.getColumnIndex(BaseColumns._ID));
         String name = row.getString(row.getColumnIndex(Columns.NAME));
@@ -85,7 +85,7 @@ public class ProjectMapper extends AbstractMapper
         Cursor rows = mDatabase.query(getTable(), getColumns(), null, null, null, null, null);
         if (rows.moveToFirst()) {
             do {
-                Project project = (Project) load(rows);
+                Project project = load(rows);
                 result.add(project);
             } while (rows.moveToNext());
         }
@@ -103,7 +103,7 @@ public class ProjectMapper extends AbstractMapper
             return null;
         }
 
-        return (Project) load(row);
+        return load(row);
     }
 
     public Project insert(Project project) throws ProjectAlreadyExistsException
@@ -117,6 +117,6 @@ public class ProjectMapper extends AbstractMapper
         values.put(Columns.DESCRIPTION, project.getDescription());
 
         long id = mDatabase.insert(getTable(), null, values);
-        return (Project) find(id);
+        return find(id);
     }
 }

@@ -38,7 +38,7 @@ public class ProjectActivity extends ActionBarActivity
 
         // Retrieve the project data from the mapper.
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-        Project project = (Project) projectMapper.find(projectId);
+        Project project = projectMapper.find(projectId);
 
         // Set the activity title to the project name.
         setTitle(project.getName());

@@ -11,7 +11,7 @@ import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
 
-public class TimeMapper extends AbstractMapper
+public class TimeMapper extends AbstractMapper<Time>
 {
     private static final String TABLE_NAME = "time";
 
@@ -52,7 +52,7 @@ public class TimeMapper extends AbstractMapper
         };
     }
 
-    protected DomainObject load(Cursor row)
+    protected Time load(Cursor row)
     {
         long id = row.getLong(row.getColumnIndex(BaseColumns._ID));
         long projectId = row.getLong(row.getColumnIndex(Columns.PROJECT_ID));
@@ -79,7 +79,7 @@ public class TimeMapper extends AbstractMapper
             Cursor rows = mDatabase.query(getTable(), getColumns(), selection, null, null, null, orderBy);
             if (rows.moveToFirst()) {
                 do {
-                    Time time = (Time) load(rows);
+                    Time time = load(rows);
                     if (time != null) {
                         result.add(time);
                     }
@@ -100,7 +100,7 @@ public class TimeMapper extends AbstractMapper
         values.put(Columns.STOP, time.getStop());
 
         long id = mDatabase.insert(getTable(), null, values);
-        return (Time) find(id);
+        return find(id);
     }
 
     public Time update(Time time)
@@ -112,6 +112,6 @@ public class TimeMapper extends AbstractMapper
         String where = BaseColumns._ID + "=" + time.getId();
 
         mDatabase.update(getTable(), values, where, null);
-        return (Time) find(time.getId());
+        return find(time.getId());
     }
 }
