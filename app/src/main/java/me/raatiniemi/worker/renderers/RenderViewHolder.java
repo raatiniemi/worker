@@ -4,7 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public abstract class RenderViewHolder<T> extends RecyclerView.ViewHolder
+import me.raatiniemi.worker.domain.DomainObject;
+
+public abstract class RenderViewHolder<T extends DomainObject> extends RecyclerView.ViewHolder
 {
     private Context context;
 
