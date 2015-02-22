@@ -20,5 +20,5 @@ public abstract class RenderViewHolder<T> extends RecyclerView.ViewHolder
         return this.context;
     }
 
-    public abstract void onBindView(T item);
+    public abstract void onBindViewHolder(T item);
 }
