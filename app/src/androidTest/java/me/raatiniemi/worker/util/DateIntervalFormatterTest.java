@@ -87,7 +87,7 @@ public class DateIntervalFormatterTest extends ApplicationTestCase<Application>
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
         String value = dateInterval.format(3600000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
-        assertEquals("1.0", value);
+        assertEquals("1.00", value);
     }
 
     public void testFormatFractionHours1h15m()
@@ -103,7 +103,7 @@ public class DateIntervalFormatterTest extends ApplicationTestCase<Application>
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
         String value = dateInterval.format(7175000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
-        assertEquals("2.0", value);
+        assertEquals("2.00", value);
     }
 
     public void testFormatFractionHours30h()
@@ -111,7 +111,7 @@ public class DateIntervalFormatterTest extends ApplicationTestCase<Application>
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
         String value = dateInterval.format(108000000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
-        assertEquals("30.0", value);
+        assertEquals("30.00", value);
     }
 
     public void testFormatFractionHours56h25m()
@@ -119,7 +119,6 @@ public class DateIntervalFormatterTest extends ApplicationTestCase<Application>
         DateIntervalFormatter dateInterval = new DateIntervalFormatter();
         String value = dateInterval.format(203100000, DateIntervalFormatter.Type.FRACTION_HOURS);
 
-        // TODO: Fix issue, should be 56.42 (41,666666667)
         assertEquals("56.42", value);
     }
 }

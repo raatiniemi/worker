@@ -30,9 +30,10 @@ public class DateIntervalFormatter
     private String fractionHours(long hours, long minutes)
     {
         // Calculate the fractal value from the minutes.
-        long fractal = (minutes * 100) / 60;
+        float fractal = (float) minutes / (float) 60.0;
 
-        return String.format("%d.%d", hours, fractal);
+        double interval = hours + fractal;
+        return String.format("%.2f", interval);
     }
 
     /**
