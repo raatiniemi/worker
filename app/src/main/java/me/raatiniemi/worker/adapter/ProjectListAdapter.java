@@ -93,7 +93,14 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // Retrieve the time that the active session was clocked in.
         int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
         String clockedInSince = resources.getString(clockedInSinceId);
-        clockedInSince = String.format(clockedInSince, project.getClockedInSince());
+        clockedInSince = String.format(
+            clockedInSince,
+            project.getClockedInSince(),
+            formatter.format(
+                project.getElapsed(),
+                DateIntervalFormatter.Type.HOURS_MINUTES
+            )
+        );
         holder.getClockedInSince().setText(clockedInSince);
         holder.getClockedInSince().setVisibility(clockedInSinceVisibility);
 
