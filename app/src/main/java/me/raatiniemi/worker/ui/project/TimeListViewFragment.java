@@ -45,7 +45,7 @@ public class TimeListViewFragment extends Fragment
 
         mLayoutManager = new LinearLayoutManager(getActivity());
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.project_time_recycler_list_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.project_time_list_view);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // Retrieve the project data from the mapper.
