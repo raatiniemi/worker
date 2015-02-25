@@ -157,6 +157,23 @@ public class Project extends DomainObject
     }
 
     /**
+     * Retrieve the elapsed time for an active project.
+     * @return Elapsed time in milliseconds, zero if project is not active.
+     */
+    public long getElapsed()
+    {
+        long elapsed = 0;
+
+        if (isActive()) {
+            // Retrieve the interval for the active time.
+            Time time = getActiveTime();
+            elapsed = time.getInterval();
+        }
+
+        return elapsed;
+    }
+
+    /**
      * Retrieve the time domain object that might be active.
      * @return Time domain object, or null if no time have been registered.
      */
