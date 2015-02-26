@@ -57,7 +57,7 @@ public class TimeListViewFragment extends Fragment
         // Set the name for the activity.
         getActivity().setTitle(project.getName());
 
-        mAdapter = new ProjectTimeListAdapter(getActivity(), project.getTime());
+        mAdapter = new ProjectTimeListAdapter(project.getTime());
         mRecyclerView.setAdapter(mAdapter);
     }
 }

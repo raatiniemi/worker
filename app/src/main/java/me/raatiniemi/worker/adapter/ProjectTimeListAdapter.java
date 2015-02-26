@@ -17,13 +17,10 @@ import me.raatiniemi.worker.util.DateIntervalFormatter;
 
 public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeListAdapter.ItemViewHolder>
 {
-    private Activity mContext;
-
     private ArrayList<Time> mTime;
 
-    public ProjectTimeListAdapter(Activity context, ArrayList<Time> time)
+    public ProjectTimeListAdapter(ArrayList<Time> time)
     {
-        mContext = context;
         mTime = time;
     }
 
