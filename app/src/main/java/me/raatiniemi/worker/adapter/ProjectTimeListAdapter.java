@@ -21,13 +21,31 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
 
     private EventListener mEventListener;
 
+    private View.OnClickListener mItemViewOnClickListener;
+
     public interface EventListener
     {
+        public void onItemViewClick(View view);
     }
 
     public ProjectTimeListAdapter(ArrayList<Time> time)
     {
         mTime = time;
+
+        mItemViewOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                onItemViewClick(view);
+            }
+        };
+    }
+
+    private void onItemViewClick(View view)
+    {
+        if (null != getEventListener()) {
+            getEventListener().onItemViewClick(view);
+        }
     }
 
     @Override
@@ -40,6 +58,9 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     public void onBindViewHolder(ItemViewHolder holder, int index)
     {
         Time time = mTime.get(index);
+
+        // Register the item view on click listener.
+        holder.itemView.setOnClickListener(mItemViewOnClickListener);
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 

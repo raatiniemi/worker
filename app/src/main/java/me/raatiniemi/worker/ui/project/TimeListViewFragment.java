@@ -58,6 +58,13 @@ public class TimeListViewFragment extends Fragment
         getActivity().setTitle(project.getName());
 
         mAdapter = new ProjectTimeListAdapter(project.getTime());
+        mAdapter.setEventListener(new ProjectTimeListAdapter.EventListener() {
+            @Override
+            public void onItemViewClick(View view)
+            {
+                // TODO: Handle on item click.
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 }
