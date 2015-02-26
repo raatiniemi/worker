@@ -22,6 +22,8 @@ public class TimeListViewFragment extends Fragment
 
     private RecyclerView mRecyclerView;
 
+    private ProjectTimeListAdapter mAdapter;
+
     private long getProjectId()
     {
         return getArguments().getLong(ProjectListActivity.MESSAGE_PROJECT_ID, 0);
@@ -55,7 +57,7 @@ public class TimeListViewFragment extends Fragment
         // Set the name for the activity.
         getActivity().setTitle(project.getName());
 
-        ProjectTimeListAdapter adapter = new ProjectTimeListAdapter(getActivity(), project.getTime());
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new ProjectTimeListAdapter(getActivity(), project.getTime());
+        mRecyclerView.setAdapter(mAdapter);
     }
 }
