@@ -19,6 +19,12 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
 {
     private ArrayList<Time> mTime;
 
+    private EventListener mEventListener;
+
+    public interface EventListener
+    {
+    }
+
     public ProjectTimeListAdapter(ArrayList<Time> time)
     {
         mTime = time;
@@ -142,5 +148,15 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
             // TODO: Handle the on long click.
             return true;
         }
+    }
+
+    public void setEventListener(EventListener eventListener)
+    {
+        mEventListener = eventListener;
+    }
+
+    public EventListener getEventListener()
+    {
+        return mEventListener;
     }
 }
