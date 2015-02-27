@@ -114,4 +114,11 @@ public class TimeMapper extends AbstractMapper<Time>
         mDatabase.update(getTable(), values, where, null);
         return find(time.getId());
     }
+
+    public boolean remove(Time time)
+    {
+        String where = BaseColumns._ID + "=" + time.getId();
+
+        return 0 < mDatabase.delete(getTable(), where, null);
+    }
 }
