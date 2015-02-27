@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,6 +26,48 @@ public class TimeListViewFragment extends Fragment
     private RecyclerView mRecyclerView;
 
     private ProjectTimeListAdapter mAdapter;
+
+    private ActionMode mActionMode;
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu)
+        {
+            mode.getMenuInflater().inflate(R.menu.actions_project, menu);
+            mode.setTitle("Actions");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu)
+        {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item)
+        {
+            switch (item.getItemId()) {
+                case R.id.actions_project_edit:
+                    // TODO: Handle item edit.
+                    mode.finish();
+                    return true;
+                case R.id.actions_project_delete:
+                    // TODO: Handle item deletion.
+                    mode.finish();
+                    return true;
+                default:
+                    // TODO: Log unidentified action item clicked.
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode)
+        {
+            mActionMode = null;
+        }
+    };
 
     private long getProjectId()
     {
@@ -60,9 +105,13 @@ public class TimeListViewFragment extends Fragment
         mAdapter = new ProjectTimeListAdapter(project.getTime());
         mAdapter.setEventListener(new ProjectTimeListAdapter.EventListener() {
             @Override
-            public boolean onItemViewLongClick(View view)
-            {
-                // TODO: Handle on item long click.
+            public boolean onItemViewLongClick(View view) {
+                if (null != mActionMode) {
+                    return false;
+                }
+
+                mActionMode = getActivity().startActionMode(mActionModeCallback);
+                // TODO: Set selection for the view.
                 return true;
             }
         });

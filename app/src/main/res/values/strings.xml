@@ -42,4 +42,7 @@
 
     <string name="time_picker_fragment_no_listener_title">Unable to set time</string>
     <string name="time_picker_fragment_no_listener_description">An internal error occurred when the time dialog was created.</string>
+
+    <string name="actions_project_edit">Edit</string>
+    <string name="actions_project_delete">Delete</string>
 </resources>
