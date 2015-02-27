@@ -97,6 +97,12 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         return mTime.get(index);
     }
 
+    public void remove(int position)
+    {
+        mTime.remove(position);
+        notifyItemRemoved(position);
+    }
+
     protected static class ItemViewHolder extends RecyclerView.ViewHolder
         implements View.OnLongClickListener
     {
