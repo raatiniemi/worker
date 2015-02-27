@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.adapter.ProjectTimeListAdapter;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.activity.ProjectListActivity;
 
 public class TimeListViewFragment extends Fragment
@@ -26,6 +28,8 @@ public class TimeListViewFragment extends Fragment
     private RecyclerView mRecyclerView;
 
     private ProjectTimeListAdapter mAdapter;
+
+    private int selectedPosition = -1;
 
     private ActionMode mActionMode;
 
@@ -47,19 +51,31 @@ public class TimeListViewFragment extends Fragment
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item)
         {
+            boolean finish = false;
+
+            // Retrieve the selected position and
+            // trigger the appropriate method.
+            int position = selectedPosition;
             switch (item.getItemId()) {
                 case R.id.actions_project_edit:
                     // TODO: Handle item edit.
-                    mode.finish();
-                    return true;
+                    finish = true;
+                    break;
                 case R.id.actions_project_delete:
-                    // TODO: Handle item deletion.
-                    mode.finish();
-                    return true;
+                    remove(position);
+                    finish = true;
+                    break;
                 default:
                     // TODO: Log unidentified action item clicked.
-                    return false;
             }
+
+            // Reset the selected position.
+            selectedPosition = -1;
+            if (finish) {
+                mode.finish();
+            }
+
+            return finish;
         }
 
         @Override
@@ -106,15 +122,33 @@ public class TimeListViewFragment extends Fragment
         mAdapter.setEventListener(new ProjectTimeListAdapter.EventListener() {
             @Override
             public boolean onItemViewLongClick(View view) {
-                if (null != mActionMode) {
-                    return false;
-                }
+                // Set the position of the selected row from the recycler view.
+                selectedPosition = mRecyclerView.getChildPosition(view);
+                if (RecyclerView.NO_POSITION < selectedPosition) {
+                    // TODO: Set selection for the view.
 
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
-                // TODO: Set selection for the view.
-                return true;
+                    // Only start the ActionMode if none has already started.
+                    if (null == mActionMode) {
+                        mActionMode = getActivity().startActionMode(mActionModeCallback);
+                    }
+                    return true;
+                }
+                return false;
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void remove(int position)
+    {
+        Time time = mAdapter.getItemAt(position);
+
+        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
+        if (timeMapper.remove(time)) {
+            mAdapter.remove(position);
+
+            // TODO: Update the project list
+            // The summarize for the project time is incorrect.
+        }
     }
 }
