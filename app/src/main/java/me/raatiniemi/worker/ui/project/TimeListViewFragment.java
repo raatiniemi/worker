@@ -60,9 +60,10 @@ public class TimeListViewFragment extends Fragment
         mAdapter = new ProjectTimeListAdapter(project.getTime());
         mAdapter.setEventListener(new ProjectTimeListAdapter.EventListener() {
             @Override
-            public void onItemViewClick(View view)
+            public boolean onItemViewLongClick(View view)
             {
-                // TODO: Handle on item click.
+                // TODO: Handle on item long click.
+                return true;
             }
         });
         mRecyclerView.setAdapter(mAdapter);

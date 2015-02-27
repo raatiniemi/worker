@@ -1,6 +1,5 @@
 package me.raatiniemi.worker.adapter;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,31 +20,29 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
 
     private EventListener mEventListener;
 
-    private View.OnClickListener mItemViewOnClickListener;
+    private View.OnLongClickListener mItemViewOnLongClickListener;
 
     public interface EventListener
     {
-        public void onItemViewClick(View view);
+        public boolean onItemViewLongClick(View view);
     }
 
     public ProjectTimeListAdapter(ArrayList<Time> time)
     {
         mTime = time;
 
-        mItemViewOnClickListener = new View.OnClickListener() {
+        mItemViewOnLongClickListener = new View.OnLongClickListener() {
             @Override
-            public void onClick(View view)
+            public boolean onLongClick(View view)
             {
-                onItemViewClick(view);
+                return onItemViewLongClick(view);
             }
         };
     }
 
-    private void onItemViewClick(View view)
+    private boolean onItemViewLongClick(View view)
     {
-        if (null != getEventListener()) {
-            getEventListener().onItemViewClick(view);
-        }
+        return null != getEventListener() && getEventListener().onItemViewLongClick(view);
     }
 
     @Override
@@ -60,7 +57,7 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         Time time = mTime.get(index);
 
         // Register the item view on click listener.
-        holder.itemView.setOnClickListener(mItemViewOnClickListener);
+        holder.itemView.setOnLongClickListener(mItemViewOnLongClickListener);
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
