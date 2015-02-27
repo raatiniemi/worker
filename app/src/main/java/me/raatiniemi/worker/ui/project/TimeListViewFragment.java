@@ -141,7 +141,7 @@ public class TimeListViewFragment extends Fragment
 
     private void remove(int position)
     {
-        Time time = mAdapter.getItemAt(position);
+        Time time = mAdapter.get(position);
 
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
         if (timeMapper.remove(time)) {

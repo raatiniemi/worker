@@ -92,9 +92,9 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         return new ItemViewHolder(view);
     }
 
-    public Time getItemAt(int index)
+    public Time get(int position)
     {
-        return mTime.get(index);
+        return mTime.get(position);
     }
 
     public void remove(int position)
