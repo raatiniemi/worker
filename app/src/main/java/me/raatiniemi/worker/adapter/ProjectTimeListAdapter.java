@@ -97,6 +97,12 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         return mTime.get(position);
     }
 
+    public void update(int position, Time time)
+    {
+        mTime.set(position, time);
+        notifyItemChanged(position);
+    }
+
     public void remove(int position)
     {
         mTime.remove(position);
