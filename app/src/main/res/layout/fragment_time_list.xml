@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp">
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/project_time_list_view"
+        android:id="@+id/fragment_time_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"

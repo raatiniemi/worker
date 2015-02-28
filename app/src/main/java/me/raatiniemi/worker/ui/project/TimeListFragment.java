@@ -100,7 +100,7 @@ public class TimeListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.fragment_project_time_list_view, container, false);
+        return inflater.inflate(R.layout.fragment_time_list, container, false);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class TimeListFragment extends Fragment
 
         mLayoutManager = new LinearLayoutManager(getActivity());
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.project_time_list_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_time_list);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // Retrieve the project data from the mapper.
