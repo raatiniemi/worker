@@ -14,12 +14,12 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.ProjectActivity"
+            android:name=".ui.ProjectActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".ui.activity.ProjectActivity">
+            android:parentActivityName=".ui.ProjectActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.ProjectActivity" />
+                android:value=".ui.ProjectActivity" />
         </activity>
 
     </application>

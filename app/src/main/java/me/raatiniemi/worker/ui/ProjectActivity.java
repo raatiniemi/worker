@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui.activity;
+package me.raatiniemi.worker.ui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
