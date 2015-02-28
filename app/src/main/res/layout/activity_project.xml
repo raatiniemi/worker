@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="me.raatiniemi.worker.ui.activity.ProjectActivity">
     <FrameLayout
-        android:id="@+id/project_time_list_view_fragment"
+        android:id="@+id/activity_project_time_list_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

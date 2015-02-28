@@ -21,7 +21,7 @@ public class ProjectActivity extends ActionBarActivity
             fragment.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.project_time_list_view_fragment, fragment, FRAGMENT_LIST_VIEW)
+                .replace(R.id.activity_project_time_list_fragment, fragment, FRAGMENT_LIST_VIEW)
                 .commit();
         }
     }
