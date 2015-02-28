@@ -8,7 +8,7 @@ import me.raatiniemi.worker.ui.TimeListFragment;
 
 public class ProjectActivity extends ActionBarActivity
 {
-    private static final String FRAGMENT_LIST_VIEW = "list view";
+    private static final String FRAGMENT_TIME_LIST_TAG = "time list";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -21,7 +21,7 @@ public class ProjectActivity extends ActionBarActivity
             fragment.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.activity_project_time_list_fragment, fragment, FRAGMENT_LIST_VIEW)
+                .replace(R.id.activity_project_time_list_fragment, fragment, FRAGMENT_TIME_LIST_TAG)
                 .commit();
         }
     }
