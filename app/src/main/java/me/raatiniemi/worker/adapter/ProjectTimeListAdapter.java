@@ -87,7 +87,7 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
     public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
     {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.project_time_list_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_time_list_item, viewGroup, false);
 
         return new ItemViewHolder(view);
     }
@@ -124,10 +124,10 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         {
             super(view);
 
-            setDate((TextView) view.findViewById(R.id.project_time_list_item_date));
-            setStart((TextView) view.findViewById(R.id.project_time_list_item_start));
-            setStop((TextView) view.findViewById(R.id.project_time_list_item_stop));
-            setSummarize((TextView) view.findViewById(R.id.project_time_list_item_summarize));
+            setDate((TextView) view.findViewById(R.id.fragment_time_list_item_date));
+            setStart((TextView) view.findViewById(R.id.fragment_time_list_item_start));
+            setStop((TextView) view.findViewById(R.id.fragment_time_list_item_stop));
+            setSummarize((TextView) view.findViewById(R.id.fragment_time_list_item_summarize));
 
             // Set the long click listener for the view holder.
             view.setOnLongClickListener(this);
