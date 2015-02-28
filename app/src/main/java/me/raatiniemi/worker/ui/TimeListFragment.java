@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui.project;
+package me.raatiniemi.worker.ui;
 
 import android.app.Fragment;
 import android.content.Intent;
