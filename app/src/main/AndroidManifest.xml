@@ -5,7 +5,7 @@
         android:icon="@drawable/ic_launcher" android:theme="@style/AppTheme" android:name=".application.Worker">
 
         <activity
-            android:name=".ui.activity.ProjectListActivity"
+            android:name=".ui.ProjectListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

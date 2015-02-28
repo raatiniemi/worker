@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui.activity;
+package me.raatiniemi.worker.ui;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -18,14 +18,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.ui.ProjectListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
-import me.raatiniemi.worker.ui.ProjectActivity;
 import me.raatiniemi.worker.ui.fragment.ClockActivityAtFragment;
 import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 

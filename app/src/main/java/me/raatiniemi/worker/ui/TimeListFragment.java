@@ -20,7 +20,6 @@ import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
-import me.raatiniemi.worker.ui.activity.ProjectListActivity;
 
 public class TimeListFragment extends Fragment
 {
