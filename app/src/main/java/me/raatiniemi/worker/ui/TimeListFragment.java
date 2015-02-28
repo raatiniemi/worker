@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.adapter.ProjectTimeListAdapter;
+import me.raatiniemi.worker.adapter.TimeListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
@@ -29,7 +29,7 @@ public class TimeListFragment extends Fragment
 
     private RecyclerView mRecyclerView;
 
-    private ProjectTimeListAdapter mAdapter;
+    private TimeListAdapter mAdapter;
 
     private int selectedPosition = -1;
 
@@ -120,8 +120,8 @@ public class TimeListFragment extends Fragment
         // Set the name for the activity.
         getActivity().setTitle(project.getName());
 
-        mAdapter = new ProjectTimeListAdapter(project.getTime());
-        mAdapter.setEventListener(new ProjectTimeListAdapter.EventListener() {
+        mAdapter = new TimeListAdapter(project.getTime());
+        mAdapter.setEventListener(new TimeListAdapter.EventListener() {
             @Override
             public boolean onItemViewLongClick(View view) {
                 // Set the position of the selected row from the recycler view.

@@ -14,7 +14,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.util.DateIntervalFormatter;
 
-public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeListAdapter.ItemViewHolder>
+public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.ItemViewHolder>
 {
     private ArrayList<Time> mTime;
 
@@ -27,7 +27,7 @@ public class ProjectTimeListAdapter extends RecyclerView.Adapter<ProjectTimeList
         public boolean onItemViewLongClick(View view);
     }
 
-    public ProjectTimeListAdapter(ArrayList<Time> time)
+    public TimeListAdapter(ArrayList<Time> time)
     {
         mTime = time;
 
