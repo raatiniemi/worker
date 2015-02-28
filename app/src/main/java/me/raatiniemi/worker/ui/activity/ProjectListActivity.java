@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.adapter.ProjectListAdapter;
+import me.raatiniemi.worker.ui.ProjectListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;

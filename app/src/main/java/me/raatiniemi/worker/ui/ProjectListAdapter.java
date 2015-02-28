@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.adapter;
+package me.raatiniemi.worker.ui;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
