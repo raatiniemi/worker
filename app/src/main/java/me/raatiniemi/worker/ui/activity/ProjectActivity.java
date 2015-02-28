@@ -4,7 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.ui.project.TimeListViewFragment;
+import me.raatiniemi.worker.ui.project.TimeListFragment;
 
 public class ProjectActivity extends ActionBarActivity
 {
@@ -17,7 +17,7 @@ public class ProjectActivity extends ActionBarActivity
         setContentView(R.layout.activity_project);
 
         if (savedInstanceState == null) {
-            TimeListViewFragment fragment = new TimeListViewFragment();
+            TimeListFragment fragment = new TimeListFragment();
             fragment.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction()

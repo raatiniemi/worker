@@ -23,7 +23,7 @@ import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.activity.ProjectListActivity;
 
-public class TimeListViewFragment extends Fragment
+public class TimeListFragment extends Fragment
 {
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -92,7 +92,7 @@ public class TimeListViewFragment extends Fragment
         return getArguments().getLong(ProjectListActivity.MESSAGE_PROJECT_ID, -1);
     }
 
-    public TimeListViewFragment()
+    public TimeListFragment()
     {
         super();
     }
