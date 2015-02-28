@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.adapter.TimeListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
