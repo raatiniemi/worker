@@ -20,15 +20,6 @@ import me.raatiniemi.worker.util.DateIntervalFormatter;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ItemViewHolder>
 {
-    public interface OnProjectListListener
-    {
-        public void onProjectActivityToggle(Project project, int index);
-
-        public void onProjectClockActivityAt(Project project, int index);
-
-        public void onProjectOpen(Project project);
-    }
-
     public interface OnItemClickListener
     {
         public void onItemClick(View view);
@@ -40,8 +31,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         public void onClockActivityAt(View view);
     }
-
-    private OnProjectListListener mOnProjectListListener;
 
     private OnItemClickListener mOnItemClickListener;
 
@@ -102,7 +91,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // Add the on click listener for the card view.
         // Will open the single project activity.
         holder.itemView.setOnClickListener(mOnClickListener);
-        holder.itemView.setTag(index);
 
         DateIntervalFormatter formatter = new DateIntervalFormatter();
         String summarize = formatter.format(project.summarizeTime());
@@ -118,8 +106,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         }
         holder.getDescription().setVisibility(visibility);
 
-        // Set row index and the click listener.
-        holder.getClockActivityToggle().setTag(index);
         holder.getClockActivityToggle().setOnClickListener(mOnClickListener);
 
         // Depending on whether the project is active the text
@@ -159,7 +145,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         String clockActivityAt = resources.getString(clockActivityAtId);
         holder.getClockActivityAt().setText(clockActivityAt);
         holder.getClockActivityAt().setOnClickListener(mOnClickListener);
-        holder.getClockActivityAt().setTag(index);
     }
 
     @Override
@@ -196,16 +181,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public Project get(int position)
     {
         return mProjects.get(position);
-    }
-
-    public void addProject(Project project)
-    {
-        add(project);
-    }
-
-    public void updateProject(Project project, int index)
-    {
-        set(index, project);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder
@@ -300,16 +275,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         {
             return mClockActivityAt;
         }
-    }
-
-    public void setOnProjectListListener(OnProjectListListener onProjectListListener)
-    {
-        mOnProjectListListener = onProjectListListener;
-    }
-
-    public OnProjectListListener getOnProjectListListener()
-    {
-        return mOnProjectListListener;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener)
