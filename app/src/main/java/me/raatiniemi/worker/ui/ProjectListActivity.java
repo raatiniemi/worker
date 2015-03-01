@@ -61,7 +61,7 @@ public class ProjectListActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.project_list_activity_actions, menu);
+        inflater.inflate(R.menu.actions_project_list, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -69,7 +69,7 @@ public class ProjectListActivity extends ActionBarActivity
     public boolean onOptionsItemSelected(MenuItem menuItem)
     {
         switch (menuItem.getItemId()) {
-            case R.id.action_create_new_project:
+            case R.id.actions_project_list_new:
                 openCreateNewProject();
                 return true;
         }
