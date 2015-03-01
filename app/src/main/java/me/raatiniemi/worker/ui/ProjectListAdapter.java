@@ -115,7 +115,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
     {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.project_list_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_project_list_item, viewGroup, false);
 
         return new ItemViewHolder(view);
     }
@@ -134,13 +134,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         Project project = mProjects.get(index);
 
         switch (view.getId()) {
-            case R.id.project_clock_activity_toggle:
+            case R.id.fragment_project_clock_activity_toggle:
                 mActivityCallback.onProjectActivityToggle(project, index);
                 break;
-            case R.id.project_clock_activity_at:
+            case R.id.fragment_project_clock_activity_at:
                 mActivityCallback.onProjectClockActivityAt(project, index);
                 break;
-            case R.id.project_list_item_card_view:
+            case R.id.fragment_project_list_item_card_view:
                 mActivityCallback.onProjectOpen(project);
                 break;
         }
@@ -178,13 +178,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         {
             super(view);
 
-            setName((TextView) view.findViewById(R.id.project_name));
-            setTime((TextView) view.findViewById(R.id.project_time));
-            setDescription((TextView) view.findViewById(R.id.project_description));
-            setClockActivityToggle((FlatButton) view.findViewById(R.id.project_clock_activity_toggle));
-            setClockedActivity((RelativeLayout) view.findViewById(R.id.project_clocked_activity));
-            setClockedInSince((TextView) view.findViewById(R.id.project_clocked_in_since));
-            setClockActivityAt((TextView) view.findViewById(R.id.project_clock_activity_at));
+            setName((TextView) view.findViewById(R.id.fragment_project_name));
+            setTime((TextView) view.findViewById(R.id.fragment_project_time));
+            setDescription((TextView) view.findViewById(R.id.fragment_project_description));
+            setClockActivityToggle((FlatButton) view.findViewById(R.id.fragment_project_clock_activity_toggle));
+            setClockedActivity((RelativeLayout) view.findViewById(R.id.fragment_project_clocked_activity));
+            setClockedInSince((TextView) view.findViewById(R.id.fragment_project_clocked_in_since));
+            setClockActivityAt((TextView) view.findViewById(R.id.fragment_project_clock_activity_at));
         }
 
         public void setName(TextView name)
