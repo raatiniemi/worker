@@ -2,6 +2,7 @@ package me.raatiniemi.worker.ui;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,23 +57,32 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         mOnClickListener = new View.OnClickListener() {
             @Override
-            public void onClick(View view)
+            public void onClick(View v)
             {
-                // Retrieve the index from the view and
-                // get the project based on the index.
-                int index = (int) view.getTag();
-                Project project = mProjects.get(index);
+                int activityToggle = R.id.fragment_project_clock_activity_toggle;
+                int activityAt = R.id.fragment_project_clock_activity_at;
 
-                switch (view.getId()) {
-                    case R.id.fragment_project_clock_activity_toggle:
-                        mOnProjectListListener.onProjectActivityToggle(project, index);
-                        break;
-                    case R.id.fragment_project_clock_activity_at:
-                        mOnProjectListListener.onProjectClockActivityAt(project, index);
-                        break;
-                    case R.id.fragment_project_list_item_card_view:
-                        mOnProjectListListener.onProjectOpen(project);
-                        break;
+                if (R.id.fragment_project_list_item_card_view == v.getId()) {
+                    if (null != getOnItemClickListener()) {
+                        getOnItemClickListener().onItemClick(v);
+                    } else {
+                        Log.e("ProjectListAdapter", "No OnItemClickListener have been supplied");
+                    }
+                } else if (activityToggle == v.getId() || activityAt == v.getId()) {
+                    if (null != getOnClockActivityChangeListener()) {
+                        View view;
+                        if (activityToggle == v.getId()) {
+                            view = (View) v.getParent().getParent();
+                            getOnClockActivityChangeListener().onClockActivityToggle(view);
+                        } else {
+                            view = (View) v.getParent().getParent().getParent();
+                            getOnClockActivityChangeListener().onClockActivityAt(view);
+                        }
+                    } else {
+                        Log.e("ProjectListAdapter", "No OnClockActivityChangeListener have been supplied");
+                    }
+                } else {
+                    Log.e("ProjectListAdapter", "Unrecognized id: "+ v.getId());
                 }
             }
         };

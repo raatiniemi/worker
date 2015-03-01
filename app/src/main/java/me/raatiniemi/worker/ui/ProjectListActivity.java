@@ -1,6 +1,7 @@
 package me.raatiniemi.worker.ui;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,14 +34,25 @@ public class ProjectListActivity extends ActionBarActivity
 
     private ProjectListAdapter mAdapter;
 
+    private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
+
     private static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_list);
+        setContentView(R.layout.activity_project_list_with_fragment);
 
+        if (null == savedInstanceState) {
+            ProjectListFragment fragment = new ProjectListFragment();
+
+            getFragmentManager().beginTransaction()
+                .replace(R.id.activity_project_list_project_list_fragment, fragment, FRAGMENT_PROJECT_LIST_TAG)
+                .commit();
+        }
+
+        /*
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -55,6 +68,7 @@ public class ProjectListActivity extends ActionBarActivity
         mAdapter = new ProjectListAdapter(projects);
         mAdapter.setOnProjectListListener(this);
         projectsView.setAdapter(mAdapter);
+        */
     }
 
     @Override
@@ -83,9 +97,16 @@ public class ProjectListActivity extends ActionBarActivity
             @Override
             public void onCreateProject(Project project)
             {
-                // Add the project to the list of available projects
-                // and notify the adapter that the data has changed.
-                mAdapter.addProject(project);
+                // Attempt to find the fragment by the used fragment tag.
+                ProjectListFragment fragment = (ProjectListFragment)
+                    getFragmentManager().findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
+
+                // If we have found the fragment, add the new project.
+                if (null != fragment) {
+                    fragment.addProject(project);
+                } else {
+                    Log.e("ProjectListActivity", "Unable to find fragment with tag: "+ FRAGMENT_PROJECT_LIST_TAG);
+                }
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
