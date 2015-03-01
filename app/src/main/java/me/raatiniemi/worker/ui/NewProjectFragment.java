@@ -46,7 +46,7 @@ public class NewProjectFragment extends DialogFragment
         super.onAttach(activity);
 
         try {
-            mOnCreateProjectListener = (OnCreateProjectListener) activity;
+            setOnCreateProjectListener((OnCreateProjectListener) activity);
         } catch (ClassCastException e) {
             Log.e("onAttach", activity.toString() +" do not implement OnCreateProjectListener");
 
@@ -128,7 +128,11 @@ public class NewProjectFragment extends DialogFragment
             project = projectMapper.insert(project);
 
             // Replay that the project have been created to the activity.
-            mOnCreateProjectListener.onCreateProject(project);
+            if (null != getOnCreateProjectListener()) {
+                getOnCreateProjectListener().onCreateProject(project);
+            } else {
+                Log.e("createNewProject", "No OnCreateProjectListener have been supplied");
+            }
 
             String message = "Project '" + name + "' have been created";
             Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
