@@ -28,6 +28,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public void onProjectOpen(Project project);
     }
 
+    public interface OnItemClickListener
+    {
+        public void onItemClick(View view);
+    }
+
     public interface OnClockActivityChangeListener
     {
         public void onClockActivityToggle(View view);
