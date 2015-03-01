@@ -2,6 +2,7 @@ package me.raatiniemi.worker.ui;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,7 +102,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         // If the project description is empty the view should be hidden.
         int visibility = View.VISIBLE;
-        if (project.getDescription() == null || project.getDescription().isEmpty()) {
+        if (TextUtils.isEmpty(project.getDescription())) {
             visibility = View.GONE;
         }
         holder.getDescription().setVisibility(visibility);
