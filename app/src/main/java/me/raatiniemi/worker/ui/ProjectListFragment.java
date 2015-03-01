@@ -10,18 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.ui.fragment.ClockActivityAtFragment;
 
 public class ProjectListFragment extends Fragment
 {
     private RecyclerView mRecyclerView;
 
     private ProjectListAdapter mAdapter;
+
+    private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
     public ProjectListFragment()
     {
@@ -65,7 +69,24 @@ public class ProjectListFragment extends Fragment
 
             @Override
             public void onClockActivityAt(View view) {
-                // TODO: Implement "onClockActivityAt".
+                int position = mRecyclerView.getChildPosition(view);
+                if (RecyclerView.NO_POSITION < position) {
+                    Project project = mAdapter.get(position);
+                    if (null != project) {
+                        final ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project, position);
+                        fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
+                            @Override
+                            public void onClockActivityAt(Project project, Calendar calendar, int index)
+                            {
+                                onClockActivityChange(index, project, calendar.getTime());
+                            }
+                        });
+
+                        getFragmentManager().beginTransaction()
+                            .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
+                            .commit();
+                    }
+                }
             }
         });
         mRecyclerView.setAdapter(mAdapter);
