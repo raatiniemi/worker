@@ -83,7 +83,13 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
 
         // Add the click listener for the create button.
         FlatButton create = (FlatButton) view.findViewById(R.id.fragment_new_project_create);
-        create.setOnClickListener(this);
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                createNewProject();
+            }
+        });
 
         // Add the click listener for the cancel button.
         FlatButton cancel = (FlatButton) view.findViewById(R.id.fragment_new_project_cancel);
@@ -102,13 +108,6 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
      */
     @Override public void onClick(View view)
     {
-        // Depending on which view was clicked we are either
-        // going to create a new project or just cancel.
-        switch (view.getId()) {
-            case R.id.fragment_new_project_create:
-                createNewProject();
-                break;
-        }
     }
 
     /**
