@@ -17,7 +17,7 @@ import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.util.DateIntervalFormatter;
 
-public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ItemViewHolder> implements View.OnClickListener
+public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ItemViewHolder>
 {
     public interface OnProjectListListener
     {
@@ -30,11 +30,36 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private OnProjectListListener mOnProjectListListener;
 
+    private View.OnClickListener mOnClickListener;
+
     private ArrayList<Project> mProjects;
 
     public ProjectListAdapter(ArrayList<Project> projects)
     {
         mProjects = projects;
+
+        mOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                // Retrieve the index from the view and
+                // get the project based on the index.
+                int index = (int) view.getTag();
+                Project project = mProjects.get(index);
+
+                switch (view.getId()) {
+                    case R.id.fragment_project_clock_activity_toggle:
+                        mOnProjectListListener.onProjectActivityToggle(project, index);
+                        break;
+                    case R.id.fragment_project_clock_activity_at:
+                        mOnProjectListListener.onProjectClockActivityAt(project, index);
+                        break;
+                    case R.id.fragment_project_list_item_card_view:
+                        mOnProjectListListener.onProjectOpen(project);
+                        break;
+                }
+            }
+        };
     }
 
     @Override
@@ -50,7 +75,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         // Add the on click listener for the card view.
         // Will open the single project activity.
-        holder.itemView.setOnClickListener(this);
+        holder.itemView.setOnClickListener(mOnClickListener);
         holder.itemView.setTag(index);
 
         DateIntervalFormatter formatter = new DateIntervalFormatter();
@@ -69,7 +94,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         // Set row index and the click listener.
         holder.getClockActivityToggle().setTag(index);
-        holder.getClockActivityToggle().setOnClickListener(this);
+        holder.getClockActivityToggle().setOnClickListener(mOnClickListener);
 
         // Depending on whether the project is active the text
         // for the clock activity view should be altered, and
@@ -107,7 +132,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // Add the onClickListener to the "Clock [in|out] at..." item.
         String clockActivityAt = resources.getString(clockActivityAtId);
         holder.getClockActivityAt().setText(clockActivityAt);
-        holder.getClockActivityAt().setOnClickListener(this);
+        holder.getClockActivityAt().setOnClickListener(mOnClickListener);
         holder.getClockActivityAt().setTag(index);
     }
 
@@ -123,27 +148,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public Project getItemAt(int index)
     {
         return mProjects.get(index);
-    }
-
-    @Override
-    public void onClick(View view)
-    {
-        // Retrieve the index from the view and
-        // get the project based on the index.
-        int index = (int) view.getTag();
-        Project project = mProjects.get(index);
-
-        switch (view.getId()) {
-            case R.id.fragment_project_clock_activity_toggle:
-                mOnProjectListListener.onProjectActivityToggle(project, index);
-                break;
-            case R.id.fragment_project_clock_activity_at:
-                mOnProjectListListener.onProjectClockActivityAt(project, index);
-                break;
-            case R.id.fragment_project_list_item_card_view:
-                mOnProjectListListener.onProjectOpen(project);
-                break;
-        }
     }
 
     public void addProject(Project project)
