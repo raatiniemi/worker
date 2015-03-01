@@ -34,6 +34,8 @@ public class ProjectListActivity extends ActionBarActivity
 
     private ProjectListAdapter mAdapter;
 
+    private static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -79,7 +81,7 @@ public class ProjectListActivity extends ActionBarActivity
     public void openCreateNewProject()
     {
         DialogFragment newProject = new NewProjectFragment();
-        newProject.show(getFragmentManager().beginTransaction(), "fragment_new_project");
+        newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
     }
 
     public void onCreateProject(Project project)
