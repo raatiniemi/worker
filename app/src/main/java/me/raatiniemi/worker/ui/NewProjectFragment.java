@@ -172,4 +172,14 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
                     .show();
         }
     }
+
+    public void setOnCreateProjectListener(OnCreateProjectListener onCreateProjectListener)
+    {
+        mOnCreateProjectListener = onCreateProjectListener;
+    }
+
+    public OnCreateProjectListener getOnCreateProjectListener()
+    {
+        return mOnCreateProjectListener;
+    }
 }
