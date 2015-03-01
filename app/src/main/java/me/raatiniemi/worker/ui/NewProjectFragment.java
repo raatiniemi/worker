@@ -10,9 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.cengalabs.flatui.views.FlatButton;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
@@ -54,7 +53,7 @@ public class NewProjectFragment extends DialogFragment
         getDialog().setTitle("Create new project");
 
         // Add the click listener for the create button.
-        FlatButton create = (FlatButton) view.findViewById(R.id.fragment_new_project_create);
+        TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -64,7 +63,7 @@ public class NewProjectFragment extends DialogFragment
         });
 
         // Add the click listener for the cancel button.
-        FlatButton cancel = (FlatButton) view.findViewById(R.id.fragment_new_project_cancel);
+        TextView cancel = (TextView) view.findViewById(R.id.fragment_new_project_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
