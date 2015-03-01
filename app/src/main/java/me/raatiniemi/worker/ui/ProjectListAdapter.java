@@ -154,9 +154,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         return new ItemViewHolder(view);
     }
 
-    public Project getItemAt(int index)
+    public Project get(int position)
     {
-        return mProjects.get(index);
+        return mProjects.get(position);
     }
 
     public void addProject(Project project)
