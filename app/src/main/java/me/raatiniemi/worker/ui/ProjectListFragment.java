@@ -67,7 +67,7 @@ public class ProjectListFragment extends Fragment
                 if (RecyclerView.NO_POSITION < position) {
                     Project project = mAdapter.get(position);
                     if (null != project) {
-                        onClockActivityChange(position, project, new Date());
+                        onClockActivityChange(position, new Date());
                     }
                 }
             }
@@ -83,7 +83,7 @@ public class ProjectListFragment extends Fragment
                             @Override
                             public void onClockActivityAt(Project project, Calendar calendar, int index)
                             {
-                                onClockActivityChange(index, project, calendar.getTime());
+                                onClockActivityChange(index, calendar.getTime());
                             }
                         });
 
@@ -97,13 +97,14 @@ public class ProjectListFragment extends Fragment
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void onClockActivityChange(int position, Project project, Date date)
+    private void onClockActivityChange(int position, Date date)
     {
         try {
             // Retrieve the project and time data mappers.
             ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
             TimeMapper timeMapper = MapperRegistry.getTimeMapper();
 
+            Project project = mAdapter.get(position);
             Time time;
 
             // Depending on whether the project is active,
