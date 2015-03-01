@@ -87,7 +87,7 @@ public class TimeListFragment extends Fragment
 
     private long getProjectId()
     {
-        return getArguments().getLong(ProjectListActivity.MESSAGE_PROJECT_ID, -1);
+        return getArguments().getLong(ProjectListFragment.MESSAGE_PROJECT_ID, -1);
     }
 
     public TimeListFragment()
