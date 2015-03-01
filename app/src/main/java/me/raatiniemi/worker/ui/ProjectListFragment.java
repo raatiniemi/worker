@@ -19,6 +19,8 @@ import me.raatiniemi.worker.mapper.ProjectMapper;
 
 public class ProjectListFragment extends Fragment
 {
+    private RecyclerView mRecyclerView;
+
     public ProjectListFragment()
     {
         super();
@@ -37,8 +39,8 @@ public class ProjectListFragment extends Fragment
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_project_list);
-        recyclerView.setLayoutManager(layoutManager);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_project_list);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         // Instantiate the data mapper for time and project.
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
@@ -51,7 +53,7 @@ public class ProjectListFragment extends Fragment
             @Override
             public void onClockActivityToggle(View view)
             {
-                int position = recyclerView.getChildPosition(view);
+                int position = mRecyclerView.getChildPosition(view);
                 if (RecyclerView.NO_POSITION < position) {
                     Project project = adapter.get(position);
                     if (null != project) {
@@ -66,7 +68,7 @@ public class ProjectListFragment extends Fragment
                 // TODO: Implement "onClockActivityAt".
             }
         });
-        recyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(adapter);
     }
 
     private void onClockActivityChange(int position, Project project, Date date)
