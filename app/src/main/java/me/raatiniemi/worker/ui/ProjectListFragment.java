@@ -1,6 +1,8 @@
 package me.raatiniemi.worker.ui;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,8 +17,11 @@ import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.ClockActivityAtFragment;
 
 public class ProjectListFragment extends Fragment
@@ -94,6 +99,36 @@ public class ProjectListFragment extends Fragment
 
     private void onClockActivityChange(int position, Project project, Date date)
     {
-        // TODO: Implement "onClockActivityChange".
+        try {
+            // Retrieve the project and time data mappers.
+            ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
+            TimeMapper timeMapper = MapperRegistry.getTimeMapper();
+
+            Time time;
+
+            // Depending on whether the project is active,
+            // we're going to clock out or clock in.
+            if (project.isActive()) {
+                time = project.clockOutAt(date);
+                timeMapper.update(time);
+            } else {
+                time = project.clockInAt(date);
+                timeMapper.insert(time);
+            }
+
+            // Retrieve the updated project from the data mapper.
+            project = projectMapper.find(project.getId());
+            mAdapter.set(position, project);
+        } catch (DomainException e) {
+            new AlertDialog.Builder(getActivity())
+                .setTitle(getString(R.string.project_list_item_project_clock_out_before_clock_in_title))
+                .setMessage(getString(R.string.project_list_item_project_clock_out_before_clock_in_description))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing...
+                    }
+                })
+                .show();
+        }
     }
 }
