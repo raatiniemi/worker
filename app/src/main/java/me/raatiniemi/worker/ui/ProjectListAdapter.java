@@ -42,6 +42,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private OnProjectListListener mOnProjectListListener;
 
+    private OnItemClickListener mOnItemClickListener;
+
     private OnClockActivityChangeListener mOnClockActivityChangeListener;
 
     private View.OnClickListener mOnClickListener;
@@ -298,6 +300,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public OnProjectListListener getOnProjectListListener()
     {
         return mOnProjectListListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener)
+    {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public OnItemClickListener getOnItemClickListener()
+    {
+        return mOnItemClickListener;
     }
 
     public void setOnClockActivityChangeListener(OnClockActivityChangeListener onClockActivityChangeListener)
