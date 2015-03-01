@@ -168,6 +168,14 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         return position;
     }
 
+    public void set(int position, Project project)
+    {
+        mProjects.set(position, project);
+
+        // Notify the adapter that the project have been modified.
+        notifyItemChanged(position);
+    }
+
     public Project get(int position)
     {
         return mProjects.get(position);
@@ -180,9 +188,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     public void updateProject(Project project, int index)
     {
-        mProjects.set(index, project);
-
-        notifyItemChanged(index);
+        set(index, project);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder
