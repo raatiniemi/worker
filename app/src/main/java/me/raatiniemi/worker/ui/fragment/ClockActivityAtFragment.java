@@ -83,7 +83,6 @@ public class ClockActivityAtFragment extends Fragment
         super.onAttach(activity);
 
         try {
-            setOnClockActivityAtListener((OnClockActivityAtListener) activity);
             mCalendar = Calendar.getInstance();
 
             // Retrieve the project and row index from the arguments.
@@ -99,8 +98,7 @@ public class ClockActivityAtFragment extends Fragment
             datePickerFragment.setOnDateSetListener(this);
             datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_date_picker");
         } catch (ClassCastException e) {
-            // TODO: Correct message depending on which type cast failed.
-            Log.e(TAG, activity.toString() +" do not implement OnClockActivityAtListener");
+            Log.e(TAG, "Project is incorrect data type");
 
             // TODO: Error message to the user, and dismiss the fragment.
         }

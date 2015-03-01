@@ -100,6 +100,7 @@ public class ProjectListActivity extends ActionBarActivity
     {
         // Instantiate the "Clock [in|out] at..."-fragment.
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project, index);
+        fragment.setOnClockActivityAtListener(this);
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(fragment, "fragment_clock_activity_at");
