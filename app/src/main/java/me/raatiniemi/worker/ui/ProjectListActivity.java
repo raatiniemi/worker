@@ -52,7 +52,8 @@ public class ProjectListActivity extends ActionBarActivity
         // Retrieve the available projects from the project data mapper.
         ArrayList<Project> projects = projectMapper.getProjects();
 
-        mAdapter = new ProjectListAdapter(this, projects);
+        mAdapter = new ProjectListAdapter(projects);
+        mAdapter.setOnProjectListListener(this);
         projectsView.setAdapter(mAdapter);
     }
 
