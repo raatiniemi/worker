@@ -11,8 +11,6 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.domain.Project;
-
 public class ClockActivityAtFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener
 {
@@ -25,34 +23,23 @@ public class ClockActivityAtFragment extends Fragment
     {
         /**
          * Triggered after the date and time have been selected.
-         * @param project Project to clock in or out.
-         * @param calendar Calendar with date and time to clock in or out.
          * @param index Row index from the adapter.
+         * @param calendar Calendar with date and time to clock in or out.
          */
-        public void onClockActivityAt(Project project, Calendar calendar, int index);
+        public void onClockActivityAt(int index, Calendar calendar);
     }
 
     /**
-     * Name of the key for the project argument.
+     * Name of the key for the row position argument.
      */
-    private static final String ARGUMENT_PROJECT = "_project";
-
-    /**
-     * Name of the key for the row index argument.
-     */
-    private static final String ARGUMENT_INDEX = "_index";
+    private static final String ARGUMENT_POSITION = "_position";
 
     private OnClockActivityAtListener mOnClockActivityAtListener;
 
     /**
-     * Project to clock in or out.
+     * Row position from the adapter.
      */
-    private Project mProject;
-
-    /**
-     * Row index from the adapter.
-     */
-    private int mIndex;
+    private int mPosition;
 
     /**
      * Calendar object with the selected date and time.
@@ -60,19 +47,16 @@ public class ClockActivityAtFragment extends Fragment
     private Calendar mCalendar;
 
     /**
-     * Create a new instance with the project and adapter row index.
-     * @param project Project to clock in or out.
-     * @param index Row index from the adapter.
+     * Create a new instance with the project and adapter row position.
+     * @param position Row position from the adapter.
      * @return New instance of the clock activity at fragment.
      */
-    public static ClockActivityAtFragment newInstance(Project project, int index)
+    public static ClockActivityAtFragment newInstance(int position)
     {
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
 
-        // Set the project and adapter row index as arguments to the fragment.
         Bundle arguments = new Bundle();
-        arguments.putSerializable(ARGUMENT_PROJECT, project);
-        arguments.putInt(ARGUMENT_INDEX, index);
+        arguments.putInt(ARGUMENT_POSITION, position);
         fragment.setArguments(arguments);
 
         return fragment;
@@ -82,26 +66,16 @@ public class ClockActivityAtFragment extends Fragment
     {
         super.onAttach(activity);
 
-        try {
-            mCalendar = Calendar.getInstance();
+        mCalendar = Calendar.getInstance();
 
-            // Retrieve the project and row index from the arguments.
-            Bundle arguments = getArguments();
-            if (!arguments.containsKey(ARGUMENT_PROJECT)) {
-                // TODO: Handle ClockActivityAtFragment without project.
-            }
-            mProject = (Project) arguments.getSerializable(ARGUMENT_PROJECT);
-            mIndex = arguments.getInt(ARGUMENT_INDEX, -1);
+        // TODO: Handle if mPosition is -1.
+        Bundle arguments = getArguments();
+        mPosition = arguments.getInt(ARGUMENT_POSITION, -1);
 
-            // Initialize the "DatePicker"-fragment.
-            DatePickerFragment datePickerFragment = new DatePickerFragment();
-            datePickerFragment.setOnDateSetListener(this);
-            datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_date_picker");
-        } catch (ClassCastException e) {
-            Log.e(TAG, "Project is incorrect data type");
-
-            // TODO: Error message to the user, and dismiss the fragment.
-        }
+        // Initialize the "DatePicker"-fragment.
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setOnDateSetListener(this);
+        datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_date_picker");
     }
 
     /**
@@ -134,7 +108,7 @@ public class ClockActivityAtFragment extends Fragment
         mCalendar.set(Calendar.MINUTE, minute);
 
         if (null != getOnClockActivityAtListener()) {
-            getOnClockActivityAtListener().onClockActivityAt(mProject, mCalendar, mIndex);
+            getOnClockActivityAtListener().onClockActivityAt(mPosition, mCalendar);
         } else {
             Log.e(TAG, "No OnClockActivityAtListener have been supplied");
         }

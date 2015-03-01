@@ -94,21 +94,18 @@ public class ProjectListFragment extends Fragment
             public void onClockActivityAt(View view) {
                 int position = mRecyclerView.getChildPosition(view);
                 if (RecyclerView.NO_POSITION < position) {
-                    Project project = mAdapter.get(position);
-                    if (null != project) {
-                        final ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project, position);
-                        fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
-                            @Override
-                            public void onClockActivityAt(Project project, Calendar calendar, int index)
-                            {
-                                onClockActivityChange(index, calendar.getTime());
-                            }
-                        });
+                    ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(position);
+                    fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
+                        @Override
+                        public void onClockActivityAt(int index, Calendar calendar)
+                        {
+                            onClockActivityChange(index, calendar.getTime());
+                        }
+                    });
 
-                        getFragmentManager().beginTransaction()
-                            .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
-                            .commit();
-                    }
+                    getFragmentManager().beginTransaction()
+                        .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
+                        .commit();
                 }
             }
         });
