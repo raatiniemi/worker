@@ -4,7 +4,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.ui.TimeListFragment;
 
 public class ProjectActivity extends ActionBarActivity
 {
