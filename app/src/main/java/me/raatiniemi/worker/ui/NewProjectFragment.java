@@ -70,9 +70,15 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        getDialog().setTitle("Create new project");
+        return inflater.inflate(R.layout.fragment_new_project, container, false);
+    }
 
-        View view = inflater.inflate(R.layout.fragment_new_project, container, false);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+
+        getDialog().setTitle("Create new project");
 
         // Add the click listener for the create button.
         FlatButton create = (FlatButton) view.findViewById(R.id.fragment_new_project_create);
@@ -81,8 +87,6 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
         // Add the click listener for the cancel button.
         FlatButton cancel = (FlatButton) view.findViewById(R.id.fragment_new_project_cancel);
         cancel.setOnClickListener(this);
-
-        return view;
     }
 
     /**
