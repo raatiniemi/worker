@@ -43,7 +43,7 @@ public class ProjectListActivity extends ActionBarActivity
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        RecyclerView projectsView = (RecyclerView) findViewById(R.id.project_list);
+        RecyclerView projectsView = (RecyclerView) findViewById(R.id.fragment_project_list);
         projectsView.setLayoutManager(manager);
 
         // Instantiate the data mapper for time and project.
