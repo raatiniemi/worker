@@ -21,6 +21,8 @@ public class ProjectListFragment extends Fragment
 {
     private RecyclerView mRecyclerView;
 
+    private ProjectListAdapter mAdapter;
+
     public ProjectListFragment()
     {
         super();
@@ -48,14 +50,13 @@ public class ProjectListFragment extends Fragment
         // Retrieve the available projects from the project data mapper.
         ArrayList<Project> projects = projectMapper.getProjects();
 
-        final ProjectListAdapter adapter = new ProjectListAdapter(projects);
-        adapter.setOnClockActivityChangeListener(new ProjectListAdapter.OnClockActivityChangeListener() {
+        mAdapter = new ProjectListAdapter(projects);
+        mAdapter.setOnClockActivityChangeListener(new ProjectListAdapter.OnClockActivityChangeListener() {
             @Override
-            public void onClockActivityToggle(View view)
-            {
+            public void onClockActivityToggle(View view) {
                 int position = mRecyclerView.getChildPosition(view);
                 if (RecyclerView.NO_POSITION < position) {
-                    Project project = adapter.get(position);
+                    Project project = mAdapter.get(position);
                     if (null != project) {
                         onClockActivityChange(position, project, new Date());
                     }
@@ -63,12 +64,11 @@ public class ProjectListFragment extends Fragment
             }
 
             @Override
-            public void onClockActivityAt(View view)
-            {
+            public void onClockActivityAt(View view) {
                 // TODO: Implement "onClockActivityAt".
             }
         });
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void onClockActivityChange(int position, Project project, Date date)
