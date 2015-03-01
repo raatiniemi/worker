@@ -28,12 +28,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public void onProjectOpen(Project project);
     }
 
-    private OnProjectListListener mActivityCallback;
+    private OnProjectListListener mOnProjectListListener;
+
     private ArrayList<Project> mProjects;
 
-    public ProjectListAdapter(OnProjectListListener activityCallback, ArrayList<Project> projects)
+    public ProjectListAdapter(OnProjectListListener onProjectListListener, ArrayList<Project> projects)
     {
-        mActivityCallback = activityCallback;
+        mOnProjectListListener = onProjectListListener;
         mProjects = projects;
     }
 
@@ -135,13 +136,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         switch (view.getId()) {
             case R.id.fragment_project_clock_activity_toggle:
-                mActivityCallback.onProjectActivityToggle(project, index);
+                mOnProjectListListener.onProjectActivityToggle(project, index);
                 break;
             case R.id.fragment_project_clock_activity_at:
-                mActivityCallback.onProjectClockActivityAt(project, index);
+                mOnProjectListListener.onProjectClockActivityAt(project, index);
                 break;
             case R.id.fragment_project_list_item_card_view:
-                mActivityCallback.onProjectOpen(project);
+                mOnProjectListListener.onProjectOpen(project);
                 break;
         }
     }
