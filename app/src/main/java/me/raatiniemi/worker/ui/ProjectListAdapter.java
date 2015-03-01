@@ -154,6 +154,20 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         return new ItemViewHolder(view);
     }
 
+    public int add(Project project)
+    {
+        // Retrieve the number of elements before adding the project,
+        // hence getting the index of the new project.
+        int position = mProjects.size();
+        mProjects.add(project);
+
+        // Notify the adapter that the project have been inserted.
+        notifyItemInserted(position);
+
+        // Return the new position, should scroll the recycler view.
+        return position;
+    }
+
     public Project get(int position)
     {
         return mProjects.get(position);
@@ -161,13 +175,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     public void addProject(Project project)
     {
-        // Retrieve the number of elements before adding the project,
-        // hence getting the index of the new project.
-        int index = mProjects.size();
-        mProjects.add(project);
-
-        // Notify the adapter that the project have been inserted.
-        notifyItemInserted(index);
+        add(project);
     }
 
     public void updateProject(Project project, int index)
