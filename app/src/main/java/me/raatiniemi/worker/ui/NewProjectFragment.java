@@ -21,7 +21,6 @@ import me.raatiniemi.worker.exception.NamelessProjectException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
-import me.raatiniemi.worker.mapper.TimeMapper;
 
 public class NewProjectFragment extends DialogFragment implements View.OnClickListener
 {
@@ -40,14 +39,14 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
     /**
      * Callback handler for the "OnCreateProjectListener".
      */
-    private OnCreateProjectListener mCallback;
+    private OnCreateProjectListener mOnCreateProjectListener;
 
     @Override public void onAttach(Activity activity)
     {
         super.onAttach(activity);
 
         try {
-            mCallback = (OnCreateProjectListener) activity;
+            mOnCreateProjectListener = (OnCreateProjectListener) activity;
         } catch (ClassCastException e) {
             Log.e("onAttach", activity.toString() +" do not implement OnCreateProjectListener");
 
@@ -130,7 +129,7 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
             project = projectMapper.insert(project);
 
             // Replay that the project have been created to the activity.
-            mCallback.onCreateProject(project);
+            mOnCreateProjectListener.onCreateProject(project);
 
             String message = "Project '" + name + "' have been created";
             Toast.makeText(Worker.getContext(), message, Toast.LENGTH_SHORT).show();
