@@ -23,7 +23,7 @@ import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 
-public class NewProjectFragment extends DialogFragment implements View.OnClickListener
+public class NewProjectFragment extends DialogFragment
 {
     /**
      * Public interface for the "OnCreateProjectListener".
@@ -100,14 +100,6 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
                 dismiss();
             }
         });
-    }
-
-    /**
-     * Callback handler for buttons within the view.
-     * @param view Tapped view.
-     */
-    @Override public void onClick(View view)
-    {
     }
 
     /**
