@@ -115,6 +115,14 @@ public class ProjectListFragment extends Fragment
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    public void addProject(Project project)
+    {
+        // Add the project to the adapter, and scroll down
+        // to the new project.
+        int position = mAdapter.add(project);
+        mRecyclerView.scrollToPosition(position);
+    }
+
     private void onClockActivityChange(int position, Date date)
     {
         try {
