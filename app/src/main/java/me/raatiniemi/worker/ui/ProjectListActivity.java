@@ -1,7 +1,6 @@
 package me.raatiniemi.worker.ui;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +24,6 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.ClockActivityAtFragment;
-import me.raatiniemi.worker.ui.fragment.NewProjectFragment;
 
 public class ProjectListActivity extends ActionBarActivity
     implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectListListener, ClockActivityAtFragment.OnClockActivityAtListener

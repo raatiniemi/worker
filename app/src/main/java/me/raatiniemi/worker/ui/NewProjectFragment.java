@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui.fragment;
+package me.raatiniemi.worker.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
