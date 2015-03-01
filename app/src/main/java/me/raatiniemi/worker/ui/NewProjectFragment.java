@@ -87,7 +87,13 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
 
         // Add the click listener for the cancel button.
         FlatButton cancel = (FlatButton) view.findViewById(R.id.fragment_new_project_cancel);
-        cancel.setOnClickListener(this);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dismiss();
+            }
+        });
     }
 
     /**
@@ -101,9 +107,6 @@ public class NewProjectFragment extends DialogFragment implements View.OnClickLi
         switch (view.getId()) {
             case R.id.fragment_new_project_create:
                 createNewProject();
-                break;
-            case R.id.fragment_new_project_cancel:
-                dismiss();
                 break;
         }
     }
