@@ -26,7 +26,7 @@ import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.ClockActivityAtFragment;
 
 public class ProjectListActivity extends ActionBarActivity
-    implements NewProjectFragment.OnCreateProjectListener, ProjectListAdapter.OnProjectListListener, ClockActivityAtFragment.OnClockActivityAtListener
+    implements ProjectListAdapter.OnProjectListListener, ClockActivityAtFragment.OnClockActivityAtListener
 {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
@@ -79,14 +79,16 @@ public class ProjectListActivity extends ActionBarActivity
     public void openCreateNewProject()
     {
         NewProjectFragment newProject = new NewProjectFragment();
+        newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
+            @Override
+            public void onCreateProject(Project project)
+            {
+                // Add the project to the list of available projects
+                // and notify the adapter that the data has changed.
+                mAdapter.addProject(project);
+            }
+        });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
-    }
-
-    public void onCreateProject(Project project)
-    {
-        // Add the project to the list of available projects
-        // and notify the adapter that the data has changed.
-        mAdapter.addProject(project);
     }
 
     public void onProjectActivityToggle(Project project, int index)
