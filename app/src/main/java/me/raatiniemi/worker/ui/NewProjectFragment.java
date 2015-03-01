@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.cengalabs.flatui.views.FlatButton;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.exception.NamelessProjectException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
