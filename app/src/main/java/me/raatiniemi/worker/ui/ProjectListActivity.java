@@ -80,7 +80,7 @@ public class ProjectListActivity extends ActionBarActivity
 
     public void openCreateNewProject()
     {
-        DialogFragment newProject = new NewProjectFragment();
+        NewProjectFragment newProject = new NewProjectFragment();
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
     }
 
