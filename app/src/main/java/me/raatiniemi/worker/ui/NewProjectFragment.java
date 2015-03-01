@@ -22,6 +22,8 @@ import me.raatiniemi.worker.mapper.ProjectMapper;
 
 public class NewProjectFragment extends DialogFragment
 {
+    private static final String TAG = "NewProjectFragment";
+
     /**
      * Public interface for the "OnCreateProjectListener".
      */
@@ -86,11 +88,11 @@ public class NewProjectFragment extends DialogFragment
 
             // Check that the user actually supplied a project name.
             if (name.length() == 0) {
-                Log.e("createNewProject", "No project name have been supplied");
+                Log.e(TAG, "No project name have been supplied");
                 throw new NamelessProjectException();
             }
 
-            Log.d("createNewProject", "Attempt to create new project with name: " + name);
+            Log.d(TAG, "Attempt to create new project with name: " + name);
 
             // Attempt to create the new project with supplied name.
             ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
@@ -103,7 +105,7 @@ public class NewProjectFragment extends DialogFragment
             if (null != getOnCreateProjectListener()) {
                 getOnCreateProjectListener().onCreateProject(project);
             } else {
-                Log.e("createNewProject", "No OnCreateProjectListener have been supplied");
+                Log.e(TAG, "No OnCreateProjectListener have been supplied");
             }
 
             String message = "Project '" + name + "' have been created";
