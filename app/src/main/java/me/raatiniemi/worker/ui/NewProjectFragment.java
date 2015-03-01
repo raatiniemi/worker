@@ -132,7 +132,7 @@ public class NewProjectFragment extends DialogFragment
             mOnCreateProjectListener.onCreateProject(project);
 
             String message = "Project '" + name + "' have been created";
-            Toast.makeText(Worker.getContext(), message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
 
             // We are finished with the project creation,
             // we now have to dismiss the dialog.
