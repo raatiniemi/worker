@@ -40,7 +40,7 @@ public class ClockActivityAtFragment extends Fragment
      */
     private static final String ARGUMENT_INDEX = "_index";
 
-    private OnClockActivityAtListener mCallback;
+    private OnClockActivityAtListener mOnClockActivityAtListener;
 
     /**
      * Project to clock in or out.
@@ -81,7 +81,7 @@ public class ClockActivityAtFragment extends Fragment
         super.onAttach(activity);
 
         try {
-            mCallback = (OnClockActivityAtListener) activity;
+            setOnClockActivityAtListener((OnClockActivityAtListener) activity);
             mCalendar = Calendar.getInstance();
 
             // Retrieve the project and row index from the arguments.
@@ -133,7 +133,20 @@ public class ClockActivityAtFragment extends Fragment
         mCalendar.set(Calendar.HOUR_OF_DAY, hour);
         mCalendar.set(Calendar.MINUTE, minute);
 
-        // Send the project, calendar, and row index back to the activity.
-        mCallback.onClockActivityAt(mProject, mCalendar, mIndex);
+        if (null != getOnClockActivityAtListener()) {
+            getOnClockActivityAtListener().onClockActivityAt(mProject, mCalendar, mIndex);
+        } else {
+            Log.e("ClockActivityAtFragment", "No OnClockActivityAtListener have been supplied");
+        }
+    }
+
+    public void setOnClockActivityAtListener(OnClockActivityAtListener onClockActivityAtListener)
+    {
+        mOnClockActivityAtListener = onClockActivityAtListener;
+    }
+
+    public OnClockActivityAtListener getOnClockActivityAtListener()
+    {
+        return mOnClockActivityAtListener;
     }
 }
