@@ -75,7 +75,7 @@ public class NewProjectFragment extends DialogFragment
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
+    public void onViewCreated(final View view, Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 
@@ -87,7 +87,7 @@ public class NewProjectFragment extends DialogFragment
             @Override
             public void onClick(View v)
             {
-                createNewProject();
+                createNewProject(view);
             }
         });
 
@@ -104,12 +104,13 @@ public class NewProjectFragment extends DialogFragment
 
     /**
      * Create a new project.
+     * @param view View for the fragment.
      */
-    private void createNewProject()
+    private void createNewProject(View view)
     {
         try {
             // Retrieve the supplied project name from the text field.
-            EditText textField = (EditText) getView().findViewById(R.id.fragment_new_project_name);
+            EditText textField = (EditText) view.findViewById(R.id.fragment_new_project_name);
             String name = textField.getText().toString();
 
             // Check that the user actually supplied a project name.
