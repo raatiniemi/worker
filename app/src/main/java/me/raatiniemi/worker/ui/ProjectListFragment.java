@@ -3,6 +3,7 @@ package me.raatiniemi.worker.ui;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,8 @@ public class ProjectListFragment extends Fragment
 
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
+    public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
+
     public ProjectListFragment()
     {
         super();
@@ -60,6 +63,21 @@ public class ProjectListFragment extends Fragment
         ArrayList<Project> projects = projectMapper.getProjects();
 
         mAdapter = new ProjectListAdapter(projects);
+        mAdapter.setOnItemClickListener(new ProjectListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                int position = mRecyclerView.getChildPosition(view);
+                if (RecyclerView.NO_POSITION < position) {
+                    Project project = mAdapter.get(position);
+                    if (null != project) {
+                        Intent intent = new Intent(getActivity(), ProjectActivity.class);
+                        intent.putExtra(MESSAGE_PROJECT_ID, project.getId());
+
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
         mAdapter.setOnClockActivityChangeListener(new ProjectListAdapter.OnClockActivityChangeListener() {
             @Override
             public void onClockActivityToggle(View view) {
