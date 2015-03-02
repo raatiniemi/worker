@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,13 +10,15 @@
     android:paddingRight="@dimen/fragment_new_project_padding_end"
     android:paddingEnd="@dimen/fragment_new_project_padding_end"
     android:paddingBottom="@dimen/fragment_new_project_padding_bottom"
-    android:minWidth="@dimen/dialog_fixed_width_minor">
+    android:minWidth="@dimen/dialog_fixed_width_minor"
+    >
 
     <TextView
         android:id="@+id/fragment_new_project_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_new_project_description" />
+        android:text="@string/fragment_new_project_description"
+        />
 
     <EditText
         android:id="@+id/fragment_new_project_name"
@@ -23,11 +26,13 @@
         android:layout_height="wrap_content"
         android:hint="@string/fragment_new_project_name_hint"
         android:textSize="@dimen/fragment_new_project_name_text_size"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        />
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
         <TextView
             android:id="@+id/fragment_new_project_cancel"
             android:layout_width="wrap_content"
@@ -41,7 +46,8 @@
             android:layout_toStartOf="@+id/fragment_new_project_create"
             android:textColor="@android:color/holo_blue_dark"
             android:textStyle="bold"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"
+            />
 
         <TextView
             android:id="@+id/fragment_new_project_create"
@@ -54,6 +60,7 @@
             android:layout_alignParentEnd="true"
             android:textColor="@android:color/holo_blue_dark"
             android:textStyle="bold"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"
+            />
     </RelativeLayout>
 </LinearLayout>
