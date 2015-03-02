@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/actions_project_edit"
-          android:title="@string/actions_project_edit"
-          android:icon="@android:drawable/ic_menu_edit"/>
-    <item android:id="@+id/actions_project_delete"
-          android:title="@string/actions_project_delete"
-          android:icon="@android:drawable/ic_menu_delete"/>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        android:id="@+id/actions_project_edit"
+        android:title="@string/actions_project_edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        />
+    <item
+        android:id="@+id/actions_project_delete"
+        android:title="@string/actions_project_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        />
 </menu>
