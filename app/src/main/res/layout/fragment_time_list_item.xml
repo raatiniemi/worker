@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -16,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fragment_time_list_item_date"
-        android:text="@string/placeholder_project_time_list_item_date"
+        tools:text="@string/placeholder_project_time_list_item_date"
         />
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -28,7 +29,7 @@
             android:id="@+id/fragment_time_list_item_start"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
-            android:text="@string/placeholder_project_time_list_item_start"
+            tools:text="@string/placeholder_project_time_list_item_start"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -38,7 +39,7 @@
             android:layout_toEndOf="@+id/fragment_time_list_item_start"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
-            android:text="@string/placeholder_project_time_list_item_stop"
+            tools:text="@string/placeholder_project_time_list_item_stop"
             />
         <TextView
             android:layout_width="fill_parent"
@@ -46,7 +47,7 @@
             android:id="@+id/fragment_time_list_item_summarize"
             android:layout_toRightOf="@+id/fragment_time_list_item_stop"
             android:layout_toEndOf="@+id/fragment_time_list_item_stop"
-            android:text="@string/placeholder_project_time_list_item_summarize"
+            tools:text="@string/placeholder_project_time_list_item_summarize"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:gravity="end|right"
