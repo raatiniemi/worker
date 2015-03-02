@@ -20,7 +20,7 @@ public class ProjectListActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project_list_with_fragment);
+        setContentView(R.layout.activity_project_list);
 
         if (null == savedInstanceState) {
             ProjectListFragment fragment = new ProjectListFragment();
