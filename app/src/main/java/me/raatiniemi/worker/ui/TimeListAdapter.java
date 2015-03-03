@@ -110,7 +110,6 @@ public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.ItemVi
     }
 
     protected static class ItemViewHolder extends RecyclerView.ViewHolder
-        implements View.OnLongClickListener
     {
         private TextView mDate;
 
@@ -128,9 +127,6 @@ public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.ItemVi
             setStart((TextView) view.findViewById(R.id.fragment_time_list_item_start));
             setStop((TextView) view.findViewById(R.id.fragment_time_list_item_stop));
             setSummarize((TextView) view.findViewById(R.id.fragment_time_list_item_summarize));
-
-            // Set the long click listener for the view holder.
-            view.setOnLongClickListener(this);
         }
 
         private void setDate(TextView date)
@@ -171,12 +167,6 @@ public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.ItemVi
         public TextView getSummarize()
         {
             return mSummarize;
-        }
-
-        @Override public boolean onLongClick(View view)
-        {
-            // TODO: Handle the on long click.
-            return true;
         }
     }
 
