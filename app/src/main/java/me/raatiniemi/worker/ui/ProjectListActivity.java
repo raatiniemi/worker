@@ -12,6 +12,8 @@ import me.raatiniemi.worker.domain.Project;
 
 public class ProjectListActivity extends ActionBarActivity
 {
+    private static final String TAG = "ProjectListActivity";
+
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
     private static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
@@ -65,7 +67,7 @@ public class ProjectListActivity extends ActionBarActivity
                 if (null != fragment) {
                     fragment.addProject(project);
                 } else {
-                    Log.e("ProjectListActivity", "Unable to find fragment with tag: "+ FRAGMENT_PROJECT_LIST_TAG);
+                    Log.e(TAG, "Unable to find fragment with tag: "+ FRAGMENT_PROJECT_LIST_TAG);
                 }
             }
         });
