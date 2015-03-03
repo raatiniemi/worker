@@ -97,9 +97,9 @@ public class ProjectListFragment extends Fragment
                     ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(position);
                     fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
                         @Override
-                        public void onClockActivityAt(int index, Calendar calendar)
+                        public void onClockActivityAt(int position, Calendar calendar)
                         {
-                            onClockActivityChange(index, calendar.getTime());
+                            onClockActivityChange(position, calendar.getTime());
                         }
                     });
 

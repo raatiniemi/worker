@@ -23,10 +23,10 @@ public class ClockActivityAtFragment extends Fragment
     {
         /**
          * Triggered after the date and time have been selected.
-         * @param index Row index from the adapter.
+         * @param position Row position from the adapter.
          * @param calendar Calendar with date and time to clock in or out.
          */
-        public void onClockActivityAt(int index, Calendar calendar);
+        public void onClockActivityAt(int position, Calendar calendar);
     }
 
     /**
