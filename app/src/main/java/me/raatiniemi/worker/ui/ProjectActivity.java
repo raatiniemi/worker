@@ -7,6 +7,8 @@ import me.raatiniemi.worker.R;
 
 public class ProjectActivity extends ActionBarActivity
 {
+    private static final String TAG = "ProjectActivity";
+
     private static final String FRAGMENT_TIME_LIST_TAG = "time list";
 
     @Override
