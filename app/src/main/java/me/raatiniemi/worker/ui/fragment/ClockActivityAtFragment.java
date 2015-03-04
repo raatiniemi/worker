@@ -66,7 +66,8 @@ public class ClockActivityAtFragment extends Fragment
         return fragment;
     }
 
-    @Override public void onAttach(Activity activity)
+    @Override
+    public void onAttach(Activity activity)
     {
         super.onAttach(activity);
 
