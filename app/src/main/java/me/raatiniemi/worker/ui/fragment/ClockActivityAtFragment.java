@@ -16,6 +16,10 @@ public class ClockActivityAtFragment extends Fragment
 {
     private static final String TAG = "ClockActivityAtFragment";
 
+    private static final String FRAGMENT_CLOCK_ACTIVITY_DATE_TAG = "clock activity date";
+
+    private static final String FRAGMENT_CLOCK_ACTIVITY_TIME_TAG = "clock activity time";
+
     /**
      * Public interface for the "OnClockActivityAtListener"
      */
@@ -75,7 +79,7 @@ public class ClockActivityAtFragment extends Fragment
         // Initialize the "DatePicker"-fragment.
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         datePickerFragment.setOnDateSetListener(this);
-        datePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_date_picker");
+        datePickerFragment.show(getFragmentManager().beginTransaction(), FRAGMENT_CLOCK_ACTIVITY_DATE_TAG);
     }
 
     /**
@@ -93,7 +97,7 @@ public class ClockActivityAtFragment extends Fragment
         // Initialize the "TimePicker"-fragment.
         TimePickerFragment timePickerFragment = new TimePickerFragment();
         timePickerFragment.setOnTimeSetListener(this);
-        timePickerFragment.show(getFragmentManager().beginTransaction(), "fragment_clock_activity_time_picker");
+        timePickerFragment.show(getFragmentManager().beginTransaction(), FRAGMENT_CLOCK_ACTIVITY_TIME_TAG);
     }
 
     /**
