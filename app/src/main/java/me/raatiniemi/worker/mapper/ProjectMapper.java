@@ -13,15 +13,6 @@ import me.raatiniemi.worker.provider.WorkerDatabase.*;
 
 public class ProjectMapper extends AbstractMapper<Project>
 {
-    public static final String CREATE_TABLE =
-        "CREATE TABLE " + Tables.PROJECT + " ( " +
-            ProjectColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            ProjectColumns.NAME + " TEXT NOT NULL, " +
-            ProjectColumns.DESCRIPTION + " TEXT NULL, " +
-            ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
-            "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK" +
-        ");";
-
     private TimeMapper mTimeMapper;
 
     public ProjectMapper(TimeMapper timeMapper)

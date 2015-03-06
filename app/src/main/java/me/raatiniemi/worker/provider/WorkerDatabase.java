@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import me.raatiniemi.worker.application.Worker;
-import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
+import me.raatiniemi.worker.provider.WorkerContract.*;
 
 public class WorkerDatabase extends SQLiteOpenHelper
 {
@@ -55,7 +55,16 @@ public class WorkerDatabase extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL(ProjectMapper.CREATE_TABLE);
+        db.execSQL(
+            "CREATE TABLE " + Tables.PROJECT + " ( " +
+                ProjectColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ProjectColumns.NAME + " TEXT NOT NULL, " +
+                ProjectColumns.DESCRIPTION + " TEXT NULL, " +
+                ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
+                "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK" +
+            ");"
+        );
+
         db.execSQL(TimeMapper.CREATE_TABLE);
     }
 
