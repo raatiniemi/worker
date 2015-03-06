@@ -13,14 +13,6 @@ import me.raatiniemi.worker.provider.WorkerDatabase.*;
 
 public class TimeMapper extends AbstractMapper<Time>
 {
-    public static final String CREATE_TABLE =
-        "CREATE TABLE " + Tables.TIME + " ( " +
-            TimeColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
-            TimeColumns.START + " INTEGER NOT NULL, " +
-            TimeColumns.STOP + " INTEGER DEFAULT 0 " +
-        ");";
-
     public TimeMapper()
     {
         super();

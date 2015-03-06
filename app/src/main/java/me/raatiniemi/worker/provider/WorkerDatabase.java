@@ -65,7 +65,14 @@ public class WorkerDatabase extends SQLiteOpenHelper
             ");"
         );
 
-        db.execSQL(TimeMapper.CREATE_TABLE);
+        db.execSQL(
+            "CREATE TABLE " + Tables.TIME + " ( " +
+                TimeColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
+                TimeColumns.START + " INTEGER NOT NULL, " +
+                TimeColumns.STOP + " INTEGER DEFAULT 0 " +
+            ");"
+        );
     }
 
     @Override
