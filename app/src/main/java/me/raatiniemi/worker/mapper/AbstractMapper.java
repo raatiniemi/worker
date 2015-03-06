@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
-import me.raatiniemi.worker.database.Helper;
+import me.raatiniemi.worker.provider.Helper;
 import me.raatiniemi.worker.domain.DomainObject;
 
 /**
