@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import me.raatiniemi.worker.application.Worker;
-import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.provider.WorkerContract.*;
 
 public class WorkerDatabase extends SQLiteOpenHelper
