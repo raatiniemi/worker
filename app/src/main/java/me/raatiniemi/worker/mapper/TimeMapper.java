@@ -2,33 +2,24 @@ package me.raatiniemi.worker.mapper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.provider.BaseColumns;
 
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.provider.WorkerContract.*;
 
 public class TimeMapper extends AbstractMapper<Time>
 {
     private static final String TABLE_NAME = "time";
 
-    private interface Columns
-    {
-        String PROJECT_ID = "project_id";
-
-        String START = "start";
-
-        String STOP = "stop";
-    }
-
     public static final String CREATE_TABLE =
         "CREATE TABLE " + TABLE_NAME + " ( " +
-            BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            Columns.PROJECT_ID + " INTEGER NOT NULL, " +
-            Columns.START + " INTEGER NOT NULL, " +
-            Columns.STOP + " INTEGER DEFAULT 0 " +
+            TimeColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
+            TimeColumns.START + " INTEGER NOT NULL, " +
+            TimeColumns.STOP + " INTEGER DEFAULT 0 " +
         ");";
 
     public TimeMapper()
@@ -44,19 +35,19 @@ public class TimeMapper extends AbstractMapper<Time>
     protected String[] getColumns()
     {
         return new String[]{
-            BaseColumns._ID,
-            Columns.PROJECT_ID,
-            Columns.START,
-            Columns.STOP
+            TimeColumns.ID,
+            TimeColumns.PROJECT_ID,
+            TimeColumns.START,
+            TimeColumns.STOP
         };
     }
 
     protected Time load(Cursor row)
     {
-        long id = row.getLong(row.getColumnIndex(BaseColumns._ID));
-        long projectId = row.getLong(row.getColumnIndex(Columns.PROJECT_ID));
-        long start = row.getLong(row.getColumnIndex(Columns.START));
-        long stop = row.getLong(row.getColumnIndex(Columns.STOP));
+        long id = row.getLong(row.getColumnIndex(TimeColumns.ID));
+        long projectId = row.getLong(row.getColumnIndex(TimeColumns.PROJECT_ID));
+        long start = row.getLong(row.getColumnIndex(TimeColumns.START));
+        long stop = row.getLong(row.getColumnIndex(TimeColumns.STOP));
 
         try {
             return new Time(id, projectId, start, stop);
@@ -72,8 +63,8 @@ public class TimeMapper extends AbstractMapper<Time>
 
         // Check that the project actually exists, i.e. it has an value for id.
         if (project != null && project.getId() != null) {
-            String selection = Columns.PROJECT_ID + "=" + project.getId();
-            String orderBy = Columns.STOP + " DESC," + Columns.START + " ASC";
+            String selection = TimeColumns.PROJECT_ID + "=" + project.getId();
+            String orderBy = TimeColumns.STOP + " DESC," + TimeColumns.START + " ASC";
 
             Cursor rows = mDatabase.query(getTable(), getColumns(), selection, null, null, null, orderBy);
             if (rows.moveToFirst()) {
@@ -94,9 +85,9 @@ public class TimeMapper extends AbstractMapper<Time>
         // TODO: Check if timer is already active for project, throw exception.
 
         ContentValues values = new ContentValues();
-        values.put(Columns.PROJECT_ID, time.getProjectId());
-        values.put(Columns.START, time.getStart());
-        values.put(Columns.STOP, time.getStop());
+        values.put(TimeColumns.PROJECT_ID, time.getProjectId());
+        values.put(TimeColumns.START, time.getStart());
+        values.put(TimeColumns.STOP, time.getStop());
 
         long id = mDatabase.insert(getTable(), null, values);
         return find(id);
@@ -105,10 +96,10 @@ public class TimeMapper extends AbstractMapper<Time>
     public Time update(Time time)
     {
         ContentValues values = new ContentValues();
-        values.put(Columns.START, time.getStart());
-        values.put(Columns.STOP, time.getStop());
+        values.put(TimeColumns.START, time.getStart());
+        values.put(TimeColumns.STOP, time.getStop());
 
-        String where = BaseColumns._ID + "=" + time.getId();
+        String where = TimeColumns.ID + "=" + time.getId();
 
         mDatabase.update(getTable(), values, where, null);
         return find(time.getId());
@@ -116,7 +107,7 @@ public class TimeMapper extends AbstractMapper<Time>
 
     public boolean remove(Time time)
     {
-        String where = BaseColumns._ID + "=" + time.getId();
+        String where = TimeColumns.ID + "=" + time.getId();
 
         return 0 < mDatabase.delete(getTable(), where, null);
     }

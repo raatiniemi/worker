@@ -14,4 +14,15 @@ public class WorkerContract
 
         String ARCHIVED = "archived";
     }
+
+    public interface TimeColumns
+    {
+        String ID = BaseColumns._ID;
+
+        String PROJECT_ID = "project_id";
+
+        String START = "start";
+
+        String STOP = "stop";
+    }
 }
