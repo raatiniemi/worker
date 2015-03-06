@@ -55,24 +55,18 @@ public class WorkerDatabase extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL(
-            "CREATE TABLE " + Tables.PROJECT + " ( " +
-                ProjectColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ProjectColumns.NAME + " TEXT NOT NULL, " +
-                ProjectColumns.DESCRIPTION + " TEXT NULL, " +
-                ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
-                "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK" +
-            ");"
-        );
+        db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
+            ProjectColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            ProjectColumns.NAME + " TEXT NOT NULL, " +
+            ProjectColumns.DESCRIPTION + " TEXT NULL, " +
+            ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
+            "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
 
-        db.execSQL(
-            "CREATE TABLE " + Tables.TIME + " ( " +
-                TimeColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
-                TimeColumns.START + " INTEGER NOT NULL, " +
-                TimeColumns.STOP + " INTEGER DEFAULT 0 " +
-            ");"
-        );
+        db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
+            TimeColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
+            TimeColumns.START + " INTEGER NOT NULL, " +
+            TimeColumns.STOP + " INTEGER DEFAULT 0)");
     }
 
     @Override
