@@ -9,13 +9,12 @@ import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.provider.WorkerContract.*;
+import me.raatiniemi.worker.provider.WorkerDatabase.*;
 
 public class ProjectMapper extends AbstractMapper<Project>
 {
-    private static final String TABLE_NAME = "project";
-
     public static final String CREATE_TABLE =
-        "CREATE TABLE " + TABLE_NAME + " ( " +
+        "CREATE TABLE " + Tables.PROJECT + " ( " +
             ProjectColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ProjectColumns.NAME + " TEXT NOT NULL, " +
             ProjectColumns.DESCRIPTION + " TEXT NULL, " +
@@ -34,7 +33,7 @@ public class ProjectMapper extends AbstractMapper<Project>
 
     protected String getTable()
     {
-        return TABLE_NAME;
+        return Tables.PROJECT;
     }
 
     protected String[] getColumns()

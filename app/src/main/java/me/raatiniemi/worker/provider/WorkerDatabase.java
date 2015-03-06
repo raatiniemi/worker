@@ -10,6 +10,11 @@ import me.raatiniemi.worker.mapper.TimeMapper;
 
 public class WorkerDatabase extends SQLiteOpenHelper
 {
+    public interface Tables
+    {
+        String PROJECT = "project";
+    }
+
     /**
      * Name of the database.
      */
