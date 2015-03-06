@@ -8,10 +8,7 @@ import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 
-/**
- * Database helper for the "worker"-database.
- */
-public class Helper extends SQLiteOpenHelper
+public class WorkerDatabase extends SQLiteOpenHelper
 {
     /**
      * Name of the database.
@@ -26,25 +23,25 @@ public class Helper extends SQLiteOpenHelper
     /**
      * Instance for the database helper.
      */
-    private static Helper mHelper;
+    private static WorkerDatabase mWorkerDatabase;
 
     /**
      * Retrieve the instance for the database helper, instantiate if necessary.
      * @return Instance for the database helper.
      */
-    public static synchronized Helper getInstance()
+    public static synchronized WorkerDatabase getInstance()
     {
-        if ( mHelper == null ) {
-            mHelper = new Helper(Worker.getContext());
+        if ( mWorkerDatabase == null ) {
+            mWorkerDatabase = new WorkerDatabase(Worker.getContext());
         }
-        return mHelper;
+        return mWorkerDatabase;
     }
 
     /**
      * Instantiate the database helper with the application context.
      * @param context Application context.
      */
-    public Helper(Context context)
+    public WorkerDatabase(Context context)
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

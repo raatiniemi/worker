@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
-import me.raatiniemi.worker.provider.Helper;
+import me.raatiniemi.worker.provider.WorkerDatabase;
 import me.raatiniemi.worker.domain.DomainObject;
 
 /**
@@ -15,7 +15,7 @@ abstract public class AbstractMapper<T extends DomainObject>
     /**
      * Instance for the database helper.
      */
-    protected Helper mHelper;
+    protected WorkerDatabase mWorkerDatabase;
 
     /**
      * Instance for the database.
@@ -23,13 +23,13 @@ abstract public class AbstractMapper<T extends DomainObject>
     protected SQLiteDatabase mDatabase;
 
     /**
-     * Instantiate the data mapper with the database helper.
-     * @param helper Database helper.
+     * Instantiate the data mapper with the worker database.
+     * @param workerDatabase Worker database.
      */
-    public AbstractMapper(Helper helper)
+    public AbstractMapper(WorkerDatabase workerDatabase)
     {
-        mHelper = helper;
-        mDatabase = mHelper.getWritableDatabase();
+        mWorkerDatabase = workerDatabase;
+        mDatabase = mWorkerDatabase.getWritableDatabase();
     }
 
     /**
@@ -37,7 +37,7 @@ abstract public class AbstractMapper<T extends DomainObject>
      */
     public AbstractMapper()
     {
-        this(Helper.getInstance());
+        this(WorkerDatabase.getInstance());
     }
 
     /**
