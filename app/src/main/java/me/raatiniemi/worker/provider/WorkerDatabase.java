@@ -13,6 +13,7 @@ public class WorkerDatabase extends SQLiteOpenHelper
     public interface Tables
     {
         String PROJECT = "project";
+        String TIME = "time";
     }
 
     /**

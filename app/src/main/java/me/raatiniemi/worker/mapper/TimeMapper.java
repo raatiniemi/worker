@@ -9,13 +9,12 @@ import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.provider.WorkerContract.*;
+import me.raatiniemi.worker.provider.WorkerDatabase.*;
 
 public class TimeMapper extends AbstractMapper<Time>
 {
-    private static final String TABLE_NAME = "time";
-
     public static final String CREATE_TABLE =
-        "CREATE TABLE " + TABLE_NAME + " ( " +
+        "CREATE TABLE " + Tables.TIME + " ( " +
             TimeColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
             TimeColumns.START + " INTEGER NOT NULL, " +
@@ -29,7 +28,7 @@ public class TimeMapper extends AbstractMapper<Time>
 
     protected String getTable()
     {
-        return TABLE_NAME;
+        return Tables.TIME;
     }
 
     protected String[] getColumns()
