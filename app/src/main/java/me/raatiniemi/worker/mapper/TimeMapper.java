@@ -71,6 +71,51 @@ public class TimeMapper extends AbstractMapper<Time>
         return result;
     }
 
+    public ArrayList<ArrayList<Time>> findTime(Project project)
+    {
+        ArrayList<ArrayList<Time>> result = new ArrayList<>();
+
+        String[] columns = new String[] { "GROUP_CONCAT(" + TimeColumns.ID + ")" };
+
+        String selection = TimeColumns.PROJECT_ID + "=" + project.getId();
+        String[] selectionArgs;
+
+        String groupBy = "strftime('%Y%m%d', start / 1000, 'unixepoch')";
+        String orderBy = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
+
+        Cursor interval = mDatabase.query(getTable(), columns, selection, null, groupBy, null, orderBy);
+        if (interval.moveToFirst()) {
+            selection = TimeColumns.ID + "= ?";
+
+            ArrayList<Time> collection;
+            do {
+                collection = new ArrayList<>();
+
+                String rows = interval.getString(0);
+                String[] ids = rows.split(",");
+
+                for (String id : ids) {
+                    selectionArgs = new String[] { id };
+
+                    Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
+                    if (row.moveToFirst()) {
+                        do {
+                            Time time = load(row);
+                            if (null != time) {
+                                collection.add(time);
+                            }
+                        } while (row.moveToNext());
+                    }
+                    row.close();
+                }
+                result.add(collection);
+            } while (interval.moveToNext());
+        }
+        interval.close();
+
+        return result;
+    }
+
     public Time insert(Time time)
     {
         // TODO: Check if timer is already active for project, throw exception.
