@@ -18,7 +18,7 @@
         >
 
         <TextView
-            android:id="@+id/fragment_time_list_group_item_day"
+            android:id="@+id/fragment_time_list_group_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Monday (March 9th)"
