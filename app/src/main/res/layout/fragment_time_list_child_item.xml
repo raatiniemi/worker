@@ -18,7 +18,7 @@
         >
 
         <TextView
-            android:id="@+id/fragment_time_list_child_item_text"
+            android:id="@+id/fragment_time_list_child_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="07:45 - 11:45"
