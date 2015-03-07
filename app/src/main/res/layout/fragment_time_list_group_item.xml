@@ -3,13 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="44dp"
+    android:layout_height="64dp"
     >
 
     <RelativeLayout
         android:id="@+id/fragment_time_list_group_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingRight="20dp"
+        android:paddingEnd="20dp"
+        android:background="#08000000"
         >
 
         <TextView
@@ -17,19 +22,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Monday (March 9th)"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textSize="16sp"
+            />
 
         <TextView
             android:id="@+id/fragment_time_list_group_item_summarize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="8.35"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:textSize="16sp"
             />
 
     </RelativeLayout>
