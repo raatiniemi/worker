@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.ui;
 
+import android.text.format.DateFormat;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,14 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.domain.TimeCollection;
+import me.raatiniemi.worker.util.DateIntervalFormatter;
 
 public class ExpandableTimeListAdapter
     extends AbstractExpandableItemAdapter<ExpandableTimeListAdapter.GroupViewHolder, ExpandableTimeListAdapter.ChildViewHolder>
@@ -76,8 +80,24 @@ public class ExpandableTimeListAdapter
     @Override
     public void onBindGroupViewHolder(GroupViewHolder holder, int position, int viewType)
     {
-        holder.mTitle.setText("Monday (9th March)");
-        holder.mSummarize.setText("8.5");
+        Date date = mData.get(position).first;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        holder.mTitle.setText(formatter.format(date));
+
+        TimeCollection collection = mData.get(position).second;
+        long interval = 0;
+        for (Time time: collection) {
+            interval += time.getInterval();
+        }
+
+        DateIntervalFormatter dateIntervalFormatter = new DateIntervalFormatter();
+        holder.mSummarize.setText(
+            dateIntervalFormatter.format(
+                interval,
+                DateIntervalFormatter.Type.FRACTION_HOURS
+            )
+        );
     }
 
     @Override
