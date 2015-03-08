@@ -2,8 +2,10 @@ package me.raatiniemi.worker.mapper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
@@ -72,11 +74,14 @@ public class TimeMapper extends AbstractMapper<Time>
         return result;
     }
 
-    public ArrayList<TimeCollection> findTime(Project project)
+    public ArrayList<Pair<Date, TimeCollection>> findTime(Project project)
     {
-        ArrayList<TimeCollection> result = new ArrayList<>();
+        ArrayList<Pair<Date, TimeCollection>> result = new ArrayList<>();
 
-        String[] columns = new String[] { "GROUP_CONCAT(" + TimeColumns.ID + ")" };
+        String[] columns = new String[] {
+            "MIN(start) AS date",
+            "GROUP_CONCAT(" + TimeColumns.ID + ")"
+        };
 
         String selection = TimeColumns.PROJECT_ID + "=" + project.getId();
         String[] selectionArgs;
@@ -92,7 +97,8 @@ public class TimeMapper extends AbstractMapper<Time>
             do {
                 collection = new TimeCollection();
 
-                String rows = interval.getString(0);
+                Date date = new Date(interval.getLong(0));
+                String rows = interval.getString(1);
                 String[] ids = rows.split(",");
 
                 for (String id : ids) {
@@ -109,7 +115,7 @@ public class TimeMapper extends AbstractMapper<Time>
                     }
                     row.close();
                 }
-                result.add(collection);
+                result.add(new Pair<>(date, collection));
             } while (interval.moveToNext());
         }
         interval.close();
