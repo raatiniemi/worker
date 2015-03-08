@@ -18,7 +18,7 @@ public class ProjectActivity extends ActionBarActivity
         setContentView(R.layout.activity_project);
 
         if (savedInstanceState == null) {
-            TimeListFragment fragment = new TimeListFragment();
+            ExpandableTimeListFragment fragment = new ExpandableTimeListFragment();
             fragment.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction()
