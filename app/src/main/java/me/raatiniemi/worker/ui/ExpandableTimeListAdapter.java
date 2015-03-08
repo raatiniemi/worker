@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.ui;
 
+import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -8,7 +10,11 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.domain.TimeCollection;
 
 public class ExpandableTimeListAdapter
     extends AbstractExpandableItemAdapter<ExpandableTimeListAdapter.GroupViewHolder, ExpandableTimeListAdapter.ChildViewHolder>
@@ -51,27 +57,39 @@ public class ExpandableTimeListAdapter
         }
     }
 
+    private ArrayList<Pair<Date, TimeCollection>> mData;
+
+    public ExpandableTimeListAdapter(ArrayList<Pair<Date, TimeCollection>> data)
+    {
+        mData = data;
+    }
+
     @Override
     public GroupViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType)
     {
-        return null;
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View view = inflater.inflate(viewType, viewGroup, false);
+
+        return new GroupViewHolder(view);
     }
 
     @Override
     public void onBindGroupViewHolder(GroupViewHolder holder, int position, int viewType)
     {
+        holder.mTitle.setText("Monday (9th March)");
+        holder.mSummarize.setText("8.5");
     }
 
     @Override
     public int getGroupCount()
     {
-        return 0;
+        return mData.size();
     }
 
     @Override
     public int getGroupItemViewType(int position)
     {
-        return 0;
+        return R.layout.fragment_time_list_group_item;
     }
 
     @Override
