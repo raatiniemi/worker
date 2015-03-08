@@ -52,13 +52,13 @@ public class ExpandableTimeListAdapter
     }
 
     @Override
-    public GroupViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int i)
+    public GroupViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType)
     {
         return null;
     }
 
     @Override
-    public void onBindGroupViewHolder(GroupViewHolder groupViewHolder, int i, int i2)
+    public void onBindGroupViewHolder(GroupViewHolder holder, int position, int viewType)
     {
     }
 
@@ -69,48 +69,48 @@ public class ExpandableTimeListAdapter
     }
 
     @Override
-    public int getGroupItemViewType(int i)
+    public int getGroupItemViewType(int position)
     {
         return 0;
     }
 
     @Override
-    public long getGroupId(int i)
+    public long getGroupId(int position)
     {
         return 0;
     }
 
     @Override
-    public ChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int i)
+    public ChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType)
     {
         return null;
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder childViewHolder, int i, int i2, int i3)
+    public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int position, int viewType)
     {
     }
 
     @Override
-    public int getChildCount(int i)
-    {
-        return 0;
-    }
-
-    @Override
-    public int getChildItemViewType(int i, int i2)
+    public int getChildCount(int groupPosition)
     {
         return 0;
     }
 
     @Override
-    public long getChildId(int i, int i2)
+    public int getChildItemViewType(int groupPosition, int position)
     {
         return 0;
     }
 
     @Override
-    public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder groupViewHolder, int i, int i2, int i3, boolean b)
+    public long getChildId(int groupPosition, int position)
+    {
+        return 0;
+    }
+
+    @Override
+    public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand)
     {
         return false;
     }
