@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.TimeCollection;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.provider.WorkerContract.*;
 import me.raatiniemi.worker.provider.WorkerDatabase.*;
@@ -71,9 +72,9 @@ public class TimeMapper extends AbstractMapper<Time>
         return result;
     }
 
-    public ArrayList<ArrayList<Time>> findTime(Project project)
+    public ArrayList<TimeCollection> findTime(Project project)
     {
-        ArrayList<ArrayList<Time>> result = new ArrayList<>();
+        ArrayList<TimeCollection> result = new ArrayList<>();
 
         String[] columns = new String[] { "GROUP_CONCAT(" + TimeColumns.ID + ")" };
 
@@ -87,9 +88,9 @@ public class TimeMapper extends AbstractMapper<Time>
         if (interval.moveToFirst()) {
             selection = TimeColumns.ID + "= ?";
 
-            ArrayList<Time> collection;
+            TimeCollection collection;
             do {
-                collection = new ArrayList<>();
+                collection = new TimeCollection();
 
                 String rows = interval.getString(0);
                 String[] ids = rows.split(",");
