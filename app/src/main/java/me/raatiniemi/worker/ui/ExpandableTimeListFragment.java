@@ -43,6 +43,7 @@ public class ExpandableTimeListFragment extends Fragment
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_expandable_time_list);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(false);
 
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
         Project project = projectMapper.find(getProjectId());
@@ -58,5 +59,7 @@ public class ExpandableTimeListFragment extends Fragment
 
         RecyclerView.Adapter wrapperAdapter = manager.createWrappedAdapter(adapter);
         recyclerView.setAdapter(wrapperAdapter);
+
+        manager.attachRecyclerView(recyclerView);
     }
 }

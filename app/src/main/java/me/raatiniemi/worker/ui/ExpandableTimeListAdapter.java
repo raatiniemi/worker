@@ -70,6 +70,8 @@ public class ExpandableTimeListAdapter
         mProvider = provider;
 
         mSimpleDateFormat = new SimpleDateFormat("EEEE (d MMMM)", Locale.getDefault());
+
+        setHasStableIds(true);
     }
 
     @Override
@@ -84,6 +86,8 @@ public class ExpandableTimeListAdapter
     @Override
     public void onBindGroupViewHolder(GroupViewHolder holder, int position, int viewType)
     {
+        holder.itemView.setClickable(true);
+
         TimeGroup group = (TimeGroup) mProvider.getGroupItem(position);
         holder.mTitle.setText(mSimpleDateFormat.format(group.getDate()));
 
@@ -119,13 +123,16 @@ public class ExpandableTimeListAdapter
     @Override
     public long getGroupId(int position)
     {
-        return 0;
+        return mProvider.getGroupItem(position).getGroupId();
     }
 
     @Override
     public ChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType)
     {
-        return null;
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View view = inflater.inflate(viewType, viewGroup, false);
+
+        return new ChildViewHolder(view);
     }
 
     @Override
@@ -136,24 +143,24 @@ public class ExpandableTimeListAdapter
     @Override
     public int getChildCount(int groupPosition)
     {
-        return 0;
+        return mProvider.getChildCount(groupPosition);
     }
 
     @Override
     public int getChildItemViewType(int groupPosition, int position)
     {
-        return 0;
+        return R.layout.fragment_time_list_child_item;
     }
 
     @Override
     public long getChildId(int groupPosition, int position)
     {
-        return 0;
+        return mProvider.getChildItem(groupPosition, position).getChildId();
     }
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand)
     {
-        return false;
+        return true;
     }
 }
