@@ -10,6 +10,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
@@ -63,13 +65,20 @@ public class ExpandableTimeListAdapter
 
     private ExpandableTimeDataProvider mProvider;
 
-    private SimpleDateFormat mSimpleDateFormat;
+    private SimpleDateFormat mDateFormat;
+
+    private SimpleDateFormat mTimeFormat;
+
+    private DateIntervalFormatter mIntervalFormat;
 
     public ExpandableTimeListAdapter(ExpandableTimeDataProvider provider)
     {
         mProvider = provider;
 
-        mSimpleDateFormat = new SimpleDateFormat("EEEE (d MMMM)", Locale.getDefault());
+        mDateFormat = new SimpleDateFormat("EEEE (d MMMM)", Locale.getDefault());
+        mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+        mIntervalFormat = new DateIntervalFormatter();
 
         setHasStableIds(true);
     }
@@ -89,7 +98,7 @@ public class ExpandableTimeListAdapter
         holder.itemView.setClickable(true);
 
         TimeGroup group = (TimeGroup) mProvider.getGroupItem(position);
-        holder.mTitle.setText(mSimpleDateFormat.format(group.getDate()));
+        holder.mTitle.setText(mDateFormat.format(group.getDate()));
 
         long interval = 0;
 
@@ -99,9 +108,8 @@ public class ExpandableTimeListAdapter
             interval += time.getInterval();
         }
 
-        DateIntervalFormatter dateIntervalFormatter = new DateIntervalFormatter();
         holder.mSummarize.setText(
-            dateIntervalFormatter.format(
+            mIntervalFormat.format(
                 interval,
                 DateIntervalFormatter.Type.FRACTION_HOURS
             )
@@ -138,6 +146,21 @@ public class ExpandableTimeListAdapter
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int position, int viewType)
     {
+        TimeChild timeChild = (TimeChild) mProvider.getChildItem(groupPosition, position);
+        Time time = timeChild.getTime();
+
+        Date start = new Date(time.getStart());
+        Date stop = new Date(time.getStop());
+
+        holder.mTitle.setText(mTimeFormat.format(start) + " - " + mTimeFormat.format(stop));
+
+        holder.mSummarize.setText(
+            mIntervalFormat.format(
+                time.getInterval(),
+                DateIntervalFormatter.Type.FRACTION_HOURS
+            )
+        );
+
     }
 
     @Override
