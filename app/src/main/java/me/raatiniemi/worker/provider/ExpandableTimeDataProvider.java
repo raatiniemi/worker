@@ -79,26 +79,28 @@ public class ExpandableTimeDataProvider extends ExpandableDataProvider
     }
 
     @Override
-    public int getChildCount(int groupPosition)
+    public List<Child> getChildItems(int groupPosition)
     {
         if (groupPosition < 0 || groupPosition >= getGroupCount()) {
             throw new IndexOutOfBoundsException("Group position " + groupPosition);
         }
 
-        return mData.get(groupPosition).second.size();
+        return mData.get(groupPosition).second;
+    }
+
+    @Override
+    public int getChildCount(int groupPosition)
+    {
+        return getChildItems(groupPosition).size();
     }
 
     @Override
     public Child getChildItem(int groupPosition, int childPosition)
     {
-        if (groupPosition < 0 || groupPosition >= getGroupCount()) {
-            throw new IndexOutOfBoundsException("Group position " + groupPosition);
-        }
-
         if (childPosition < 0 || childPosition >= getChildCount(groupPosition)) {
             throw new IndexOutOfBoundsException("Child position " + childPosition);
         }
 
-        return mData.get(groupPosition).second.get(childPosition);
+        return getChildItems(groupPosition).get(childPosition);
     }
 }
