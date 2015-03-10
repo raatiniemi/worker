@@ -74,7 +74,7 @@ public class ExpandableTimeListAdapter
     {
         mProvider = provider;
 
-        mDateFormat = new SimpleDateFormat("EEEE (d MMMM)", Locale.getDefault());
+        mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
         mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         mIntervalFormat = new DateIntervalFormatter();
