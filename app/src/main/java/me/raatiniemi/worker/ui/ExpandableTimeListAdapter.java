@@ -11,7 +11,6 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
