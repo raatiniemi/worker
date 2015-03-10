@@ -93,16 +93,16 @@ public class ExpandableTimeListAdapter
     }
 
     @Override
-    public void onBindGroupViewHolder(GroupViewHolder holder, int position, int viewType)
+    public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType)
     {
         holder.itemView.setClickable(true);
 
-        TimeGroup group = (TimeGroup) mProvider.getGroupItem(position);
+        TimeGroup group = (TimeGroup) mProvider.getGroupItem(groupPosition);
         holder.mTitle.setText(mDateFormat.format(group.getDate()));
 
         long interval = 0;
 
-        List<Child> childItems = mProvider.getChildItems(position);
+        List<Child> childItems = mProvider.getChildItems(groupPosition);
         for (Child child: childItems) {
             Time time = ((TimeChild) child).getTime();
             interval += time.getInterval();
@@ -123,15 +123,15 @@ public class ExpandableTimeListAdapter
     }
 
     @Override
-    public int getGroupItemViewType(int position)
+    public int getGroupItemViewType(int groupPosition)
     {
         return R.layout.fragment_time_list_group_item;
     }
 
     @Override
-    public long getGroupId(int position)
+    public long getGroupId(int groupPosition)
     {
-        return mProvider.getGroupItem(position).getGroupId();
+        return mProvider.getGroupItem(groupPosition).getGroupId();
     }
 
     @Override
@@ -144,9 +144,9 @@ public class ExpandableTimeListAdapter
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int position, int viewType)
+    public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType)
     {
-        TimeChild timeChild = (TimeChild) mProvider.getChildItem(groupPosition, position);
+        TimeChild timeChild = (TimeChild) mProvider.getChildItem(groupPosition, childPosition);
         Time time = timeChild.getTime();
 
         Date start = new Date(time.getStart());
@@ -170,15 +170,15 @@ public class ExpandableTimeListAdapter
     }
 
     @Override
-    public int getChildItemViewType(int groupPosition, int position)
+    public int getChildItemViewType(int groupPosition, int childPosition)
     {
         return R.layout.fragment_time_list_child_item;
     }
 
     @Override
-    public long getChildId(int groupPosition, int position)
+    public long getChildId(int groupPosition, int childPosition)
     {
-        return mProvider.getChildItem(groupPosition, position).getChildId();
+        return mProvider.getChildItem(groupPosition, childPosition).getChildId();
     }
 
     @Override
