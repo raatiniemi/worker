@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.provider;
 
+import java.util.List;
+
 public class ExpandableTimeDataProvider extends ExpandableDataProvider
 {
     public static class TimeGroup extends Group
@@ -30,6 +32,13 @@ public class ExpandableTimeDataProvider extends ExpandableDataProvider
         {
             return null;
         }
+    }
+
+    private List<Groupable> mData;
+
+    public ExpandableTimeDataProvider(List<Groupable> data)
+    {
+        mData = data;
     }
 
     @Override
