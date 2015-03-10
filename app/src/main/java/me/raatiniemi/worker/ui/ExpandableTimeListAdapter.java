@@ -1,7 +1,5 @@
 package me.raatiniemi.worker.ui;
 
-import android.text.format.DateFormat;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +10,14 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Time;
-import me.raatiniemi.worker.domain.TimeCollection;
+import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
+import me.raatiniemi.worker.provider.ExpandableTimeDataProvider;
+import me.raatiniemi.worker.provider.ExpandableTimeDataProvider.*;
 import me.raatiniemi.worker.util.DateIntervalFormatter;
 
 public class ExpandableTimeListAdapter
@@ -61,11 +61,15 @@ public class ExpandableTimeListAdapter
         }
     }
 
-    private ArrayList<Pair<Date, TimeCollection>> mData;
+    private ExpandableTimeDataProvider mProvider;
 
-    public ExpandableTimeListAdapter(ArrayList<Pair<Date, TimeCollection>> data)
+    private SimpleDateFormat mSimpleDateFormat;
+
+    public ExpandableTimeListAdapter(ExpandableTimeDataProvider provider)
     {
-        mData = data;
+        mProvider = provider;
+
+        mSimpleDateFormat = new SimpleDateFormat("EEEE (d MMMM)", Locale.getDefault());
     }
 
     @Override
@@ -80,14 +84,14 @@ public class ExpandableTimeListAdapter
     @Override
     public void onBindGroupViewHolder(GroupViewHolder holder, int position, int viewType)
     {
-        Date date = mData.get(position).first;
+        TimeGroup group = (TimeGroup) mProvider.getGroupItem(position);
+        holder.mTitle.setText(mSimpleDateFormat.format(group.getDate()));
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        holder.mTitle.setText(formatter.format(date));
-
-        TimeCollection collection = mData.get(position).second;
         long interval = 0;
-        for (Time time: collection) {
+
+        List<Child> childItems = mProvider.getChildItems(position);
+        for (Child child: childItems) {
+            Time time = ((TimeChild) child).getTime();
             interval += time.getInterval();
         }
 
@@ -103,7 +107,7 @@ public class ExpandableTimeListAdapter
     @Override
     public int getGroupCount()
     {
-        return mData.size();
+        return mProvider.getGroupCount();
     }
 
     @Override
