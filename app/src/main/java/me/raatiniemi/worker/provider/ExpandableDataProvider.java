@@ -16,7 +16,6 @@ public abstract class ExpandableDataProvider
 
     public static abstract class Data
     {
-        public abstract String getText();
     }
 
     public static abstract class Group extends Data

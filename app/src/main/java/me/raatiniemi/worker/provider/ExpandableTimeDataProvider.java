@@ -11,12 +11,6 @@ public class ExpandableTimeDataProvider extends ExpandableDataProvider
         {
             return 0;
         }
-
-        @Override
-        public String getText()
-        {
-            return null;
-        }
     }
 
     public static class TimeChild extends Child
@@ -25,12 +19,6 @@ public class ExpandableTimeDataProvider extends ExpandableDataProvider
         public int getChildId()
         {
             return 0;
-        }
-
-        @Override
-        public String getText()
-        {
-            return null;
         }
     }
 
