@@ -5,22 +5,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
-import me.raatiniemi.worker.domain.TimeCollection;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
+import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
+import me.raatiniemi.worker.provider.ExpandableTimeDataProvider;
 
 public class ExpandableTimeListFragment extends Fragment
 {
@@ -49,11 +48,13 @@ public class ExpandableTimeListFragment extends Fragment
         Project project = projectMapper.find(getProjectId());
 
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-        ArrayList<Pair<Date, TimeCollection>> data = timeMapper.findTime(project);
+        List<Groupable> data = timeMapper.findTime(project);
+
+        ExpandableTimeDataProvider provider = new ExpandableTimeDataProvider(data);
 
         RecyclerViewExpandableItemManager manager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        ExpandableTimeListAdapter adapter = new ExpandableTimeListAdapter(data);
+        ExpandableTimeListAdapter adapter = new ExpandableTimeListAdapter(provider);
 
         RecyclerView.Adapter wrapperAdapter = manager.createWrappedAdapter(adapter);
         recyclerView.setAdapter(wrapperAdapter);

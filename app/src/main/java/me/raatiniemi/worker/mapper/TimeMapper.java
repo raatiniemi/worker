@@ -2,15 +2,16 @@ package me.raatiniemi.worker.mapper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
-import me.raatiniemi.worker.domain.TimeCollection;
 import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
+import me.raatiniemi.worker.provider.ExpandableTimeDataProvider.*;
 import me.raatiniemi.worker.provider.WorkerContract.*;
 import me.raatiniemi.worker.provider.WorkerDatabase.*;
 
@@ -74,9 +75,9 @@ public class TimeMapper extends AbstractMapper<Time>
         return result;
     }
 
-    public ArrayList<Pair<Date, TimeCollection>> findTime(Project project)
+    public List<Groupable> findTime(Project project)
     {
-        ArrayList<Pair<Date, TimeCollection>> result = new ArrayList<>();
+        List<Groupable> result = new ArrayList<>();
 
         String[] columns = new String[] {
             "MIN(start) AS date",
@@ -93,15 +94,17 @@ public class TimeMapper extends AbstractMapper<Time>
         if (interval.moveToFirst()) {
             selection = TimeColumns.ID + "= ?";
 
-            TimeCollection collection;
             do {
-                collection = new TimeCollection();
+                TimeGroup group = new TimeGroup(
+                    interval.getPosition(),
+                    new Date(interval.getLong(0))
+                );
 
-                Date date = new Date(interval.getLong(0));
-                String rows = interval.getString(1);
-                String[] ids = rows.split(",");
+                List<Child> children = new ArrayList<>();
 
-                for (String id : ids) {
+                String grouped = interval.getString(1);
+                String[] rows = grouped.split(",");
+                for (String id : rows) {
                     selectionArgs = new String[] { id };
 
                     Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
@@ -109,13 +112,16 @@ public class TimeMapper extends AbstractMapper<Time>
                         do {
                             Time time = load(row);
                             if (null != time) {
-                                collection.add(time);
+                                children.add(
+                                    new TimeChild(row.getPosition(), time)
+                                );
                             }
                         } while (row.moveToNext());
                     }
                     row.close();
                 }
-                result.add(new Pair<>(date, collection));
+                Groupable groupable = new Groupable(group, children);
+                result.add(groupable);
             } while (interval.moveToNext());
         }
         interval.close();
