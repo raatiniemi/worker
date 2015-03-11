@@ -19,7 +19,7 @@ import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
 import me.raatiniemi.worker.provider.ExpandableTimeDataProvider;
 import me.raatiniemi.worker.provider.ExpandableTimeDataProvider.*;
-import me.raatiniemi.worker.util.DateIntervalFormatter;
+import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class ExpandableTimeListAdapter
     extends AbstractExpandableItemAdapter<ExpandableTimeListAdapter.GroupViewHolder, ExpandableTimeListAdapter.ChildViewHolder>
@@ -68,7 +68,7 @@ public class ExpandableTimeListAdapter
 
     private SimpleDateFormat mTimeFormat;
 
-    private DateIntervalFormatter mIntervalFormat;
+    private DateIntervalFormat mIntervalFormat;
 
     public ExpandableTimeListAdapter(ExpandableTimeDataProvider provider)
     {
@@ -77,7 +77,7 @@ public class ExpandableTimeListAdapter
         mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
         mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-        mIntervalFormat = new DateIntervalFormatter();
+        mIntervalFormat = new DateIntervalFormat();
 
         setHasStableIds(true);
     }
@@ -110,7 +110,7 @@ public class ExpandableTimeListAdapter
         holder.mSummarize.setText(
             mIntervalFormat.format(
                 interval,
-                DateIntervalFormatter.Type.FRACTION_HOURS
+                DateIntervalFormat.Type.FRACTION_HOURS
             )
         );
     }
@@ -156,7 +156,7 @@ public class ExpandableTimeListAdapter
         holder.mSummarize.setText(
             mIntervalFormat.format(
                 time.getInterval(),
-                DateIntervalFormatter.Type.FRACTION_HOURS
+                DateIntervalFormat.Type.FRACTION_HOURS
             )
         );
 

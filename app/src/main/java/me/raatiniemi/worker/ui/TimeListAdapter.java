@@ -12,7 +12,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Time;
-import me.raatiniemi.worker.util.DateIntervalFormatter;
+import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.ItemViewHolder>
 {
@@ -75,8 +75,8 @@ public class TimeListAdapter extends RecyclerView.Adapter<TimeListAdapter.ItemVi
         } else {
             Date stop = new Date(time.getStop());
 
-            DateIntervalFormatter formatter = new DateIntervalFormatter();
-            String summarize = formatter.format(time.getTime());
+            DateIntervalFormat intervalFormat = new DateIntervalFormat();
+            String summarize = intervalFormat.format(time.getTime());
 
             holder.getStop().setText(format.format(stop));
             holder.getSummarize().setText(summarize);

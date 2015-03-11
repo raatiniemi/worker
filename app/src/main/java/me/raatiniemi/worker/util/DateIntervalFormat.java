@@ -3,7 +3,7 @@ package me.raatiniemi.worker.util;
 /**
  * Format time interval.
  */
-public class DateIntervalFormatter
+public class DateIntervalFormat
 {
     /**
      * Available format types.

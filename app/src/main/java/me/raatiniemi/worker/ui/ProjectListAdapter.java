@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
-import me.raatiniemi.worker.util.DateIntervalFormatter;
+import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ItemViewHolder>
 {
@@ -93,8 +93,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // Will open the single project activity.
         holder.itemView.setOnClickListener(mOnClickListener);
 
-        DateIntervalFormatter formatter = new DateIntervalFormatter();
-        String summarize = formatter.format(project.summarizeTime());
+        DateIntervalFormat intervalFormat = new DateIntervalFormat();
+        String summarize = intervalFormat.format(project.summarizeTime());
 
         holder.getName().setText(project.getName());
         holder.getTime().setText(summarize);
@@ -134,9 +134,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         clockedInSince = String.format(
             clockedInSince,
             project.getClockedInSince(),
-            formatter.format(
+            intervalFormat.format(
                 project.getElapsed(),
-                DateIntervalFormatter.Type.HOURS_MINUTES
+                DateIntervalFormat.Type.HOURS_MINUTES
             )
         );
         holder.getClockedInSince().setText(clockedInSince);
