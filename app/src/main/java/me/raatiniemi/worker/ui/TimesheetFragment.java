@@ -19,9 +19,9 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
-import me.raatiniemi.worker.provider.ExpandableTimeDataProvider;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
 
-public class ExpandableTimeListFragment extends Fragment
+public class TimesheetFragment extends Fragment
 {
     private long getProjectId()
     {
@@ -31,7 +31,7 @@ public class ExpandableTimeListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.fragment_expandable_time_list, container, false);
+        return inflater.inflate(R.layout.fragment_timesheet, container, false);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ExpandableTimeListFragment extends Fragment
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_expandable_time_list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(false);
 
@@ -51,11 +51,11 @@ public class ExpandableTimeListFragment extends Fragment
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
         List<Groupable> data = timeMapper.findTime(project);
 
-        ExpandableTimeDataProvider provider = new ExpandableTimeDataProvider(data);
+        TimesheetExpandableDataProvider provider = new TimesheetExpandableDataProvider(data);
 
         RecyclerViewExpandableItemManager manager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        ExpandableTimeListAdapter adapter = new ExpandableTimeListAdapter(provider);
+        TimesheetAdapter adapter = new TimesheetAdapter(provider);
 
         RecyclerView.Adapter wrapperAdapter = manager.createWrappedAdapter(adapter);
         recyclerView.setAdapter(wrapperAdapter);

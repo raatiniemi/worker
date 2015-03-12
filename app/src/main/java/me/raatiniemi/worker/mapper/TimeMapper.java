@@ -11,7 +11,7 @@ import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
-import me.raatiniemi.worker.provider.ExpandableTimeDataProvider.*;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.*;
 import me.raatiniemi.worker.provider.WorkerContract.*;
 import me.raatiniemi.worker.provider.WorkerDatabase.*;
 

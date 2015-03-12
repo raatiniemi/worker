@@ -17,12 +17,12 @@ import java.util.Locale;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
-import me.raatiniemi.worker.provider.ExpandableTimeDataProvider;
-import me.raatiniemi.worker.provider.ExpandableTimeDataProvider.*;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.*;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
-public class ExpandableTimeListAdapter
-    extends AbstractExpandableItemAdapter<ExpandableTimeListAdapter.GroupViewHolder, ExpandableTimeListAdapter.ChildViewHolder>
+public class TimesheetAdapter
+    extends AbstractExpandableItemAdapter<TimesheetAdapter.GroupViewHolder, TimesheetAdapter.ChildViewHolder>
 {
     public static class BaseViewHolder extends AbstractExpandableItemViewHolder
     {
@@ -62,7 +62,7 @@ public class ExpandableTimeListAdapter
         }
     }
 
-    private ExpandableTimeDataProvider mProvider;
+    private TimesheetExpandableDataProvider mProvider;
 
     private SimpleDateFormat mDateFormat;
 
@@ -70,7 +70,7 @@ public class ExpandableTimeListAdapter
 
     private DateIntervalFormat mIntervalFormat;
 
-    public ExpandableTimeListAdapter(ExpandableTimeDataProvider provider)
+    public TimesheetAdapter(TimesheetExpandableDataProvider provider)
     {
         mProvider = provider;
 

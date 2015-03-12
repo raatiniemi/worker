@@ -5,7 +5,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.Time;
 
-public class ExpandableTimeDataProvider extends ExpandableDataProvider
+public class TimesheetExpandableDataProvider extends ExpandableDataProvider
 {
     public static class TimeGroup extends Group
     {
@@ -57,7 +57,7 @@ public class ExpandableTimeDataProvider extends ExpandableDataProvider
 
     private List<Groupable> mData;
 
-    public ExpandableTimeDataProvider(List<Groupable> data)
+    public TimesheetExpandableDataProvider(List<Groupable> data)
     {
         mData = data;
     }
