@@ -101,7 +101,7 @@ public class TimesheetAdapter
 
     private boolean onTimeLongClick(View view)
     {
-        return null != getTimesheetListener() && getTimesheetListener().onTimeLongClick(view);
+        return null != getOnTimesheetListener() && getOnTimesheetListener().onTimeLongClick(view);
     }
 
     @Override
@@ -211,12 +211,12 @@ public class TimesheetAdapter
         return true;
     }
 
-    public void setTimesheetListener(OnTimesheetListener onTimesheetListener)
+    public void setOnTimesheetListener(OnTimesheetListener onTimesheetListener)
     {
         mOnTimesheetListener = onTimesheetListener;
     }
 
-    public OnTimesheetListener getTimesheetListener()
+    public OnTimesheetListener getOnTimesheetListener()
     {
         return mOnTimesheetListener;
     }
