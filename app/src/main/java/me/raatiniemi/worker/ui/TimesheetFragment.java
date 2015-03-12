@@ -23,6 +23,10 @@ import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
 
 public class TimesheetFragment extends Fragment
 {
+    private RecyclerView mRecyclerView;
+
+    private TimesheetAdapter mTimesheetAdapter;
+
     private long getProjectId()
     {
         return getArguments().getLong(ProjectListFragment.MESSAGE_PROJECT_ID, -1);
@@ -41,9 +45,9 @@ public class TimesheetFragment extends Fragment
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(false);
 
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
         Project project = projectMapper.find(getProjectId());
@@ -55,11 +59,11 @@ public class TimesheetFragment extends Fragment
 
         RecyclerViewExpandableItemManager manager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        TimesheetAdapter adapter = new TimesheetAdapter(provider);
+        mTimesheetAdapter = new TimesheetAdapter(provider);
 
-        RecyclerView.Adapter wrapperAdapter = manager.createWrappedAdapter(adapter);
-        recyclerView.setAdapter(wrapperAdapter);
+        RecyclerView.Adapter wrapperAdapter = manager.createWrappedAdapter(mTimesheetAdapter);
+        mRecyclerView.setAdapter(wrapperAdapter);
 
-        manager.attachRecyclerView(recyclerView);
+        manager.attachRecyclerView(mRecyclerView);
     }
 }
