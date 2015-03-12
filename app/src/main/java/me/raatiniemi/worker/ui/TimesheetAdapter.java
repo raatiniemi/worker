@@ -75,6 +75,8 @@ public class TimesheetAdapter
 
     private DateIntervalFormat mIntervalFormat;
 
+    private View.OnLongClickListener mOnTimeLongClickListener;
+
     private OnTimesheetListener mOnTimesheetListener;
 
     public TimesheetAdapter(TimesheetExpandableDataProvider provider)
@@ -86,7 +88,20 @@ public class TimesheetAdapter
 
         mIntervalFormat = new DateIntervalFormat();
 
+        mOnTimeLongClickListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view)
+            {
+                return onTimeLongClick(view);
+            }
+        };
+
         setHasStableIds(true);
+    }
+
+    private boolean onTimeLongClick(View view)
+    {
+        return null != getTimesheetListener() && getTimesheetListener().onTimeLongClick(view);
     }
 
     @Override
@@ -152,6 +167,9 @@ public class TimesheetAdapter
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType)
     {
+        // Register the long click listener on the time item.
+        holder.itemView.setOnLongClickListener(mOnTimeLongClickListener);
+
         TimeChild timeChild = (TimeChild) mProvider.getChildItem(groupPosition, childPosition);
         Time time = timeChild.getTime();
 
