@@ -62,6 +62,11 @@ public class TimesheetAdapter
         }
     }
 
+    public interface OnTimesheetListener
+    {
+        public boolean onTimeLongClick(View view);
+    }
+
     private TimesheetExpandableDataProvider mProvider;
 
     private SimpleDateFormat mDateFormat;
@@ -69,6 +74,8 @@ public class TimesheetAdapter
     private SimpleDateFormat mTimeFormat;
 
     private DateIntervalFormat mIntervalFormat;
+
+    private OnTimesheetListener mOnTimesheetListener;
 
     public TimesheetAdapter(TimesheetExpandableDataProvider provider)
     {
@@ -184,5 +191,15 @@ public class TimesheetAdapter
     public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand)
     {
         return true;
+    }
+
+    public void setTimesheetListener(OnTimesheetListener onTimesheetListener)
+    {
+        mOnTimesheetListener = onTimesheetListener;
+    }
+
+    public OnTimesheetListener getTimesheetListener()
+    {
+        return mOnTimesheetListener;
     }
 }
