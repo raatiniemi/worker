@@ -7,7 +7,7 @@
     >
 
     <RelativeLayout
-        android:id="@+id/fragment_time_list_group_item"
+        android:id="@+id/fragment_timesheet_group_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="20dp"
@@ -18,7 +18,7 @@
         >
 
         <TextView
-            android:id="@+id/fragment_time_list_group_item_title"
+            android:id="@+id/fragment_timesheet_group_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Monday (March 9th)"
@@ -27,12 +27,12 @@
             android:layout_alignParentStart="true"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:layout_toLeftOf="@+id/fragment_time_list_group_item_summarize"
-            android:layout_toStartOf="@+id/fragment_time_list_group_item_summarize"
+            android:layout_toLeftOf="@+id/fragment_timesheet_group_item_summarize"
+            android:layout_toStartOf="@+id/fragment_timesheet_group_item_summarize"
             />
 
         <TextView
-            android:id="@+id/fragment_time_list_group_item_summarize"
+            android:id="@+id/fragment_timesheet_group_item_summarize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="8.35"

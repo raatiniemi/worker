@@ -44,9 +44,9 @@ public class TimesheetAdapter
         {
             super(view);
 
-            mContainer = (RelativeLayout) view.findViewById(R.id.fragment_time_list_group_item);
-            mTitle = (TextView) view.findViewById(R.id.fragment_time_list_group_item_title);
-            mSummarize = (TextView) view.findViewById(R.id.fragment_time_list_group_item_summarize);
+            mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_group_item);
+            mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
+            mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
         }
     }
 
@@ -146,7 +146,7 @@ public class TimesheetAdapter
     @Override
     public int getGroupItemViewType(int groupPosition)
     {
-        return R.layout.fragment_time_list_group_item;
+        return R.layout.fragment_timesheet_group_item;
     }
 
     @Override
