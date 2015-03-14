@@ -78,6 +78,11 @@ public class TimesheetExpandableDataProvider extends ExpandableDataProvider
         return mData.get(groupPosition).first;
     }
 
+    public void removeGroupItem(int groupPosition)
+    {
+        mData.remove(groupPosition);
+    }
+
     @Override
     public List<Child> getChildItems(int groupPosition)
     {
@@ -107,5 +112,9 @@ public class TimesheetExpandableDataProvider extends ExpandableDataProvider
     public void removeChildItem(int groupPosition, int childPosition)
     {
         getChildItems(groupPosition).remove(childPosition);
+
+        if (0 == getChildCount(groupPosition)) {
+            removeGroupItem(groupPosition);
+        }
     }
 }
