@@ -19,11 +19,6 @@
     <string name="project_list_item_project_clock_out_before_clock_in_title">Unable to clock out</string>
     <string name="project_list_item_project_clock_out_before_clock_in_description">The time for clock out is before the time for clock in.</string>
 
-    <string name="placeholder_project_time_list_item_date">2015-01-30</string>
-    <string name="placeholder_project_time_list_item_start">07:30</string>
-    <string name="placeholder_project_time_list_item_stop">09:30</string>
-    <string name="placeholder_project_time_list_item_summarize">2h 0m</string>
-
     <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
     <string name="fragment_new_project_name_hint">Project name&#8230;</string>
     <string name="fragment_new_project_cancel">Cancel</string>
