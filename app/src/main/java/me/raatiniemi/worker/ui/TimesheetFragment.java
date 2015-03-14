@@ -168,7 +168,7 @@ public class TimesheetFragment extends Fragment
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
         if (timeMapper.remove(time)) {
             Log.d(TAG, "Removing item: "+ groupPosition +":"+ childPosition);
-            mTimesheetAdapter.remove(position, groupPosition, childPosition);
+            mTimesheetAdapter.remove(groupPosition, childPosition);
 
             // Create the intent for the broadcast to update the
             // project list. We have to supply the project id,

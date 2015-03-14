@@ -104,7 +104,7 @@ public class TimesheetAdapter
         return null != getOnTimesheetListener() && getOnTimesheetListener().onTimeLongClick(view);
     }
 
-    public void remove(int position, int groupPosition, int childPosition)
+    public void remove(int groupPosition, int childPosition)
     {
         mProvider.removeChildItem(groupPosition, childPosition);
         notifyDataSetChanged();
