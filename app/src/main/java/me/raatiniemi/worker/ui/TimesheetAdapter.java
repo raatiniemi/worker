@@ -181,6 +181,7 @@ public class TimesheetAdapter
         TimeChild timeChild = (TimeChild) mProvider.getChildItem(groupPosition, childPosition);
         Time time = timeChild.getTime();
 
+        // TODO: Handle when project is active, stop time is 01:00.
         Date start = new Date(time.getStart());
         Date stop = new Date(time.getStop());
 
