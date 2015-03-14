@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,9 +27,64 @@ import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
 
 public class TimesheetFragment extends Fragment
 {
+    private static final String TAG = "TimesheetFragment";
+
     private RecyclerView mRecyclerView;
 
     private TimesheetAdapter mTimesheetAdapter;
+
+    private RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager;
+
+    private int mSelectedPosition = -1;
+
+    private ActionMode mActionMode;
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback()
+    {
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu)
+        {
+            // TODO: Retrieve title from resources, for localization support.
+            actionMode.setTitle("Actions");
+            actionMode.getMenuInflater().inflate(R.menu.actions_project, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu)
+        {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem item)
+        {
+            boolean finish = false;
+
+            int position = mSelectedPosition;
+            switch (item.getItemId()) {
+                case R.id.actions_project_delete:
+                    remove(position);
+                    finish = true;
+                    break;
+                default:
+                    // TODO: Log unidentified action item clicked.
+            }
+
+
+            mSelectedPosition = -1;
+            if (finish) {
+                actionMode.finish();
+            }
+            return finish;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode)
+        {
+            mActionMode = null;
+        }
+    };
 
     private long getProjectId()
     {
@@ -57,13 +116,45 @@ public class TimesheetFragment extends Fragment
 
         TimesheetExpandableDataProvider provider = new TimesheetExpandableDataProvider(data);
 
-        RecyclerViewExpandableItemManager manager = new RecyclerViewExpandableItemManager(savedInstanceState);
+        mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
         mTimesheetAdapter = new TimesheetAdapter(provider);
+        mTimesheetAdapter.setOnTimesheetListener(new TimesheetAdapter.OnTimesheetListener() {
+            @Override
+            public boolean onTimeLongClick(View view)
+            {
+                mSelectedPosition = mRecyclerView.getChildPosition(view);
+                if (RecyclerView.NO_POSITION < mSelectedPosition) {
+                    // TODO: Set selection for the view.
 
-        RecyclerView.Adapter wrapperAdapter = manager.createWrappedAdapter(mTimesheetAdapter);
+                    // Only start the ActionMode if none has already started.
+                    if (null == mActionMode) {
+                        mActionMode = getActivity().startActionMode(mActionModeCallback);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        RecyclerView.Adapter wrapperAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter);
         mRecyclerView.setAdapter(wrapperAdapter);
 
-        manager.attachRecyclerView(mRecyclerView);
+        mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
+    }
+
+    private void remove(int position)
+    {
+        // The incoming "position" contains the position of the row refereed to as the
+        // flat position, i.e. position of the row in the recycler views current state
+        // (with expanded groups, etc.).
+        //
+        // From this we need to get the expanded position to be able to retrieve the
+        // actual group and child of which we'd like to remove.
+        long expandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(position);
+        int groupPosition = RecyclerViewExpandableItemManager.getPackedPositionGroup(expandablePosition);
+        int childPosition = RecyclerViewExpandableItemManager.getPackedPositionChild(expandablePosition);
+
+        Log.d(TAG, "Removing item: "+ groupPosition +":"+ childPosition);
     }
 }
