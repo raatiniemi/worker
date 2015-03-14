@@ -1,8 +1,10 @@
 package me.raatiniemi.worker.ui;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -167,6 +169,21 @@ public class TimesheetFragment extends Fragment
         if (timeMapper.remove(time)) {
             Log.d(TAG, "Removing item: "+ groupPosition +":"+ childPosition);
             mTimesheetAdapter.remove(position, groupPosition, childPosition);
+
+            // Create the intent for the broadcast to update the
+            // project list. We have to supply the project id,
+            // otherwise we're unable to properly update the view.
+            //
+            // TODO: Properly name the broadcast intent.
+            // The name of the broadcast intent should be supplied
+            // by the fragment we're trying to update, in case we'd
+            // want to update the fragment from an additional location.
+            Intent intent = new Intent("project-list-view-update");
+            intent.putExtra("project_id", getProjectId());
+
+            // Send the project update broadcast.
+            LocalBroadcastManager.getInstance(getActivity())
+                .sendBroadcast(intent);
         }
     }
 }
