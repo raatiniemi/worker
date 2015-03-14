@@ -104,6 +104,14 @@ public class TimesheetAdapter
         return null != getOnTimesheetListener() && getOnTimesheetListener().onTimeLongClick(view);
     }
 
+    public void remove(int position, int groupPosition, int childPosition)
+    {
+        // TODO: Reload the group item, summarize time is incorrect.
+        // TODO: If no more items is located in the group, remove the group.
+        notifyItemRemoved(position);
+        mProvider.removeChildItem(groupPosition, childPosition);
+    }
+
     @Override
     public GroupViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType)
     {

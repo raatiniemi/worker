@@ -103,4 +103,9 @@ public class TimesheetExpandableDataProvider extends ExpandableDataProvider
 
         return getChildItems(groupPosition).get(childPosition);
     }
+
+    public void removeChildItem(int groupPosition, int childPosition)
+    {
+        getChildItems(groupPosition).remove(childPosition);
+    }
 }

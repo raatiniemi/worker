@@ -19,17 +19,21 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.*;
 
 public class TimesheetFragment extends Fragment
 {
     private static final String TAG = "TimesheetFragment";
 
     private RecyclerView mRecyclerView;
+
+    private TimesheetExpandableDataProvider mProvider;
 
     private TimesheetAdapter mTimesheetAdapter;
 
@@ -114,11 +118,11 @@ public class TimesheetFragment extends Fragment
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
         List<Groupable> data = timeMapper.findTime(project);
 
-        TimesheetExpandableDataProvider provider = new TimesheetExpandableDataProvider(data);
+        mProvider = new TimesheetExpandableDataProvider(data);
 
         mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        mTimesheetAdapter = new TimesheetAdapter(provider);
+        mTimesheetAdapter = new TimesheetAdapter(mProvider);
         mTimesheetAdapter.setOnTimesheetListener(new TimesheetAdapter.OnTimesheetListener() {
             @Override
             public boolean onTimeLongClick(View view)
@@ -155,6 +159,14 @@ public class TimesheetFragment extends Fragment
         int groupPosition = RecyclerViewExpandableItemManager.getPackedPositionGroup(expandablePosition);
         int childPosition = RecyclerViewExpandableItemManager.getPackedPositionChild(expandablePosition);
 
-        Log.d(TAG, "Removing item: "+ groupPosition +":"+ childPosition);
+        // TODO: Migrate the mapper remove call to the provider?
+        TimeChild child = (TimeChild) mProvider.getChildItem(groupPosition, childPosition);
+        Time time = child.getTime();
+
+        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
+        if (timeMapper.remove(time)) {
+            Log.d(TAG, "Removing item: "+ groupPosition +":"+ childPosition);
+            mTimesheetAdapter.remove(position, groupPosition, childPosition);
+        }
     }
 }
