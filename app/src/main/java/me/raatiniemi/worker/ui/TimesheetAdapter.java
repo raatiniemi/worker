@@ -104,6 +104,12 @@ public class TimesheetAdapter
         return null != getOnTimesheetListener() && getOnTimesheetListener().onTimeLongClick(view);
     }
 
+    public void addGroup(Groupable groupable)
+    {
+        mProvider.addGroupItem(groupable);
+        notifyDataSetChanged();
+    }
+
     public void remove(int groupPosition, int childPosition)
     {
         mProvider.removeChildItem(groupPosition, childPosition);
