@@ -33,6 +33,8 @@ public class TimesheetFragment extends Fragment
 {
     private static final String TAG = "TimesheetFragment";
 
+    private Project mProject;
+
     private RecyclerView mRecyclerView;
 
     private TimesheetExpandableDataProvider mProvider;
@@ -107,17 +109,17 @@ public class TimesheetFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
 
+        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
+        mProject = projectMapper.find(getProjectId());
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(false);
 
-        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-        Project project = projectMapper.find(getProjectId());
-
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-        List<Groupable> data = timeMapper.findTime(project);
+        List<Groupable> data = timeMapper.findTime(mProject);
 
         mProvider = new TimesheetExpandableDataProvider(data);
 
