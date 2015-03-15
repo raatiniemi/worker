@@ -95,6 +95,8 @@ public class TimesheetFragment extends Fragment
         }
     };
 
+    private boolean mLoading = false;
+
     private long getProjectId()
     {
         return getArguments().getLong(ProjectListFragment.MESSAGE_PROJECT_ID, -1);
@@ -120,8 +122,52 @@ public class TimesheetFragment extends Fragment
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setHasFixedSize(false);
 
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                // Make sure we're not loading data before checking the position.
+                if (!mLoading) {
+                    // Retrieve positional data, needed for the calculation on whether
+                    // we are close to the end of the list or not.
+                    int visibleItems = mLinearLayoutManager.getChildCount();
+                    int firstVisiblePosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+
+                    // Retrieve the total number of items within the recycler view,
+                    // this will include both the group and the children.
+                    int totalItems = mLinearLayoutManager.getItemCount();
+
+                    // Check if the last row in the list is visible.
+                    if ((visibleItems + firstVisiblePosition) >= totalItems) {
+                        // We are about to start loading data, and thus we need
+                        // to block additional loading requests.
+                        mLoading = true;
+
+                        // Retrieve the total number of groups within the view, we need to
+                        // exclude the children otherwise the offset will be wrong.
+                        int offset = mTimesheetAdapter.getGroupCount();
+
+                        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
+                        List<Groupable> data = timeMapper.findIntervalByProject(mProject, offset);
+
+                        // Check if we retrieved any additional items.
+                        //
+                        // If we didn't, we're at the end of the available data,
+                        // there's no reason to unlock the loading (i.e. mLoading
+                        // should continue to be true).
+                        if (0 < data.size()) {
+                            for (Groupable groupable : data) {
+                                mTimesheetAdapter.addGroup(groupable);
+                            }
+                            mLoading = false;
+                        }
+                    }
+                }
+            }
+        });
+
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-        List<Groupable> data = timeMapper.findTime(mProject);
+        List<Groupable> data = timeMapper.findIntervalByProject(mProject);
 
         mProvider = new TimesheetExpandableDataProvider(data);
 
