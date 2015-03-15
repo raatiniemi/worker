@@ -133,9 +133,10 @@ public class TimeMapper extends AbstractMapper<Time>
     /**
      * Load a batch of time items grouped as an interval.
      * @param intervalRow Cursor for grouped interval.
+     * @param positionOffset Offset for the cursor position.
      * @return Time grouped as interval, or null if no rows are available.
      */
-    private Groupable loadGroupable(Cursor intervalRow)
+    private Groupable loadGroupable(Cursor intervalRow, int positionOffset)
     {
         // We're getting the id for the time objects as a comma-separated string column.
         // We have to split the value before attempting to retrieve each individual row.
@@ -145,7 +146,7 @@ public class TimeMapper extends AbstractMapper<Time>
             // Instantiate the group. The first column should be
             // the lowest timestamp within the interval.
             TimeGroup group = new TimeGroup(
-                intervalRow.getPosition(),
+                (intervalRow.getPosition() + positionOffset),
                 new Date(intervalRow.getLong(0))
             );
 
@@ -160,10 +161,13 @@ public class TimeMapper extends AbstractMapper<Time>
 
                 Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
                 if (row.moveToFirst()) {
+                    TimeChild child;
+
                     do {
                         Time time = load(row);
                         if (null != time) {
-                            children.add(new TimeChild(row.getPosition(), time));
+                            child = new TimeChild((row.getPosition() + positionOffset), time);
+                            children.add(child);
                         }
                     } while (row.moveToNext());
                 }
@@ -209,7 +213,7 @@ public class TimeMapper extends AbstractMapper<Time>
                 do {
                     // Attempt to load the grouped interval, might return null
                     // if no rows are available.
-                    Groupable groupable = loadGroupable(intervalRow);
+                    Groupable groupable = loadGroupable(intervalRow, start);
                     if (null != groupable) {
                         result.add(groupable);
                     }
