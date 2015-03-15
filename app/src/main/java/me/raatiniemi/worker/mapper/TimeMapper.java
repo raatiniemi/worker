@@ -76,60 +76,6 @@ public class TimeMapper extends AbstractMapper<Time>
         return result;
     }
 
-    public List<Groupable> findTime(Project project)
-    {
-        List<Groupable> result = new ArrayList<>();
-
-        String[] columns = new String[] {
-            "MIN(start) AS date",
-            "GROUP_CONCAT(" + TimeColumns.ID + ")"
-        };
-
-        String selection = TimeColumns.PROJECT_ID + "=" + project.getId();
-        String[] selectionArgs;
-
-        String groupBy = "strftime('%Y%m%d', start / 1000, 'unixepoch')";
-        String orderBy = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
-
-        Cursor interval = mDatabase.query(getTable(), columns, selection, null, groupBy, null, orderBy);
-        if (interval.moveToFirst()) {
-            selection = TimeColumns.ID + "= ?";
-
-            do {
-                TimeGroup group = new TimeGroup(
-                    interval.getPosition(),
-                    new Date(interval.getLong(0))
-                );
-
-                List<Child> children = new ArrayList<>();
-
-                String grouped = interval.getString(1);
-                String[] rows = grouped.split(",");
-                for (String id : rows) {
-                    selectionArgs = new String[] { id };
-
-                    Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
-                    if (row.moveToFirst()) {
-                        do {
-                            Time time = load(row);
-                            if (null != time) {
-                                children.add(
-                                    new TimeChild(row.getPosition(), time)
-                                );
-                            }
-                        } while (row.moveToNext());
-                    }
-                    row.close();
-                }
-                Groupable groupable = new Groupable(group, children);
-                result.add(groupable);
-            } while (interval.moveToNext());
-        }
-        interval.close();
-
-        return result;
-    }
-
     /**
      * Load a batch of time items grouped as an interval.
      * @param intervalRow Cursor for grouped interval.
