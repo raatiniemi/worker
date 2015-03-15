@@ -35,6 +35,8 @@ public class TimesheetFragment extends Fragment
 
     private Project mProject;
 
+    private LinearLayoutManager mLinearLayoutManager;
+
     private RecyclerView mRecyclerView;
 
     private TimesheetExpandableDataProvider mProvider;
@@ -112,10 +114,10 @@ public class TimesheetFragment extends Fragment
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
         mProject = projectMapper.find(getProjectId());
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
-        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setHasFixedSize(false);
 
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
