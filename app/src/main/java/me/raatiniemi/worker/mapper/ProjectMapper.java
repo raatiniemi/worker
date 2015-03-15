@@ -3,14 +3,13 @@ package me.raatiniemi.worker.mapper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import java.util.ArrayList;
-
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.provider.WorkerContract.*;
 import me.raatiniemi.worker.provider.WorkerDatabase.*;
 import me.raatiniemi.worker.util.ProjectCollection;
+import me.raatiniemi.worker.util.TimeCollection;
 
 public class ProjectMapper extends AbstractMapper<Project>
 {
@@ -50,7 +49,7 @@ public class ProjectMapper extends AbstractMapper<Project>
         project.setArchived(archived);
 
         if (null != mTimeMapper) {
-            ArrayList<Time> time = mTimeMapper.findTimeByProject(project);
+            TimeCollection time = mTimeMapper.findTimeByProject(project);
             for (Time item: time) {
                 project.addTime(item);
             }

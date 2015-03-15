@@ -14,6 +14,7 @@ import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.*;
 import me.raatiniemi.worker.provider.WorkerContract.*;
 import me.raatiniemi.worker.provider.WorkerDatabase.*;
+import me.raatiniemi.worker.util.TimeCollection;
 
 public class TimeMapper extends AbstractMapper<Time>
 {
@@ -52,9 +53,9 @@ public class TimeMapper extends AbstractMapper<Time>
         }
     }
 
-    public ArrayList<Time> findTimeByProject(Project project)
+    public TimeCollection findTimeByProject(Project project)
     {
-        ArrayList<Time> result = new ArrayList<>();
+        TimeCollection result = new TimeCollection();
 
         // Check that the project actually exists, i.e. it has an value for id.
         if (project != null && project.getId() != null) {

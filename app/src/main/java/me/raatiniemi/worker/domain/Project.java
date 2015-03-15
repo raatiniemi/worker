@@ -1,11 +1,11 @@
 package me.raatiniemi.worker.domain;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
+import me.raatiniemi.worker.util.TimeCollection;
 
 /**
  * Domain object for the Project.
@@ -30,7 +30,7 @@ public class Project extends DomainObject
     /**
      * Time registered for the project.
      */
-    private ArrayList<Time> mTime;
+    private TimeCollection mTime;
 
     /**
      * Initialize an existing project.
@@ -42,7 +42,7 @@ public class Project extends DomainObject
         super(id);
 
         setName(name);
-        setTime(new ArrayList<Time>());
+        setTime(new TimeCollection());
     }
 
     /**
@@ -112,7 +112,7 @@ public class Project extends DomainObject
      * Setter for the project time.
      * @param time Project time.
      */
-    private void setTime(ArrayList<Time> time)
+    private void setTime(TimeCollection time)
     {
         mTime = time;
     }
@@ -121,7 +121,7 @@ public class Project extends DomainObject
      * Getter for the project time.
      * @return Project time.
      */
-    public ArrayList<Time> getTime()
+    public TimeCollection getTime()
     {
         return mTime;
     }
@@ -144,7 +144,7 @@ public class Project extends DomainObject
         // Total time in number of seconds.
         long total = 0;
 
-        ArrayList<Time> time = getTime();
+        TimeCollection time = getTime();
         if (null != time && !time.isEmpty()) {
             // Iterate of the registered time and
             // retrieve the time interval.
@@ -179,7 +179,7 @@ public class Project extends DomainObject
      */
     private Time getActiveTime()
     {
-        ArrayList<Time> time = getTime();
+        TimeCollection time = getTime();
 
         if (time == null || time.isEmpty()) {
             return null;
