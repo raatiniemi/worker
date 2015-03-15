@@ -24,6 +24,7 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.ui.fragment.ClockActivityAtFragment;
+import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectListFragment extends Fragment
 {
@@ -60,7 +61,7 @@ public class ProjectListFragment extends Fragment
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
 
         // Retrieve the available projects from the project data mapper.
-        ArrayList<Project> projects = projectMapper.getProjects();
+        ProjectCollection projects = projectMapper.getProjects();
 
         mAdapter = new ProjectListAdapter(projects);
         mAdapter.setOnItemClickListener(new ProjectListAdapter.OnItemClickListener() {

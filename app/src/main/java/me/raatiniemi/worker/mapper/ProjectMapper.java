@@ -10,6 +10,7 @@ import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.provider.WorkerContract.*;
 import me.raatiniemi.worker.provider.WorkerDatabase.*;
+import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectMapper extends AbstractMapper<Project>
 {
@@ -58,9 +59,9 @@ public class ProjectMapper extends AbstractMapper<Project>
         return project;
     }
 
-    public ArrayList<Project> getProjects()
+    public ProjectCollection getProjects()
     {
-        ArrayList<Project> result = new ArrayList<>();
+        ProjectCollection result = new ProjectCollection();
 
         Cursor rows = mDatabase.query(getTable(), getColumns(), null, null, null, null, null);
         if (rows.moveToFirst()) {

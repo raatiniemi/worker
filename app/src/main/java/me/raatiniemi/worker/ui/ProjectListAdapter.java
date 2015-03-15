@@ -18,6 +18,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.util.DateIntervalFormat;
+import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ItemViewHolder>
 {
@@ -39,9 +40,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private View.OnClickListener mOnClickListener;
 
-    private ArrayList<Project> mProjects;
+    private ProjectCollection mProjects;
 
-    public ProjectListAdapter(ArrayList<Project> projects)
+    public ProjectListAdapter(ProjectCollection projects)
     {
         mProjects = projects;
 
