@@ -78,6 +78,11 @@ public class TimesheetExpandableDataProvider extends ExpandableDataProvider
         return mData.get(groupPosition).first;
     }
 
+    public void addGroupItem(Groupable groupable)
+    {
+        mData.add(groupable);
+    }
+
     public void removeGroupItem(int groupPosition)
     {
         mData.remove(groupPosition);
