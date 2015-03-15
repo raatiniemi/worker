@@ -41,7 +41,7 @@ public class TimesheetFragment extends Fragment
 
     private RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager;
 
-    private int mSelectedPosition = -1;
+    private long mExpandablePosition = -1;
 
     private ActionMode mActionMode;
 
@@ -67,18 +67,17 @@ public class TimesheetFragment extends Fragment
         {
             boolean finish = false;
 
-            int position = mSelectedPosition;
+            long expandablePosition = mExpandablePosition;
             switch (item.getItemId()) {
                 case R.id.actions_project_delete:
-                    remove(position);
+                    remove(expandablePosition);
                     finish = true;
                     break;
                 default:
                     // TODO: Log unidentified action item clicked.
             }
 
-
-            mSelectedPosition = -1;
+            mExpandablePosition = -1;
             if (finish) {
                 actionMode.finish();
             }
@@ -129,8 +128,14 @@ public class TimesheetFragment extends Fragment
             @Override
             public boolean onTimeLongClick(View view)
             {
-                mSelectedPosition = mRecyclerView.getChildPosition(view);
-                if (RecyclerView.NO_POSITION < mSelectedPosition) {
+                // The position of the item within the recycler view is referred to as the flat
+                // position. With this position we have to retrieve the expandable position, which
+                // basically is the group and child within bit shifted long.
+                //
+                // From this position we can later on get the actual group and child position.
+                int flatPosition = mRecyclerView.getChildPosition(view);
+                if (RecyclerView.NO_POSITION < flatPosition) {
+                    mExpandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(flatPosition);
                     // TODO: Set selection for the view.
 
                     // Only start the ActionMode if none has already started.
@@ -149,15 +154,8 @@ public class TimesheetFragment extends Fragment
         mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
     }
 
-    private void remove(int position)
+    private void remove(long expandablePosition)
     {
-        // The incoming "position" contains the position of the row refereed to as the
-        // flat position, i.e. position of the row in the recycler views current state
-        // (with expanded groups, etc.).
-        //
-        // From this we need to get the expanded position to be able to retrieve the
-        // actual group and child of which we'd like to remove.
-        long expandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(position);
         int groupPosition = RecyclerViewExpandableItemManager.getPackedPositionGroup(expandablePosition);
         int childPosition = RecyclerViewExpandableItemManager.getPackedPositionChild(expandablePosition);
 
