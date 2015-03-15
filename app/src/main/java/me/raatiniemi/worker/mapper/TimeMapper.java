@@ -130,6 +130,107 @@ public class TimeMapper extends AbstractMapper<Time>
         return result;
     }
 
+    /**
+     * Load a batch of time items grouped as an interval.
+     * @param intervalRow Cursor for grouped interval.
+     * @return Time grouped as interval, or null if no rows are available.
+     */
+    private Groupable loadGroupable(Cursor intervalRow)
+    {
+        // We're getting the id for the time objects as a comma-separated string column.
+        // We have to split the value before attempting to retrieve each individual row.
+        String grouped = intervalRow.getString(1);
+        String[] rows = grouped.split(",");
+        if (0 < rows.length) {
+            // Instantiate the group. The first column should be
+            // the lowest timestamp within the interval.
+            TimeGroup group = new TimeGroup(
+                intervalRow.getPosition(),
+                new Date(intervalRow.getLong(0))
+            );
+
+            ArrayList<Child> children = new ArrayList<>();
+
+            String selection = TimeColumns.ID + " = ?";
+            String[] selectionArgs;
+
+            // Iterate through and retrieve each row.
+            for (String id : rows) {
+                selectionArgs = new String[] { id };
+
+                Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
+                if (row.moveToFirst()) {
+                    do {
+                        Time time = load(row);
+                        if (null != time) {
+                            children.add(new TimeChild(row.getPosition(), time));
+                        }
+                    } while (row.moveToNext());
+                }
+                row.close();
+            }
+
+            return new Groupable(group, children);
+        }
+        return null;
+    }
+
+    /**
+     * Find and group time as an interval for a specified project.
+     * @param project Project connected to the time.
+     * @param start Where in the iteration to start, e.g. zero for first iteration.
+     * @return Time grouped as interval for specified project.
+     */
+    public List<Groupable> findIntervalByProject(Project project, int start)
+    {
+        List<Groupable> result = new ArrayList<>();
+
+        // Check that the project is a valid candidate, i.e. it's an existing project.
+        if (null != project && null != project.getId()) {
+            // We have to group each of the time objects related to the interval.
+            String[] columns = new String[] {
+                "MIN(start) AS date",
+                "GROUP_CONCAT(" + TimeColumns.ID + ")"
+            };
+
+            String selection = TimeColumns.PROJECT_ID + "=" + project.getId();
+
+            // Since we're storing everything registered time as milliseconds we have to
+            // convert it to seconds and then group it by the desired interval.
+            String groupBy = "strftime('%Y%m%d', start / 1000, 'unixepoch')";
+            String orderBy = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
+
+            // Build the limit section, the start control where in the
+            // result we should begin fetching the rows.
+            String limit = start + ", 10";
+
+            Cursor intervalRow = mDatabase.query(getTable(), columns, selection, null, groupBy, null, orderBy, limit);
+            if (intervalRow.moveToFirst()) {
+                do {
+                    // Attempt to load the grouped interval, might return null
+                    // if no rows are available.
+                    Groupable groupable = loadGroupable(intervalRow);
+                    if (null != groupable) {
+                        result.add(groupable);
+                    }
+                } while (intervalRow.moveToNext());
+            }
+            intervalRow.close();
+        }
+
+        return result;
+    }
+
+    /**
+     * Find and group time as an interval for a specified project.
+     * @param project Project connected to the time.
+     * @return Time grouped as interval for specified project.
+     */
+    public List<Groupable> findIntervalByProject(Project project)
+    {
+        return findIntervalByProject(project, 0);
+    }
+
     public Time insert(Time time)
     {
         // TODO: Check if timer is already active for project, throw exception.
