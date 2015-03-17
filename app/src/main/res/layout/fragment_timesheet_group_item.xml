@@ -3,17 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="64dp"
+    android:layout_height="@dimen/expandable_group_item_height"
     >
 
     <RelativeLayout
         android:id="@+id/fragment_timesheet_group_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="20dp"
-        android:paddingStart="20dp"
-        android:paddingRight="20dp"
-        android:paddingEnd="20dp"
+        android:paddingLeft="@dimen/expandable_group_item_padding_left"
+        android:paddingStart="@dimen/expandable_group_item_padding_left"
+        android:paddingRight="@dimen/expandable_group_item_padding_right"
+        android:paddingEnd="@dimen/expandable_group_item_padding_right"
         android:theme="@style/ExpandableGroupItem"
         >
 
