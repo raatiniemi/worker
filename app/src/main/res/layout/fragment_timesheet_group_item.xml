@@ -14,7 +14,7 @@
         android:paddingStart="20dp"
         android:paddingRight="20dp"
         android:paddingEnd="20dp"
-        android:background="#08000000"
+        android:background="#ffdbdbdb"
         >
 
         <TextView
