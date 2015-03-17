@@ -3,4 +3,26 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowActionModeOverlay">true</item>
     </style>
+
+    <style name="ExpandableGroupItem">
+        <item name="android:background">#ffdbdbdb</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ExpandableGroupItem.Title">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ExpandableGroupItem.Summarize">
+    </style>
+
+    <style name="ExpandableChildItem">
+        <item name="android:background">#ffe2e2e2</item>
+    </style>
+
+    <style name="ExpandableChildItem.Title">
+    </style>
+
+    <style name="ExpandableChildItem.Summarize">
+    </style>
 </resources>
