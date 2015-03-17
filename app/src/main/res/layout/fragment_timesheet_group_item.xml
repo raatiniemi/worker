@@ -21,24 +21,24 @@
             android:id="@+id/fragment_timesheet_group_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Monday (March 9th)"
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_toLeftOf="@+id/fragment_timesheet_group_item_summarize"
             android:layout_toStartOf="@+id/fragment_timesheet_group_item_summarize"
             android:theme="@style/ExpandableGroupItem.Title"
+            tools:text="Monday (March 9th)"
             />
 
         <TextView
             android:id="@+id/fragment_timesheet_group_item_summarize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="8.35"
             android:layout_centerInParent="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:theme="@style/ExpandableGroupItem.Summarize"
+            tools:text="8.35"
             />
 
     </RelativeLayout>

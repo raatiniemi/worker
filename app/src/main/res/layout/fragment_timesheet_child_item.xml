@@ -21,24 +21,24 @@
             android:id="@+id/fragment_timesheet_child_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="07:45 - 11:45"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/fragment_timesheet_child_item_summarize"
             android:layout_toStartOf="@+id/fragment_timesheet_child_item_summarize"
             android:theme="@style/ExpandableChildItem.Title"
+            tools:text="07:45 - 11:45"
             />
 
         <TextView
             android:id="@+id/fragment_timesheet_child_item_summarize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="4.5"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:theme="@style/ExpandableChildItem.Summarize"
+            tools:text="4.5"
             />
 
     </RelativeLayout>
