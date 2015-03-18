@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="transparent">#00000000</color>
+
     <color name="expandable_group_item_background">#ffdbdbdb</color>
     <color name="expandable_child_item_background">#ffe2e2e2</color>
 </resources>
