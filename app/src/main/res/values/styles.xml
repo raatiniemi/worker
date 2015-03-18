@@ -9,20 +9,20 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="ExpandableGroupItem.Title">
+    <style name="TimeGroupItemTitle">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="ExpandableGroupItem.Summarize">
+    <style name="TimeGroupItemSummarize">
     </style>
 
     <style name="ExpandableChildItem">
         <item name="android:background">@color/expandable_child_item_background</item>
     </style>
 
-    <style name="ExpandableChildItem.Title">
+    <style name="TimeChildItemTitle">
     </style>
 
-    <style name="ExpandableChildItem.Summarize">
+    <style name="TimeChildItemSummarize">
     </style>
 </resources>

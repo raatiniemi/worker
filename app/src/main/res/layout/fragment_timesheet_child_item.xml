@@ -26,7 +26,7 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/fragment_timesheet_child_item_summarize"
             android:layout_toStartOf="@+id/fragment_timesheet_child_item_summarize"
-            android:theme="@style/ExpandableChildItem.Title"
+            android:theme="@style/TimeChildItemTitle"
             tools:text="07:45 - 11:45"
             />
 
@@ -37,7 +37,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:theme="@style/ExpandableChildItem.Summarize"
+            android:theme="@style/TimeChildItemSummarize"
             tools:text="4.5"
             />
 
