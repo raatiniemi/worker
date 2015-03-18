@@ -5,7 +5,7 @@
     </style>
 
     <style name="ExpandableGroupItem">
-        <item name="android:background">#ffdbdbdb</item>
+        <item name="android:background">@color/expandable_group_item_background</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -17,7 +17,7 @@
     </style>
 
     <style name="ExpandableChildItem">
-        <item name="android:background">#ffe2e2e2</item>
+        <item name="android:background">@color/expandable_child_item_background</item>
     </style>
 
     <style name="ExpandableChildItem.Title">
