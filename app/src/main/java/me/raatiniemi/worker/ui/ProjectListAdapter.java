@@ -150,12 +150,18 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int index)
+    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.fragment_project_list_item, viewGroup, false);
+        View view = inflater.inflate(viewType, viewGroup, false);
 
         return new ItemViewHolder(view);
+    }
+
+    @Override
+    public int getItemViewType(int position)
+    {
+        return R.layout.fragment_project_list_item;
     }
 
     public int add(Project project)
