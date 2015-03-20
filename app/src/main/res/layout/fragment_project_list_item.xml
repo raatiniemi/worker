@@ -12,33 +12,32 @@
     android:layout_marginRight="@dimen/project_list_item_card_view_margin_horizontal"
     >
     <RelativeLayout
+        android:id="@+id/fragment_project_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/project_list_item_padding_horizontal"
         android:paddingTop="@dimen/project_list_item_padding_vertical"
         android:paddingRight="@dimen/project_list_item_padding_horizontal"
         android:paddingBottom="@dimen/project_list_item_padding_vertical"
-        android:id="@+id/fragment_project_list_item"
         >
 
         <TextView
             android:id="@+id/fragment_project_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            tools:text="Project name"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/fragment_project_time"
             android:layout_toLeftOf="@+id/fragment_project_time"
             android:textStyle="bold"
+            tools:text="Project name"
             />
 
         <TextView
             android:id="@+id/fragment_project_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="24h 25m"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -46,30 +45,31 @@
             android:layout_alignBottom="@+id/fragment_project_name"
             android:layout_marginLeft="@dimen/project_list_item_time_margin_start"
             android:layout_marginStart="@dimen/project_list_item_time_margin_start"
+            tools:text="24h 25m"
             />
 
         <TextView
             android:id="@+id/fragment_project_description"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            tools:text="Project description"
             android:layout_below="@+id/fragment_project_name"
             android:layout_marginTop="@dimen/project_list_item_description_margin_top"
             android:layout_alignLeft="@+id/fragment_project_name"
             android:layout_alignStart="@+id/fragment_project_name"
             android:layout_alignRight="@+id/fragment_project_time"
             android:layout_alignEnd="@+id/fragment_project_time"
+            tools:text="Project description"
             />
 
         <com.cengalabs.flatui.views.FlatButton
             android:id="@+id/fragment_project_clock_activity_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/project_list_item_project_clock_in"
             android:layout_below="@+id/fragment_project_description"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/project_list_item_clock_activity_toggle_margin_top"
+            android:text="@string/project_list_item_project_clock_in"
             flatui:fl_blockButtonEffectHeight="3dp"
             flatui:fl_theme="@array/grass"
             />
@@ -90,20 +90,20 @@
                 android:id="@+id/fragment_project_clocked_in_since"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Since 07:45"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:visibility="gone"
+                tools:text="Since 07:45"
                 />
             <TextView
                 android:id="@+id/fragment_project_clock_activity_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/project_list_item_project_clock_in_at"
                 android:layout_below="@+id/fragment_project_clocked_in_since"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:text="@string/project_list_item_project_clock_in_at"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textStyle="bold"
                 />
