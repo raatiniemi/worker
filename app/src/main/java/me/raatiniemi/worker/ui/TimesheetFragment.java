@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
 import java.util.List;
@@ -200,6 +201,12 @@ public class TimesheetFragment extends Fragment
 
         RecyclerView.Adapter wrapperAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter);
         mRecyclerView.setAdapter(wrapperAdapter);
+        mRecyclerView.addItemDecoration(
+            new SimpleListDividerDecorator(
+                getResources().getDrawable(R.drawable.expandable_list_item_divider),
+                true
+            )
+        );
 
         mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
     }
