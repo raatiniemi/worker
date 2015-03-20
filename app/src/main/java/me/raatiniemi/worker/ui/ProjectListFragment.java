@@ -27,13 +27,15 @@ import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectListFragment extends Fragment
 {
-    private RecyclerView mRecyclerView;
-
-    private ProjectListAdapter mAdapter;
+    private static final String TAG = "ProjectListFragment";
 
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
+
+    private RecyclerView mRecyclerView;
+
+    private ProjectListAdapter mAdapter;
 
     public ProjectListFragment()
     {
