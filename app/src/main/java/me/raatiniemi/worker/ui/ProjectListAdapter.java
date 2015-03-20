@@ -22,6 +22,8 @@ import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ItemViewHolder>
 {
+    private static final String TAG = "ProjectListAdapter";
+
     public interface OnItemClickListener
     {
         public void onItemClick(View view);

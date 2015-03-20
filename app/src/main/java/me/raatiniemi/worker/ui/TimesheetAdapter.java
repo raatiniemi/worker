@@ -24,6 +24,8 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 public class TimesheetAdapter
     extends AbstractExpandableItemAdapter<TimesheetAdapter.GroupViewHolder, TimesheetAdapter.ChildViewHolder>
 {
+    private static final String TAG = "TimesheetAdapter";
+
     public static class BaseViewHolder extends AbstractExpandableItemViewHolder
     {
         public RelativeLayout mContainer;

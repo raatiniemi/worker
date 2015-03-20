@@ -16,6 +16,8 @@ import me.raatiniemi.worker.R;
 
 public class TimePickerFragment extends DialogFragment
 {
+    private static final String TAG = "TimePickerFragment";
+
     /**
      * The "OnTimeSetListener" for the TimePickerDialog.
      */

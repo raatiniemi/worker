@@ -15,6 +15,8 @@ import me.raatiniemi.worker.R;
 
 public class DatePickerFragment extends DialogFragment
 {
+    private static final String TAG = "DatePickerFragment";
+
     /**
      * The "OnDateSetListener" for the DatePickerDialog.
      */
