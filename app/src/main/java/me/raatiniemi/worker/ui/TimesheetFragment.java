@@ -79,7 +79,8 @@ public class TimesheetFragment extends Fragment
                     finish = true;
                     break;
                 default:
-                    // TODO: Log unidentified action item clicked.
+                    Log.w(TAG, "Undefined action: " + item.getItemId());
+                    break;
             }
 
             mExpandablePosition = -1;
