@@ -83,8 +83,9 @@ public class ProjectMapper extends AbstractMapper<Project>
     {
         ProjectCollection result = new ProjectCollection();
 
-        // TODO: Exclude projects that has been archived.
-        Cursor rows = mDatabase.query(getTable(), getColumns(), null, null, null, null, null);
+        // Exclude projects that have been archived.
+        String selection = "COALESCE(" + ProjectColumns.ARCHIVED + ", 0) = 0";
+        Cursor rows = mDatabase.query(getTable(), getColumns(), selection, null, null, null, null);
         if (rows.moveToFirst()) {
             do {
                 Project project = load(rows);
