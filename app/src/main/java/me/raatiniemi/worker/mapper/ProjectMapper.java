@@ -63,16 +63,23 @@ public class ProjectMapper extends AbstractMapper<Project>
         project.setDescription(description);
         project.setArchived(archived);
 
+        return project;
+    }
+
+    /**
+     * Load the time for the project.
+     * @param project Project for which to load the time.
+     */
+    private void loadTime(Project project)
+    {
         // If the mapper for time objects is available, we should load
         // the the project time for the default interval.
         if (null != mTimeMapper) {
             TimeCollection time = mTimeMapper.findTimeByProject(project);
-            for (Time item: time) {
+            for (Time item : time) {
                 project.addTime(item);
             }
         }
-
-        return project;
     }
 
     /**
@@ -89,6 +96,9 @@ public class ProjectMapper extends AbstractMapper<Project>
         if (rows.moveToFirst()) {
             do {
                 Project project = load(rows);
+
+                // Populate the project with the registered time.
+                loadTime(project);
                 result.add(project);
             } while (rows.moveToNext());
         }
@@ -134,5 +144,20 @@ public class ProjectMapper extends AbstractMapper<Project>
 
         long id = mDatabase.insert(getTable(), null, values);
         return find(id);
+    }
+
+    /**
+     * Reload the project, and re-populate it with the registered time.
+     * @param id Id for the project to reload.
+     * @return Project with reloaded data.
+     */
+    public Project reload(long id)
+    {
+        Project project = find(id);
+        if (null != project) {
+            loadTime(project);
+        }
+
+        return project;
     }
 }

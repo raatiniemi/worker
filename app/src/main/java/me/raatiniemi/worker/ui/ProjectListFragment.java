@@ -143,7 +143,7 @@ public class ProjectListFragment extends Fragment
             }
 
             // Retrieve the updated project from the data mapper.
-            project = projectMapper.find(project.getId());
+            project = projectMapper.reload(project.getId());
             mAdapter.set(position, project);
         } catch (DomainException e) {
             new AlertDialog.Builder(getActivity())
