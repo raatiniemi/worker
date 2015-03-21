@@ -59,7 +59,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                     if (null != getOnItemClickListener()) {
                         getOnItemClickListener().onItemClick(v);
                     } else {
-                        Log.e("ProjectListAdapter", "No OnItemClickListener have been supplied");
+                        Log.e(TAG, "No OnItemClickListener have been supplied");
                     }
                 } else if (activityToggle == v.getId() || activityAt == v.getId()) {
                     if (null != getOnClockActivityChangeListener()) {
@@ -72,10 +72,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                             getOnClockActivityChangeListener().onClockActivityAt(view);
                         }
                     } else {
-                        Log.e("ProjectListAdapter", "No OnClockActivityChangeListener have been supplied");
+                        Log.e(TAG, "No OnClockActivityChangeListener have been supplied");
                     }
                 } else {
-                    Log.e("ProjectListAdapter", "Unrecognized id: "+ v.getId());
+                    Log.e(TAG, "Unrecognized id: "+ v.getId());
                 }
             }
         };
