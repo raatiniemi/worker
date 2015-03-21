@@ -68,7 +68,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                             view = (View) v.getParent().getParent();
                             getOnClockActivityChangeListener().onClockActivityToggle(view);
                         } else {
-                            view = (View) v.getParent().getParent().getParent();
+                            view = (View) v.getParent().getParent();
                             getOnClockActivityChangeListener().onClockActivityAt(view);
                         }
                     } else {
