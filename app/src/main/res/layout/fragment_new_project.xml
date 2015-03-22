@@ -44,7 +44,7 @@
             android:padding="5dp"
             android:layout_toLeftOf="@+id/fragment_new_project_create"
             android:layout_toStartOf="@+id/fragment_new_project_create"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@color/accent"
             android:textStyle="bold"
             android:textAllCaps="true"
             />
@@ -58,7 +58,7 @@
             android:padding="5dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@color/accent"
             android:textStyle="bold"
             android:textAllCaps="true"
             />

@@ -103,7 +103,7 @@
             android:layout_marginStart="@dimen/project_list_item_clocked_activity_margin_start"
             android:gravity="right"
             android:text="@string/project_list_item_project_clock_in_at"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@color/accent"
             android:textStyle="bold"
             />
     </RelativeLayout>
