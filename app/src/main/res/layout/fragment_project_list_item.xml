@@ -94,8 +94,6 @@
             android:id="@+id/fragment_project_clock_activity_at"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/fragment_project_clock_activity_toggle"
-            android:layout_toEndOf="@+id/fragment_project_clock_activity_toggle"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/fragment_project_clock_activity_toggle"
