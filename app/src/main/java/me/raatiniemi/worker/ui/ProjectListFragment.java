@@ -83,11 +83,27 @@ public class ProjectListFragment extends Fragment
         mAdapter.setOnClockActivityChangeListener(new ProjectListAdapter.OnClockActivityChangeListener() {
             @Override
             public void onClockActivityToggle(View view) {
-                int position = mRecyclerView.getChildPosition(view);
+                final int position = mRecyclerView.getChildPosition(view);
                 if (RecyclerView.NO_POSITION < position) {
                     Project project = mAdapter.get(position);
                     if (null != project) {
-                        onClockActivityChange(position, new Date());
+                        if (project.isActive()) {
+                            // TODO: Add configuration for disabling confirm dialog.
+                            // When using the toggle clock activity functionality, the user
+                            // have to confirm the clock out.
+                            new AlertDialog.Builder(getActivity())
+                                .setTitle(getString(R.string.confirm_clock_out_title))
+                                .setMessage(getString(R.string.confirm_clock_out_message))
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        onClockActivityChange(position, new Date());
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, null)
+                                .show();
+                        } else {
+                            onClockActivityChange(position, new Date());
+                        }
                     }
                 }
             }
