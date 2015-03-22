@@ -36,6 +36,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public void onClockActivityAt(View view);
     }
 
+    private DateIntervalFormat mDateIntervalFormat;
+
     private OnItemClickListener mOnItemClickListener;
 
     private OnClockActivityChangeListener mOnClockActivityChangeListener;
@@ -47,6 +49,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public ProjectListAdapter(ProjectCollection projects)
     {
         mProjects = projects;
+
+        mDateIntervalFormat = new DateIntervalFormat();
 
         mOnClickListener = new View.OnClickListener() {
             @Override
@@ -96,8 +100,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // Will open the single project activity.
         holder.itemView.setOnClickListener(mOnClickListener);
 
-        DateIntervalFormat intervalFormat = new DateIntervalFormat();
-        String summarize = intervalFormat.format(project.summarizeTime());
+        String summarize = mDateIntervalFormat.format(project.summarizeTime());
 
         holder.mName.setText(project.getName());
         holder.mTime.setText(summarize);
@@ -137,7 +140,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         clockedInSince = String.format(
             clockedInSince,
             project.getClockedInSince(),
-            intervalFormat.format(
+            mDateIntervalFormat.format(
                 project.getElapsed(),
                 DateIntervalFormat.Type.HOURS_MINUTES
             )
