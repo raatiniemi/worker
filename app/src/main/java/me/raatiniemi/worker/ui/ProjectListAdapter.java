@@ -7,12 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cengalabs.flatui.views.FlatButton;
-
-import java.util.ArrayList;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.application.Worker;
