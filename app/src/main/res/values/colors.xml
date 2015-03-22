@@ -2,6 +2,9 @@
 <resources>
     <color name="transparent">#00000000</color>
 
+    <color name="primary">#F44336</color>
+    <color name="primaryDark">#D32F2F</color>
+
     <color name="expandable_group_item_background">#ffdbdbdb</color>
     <color name="expandable_child_item_background">#ffe2e2e2</color>
 </resources>
