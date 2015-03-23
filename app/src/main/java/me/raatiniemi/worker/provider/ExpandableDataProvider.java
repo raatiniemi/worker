@@ -30,11 +30,11 @@ public abstract class ExpandableDataProvider
 
     public abstract int getGroupCount();
 
+    public abstract Group getGroupItem(int groupPosition);
+
     public abstract List<Child> getChildItems(int groupPosition);
 
     public abstract int getChildCount(int groupPosition);
-
-    public abstract Group getGroupItem(int groupPosition);
 
     public abstract Child getChildItem(int groupPosition, int childPosition);
 }
