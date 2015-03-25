@@ -5,6 +5,8 @@
 
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
+
+        <item name="colorButtonNormal">@color/accent</item>
     </style>
 
     <style name="ExpandableGroupItem">
