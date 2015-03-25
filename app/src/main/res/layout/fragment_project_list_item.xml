@@ -85,9 +85,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginLeft="@dimen/project_list_item_clocked_activity_margin_start"
             android:layout_marginStart="@dimen/project_list_item_clocked_activity_margin_start"
-            android:visibility="gone"
             android:gravity="right"
-            tools:text="Since 07:45"
+            tools:text="Since 07:45 (8h 50m)"
             />
 
         <TextView
