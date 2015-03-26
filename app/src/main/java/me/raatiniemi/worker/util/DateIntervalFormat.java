@@ -44,7 +44,14 @@ public class DateIntervalFormat
      */
     private String hoursMinutes(long hours, long minutes)
     {
-        return String.format("%dh %dm", hours, minutes);
+        String format = "%1$dh %2$dm";
+
+        // If no hours is available, remove it from the format.
+        if (0 == hours) {
+            format = "%2$dm";
+        }
+
+        return String.format(format, hours, minutes);
     }
 
     /**

@@ -15,7 +15,7 @@ public class DateIntervalFormatTest extends ApplicationTestCase<Application>
         DateIntervalFormat dateInterval = new DateIntervalFormat();
         String value = dateInterval.format(60000);
 
-        assertEquals("0h 1m", value);
+        assertEquals("1m", value);
     }
 
     public void testFormatHoursMinutes10m()
@@ -23,7 +23,7 @@ public class DateIntervalFormatTest extends ApplicationTestCase<Application>
         DateIntervalFormat dateInterval = new DateIntervalFormat();
         String value = dateInterval.format(600000);
 
-        assertEquals("0h 10m", value);
+        assertEquals("10m", value);
     }
 
     public void testFormatHoursMinutes30m()
@@ -31,7 +31,7 @@ public class DateIntervalFormatTest extends ApplicationTestCase<Application>
         DateIntervalFormat dateInterval = new DateIntervalFormat();
         String value = dateInterval.format(1800000);
 
-        assertEquals("0h 30m", value);
+        assertEquals("30m", value);
     }
 
     public void testFormatHoursMinutes60m()
