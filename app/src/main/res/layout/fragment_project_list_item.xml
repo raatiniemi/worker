@@ -50,6 +50,7 @@
                 android:layout_alignBottom="@+id/fragment_project_name"
                 android:layout_marginLeft="@dimen/project_list_item_time_margin_start"
                 android:layout_marginStart="@dimen/project_list_item_time_margin_start"
+                android:textColor="@color/textSecondary"
                 tools:text="24h 25m"
                 />
 
@@ -63,6 +64,7 @@
                 android:layout_alignStart="@+id/fragment_project_name"
                 android:layout_alignRight="@+id/fragment_project_time"
                 android:layout_alignEnd="@+id/fragment_project_time"
+                android:textColor="@color/textSecondary"
                 tools:text="Project description"
                 />
 
@@ -121,6 +123,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:gravity="right|center_vertical"
+                android:textColor="@color/textSecondary"
                 tools:text="Since 07:45 (8h 50m)"
                 />
         </RelativeLayout>

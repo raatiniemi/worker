@@ -9,7 +9,10 @@
     <color name="accent">#FF4081</color>
 
     <color name="text">#757575</color>
-    <color name="textSecondary">#BDBDBD</color>
+    <color name="textSecondary">#9E9E9E</color>
+
+    <color name="actionIconTint">#BDBDBD</color>
+    <color name="actionIconTintActive">@color/accent</color>
 
     <color name="expandable_group_item_background">#ffdbdbdb</color>
     <color name="expandable_child_item_background">#ffe2e2e2</color>

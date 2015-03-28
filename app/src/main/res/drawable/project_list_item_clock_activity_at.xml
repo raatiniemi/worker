@@ -6,7 +6,7 @@
         >
         <bitmap
             android:src="@drawable/ic_event_black_24dp"
-            android:tint="@color/textSecondary"
+            android:tint="@color/actionIconTint"
             />
     </item>
 
