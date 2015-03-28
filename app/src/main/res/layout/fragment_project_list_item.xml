@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_project_list_item_content"
             android:padding="6dp"
+            android:background="@drawable/project_list_item_action_divider"
             >
 
             <ImageButton
