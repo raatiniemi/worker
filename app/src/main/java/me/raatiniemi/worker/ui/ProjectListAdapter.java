@@ -7,9 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.cengalabs.flatui.views.FlatButton;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.application.Worker;
@@ -56,7 +55,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                 int activityToggle = R.id.fragment_project_clock_activity_toggle;
                 int activityAt = R.id.fragment_project_clock_activity_at;
 
-                if (R.id.fragment_project_list_item_card_view == v.getId()) {
+                if (R.id.fragment_project_list_item == v.getId()) {
                     if (null != getOnItemClickListener()) {
                         getOnItemClickListener().onItemClick(v);
                     } else {
@@ -64,12 +63,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                     }
                 } else if (activityToggle == v.getId() || activityAt == v.getId()) {
                     if (null != getOnClockActivityChangeListener()) {
-                        View view;
+                        View view = (View) v.getParent().getParent().getParent();
                         if (activityToggle == v.getId()) {
-                            view = (View) v.getParent().getParent();
                             getOnClockActivityChangeListener().onClockActivityToggle(view);
                         } else {
-                            view = (View) v.getParent().getParent();
                             getOnClockActivityChangeListener().onClockActivityAt(view);
                         }
                     } else {
@@ -111,25 +108,21 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         holder.mDescription.setVisibility(visibility);
 
         holder.mClockActivityToggle.setOnClickListener(mOnClickListener);
+        holder.mClockActivityToggle.setActivated(project.isActive());
 
-        // Depending on whether the project is active the text
-        // for the clock activity view should be altered, and
-        // visibility for the clocked activity view.
-        int clockActivityToggleId = R.string.project_list_item_project_clock_in;
-        int clockActivityAtId = R.string.project_list_item_project_clock_in_at;
-        int clockedInSinceVisibility = View.GONE;
-        if (project.isActive()) {
-            clockActivityToggleId = R.string.project_list_item_project_clock_out;
-            clockActivityAtId = R.string.project_list_item_project_clock_out_at;
-            clockedInSinceVisibility = View.VISIBLE;
-        }
+        // Add the onClickListener to the "Clock [in|out] at..." item.
+        holder.mClockActivityAt.setOnClickListener(mOnClickListener);
 
         // Retrieve the resource instance.
         Resources resources = Worker.getContext().getResources();
 
-        // Retrieve the string from the resources and update the view.
-        String clockActivityToggle = resources.getString(clockActivityToggleId);
-        holder.mClockActivityToggle.setText(clockActivityToggle);
+        // Depending on whether the project is active the text
+        // for the clock activity view should be altered, and
+        // visibility for the clocked activity view.
+        int clockedInSinceVisibility = View.GONE;
+        if (project.isActive()) {
+            clockedInSinceVisibility = View.VISIBLE;
+        }
 
         // Retrieve the time that the active session was clocked in.
         int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
@@ -144,11 +137,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         );
         holder.mClockedInSince.setText(clockedInSince);
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
-
-        // Add the onClickListener to the "Clock [in|out] at..." item.
-        String clockActivityAt = resources.getString(clockActivityAtId);
-        holder.mClockActivityAt.setText(clockActivityAt);
-        holder.mClockActivityAt.setOnClickListener(mOnClickListener);
     }
 
     @Override
@@ -201,11 +189,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
         public TextView mDescription;
 
-        public FlatButton mClockActivityToggle;
+        public ImageButton mClockActivityToggle;
+
+        public ImageButton mClockActivityAt;
 
         public TextView mClockedInSince;
-
-        public TextView mClockActivityAt;
 
         public ItemViewHolder(View view)
         {
@@ -214,9 +202,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             mName = (TextView) view.findViewById(R.id.fragment_project_name);
             mTime = (TextView) view.findViewById(R.id.fragment_project_time);
             mDescription = (TextView) view.findViewById(R.id.fragment_project_description);
-            mClockActivityToggle = (FlatButton) view.findViewById(R.id.fragment_project_clock_activity_toggle);
+            mClockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_toggle);
+            mClockActivityAt = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_at);
             mClockedInSince = (TextView) view.findViewById(R.id.fragment_project_clocked_in_since);
-            mClockActivityAt = (TextView) view.findViewById(R.id.fragment_project_clock_activity_at);
         }
     }
 
