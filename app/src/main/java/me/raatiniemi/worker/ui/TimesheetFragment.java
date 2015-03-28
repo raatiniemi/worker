@@ -48,6 +48,8 @@ public class TimesheetFragment extends Fragment
 
     private long mExpandablePosition = -1;
 
+    private View mSelectedView;
+
     private ActionMode mActionMode;
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback()
@@ -93,6 +95,13 @@ public class TimesheetFragment extends Fragment
         @Override
         public void onDestroyActionMode(ActionMode actionMode)
         {
+            // If there's a selected row, we have
+            // to clear the selection-state.
+            if (null != mSelectedView) {
+                mSelectedView.setSelected(false);
+                mSelectedView = null;
+            }
+
             mActionMode = null;
         }
     };
@@ -188,7 +197,17 @@ public class TimesheetFragment extends Fragment
                 int flatPosition = mRecyclerView.getChildPosition(view);
                 if (RecyclerView.NO_POSITION < flatPosition) {
                     mExpandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(flatPosition);
-                    // TODO: Set selection for the view.
+
+                    // If there's already a selected row, we have
+                    // to clear the selection-state.
+                    if (null != mSelectedView) {
+                        mSelectedView.setSelected(false);
+                    }
+
+                    // Save the view for reference and put
+                    // the view in the selection-state.
+                    mSelectedView = view;
+                    mSelectedView.setSelected(true);
 
                     // Only start the ActionMode if none has already started.
                     if (null == mActionMode) {
