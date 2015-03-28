@@ -14,7 +14,6 @@
         android:paddingStart="@dimen/expandable_child_item_padding_left"
         android:paddingRight="@dimen/expandable_child_item_padding_right"
         android:paddingEnd="@dimen/expandable_child_item_padding_right"
-        android:theme="@style/ExpandableChildItem"
         >
 
         <TextView
@@ -26,7 +25,6 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/fragment_timesheet_child_item_summarize"
             android:layout_toStartOf="@+id/fragment_timesheet_child_item_summarize"
-            android:theme="@style/ExpandableChildItemPrimary"
             tools:text="07:45 - 11:45"
             />
 
@@ -37,7 +35,6 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:theme="@style/ExpandableChildItemSecondary"
             tools:text="4.5"
             />
 
