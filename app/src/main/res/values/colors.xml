@@ -13,7 +13,4 @@
 
     <color name="actionIconTint">#BDBDBD</color>
     <color name="actionIconTintActive">@color/accent</color>
-
-    <color name="expandable_group_item_background">#ffdbdbdb</color>
-    <color name="expandable_child_item_background">#ffe2e2e2</color>
 </resources>

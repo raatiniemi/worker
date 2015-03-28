@@ -13,7 +13,6 @@
     </style>
 
     <style name="ExpandableGroupItem">
-        <item name="android:background">@color/expandable_group_item_background</item>
         <item name="android:textSize">16sp</item>
     </style>
 
@@ -25,7 +24,6 @@
     </style>
 
     <style name="ExpandableChildItem">
-        <item name="android:background">@color/expandable_child_item_background</item>
     </style>
 
     <style name="ExpandableChildItemPrimary">
