@@ -52,7 +52,7 @@ public class ProjectListActivity extends ActionBarActivity
         return super.onOptionsItemSelected(menuItem);
     }
 
-    public void openCreateNewProject()
+    protected void openCreateNewProject()
     {
         NewProjectFragment newProject = new NewProjectFragment();
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
