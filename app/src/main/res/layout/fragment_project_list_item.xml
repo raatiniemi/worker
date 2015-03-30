@@ -74,7 +74,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_project_list_item_content"
-            android:padding="6dp"
+            android:paddingLeft="2dp"
+            android:paddingStart="2dp"
+            android:paddingRight="2dp"
+            android:paddingEnd="2dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
             android:background="@drawable/project_list_item_action_divider"
             >
 
@@ -89,7 +94,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
-                android:background="@android:color/transparent"
+                android:background="@drawable/project_list_item_clock_activity_toggle_background"
                 android:src="@drawable/project_list_item_clock_activity_toggle"
                 />
 

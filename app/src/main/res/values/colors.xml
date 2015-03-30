@@ -12,5 +12,5 @@
     <color name="textSecondary">#9E9E9E</color>
 
     <color name="actionIconTint">#BDBDBD</color>
-    <color name="actionIconTintActive">@color/accent</color>
+    <color name="actionIconTintActive">@android:color/white</color>
 </resources>
