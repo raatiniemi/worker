@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -120,6 +121,9 @@ public class TimeMapper extends AbstractMapper<Time>
                 row.close();
             }
 
+            // Reverse the order of the children to put the latest
+            // item at the top of the list.
+            Collections.reverse(children);
             return new Groupable(group, children);
         }
         return null;
