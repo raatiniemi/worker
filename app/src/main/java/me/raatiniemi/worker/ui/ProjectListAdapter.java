@@ -40,6 +40,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private View.OnClickListener mOnClickListener;
 
+    private HintedImageButtonListener mHintedImageButtonListener;
+
     private ProjectCollection mProjects;
 
     public ProjectListAdapter(ProjectCollection projects)
@@ -77,6 +79,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                 }
             }
         };
+
+        mHintedImageButtonListener = new HintedImageButtonListener(Worker.getContext());
     }
 
     @Override
@@ -108,10 +112,12 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         holder.mDescription.setVisibility(visibility);
 
         holder.mClockActivityToggle.setOnClickListener(mOnClickListener);
+        holder.mClockActivityToggle.setOnLongClickListener(mHintedImageButtonListener);
         holder.mClockActivityToggle.setActivated(project.isActive());
 
         // Add the onClickListener to the "Clock [in|out] at..." item.
         holder.mClockActivityAt.setOnClickListener(mOnClickListener);
+        holder.mClockActivityAt.setOnLongClickListener(mHintedImageButtonListener);
 
         // Retrieve the resource instance.
         Resources resources = Worker.getContext().getResources();
