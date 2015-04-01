@@ -120,9 +120,19 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         // for the clock activity view should be altered, and
         // visibility for the clocked activity view.
         int clockedInSinceVisibility = View.GONE;
+        int clockActivityToggleId = R.string.project_list_item_project_clock_in;
+        int clockActivityAtId = R.string.project_list_item_project_clock_in_at;
         if (project.isActive()) {
+            clockActivityToggleId = R.string.project_list_item_project_clock_out;
+            clockActivityAtId = R.string.project_list_item_project_clock_out_at;
             clockedInSinceVisibility = View.VISIBLE;
         }
+
+        String clockActivityToggle = resources.getString(clockActivityToggleId);
+        holder.mClockActivityToggle.setContentDescription(clockActivityToggle);
+
+        String clockActivityAt = resources.getString(clockActivityAtId);
+        holder.mClockActivityAt.setContentDescription(clockActivityAt);
 
         // Retrieve the time that the active session was clocked in.
         int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
