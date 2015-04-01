@@ -94,6 +94,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
+                android:contentDescription="@string/project_list_item_project_clock_in"
                 android:background="@drawable/project_list_item_clock_activity_toggle_background"
                 android:src="@drawable/project_list_item_clock_activity_toggle"
                 />
@@ -109,6 +110,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
+                android:contentDescription="@string/project_list_item_project_clock_in_at"
                 android:background="@android:color/transparent"
                 android:src="@drawable/project_list_item_clock_activity_at"
                 />
