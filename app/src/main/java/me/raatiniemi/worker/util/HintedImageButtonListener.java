@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui;
+package me.raatiniemi.worker.util;
 
 import android.content.Context;
 import android.text.TextUtils;
