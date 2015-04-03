@@ -13,6 +13,8 @@ import me.raatiniemi.worker.util.TimeCollection;
 
 public class ProjectMapper extends AbstractMapper<Project>
 {
+    private static final String TAG = "ProjectMapper";
+
     private TimeMapper mTimeMapper;
 
     public ProjectMapper(TimeMapper timeMapper)
