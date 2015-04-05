@@ -185,7 +185,7 @@ public class Project extends DomainObject
             return null;
         }
 
-        return time.get(time.size() - 1);
+        return time.get(0);
     }
 
     /**

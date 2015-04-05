@@ -61,7 +61,7 @@ public class TimeMapper extends AbstractMapper<Time>
         // Check that the project actually exists, i.e. it has an value for id.
         if (project != null && project.getId() != null) {
             String selection = TimeColumns.PROJECT_ID + "=" + project.getId();
-            String orderBy = TimeColumns.STOP + " DESC," + TimeColumns.START + " ASC";
+            String orderBy = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
 
             Cursor rows = mDatabase.query(getTable(), getColumns(), selection, null, null, null, orderBy);
             if (rows.moveToFirst()) {
