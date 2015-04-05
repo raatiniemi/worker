@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -19,9 +20,19 @@ import me.raatiniemi.worker.util.TimeCollection;
 
 public class TimeMapper extends AbstractMapper<Time>
 {
+    private final long mBeginningOfMonth;
+
     public TimeMapper()
     {
         super();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        mBeginningOfMonth = calendar.getTimeInMillis();
     }
 
     protected String getTable()
@@ -60,10 +71,11 @@ public class TimeMapper extends AbstractMapper<Time>
 
         // Check that the project actually exists, i.e. it has an value for id.
         if (project != null && project.getId() != null) {
-            String selection = TimeColumns.PROJECT_ID + "=" + project.getId();
+            String selection = TimeColumns.PROJECT_ID + "=" + project.getId() + " AND (" + TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0)";
+            String[] selectionArgs = new String[] { String.valueOf(mBeginningOfMonth) };
             String orderBy = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
 
-            Cursor rows = mDatabase.query(getTable(), getColumns(), selection, null, null, null, orderBy);
+            Cursor rows = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, orderBy);
             if (rows.moveToFirst()) {
                 do {
                     Time time = load(rows);
