@@ -9,7 +9,8 @@
     android:paddingStart="@dimen/fragment_new_project_padding_start"
     android:paddingRight="@dimen/fragment_new_project_padding_end"
     android:paddingEnd="@dimen/fragment_new_project_padding_end"
-    android:paddingBottom="@dimen/fragment_new_project_padding_bottom"
+    android:paddingTop="@dimen/fragment_new_project_padding_vertical"
+    android:paddingBottom="@dimen/fragment_new_project_padding_vertical"
     android:minWidth="@dimen/dialog_fixed_width_minor"
     >
 
@@ -27,6 +28,7 @@
         android:hint="@string/fragment_new_project_name_hint"
         android:textSize="@dimen/fragment_new_project_name_text_size"
         android:layout_marginTop="5dp"
+        android:backgroundTint="@color/accent"
         />
 
     <RelativeLayout
