@@ -11,9 +11,9 @@
         <item name="android:textColor">@color/text</item>
         <item name="android:textColorSecondary">@color/textSecondary</item>
 
-        <item name="android:dialogTheme">@style/WorkerDialog</item>
+        <item name="android:dialogTheme">@style/Theme.Dialog</item>
     </style>
-    <style name="WorkerDialog" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Theme.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">false</item>
 
         <item name="colorPrimary">@color/primary</item>
