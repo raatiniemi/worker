@@ -36,6 +36,15 @@ public class ProjectTest extends ApplicationTestCase<Application>
         assertEquals("Foobar", project.getDescription());
     }
 
+    public void testGetArchived()
+    {
+        Project project = new Project((long) 1, null);
+
+        Long archived = (long) 0;
+
+        assertEquals(archived, project.getArchived());
+    }
+
     public void testSetArchived()
     {
         Project project = new Project((long) 1, null);
