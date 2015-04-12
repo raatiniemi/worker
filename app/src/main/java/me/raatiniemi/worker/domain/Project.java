@@ -43,6 +43,7 @@ public class Project extends DomainObject
 
         setName(name);
         setTime(new TimeCollection());
+        setArchived((long) 0);
     }
 
     /**
