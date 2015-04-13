@@ -20,12 +20,17 @@ import me.raatiniemi.worker.util.TimeCollection;
 
 public class TimeMapper extends AbstractMapper<Time>
 {
+    /**
+     * Timestamp for the beginning of the month in milliseconds.
+     */
     private final long mBeginningOfMonth;
 
     public TimeMapper()
     {
         super();
 
+        // Reset the calendar to retrieve timestamp
+        // of the beginning of the month.
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
