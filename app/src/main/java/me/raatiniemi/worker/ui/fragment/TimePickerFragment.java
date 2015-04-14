@@ -47,7 +47,7 @@ public class TimePickerFragment extends DialogFragment
         super.onAttach(activity);
 
         // Check if we have a callback listener.
-        if (getOnTimeSetListener() == null) {
+        if (null == getOnTimeSetListener()) {
             Log.e("onAttach", "No listener have been supplied for the TimePickerFragment");
 
             // We're unable to use the TimePickerFragment
