@@ -22,7 +22,7 @@ import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
-import me.raatiniemi.worker.ui.fragment.ClockActivityAtFragment;
+import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectListFragment extends Fragment

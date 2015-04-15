@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui.fragment;
+package me.raatiniemi.worker.util;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
