@@ -12,7 +12,7 @@ import me.raatiniemi.worker.domain.Project;
 
 public class MainActivity extends ActionBarActivity
 {
-    private static final String TAG = "ProjectListActivity";
+    private static final String TAG = "MainActivity";
 
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
