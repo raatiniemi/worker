@@ -13,7 +13,7 @@
         >
 
         <activity
-            android:name=".ui.ProjectListActivity"
+            android:name=".ui.MainActivity"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

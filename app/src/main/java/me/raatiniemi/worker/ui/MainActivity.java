@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
 
-public class ProjectListActivity extends ActionBarActivity
+public class MainActivity extends ActionBarActivity
 {
     private static final String TAG = "ProjectListActivity";
 
