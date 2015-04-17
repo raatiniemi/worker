@@ -14,9 +14,9 @@ public class MainActivity extends ActionBarActivity
 {
     private static final String TAG = "MainActivity";
 
-    private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
+    static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
-    private static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
+    static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 
     /**
      * Instance for the main activity.
