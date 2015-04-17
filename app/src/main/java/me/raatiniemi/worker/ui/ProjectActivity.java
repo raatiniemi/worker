@@ -9,8 +9,6 @@ public class ProjectActivity extends ActionBarActivity
 {
     private static final String TAG = "ProjectActivity";
 
-    private static final String FRAGMENT_TIME_LIST_TAG = "time list";
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -22,7 +20,7 @@ public class ProjectActivity extends ActionBarActivity
             fragment.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.activity_project_time_list_fragment, fragment, FRAGMENT_TIME_LIST_TAG)
+                .replace(R.id.activity_project_time_list_fragment, fragment, MainActivity.FRAGMENT_TIME_LIST_TAG)
                 .commit();
         }
     }
