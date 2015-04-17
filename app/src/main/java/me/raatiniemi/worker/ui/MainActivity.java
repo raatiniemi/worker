@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity
 
     static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
-    static final String FRAGMENT_TIME_LIST_TAG = "time list";
+    static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
 
     static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 

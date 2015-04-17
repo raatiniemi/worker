@@ -20,7 +20,7 @@ public class ProjectActivity extends ActionBarActivity
             fragment.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.activity_project_time_list_fragment, fragment, MainActivity.FRAGMENT_TIME_LIST_TAG)
+                .replace(R.id.activity_project_time_list_fragment, fragment, MainActivity.FRAGMENT_TIMESHEET_TAG)
                 .commit();
         }
     }
