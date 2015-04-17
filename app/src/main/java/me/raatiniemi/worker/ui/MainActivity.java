@@ -18,11 +18,20 @@ public class MainActivity extends ActionBarActivity
 
     private static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 
+    /**
+     * Instance for the main activity.
+     */
+    private static MainActivity sInstance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Store the instance for the main activity as a static variable.
+        // This will allow fragments to communicate using the main activity.
+        sInstance = this;
 
         if (null == savedInstanceState) {
             ProjectListFragment fragment = new ProjectListFragment();
@@ -72,5 +81,14 @@ public class MainActivity extends ActionBarActivity
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
+    }
+
+    /**
+     * Retrieve the instance for the main activity.
+     * @return Instance for the main activity or null if none is available.
+     */
+    static MainActivity getInstance()
+    {
+        return sInstance;
     }
 }
