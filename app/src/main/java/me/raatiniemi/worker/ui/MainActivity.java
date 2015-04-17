@@ -37,7 +37,7 @@ public class MainActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actions_project_list, menu);
+        inflater.inflate(R.menu.actions_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
