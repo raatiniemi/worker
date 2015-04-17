@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity
             ProjectListFragment fragment = new ProjectListFragment();
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.activity_project_list_project_list_fragment, fragment, FRAGMENT_PROJECT_LIST_TAG)
+                .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
                 .commit();
         }
     }
