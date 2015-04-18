@@ -3,7 +3,6 @@ package me.raatiniemi.worker.ui;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,10 +71,16 @@ public class ProjectListFragment extends Fragment
                 if (RecyclerView.NO_POSITION < position) {
                     Project project = mAdapter.get(position);
                     if (null != project) {
-                        Intent intent = new Intent(getActivity(), ProjectActivity.class);
-                        intent.putExtra(MESSAGE_PROJECT_ID, project.getId());
+                        Bundle bundle = new Bundle();
+                        bundle.putLong(MESSAGE_PROJECT_ID, project.getId());
 
-                        startActivity(intent);
+                        TimesheetFragment fragment = new TimesheetFragment();
+                        fragment.setArguments(bundle);
+
+                        getFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment, MainActivity.FRAGMENT_TIMESHEET_TAG)
+                            .addToBackStack(MainActivity.FRAGMENT_PROJECT_LIST_TAG)
+                            .commit();
                     }
                 }
             }

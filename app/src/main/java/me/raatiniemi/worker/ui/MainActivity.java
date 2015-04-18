@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.ui;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,6 +85,20 @@ public class MainActivity extends ActionBarActivity
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        FragmentManager fragmentManager = getFragmentManager();
+
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
+        Object instance = TimesheetFragment.class;
+        if (instance.equals(fragment.getClass())) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**
