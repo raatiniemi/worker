@@ -21,16 +21,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.ProjectActivity"
-            android:parentActivityName=".ui.ProjectActivity"
-            >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.ProjectActivity"
-                />
-        </activity>
-
     </application>
 
 </manifest>
