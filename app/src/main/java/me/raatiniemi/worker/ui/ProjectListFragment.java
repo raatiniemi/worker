@@ -130,14 +130,8 @@ public class ProjectListFragment extends Fragment
         });
         mRecyclerView.setAdapter(mAdapter);
 
-        // Instantiate the data mapper for time and project.
-        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-
-        // Retrieve the available projects from the project data mapper.
-        ProjectCollection projects = projectMapper.getProjects();
-        setData(projects);
-
         getPresenter().attachView(this);
+        getPresenter().loadProjects();
     }
 
     @Override
