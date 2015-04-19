@@ -36,6 +36,8 @@ public class ProjectListFragment extends Fragment
 
     private ProjectListAdapter mAdapter;
 
+    private ProjectsPresenter mPresenter;
+
     public ProjectListFragment()
     {
         super();
@@ -134,6 +136,24 @@ public class ProjectListFragment extends Fragment
         // Retrieve the available projects from the project data mapper.
         ProjectCollection projects = projectMapper.getProjects();
         setData(projects);
+
+        getPresenter().attachView(this);
+    }
+
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+
+        getPresenter().detachView();
+    }
+
+    protected ProjectsPresenter getPresenter()
+    {
+        if (null == mPresenter) {
+            mPresenter = new ProjectsPresenter();
+        }
+        return mPresenter;
     }
 
     public void setData(ProjectCollection projects)
