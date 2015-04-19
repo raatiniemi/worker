@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.ui;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -33,6 +34,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         public void onClockActivityAt(View view);
     }
 
+    private Context mContext;
+
     private DateIntervalFormat mDateIntervalFormat;
 
     private OnItemClickListener mOnItemClickListener;
@@ -45,8 +48,9 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private ProjectCollection mProjects;
 
-    public ProjectListAdapter()
+    public ProjectListAdapter(Context context)
     {
+        mContext = context;
         mDateIntervalFormat = new DateIntervalFormat();
 
         mOnClickListener = new View.OnClickListener() {
@@ -79,7 +83,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             }
         };
 
-        mHintedImageButtonListener = new HintedImageButtonListener(Worker.getContext());
+        mHintedImageButtonListener = new HintedImageButtonListener(mContext);
     }
 
     public void setProjects(ProjectCollection projects)

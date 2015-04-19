@@ -57,7 +57,7 @@ public class ProjectListFragment extends Fragment
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_project_list);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new ProjectListAdapter();
+        mAdapter = new ProjectListAdapter(getActivity());
         mAdapter.setOnItemClickListener(new ProjectListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
