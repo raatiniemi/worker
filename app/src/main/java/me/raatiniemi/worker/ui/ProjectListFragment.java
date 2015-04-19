@@ -63,7 +63,8 @@ public class ProjectListFragment extends Fragment
         // Retrieve the available projects from the project data mapper.
         ProjectCollection projects = projectMapper.getProjects();
 
-        mAdapter = new ProjectListAdapter(projects);
+        mAdapter = new ProjectListAdapter();
+        mAdapter.setProjects(projects);
         mAdapter.setOnItemClickListener(new ProjectListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {

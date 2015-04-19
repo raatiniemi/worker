@@ -45,10 +45,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     private ProjectCollection mProjects;
 
-    public ProjectListAdapter(ProjectCollection projects)
+    public ProjectListAdapter()
     {
-        mProjects = projects;
-
         mDateIntervalFormat = new DateIntervalFormat();
 
         mOnClickListener = new View.OnClickListener() {
