@@ -84,6 +84,16 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         mHintedImageButtonListener = new HintedImageButtonListener(Worker.getContext());
     }
 
+    public void setProjects(ProjectCollection projects)
+    {
+        mProjects = projects;
+    }
+
+    public ProjectCollection getProjects()
+    {
+        return mProjects;
+    }
+
     @Override
     public int getItemCount()
     {
