@@ -1,12 +1,11 @@
 package me.raatiniemi.worker.ui;
 
-import android.app.Fragment;
 
 public class ProjectsPresenter
 {
-    private Fragment mFragment;
+    private ProjectListFragment mFragment;
 
-    private Fragment getView()
+    private ProjectListFragment getView()
     {
         return mFragment;
     }
@@ -16,7 +15,7 @@ public class ProjectsPresenter
         return null != getView();
     }
 
-    public void attachView(Fragment fragment)
+    public void attachView(ProjectListFragment fragment)
     {
         mFragment = fragment;
     }
