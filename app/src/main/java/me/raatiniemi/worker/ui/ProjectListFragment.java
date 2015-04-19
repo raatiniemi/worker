@@ -57,14 +57,7 @@ public class ProjectListFragment extends Fragment
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_project_list);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        // Instantiate the data mapper for time and project.
-        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-
-        // Retrieve the available projects from the project data mapper.
-        ProjectCollection projects = projectMapper.getProjects();
-
         mAdapter = new ProjectListAdapter();
-        mAdapter.setProjects(projects);
         mAdapter.setOnItemClickListener(new ProjectListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -134,6 +127,19 @@ public class ProjectListFragment extends Fragment
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+
+        // Instantiate the data mapper for time and project.
+        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
+
+        // Retrieve the available projects from the project data mapper.
+        ProjectCollection projects = projectMapper.getProjects();
+        setData(projects);
+    }
+
+    public void setData(ProjectCollection projects)
+    {
+        mAdapter.setProjects(projects);
+        mAdapter.notifyDataSetChanged();
     }
 
     public void addProject(Project project)
