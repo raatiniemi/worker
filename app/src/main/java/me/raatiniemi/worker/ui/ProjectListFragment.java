@@ -133,14 +133,6 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onDestroyView()
-    {
-        super.onDestroyView();
-
-        getPresenter().detachView();
-    }
-
-    @Override
     protected ProjectsPresenter createPresenter()
     {
         return new ProjectsPresenter();

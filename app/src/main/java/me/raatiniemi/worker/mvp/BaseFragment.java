@@ -15,4 +15,14 @@ abstract public class BaseFragment<P extends BasePresenter> extends Fragment imp
         }
         return mPresenter;
     }
+
+    @Override
+    public void onDestroyView()
+    {
+        super.onDestroyView();
+
+        if (null != getPresenter()) {
+            getPresenter().detachView();
+        }
+    }
 }
