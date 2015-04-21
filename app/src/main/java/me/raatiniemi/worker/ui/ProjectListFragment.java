@@ -129,7 +129,7 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
         mRecyclerView.setAdapter(mAdapter);
 
         getPresenter().attachView(this);
-        getPresenter().loadProjects();
+        getPresenter().loadProjects(MapperRegistry.getProjectMapper());
     }
 
     @Override

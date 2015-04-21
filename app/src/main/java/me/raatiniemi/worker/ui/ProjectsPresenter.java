@@ -2,14 +2,13 @@ package me.raatiniemi.worker.ui;
 
 import android.os.AsyncTask;
 
-import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mvp.BasePresenter;
 import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectsPresenter extends BasePresenter<ProjectListFragment>
 {
-    private AsyncTask<Void, Void, ProjectCollection> mProjectLoader;
+    private AsyncTask<ProjectMapper, Void, ProjectCollection> mProjectLoader;
 
     @Override
     public void detachView()
@@ -21,18 +20,24 @@ public class ProjectsPresenter extends BasePresenter<ProjectListFragment>
         }
     }
 
-    public void loadProjects()
+    public void loadProjects(ProjectMapper mapper)
     {
         if (null != mProjectLoader && !mProjectLoader.isCancelled()) {
             mProjectLoader.cancel(true);
         }
 
-        mProjectLoader = new AsyncTask<Void, Void, ProjectCollection>() {
+        mProjectLoader = new AsyncTask<ProjectMapper, Void, ProjectCollection>() {
             @Override
-            protected ProjectCollection doInBackground(Void... params)
+            protected ProjectCollection doInBackground(ProjectMapper... params)
             {
-                ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-                return projectMapper.getProjects();
+                // Check that we have received the project mapper as argument.
+                if (params.length == 0 || !(params[0] instanceof ProjectMapper)) {
+                    return null;
+                }
+
+                // Retrieve the projects from the project mapper.
+                ProjectMapper mapper = params[0];
+                return mapper.getProjects();
             }
 
             @Override
@@ -47,6 +52,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectListFragment>
                 }
             }
         };
-        mProjectLoader.execute();
+        mProjectLoader.execute(mapper);
     }
 }
