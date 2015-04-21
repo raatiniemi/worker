@@ -1,7 +1,6 @@
 package me.raatiniemi.worker.ui;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,10 +20,11 @@ import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
+import me.raatiniemi.worker.mvp.BaseFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListFragment extends Fragment
+public class ProjectListFragment extends BaseFragment
 {
     private static final String TAG = "ProjectListFragment";
 
