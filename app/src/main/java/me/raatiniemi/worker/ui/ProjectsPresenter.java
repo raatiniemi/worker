@@ -9,31 +9,12 @@ import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectsPresenter extends BasePresenter<ProjectListFragment>
 {
-    private ProjectListFragment mFragment;
-
     private AsyncTask<Void, Void, ProjectCollection> mProjectLoader;
-
-    private ProjectListFragment getView()
-    {
-        return mFragment;
-    }
-
-    private boolean isViewAttached()
-    {
-        return null != getView();
-    }
-
-    @Override
-    public void attachView(ProjectListFragment fragment)
-    {
-        mFragment = fragment;
-    }
 
     @Override
     public void detachView()
     {
-        mFragment = null;
-
+        super.detachView();
 
         if (null != mProjectLoader && !mProjectLoader.isCancelled()) {
             mProjectLoader.cancel(true);
