@@ -4,9 +4,10 @@ import android.os.AsyncTask;
 
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.mvp.BasePresenter;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectsPresenter
+public class ProjectsPresenter extends BasePresenter<ProjectListFragment>
 {
     private ProjectListFragment mFragment;
 
@@ -22,11 +23,13 @@ public class ProjectsPresenter
         return null != getView();
     }
 
+    @Override
     public void attachView(ProjectListFragment fragment)
     {
         mFragment = fragment;
     }
 
+    @Override
     public void detachView()
     {
         mFragment = null;

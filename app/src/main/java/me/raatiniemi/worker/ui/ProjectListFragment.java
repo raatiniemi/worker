@@ -24,7 +24,7 @@ import me.raatiniemi.worker.mvp.BaseFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListFragment extends BaseFragment
+public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
 {
     private static final String TAG = "ProjectListFragment";
 
