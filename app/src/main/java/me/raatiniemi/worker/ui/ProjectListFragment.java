@@ -36,8 +36,6 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
 
     private ProjectListAdapter mAdapter;
 
-    private ProjectsPresenter mPresenter;
-
     public ProjectListFragment()
     {
         super();
@@ -142,12 +140,10 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
         getPresenter().detachView();
     }
 
-    protected ProjectsPresenter getPresenter()
+    @Override
+    protected ProjectsPresenter createPresenter()
     {
-        if (null == mPresenter) {
-            mPresenter = new ProjectsPresenter();
-        }
-        return mPresenter;
+        return new ProjectsPresenter();
     }
 
     public void setData(ProjectCollection projects)
