@@ -59,10 +59,10 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
                     // Relay the event with the item view to the OnItemClickListener.
                     getOnItemClickListener().onItemClick(v);
                 } else {
-                    int activityToggle = R.id.fragment_project_clock_activity_toggle;
-                    int activityAt = R.id.fragment_project_clock_activity_at;
+                    int activityToggleId = R.id.fragment_project_clock_activity_toggle;
+                    int activityAtId = R.id.fragment_project_clock_activity_at;
 
-                    if (activityToggle == v.getId() || activityAt == v.getId()) {
+                    if (activityToggleId == v.getId() || activityAtId == v.getId()) {
                         // Check that the OnClockActivityChangeListener have been supplied.
                         if (null == getOnClockActivityChangeListener()) {
                             Log.e(TAG, "No OnClockActivityChangeListener have been supplied");
@@ -79,7 +79,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
                         // Depending on which ImageButton have been clicked the event should be
                         // sent to different methods on the OnClockActivityChangeListener.
-                        if (activityToggle == v.getId()) {
+                        if (activityToggleId == v.getId()) {
                             getOnClockActivityChangeListener().onClockActivityToggle(view);
                         } else {
                             getOnClockActivityChangeListener().onClockActivityAt(view);
