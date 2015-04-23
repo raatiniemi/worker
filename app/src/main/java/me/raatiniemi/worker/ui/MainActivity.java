@@ -2,8 +2,8 @@ package me.raatiniemi.worker.ui;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
 
