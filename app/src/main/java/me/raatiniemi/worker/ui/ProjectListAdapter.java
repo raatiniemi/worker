@@ -22,18 +22,6 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 {
     private static final String TAG = "ProjectListAdapter";
 
-    public interface OnItemClickListener
-    {
-        public void onItemClick(View view);
-    }
-
-    public interface OnClockActivityChangeListener
-    {
-        public void onClockActivityToggle(View view);
-
-        public void onClockActivityAt(View view);
-    }
-
     private Context mContext;
 
     private DateIntervalFormat mDateIntervalFormat;
@@ -237,6 +225,11 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
         }
     }
 
+    public interface OnItemClickListener
+    {
+        public void onItemClick(View view);
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener)
     {
         mOnItemClickListener = onItemClickListener;
@@ -245,6 +238,13 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
     public OnItemClickListener getOnItemClickListener()
     {
         return mOnItemClickListener;
+    }
+
+    public interface OnClockActivityChangeListener
+    {
+        public void onClockActivityToggle(View view);
+
+        public void onClockActivityAt(View view);
     }
 
     public void setOnClockActivityChangeListener(OnClockActivityChangeListener onClockActivityChangeListener)
