@@ -92,12 +92,6 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
     }
 
     @Override
-    public int getItemCount()
-    {
-        return null != getItems() ? getItems().size() : 0;
-    }
-
-    @Override
     public void onBindViewHolder(ItemViewHolder holder, int index)
     {
         Project project = get(index);

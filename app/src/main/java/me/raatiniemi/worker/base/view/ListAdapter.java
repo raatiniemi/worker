@@ -31,4 +31,10 @@ abstract public class ListAdapter<T extends List, V extends RecyclerView.ViewHol
     {
         return mItems;
     }
+
+    @Override
+    public int getItemCount()
+    {
+        return null != getItems() ? getItems().size() : 0;
+    }
 }
