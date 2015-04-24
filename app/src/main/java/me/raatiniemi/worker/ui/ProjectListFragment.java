@@ -138,7 +138,7 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
 
     public void setData(ProjectCollection projects)
     {
-        mAdapter.setProjects(projects);
+        mAdapter.setItems(projects);
         mAdapter.notifyDataSetChanged();
     }
 

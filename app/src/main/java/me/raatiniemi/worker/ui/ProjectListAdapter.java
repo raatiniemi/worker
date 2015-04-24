@@ -34,8 +34,6 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
 
     private HintedImageButtonListener mHintedImageButtonListener;
 
-    private ProjectCollection mProjects;
-
     public ProjectListAdapter(Context context)
     {
         super(context);
@@ -94,26 +92,16 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
         mHintedImageButtonListener = new HintedImageButtonListener(getContext());
     }
 
-    public void setProjects(ProjectCollection projects)
-    {
-        mProjects = projects;
-    }
-
-    public ProjectCollection getProjects()
-    {
-        return mProjects;
-    }
-
     @Override
     public int getItemCount()
     {
-        return null != getProjects() ? getProjects().size() : 0;
+        return null != getItems() ? getItems().size() : 0;
     }
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int index)
     {
-        Project project = mProjects.get(index);
+        Project project = get(index);
 
         // Add the on click listener for the card view.
         // Will open the single project activity.
@@ -195,8 +183,8 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
     {
         // Retrieve the number of elements before adding the project,
         // hence getting the index of the new project.
-        int position = mProjects.size();
-        mProjects.add(project);
+        int position = getItems().size();
+        getItems().add(project);
 
         // Notify the adapter that the project have been inserted.
         notifyItemInserted(position);
@@ -207,7 +195,7 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
 
     public void set(int position, Project project)
     {
-        mProjects.set(position, project);
+        getItems().set(position, project);
 
         // Notify the adapter that the project have been modified.
         notifyItemChanged(position);
@@ -215,7 +203,7 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
 
     public Project get(int position)
     {
-        return mProjects.get(position);
+        return getItems().get(position);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder
