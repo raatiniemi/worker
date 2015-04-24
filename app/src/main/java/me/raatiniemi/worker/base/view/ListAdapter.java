@@ -10,6 +10,8 @@ abstract public class ListAdapter<T extends List, V extends RecyclerView.ViewHol
 {
     private Context mContext;
 
+    private T mItems;
+
     protected Context getContext()
     {
         return mContext;
@@ -18,5 +20,15 @@ abstract public class ListAdapter<T extends List, V extends RecyclerView.ViewHol
     public ListAdapter(Context context)
     {
         mContext = context;
+    }
+
+    public void setItems(T items)
+    {
+        mItems = items;
+    }
+
+    public T getItems()
+    {
+        return mItems;
     }
 }
