@@ -52,10 +52,8 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
     {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_project_list);
-        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new ProjectListAdapter(getActivity());
         mAdapter.setOnItemClickListener(new ProjectListAdapter.OnItemClickListener() {
