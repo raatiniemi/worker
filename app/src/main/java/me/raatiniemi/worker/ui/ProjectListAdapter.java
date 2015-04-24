@@ -14,16 +14,15 @@ import android.widget.TextView;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.application.Worker;
+import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.ItemViewHolder>
+public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectListAdapter.ItemViewHolder>
 {
     private static final String TAG = "ProjectListAdapter";
-
-    private Context mContext;
 
     private DateIntervalFormat mDateIntervalFormat;
 
@@ -39,7 +38,8 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
 
     public ProjectListAdapter(Context context)
     {
-        mContext = context;
+        super(context);
+
         mDateIntervalFormat = new DateIntervalFormat();
 
         mOnClickListener = new View.OnClickListener() {
@@ -91,7 +91,7 @@ public class ProjectListAdapter extends RecyclerView.Adapter<ProjectListAdapter.
             }
         };
 
-        mHintedImageButtonListener = new HintedImageButtonListener(mContext);
+        mHintedImageButtonListener = new HintedImageButtonListener(getContext());
     }
 
     public void setProjects(ProjectCollection projects)
