@@ -129,7 +129,7 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
         holder.mClockActivityAt.setOnLongClickListener(mHintedImageButtonListener);
 
         // Retrieve the resource instance.
-        Resources resources = Worker.getContext().getResources();
+        Resources resources = getContext().getResources();
 
         // Depending on whether the project is active the text
         // for the clock activity view should be altered, and
