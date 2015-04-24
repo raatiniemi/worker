@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.util.DateIntervalFormat;
