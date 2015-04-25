@@ -71,7 +71,7 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
                         // listener. The item view is needed for positional data.
                         View view = (View) v.getParent().getParent().getParent();
                         if (null == view || !(view instanceof CardView)) {
-                            Log.e(TAG, "Unable to locate the correct view for OnClockActivityChangeListener");
+                            Log.e(TAG, "Unable to locate the correct view for the OnClockActivityChangeListener");
                             return;
                         }
 
