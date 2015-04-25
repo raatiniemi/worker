@@ -43,10 +43,11 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
             @Override
             public void onClick(View v)
             {
-                Log.d(TAG, "View with id " + v.getId() + " was clicked");
+                final int viewId = v.getId();
+                Log.d(TAG, "View with id " + viewId + " was clicked");
 
                 // Check if the clicked view is the item view from the recycler view.
-                if (v.getId() == R.id.fragment_project_list_item) {
+                if (viewId == R.id.fragment_project_list_item) {
                     // Check that the OnItemClickListener have been supplied.
                     if (null == getOnItemClickListener()) {
                         Log.e(TAG, "No OnItemClickListener have been supplied");
@@ -56,10 +57,10 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
                     // Relay the event with the item view to the OnItemClickListener.
                     getOnItemClickListener().onItemClick(v);
                 } else {
-                    int activityToggleId = R.id.fragment_project_clock_activity_toggle;
-                    int activityAtId = R.id.fragment_project_clock_activity_at;
+                    final int activityToggleId = R.id.fragment_project_clock_activity_toggle;
+                    final int activityAtId = R.id.fragment_project_clock_activity_at;
 
-                    if (v.getId() == activityToggleId || v.getId() == activityAtId) {
+                    if (viewId == activityToggleId || viewId == activityAtId) {
                         // Check that the OnClockActivityChangeListener have been supplied.
                         if (null == getOnClockActivityChangeListener()) {
                             Log.e(TAG, "No OnClockActivityChangeListener have been supplied");
@@ -76,13 +77,13 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
 
                         // Depending on which ImageButton have been clicked the event should be
                         // sent to different methods on the OnClockActivityChangeListener.
-                        if (v.getId() == activityToggleId) {
+                        if (viewId == activityToggleId) {
                             getOnClockActivityChangeListener().onClockActivityToggle(view);
                         } else {
                             getOnClockActivityChangeListener().onClockActivityAt(view);
                         }
                     } else {
-                        Log.e(TAG, "Unhandled view with id " + v.getId());
+                        Log.e(TAG, "Unhandled view with id " + viewId + " in the OnClickListener");
                     }
                 }
             }
