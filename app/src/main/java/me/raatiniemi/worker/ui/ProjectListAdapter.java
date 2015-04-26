@@ -92,6 +92,21 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
     }
 
     @Override
+    public int getItemViewType(int position)
+    {
+        return R.layout.fragment_project_list_item;
+    }
+
+    @Override
+    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
+    {
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View view = inflater.inflate(viewType, viewGroup, false);
+
+        return new ItemViewHolder(view);
+    }
+
+    @Override
     public void onBindViewHolder(ItemViewHolder holder, int index)
     {
         Project project = get(index);
@@ -155,21 +170,6 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
         );
         holder.mClockedInSince.setText(clockedInSince);
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
-    }
-
-    @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
-    {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(viewType, viewGroup, false);
-
-        return new ItemViewHolder(view);
-    }
-
-    @Override
-    public int getItemViewType(int position)
-    {
-        return R.layout.fragment_project_list_item;
     }
 
     public int add(Project project)
