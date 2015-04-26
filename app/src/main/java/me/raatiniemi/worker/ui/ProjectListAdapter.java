@@ -36,9 +36,8 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
     public ProjectListAdapter(Context context, DateIntervalFormat dateIntervalFormat)
     {
         super(context);
-        mDateIntervalFormat = dateIntervalFormat;
 
-        mHintedImageButtonListener = new HintedImageButtonListener(getContext());
+        mDateIntervalFormat = dateIntervalFormat;
     }
 
     @Override
@@ -79,12 +78,12 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
         holder.mDescription.setVisibility(visibility);
 
         holder.mClockActivityToggle.setOnClickListener(mOnClickListener);
-        holder.mClockActivityToggle.setOnLongClickListener(mHintedImageButtonListener);
+        holder.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
         holder.mClockActivityToggle.setActivated(project.isActive());
 
         // Add the onClickListener to the "Clock [in|out] at..." item.
         holder.mClockActivityAt.setOnClickListener(mOnClickListener);
-        holder.mClockActivityAt.setOnLongClickListener(mHintedImageButtonListener);
+        holder.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
 
         // Retrieve the resource instance.
         Resources resources = getContext().getResources();
@@ -257,5 +256,15 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
     public OnClockActivityChangeListener getOnClockActivityChangeListener()
     {
         return mOnClockActivityChangeListener;
+    }
+
+    public void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener)
+    {
+        mHintedImageButtonListener = hintedImageButtonListener;
+    }
+
+    public HintedImageButtonListener getHintedImageButtonListener()
+    {
+        return mHintedImageButtonListener;
     }
 }
