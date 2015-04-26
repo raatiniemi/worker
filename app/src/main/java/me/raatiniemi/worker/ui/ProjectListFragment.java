@@ -22,6 +22,7 @@ import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.mvp.BaseFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
+import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
@@ -55,7 +56,7 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_project_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new ProjectListAdapter(getActivity());
+        mAdapter = new ProjectListAdapter(getActivity(), new DateIntervalFormat());
         mAdapter.setOnItemClickListener(new ProjectListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {

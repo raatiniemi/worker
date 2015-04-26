@@ -33,11 +33,10 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
 
     private HintedImageButtonListener mHintedImageButtonListener;
 
-    public ProjectListAdapter(Context context)
+    public ProjectListAdapter(Context context, DateIntervalFormat dateIntervalFormat)
     {
         super(context);
-
-        mDateIntervalFormat = new DateIntervalFormat();
+        mDateIntervalFormat = dateIntervalFormat;
 
         mOnClickListener = new View.OnClickListener() {
             @Override
