@@ -16,10 +16,19 @@ public class MainActivity extends AppCompatActivity
 {
     private static final String TAG = "MainActivity";
 
+    /**
+     * Tag for the project list fragment.
+     */
     static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
+    /**
+     * Tag for the timesheet fragment.
+     */
     static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
 
+    /**
+     * Tag for the new project fragment.
+     */
     static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 
     /**
@@ -65,6 +74,9 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(menuItem);
     }
 
+    /**
+     * Open the fragment for creating a new project.
+     */
     protected void openCreateNewProject()
     {
         NewProjectFragment newProject = new NewProjectFragment();
