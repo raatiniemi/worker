@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity
         // Depending on which fragment is contained within the
         // container the back button will behave differently.
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        Class instance = TimesheetFragment.class;
+        Class<TimesheetFragment> instance = TimesheetFragment.class;
         if (instance.equals(fragment.getClass())) {
             fragmentManager.popBackStack();
         } else {
