@@ -10,6 +10,9 @@ abstract public class ListAdapter<T extends List, V extends RecyclerView.ViewHol
 {
     private Context mContext;
 
+    /**
+     * Data items for the adapter to display.
+     */
     private T mItems;
 
     protected Context getContext()
@@ -22,16 +25,28 @@ abstract public class ListAdapter<T extends List, V extends RecyclerView.ViewHol
         mContext = context;
     }
 
+    /**
+     * Set the data items for the adapter.
+     * @param items Data items for the adapter.
+     */
     public void setItems(T items)
     {
         mItems = items;
     }
 
+    /**
+     * Retrieve the data items for the adapter.
+     * @return Data items for the adapter.
+     */
     public T getItems()
     {
         return mItems;
     }
 
+    /**
+     * Retrieve the number of items within the data container.
+     * @return Number of items within the data container.
+     */
     @Override
     public int getItemCount()
     {
