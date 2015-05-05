@@ -212,6 +212,8 @@ public class TimeMapper extends AbstractMapper<Time>
         values.put(TimeColumns.STOP, time.getStop());
 
         long id = mDatabase.insert(getTable(), null, values);
+
+        // Retrieve the time item from the database.
         return find(id);
     }
 
@@ -224,6 +226,8 @@ public class TimeMapper extends AbstractMapper<Time>
         String where = TimeColumns.ID + "=" + time.getId();
 
         mDatabase.update(getTable(), values, where, null);
+
+        // Retrieve the time item from the database.
         return find(time.getId());
     }
 
