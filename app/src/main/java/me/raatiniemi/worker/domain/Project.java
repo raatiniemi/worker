@@ -210,6 +210,9 @@ public class Project extends DomainObject
 
         // Retrieve the last time, i.e. the active time session.
         Time time = getActiveTime();
+        if (null == time) {
+            return null;
+        }
         Date date = new Date(time.getStart());
 
         // Format the timestamp with hours and minutes.
@@ -252,8 +255,11 @@ public class Project extends DomainObject
         // Retrieve the active Time domain object,
         // and clock out with the supplied date.
         Time time = getActiveTime();
-        time.clockOutAt(date);
+        if (null == time) {
+            return null;
+        }
 
+        time.clockOutAt(date);
         return time;
     }
 
