@@ -99,14 +99,10 @@ public class TimesheetAdapter
             DateIntervalFormat.Type.FRACTION_HOURS
         );
 
-        Float difference = Float.valueOf(summarize);
-        if (null != difference) {
-            difference = difference - 8;
-
-            if (difference != 0) {
-                String format = difference > 0 ? " (+%.2f)" : " (%.2f)";
-                summarize += String.format(format, difference);
-            }
+        Float difference = Float.valueOf(summarize) - 8;
+        if (difference != 0) {
+            String format = difference > 0 ? " (+%.2f)" : " (%.2f)";
+            summarize += String.format(format, difference);
         }
 
         holder.mSummarize.setText(summarize);
