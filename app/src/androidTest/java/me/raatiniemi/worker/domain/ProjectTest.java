@@ -6,38 +6,32 @@ import android.test.ApplicationTestCase;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
 
-public class ProjectTest extends ApplicationTestCase<Application>
-{
-    public ProjectTest()
-    {
+public class ProjectTest extends ApplicationTestCase<Application> {
+    public ProjectTest() {
         super(Application.class);
     }
 
-    public void testGetName()
-    {
+    public void testGetName() {
         Project project = new Project((long) 1, "Foo");
 
         assertEquals("Foo", project.getName());
     }
 
-    public void testSetName()
-    {
+    public void testSetName() {
         Project project = new Project((long) 1, null);
         project.setName("Foo");
 
         assertEquals("Foo", project.getName());
     }
 
-    public void testSetDescription()
-    {
+    public void testSetDescription() {
         Project project = new Project((long) 1, null);
         project.setDescription("Foobar");
 
         assertEquals("Foobar", project.getDescription());
     }
 
-    public void testGetArchived()
-    {
+    public void testGetArchived() {
         Project project = new Project((long) 1, null);
 
         Long archived = (long) 0;
@@ -45,8 +39,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         assertEquals(archived, project.getArchived());
     }
 
-    public void testSetArchived()
-    {
+    public void testSetArchived() {
         Project project = new Project((long) 1, null);
 
         Long archived = (long) 1;
@@ -55,16 +48,14 @@ public class ProjectTest extends ApplicationTestCase<Application>
         assertEquals(archived, project.getArchived());
     }
 
-    public void testGetTime()
-    {
+    public void testGetTime() {
         Project project = new Project((long) 1, "Foo");
 
         assertTrue(project.getTime() != null);
         assertTrue(project.getTime().size() == 0);
     }
 
-    public void testAddTime()
-    {
+    public void testAddTime() {
         try {
             Project project = new Project((long) 1, "Foo");
 
@@ -76,8 +67,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testSummarizeSingleTime()
-    {
+    public void testSummarizeSingleTime() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 0, 60000));
@@ -88,15 +78,13 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testSummarizeWithoutTime()
-    {
+    public void testSummarizeWithoutTime() {
         Project project = new Project((long) 1, "Foo");
 
         assertEquals((long) 0, project.summarizeTime());
     }
 
-    public void testSummarizeTimeWithActiveTime()
-    {
+    public void testSummarizeTimeWithActiveTime() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 0, 60000));
@@ -108,8 +96,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testSummarizeTimeWithRoundUp()
-    {
+    public void testSummarizeTimeWithRoundUp() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 0, 60000));
@@ -121,8 +108,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testSummarizeTimeWithRoundDown()
-    {
+    public void testSummarizeTimeWithRoundDown() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 0, 60000));
@@ -134,8 +120,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testSummarizeTimeWithHours()
-    {
+    public void testSummarizeTimeWithHours() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 3600000, 7200000));
@@ -147,8 +132,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testClockOut()
-    {
+    public void testClockOut() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 60000, 0));
@@ -159,8 +143,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testClockOutWithoutActiveTime()
-    {
+    public void testClockOutWithoutActiveTime() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 60000, 120000));
@@ -173,8 +156,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testClockOutWithoutTime()
-    {
+    public void testClockOutWithoutTime() {
         try {
             Project project = new Project((long) 1, "Foo");
 
@@ -186,8 +168,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testIsActiveWithActiveTime()
-    {
+    public void testIsActiveWithActiveTime() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 60000, 0));
@@ -198,8 +179,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testIsActiveWithoutActiveTime()
-    {
+    public void testIsActiveWithoutActiveTime() {
         try {
             Project project = new Project((long) 1, "Foo");
             project.addTime(new Time(null, project.getId(), 60000, 120000));
@@ -210,8 +190,7 @@ public class ProjectTest extends ApplicationTestCase<Application>
         }
     }
 
-    public void testIsActiveWithoutTime()
-    {
+    public void testIsActiveWithoutTime() {
         Project project = new Project((long) 1, "Foo");
 
         assertFalse(project.isActive());
