@@ -1,5 +1,4 @@
 package me.raatiniemi.worker.exception;
 
-public class NamelessProjectException extends Exception
-{
+public class NamelessProjectException extends Exception {
 }

@@ -5,16 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import me.raatiniemi.worker.application.Worker;
-import me.raatiniemi.worker.provider.WorkerContract.*;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 
-public class WorkerDatabase extends SQLiteOpenHelper
-{
-    public interface Tables
-    {
-        String PROJECT = "project";
-        String TIME = "time";
-    }
-
+public class WorkerDatabase extends SQLiteOpenHelper {
     /**
      * Name of the database.
      */
@@ -31,29 +25,28 @@ public class WorkerDatabase extends SQLiteOpenHelper
     private static WorkerDatabase mWorkerDatabase;
 
     /**
+     * Instantiate the database helper with the application context.
+     *
+     * @param context Application context.
+     */
+    public WorkerDatabase(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    /**
      * Retrieve the instance for the database helper, instantiate if necessary.
+     *
      * @return Instance for the database helper.
      */
-    public static synchronized WorkerDatabase getInstance()
-    {
-        if ( mWorkerDatabase == null ) {
+    public static synchronized WorkerDatabase getInstance() {
+        if (mWorkerDatabase == null) {
             mWorkerDatabase = new WorkerDatabase(Worker.getContext());
         }
         return mWorkerDatabase;
     }
 
-    /**
-     * Instantiate the database helper with the application context.
-     * @param context Application context.
-     */
-    public WorkerDatabase(Context context)
-    {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
     @Override
-    public void onCreate(SQLiteDatabase db)
-    {
+    public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
             ProjectColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ProjectColumns.NAME + " TEXT NOT NULL, " +
@@ -69,7 +62,12 @@ public class WorkerDatabase extends SQLiteOpenHelper
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    }
+
+    public interface Tables {
+        String PROJECT = "project";
+
+        String TIME = "time";
     }
 }

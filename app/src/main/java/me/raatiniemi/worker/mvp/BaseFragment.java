@@ -2,8 +2,7 @@ package me.raatiniemi.worker.mvp;
 
 import android.app.Fragment;
 
-abstract public class BaseFragment<P extends MvpPresenter> extends Fragment implements MvpView
-{
+abstract public class BaseFragment<P extends MvpPresenter> extends Fragment implements MvpView {
     /**
      * Instance for the presenter.
      */
@@ -11,16 +10,17 @@ abstract public class BaseFragment<P extends MvpPresenter> extends Fragment impl
 
     /**
      * Create the instance for the presenter.
+     *
      * @return Instance for the presenter.
      */
     abstract protected P createPresenter();
 
     /**
      * Retrieve the presenter, create instance if none is available.
+     *
      * @return Instance for the presenter.
      */
-    protected P getPresenter()
-    {
+    protected P getPresenter() {
         if (null == mPresenter) {
             mPresenter = createPresenter();
         }
@@ -28,8 +28,7 @@ abstract public class BaseFragment<P extends MvpPresenter> extends Fragment impl
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
 
         if (null != getPresenter()) {

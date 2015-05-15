@@ -19,8 +19,7 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectListAdapter.ItemViewHolder>
-{
+public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectListAdapter.ItemViewHolder> {
     private static final String TAG = "ProjectListAdapter";
 
     private View.OnClickListener mOnClickListener = new OnProjectClickListener();
@@ -33,22 +32,19 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
 
     private HintedImageButtonListener mHintedImageButtonListener;
 
-    public ProjectListAdapter(Context context, DateIntervalFormat dateIntervalFormat)
-    {
+    public ProjectListAdapter(Context context, DateIntervalFormat dateIntervalFormat) {
         super(context);
 
         mDateIntervalFormat = dateIntervalFormat;
     }
 
     @Override
-    public int getItemViewType(int position)
-    {
+    public int getItemViewType(int position) {
         return R.layout.fragment_project_list_item;
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
-    {
+    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
@@ -56,8 +52,7 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, int index)
-    {
+    public void onBindViewHolder(ItemViewHolder holder, int index) {
         Project project = get(index);
 
         // Add the on click listener for the card view.
@@ -121,8 +116,7 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 
-    public int add(Project project)
-    {
+    public int add(Project project) {
         // Retrieve the number of elements before adding the project,
         // hence getting the index of the new project.
         int position = getItems().size();
@@ -135,21 +129,52 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
         return position;
     }
 
-    public void set(int position, Project project)
-    {
+    public void set(int position, Project project) {
         getItems().set(position, project);
 
         // Notify the adapter that the project have been modified.
         notifyItemChanged(position);
     }
 
-    public Project get(int position)
-    {
+    public Project get(int position) {
         return getItems().get(position);
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder
-    {
+    public OnItemClickListener getOnItemClickListener() {
+        return mOnItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public OnClockActivityChangeListener getOnClockActivityChangeListener() {
+        return mOnClockActivityChangeListener;
+    }
+
+    public void setOnClockActivityChangeListener(OnClockActivityChangeListener onClockActivityChangeListener) {
+        mOnClockActivityChangeListener = onClockActivityChangeListener;
+    }
+
+    public HintedImageButtonListener getHintedImageButtonListener() {
+        return mHintedImageButtonListener;
+    }
+
+    public void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
+        mHintedImageButtonListener = hintedImageButtonListener;
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view);
+    }
+
+    public interface OnClockActivityChangeListener {
+        public void onClockActivityToggle(View view);
+
+        public void onClockActivityAt(View view);
+    }
+
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView mName;
 
         public TextView mTime;
@@ -162,8 +187,7 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
 
         public TextView mClockedInSince;
 
-        public ItemViewHolder(View view)
-        {
+        public ItemViewHolder(View view) {
             super(view);
 
             mName = (TextView) view.findViewById(R.id.fragment_project_name);
@@ -175,11 +199,9 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
         }
     }
 
-    private class OnProjectClickListener implements View.OnClickListener
-    {
+    private class OnProjectClickListener implements View.OnClickListener {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             final int viewId = v.getId();
             Log.d(TAG, "View with id " + viewId + " was clicked");
 
@@ -224,47 +246,5 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
                 }
             }
         }
-    }
-
-    public interface OnItemClickListener
-    {
-        public void onItemClick(View view);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener)
-    {
-        mOnItemClickListener = onItemClickListener;
-    }
-
-    public OnItemClickListener getOnItemClickListener()
-    {
-        return mOnItemClickListener;
-    }
-
-    public interface OnClockActivityChangeListener
-    {
-        public void onClockActivityToggle(View view);
-
-        public void onClockActivityAt(View view);
-    }
-
-    public void setOnClockActivityChangeListener(OnClockActivityChangeListener onClockActivityChangeListener)
-    {
-        mOnClockActivityChangeListener = onClockActivityChangeListener;
-    }
-
-    public OnClockActivityChangeListener getOnClockActivityChangeListener()
-    {
-        return mOnClockActivityChangeListener;
-    }
-
-    public void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener)
-    {
-        mHintedImageButtonListener = hintedImageButtonListener;
-    }
-
-    public HintedImageButtonListener getHintedImageButtonListener()
-    {
-        return mHintedImageButtonListener;
     }
 }

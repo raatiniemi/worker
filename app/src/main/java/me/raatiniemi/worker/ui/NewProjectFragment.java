@@ -20,21 +20,8 @@ import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 
-public class NewProjectFragment extends DialogFragment
-{
+public class NewProjectFragment extends DialogFragment {
     private static final String TAG = "NewProjectFragment";
-
-    /**
-     * Public interface for the "OnCreateProjectListener".
-     */
-    public interface OnCreateProjectListener
-    {
-        /**
-         * When a new project have been created the project is sent to this method.
-         * @param project The newly created project.
-         */
-        public void onCreateProject(Project project);
-    }
 
     /**
      * Callback handler for the "OnCreateProjectListener".
@@ -42,14 +29,12 @@ public class NewProjectFragment extends DialogFragment
     private OnCreateProjectListener mOnCreateProjectListener;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_new_project, container, false);
     }
 
     @Override
-    public void onViewCreated(final View view, Bundle savedInstanceState)
-    {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getDialog().setTitle("Create new project");
@@ -58,8 +43,7 @@ public class NewProjectFragment extends DialogFragment
         TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 createNewProject(view);
             }
         });
@@ -68,8 +52,7 @@ public class NewProjectFragment extends DialogFragment
         TextView cancel = (TextView) view.findViewById(R.id.fragment_new_project_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 dismiss();
             }
         });
@@ -77,10 +60,10 @@ public class NewProjectFragment extends DialogFragment
 
     /**
      * Create a new project.
+     *
      * @param view View for the fragment.
      */
-    private void createNewProject(View view)
-    {
+    private void createNewProject(View view) {
         try {
             // Retrieve the supplied project name from the text field.
             EditText textField = (EditText) view.findViewById(R.id.fragment_new_project_name);
@@ -117,35 +100,45 @@ public class NewProjectFragment extends DialogFragment
         } catch (NamelessProjectException e) {
             // No project name supplied, display error message to user.
             new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.fragment_new_project_create_without_name_title)
-                    .setMessage(R.string.fragment_new_project_create_without_name_description)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Do nothing...
-                        }
-                    })
-                    .show();
+                .setTitle(R.string.fragment_new_project_create_without_name_title)
+                .setMessage(R.string.fragment_new_project_create_without_name_description)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing...
+                    }
+                })
+                .show();
         } catch (ProjectAlreadyExistsException e) {
             // Project name already exists, display error message to user.
             new AlertDialog.Builder(getActivity())
-                    .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
-                    .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Do nothing...
-                        }
-                    })
-                    .show();
+                .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
+                .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing...
+                    }
+                })
+                .show();
         }
     }
 
-    public void setOnCreateProjectListener(OnCreateProjectListener onCreateProjectListener)
-    {
+    public OnCreateProjectListener getOnCreateProjectListener() {
+        return mOnCreateProjectListener;
+    }
+
+    public void setOnCreateProjectListener(OnCreateProjectListener onCreateProjectListener) {
         mOnCreateProjectListener = onCreateProjectListener;
     }
 
-    public OnCreateProjectListener getOnCreateProjectListener()
-    {
-        return mOnCreateProjectListener;
+    /**
+     * Public interface for the "OnCreateProjectListener".
+     */
+    public interface OnCreateProjectListener {
+        /**
+         * When a new project have been created the project is sent to this method.
+         *
+         * @param project The newly created project.
+         */
+        public void onCreateProject(Project project);
     }
 }

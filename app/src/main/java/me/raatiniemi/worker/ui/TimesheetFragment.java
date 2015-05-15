@@ -26,12 +26,11 @@ import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
-import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
+import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
-import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.*;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
 
-public class TimesheetFragment extends Fragment
-{
+public class TimesheetFragment extends Fragment {
     private static final String TAG = "TimesheetFragment";
 
     private Project mProject;
@@ -52,11 +51,9 @@ public class TimesheetFragment extends Fragment
 
     private ActionMode mActionMode;
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback()
-    {
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
         @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu)
-        {
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             // TODO: Retrieve title from resources, for localization support.
             actionMode.setTitle("Actions");
             actionMode.getMenuInflater().inflate(R.menu.actions_project, menu);
@@ -64,14 +61,12 @@ public class TimesheetFragment extends Fragment
         }
 
         @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu)
-        {
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
             return false;
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem item)
-        {
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
             boolean finish = false;
 
             long expandablePosition = mExpandablePosition;
@@ -93,8 +88,7 @@ public class TimesheetFragment extends Fragment
         }
 
         @Override
-        public void onDestroyActionMode(ActionMode actionMode)
-        {
+        public void onDestroyActionMode(ActionMode actionMode) {
             // If there's a selected row, we have
             // to clear the selection-state.
             if (null != mSelectedView) {
@@ -108,20 +102,17 @@ public class TimesheetFragment extends Fragment
 
     private boolean mLoading = false;
 
-    private long getProjectId()
-    {
+    private long getProjectId() {
         return getArguments().getLong(ProjectListFragment.MESSAGE_PROJECT_ID, -1);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_timesheet, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
@@ -135,8 +126,7 @@ public class TimesheetFragment extends Fragment
 
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
-            {
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 // Make sure we're not loading data before checking the position.
                 if (!mLoading) {
                     // Retrieve positional data, needed for the calculation on whether
@@ -187,8 +177,7 @@ public class TimesheetFragment extends Fragment
         mTimesheetAdapter = new TimesheetAdapter(mProvider);
         mTimesheetAdapter.setOnTimesheetListener(new TimesheetAdapter.OnTimesheetListener() {
             @Override
-            public boolean onTimeLongClick(View view)
-            {
+            public boolean onTimeLongClick(View view) {
                 // The position of the item within the recycler view is referred to as the flat
                 // position. With this position we have to retrieve the expandable position, which
                 // basically is the group and child within bit shifted long.
@@ -231,8 +220,7 @@ public class TimesheetFragment extends Fragment
         mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
     }
 
-    private void remove(long expandablePosition)
-    {
+    private void remove(long expandablePosition) {
         int groupPosition = RecyclerViewExpandableItemManager.getPackedPositionGroup(expandablePosition);
         int childPosition = RecyclerViewExpandableItemManager.getPackedPositionChild(expandablePosition);
 
@@ -242,7 +230,7 @@ public class TimesheetFragment extends Fragment
 
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
         if (timeMapper.remove(time)) {
-            Log.d(TAG, "Removing item: "+ groupPosition +":"+ childPosition);
+            Log.d(TAG, "Removing item: " + groupPosition + ":" + childPosition);
             mTimesheetAdapter.remove(groupPosition, childPosition);
 
             // Create the intent for the broadcast to update the

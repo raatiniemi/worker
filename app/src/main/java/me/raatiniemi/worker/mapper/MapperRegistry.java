@@ -3,8 +3,12 @@ package me.raatiniemi.worker.mapper;
 /**
  * Registry for classes related to data mapping.
  */
-final public class MapperRegistry
-{
+final public class MapperRegistry {
+    /**
+     * Instance for the mapper registry.
+     */
+    private static MapperRegistry mInstance;
+
     /**
      * Instance for project mapper.
      */
@@ -16,16 +20,11 @@ final public class MapperRegistry
     private TimeMapper mTimeMapper;
 
     /**
-     * Instance for the mapper registry.
-     */
-    private static MapperRegistry mInstance;
-
-    /**
      * Retrieve the instance for the mapper registry.
+     *
      * @return Mapper registry instance.
      */
-    private static MapperRegistry getInstance()
-    {
+    private static MapperRegistry getInstance() {
         if (mInstance == null) {
             mInstance = new MapperRegistry();
         }
@@ -35,10 +34,10 @@ final public class MapperRegistry
 
     /**
      * Retrieve the instance for the project mapper.
+     *
      * @return Project mapper instance.
      */
-    public static ProjectMapper getProjectMapper()
-    {
+    public static ProjectMapper getProjectMapper() {
         MapperRegistry instance = getInstance();
 
         if (instance.mProjectMapper == null) {
@@ -50,10 +49,10 @@ final public class MapperRegistry
 
     /**
      * Retrieve the instance for the time mapper.
+     *
      * @return Time mapper instance.
      */
-    public static TimeMapper getTimeMapper()
-    {
+    public static TimeMapper getTimeMapper() {
         MapperRegistry instance = getInstance();
 
         if (instance.mTimeMapper == null) {

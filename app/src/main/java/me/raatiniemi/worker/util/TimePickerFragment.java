@@ -14,8 +14,7 @@ import java.util.Calendar;
 
 import me.raatiniemi.worker.R;
 
-public class TimePickerFragment extends DialogFragment
-{
+public class TimePickerFragment extends DialogFragment {
     private static final String TAG = "TimePickerFragment";
 
     /**
@@ -24,26 +23,25 @@ public class TimePickerFragment extends DialogFragment
     private TimePickerDialog.OnTimeSetListener mOnTimeSetListener;
 
     /**
-     * Set the "OnTimeSetListener" for the TimePickerDialog.
-     * @param listener "OnTimeSetListener" for the TimePickerDialog.
-     */
-    public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener)
-    {
-        mOnTimeSetListener = listener;
-    }
-
-    /**
      * Get the "OnTimeSetListener" for the TimePickerDialog.
+     *
      * @return "OnTimeSetListener" for the TimePickerDialog.
      */
-    public TimePickerDialog.OnTimeSetListener getOnTimeSetListener()
-    {
+    public TimePickerDialog.OnTimeSetListener getOnTimeSetListener() {
         return mOnTimeSetListener;
     }
 
+    /**
+     * Set the "OnTimeSetListener" for the TimePickerDialog.
+     *
+     * @param listener "OnTimeSetListener" for the TimePickerDialog.
+     */
+    public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener) {
+        mOnTimeSetListener = listener;
+    }
+
     @Override
-    public void onAttach(Activity activity)
-    {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         // Check if we have a callback listener.
@@ -70,8 +68,7 @@ public class TimePickerFragment extends DialogFragment
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);

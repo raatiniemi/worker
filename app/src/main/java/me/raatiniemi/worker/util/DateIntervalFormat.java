@@ -3,32 +3,15 @@ package me.raatiniemi.worker.util;
 /**
  * Format time interval.
  */
-public class DateIntervalFormat
-{
-    /**
-     * Available format types.
-     */
-    public static enum Type
-    {
-        /**
-         * Format the interval with fraction hours, e.g. "8.25" for 8 hours and 15 minutes.
-         */
-        FRACTION_HOURS,
-
-        /**
-         * Format the interval with hours and minutes, e.g. "5h 12m".
-         */
-        HOURS_MINUTES
-    }
-
+public class DateIntervalFormat {
     /**
      * Format the interval with fractal hours, e.g. "8.25" for 8 hours and 15 minutes.
+     *
      * @param hours Hours to apply to the format.
      * @param minutes Minutes to apply to the format.
      * @return Interval formatted with fractal hours.
      */
-    private String fractionHours(long hours, long minutes)
-    {
+    private String fractionHours(long hours, long minutes) {
         // Calculate the fractal value from the minutes.
         float fractal = (float) minutes / (float) 60.0;
 
@@ -38,12 +21,12 @@ public class DateIntervalFormat
 
     /**
      * Format interval with hours and minutes.
+     *
      * @param hours Hours to apply to the format.
      * @param minutes Minutes to apply to the format.
      * @return Interval formatted with hours and minutes.
      */
-    private String hoursMinutes(long hours, long minutes)
-    {
+    private String hoursMinutes(long hours, long minutes) {
         String format = "%1$dh %2$dm";
 
         // If no hours is available, remove it from the format.
@@ -56,12 +39,12 @@ public class DateIntervalFormat
 
     /**
      * Format the interval with given format type.
+     *
      * @param interval Interval in milliseconds to format.
      * @param type Type of format to use.
      * @return Interval formatted with given type.
      */
-    public String format(long interval, Type type)
-    {
+    public String format(long interval, Type type) {
         String format;
 
         // Convert milliseconds to seconds.
@@ -109,11 +92,26 @@ public class DateIntervalFormat
 
     /**
      * Format the interval with the default format type.
+     *
      * @param interval Interval in milliseconds to format.
      * @return Interval formatted with the default format type.
      */
-    public String format(long interval)
-    {
+    public String format(long interval) {
         return format(interval, Type.HOURS_MINUTES);
+    }
+
+    /**
+     * Available format types.
+     */
+    public static enum Type {
+        /**
+         * Format the interval with fraction hours, e.g. "8.25" for 8 hours and 15 minutes.
+         */
+        FRACTION_HOURS,
+
+        /**
+         * Format the interval with hours and minutes, e.g. "5h 12m".
+         */
+        HOURS_MINUTES
     }
 }

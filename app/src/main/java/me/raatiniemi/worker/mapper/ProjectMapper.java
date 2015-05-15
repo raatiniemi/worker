@@ -6,19 +6,17 @@ import android.database.Cursor;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.provider.WorkerContract.*;
-import me.raatiniemi.worker.provider.WorkerDatabase.*;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.provider.WorkerDatabase.Tables;
 import me.raatiniemi.worker.util.ProjectCollection;
 import me.raatiniemi.worker.util.TimeCollection;
 
-public class ProjectMapper extends AbstractMapper<Project>
-{
+public class ProjectMapper extends AbstractMapper<Project> {
     private static final String TAG = "ProjectMapper";
 
     private TimeMapper mTimeMapper;
 
-    public ProjectMapper(TimeMapper timeMapper)
-    {
+    public ProjectMapper(TimeMapper timeMapper) {
         super();
 
         mTimeMapper = timeMapper;
@@ -26,19 +24,19 @@ public class ProjectMapper extends AbstractMapper<Project>
 
     /**
      * Retrieve the name of the project table within the database.
+     *
      * @return Name of project table.
      */
-    protected String getTable()
-    {
+    protected String getTable() {
         return Tables.PROJECT;
     }
 
     /**
      * Retrieve the project table columns.
+     *
      * @return Project table columns.
      */
-    protected String[] getColumns()
-    {
+    protected String[] getColumns() {
         return new String[]{
             ProjectColumns.ID,
             ProjectColumns.NAME,
@@ -49,11 +47,11 @@ public class ProjectMapper extends AbstractMapper<Project>
 
     /**
      * Load the project object from the cursor.
+     *
      * @param row Database cursor.
      * @return Project with data.
      */
-    protected Project load(Cursor row)
-    {
+    protected Project load(Cursor row) {
         // Retrieve the project data from the cursor.
         long id = row.getLong(row.getColumnIndex(ProjectColumns.ID));
         String name = row.getString(row.getColumnIndex(ProjectColumns.NAME));
@@ -70,10 +68,10 @@ public class ProjectMapper extends AbstractMapper<Project>
 
     /**
      * Load the time for the project.
+     *
      * @param project Project for which to load the time.
      */
-    private void loadTime(Project project)
-    {
+    private void loadTime(Project project) {
         // If the mapper for time objects is available, we should load
         // the the project time for the default interval.
         if (null != mTimeMapper) {
@@ -86,10 +84,10 @@ public class ProjectMapper extends AbstractMapper<Project>
 
     /**
      * Retrieve all of the available projects.
+     *
      * @return List of all available projects.
      */
-    public ProjectCollection getProjects()
-    {
+    public ProjectCollection getProjects() {
         ProjectCollection result = new ProjectCollection();
 
         // Exclude projects that have been archived.
@@ -110,14 +108,14 @@ public class ProjectMapper extends AbstractMapper<Project>
 
     /**
      * Find project by name.
+     *
      * @param name Name of the project to find.
      * @return Project if found, otherwise null.
      */
-    public Project find(String name)
-    {
+    public Project find(String name) {
         // Build the selection to find the project by name.
         String selection = ProjectColumns.NAME + "=?";
-        String[] selectionArgs = new String[]{name};
+        String[] selectionArgs = new String[]{ name };
 
         Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
         if (!row.moveToFirst()) {
@@ -129,12 +127,12 @@ public class ProjectMapper extends AbstractMapper<Project>
 
     /**
      * Attempt to save new project.
+     *
      * @param project Project to be saved.
      * @return Newly saved project.
      * @throws ProjectAlreadyExistsException If the project name already exists.
      */
-    public Project insert(Project project) throws ProjectAlreadyExistsException
-    {
+    public Project insert(Project project) throws ProjectAlreadyExistsException {
         // Verify that the project name is unique.
         if (null != find(project.getName())) {
             throw new ProjectAlreadyExistsException();
@@ -150,11 +148,11 @@ public class ProjectMapper extends AbstractMapper<Project>
 
     /**
      * Reload the project, and re-populate it with the registered time.
+     *
      * @param id Id for the project to reload.
      * @return Project with reloaded data.
      */
-    public Project reload(long id)
-    {
+    public Project reload(long id) {
         Project project = find(id);
         if (null != project) {
             loadTime(project);

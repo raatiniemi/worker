@@ -10,8 +10,7 @@ import me.raatiniemi.worker.util.TimeCollection;
 /**
  * Domain object for the Project.
  */
-public class Project extends DomainObject
-{
+public class Project extends DomainObject {
     /**
      * Name for the project.
      */
@@ -34,11 +33,11 @@ public class Project extends DomainObject
 
     /**
      * Initialize an existing project.
+     *
      * @param id Id for the project.
      * @param name Name of the project.
      */
-    public Project(Long id, String name)
-    {
+    public Project(Long id, String name) {
         super(id);
 
         setName(name);
@@ -48,100 +47,100 @@ public class Project extends DomainObject
 
     /**
      * Initialize a new project without an id.
+     *
      * @param name Name of the project.
      */
-    public Project(String name)
-    {
+    public Project(String name) {
         this(null, name);
     }
 
     /**
-     * Set the project name.
-     * @param name Project name.
-     */
-    public void setName(String name)
-    {
-         mName = name;
-    }
-
-    /**
      * Retrieve the project name.
+     *
      * @return Project name.
      */
-    public String getName()
-    {
+    public String getName() {
         return mName;
     }
 
     /**
-     * Set the project description.
-     * @param description Project description.
+     * Set the project name.
+     *
+     * @param name Project name.
      */
-    public void setDescription(String description)
-    {
-        mDescription = description;
+    public void setName(String name) {
+        mName = name;
     }
 
     /**
      * Retrieve the project description.
+     *
      * @return Project description.
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return mDescription;
     }
 
     /**
-     * Set the flag for archived project.
-     * @param archived Flag for archived project.
+     * Set the project description.
+     *
+     * @param description Project description.
      */
-    public void setArchived(Long archived)
-    {
-        mArchived = archived;
+    public void setDescription(String description) {
+        mDescription = description;
     }
 
     /**
      * Retrieve the flag for archived project.
+     *
      * @return Flag for archived project.
      */
-    public Long getArchived()
-    {
+    public Long getArchived() {
         return mArchived;
     }
 
     /**
-     * Setter for the project time.
-     * @param time Project time.
+     * Set the flag for archived project.
+     *
+     * @param archived Flag for archived project.
      */
-    private void setTime(TimeCollection time)
-    {
-        mTime = time;
+    public void setArchived(Long archived) {
+        mArchived = archived;
     }
 
     /**
      * Getter for the project time.
+     *
      * @return Project time.
      */
-    public TimeCollection getTime()
-    {
+    public TimeCollection getTime() {
         return mTime;
     }
 
     /**
+     * Setter for the project time.
+     *
+     * @param time Project time.
+     */
+    private void setTime(TimeCollection time) {
+        mTime = time;
+    }
+
+    /**
      * Add additional time for the project.
+     *
      * @param time Time to add to the project.
      */
-    public void addTime(Time time)
-    {
+    public void addTime(Time time) {
         getTime().add(time);
     }
 
     /**
      * Summarize the time for the project.
+     *
      * @return Registered time in number of milliseconds.
      */
-    public long summarizeTime()
-    {
+    public long summarizeTime() {
         // Total time in number of seconds.
         long total = 0;
 
@@ -149,7 +148,7 @@ public class Project extends DomainObject
         if (null != time && !time.isEmpty()) {
             // Iterate of the registered time and
             // retrieve the time interval.
-            for (Time item: time) {
+            for (Time item : time) {
                 total += item.getTime();
             }
         }
@@ -159,10 +158,10 @@ public class Project extends DomainObject
 
     /**
      * Retrieve the elapsed time for an active project.
+     *
      * @return Elapsed time in milliseconds, zero if project is not active.
      */
-    public long getElapsed()
-    {
+    public long getElapsed() {
         long elapsed = 0;
 
         if (isActive()) {
@@ -178,10 +177,10 @@ public class Project extends DomainObject
 
     /**
      * Retrieve the time domain object that might be active.
+     *
      * @return Time domain object, or null if no time have been registered.
      */
-    private Time getActiveTime()
-    {
+    private Time getActiveTime() {
         TimeCollection time = getTime();
 
         if (time == null || time.isEmpty()) {
@@ -193,10 +192,10 @@ public class Project extends DomainObject
 
     /**
      * Retrieve the time when the project was clocked in.
+     *
      * @return Time when project was clocked in, or null if project is not active.
      */
-    public String getClockedInSince()
-    {
+    public String getClockedInSince() {
         // TODO: Just return the value for getStart() and parse it outside of the domain object.
 
         // If the project is not active, there's nothing to do.
@@ -222,11 +221,11 @@ public class Project extends DomainObject
 
     /**
      * Clock in project at a given date and time, if project is active nothing happens.
+     *
      * @param date Date and time for when to clock in the project.
      * @return The clocked time domain object, or null if project is active.
      */
-    public Time clockInAt(Date date) throws DomainException
-    {
+    public Time clockInAt(Date date) throws DomainException {
         // If the project is already active, we can't clock in.
         if (isActive()) {
             throw new ClockActivityException("Unable to clock in, project is already active");
@@ -242,11 +241,11 @@ public class Project extends DomainObject
 
     /**
      * Clock out project at a given date and time, if project is not active nothing happens.
+     *
      * @param date Date and time for when to clock out the project.
      * @return The clocked out time domain object, or null if project is not active.
      */
-    public Time clockOutAt(Date date) throws DomainException
-    {
+    public Time clockOutAt(Date date) throws DomainException {
         // If the project is not active, we can't clock out.
         if (!isActive()) {
             throw new ClockActivityException("Unable to clock out, project is not active");
@@ -265,19 +264,19 @@ public class Project extends DomainObject
 
     /**
      * Clock out the active project, if the project is not active nothing happens.
+     *
      * @return The clocked out time domain object, or null if project is not active.
      */
-    public Time clockOut() throws DomainException
-    {
+    public Time clockOut() throws DomainException {
         return clockOutAt(new Date());
     }
 
     /**
      * Check if the project is active.
+     *
      * @return True if the project is active, otherwise false.
      */
-    public boolean isActive()
-    {
+    public boolean isActive() {
         boolean active = false;
 
         // Retrieve the last element of the time array and check if the

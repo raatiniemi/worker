@@ -9,27 +9,26 @@ import android.widget.Toast;
 /**
  * Display hint for the image via long click.
  */
-public class HintedImageButtonListener implements View.OnLongClickListener
-{
+public class HintedImageButtonListener implements View.OnLongClickListener {
     protected Context mContext;
 
     /**
      * Construct the hinted image button listener.
+     *
      * @param context Context to use.
      */
-    public HintedImageButtonListener(Context context)
-    {
+    public HintedImageButtonListener(Context context) {
         mContext = context;
     }
 
     /**
      * Display the content description of the view in a toast message.
+     *
      * @param view View pressed by the user.
      * @return True if the long click was consumed, otherwise false.
      */
     @Override
-    public boolean onLongClick(View view)
-    {
+    public boolean onLongClick(View view) {
         if (null != view) {
             // Check that the view actually have content description to display.
             CharSequence description = view.getContentDescription();
@@ -39,7 +38,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener
                 view.getLocationInWindow(position);
 
                 Toast toast = Toast.makeText(mContext, description, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP|Gravity.LEFT, position[0], position[1]);
+                toast.setGravity(Gravity.TOP | Gravity.LEFT, position[0], position[1]);
                 toast.show();
 
                 return true;

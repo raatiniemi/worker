@@ -6,13 +6,11 @@ import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mvp.BasePresenter;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectsPresenter extends BasePresenter<ProjectListFragment>
-{
+public class ProjectsPresenter extends BasePresenter<ProjectListFragment> {
     private AsyncTask<ProjectMapper, Void, ProjectCollection> mProjectLoader;
 
     @Override
-    public void detachView()
-    {
+    public void detachView() {
         super.detachView();
 
         if (null != mProjectLoader && !mProjectLoader.isCancelled()) {
@@ -20,16 +18,14 @@ public class ProjectsPresenter extends BasePresenter<ProjectListFragment>
         }
     }
 
-    public void loadProjects(ProjectMapper mapper)
-    {
+    public void loadProjects(ProjectMapper mapper) {
         if (null != mProjectLoader && !mProjectLoader.isCancelled()) {
             mProjectLoader.cancel(true);
         }
 
         mProjectLoader = new AsyncTask<ProjectMapper, Void, ProjectCollection>() {
             @Override
-            protected ProjectCollection doInBackground(ProjectMapper... params)
-            {
+            protected ProjectCollection doInBackground(ProjectMapper... params) {
                 // Check that we have received the project mapper as argument.
                 if (params.length == 0 || !(params[0] instanceof ProjectMapper)) {
                     return null;
@@ -41,8 +37,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectListFragment>
             }
 
             @Override
-            protected void onPostExecute(ProjectCollection projects)
-            {
+            protected void onPostExecute(ProjectCollection projects) {
                 if (isCancelled() || null == projects) {
                     return;
                 }

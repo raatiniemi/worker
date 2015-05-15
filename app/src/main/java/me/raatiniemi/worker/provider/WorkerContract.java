@@ -2,10 +2,8 @@ package me.raatiniemi.worker.provider;
 
 import android.provider.BaseColumns;
 
-public class WorkerContract
-{
-    public interface ProjectColumns
-    {
+public class WorkerContract {
+    public interface ProjectColumns {
         String ID = BaseColumns._ID;
 
         String NAME = "name";
@@ -15,8 +13,7 @@ public class WorkerContract
         String ARCHIVED = "archived";
     }
 
-    public interface TimeColumns
-    {
+    public interface TimeColumns {
         String ID = BaseColumns._ID;
 
         String PROJECT_ID = "project_id";

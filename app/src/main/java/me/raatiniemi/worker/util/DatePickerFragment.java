@@ -13,8 +13,7 @@ import java.util.Calendar;
 
 import me.raatiniemi.worker.R;
 
-public class DatePickerFragment extends DialogFragment
-{
+public class DatePickerFragment extends DialogFragment {
     private static final String TAG = "DatePickerFragment";
 
     /**
@@ -23,26 +22,25 @@ public class DatePickerFragment extends DialogFragment
     private DatePickerDialog.OnDateSetListener mOnDateSetListener;
 
     /**
-     * Set the "OnDateSetListener" for the DatePickerDialog.
-     * @param listener "OnDateSetListener" for the DatePickerDialog.
-     */
-    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener)
-    {
-        mOnDateSetListener = listener;
-    }
-
-    /**
      * Get the "OnDateSetListener" for the DatePickerDialog.
+     *
      * @return "OnDateSetListener" for the DatePickerDialog.
      */
-    public DatePickerDialog.OnDateSetListener getOnDateSetListener()
-    {
+    public DatePickerDialog.OnDateSetListener getOnDateSetListener() {
         return mOnDateSetListener;
     }
 
+    /**
+     * Set the "OnDateSetListener" for the DatePickerDialog.
+     *
+     * @param listener "OnDateSetListener" for the DatePickerDialog.
+     */
+    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
+        mOnDateSetListener = listener;
+    }
+
     @Override
-    public void onAttach(Activity activity)
-    {
+    public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         // Check if we have a callback listener.
@@ -69,8 +67,7 @@ public class DatePickerFragment extends DialogFragment
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);

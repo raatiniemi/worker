@@ -26,32 +26,28 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
-{
+public class ProjectListFragment extends BaseFragment<ProjectsPresenter> {
+    public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
+
     private static final String TAG = "ProjectListFragment";
 
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
-
-    public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     private RecyclerView mRecyclerView;
 
     private ProjectListAdapter mAdapter;
 
-    public ProjectListFragment()
-    {
+    public ProjectListFragment() {
         super();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_project_list, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_project_list);
@@ -115,8 +111,7 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
                     ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(position);
                     fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
                         @Override
-                        public void onClockActivityAt(int position, Calendar calendar)
-                        {
+                        public void onClockActivityAt(int position, Calendar calendar) {
                             onClockActivityChange(position, calendar.getTime());
                         }
                     });
@@ -134,27 +129,23 @@ public class ProjectListFragment extends BaseFragment<ProjectsPresenter>
     }
 
     @Override
-    protected ProjectsPresenter createPresenter()
-    {
+    protected ProjectsPresenter createPresenter() {
         return new ProjectsPresenter();
     }
 
-    public void setData(ProjectCollection projects)
-    {
+    public void setData(ProjectCollection projects) {
         mAdapter.setItems(projects);
         mAdapter.notifyDataSetChanged();
     }
 
-    public void addProject(Project project)
-    {
+    public void addProject(Project project) {
         // Add the project to the adapter, and scroll down
         // to the new project.
         int position = mAdapter.add(project);
         mRecyclerView.scrollToPosition(position);
     }
 
-    private void onClockActivityChange(int position, Date date)
-    {
+    private void onClockActivityChange(int position, Date date) {
         try {
             // Retrieve the project and time data mappers.
             ProjectMapper projectMapper = MapperRegistry.getProjectMapper();

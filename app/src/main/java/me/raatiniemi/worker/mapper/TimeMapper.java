@@ -12,21 +12,21 @@ import java.util.List;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
-import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
-import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.*;
-import me.raatiniemi.worker.provider.WorkerContract.*;
-import me.raatiniemi.worker.provider.WorkerDatabase.*;
+import me.raatiniemi.worker.provider.ExpandableDataProvider.Child;
+import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeGroup;
+import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.provider.WorkerDatabase.Tables;
 import me.raatiniemi.worker.util.TimeCollection;
 
-public class TimeMapper extends AbstractMapper<Time>
-{
+public class TimeMapper extends AbstractMapper<Time> {
     /**
      * Timestamp for the beginning of the month in milliseconds.
      */
     private final long mBeginningOfMonth;
 
-    public TimeMapper()
-    {
+    public TimeMapper() {
         super();
 
         // Reset the calendar to retrieve timestamp
@@ -40,13 +40,11 @@ public class TimeMapper extends AbstractMapper<Time>
         mBeginningOfMonth = calendar.getTimeInMillis();
     }
 
-    protected String getTable()
-    {
+    protected String getTable() {
         return Tables.TIME;
     }
 
-    protected String[] getColumns()
-    {
+    protected String[] getColumns() {
         return new String[]{
             TimeColumns.ID,
             TimeColumns.PROJECT_ID,
@@ -55,8 +53,7 @@ public class TimeMapper extends AbstractMapper<Time>
         };
     }
 
-    protected Time load(Cursor row)
-    {
+    protected Time load(Cursor row) {
         long id = row.getLong(row.getColumnIndex(TimeColumns.ID));
         long projectId = row.getLong(row.getColumnIndex(TimeColumns.PROJECT_ID));
         long start = row.getLong(row.getColumnIndex(TimeColumns.START));
@@ -70,14 +67,13 @@ public class TimeMapper extends AbstractMapper<Time>
         }
     }
 
-    public TimeCollection findTimeByProject(Project project)
-    {
+    public TimeCollection findTimeByProject(Project project) {
         TimeCollection result = new TimeCollection();
 
         // Check that the project actually exists, i.e. it has an value for id.
         if (project != null && project.getId() != null) {
             String selection = TimeColumns.PROJECT_ID + "=" + project.getId() + " AND (" + TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0)";
-            String[] selectionArgs = new String[] { String.valueOf(mBeginningOfMonth) };
+            String[] selectionArgs = new String[]{ String.valueOf(mBeginningOfMonth) };
             String orderBy = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
 
             Cursor rows = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, orderBy);
@@ -96,12 +92,12 @@ public class TimeMapper extends AbstractMapper<Time>
 
     /**
      * Load a batch of time items grouped as an interval.
+     *
      * @param intervalRow Cursor for grouped interval.
      * @param positionOffset Offset for the cursor position.
      * @return Time grouped as interval, or null if no rows are available.
      */
-    private Groupable loadGroupable(Cursor intervalRow, int positionOffset)
-    {
+    private Groupable loadGroupable(Cursor intervalRow, int positionOffset) {
         // We're getting the id for the time objects as a comma-separated string column.
         // We have to split the value before attempting to retrieve each individual row.
         String grouped = intervalRow.getString(1);
@@ -121,7 +117,7 @@ public class TimeMapper extends AbstractMapper<Time>
 
             // Iterate through and retrieve each row.
             for (String id : rows) {
-                selectionArgs = new String[] { id };
+                selectionArgs = new String[]{ id };
 
                 Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
                 if (row.moveToFirst()) {
@@ -148,18 +144,18 @@ public class TimeMapper extends AbstractMapper<Time>
 
     /**
      * Find and group time as an interval for a specified project.
+     *
      * @param project Project connected to the time.
      * @param start Where in the iteration to start, e.g. zero for first iteration.
      * @return Time grouped as interval for specified project.
      */
-    public List<Groupable> findIntervalByProject(Project project, int start)
-    {
+    public List<Groupable> findIntervalByProject(Project project, int start) {
         List<Groupable> result = new ArrayList<>();
 
         // Check that the project is a valid candidate, i.e. it's an existing project.
         if (null != project && null != project.getId()) {
             // We have to group each of the time objects related to the interval.
-            String[] columns = new String[] {
+            String[] columns = new String[]{
                 "MIN(start) AS date",
                 "GROUP_CONCAT(" + TimeColumns.ID + ")"
             };
@@ -194,16 +190,15 @@ public class TimeMapper extends AbstractMapper<Time>
 
     /**
      * Find and group time as an interval for a specified project.
+     *
      * @param project Project connected to the time.
      * @return Time grouped as interval for specified project.
      */
-    public List<Groupable> findIntervalByProject(Project project)
-    {
+    public List<Groupable> findIntervalByProject(Project project) {
         return findIntervalByProject(project, 0);
     }
 
-    public Time insert(Time time)
-    {
+    public Time insert(Time time) {
         // TODO: Check if timer is already active for project, throw exception.
 
         ContentValues values = new ContentValues();
@@ -217,8 +212,7 @@ public class TimeMapper extends AbstractMapper<Time>
         return find(id);
     }
 
-    public Time update(Time time)
-    {
+    public Time update(Time time) {
         ContentValues values = new ContentValues();
         values.put(TimeColumns.START, time.getStart());
         values.put(TimeColumns.STOP, time.getStop());
@@ -231,8 +225,7 @@ public class TimeMapper extends AbstractMapper<Time>
         return find(time.getId());
     }
 
-    public boolean remove(Time time)
-    {
+    public boolean remove(Time time) {
         String where = TimeColumns.ID + "=" + time.getId();
 
         return 0 < mDatabase.delete(getTable(), where, null);

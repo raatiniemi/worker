@@ -16,58 +16,16 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Time;
-import me.raatiniemi.worker.provider.ExpandableDataProvider.*;
+import me.raatiniemi.worker.provider.ExpandableDataProvider.Child;
+import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
-import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.*;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
+import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeGroup;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter
-    extends AbstractExpandableItemAdapter<TimesheetAdapter.GroupViewHolder, TimesheetAdapter.ChildViewHolder>
-{
+    extends AbstractExpandableItemAdapter<TimesheetAdapter.GroupViewHolder, TimesheetAdapter.ChildViewHolder> {
     private static final String TAG = "TimesheetAdapter";
-
-    public static class BaseViewHolder extends AbstractExpandableItemViewHolder
-    {
-        public RelativeLayout mContainer;
-
-        public TextView mTitle;
-
-        public TextView mSummarize;
-
-        public BaseViewHolder(View view)
-        {
-            super(view);
-        }
-    }
-
-    public static class GroupViewHolder extends BaseViewHolder
-    {
-        public GroupViewHolder(View view)
-        {
-            super(view);
-
-            mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_group_item);
-            mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
-            mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
-        }
-    }
-
-    public static class ChildViewHolder extends BaseViewHolder
-    {
-        public ChildViewHolder(View view)
-        {
-            super(view);
-
-            mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_child_item);
-            mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
-            mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
-        }
-    }
-
-    public interface OnTimesheetListener
-    {
-        public boolean onTimeLongClick(View view);
-    }
 
     private TimesheetExpandableDataProvider mProvider;
 
@@ -81,8 +39,7 @@ public class TimesheetAdapter
 
     private OnTimesheetListener mOnTimesheetListener;
 
-    public TimesheetAdapter(TimesheetExpandableDataProvider provider)
-    {
+    public TimesheetAdapter(TimesheetExpandableDataProvider provider) {
         mProvider = provider;
 
         mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
@@ -92,8 +49,7 @@ public class TimesheetAdapter
 
         mOnTimeLongClickListener = new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View view)
-            {
+            public boolean onLongClick(View view) {
                 return onTimeLongClick(view);
             }
         };
@@ -101,26 +57,22 @@ public class TimesheetAdapter
         setHasStableIds(true);
     }
 
-    private boolean onTimeLongClick(View view)
-    {
+    private boolean onTimeLongClick(View view) {
         return null != getOnTimesheetListener() && getOnTimesheetListener().onTimeLongClick(view);
     }
 
-    public void addGroup(Groupable groupable)
-    {
+    public void addGroup(Groupable groupable) {
         mProvider.addGroupItem(groupable);
         notifyDataSetChanged();
     }
 
-    public void remove(int groupPosition, int childPosition)
-    {
+    public void remove(int groupPosition, int childPosition) {
         mProvider.removeChildItem(groupPosition, childPosition);
         notifyDataSetChanged();
     }
 
     @Override
-    public GroupViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType)
-    {
+    public GroupViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
@@ -128,8 +80,7 @@ public class TimesheetAdapter
     }
 
     @Override
-    public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType)
-    {
+    public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType) {
         holder.itemView.setClickable(true);
 
         TimeGroup group = (TimeGroup) mProvider.getGroupItem(groupPosition);
@@ -138,7 +89,7 @@ public class TimesheetAdapter
         long interval = 0;
 
         List<Child> childItems = mProvider.getChildItems(groupPosition);
-        for (Child child: childItems) {
+        for (Child child : childItems) {
             Time time = ((TimeChild) child).getTime();
             interval += time.getInterval();
         }
@@ -162,26 +113,22 @@ public class TimesheetAdapter
     }
 
     @Override
-    public int getGroupCount()
-    {
+    public int getGroupCount() {
         return mProvider.getGroupCount();
     }
 
     @Override
-    public int getGroupItemViewType(int groupPosition)
-    {
+    public int getGroupItemViewType(int groupPosition) {
         return R.layout.fragment_timesheet_group_item;
     }
 
     @Override
-    public long getGroupId(int groupPosition)
-    {
+    public long getGroupId(int groupPosition) {
         return mProvider.getGroupItem(groupPosition).getGroupId();
     }
 
     @Override
-    public ChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType)
-    {
+    public ChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
@@ -189,8 +136,7 @@ public class TimesheetAdapter
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType)
-    {
+    public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
         // Register the long click listener on the time item.
         holder.itemView.setOnLongClickListener(mOnTimeLongClickListener);
 
@@ -213,36 +159,66 @@ public class TimesheetAdapter
     }
 
     @Override
-    public int getChildCount(int groupPosition)
-    {
+    public int getChildCount(int groupPosition) {
         return mProvider.getChildCount(groupPosition);
     }
 
     @Override
-    public int getChildItemViewType(int groupPosition, int childPosition)
-    {
+    public int getChildItemViewType(int groupPosition, int childPosition) {
         return R.layout.fragment_timesheet_child_item;
     }
 
     @Override
-    public long getChildId(int groupPosition, int childPosition)
-    {
+    public long getChildId(int groupPosition, int childPosition) {
         return mProvider.getChildItem(groupPosition, childPosition).getChildId();
     }
 
     @Override
-    public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand)
-    {
+    public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
         return true;
     }
 
-    public void setOnTimesheetListener(OnTimesheetListener onTimesheetListener)
-    {
+    public OnTimesheetListener getOnTimesheetListener() {
+        return mOnTimesheetListener;
+    }
+
+    public void setOnTimesheetListener(OnTimesheetListener onTimesheetListener) {
         mOnTimesheetListener = onTimesheetListener;
     }
 
-    public OnTimesheetListener getOnTimesheetListener()
-    {
-        return mOnTimesheetListener;
+    public interface OnTimesheetListener {
+        public boolean onTimeLongClick(View view);
+    }
+
+    public static class BaseViewHolder extends AbstractExpandableItemViewHolder {
+        public RelativeLayout mContainer;
+
+        public TextView mTitle;
+
+        public TextView mSummarize;
+
+        public BaseViewHolder(View view) {
+            super(view);
+        }
+    }
+
+    public static class GroupViewHolder extends BaseViewHolder {
+        public GroupViewHolder(View view) {
+            super(view);
+
+            mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_group_item);
+            mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
+            mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
+        }
+    }
+
+    public static class ChildViewHolder extends BaseViewHolder {
+        public ChildViewHolder(View view) {
+            super(view);
+
+            mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_child_item);
+            mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
+            mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
+        }
     }
 }

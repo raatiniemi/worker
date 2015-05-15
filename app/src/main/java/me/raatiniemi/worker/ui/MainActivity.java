@@ -12,10 +12,7 @@ import android.view.MenuItem;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
 
-public class MainActivity extends AppCompatActivity
-{
-    private static final String TAG = "MainActivity";
-
+public class MainActivity extends AppCompatActivity {
     /**
      * Tag for the project list fragment.
      */
@@ -31,14 +28,24 @@ public class MainActivity extends AppCompatActivity
      */
     static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 
+    private static final String TAG = "MainActivity";
+
     /**
      * Instance for the main activity.
      */
     private static MainActivity sInstance;
 
+    /**
+     * Retrieve the instance for the main activity.
+     *
+     * @return Instance for the main activity or null if none is available.
+     */
+    static MainActivity getInstance() {
+        return sInstance;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -56,16 +63,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actions_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem)
-    {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.actions_project_list_new:
                 openCreateNewProject();
@@ -77,13 +82,11 @@ public class MainActivity extends AppCompatActivity
     /**
      * Open the fragment for creating a new project.
      */
-    protected void openCreateNewProject()
-    {
+    protected void openCreateNewProject() {
         NewProjectFragment newProject = new NewProjectFragment();
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
             @Override
-            public void onCreateProject(Project project)
-            {
+            public void onCreateProject(Project project) {
                 // Attempt to find the fragment by the used fragment tag.
                 ProjectListFragment fragment = (ProjectListFragment)
                     getFragmentManager().findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity
                 if (null != fragment) {
                     fragment.addProject(project);
                 } else {
-                    Log.e(TAG, "Unable to find fragment with tag: "+ FRAGMENT_PROJECT_LIST_TAG);
+                    Log.e(TAG, "Unable to find fragment with tag: " + FRAGMENT_PROJECT_LIST_TAG);
                 }
             }
         });
@@ -100,8 +103,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         FragmentManager fragmentManager = getFragmentManager();
 
         // Depending on which fragment is contained within the
@@ -113,14 +115,5 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    /**
-     * Retrieve the instance for the main activity.
-     * @return Instance for the main activity or null if none is available.
-     */
-    static MainActivity getInstance()
-    {
-        return sInstance;
     }
 }
