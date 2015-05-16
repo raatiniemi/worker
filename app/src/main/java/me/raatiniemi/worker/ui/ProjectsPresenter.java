@@ -3,7 +3,7 @@ package me.raatiniemi.worker.ui;
 import android.os.AsyncTask;
 
 import me.raatiniemi.worker.mapper.ProjectMapper;
-import me.raatiniemi.worker.mvp.BasePresenter;
+import me.raatiniemi.worker.base.presenter.BasePresenter;
 import me.raatiniemi.worker.util.ProjectCollection;
 
 public class ProjectsPresenter extends BasePresenter<ProjectListFragment> {
