@@ -165,13 +165,13 @@ public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectLi
     }
 
     public interface OnItemClickListener {
-        public void onItemClick(View view);
+        void onItemClick(View view);
     }
 
     public interface OnClockActivityChangeListener {
-        public void onClockActivityToggle(View view);
+        void onClockActivityToggle(View view);
 
-        public void onClockActivityAt(View view);
+        void onClockActivityAt(View view);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
