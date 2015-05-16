@@ -25,7 +25,7 @@ final public class MapperRegistry {
      * @return Mapper registry instance.
      */
     private static MapperRegistry getInstance() {
-        if (mInstance == null) {
+        if (null == mInstance) {
             mInstance = new MapperRegistry();
         }
 
@@ -40,7 +40,7 @@ final public class MapperRegistry {
     public static ProjectMapper getProjectMapper() {
         MapperRegistry instance = getInstance();
 
-        if (instance.mProjectMapper == null) {
+        if (null == instance.mProjectMapper) {
             instance.mProjectMapper = new ProjectMapper(MapperRegistry.getTimeMapper());
         }
 
@@ -55,7 +55,7 @@ final public class MapperRegistry {
     public static TimeMapper getTimeMapper() {
         MapperRegistry instance = getInstance();
 
-        if (instance.mTimeMapper == null) {
+        if (null == instance.mTimeMapper) {
             instance.mTimeMapper = new TimeMapper();
         }
 
