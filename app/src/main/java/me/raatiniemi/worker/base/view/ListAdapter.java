@@ -49,4 +49,8 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
     public int getItemCount() {
         return null != getItems() ? getItems().size() : 0;
     }
+
+    public T get(int position) {
+        return getItems().get(position);
+    }
 }

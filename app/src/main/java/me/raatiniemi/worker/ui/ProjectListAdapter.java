@@ -136,10 +136,6 @@ public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, 
         notifyItemChanged(position);
     }
 
-    public Project get(int position) {
-        return getItems().get(position);
-    }
-
     public OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
     }
