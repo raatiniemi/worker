@@ -1,6 +1,9 @@
-package me.raatiniemi.worker.mvp;
+package me.raatiniemi.worker.base.view;
 
 import android.app.Fragment;
+
+import me.raatiniemi.worker.mvp.MvpPresenter;
+import me.raatiniemi.worker.mvp.MvpView;
 
 abstract public class BaseFragment<P extends MvpPresenter> extends Fragment implements MvpView {
     /**
