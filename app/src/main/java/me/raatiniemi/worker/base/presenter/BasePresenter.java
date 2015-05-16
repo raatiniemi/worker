@@ -1,6 +1,6 @@
 package me.raatiniemi.worker.base.presenter;
 
-import me.raatiniemi.worker.mvp.MvpView;
+import me.raatiniemi.worker.base.view.MvpView;
 
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     private V mView;
