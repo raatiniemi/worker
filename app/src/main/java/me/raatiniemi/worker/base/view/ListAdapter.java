@@ -60,4 +60,17 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
         // Notify the adapter that data item have changed.
         notifyItemChanged(position);
     }
+
+    public int add(T item) {
+        // Retrieve the position for the new item by retrieving the number of
+        // items within the container before adding the new item.
+        int position = getItemCount();
+        getItems().add(item);
+
+        // Notify the adapter a new item have been added.
+        notifyItemInserted(position);
+
+        // Return the position for the new item.
+        return position;
+    }
 }

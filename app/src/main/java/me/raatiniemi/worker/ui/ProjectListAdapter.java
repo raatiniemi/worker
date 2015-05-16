@@ -116,19 +116,6 @@ public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, 
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 
-    public int add(Project project) {
-        // Retrieve the number of elements before adding the project,
-        // hence getting the index of the new project.
-        int position = getItems().size();
-        getItems().add(project);
-
-        // Notify the adapter that the project have been inserted.
-        notifyItemInserted(position);
-
-        // Return the new position, should scroll the recycler view.
-        return position;
-    }
-
     public OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
     }
