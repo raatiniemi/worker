@@ -129,13 +129,6 @@ public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, 
         return position;
     }
 
-    public void set(int position, Project project) {
-        getItems().set(position, project);
-
-        // Notify the adapter that the project have been modified.
-        notifyItemChanged(position);
-    }
-
     public OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
     }

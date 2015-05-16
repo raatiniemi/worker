@@ -53,4 +53,11 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
     public T get(int position) {
         return getItems().get(position);
     }
+
+    public void set(int position, T item) {
+        getItems().set(position, item);
+
+        // Notify the adapter that data item have changed.
+        notifyItemChanged(position);
+    }
 }
