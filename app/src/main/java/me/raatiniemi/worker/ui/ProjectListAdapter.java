@@ -19,7 +19,7 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListAdapter extends ListAdapter<ProjectCollection, ProjectListAdapter.ItemViewHolder> {
+public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, ProjectListAdapter.ItemViewHolder> {
     private static final String TAG = "ProjectListAdapter";
 
     private View.OnClickListener mOnClickListener = new OnProjectClickListener();

@@ -5,14 +5,14 @@ import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
 
-abstract public class ListAdapter<T extends List, V extends RecyclerView.ViewHolder>
+abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<V> {
     private Context mContext;
 
     /**
      * Data items for the adapter to display.
      */
-    private T mItems;
+    private C mItems;
 
     public ListAdapter(Context context) {
         mContext = context;
@@ -27,7 +27,7 @@ abstract public class ListAdapter<T extends List, V extends RecyclerView.ViewHol
      *
      * @return Data items for the adapter.
      */
-    public T getItems() {
+    public C getItems() {
         return mItems;
     }
 
@@ -36,7 +36,7 @@ abstract public class ListAdapter<T extends List, V extends RecyclerView.ViewHol
      *
      * @param items Data items for the adapter.
      */
-    public void setItems(T items) {
+    public void setItems(C items) {
         mItems = items;
     }
 
