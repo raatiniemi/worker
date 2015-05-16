@@ -20,13 +20,13 @@ import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
-import me.raatiniemi.worker.base.view.BaseFragment;
+import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListFragment extends BaseFragment<ProjectsPresenter> {
+public class ProjectListFragment extends MvpFragment<ProjectsPresenter> {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     private static final String TAG = "ProjectListFragment";
