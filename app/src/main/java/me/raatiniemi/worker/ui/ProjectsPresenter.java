@@ -27,7 +27,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectListFragment> {
             @Override
             protected ProjectCollection doInBackground(ProjectMapper... params) {
                 // Check that we have received the project mapper as argument.
-                if (params.length == 0 || !(params[0] instanceof ProjectMapper)) {
+                if (0 == params.length || null == params[0]) {
                     return null;
                 }
 
