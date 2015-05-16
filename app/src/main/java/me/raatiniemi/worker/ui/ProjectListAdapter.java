@@ -26,8 +26,6 @@ public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, 
 
     private DateIntervalFormat mDateIntervalFormat;
 
-    private OnItemClickListener mOnItemClickListener;
-
     private OnClockActivityChangeListener mOnClockActivityChangeListener;
 
     private HintedImageButtonListener mHintedImageButtonListener;
@@ -116,14 +114,6 @@ public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, 
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 
-    public OnItemClickListener getOnItemClickListener() {
-        return mOnItemClickListener;
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        mOnItemClickListener = onItemClickListener;
-    }
-
     public OnClockActivityChangeListener getOnClockActivityChangeListener() {
         return mOnClockActivityChangeListener;
     }
@@ -138,10 +128,6 @@ public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, 
 
     public void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
         mHintedImageButtonListener = hintedImageButtonListener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(View view);
     }
 
     public interface OnClockActivityChangeListener {

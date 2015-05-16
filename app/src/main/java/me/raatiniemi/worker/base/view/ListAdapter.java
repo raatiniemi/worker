@@ -2,6 +2,7 @@ package me.raatiniemi.worker.base.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
      * Data items for the adapter to display.
      */
     private C mItems;
+
+    private OnItemClickListener mOnItemClickListener;
 
     public ListAdapter(Context context) {
         mContext = context;
@@ -72,5 +75,17 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
 
         // Return the position for the new item.
         return position;
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return mOnItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view);
     }
 }
