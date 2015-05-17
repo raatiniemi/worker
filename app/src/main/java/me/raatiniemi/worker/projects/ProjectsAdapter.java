@@ -85,11 +85,11 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         // for the clock activity view should be altered, and
         // visibility for the clocked activity view.
         int clockedInSinceVisibility = View.GONE;
-        int clockActivityToggleId = R.string.project_list_item_project_clock_in;
-        int clockActivityAtId = R.string.project_list_item_project_clock_in_at;
+        int clockActivityToggleId = R.string.projects_item_project_clock_in;
+        int clockActivityAtId = R.string.projects_item_project_clock_in_at;
         if (project.isActive()) {
-            clockActivityToggleId = R.string.project_list_item_project_clock_out;
-            clockActivityAtId = R.string.project_list_item_project_clock_out_at;
+            clockActivityToggleId = R.string.projects_item_project_clock_out;
+            clockActivityAtId = R.string.projects_item_project_clock_out_at;
             clockedInSinceVisibility = View.VISIBLE;
         }
 
@@ -100,7 +100,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         holder.mClockActivityAt.setContentDescription(clockActivityAt);
 
         // Retrieve the time that the active session was clocked in.
-        int clockedInSinceId = R.string.project_list_item_project_clocked_in_since;
+        int clockedInSinceId = R.string.projects_item_project_clocked_in_since;
         String clockedInSince = resources.getString(clockedInSinceId);
         clockedInSince = String.format(
             clockedInSince,

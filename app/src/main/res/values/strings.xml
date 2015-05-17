@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Worker</string>
-    <string name="project_list_activity_title">Projects</string>
+    <string name="projects_title">Projects</string>
 
-    <string name="project_list_activity_actions_create_new_project">Create new project</string>
+    <string name="projects_actions_create_new_project">Create new project</string>
 
-    <string name="project_list_item_project_clocked_in_since" formatted="false">Since %s (%s)</string>
-    <string name="project_list_item_project_clock_in">Clock in now</string>
-    <string name="project_list_item_project_clock_out">Clock out now</string>
-    <string name="project_list_item_project_clock_in_at">Clock in at given date and time</string>
-    <string name="project_list_item_project_clock_out_at">Clock out at given date and time</string>
+    <string name="projects_item_project_clocked_in_since" formatted="false">Since %s (%s)</string>
+    <string name="projects_item_project_clock_in">Clock in now</string>
+    <string name="projects_item_project_clock_out">Clock out now</string>
+    <string name="projects_item_project_clock_in_at">Clock in at given date and time</string>
+    <string name="projects_item_project_clock_out_at">Clock out at given date and time</string>
 
-    <string name="project_list_item_project_clock_out_before_clock_in_title">Unable to clock out</string>
-    <string name="project_list_item_project_clock_out_before_clock_in_description">The time for clock out is before the time for clock in.</string>
+    <string name="projects_item_project_clock_out_before_clock_in_title">Unable to clock out</string>
+    <string name="projects_item_project_clock_out_before_clock_in_description">The time for clock out is before the time for clock in.</string>
 
     <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
     <string name="fragment_new_project_name_hint">Project name&#8230;</string>
