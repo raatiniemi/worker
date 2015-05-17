@@ -103,7 +103,7 @@ public class TimesheetFragment extends Fragment {
     private boolean mLoading = false;
 
     private long getProjectId() {
-        return getArguments().getLong(ProjectListFragment.MESSAGE_PROJECT_ID, -1);
+        return getArguments().getLong(ProjectsFragment.MESSAGE_PROJECT_ID, -1);
     }
 
     @Override

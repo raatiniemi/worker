@@ -26,10 +26,10 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListFragment extends MvpFragment<ProjectsPresenter> {
+public class ProjectsFragment extends MvpFragment<ProjectsPresenter> {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
-    private static final String TAG = "ProjectListFragment";
+    private static final String TAG = "ProjectsFragment";
 
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
@@ -37,20 +37,20 @@ public class ProjectListFragment extends MvpFragment<ProjectsPresenter> {
 
     private ProjectListAdapter mAdapter;
 
-    public ProjectListFragment() {
+    public ProjectsFragment() {
         super();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_project_list, container, false);
+        return inflater.inflate(R.layout.fragment_projects, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_project_list);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new ProjectListAdapter(getActivity(), new DateIntervalFormat());

@@ -6,7 +6,7 @@ import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.base.presenter.BasePresenter;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectsPresenter extends BasePresenter<ProjectListFragment> {
+public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
     private AsyncTask<ProjectMapper, Void, ProjectCollection> mProjectLoader;
 
     @Override

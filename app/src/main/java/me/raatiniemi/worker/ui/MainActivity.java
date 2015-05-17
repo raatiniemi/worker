@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         sInstance = this;
 
         if (null == savedInstanceState) {
-            ProjectListFragment fragment = new ProjectListFragment();
+            ProjectsFragment fragment = new ProjectsFragment();
 
             getFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCreateProject(Project project) {
                 // Attempt to find the fragment by the used fragment tag.
-                ProjectListFragment fragment = (ProjectListFragment)
+                ProjectsFragment fragment = (ProjectsFragment)
                     getFragmentManager().findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
 
                 // If we have found the fragment, add the new project.

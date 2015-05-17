@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     >
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_project_list"
+        android:id="@+id/fragment_projects"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/project_list_item_card_view_margin_vertical"
