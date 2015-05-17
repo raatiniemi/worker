@@ -29,7 +29,7 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectsFragment extends MvpFragment<ProjectsPresenter> {
+public class ProjectsFragment extends MvpFragment<ProjectsPresenter> implements ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     private static final String TAG = "ProjectsFragment";
@@ -141,6 +141,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter> {
         mAdapter.notifyDataSetChanged();
     }
 
+    @Override
     public void addProject(Project project) {
         // Add the project to the adapter, and scroll down
         // to the new project.
