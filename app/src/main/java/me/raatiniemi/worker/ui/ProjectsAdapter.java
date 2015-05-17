@@ -38,7 +38,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
 
     @Override
     public int getItemViewType(int position) {
-        return R.layout.fragment_project_list_item;
+        return R.layout.fragment_projects_item;
     }
 
     @Override
@@ -168,7 +168,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
             Log.d(TAG, "View with id " + viewId + " was clicked");
 
             // Check if the clicked view is the item view from the recycler view.
-            if (viewId == R.id.fragment_project_list_item) {
+            if (viewId == R.id.fragment_projects_item) {
                 // Check that the OnItemClickListener have been supplied.
                 if (null == getOnItemClickListener()) {
                     Log.e(TAG, "No OnItemClickListener have been supplied");
