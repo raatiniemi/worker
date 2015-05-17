@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <item
-        android:id="@+id/actions_project_list_new"
+        android:id="@+id/actions_projects_new"
         android:title="@string/project_list_activity_actions_create_new_project"
         android:icon="@android:drawable/ic_menu_add"
         />

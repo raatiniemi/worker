@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.actions_project_list_new:
+            case R.id.actions_projects_new:
                 openCreateNewProject();
                 return true;
         }
