@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
@@ -55,7 +56,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter> {
 
         mAdapter = new ProjectsAdapter(getActivity(), new DateIntervalFormat());
         mAdapter.setHintedImageButtonListener(new HintedImageButtonListener(getActivity()));
-        mAdapter.setOnItemClickListener(new ProjectsAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
                 int position = mRecyclerView.getChildPosition(view);
