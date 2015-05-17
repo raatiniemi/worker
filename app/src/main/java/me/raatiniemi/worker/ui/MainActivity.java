@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.projects.ProjectsFragment;
 
 public class MainActivity extends AppCompatActivity {
     /**

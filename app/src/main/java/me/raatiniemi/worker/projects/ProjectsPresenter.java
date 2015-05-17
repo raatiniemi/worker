@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui;
+package me.raatiniemi.worker.projects;
 
 import android.os.AsyncTask;
 

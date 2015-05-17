@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui;
+package me.raatiniemi.worker.projects;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,6 +22,8 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.base.view.MvpFragment;
+import me.raatiniemi.worker.ui.MainActivity;
+import me.raatiniemi.worker.ui.TimesheetFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
