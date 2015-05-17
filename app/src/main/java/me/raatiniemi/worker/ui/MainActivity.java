@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.projects.ProjectsFragment;
+import me.raatiniemi.worker.projects.ProjectsView;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -88,15 +89,23 @@ public class MainActivity extends AppCompatActivity {
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
             @Override
             public void onCreateProject(Project project) {
-                // Attempt to find the fragment by the used fragment tag.
-                ProjectsFragment fragment = (ProjectsFragment)
-                    getFragmentManager().findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
-
-                // If we have found the fragment, add the new project.
-                if (null != fragment) {
-                    fragment.addProject(project);
-                } else {
-                    Log.e(TAG, "Unable to find fragment with tag: " + FRAGMENT_PROJECT_LIST_TAG);
+                ProjectsView fragment = null;
+                try {
+                    // Attempt to find the projects fragment by its tag.
+                    fragment = (ProjectsView) getFragmentManager()
+                        .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
+                } catch (ClassCastException e) {
+                    // Something has gone wrong with the fragment manager,
+                    // just print the exception and continue.
+                    Log.e(TAG, "Unable to cast projects fragment: " + e.getMessage());
+                } finally {
+                    // If we managed to find the instance for the
+                    // project fragment, add the new project.
+                    if (null != fragment) {
+                        fragment.addProject(project);
+                    } else {
+                        Log.w(TAG, "Unable to find fragment with tag: " + FRAGMENT_PROJECT_LIST_TAG);
+                    }
                 }
             }
         });
