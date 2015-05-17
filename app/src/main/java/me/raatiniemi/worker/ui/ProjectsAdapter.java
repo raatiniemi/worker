@@ -19,8 +19,8 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, ProjectListAdapter.ItemViewHolder> {
-    private static final String TAG = "ProjectListAdapter";
+public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, ProjectsAdapter.ItemViewHolder> {
+    private static final String TAG = "ProjectsAdapter";
 
     private View.OnClickListener mOnClickListener = new OnProjectClickListener();
 
@@ -30,7 +30,7 @@ public class ProjectListAdapter extends ListAdapter<Project, ProjectCollection, 
 
     private HintedImageButtonListener mHintedImageButtonListener;
 
-    public ProjectListAdapter(Context context, DateIntervalFormat dateIntervalFormat) {
+    public ProjectsAdapter(Context context, DateIntervalFormat dateIntervalFormat) {
         super(context);
 
         mDateIntervalFormat = dateIntervalFormat;

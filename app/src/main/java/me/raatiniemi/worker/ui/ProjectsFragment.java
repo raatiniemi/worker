@@ -35,7 +35,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter> {
 
     private RecyclerView mRecyclerView;
 
-    private ProjectListAdapter mAdapter;
+    private ProjectsAdapter mAdapter;
 
     public ProjectsFragment() {
         super();
@@ -53,9 +53,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter> {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new ProjectListAdapter(getActivity(), new DateIntervalFormat());
+        mAdapter = new ProjectsAdapter(getActivity(), new DateIntervalFormat());
         mAdapter.setHintedImageButtonListener(new HintedImageButtonListener(getActivity()));
-        mAdapter.setOnItemClickListener(new ProjectListAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new ProjectsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
                 int position = mRecyclerView.getChildPosition(view);
@@ -76,7 +76,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter> {
                 }
             }
         });
-        mAdapter.setOnClockActivityChangeListener(new ProjectListAdapter.OnClockActivityChangeListener() {
+        mAdapter.setOnClockActivityChangeListener(new ProjectsAdapter.OnClockActivityChangeListener() {
             @Override
             public void onClockActivityToggle(View view) {
                 final int position = mRecyclerView.getChildPosition(view);
