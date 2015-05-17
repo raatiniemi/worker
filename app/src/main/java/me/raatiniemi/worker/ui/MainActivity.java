@@ -16,17 +16,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Tag for the project list fragment.
      */
-    static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
+    public static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
     /**
      * Tag for the timesheet fragment.
      */
-    static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
+    public static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
 
     /**
      * Tag for the new project fragment.
      */
-    static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
+    public static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 
     private static final String TAG = "MainActivity";
 
