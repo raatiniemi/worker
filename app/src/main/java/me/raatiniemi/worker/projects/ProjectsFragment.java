@@ -15,13 +15,13 @@ import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
+import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
-import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.ui.MainActivity;
 import me.raatiniemi.worker.ui.TimesheetFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
