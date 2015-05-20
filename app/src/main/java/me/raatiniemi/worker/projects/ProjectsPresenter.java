@@ -20,6 +20,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
         if (null != mProjectLoader && !mProjectLoader.isCancelled()) {
             mProjectLoader.cancel(true);
         }
+        mProjectLoader = null;
     }
 
     /**
