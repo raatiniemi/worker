@@ -103,7 +103,7 @@ public class DateIntervalFormat {
     /**
      * Available format types.
      */
-    public static enum Type {
+    public enum Type {
         /**
          * Format the interval with fraction hours, e.g. "8.25" for 8 hours and 15 minutes.
          */
