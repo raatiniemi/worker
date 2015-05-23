@@ -19,20 +19,45 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
+/**
+ * Adapter for listing available projects.
+ */
 public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, ProjectsAdapter.ItemViewHolder> {
+    /**
+     * Tag for logging within the ProjectsAdapter.
+     */
     private static final String TAG = "ProjectsAdapter";
 
+    /**
+     * On click listener for the project item related views.
+     */
     private View.OnClickListener mOnClickListener = new OnProjectClickListener();
 
+    /**
+     * Handles formatting for date intervals.
+     */
     private DateIntervalFormat mDateIntervalFormat;
 
+    /**
+     * Listener for toggling the clock activity.
+     */
     private OnClockActivityChangeListener mOnClockActivityChangeListener;
 
+    /**
+     * Listener for hinting images.
+     */
     private HintedImageButtonListener mHintedImageButtonListener;
 
+    /**
+     * Construct the ProjectsAdapter.
+     *
+     * @param context Context to use.
+     * @param dateIntervalFormat Formatter for date intervals.
+     */
     public ProjectsAdapter(Context context, DateIntervalFormat dateIntervalFormat) {
         super(context);
 
+        // Populate the date interval formatter.
         mDateIntervalFormat = dateIntervalFormat;
     }
 
@@ -114,39 +139,93 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 
+    /**
+     * Retrieve the listener for toggling the clock activity.
+     *
+     * @return Listener for toggling the clock activity, or null if none have been supplied.
+     */
     public OnClockActivityChangeListener getOnClockActivityChangeListener() {
         return mOnClockActivityChangeListener;
     }
 
+    /**
+     * Set the listener for toggling the clock activity.
+     *
+     * @param onClockActivityChangeListener Listener for toggling the clock activity.
+     */
     public void setOnClockActivityChangeListener(OnClockActivityChangeListener onClockActivityChangeListener) {
         mOnClockActivityChangeListener = onClockActivityChangeListener;
     }
 
+    /**
+     * Retrieve the listener for hinting images.
+     *
+     * @return Listener for hinting images, or null if none have been supplied.
+     */
     public HintedImageButtonListener getHintedImageButtonListener() {
         return mHintedImageButtonListener;
     }
 
+    /**
+     * Set the listener for hinting images.
+     *
+     * @param hintedImageButtonListener Listener for hinting images.
+     */
     public void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
         mHintedImageButtonListener = hintedImageButtonListener;
     }
 
+    /**
+     * Listener interface for toggling the clock activity.
+     */
     public interface OnClockActivityChangeListener {
+        /**
+         * Toggle the clock activity change.
+         *
+         * @param view View for the project item.
+         */
         void onClockActivityToggle(View view);
 
+        /**
+         * Toggle the clock activity change, with date and time.
+         *
+         * @param view View for the project item.
+         */
         void onClockActivityAt(View view);
     }
 
+    /**
+     * View holder for the project item view.
+     */
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * Field for the project name.
+         */
         public TextView mName;
 
+        /**
+         * Field for the registered project time.
+         */
         public TextView mTime;
 
+        /**
+         * Field for the project description.
+         */
         public TextView mDescription;
 
+        /**
+         * Icon for toggling the project activity.
+         */
         public ImageButton mClockActivityToggle;
 
+        /**
+         * Icon for toggling the project activity, with date and time.
+         */
         public ImageButton mClockActivityAt;
 
+        /**
+         * Field for the time when the project was clocked in.
+         */
         public TextView mClockedInSince;
 
         public ItemViewHolder(View view) {
