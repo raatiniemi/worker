@@ -38,7 +38,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
                 view.getLocationInWindow(position);
 
                 Toast toast = Toast.makeText(mContext, description, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP | Gravity.LEFT, position[0], position[1]);
+                toast.setGravity(Gravity.TOP | Gravity.START, position[0], position[1]);
                 toast.show();
 
                 return true;
