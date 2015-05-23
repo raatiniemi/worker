@@ -161,7 +161,15 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         }
     }
 
+    /**
+     * OnClickListener for the project item.
+     */
     private class OnProjectClickListener implements View.OnClickListener {
+        /**
+         * Handles click events for project related views.
+         *
+         * @param v View that has been clicked.
+         */
         @Override
         public void onClick(View v) {
             final int viewId = v.getId();
