@@ -4,7 +4,7 @@ import android.app.Fragment;
 
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
 
-abstract public class MvpFragment<P extends MvpPresenter> extends Fragment implements MvpView {
+abstract public class MvpFragment<P extends MvpPresenter, T> extends Fragment implements MvpView {
     /**
      * Instance for the presenter.
      */
@@ -28,6 +28,13 @@ abstract public class MvpFragment<P extends MvpPresenter> extends Fragment imple
         }
         return mPresenter;
     }
+
+    /**
+     * Set the data for the fragment.
+     *
+     * @param data Data for the fragment.
+     */
+    abstract public void setData(T data);
 
     @Override
     public void onDestroyView() {
