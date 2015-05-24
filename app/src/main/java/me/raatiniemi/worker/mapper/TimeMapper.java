@@ -16,8 +16,8 @@ import me.raatiniemi.worker.provider.ExpandableDataProvider.Child;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeGroup;
+import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.provider.WorkerDatabase.Tables;
 import me.raatiniemi.worker.util.TimeCollection;
 
 public class TimeMapper extends AbstractMapper<Time> {

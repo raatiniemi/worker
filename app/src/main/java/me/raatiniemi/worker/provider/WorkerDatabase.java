@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import me.raatiniemi.worker.application.Worker;
+import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 
@@ -80,20 +81,5 @@ public class WorkerDatabase extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    }
-
-    /**
-     * Name for the available tables within the database.
-     */
-    public interface Tables {
-        /**
-         * Name for the project table.
-         */
-        String PROJECT = "project";
-
-        /**
-         * Name for the registered time table.
-         */
-        String TIME = "time";
     }
 }
