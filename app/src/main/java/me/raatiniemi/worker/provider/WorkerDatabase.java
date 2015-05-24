@@ -8,6 +8,9 @@ import me.raatiniemi.worker.application.Worker;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 
+/**
+ * Handler for the worker sqlite database.
+ */
 public class WorkerDatabase extends SQLiteOpenHelper {
     /**
      * Name of the database.
@@ -39,14 +42,20 @@ public class WorkerDatabase extends SQLiteOpenHelper {
      * @return Instance for the database helper.
      */
     public static synchronized WorkerDatabase getInstance() {
-        if (mWorkerDatabase == null) {
+        if (null == mWorkerDatabase) {
             mWorkerDatabase = new WorkerDatabase(Worker.getContext());
         }
         return mWorkerDatabase;
     }
 
+    /**
+     * Creates the initial table structure for the database.
+     *
+     * @param db Instance for the database.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Table structure for the projects.
         db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
             ProjectColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ProjectColumns.NAME + " TEXT NOT NULL, " +
@@ -54,6 +63,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
             ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
             "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
 
+        // Table structure for the registered time.
         db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
             TimeColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
@@ -61,13 +71,29 @@ public class WorkerDatabase extends SQLiteOpenHelper {
             TimeColumns.STOP + " INTEGER DEFAULT 0)");
     }
 
+    /**
+     * Handles upgrade events for the database structure.
+     *
+     * @param db Instance for the database.
+     * @param oldVersion Old version of the structure.
+     * @param newVersion New version of the structure.
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
+    /**
+     * Name for the available tables within the database.
+     */
     public interface Tables {
+        /**
+         * Name for the project table.
+         */
         String PROJECT = "project";
 
+        /**
+         * Name for the registered time table.
+         */
         String TIME = "time";
     }
 }
