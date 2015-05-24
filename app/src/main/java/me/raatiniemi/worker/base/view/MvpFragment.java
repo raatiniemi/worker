@@ -4,6 +4,12 @@ import android.app.Fragment;
 
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
 
+/**
+ * Base for the model-view-presenter fragment.
+ *
+ * @param <P> Presenter to use with the fragment.
+ * @param <T> Type of data to use with the fragment.
+ */
 abstract public class MvpFragment<P extends MvpPresenter, T> extends Fragment implements MvpView {
     /**
      * Instance for the presenter.
@@ -36,10 +42,14 @@ abstract public class MvpFragment<P extends MvpPresenter, T> extends Fragment im
      */
     abstract public void setData(T data);
 
+    /**
+     * Handles clean up when the fragment view is destroyed.
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
+        // If the presenter is still active, we have to detach it.
         if (null != getPresenter()) {
             getPresenter().detachView();
         }
