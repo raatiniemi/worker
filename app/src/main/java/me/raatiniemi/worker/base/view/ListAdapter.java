@@ -2,12 +2,18 @@ package me.raatiniemi.worker.base.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.util.List;
 
 abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<V> {
+    /**
+     * Tag for logging within the ListAdapter.
+     */
+    private static final String TAG = "ListAdapter";
+
     private Context mContext;
 
     /**
@@ -16,6 +22,8 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
     private C mItems;
 
     private OnItemClickListener mOnItemClickListener;
+
+    private OnClickListener mOnClickListener = new OnClickListener();
 
     public ListAdapter(Context context) {
         mContext = context;
@@ -85,7 +93,25 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
         mOnItemClickListener = onItemClickListener;
     }
 
+    protected OnClickListener getOnClickListener() {
+        return mOnClickListener;
+    }
+
     public interface OnItemClickListener {
         void onItemClick(View view);
+    }
+
+    protected class OnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            // Check that the OnItemClickListener have been supplied.
+            if (null == getOnItemClickListener()) {
+                Log.e(TAG, "No OnItemClickListener have been supplied");
+                return;
+            }
+
+            // Relay the event with the item view to the OnItemClickListener.
+            getOnItemClickListener().onItemClick(v);
+        }
     }
 }
