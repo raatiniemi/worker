@@ -7,6 +7,13 @@ import android.view.View;
 
 import java.util.List;
 
+/**
+ * Base adapter for working with the RecyclerView.
+ *
+ * @param <T> Reference type for a single item within the list collection.
+ * @param <C> Reference type for the list collection.
+ * @param <V> Reference type for the view holder.
+ */
 abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<V> {
     /**
@@ -14,6 +21,9 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
      */
     private static final String TAG = "ListAdapter";
 
+    /**
+     * Context to use.
+     */
     private Context mContext;
 
     /**
@@ -21,14 +31,30 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
      */
     private C mItems;
 
+    /**
+     * On click listener for list items.
+     */
     private OnItemClickListener mOnItemClickListener;
 
+    /**
+     * On click listener for views within the ListAdapter.
+     */
     private OnClickListener mOnClickListener = new OnClickListener();
 
+    /**
+     * Construct the ListAdapter.
+     *
+     * @param context Context to use.
+     */
     public ListAdapter(Context context) {
         mContext = context;
     }
 
+    /**
+     * Retrieve the context to use.
+     *
+     * @return Context to use.
+     */
     protected Context getContext() {
         return mContext;
     }
@@ -61,10 +87,22 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
         return null != getItems() ? getItems().size() : 0;
     }
 
+    /**
+     * Get item from the data container.
+     *
+     * @param position Position of the item to retrieve.
+     * @return Item at the supplied position.
+     */
     public T get(int position) {
         return getItems().get(position);
     }
 
+    /**
+     * Update item at a given position within the data container.
+     *
+     * @param position Position of the item to update.
+     * @param item Item to update the data container position.
+     */
     public void set(int position, T item) {
         getItems().set(position, item);
 
@@ -72,6 +110,12 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
         notifyItemChanged(position);
     }
 
+    /**
+     * Add an item to the data container.
+     *
+     * @param item Item to add to the data container.
+     * @return Position of the new item within the container.fa
+     */
     public int add(T item) {
         // Retrieve the position for the new item by retrieving the number of
         // items within the container before adding the new item.
@@ -85,25 +129,56 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
         return position;
     }
 
+    /**
+     * Retrieve the click listener for list items.
+     *
+     * @return Click listener for list items, or null if none has been supplied.
+     */
     public OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
     }
 
+    /**
+     * Set the click listener for list items.
+     *
+     * @param onItemClickListener Click listener for list items.
+     */
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
+    /**
+     * Retrieve the click listener for list item views.
+     *
+     * @return Click listener for list item views.
+     */
     protected OnClickListener getOnClickListener() {
         return mOnClickListener;
     }
 
+    /**
+     * Click listener interface for list items.
+     */
     public interface OnItemClickListener {
+        /**
+         * Handles list item click events.
+         *
+         * @param view View that has been clicked.
+         */
         void onItemClick(View view);
     }
 
+    /**
+     * On click listener for list items.
+     */
     protected class OnClickListener implements View.OnClickListener {
+        /**
+         * Handles click events to the list item.
+         *
+         * @param view List item that have been clicked.
+         */
         @Override
-        public void onClick(View v) {
+        public void onClick(View view) {
             // Check that the OnItemClickListener have been supplied.
             if (null == getOnItemClickListener()) {
                 Log.e(TAG, "No OnItemClickListener have been supplied");
@@ -111,7 +186,7 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
             }
 
             // Relay the event with the item view to the OnItemClickListener.
-            getOnItemClickListener().onItemClick(v);
+            getOnItemClickListener().onItemClick(view);
         }
     }
 }

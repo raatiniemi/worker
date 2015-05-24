@@ -241,13 +241,13 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
     }
 
     /**
-     * OnClickListener for the project item.
+     * On click listener for project actions.
      */
     private class OnProjectActionClickListener implements View.OnClickListener {
         /**
-         * Handles click events for project related views.
+         * Handles click events for project actions.
          *
-         * @param v View that has been clicked.
+         * @param v Project action view that has been clicked.
          */
         @Override
         public void onClick(View v) {
