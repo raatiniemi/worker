@@ -22,6 +22,11 @@ public class DatePickerFragment extends DialogFragment {
     private Calendar mMinDate;
 
     /**
+     * Maximum date available for the date picker.
+     */
+    private Calendar mMaxDate;
+
+    /**
      * The "OnDateSetListener" for the DatePickerDialog.
      */
     private DatePickerDialog.OnDateSetListener mOnDateSetListener;
@@ -80,6 +85,24 @@ public class DatePickerFragment extends DialogFragment {
      */
     public void setMinDate(Calendar minDate) {
         mMinDate = minDate;
+    }
+
+    /**
+     * Retrieve the maximum date available for the date picker.
+     *
+     * @return Maximum date, or null if none is set.
+     */
+    public Calendar getMaxDate() {
+        return mMaxDate;
+    }
+
+    /**
+     * Set the maximum date for the date picker.
+     *
+     * @param maxDate Maximum date.
+     */
+    public void setMaxDate(Calendar maxDate) {
+        mMaxDate = maxDate;
     }
 
     /**
