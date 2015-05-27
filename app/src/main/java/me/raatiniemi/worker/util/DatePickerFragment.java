@@ -61,12 +61,16 @@ public class DatePickerFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dialog = new DatePickerDialog(
+            getActivity(),
+            getOnDateSetListener(),
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        );
 
         // TODO: If project is clocked in, set minimum date.
-        return new DatePickerDialog(getActivity(), getOnDateSetListener(), year, month, day);
+        return dialog;
     }
 
     /**
