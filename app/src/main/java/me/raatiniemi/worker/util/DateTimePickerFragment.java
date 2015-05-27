@@ -16,6 +16,11 @@ public class DateTimePickerFragment extends Fragment
     private Calendar mMinDate;
 
     /**
+     * Maximum date available for the date picker.
+     */
+    private Calendar mMaxDate;
+
+    /**
      * Retrieve the minimum date available for the date picker.
      *
      * @return Minimum date, or null if none is set.
@@ -31,6 +36,24 @@ public class DateTimePickerFragment extends Fragment
      */
     public void setMinDate(Calendar minDate) {
         mMinDate = minDate;
+    }
+
+    /**
+     * Retrieve the maximum date available for the date picker.
+     *
+     * @return Maximum date, or null if none is set.
+     */
+    public Calendar getMaxDate() {
+        return mMaxDate;
+    }
+
+    /**
+     * Set the maximum date for the date picker.
+     *
+     * @param maxDate Maximum date.
+     */
+    public void setMaxDate(Calendar maxDate) {
+        mMaxDate = maxDate;
     }
 
     @Override
