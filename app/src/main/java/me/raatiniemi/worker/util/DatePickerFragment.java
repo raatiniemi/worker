@@ -45,7 +45,7 @@ public class DatePickerFragment extends DialogFragment {
 
         // Check if we have a callback listener.
         if (null == getOnDateSetListener()) {
-            Log.e("onAttach", "No listener have been supplied for the DatePickerFragment");
+            Log.e(TAG, "No listener have been supplied for the DatePickerFragment");
 
             // We're unable to use the DatePickerFragment
             // since we do not have listener.
