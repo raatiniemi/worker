@@ -21,24 +21,6 @@ public class DatePickerFragment extends DialogFragment {
      */
     private DatePickerDialog.OnDateSetListener mOnDateSetListener;
 
-    /**
-     * Get the "OnDateSetListener" for the DatePickerDialog.
-     *
-     * @return "OnDateSetListener" for the DatePickerDialog.
-     */
-    public DatePickerDialog.OnDateSetListener getOnDateSetListener() {
-        return mOnDateSetListener;
-    }
-
-    /**
-     * Set the "OnDateSetListener" for the DatePickerDialog.
-     *
-     * @param listener "OnDateSetListener" for the DatePickerDialog.
-     */
-    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
-        mOnDateSetListener = listener;
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -75,5 +57,23 @@ public class DatePickerFragment extends DialogFragment {
 
         // TODO: If project is clocked in, set minimum date.
         return new DatePickerDialog(getActivity(), getOnDateSetListener(), year, month, day);
+    }
+
+    /**
+     * Get the "OnDateSetListener" for the DatePickerDialog.
+     *
+     * @return "OnDateSetListener" for the DatePickerDialog.
+     */
+    public DatePickerDialog.OnDateSetListener getOnDateSetListener() {
+        return mOnDateSetListener;
+    }
+
+    /**
+     * Set the "OnDateSetListener" for the DatePickerDialog.
+     *
+     * @param listener "OnDateSetListener" for the DatePickerDialog.
+     */
+    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
+        mOnDateSetListener = listener;
     }
 }
