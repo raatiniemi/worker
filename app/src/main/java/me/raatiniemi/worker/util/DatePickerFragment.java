@@ -75,6 +75,12 @@ public class DatePickerFragment extends DialogFragment {
             dialog.getDatePicker().setMinDate(getMinDate().getTimeInMillis());
         }
 
+        // If a maximum date is available we have
+        // to set it on the date picker.
+        if (null != getMaxDate()) {
+            dialog.getDatePicker().setMaxDate(getMaxDate().getTimeInMillis());
+        }
+
         // TODO: If project is clocked in, set minimum date.
         return dialog;
     }
