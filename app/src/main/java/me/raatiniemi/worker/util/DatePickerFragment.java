@@ -17,6 +17,11 @@ public class DatePickerFragment extends DialogFragment {
     private static final String TAG = "DatePickerFragment";
 
     /**
+     * Minimum date available for the date picker.
+     */
+    private Calendar mMinDate;
+
+    /**
      * The "OnDateSetListener" for the DatePickerDialog.
      */
     private DatePickerDialog.OnDateSetListener mOnDateSetListener;
@@ -57,6 +62,24 @@ public class DatePickerFragment extends DialogFragment {
 
         // TODO: If project is clocked in, set minimum date.
         return new DatePickerDialog(getActivity(), getOnDateSetListener(), year, month, day);
+    }
+
+    /**
+     * Retrieve the minimum date available for the date picker.
+     *
+     * @return Minimum date, or null if none is set.
+     */
+    public Calendar getMinDate() {
+        return mMinDate;
+    }
+
+    /**
+     * Set the minimum date for the date picker.
+     *
+     * @param minDate Minimum date.
+     */
+    public void setMinDate(Calendar minDate) {
+        mMinDate = minDate;
     }
 
     /**
