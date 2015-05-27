@@ -69,6 +69,12 @@ public class DatePickerFragment extends DialogFragment {
             calendar.get(Calendar.DAY_OF_MONTH)
         );
 
+        // If a minimum date is available we have
+        // to set it on the date picker.
+        if (null != getMinDate()) {
+            dialog.getDatePicker().setMinDate(getMinDate().getTimeInMillis());
+        }
+
         // TODO: If project is clocked in, set minimum date.
         return dialog;
     }
