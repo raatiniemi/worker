@@ -10,6 +10,8 @@ import java.util.Calendar;
 
 public class DateTimePickerFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    private static final String TAG = "DateTimePickerFragment";
+
     /**
      * Minimum date available for the date picker.
      */
