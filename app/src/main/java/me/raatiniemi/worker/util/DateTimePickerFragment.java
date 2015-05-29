@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.util;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
@@ -11,6 +12,8 @@ import java.util.Calendar;
 public class DateTimePickerFragment extends Fragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String TAG = "DateTimePickerFragment";
+
+    private static final String FRAGMENT_DATE_PICKER_TAG = "date picker";
 
     /**
      * Minimum date available for the date picker.
@@ -56,6 +59,18 @@ public class DateTimePickerFragment extends Fragment
      */
     public void setMaxDate(Calendar maxDate) {
         mMaxDate = maxDate;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        DatePickerFragment datePicker = new DatePickerFragment();
+        datePicker.setOnDateSetListener(this);
+        datePicker.show(
+            getFragmentManager().beginTransaction(),
+            FRAGMENT_DATE_PICKER_TAG
+        );
     }
 
     @Override
