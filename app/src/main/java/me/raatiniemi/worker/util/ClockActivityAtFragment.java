@@ -1,23 +1,14 @@
 package me.raatiniemi.worker.util;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Fragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-public class ClockActivityAtFragment extends Fragment
-    implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class ClockActivityAtFragment extends DateTimePickerFragment
+    implements DateTimePickerFragment.OnDateTimeSetListener {
     private static final String TAG = "ClockActivityAtFragment";
-
-    private static final String FRAGMENT_CLOCK_ACTIVITY_DATE_TAG = "clock activity date";
-
-    private static final String FRAGMENT_CLOCK_ACTIVITY_TIME_TAG = "clock activity time";
 
     /**
      * Name of the key for the row position argument.
@@ -34,11 +25,6 @@ public class ClockActivityAtFragment extends Fragment
     private int getPosition() {
         return getArguments().getInt(ARGUMENT_POSITION, -1);
     }
-
-    /**
-     * Calendar object with the selected date and time.
-     */
-    private Calendar mCalendar;
 
     /**
      * Create a new instance with the project and adapter row position.
@@ -60,48 +46,17 @@ public class ClockActivityAtFragment extends Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mCalendar = Calendar.getInstance();
-
-        // Initialize the "DatePicker"-fragment.
-        DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.setOnDateSetListener(this);
-        datePickerFragment.show(getFragmentManager().beginTransaction(), FRAGMENT_CLOCK_ACTIVITY_DATE_TAG);
+        setOnDateTimeSetListener(this);
     }
 
-    /**
-     * Callback method from the date picker fragment.
-     *
-     * @param view Date picker view.
-     * @param year Selected year.
-     * @param month Selected month.
-     * @param day Selected day.
-     */
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Change the year, month, and day to the calendar.
-        mCalendar.set(year, month, day);
-
-        // Initialize the "TimePicker"-fragment.
-        TimePickerFragment timePickerFragment = new TimePickerFragment();
-        timePickerFragment.setOnTimeSetListener(this);
-        timePickerFragment.show(getFragmentManager().beginTransaction(), FRAGMENT_CLOCK_ACTIVITY_TIME_TAG);
-    }
-
-    /**
-     * Callback method from the time picker fragment.
-     *
-     * @param view Time picker view.
-     * @param hour Selected hour.
-     * @param minute Selected minute.
-     */
-    public void onTimeSet(TimePicker view, int hour, int minute) {
-        mCalendar.set(Calendar.HOUR_OF_DAY, hour);
-        mCalendar.set(Calendar.MINUTE, minute);
-
-        if (null != getOnClockActivityAtListener()) {
-            getOnClockActivityAtListener().onClockActivityAt(getPosition(), mCalendar);
-        } else {
+    @Override
+    public void onDateTimeSet(Calendar calendar) {
+        if (null == getOnClockActivityAtListener()) {
             Log.e(TAG, "No OnClockActivityAtListener have been supplied");
+            return;
         }
+
+        getOnClockActivityAtListener().onClockActivityAt(getPosition(), calendar);
     }
 
     public OnClockActivityAtListener getOnClockActivityAtListener() {
