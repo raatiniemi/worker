@@ -22,24 +22,6 @@ public class TimePickerFragment extends DialogFragment {
      */
     private TimePickerDialog.OnTimeSetListener mOnTimeSetListener;
 
-    /**
-     * Get the "OnTimeSetListener" for the TimePickerDialog.
-     *
-     * @return "OnTimeSetListener" for the TimePickerDialog.
-     */
-    public TimePickerDialog.OnTimeSetListener getOnTimeSetListener() {
-        return mOnTimeSetListener;
-    }
-
-    /**
-     * Set the "OnTimeSetListener" for the TimePickerDialog.
-     *
-     * @param listener "OnTimeSetListener" for the TimePickerDialog.
-     */
-    public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener) {
-        mOnTimeSetListener = listener;
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -75,5 +57,23 @@ public class TimePickerFragment extends DialogFragment {
 
         // TODO: If project is clocked in, set minimum time.
         return new TimePickerDialog(getActivity(), getOnTimeSetListener(), hour, minute, DateFormat.is24HourFormat(getActivity()));
+    }
+
+    /**
+     * Get the "OnTimeSetListener" for the TimePickerDialog.
+     *
+     * @return "OnTimeSetListener" for the TimePickerDialog.
+     */
+    public TimePickerDialog.OnTimeSetListener getOnTimeSetListener() {
+        return mOnTimeSetListener;
+    }
+
+    /**
+     * Set the "OnTimeSetListener" for the TimePickerDialog.
+     *
+     * @param listener "OnTimeSetListener" for the TimePickerDialog.
+     */
+    public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener) {
+        mOnTimeSetListener = listener;
     }
 }
