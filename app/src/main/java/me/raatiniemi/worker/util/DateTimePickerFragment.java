@@ -23,6 +23,11 @@ public class DateTimePickerFragment extends Fragment
     private Calendar mCalendar = Calendar.getInstance();
 
     /**
+     * Listener for the selected date and time.
+     */
+    private OnDateTimeSetListener mOnDateTimeSetListener;
+
+    /**
      * Minimum date available for the date picker.
      */
     private Calendar mMinDate;
@@ -98,6 +103,24 @@ public class DateTimePickerFragment extends Fragment
         // Relay the selected hour and minute to the stored calendar.
         mCalendar.set(Calendar.HOUR_OF_DAY, hour);
         mCalendar.set(Calendar.MINUTE, minute);
+    }
+
+    /**
+     * Get the "OnDateTimeSetListener", or null if none have been supplied.
+     *
+     * @return Listener for "OnDateTimeSetListener".
+     */
+    public OnDateTimeSetListener getOnDateTimeSetListener() {
+        return mOnDateTimeSetListener;
+    }
+
+    /**
+     * Set the "OnDateTimeSetListener".
+     *
+     * @param onDateTimeSetListener Listener for "OnDateTimeSetListener".
+     */
+    public void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
+        mOnDateTimeSetListener = onDateTimeSetListener;
     }
 
     /**
