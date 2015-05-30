@@ -52,11 +52,15 @@ public class TimePickerFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        TimePickerDialog dialog = new TimePickerDialog(
+            getActivity(),
+            getOnTimeSetListener(),
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            DateFormat.is24HourFormat(getActivity())
+        );
 
-        // TODO: If project is clocked in, set minimum time.
-        return new TimePickerDialog(getActivity(), getOnTimeSetListener(), hour, minute, DateFormat.is24HourFormat(getActivity()));
+        return dialog;
     }
 
     /**
