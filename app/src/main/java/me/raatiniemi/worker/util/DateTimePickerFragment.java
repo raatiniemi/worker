@@ -16,6 +16,11 @@ public class DateTimePickerFragment extends Fragment
     private static final String FRAGMENT_DATE_PICKER_TAG = "date picker";
 
     /**
+     * Date and time set by the "DateTimePickerFragment".
+     */
+    private Calendar mCalendar = Calendar.getInstance();
+
+    /**
      * Minimum date available for the date picker.
      */
     private Calendar mMinDate;
@@ -75,9 +80,14 @@ public class DateTimePickerFragment extends Fragment
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        // Relay the selected year, month, and day to the stored calendar.
+        mCalendar.set(year, month, day);
     }
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+        // Relay the selected hour and minute to the stored calendar.
+        mCalendar.set(Calendar.HOUR_OF_DAY, hour);
+        mCalendar.set(Calendar.MINUTE, minute);
     }
 }
