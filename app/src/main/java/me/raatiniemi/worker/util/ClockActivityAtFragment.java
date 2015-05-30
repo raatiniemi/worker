@@ -122,6 +122,6 @@ public class ClockActivityAtFragment extends Fragment
          * @param position Row position from the adapter.
          * @param calendar Calendar with date and time to clock in or out.
          */
-        public void onClockActivityAt(int position, Calendar calendar);
+        void onClockActivityAt(int position, Calendar calendar);
     }
 }
