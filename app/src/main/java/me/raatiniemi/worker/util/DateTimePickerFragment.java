@@ -99,4 +99,16 @@ public class DateTimePickerFragment extends Fragment
         mCalendar.set(Calendar.HOUR_OF_DAY, hour);
         mCalendar.set(Calendar.MINUTE, minute);
     }
+
+    /**
+     * Interface for listening to the selected date and time.
+     */
+    public interface OnDateTimeSetListener {
+        /**
+         * Listen for the selected date and time.
+         *
+         * @param calendar Selected date and time.
+         */
+        void onDateTimeSet(Calendar calendar);
+    }
 }
