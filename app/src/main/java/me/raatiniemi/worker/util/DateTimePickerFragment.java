@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
@@ -103,6 +104,15 @@ public class DateTimePickerFragment extends Fragment
         // Relay the selected hour and minute to the stored calendar.
         mCalendar.set(Calendar.HOUR_OF_DAY, hour);
         mCalendar.set(Calendar.MINUTE, minute);
+
+        // Check that we have been supplied with a listener.
+        if (null == getOnDateTimeSetListener()) {
+            Log.e(TAG, "No OnDateTimeSetListener have been supplied");
+            return;
+        }
+
+        // Send the calendar to the listener.
+        getOnDateTimeSetListener().onDateTimeSet(mCalendar);
     }
 
     /**
