@@ -15,6 +15,8 @@ public class DateTimePickerFragment extends Fragment
 
     private static final String FRAGMENT_DATE_PICKER_TAG = "date picker";
 
+    private static final String FRAGMENT_TIME_PICKER_TAG = "time picker";
+
     /**
      * Date and time set by the "DateTimePickerFragment".
      */
@@ -82,6 +84,13 @@ public class DateTimePickerFragment extends Fragment
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         // Relay the selected year, month, and day to the stored calendar.
         mCalendar.set(year, month, day);
+
+        TimePickerFragment timePicker = new TimePickerFragment();
+        timePicker.setOnTimeSetListener(this);
+        timePicker.show(
+            getFragmentManager().beginTransaction(),
+            FRAGMENT_TIME_PICKER_TAG
+        );
     }
 
     @Override
