@@ -27,9 +27,13 @@ public class ClockActivityAtFragment extends Fragment
     private OnClockActivityAtListener mOnClockActivityAtListener;
 
     /**
-     * Row position from the adapter.
+     * Retrieve the row position for the project from the adapter.
+     *
+     * @return Position for the project from the adapter.
      */
-    private int mPosition;
+    private int getPosition() {
+        return getArguments().getInt(ARGUMENT_POSITION, -1);
+    }
 
     /**
      * Calendar object with the selected date and time.
@@ -57,10 +61,6 @@ public class ClockActivityAtFragment extends Fragment
         super.onAttach(activity);
 
         mCalendar = Calendar.getInstance();
-
-        // TODO: Handle if mPosition is -1.
-        Bundle arguments = getArguments();
-        mPosition = arguments.getInt(ARGUMENT_POSITION, -1);
 
         // Initialize the "DatePicker"-fragment.
         DatePickerFragment datePickerFragment = new DatePickerFragment();
@@ -98,7 +98,7 @@ public class ClockActivityAtFragment extends Fragment
         mCalendar.set(Calendar.MINUTE, minute);
 
         if (null != getOnClockActivityAtListener()) {
-            getOnClockActivityAtListener().onClockActivityAt(mPosition, mCalendar);
+            getOnClockActivityAtListener().onClockActivityAt(getPosition(), mCalendar);
         } else {
             Log.e(TAG, "No OnClockActivityAtListener have been supplied");
         }
