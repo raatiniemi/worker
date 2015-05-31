@@ -15,6 +15,9 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
      */
     private static final String ARGUMENT_POSITION = "_position";
 
+    /**
+     * Listener for "OnClockActivityAtListener".
+     */
     private OnClockActivityAtListener mOnClockActivityAtListener;
 
     /**
@@ -56,13 +59,25 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
             return;
         }
 
+        // Send the project row position with the selected
+        // date and time to the listener.
         getOnClockActivityAtListener().onClockActivityAt(getPosition(), calendar);
     }
 
+    /**
+     * Get the "OnClockActivityAtListener", or null if none has been supplied.
+     *
+     * @return Listener for "OnClockActivityAtListener".
+     */
     public OnClockActivityAtListener getOnClockActivityAtListener() {
         return mOnClockActivityAtListener;
     }
 
+    /**
+     * Set the "OnClockActivityAtListener".
+     *
+     * @param onClockActivityAtListener Listener for "OnClockActivityAtListener".
+     */
     public void setOnClockActivityAtListener(OnClockActivityAtListener onClockActivityAtListener) {
         mOnClockActivityAtListener = onClockActivityAtListener;
     }
