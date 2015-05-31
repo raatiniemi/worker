@@ -195,28 +195,19 @@ public class Project extends DomainObject {
      *
      * @return Time when project was clocked in, or null if project is not active.
      */
-    public String getClockedInSince() {
-        // TODO: Just return the value for getStart() and parse it outside of the domain object.
-
+    public Date getClockedInSince() {
         // If the project is not active, there's nothing to do.
         if (!isActive()) {
             return null;
         }
-
-        // TODO: Handle if the time session overlap days.
-        // The timestamp should include the date it was
-        // checked in, e.g. 21 May 1:06PM.
 
         // Retrieve the last time, i.e. the active time session.
         Time time = getActiveTime();
         if (null == time) {
             return null;
         }
-        Date date = new Date(time.getStart());
 
-        // Format the timestamp with hours and minutes.
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-        return format.format(date);
+        return new Date(time.getStart());
     }
 
     /**

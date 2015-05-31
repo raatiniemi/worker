@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.domain.Project;
@@ -125,17 +128,23 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         holder.mClockActivityAt.setContentDescription(clockActivityAt);
 
         // Retrieve the time that the active session was clocked in.
-        int clockedInSinceId = R.string.projects_item_project_clocked_in_since;
-        String clockedInSince = resources.getString(clockedInSinceId);
-        clockedInSince = String.format(
-            clockedInSince,
-            project.getClockedInSince(),
-            mDateIntervalFormat.format(
-                project.getElapsed(),
-                DateIntervalFormat.Type.HOURS_MINUTES
-            )
-        );
-        holder.mClockedInSince.setText(clockedInSince);
+        // TODO: Handle if the time session overlap days.
+        // The timestamp should include the date it was
+        // checked in, e.g. 21 May 1:06PM.
+        Date clockedInSince = project.getClockedInSince();
+        String clockedInSinceText = null;
+        if (null != clockedInSince) {
+            clockedInSinceText = resources.getString(R.string.projects_item_project_clocked_in_since);
+            clockedInSinceText = String.format(
+                clockedInSinceText,
+                (new SimpleDateFormat("HH:mm")).format(clockedInSince),
+                mDateIntervalFormat.format(
+                    project.getElapsed(),
+                    DateIntervalFormat.Type.HOURS_MINUTES
+                )
+            );
+        }
+        holder.mClockedInSince.setText(clockedInSinceText);
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 
