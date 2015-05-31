@@ -134,7 +134,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                     return;
                 }
 
-                ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(position);
+                // Retrieve the project from the retrieved position.
+                final Project project = mAdapter.get(position);
+                if (null == project) {
+                    Log.w(TAG, "Unable to retrieve project from position " + position);
+                    return;
+                }
+
+                ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(position, project);
                 fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
                     @Override
                     public void onClockActivityAt(int position, Calendar calendar) {

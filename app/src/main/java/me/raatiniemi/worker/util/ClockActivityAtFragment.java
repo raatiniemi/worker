@@ -6,6 +6,8 @@ import android.util.Log;
 
 import java.util.Calendar;
 
+import me.raatiniemi.worker.domain.Project;
+
 public class ClockActivityAtFragment extends DateTimePickerFragment
     implements DateTimePickerFragment.OnDateTimeSetListener {
     private static final String TAG = "ClockActivityAtFragment";
@@ -35,7 +37,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
      * @param position Row position from the adapter.
      * @return New instance of the clock activity at fragment.
      */
-    public static ClockActivityAtFragment newInstance(int position) {
+    public static ClockActivityAtFragment newInstance(int position, Project project) {
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
 
         Bundle arguments = new Bundle();
