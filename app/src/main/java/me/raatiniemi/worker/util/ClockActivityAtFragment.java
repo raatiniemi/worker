@@ -32,9 +32,10 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     }
 
     /**
-     * Create a new instance with the project and adapter row position.
+     * Create a new instance for project clock in/out with date and time.
      *
-     * @param position Row position from the adapter.
+     * @param position Row position for the project from the adapter.
+     * @param project Project used with the clock activity.
      * @return New instance of the clock activity at fragment.
      */
     public static ClockActivityAtFragment newInstance(int position, Project project) {
