@@ -63,14 +63,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
             @Override
             public void onItemClick(View view) {
                 // Retrieve the position for the project from the RecyclerView.
-                int position = mRecyclerView.getChildPosition(view);
+                final int position = mRecyclerView.getChildPosition(view);
                 if (RecyclerView.NO_POSITION == position) {
                     Log.w(TAG, "Unable to retrieve project position for onItemClick");
                     return;
                 }
 
                 // Retrieve the project from the retrieved position.
-                Project project = mAdapter.get(position);
+                final Project project = mAdapter.get(position);
                 if (null == project) {
                     Log.w(TAG, "Unable to retrieve project from position " + position);
                     return;
@@ -99,7 +99,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                 }
 
                 // Retrieve the project from the retrieved position.
-                Project project = mAdapter.get(position);
+                final Project project = mAdapter.get(position);
                 if (null == project) {
                     Log.w(TAG, "Unable to retrieve project from position " + position);
                     return;
@@ -128,7 +128,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
             @Override
             public void onClockActivityAt(View view) {
                 // Retrieve the position for the project from the RecyclerView.
-                int position = mRecyclerView.getChildPosition(view);
+                final int position = mRecyclerView.getChildPosition(view);
                 if (RecyclerView.NO_POSITION == position) {
                     Log.w(TAG, "Unable to retrieve project position for onClockActivityAt");
                     return;
