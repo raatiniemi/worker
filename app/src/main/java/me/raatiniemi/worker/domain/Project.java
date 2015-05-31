@@ -1,6 +1,5 @@
 package me.raatiniemi.worker.domain;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import me.raatiniemi.worker.exception.DomainException;
