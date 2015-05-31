@@ -80,6 +80,11 @@ public class DateTimePickerFragment extends Fragment
 
         DatePickerFragment datePicker = new DatePickerFragment();
         datePicker.setOnDateSetListener(this);
+
+        // Set the min/max date for the picker.
+        datePicker.setMaxDate(getMaxDate());
+        datePicker.setMinDate(getMinDate());
+
         datePicker.show(
             getFragmentManager().beginTransaction(),
             FRAGMENT_DATE_PICKER_TAG
