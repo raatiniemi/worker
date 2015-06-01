@@ -44,6 +44,11 @@ public class DateTimePickerFragment extends Fragment
     private DatePickerFragment mDatePicker;
 
     /**
+     * Instance for the time picker.
+     */
+    private TimePickerFragment mTimePicker;
+
+    /**
      * Retrieve the minimum date available for the date picker.
      *
      * @return Minimum date, or null if none is set.
@@ -106,6 +111,13 @@ public class DateTimePickerFragment extends Fragment
                 .commit();
         }
         mDatePicker = null;
+
+        if (null != mTimePicker) {
+            getFragmentManager().beginTransaction()
+                .remove(mTimePicker)
+                .commit();
+        }
+        mTimePicker = null;
     }
 
     @Override
@@ -113,9 +125,9 @@ public class DateTimePickerFragment extends Fragment
         // Relay the selected year, month, and day to the stored calendar.
         mCalendar.set(year, month, day);
 
-        TimePickerFragment timePicker = new TimePickerFragment();
-        timePicker.setOnTimeSetListener(this);
-        timePicker.show(
+        mTimePicker = new TimePickerFragment();
+        mTimePicker.setOnTimeSetListener(this);
+        mTimePicker.show(
             getFragmentManager().beginTransaction(),
             FRAGMENT_TIME_PICKER_TAG
         );
