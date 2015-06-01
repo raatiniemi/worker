@@ -86,6 +86,16 @@ public class DatePickerFragment extends DialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+
+        // Delegate the "onCancel" event to the listener, if available.
+        if (null != getOnCancelListener()) {
+            getOnCancelListener().onCancel(dialog);
+        }
+    }
+
     /**
      * Retrieve the minimum date available for the date picker.
      *
