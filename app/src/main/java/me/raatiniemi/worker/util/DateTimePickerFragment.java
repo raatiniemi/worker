@@ -39,6 +39,11 @@ public class DateTimePickerFragment extends Fragment
     private Calendar mMaxDate;
 
     /**
+     * Instance for the date picker.
+     */
+    private DatePickerFragment mDatePicker;
+
+    /**
      * Retrieve the minimum date available for the date picker.
      *
      * @return Minimum date, or null if none is set.
@@ -78,17 +83,29 @@ public class DateTimePickerFragment extends Fragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        DatePickerFragment datePicker = new DatePickerFragment();
-        datePicker.setOnDateSetListener(this);
+        mDatePicker = new DatePickerFragment();
+        mDatePicker.setOnDateSetListener(this);
 
         // Set the min/max date for the picker.
-        datePicker.setMaxDate(getMaxDate());
-        datePicker.setMinDate(getMinDate());
+        mDatePicker.setMaxDate(getMaxDate());
+        mDatePicker.setMinDate(getMinDate());
 
-        datePicker.show(
+        mDatePicker.show(
             getFragmentManager().beginTransaction(),
             FRAGMENT_DATE_PICKER_TAG
         );
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (null != mDatePicker) {
+            getFragmentManager().beginTransaction()
+                .remove(mDatePicker)
+                .commit();
+        }
+        mDatePicker = null;
     }
 
     @Override
