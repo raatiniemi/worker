@@ -31,6 +31,8 @@ public class DatePickerFragment extends DialogFragment {
      */
     private DatePickerDialog.OnDateSetListener mOnDateSetListener;
 
+    private DialogInterface.OnCancelListener mOnCancelListener;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -136,5 +138,13 @@ public class DatePickerFragment extends DialogFragment {
      */
     public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
         mOnDateSetListener = listener;
+    }
+
+    public DialogInterface.OnCancelListener getOnCancelListener() {
+        return mOnCancelListener;
+    }
+
+    public void setOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
+        mOnCancelListener = onCancelListener;
     }
 }
