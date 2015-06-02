@@ -98,6 +98,16 @@ public class DatePickerFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+
+        // Delegate the "onDismiss" event to the listener, if available.
+        if (null != getOnDismissListener()) {
+            getOnDismissListener().onDismiss(dialog);
+        }
+    }
+
     /**
      * Retrieve the minimum date available for the date picker.
      *
