@@ -65,6 +65,16 @@ public class TimePickerFragment extends DialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+
+        // Delegate the "onDismiss" event to the listener, if available.
+        if (null != getOnDismissListener()) {
+            getOnDismissListener().onDismiss(dialog);
+        }
+    }
+
     /**
      * Get the "OnTimeSetListener" for the TimePickerDialog.
      *
