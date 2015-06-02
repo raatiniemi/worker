@@ -22,6 +22,8 @@ public class TimePickerFragment extends DialogFragment {
      */
     private TimePickerDialog.OnTimeSetListener mOnTimeSetListener;
 
+    private DialogInterface.OnDismissListener mOnDismissListener;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -79,5 +81,13 @@ public class TimePickerFragment extends DialogFragment {
      */
     public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener) {
         mOnTimeSetListener = listener;
+    }
+
+    public DialogInterface.OnDismissListener getOnDismissListener() {
+        return mOnDismissListener;
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+        mOnDismissListener = onDismissListener;
     }
 }
