@@ -49,6 +49,17 @@ public class DateTimePickerFragment extends Fragment
     private TimePickerFragment mTimePicker;
 
     /**
+     * Dismiss the DateTimePickerFragment.
+     *
+     * Triggers the onDetach-method for additional clean up.
+     */
+    private void dismiss() {
+        getFragmentManager().beginTransaction()
+            .remove(this)
+            .commit();
+    }
+
+    /**
      * Retrieve the minimum date available for the date picker.
      *
      * @return Minimum date, or null if none is set.
