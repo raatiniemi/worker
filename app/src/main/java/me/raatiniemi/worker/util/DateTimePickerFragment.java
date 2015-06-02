@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -102,6 +103,17 @@ public class DateTimePickerFragment extends Fragment
         mDatePicker = new DatePickerFragment();
         mDatePicker.setOnDateSetListener(this);
 
+        // The date picker only needs to listen to the "onCancel"-event
+        // to initialize fragment clean up.
+        //
+        // The "onDismiss"-event will run for both set date and cancel.
+        mDatePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                dismiss();
+            }
+        });
+
         // Set the min/max date for the picker.
         mDatePicker.setMaxDate(getMaxDate());
         mDatePicker.setMinDate(getMinDate());
@@ -138,6 +150,21 @@ public class DateTimePickerFragment extends Fragment
 
         mTimePicker = new TimePickerFragment();
         mTimePicker.setOnTimeSetListener(this);
+
+        // The timer picker only needs to listen to the "onDismiss"-event since
+        // it will run for both set time and cancel.
+        //
+        // And, in either case we'd want to clean up the fragment.
+        //
+        // Also, I was unable to get the TimePickerDialog to trigger the
+        // "onCancel"-event to the DialogFragment.
+        mTimePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                dismiss();
+            }
+        });
+
         mTimePicker.show(
             getFragmentManager().beginTransaction(),
             FRAGMENT_TIME_PICKER_TAG
