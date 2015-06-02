@@ -22,6 +22,8 @@ public class TimePickerFragment extends DialogFragment {
      */
     private TimePickerDialog.OnTimeSetListener mOnTimeSetListener;
 
+    private DialogInterface.OnCancelListener mOnCancelListener;
+
     private DialogInterface.OnDismissListener mOnDismissListener;
 
     @Override
@@ -91,6 +93,14 @@ public class TimePickerFragment extends DialogFragment {
      */
     public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener) {
         mOnTimeSetListener = listener;
+    }
+
+    public DialogInterface.OnCancelListener getOnCancelListener() {
+        return mOnCancelListener;
+    }
+
+    public void setOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
+        mOnCancelListener = onCancelListener;
     }
 
     public DialogInterface.OnDismissListener getOnDismissListener() {
