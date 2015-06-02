@@ -33,6 +33,8 @@ public class DatePickerFragment extends DialogFragment {
 
     private DialogInterface.OnCancelListener mOnCancelListener;
 
+    private DialogInterface.OnDismissListener mOnDismissListener;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -156,5 +158,13 @@ public class DatePickerFragment extends DialogFragment {
 
     public void setOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
         mOnCancelListener = onCancelListener;
+    }
+
+    public DialogInterface.OnDismissListener getOnDismissListener() {
+        return mOnDismissListener;
+    }
+
+    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+        mOnDismissListener = onDismissListener;
     }
 }
