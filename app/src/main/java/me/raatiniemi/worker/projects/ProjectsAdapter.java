@@ -266,31 +266,33 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
             final int activityToggleId = R.id.fragment_project_clock_activity_toggle;
             final int activityAtId = R.id.fragment_project_clock_activity_at;
 
-            if (viewId == activityToggleId || viewId == activityAtId) {
-                // Check that the OnClockActivityChangeListener have been supplied.
-                if (null == getOnClockActivityChangeListener()) {
-                    Log.e(TAG, "No OnClockActivityChangeListener have been supplied");
-                    return;
-                }
-
-                // We have to navigate to the RecyclerView item view and send it to the
-                // listener. The item view is needed for positional data.
-                View view = (View) v.getParent().getParent().getParent();
-                if (null == view || !(view instanceof CardView)) {
-                    Log.e(TAG, "Unable to locate the correct view for the OnClockActivityChangeListener");
-                    return;
-                }
-
-                // Depending on which ImageButton have been clicked the event should be
-                // sent to different methods on the OnClockActivityChangeListener.
-                if (viewId == activityToggleId) {
-                    getOnClockActivityChangeListener().onClockActivityToggle(view);
-                } else {
-                    getOnClockActivityChangeListener().onClockActivityAt(view);
-                }
-            } else {
+            // Only allow registered action clicks to proceed.
+            if (viewId != activityToggleId && viewId != activityAtId) {
                 Log.e(TAG, "Unhandled view with id " + viewId + " in the OnClickListener");
+                return;
             }
+
+            // Check that the OnClockActivityChangeListener have been supplied.
+            if (null == getOnClockActivityChangeListener()) {
+                Log.e(TAG, "No OnClockActivityChangeListener have been supplied");
+                return;
+            }
+
+            // We have to navigate to the RecyclerView item view and send it to the
+            // listener. The item view is needed for positional data.
+            View view = (View) v.getParent().getParent().getParent();
+            if (null == view || !(view instanceof CardView)) {
+                Log.e(TAG, "Unable to locate the correct view for the OnClockActivityChangeListener");
+                return;
+            }
+
+            // Depending on which ImageButton have been clicked the event should be
+            // sent to different methods on the OnClockActivityChangeListener.
+            if (viewId == activityToggleId) {
+                getOnClockActivityChangeListener().onClockActivityToggle(view);
+                return;
+            }
+            getOnClockActivityChangeListener().onClockActivityAt(view);
         }
     }
 }
