@@ -46,7 +46,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
         }
 
         // Initiate a new read task.
-        mProjectReadTask = new ProjectsReadTask(this);
-        mProjectReadTask.execute(mapper);
+        mProjectReadTask = new ProjectsReadTask(this, mapper);
+        mProjectReadTask.execute();
     }
 }

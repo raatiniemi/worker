@@ -14,7 +14,7 @@ import me.raatiniemi.worker.util.ProjectCollection;
  * Reads projects via the mapper in a background thread.
  */
 public class ProjectsReadTask
-    extends AsyncTask<ProjectMapper, Void, AsyncTaskResult<ProjectCollection>> {
+    extends AsyncTask<Void, Void, AsyncTaskResult<ProjectCollection>> {
     /**
      * Tag used when logging.
      */
@@ -26,12 +26,19 @@ public class ProjectsReadTask
     private WeakReference<ProjectsPresenter> mPresenterRef;
 
     /**
-     * Construct the task with the presenter.
+     * Mapper used to retrieve the projects.
+     */
+    private ProjectMapper mProjectMapper;
+
+    /**
+     * Construct the task with the presenter and mapper.
      *
      * @param presenter Presenter using the task.
+     * @param projectMapper Mapper used to retrieve the projects.
      */
-    public ProjectsReadTask(ProjectsPresenter presenter) {
+    public ProjectsReadTask(ProjectsPresenter presenter, ProjectMapper projectMapper) {
         mPresenterRef = new WeakReference<>(presenter);
+        mProjectMapper = projectMapper;
     }
 
     /**
@@ -53,9 +60,9 @@ public class ProjectsReadTask
     }
 
     @Override
-    protected AsyncTaskResult<ProjectCollection> doInBackground(ProjectMapper... params) {
+    protected AsyncTaskResult<ProjectCollection> doInBackground(Void... voids) {
         // Check that we have received the project mapper as argument.
-        if (0 == params.length || null == params[0]) {
+        if (null == mProjectMapper) {
             Log.e(TAG, "No ProjectMapper is available");
             return null;
         }
@@ -63,8 +70,7 @@ public class ProjectsReadTask
         AsyncTaskResult<ProjectCollection> result;
         try {
             // Retrieve the projects from the project mapper.
-            ProjectMapper mapper = params[0];
-            result = new AsyncTaskResult<>(mapper.getProjects());
+            result = new AsyncTaskResult<>(mProjectMapper.getProjects());
         } catch (Throwable e) {
             result = new AsyncTaskResult<>(e);
         }
