@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity {
         try {
             // Attempt to retrieve the projects fragment.
             ProjectsView fragment = (ProjectsView) getFragmentManager()
-                    .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
+                .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
 
             // Dispatch the create new project to the fragment.
             fragment.createNewProject();
