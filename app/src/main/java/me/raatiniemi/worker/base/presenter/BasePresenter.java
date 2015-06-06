@@ -18,7 +18,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
      *
      * @return Attached view if available, otherwise null.
      */
-    protected V getView() {
+    public V getView() {
         return mView;
     }
 
@@ -27,7 +27,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
      *
      * @return True if a view is attached, otherwise false.
      */
-    protected boolean isViewAttached() {
+    public boolean isViewAttached() {
         return null != getView();
     }
 
