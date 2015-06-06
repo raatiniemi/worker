@@ -1,6 +1,5 @@
 package me.raatiniemi.worker.ui;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +20,7 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 import java.util.List;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.base.view.BaseFragment;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
@@ -31,7 +31,7 @@ import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
 
-public class TimesheetFragment extends Fragment {
+public class TimesheetFragment extends BaseFragment {
     private static final String TAG = "TimesheetFragment";
 
     private Project mProject;

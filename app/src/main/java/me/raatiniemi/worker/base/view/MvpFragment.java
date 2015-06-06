@@ -1,7 +1,5 @@
 package me.raatiniemi.worker.base.view;
 
-import android.app.Fragment;
-
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
 
 /**
@@ -10,7 +8,7 @@ import me.raatiniemi.worker.base.presenter.MvpPresenter;
  * @param <P> Presenter to use with the fragment.
  * @param <T> Type of data to use with the fragment.
  */
-abstract public class MvpFragment<P extends MvpPresenter, T> extends Fragment implements MvpView {
+abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragment implements MvpView {
     /**
      * Instance for the presenter.
      */

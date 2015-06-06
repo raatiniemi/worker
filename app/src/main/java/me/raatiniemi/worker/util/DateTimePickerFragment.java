@@ -2,7 +2,6 @@ package me.raatiniemi.worker.util;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.util.Log;
@@ -11,7 +10,9 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-public class DateTimePickerFragment extends Fragment
+import me.raatiniemi.worker.base.view.BaseFragment;
+
+public class DateTimePickerFragment extends BaseFragment
     implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String TAG = "DateTimePickerFragment";
 
