@@ -23,6 +23,7 @@
 
         <activity
             android:name=".project.ProjectActivity"
+            android:parentActivityName=".ui.MainActivity"
             />
 
     </application>
