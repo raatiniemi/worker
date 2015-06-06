@@ -1,10 +1,8 @@
 package me.raatiniemi.worker.base.view;
 
-import android.support.v7.app.AppCompatActivity;
-
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
 
-abstract public class MvpActivity<P extends MvpPresenter> extends AppCompatActivity implements MvpView {
+abstract public class MvpActivity<P extends MvpPresenter> extends BaseActivity implements MvpView {
     /**
      * Instance for the presenter.
      */

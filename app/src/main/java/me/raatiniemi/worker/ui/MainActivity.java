@@ -3,18 +3,18 @@ package me.raatiniemi.worker.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.base.view.BaseActivity;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.projects.ProjectsView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     /**
      * Tag for the project list fragment.
      */
