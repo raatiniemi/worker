@@ -80,7 +80,7 @@ public class NewProjectFragment extends DialogFragment {
                 })
                 .show();
 
-            Log.e(TAG, "No project name have been supplied");
+            Log.i(TAG, "No project name have been supplied");
             return;
         }
 
@@ -98,7 +98,7 @@ public class NewProjectFragment extends DialogFragment {
             if (null != getOnCreateProjectListener()) {
                 getOnCreateProjectListener().onCreateProject(project);
             } else {
-                Log.e(TAG, "No OnCreateProjectListener have been supplied");
+                Log.w(TAG, "No OnCreateProjectListener have been supplied");
             }
 
             String message = getString(R.string.fragment_new_project_create_successful);
