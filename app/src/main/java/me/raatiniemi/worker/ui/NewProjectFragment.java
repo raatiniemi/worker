@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.Project;
-import me.raatiniemi.worker.exception.NamelessProjectException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
@@ -65,17 +64,27 @@ public class NewProjectFragment extends DialogFragment {
      * @param view View for the fragment.
      */
     private void createNewProject(View view) {
+        // Retrieve the supplied project name from the text field.
+        EditText textField = (EditText) view.findViewById(R.id.fragment_new_project_name);
+
+        // Check that the user has supplied a project name.
+        String name = textField.getText().toString();
+        if (0 == name.length()) {
+            new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.fragment_new_project_create_without_name_title)
+                .setMessage(R.string.fragment_new_project_create_without_name_description)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing...
+                    }
+                })
+                .show();
+
+            Log.e(TAG, "No project name have been supplied");
+            return;
+        }
+
         try {
-            // Retrieve the supplied project name from the text field.
-            EditText textField = (EditText) view.findViewById(R.id.fragment_new_project_name);
-            String name = textField.getText().toString();
-
-            // Check that the user actually supplied a project name.
-            if (name.length() == 0) {
-                Log.e(TAG, "No project name have been supplied");
-                throw new NamelessProjectException();
-            }
-
             Log.d(TAG, "Attempt to create new project with name: " + name);
 
             // Attempt to create the new project with supplied name.
@@ -98,17 +107,6 @@ public class NewProjectFragment extends DialogFragment {
             // We are finished with the project creation,
             // we now have to dismiss the dialog.
             dismiss();
-        } catch (NamelessProjectException e) {
-            // No project name supplied, display error message to user.
-            new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.fragment_new_project_create_without_name_title)
-                .setMessage(R.string.fragment_new_project_create_without_name_description)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
         } catch (ProjectAlreadyExistsException e) {
             // Project name already exists, display error message to user.
             new AlertDialog.Builder(getActivity())
