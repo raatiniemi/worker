@@ -21,6 +21,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".project.ProjectActivity"
+            />
+
     </application>
 
 </manifest>
