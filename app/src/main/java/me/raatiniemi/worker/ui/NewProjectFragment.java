@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,18 +34,22 @@ public class NewProjectFragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Retrieve and set the title for the dialog.
         getDialog().setTitle(getString(R.string.fragment_new_project_title));
+
+        // Retrieve the text field for project name.
+        final EditText projectName = (EditText) view.findViewById(R.id.fragment_new_project_name);
 
         // Add the click listener for the create button.
         TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createNewProject(view);
+                // Retrieve the project name from the text field.
+                createNewProject(projectName.getText().toString());
             }
         });
 
@@ -61,15 +66,10 @@ public class NewProjectFragment extends DialogFragment {
     /**
      * Create a new project.
      *
-     * @param view View for the fragment.
+     * @param name Name of the project to create.
      */
-    private void createNewProject(View view) {
-        // Retrieve the supplied project name from the text field.
-        EditText textField = (EditText) view.findViewById(R.id.fragment_new_project_name);
-
-        // Check that the user has supplied a project name.
-        String name = textField.getText().toString();
-        if (0 == name.length()) {
+    private void createNewProject(String name) {
+        if (TextUtils.isEmpty(name)) {
             new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.fragment_new_project_create_without_name_title)
                 .setMessage(R.string.fragment_new_project_create_without_name_description)
@@ -102,7 +102,7 @@ public class NewProjectFragment extends DialogFragment {
             }
 
             String message = "Project '" + name + "' have been created";
-            Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
             // We are finished with the project creation,
             // we now have to dismiss the dialog.
