@@ -37,7 +37,8 @@ public class NewProjectFragment extends DialogFragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDialog().setTitle("Create new project");
+        // Retrieve and set the title for the dialog.
+        getDialog().setTitle(getString(R.string.fragment_new_project_title));
 
         // Add the click listener for the create button.
         TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
