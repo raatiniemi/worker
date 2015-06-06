@@ -4,10 +4,14 @@ import android.os.Bundle;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
-import me.raatiniemi.worker.ui.MainActivity;
 import me.raatiniemi.worker.ui.TimesheetFragment;
 
 public class ProjectActivity extends BaseActivity {
+    /**
+     * Tag for the timesheet fragment.
+     */
+    public static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,7 +22,7 @@ public class ProjectActivity extends BaseActivity {
             fragment.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_timesheet, fragment, MainActivity.FRAGMENT_TIMESHEET_TAG)
+                .replace(R.id.fragment_timesheet, fragment, ProjectActivity.FRAGMENT_TIMESHEET_TAG)
                 .commit();
         }
     }

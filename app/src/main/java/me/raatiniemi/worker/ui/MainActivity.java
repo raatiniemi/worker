@@ -21,11 +21,6 @@ public class MainActivity extends BaseActivity {
     public static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
     /**
-     * Tag for the timesheet fragment.
-     */
-    public static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
-
-    /**
      * Tag for the new project fragment.
      */
     public static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
