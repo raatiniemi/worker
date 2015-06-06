@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui;
+package me.raatiniemi.worker.project.timesheet;
 
 import android.view.LayoutInflater;
 import android.view.View;

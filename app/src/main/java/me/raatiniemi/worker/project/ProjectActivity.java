@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
-import me.raatiniemi.worker.ui.TimesheetFragment;
+import me.raatiniemi.worker.project.timesheet.TimesheetFragment;
 
 public class ProjectActivity extends BaseActivity {
     /**

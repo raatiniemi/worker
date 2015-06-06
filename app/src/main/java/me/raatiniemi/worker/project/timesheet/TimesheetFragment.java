@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.ui;
+package me.raatiniemi.worker.project.timesheet;
 
 import android.content.Intent;
 import android.os.Bundle;
