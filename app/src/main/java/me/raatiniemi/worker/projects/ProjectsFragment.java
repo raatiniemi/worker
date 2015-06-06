@@ -2,6 +2,7 @@ package me.raatiniemi.worker.projects;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
+import me.raatiniemi.worker.project.ProjectActivity;
 import me.raatiniemi.worker.ui.MainActivity;
 import me.raatiniemi.worker.ui.TimesheetFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
@@ -76,16 +78,10 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                     return;
                 }
 
-                Bundle bundle = new Bundle();
-                bundle.putLong(MESSAGE_PROJECT_ID, project.getId());
+                Intent intent = new Intent(getActivity(), ProjectActivity.class);
+                intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
 
-                TimesheetFragment fragment = new TimesheetFragment();
-                fragment.setArguments(bundle);
-
-                getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment, MainActivity.FRAGMENT_TIMESHEET_TAG)
-                    .addToBackStack(MainActivity.FRAGMENT_PROJECT_LIST_TAG)
-                    .commit();
+                startActivity(intent);
             }
         });
         mAdapter.setOnClockActivityChangeListener(new ProjectsAdapter.OnClockActivityChangeListener() {
