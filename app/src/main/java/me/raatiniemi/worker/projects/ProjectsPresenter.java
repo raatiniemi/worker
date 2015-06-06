@@ -15,6 +15,9 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
      */
     private static final String TAG = "ProjectsPresenter";
 
+    /**
+     * Store reference to the read task.
+     */
     private ProjectsReadTask mProjectReadTask;
 
     @Override
@@ -42,6 +45,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
             mProjectReadTask.cancel(true);
         }
 
+        // Initiate a new read task.
         mProjectReadTask = new ProjectsReadTask(this);
         mProjectReadTask.execute(mapper);
     }
