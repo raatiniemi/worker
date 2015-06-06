@@ -158,7 +158,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         mRecyclerView.setAdapter(mAdapter);
 
         getPresenter().attachView(this);
-        getPresenter().loadProjects(MapperRegistry.getProjectMapper());
+        getPresenter().getProjects(MapperRegistry.getProjectMapper());
     }
 
     @Override
