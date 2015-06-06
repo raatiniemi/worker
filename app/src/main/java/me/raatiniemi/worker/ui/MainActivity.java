@@ -19,28 +19,10 @@ public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
-    /**
-     * Instance for the main activity.
-     */
-    private static MainActivity sInstance;
-
-    /**
-     * Retrieve the instance for the main activity.
-     *
-     * @return Instance for the main activity or null if none is available.
-     */
-    static MainActivity getInstance() {
-        return sInstance;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Store the instance for the main activity as a static variable.
-        // This will allow fragments to communicate using the main activity.
-        sInstance = this;
 
         if (null == savedInstanceState) {
             ProjectsFragment fragment = new ProjectsFragment();
