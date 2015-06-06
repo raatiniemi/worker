@@ -101,7 +101,7 @@ public class NewProjectFragment extends DialogFragment {
                 Log.e(TAG, "No OnCreateProjectListener have been supplied");
             }
 
-            String message = "Project '" + name + "' have been created";
+            String message = getString(R.string.fragment_new_project_create_successful);
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
             // We are finished with the project creation,
