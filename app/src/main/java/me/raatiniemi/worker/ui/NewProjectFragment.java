@@ -138,6 +138,6 @@ public class NewProjectFragment extends DialogFragment {
          *
          * @param project The newly created project.
          */
-        public void onCreateProject(Project project);
+        void onCreateProject(Project project);
     }
 }
