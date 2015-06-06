@@ -35,9 +35,9 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
     /**
      * Load the projects from the mapper and populate the view.
      *
-     * @param mapper Mapper to use for the data loading.
+     * @param projectMapper Mapper to use for the data loading.
      */
-    public void loadProjects(ProjectMapper mapper) {
+    public void loadProjects(ProjectMapper projectMapper) {
         // If the project loader is already active we have to cancel
         // its running process before we can start a new process.
         if (null != mProjectReadTask && !mProjectReadTask.isCancelled()) {
@@ -46,7 +46,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
         }
 
         // Initiate a new read task.
-        mProjectReadTask = new ProjectsReadTask(this, mapper);
+        mProjectReadTask = new ProjectsReadTask(this, projectMapper);
         mProjectReadTask.execute();
     }
 }
