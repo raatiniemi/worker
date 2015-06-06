@@ -1,7 +1,5 @@
 package me.raatiniemi.worker.ui;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -105,20 +103,5 @@ public class MainActivity extends BaseActivity {
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
-    }
-
-    @Override
-    public void onBackPressed() {
-        FragmentManager fragmentManager = getFragmentManager();
-
-        // Depending on which fragment is contained within the
-        // container the back button will behave differently.
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        Class<TimesheetFragment> instance = TimesheetFragment.class;
-        if (instance.equals(fragment.getClass())) {
-            fragmentManager.popBackStack();
-        } else {
-            super.onBackPressed();
-        }
     }
 }
