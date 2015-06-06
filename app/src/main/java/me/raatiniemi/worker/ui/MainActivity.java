@@ -8,7 +8,6 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
-import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.projects.ProjectsView;
 
@@ -17,11 +16,6 @@ public class MainActivity extends BaseActivity {
      * Tag for the project list fragment.
      */
     public static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
-
-    /**
-     * Tag for the new project fragment.
-     */
-    public static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 
     private static final String TAG = "MainActivity";
 
@@ -78,30 +72,17 @@ public class MainActivity extends BaseActivity {
      * Open the fragment for creating a new project.
      */
     protected void openCreateNewProject() {
-        NewProjectFragment newProject = new NewProjectFragment();
-        newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
-            @Override
-            public void onCreateProject(Project project) {
-                ProjectsView fragment = null;
-                try {
-                    // Attempt to find the projects fragment by its tag.
-                    fragment = (ProjectsView) getFragmentManager()
-                        .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
-                } catch (ClassCastException e) {
-                    // Something has gone wrong with the fragment manager,
-                    // just print the exception and continue.
-                    Log.e(TAG, "Unable to cast projects fragment: " + e.getMessage());
-                } finally {
-                    // If we managed to find the instance for the
-                    // project fragment, add the new project.
-                    if (null != fragment) {
-                        fragment.addProject(project);
-                    } else {
-                        Log.w(TAG, "Unable to find fragment with tag: " + FRAGMENT_PROJECT_LIST_TAG);
-                    }
-                }
-            }
-        });
-        newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
+        try {
+            // Attempt to retrieve the projects fragment.
+            ProjectsView fragment = (ProjectsView) getFragmentManager()
+                    .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
+
+            // Dispatch the create new project to the fragment.
+            fragment.createNewProject();
+        } catch (ClassCastException e) {
+            // Something has gone wrong with the fragment manager,
+            // just print the exception and continue.
+            Log.e(TAG, "Unable to cast projects fragment: " + e.getMessage());
+        }
     }
 }

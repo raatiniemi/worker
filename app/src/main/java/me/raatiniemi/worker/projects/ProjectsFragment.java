@@ -25,6 +25,8 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.project.ProjectActivity;
+import me.raatiniemi.worker.ui.MainActivity;
+import me.raatiniemi.worker.ui.NewProjectFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
@@ -36,6 +38,11 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
     private static final String TAG = "ProjectsFragment";
 
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
+
+    /**
+     * Tag for the new project fragment.
+     */
+    public static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
 
     private RecyclerView mRecyclerView;
 
@@ -166,11 +173,18 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
     }
 
     @Override
-    public void addProject(Project project) {
-        // Add the project to the adapter, and scroll down
-        // to the new project.
-        int position = mAdapter.add(project);
-        mRecyclerView.scrollToPosition(position);
+    public void createNewProject() {
+        NewProjectFragment newProject = new NewProjectFragment();
+        newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
+            @Override
+            public void onCreateProject(Project project) {
+                // Add the project to the adapter, and scroll
+                // down to the new project.
+                int position = mAdapter.add(project);
+                mRecyclerView.scrollToPosition(position);
+            }
+        });
+        newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
     }
 
     private void onClockActivityChange(int position, Date date) {
