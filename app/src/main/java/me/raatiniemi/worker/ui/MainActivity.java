@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity {
     /**
      * Open the fragment for creating a new project.
      */
-    protected void openCreateNewProject() {
+    private void openCreateNewProject() {
         try {
             // Attempt to retrieve the projects fragment.
             ProjectsView fragment = (ProjectsView) getFragmentManager()
