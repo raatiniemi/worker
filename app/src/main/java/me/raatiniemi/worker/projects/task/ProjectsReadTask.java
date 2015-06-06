@@ -9,6 +9,9 @@ import me.raatiniemi.worker.projects.ProjectsPresenter;
 import me.raatiniemi.worker.util.AsyncTaskResult;
 import me.raatiniemi.worker.util.ProjectCollection;
 
+/**
+ * Reads projects via the mapper in a background thread.
+ */
 public class ProjectsReadTask
     extends AsyncTask<ProjectMapper, Void, AsyncTaskResult<ProjectCollection>> {
     /**
@@ -16,6 +19,11 @@ public class ProjectsReadTask
      */
     private WeakReference<ProjectsPresenter> mPresenterRef;
 
+    /**
+     * Construct the task with the presenter.
+     *
+     * @param presenter Presenter using the task.
+     */
     public ProjectsReadTask(ProjectsPresenter presenter) {
         mPresenterRef = new WeakReference<>(presenter);
     }
