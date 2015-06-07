@@ -2,10 +2,8 @@ package me.raatiniemi.worker.projects;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,11 +28,6 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
      * Tag for logging within the ProjectsAdapter.
      */
     private static final String TAG = "ProjectsAdapter";
-
-    /**
-     * On click listener for the project item related views.
-     */
-    private View.OnClickListener mOnProjectClickListener = new OnProjectActionClickListener();
 
     /**
      * Handles formatting for date intervals.
@@ -78,7 +71,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, int index) {
+    public void onBindViewHolder(final ItemViewHolder holder, int index) {
         Project project = get(index);
 
         // Add the on click listener for the card view.
@@ -98,12 +91,26 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         }
         holder.mDescription.setVisibility(visibility);
 
-        holder.mClockActivityToggle.setOnClickListener(mOnProjectClickListener);
+        holder.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != getOnClockActivityChangeListener()) {
+                    getOnClockActivityChangeListener().onClockActivityToggle(holder.itemView);
+                }
+            }
+        });
         holder.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
         holder.mClockActivityToggle.setActivated(project.isActive());
 
         // Add the onClickListener to the "Clock [in|out] at..." item.
-        holder.mClockActivityAt.setOnClickListener(mOnProjectClickListener);
+        holder.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null != getOnClockActivityChangeListener()) {
+                    getOnClockActivityChangeListener().onClockActivityAt(holder.itemView);
+                }
+            }
+        });
         holder.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
 
         // Retrieve the resource instance.
@@ -246,53 +253,6 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
             mClockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_toggle);
             mClockActivityAt = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_at);
             mClockedInSince = (TextView) view.findViewById(R.id.fragment_project_clocked_in_since);
-        }
-    }
-
-    /**
-     * On click listener for project actions.
-     */
-    private class OnProjectActionClickListener implements View.OnClickListener {
-        /**
-         * Handles click events for project actions.
-         *
-         * @param v Project action view that has been clicked.
-         */
-        @Override
-        public void onClick(View v) {
-            final int viewId = v.getId();
-            Log.d(TAG, "View with id " + viewId + " was clicked");
-
-            final int activityToggleId = R.id.fragment_project_clock_activity_toggle;
-            final int activityAtId = R.id.fragment_project_clock_activity_at;
-
-            // Only allow registered action clicks to proceed.
-            if (viewId != activityToggleId && viewId != activityAtId) {
-                Log.e(TAG, "Unhandled view with id " + viewId + " in the OnClickListener");
-                return;
-            }
-
-            // Check that the OnClockActivityChangeListener have been supplied.
-            if (null == getOnClockActivityChangeListener()) {
-                Log.e(TAG, "No OnClockActivityChangeListener have been supplied");
-                return;
-            }
-
-            // We have to navigate to the RecyclerView item view and send it to the
-            // listener. The item view is needed for positional data.
-            View view = (View) v.getParent().getParent().getParent();
-            if (null == view || !(view instanceof CardView)) {
-                Log.e(TAG, "Unable to locate the correct view for the OnClockActivityChangeListener");
-                return;
-            }
-
-            // Depending on which ImageButton have been clicked the event should be
-            // sent to different methods on the OnClockActivityChangeListener.
-            if (viewId == activityToggleId) {
-                getOnClockActivityChangeListener().onClockActivityToggle(view);
-                return;
-            }
-            getOnClockActivityChangeListener().onClockActivityAt(view);
         }
     }
 }
