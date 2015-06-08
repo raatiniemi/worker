@@ -30,11 +30,6 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
     private static final String TAG = "ProjectsAdapter";
 
     /**
-     * Handles formatting for date intervals.
-     */
-    private DateIntervalFormat mDateIntervalFormat;
-
-    /**
      * Listener for toggling the clock activity.
      */
     private OnClockActivityChangeListener mOnClockActivityChangeListener;
@@ -49,14 +44,10 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
      *
      * @param context Context to use.
      * @param clockActivityChangeListener Listener for clock activity changes.
-     * @param dateIntervalFormat Formatter for date intervals.
      */
-    public ProjectsAdapter(Context context, OnClockActivityChangeListener clockActivityChangeListener, DateIntervalFormat dateIntervalFormat) {
+    public ProjectsAdapter(Context context, OnClockActivityChangeListener clockActivityChangeListener) {
         super(context);
         mOnClockActivityChangeListener = clockActivityChangeListener;
-
-        // Populate the date interval formatter.
-        mDateIntervalFormat = dateIntervalFormat;
     }
 
     @Override
@@ -80,7 +71,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         // Will open the single project activity.
         holder.itemView.setOnClickListener(getOnClickListener());
 
-        String summarize = mDateIntervalFormat.format(project.summarizeTime());
+        String summarize = DateIntervalFormat.format(project.summarizeTime());
 
         holder.mName.setText(project.getName());
         holder.mTime.setText(summarize);
@@ -143,7 +134,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
             clockedInSinceText = String.format(
                 clockedInSinceText,
                 (new SimpleDateFormat("HH:mm")).format(clockedInSince),
-                mDateIntervalFormat.format(
+                DateIntervalFormat.format(
                     project.getElapsed(),
                     DateIntervalFormat.Type.HOURS_MINUTES
                 )

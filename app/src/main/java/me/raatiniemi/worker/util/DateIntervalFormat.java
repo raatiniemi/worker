@@ -11,7 +11,7 @@ public class DateIntervalFormat {
      * @param minutes Minutes to apply to the format.
      * @return Interval formatted with fractal hours.
      */
-    private String fractionHours(long hours, long minutes) {
+    private static String fractionHours(long hours, long minutes) {
         // Calculate the fractal value from the minutes.
         float fractal = (float) minutes / (float) 60.0;
 
@@ -26,7 +26,7 @@ public class DateIntervalFormat {
      * @param minutes Minutes to apply to the format.
      * @return Interval formatted with hours and minutes.
      */
-    private String hoursMinutes(long hours, long minutes) {
+    private static String hoursMinutes(long hours, long minutes) {
         String format = "%1$dh %2$dm";
 
         // If no hours is available, remove it from the format.
@@ -44,7 +44,7 @@ public class DateIntervalFormat {
      * @param type Type of format to use.
      * @return Interval formatted with given type.
      */
-    public String format(long interval, Type type) {
+    public static String format(long interval, Type type) {
         String format;
 
         // Convert milliseconds to seconds.
@@ -96,7 +96,7 @@ public class DateIntervalFormat {
      * @param interval Interval in milliseconds to format.
      * @return Interval formatted with the default format type.
      */
-    public String format(long interval) {
+    public static String format(long interval) {
         return format(interval, Type.HOURS_MINUTES);
     }
 

@@ -33,8 +33,6 @@ public class TimesheetAdapter
 
     private SimpleDateFormat mTimeFormat;
 
-    private DateIntervalFormat mIntervalFormat;
-
     private View.OnLongClickListener mOnTimeLongClickListener;
 
     private OnTimesheetListener mOnTimesheetListener;
@@ -44,8 +42,6 @@ public class TimesheetAdapter
 
         mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
         mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-        mIntervalFormat = new DateIntervalFormat();
 
         mOnTimeLongClickListener = new View.OnLongClickListener() {
             @Override
@@ -94,7 +90,7 @@ public class TimesheetAdapter
             interval += time.getInterval();
         }
 
-        String summarize = mIntervalFormat.format(
+        String summarize = DateIntervalFormat.format(
             interval,
             DateIntervalFormat.Type.FRACTION_HOURS
         );
@@ -146,7 +142,7 @@ public class TimesheetAdapter
         holder.mTitle.setText(title);
 
         holder.mSummarize.setText(
-            mIntervalFormat.format(
+            DateIntervalFormat.format(
                 time.getInterval(),
                 DateIntervalFormat.Type.FRACTION_HOURS
             )
