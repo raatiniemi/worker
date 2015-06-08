@@ -23,15 +23,6 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     private OnClockActivityAtListener mOnClockActivityAtListener;
 
     /**
-     * Retrieve the row position for the project from the adapter.
-     *
-     * @return Position for the project from the adapter.
-     */
-    private int getPosition() {
-        return getArguments().getInt(ARGUMENT_POSITION, -1);
-    }
-
-    /**
      * Create a new instance for project clock in/out with date and time.
      *
      * @param position Row position for the project from the adapter.
@@ -53,6 +44,15 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         fragment.setArguments(arguments);
 
         return fragment;
+    }
+
+    /**
+     * Retrieve the row position for the project from the adapter.
+     *
+     * @return Position for the project from the adapter.
+     */
+    private int getPosition() {
+        return getArguments().getInt(ARGUMENT_POSITION, -1);
     }
 
     @Override
