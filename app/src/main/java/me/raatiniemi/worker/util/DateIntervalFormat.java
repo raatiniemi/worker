@@ -5,6 +5,12 @@ package me.raatiniemi.worker.util;
  */
 public class DateIntervalFormat {
     /**
+     * Private constructor, preventing instance creation.
+     */
+    private DateIntervalFormat() {
+    }
+
+    /**
      * Format the interval with fractal hours, e.g. "8.25" for 8 hours and 15 minutes.
      *
      * @param hours Hours to apply to the format.
