@@ -36,7 +36,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
 
     private static final String TAG = "ProjectsFragment";
 
-    private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
+    public static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
     /**
      * Tag for the new project fragment.
