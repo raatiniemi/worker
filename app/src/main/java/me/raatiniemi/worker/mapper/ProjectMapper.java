@@ -6,8 +6,8 @@ import android.database.Cursor;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.util.ProjectCollection;
 import me.raatiniemi.worker.util.TimeCollection;
 
