@@ -31,7 +31,8 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
 
-public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectCollection> implements ProjectsView {
+public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectCollection>
+    implements ProjectsAdapter.OnClockActivityChangeListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     private static final String TAG = "ProjectsFragment";
@@ -63,7 +64,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new ProjectsAdapter(getActivity(), new DateIntervalFormat());
+        mAdapter = new ProjectsAdapter(getActivity(), this, new DateIntervalFormat());
         mAdapter.setHintedImageButtonListener(new HintedImageButtonListener(getActivity()));
         mAdapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
             @Override
@@ -86,72 +87,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                 intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
 
                 startActivity(intent);
-            }
-        });
-        mAdapter.setOnClockActivityChangeListener(new ProjectsAdapter.OnClockActivityChangeListener() {
-            @Override
-            public void onClockActivityToggle(View view) {
-                // Retrieve the position for the project from the RecyclerView.
-                final int position = mRecyclerView.getChildPosition(view);
-                if (RecyclerView.NO_POSITION == position) {
-                    Log.w(TAG, "Unable to retrieve project position for onClockActivityToggle");
-                    return;
-                }
-
-                // Retrieve the project from the retrieved position.
-                final Project project = mAdapter.get(position);
-                if (null == project) {
-                    Log.w(TAG, "Unable to retrieve project from position " + position);
-                    return;
-                }
-
-                // TODO: Add configuration for disabling confirm dialog.
-                // When using the toggle clock activity functionality, the user
-                // have to confirm the clock out.
-                if (project.isActive()) {
-                    new AlertDialog.Builder(getActivity())
-                        .setTitle(getString(R.string.confirm_clock_out_title))
-                        .setMessage(getString(R.string.confirm_clock_out_message))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                onClockActivityChange(position, new Date());
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, null)
-                        .show();
-                    return;
-                }
-
-                onClockActivityChange(position, new Date());
-            }
-
-            @Override
-            public void onClockActivityAt(View view) {
-                // Retrieve the position for the project from the RecyclerView.
-                final int position = mRecyclerView.getChildPosition(view);
-                if (RecyclerView.NO_POSITION == position) {
-                    Log.w(TAG, "Unable to retrieve project position for onClockActivityAt");
-                    return;
-                }
-
-                // Retrieve the project from the retrieved position.
-                final Project project = mAdapter.get(position);
-                if (null == project) {
-                    Log.w(TAG, "Unable to retrieve project from position " + position);
-                    return;
-                }
-
-                ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(position, project);
-                fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
-                    @Override
-                    public void onClockActivityAt(int position, Calendar calendar) {
-                        onClockActivityChange(position, calendar.getTime());
-                    }
-                });
-
-                getFragmentManager().beginTransaction()
-                    .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
-                    .commit();
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -219,5 +154,70 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                 })
                 .show();
         }
+    }
+
+    @Override
+    public void onClockActivityToggle(View view) {
+        // Retrieve the position for the project from the RecyclerView.
+        final int position = mRecyclerView.getChildPosition(view);
+        if (RecyclerView.NO_POSITION == position) {
+            Log.w(TAG, "Unable to retrieve project position for onClockActivityToggle");
+            return;
+        }
+
+        // Retrieve the project from the retrieved position.
+        final Project project = mAdapter.get(position);
+        if (null == project) {
+            Log.w(TAG, "Unable to retrieve project from position " + position);
+            return;
+        }
+
+        // TODO: Add configuration for disabling confirm dialog.
+        // When using the toggle clock activity functionality, the user
+        // have to confirm the clock out.
+        if (project.isActive()) {
+            new AlertDialog.Builder(getActivity())
+                .setTitle(getString(R.string.confirm_clock_out_title))
+                .setMessage(getString(R.string.confirm_clock_out_message))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        onClockActivityChange(position, new Date());
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+            return;
+        }
+
+        onClockActivityChange(position, new Date());
+    }
+
+    @Override
+    public void onClockActivityAt(View view) {
+        // Retrieve the position for the project from the RecyclerView.
+        final int position = mRecyclerView.getChildPosition(view);
+        if (RecyclerView.NO_POSITION == position) {
+            Log.w(TAG, "Unable to retrieve project position for onClockActivityAt");
+            return;
+        }
+
+        // Retrieve the project from the retrieved position.
+        final Project project = mAdapter.get(position);
+        if (null == project) {
+            Log.w(TAG, "Unable to retrieve project from position " + position);
+            return;
+        }
+
+        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(position, project);
+        fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
+            @Override
+            public void onClockActivityAt(int position, Calendar calendar) {
+                onClockActivityChange(position, calendar.getTime());
+            }
+        });
+
+        getFragmentManager().beginTransaction()
+            .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
+            .commit();
     }
 }

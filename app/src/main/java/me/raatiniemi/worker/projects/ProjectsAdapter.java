@@ -48,10 +48,12 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
      * Construct the ProjectsAdapter.
      *
      * @param context Context to use.
+     * @param clockActivityChangeListener Listener for clock activity changes.
      * @param dateIntervalFormat Formatter for date intervals.
      */
-    public ProjectsAdapter(Context context, DateIntervalFormat dateIntervalFormat) {
+    public ProjectsAdapter(Context context, OnClockActivityChangeListener clockActivityChangeListener, DateIntervalFormat dateIntervalFormat) {
         super(context);
+        mOnClockActivityChangeListener = clockActivityChangeListener;
 
         // Populate the date interval formatter.
         mDateIntervalFormat = dateIntervalFormat;
@@ -94,9 +96,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         holder.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != getOnClockActivityChangeListener()) {
-                    getOnClockActivityChangeListener().onClockActivityToggle(holder.itemView);
-                }
+                mOnClockActivityChangeListener.onClockActivityToggle(holder.itemView);
             }
         });
         holder.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
@@ -106,9 +106,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         holder.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (null != getOnClockActivityChangeListener()) {
-                    getOnClockActivityChangeListener().onClockActivityAt(holder.itemView);
-                }
+                mOnClockActivityChangeListener.onClockActivityAt(holder.itemView);
             }
         });
         holder.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
@@ -153,24 +151,6 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         }
         holder.mClockedInSince.setText(clockedInSinceText);
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
-    }
-
-    /**
-     * Retrieve the listener for toggling the clock activity.
-     *
-     * @return Listener for toggling the clock activity, or null if none have been supplied.
-     */
-    public OnClockActivityChangeListener getOnClockActivityChangeListener() {
-        return mOnClockActivityChangeListener;
-    }
-
-    /**
-     * Set the listener for toggling the clock activity.
-     *
-     * @param onClockActivityChangeListener Listener for toggling the clock activity.
-     */
-    public void setOnClockActivityChangeListener(OnClockActivityChangeListener onClockActivityChangeListener) {
-        mOnClockActivityChangeListener = onClockActivityChangeListener;
     }
 
     /**
