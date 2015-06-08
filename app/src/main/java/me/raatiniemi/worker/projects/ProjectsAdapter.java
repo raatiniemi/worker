@@ -11,11 +11,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.model.project.ProjectComparator;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.ProjectCollection;
@@ -142,6 +144,10 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         }
         holder.mClockedInSince.setText(clockedInSinceText);
         holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
+    }
+
+    public int findProject(Project project) {
+        return Collections.binarySearch(getItems(), project, new ProjectComparator());
     }
 
     /**
