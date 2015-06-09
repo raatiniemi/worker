@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;

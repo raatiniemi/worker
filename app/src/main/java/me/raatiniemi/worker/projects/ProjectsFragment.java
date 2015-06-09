@@ -18,7 +18,7 @@ import java.util.Date;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.base.view.MvpFragment;
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;

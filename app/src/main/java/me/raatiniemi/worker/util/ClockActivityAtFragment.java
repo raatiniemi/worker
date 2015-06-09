@@ -5,7 +5,7 @@ import android.util.Log;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.model.project.Project;
 
 public class ClockActivityAtFragment extends DateTimePickerFragment
     implements DateTimePickerFragment.OnDateTimeSetListener {

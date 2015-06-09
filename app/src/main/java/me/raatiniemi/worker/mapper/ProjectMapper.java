@@ -3,7 +3,7 @@ package me.raatiniemi.worker.mapper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
