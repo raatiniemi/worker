@@ -22,7 +22,7 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseFragment;
 import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;

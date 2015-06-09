@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.Child;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;

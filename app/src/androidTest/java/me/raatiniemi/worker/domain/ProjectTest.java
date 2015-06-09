@@ -6,6 +6,7 @@ import android.test.ApplicationTestCase;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
 import me.raatiniemi.worker.model.project.Project;
+import me.raatiniemi.worker.model.time.Time;
 
 public class ProjectTest extends ApplicationTestCase<Application> {
     public ProjectTest() {

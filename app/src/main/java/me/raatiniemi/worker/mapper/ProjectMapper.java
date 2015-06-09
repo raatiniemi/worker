@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;

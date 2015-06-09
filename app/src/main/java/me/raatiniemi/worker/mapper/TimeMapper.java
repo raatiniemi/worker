@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.Child;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;

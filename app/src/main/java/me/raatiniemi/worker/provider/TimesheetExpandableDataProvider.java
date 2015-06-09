@@ -3,7 +3,7 @@ package me.raatiniemi.worker.provider;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.model.time.Time;
 
 public class TimesheetExpandableDataProvider extends ExpandableDataProvider {
     private List<Groupable> mData;
