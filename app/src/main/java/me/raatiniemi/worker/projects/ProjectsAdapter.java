@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.model.project.ProjectComparator;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
-import me.raatiniemi.worker.util.ProjectCollection;
+import me.raatiniemi.worker.model.project.ProjectCollection;
 
 /**
  * Adapter for listing available projects.
