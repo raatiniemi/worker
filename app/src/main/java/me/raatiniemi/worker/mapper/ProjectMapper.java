@@ -9,7 +9,7 @@ import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.model.project.ProjectCollection;
-import me.raatiniemi.worker.util.TimeCollection;
+import me.raatiniemi.worker.model.time.TimeCollection;
 
 public class ProjectMapper extends AbstractMapper<Project> {
     private static final String TAG = "ProjectMapper";

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
-import me.raatiniemi.worker.util.TimeCollection;
+import me.raatiniemi.worker.model.time.TimeCollection;
 
 /**
  * Domain object for the Project.
