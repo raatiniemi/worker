@@ -1,7 +1,6 @@
 package me.raatiniemi.worker.util;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -13,11 +12,6 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     private static final String TAG = "ClockActivityAtFragment";
 
     /**
-     * Name of the key for the row position argument.
-     */
-    private static final String ARGUMENT_POSITION = "_position";
-
-    /**
      * Listener for "OnClockActivityAtListener".
      */
     private OnClockActivityAtListener mOnClockActivityAtListener;
@@ -25,11 +19,10 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     /**
      * Create a new instance for project clock in/out with date and time.
      *
-     * @param position Row position for the project from the adapter.
      * @param project Project used with the clock activity.
      * @return New instance of the clock activity at fragment.
      */
-    public static ClockActivityAtFragment newInstance(int position, Project project) {
+    public static ClockActivityAtFragment newInstance(Project project) {
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
 
         // If the project is active we have to set the minimum date for clocking out.
@@ -39,20 +32,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
             fragment.setMinDate(calendar);
         }
 
-        Bundle arguments = new Bundle();
-        arguments.putInt(ARGUMENT_POSITION, position);
-        fragment.setArguments(arguments);
-
         return fragment;
-    }
-
-    /**
-     * Retrieve the row position for the project from the adapter.
-     *
-     * @return Position for the project from the adapter.
-     */
-    private int getPosition() {
-        return getArguments().getInt(ARGUMENT_POSITION, -1);
     }
 
     @Override
@@ -71,7 +51,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
 
         // Send the project row position with the selected
         // date and time to the listener.
-        getOnClockActivityAtListener().onClockActivityAt(getPosition(), calendar);
+        getOnClockActivityAtListener().onClockActivityAt(calendar);
     }
 
     /**
@@ -99,9 +79,8 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         /**
          * Triggered after the date and time have been selected.
          *
-         * @param position Row position from the adapter.
          * @param calendar Calendar with date and time to clock in or out.
          */
-        void onClockActivityAt(int position, Calendar calendar);
+        void onClockActivityAt(Calendar calendar);
     }
 }

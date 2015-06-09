@@ -66,8 +66,8 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int index) {
-        Project project = get(index);
+    public void onBindViewHolder(ItemViewHolder holder, int index) {
+        final Project project = get(index);
 
         // Add the on click listener for the card view.
         // Will open the single project activity.
@@ -89,7 +89,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         holder.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClockActivityChangeListener.onClockActivityToggle(holder.itemView);
+                mOnClockActivityChangeListener.onClockActivityToggle(project);
             }
         });
         holder.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
@@ -99,7 +99,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         holder.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnClockActivityChangeListener.onClockActivityAt(holder.itemView);
+                mOnClockActivityChangeListener.onClockActivityAt(project);
             }
         });
         holder.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
@@ -175,16 +175,16 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         /**
          * Toggle the clock activity change.
          *
-         * @param view View for the project item.
+         * @param project Project to change the clock activity.
          */
-        void onClockActivityToggle(View view);
+        void onClockActivityToggle(Project project);
 
         /**
          * Toggle the clock activity change, with date and time.
          *
-         * @param view View for the project item.
+         * @param project Project to change the clock activity.
          */
-        void onClockActivityAt(View view);
+        void onClockActivityAt(Project project);
     }
 
     /**

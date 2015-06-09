@@ -120,13 +120,12 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
     }
 
-    private void onClockActivityChange(int position, Date date) {
+    private void onClockActivityChange(Project project, Date date) {
         try {
             // Retrieve the project and time data mappers.
             ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
             TimeMapper timeMapper = MapperRegistry.getTimeMapper();
 
-            Project project = mAdapter.get(position);
             Time time;
 
             // Depending on whether the project is active,
@@ -137,6 +136,13 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
             } else {
                 time = project.clockInAt(date);
                 timeMapper.insert(time);
+            }
+
+            // Retrieve the position for the project.
+            int position = mAdapter.findProject(project);
+            if (0 > position) {
+                Log.e(TAG, "Unable to retrieve position for project");
+                return;
             }
 
             // Retrieve the updated project from the data mapper.
@@ -156,21 +162,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
     }
 
     @Override
-    public void onClockActivityToggle(View view) {
-        // Retrieve the position for the project from the RecyclerView.
-        final int position = mRecyclerView.getChildPosition(view);
-        if (RecyclerView.NO_POSITION == position) {
-            Log.w(TAG, "Unable to retrieve project position for onClockActivityToggle");
-            return;
-        }
-
-        // Retrieve the project from the retrieved position.
-        final Project project = mAdapter.get(position);
-        if (null == project) {
-            Log.w(TAG, "Unable to retrieve project from position " + position);
-            return;
-        }
-
+    public void onClockActivityToggle(final Project project) {
         // TODO: Add configuration for disabling confirm dialog.
         // When using the toggle clock activity functionality, the user
         // have to confirm the clock out.
@@ -180,7 +172,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                 .setMessage(getString(R.string.confirm_clock_out_message))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        onClockActivityChange(position, new Date());
+                        onClockActivityChange(project, new Date());
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
@@ -188,30 +180,16 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
             return;
         }
 
-        onClockActivityChange(position, new Date());
+        onClockActivityChange(project, new Date());
     }
 
     @Override
-    public void onClockActivityAt(View view) {
-        // Retrieve the position for the project from the RecyclerView.
-        final int position = mRecyclerView.getChildPosition(view);
-        if (RecyclerView.NO_POSITION == position) {
-            Log.w(TAG, "Unable to retrieve project position for onClockActivityAt");
-            return;
-        }
-
-        // Retrieve the project from the retrieved position.
-        final Project project = mAdapter.get(position);
-        if (null == project) {
-            Log.w(TAG, "Unable to retrieve project from position " + position);
-            return;
-        }
-
-        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(position, project);
+    public void onClockActivityAt(final Project project) {
+        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project);
         fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
             @Override
-            public void onClockActivityAt(int position, Calendar calendar) {
-                onClockActivityChange(position, calendar.getTime());
+            public void onClockActivityAt(Calendar calendar) {
+                onClockActivityChange(project, calendar.getTime());
             }
         });
 
