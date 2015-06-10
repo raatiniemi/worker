@@ -31,7 +31,7 @@ import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.model.project.ProjectCollection;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectCollection>
-    implements ProjectsAdapter.OnClockActivityChangeListener, ProjectsView {
+    implements ProjectsAdapter.OnClockActivityChangeListener, ListAdapter.OnItemClickListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     public static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
@@ -65,29 +65,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
 
         mAdapter = new ProjectsAdapter(getActivity(), this);
         mAdapter.setHintedImageButtonListener(new HintedImageButtonListener(getActivity()));
-        mAdapter.setOnItemClickListener(new ListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view) {
-                // Retrieve the position for the project from the RecyclerView.
-                final int position = mRecyclerView.getChildPosition(view);
-                if (RecyclerView.NO_POSITION == position) {
-                    Log.w(TAG, "Unable to retrieve project position for onItemClick");
-                    return;
-                }
-
-                // Retrieve the project from the retrieved position.
-                final Project project = mAdapter.get(position);
-                if (null == project) {
-                    Log.w(TAG, "Unable to retrieve project from position " + position);
-                    return;
-                }
-
-                Intent intent = new Intent(getActivity(), ProjectActivity.class);
-                intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
-
-                startActivity(intent);
-            }
-        });
+        mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
         getPresenter().attachView(this);
@@ -159,6 +137,28 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                 })
                 .show();
         }
+    }
+
+    @Override
+    public void onItemClick(View view) {
+        // Retrieve the position for the project from the RecyclerView.
+        final int position = mRecyclerView.getChildPosition(view);
+        if (RecyclerView.NO_POSITION == position) {
+            Log.w(TAG, "Unable to retrieve project position for onItemClick");
+            return;
+        }
+
+        // Retrieve the project from the retrieved position.
+        final Project project = mAdapter.get(position);
+        if (null == project) {
+            Log.w(TAG, "Unable to retrieve project from position " + position);
+            return;
+        }
+
+        Intent intent = new Intent(getActivity(), ProjectActivity.class);
+        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
+
+        startActivity(intent);
     }
 
     @Override
