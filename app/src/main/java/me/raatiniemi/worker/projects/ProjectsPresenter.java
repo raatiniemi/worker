@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.projects;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import me.raatiniemi.worker.base.presenter.BasePresenter;
@@ -25,7 +26,8 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
         super.detachView();
 
         // Before we can detach the view we have to clean up.
-        if (null != mProjectReadTask && !mProjectReadTask.isCancelled()) {
+        if (null != mProjectReadTask &&
+            AsyncTask.Status.FINISHED != mProjectReadTask.getStatus()) {
             Log.i(TAG, "Cancelling read task, view is detaching");
             mProjectReadTask.cancel(true);
         }
@@ -40,7 +42,8 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
     public void getProjects(ProjectMapper projectMapper) {
         // If the project loader is already active we have to cancel
         // its running process before we can start a new process.
-        if (null != mProjectReadTask && !mProjectReadTask.isCancelled()) {
+        if (null != mProjectReadTask &&
+            AsyncTask.Status.FINISHED != mProjectReadTask.getStatus()) {
             Log.w(TAG, "Cancelling read task, new read task is initiated");
             mProjectReadTask.cancel(true);
         }
