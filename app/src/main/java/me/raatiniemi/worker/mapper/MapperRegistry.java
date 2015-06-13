@@ -61,7 +61,9 @@ final public class MapperRegistry {
         MapperRegistry instance = getInstance();
 
         if (null == instance.mTimeMapper) {
-            instance.mTimeMapper = new TimeMapper();
+            instance.mTimeMapper = new TimeMapper(
+                Worker.getContext()
+            );
         }
 
         return instance.mTimeMapper;

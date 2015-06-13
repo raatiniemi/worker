@@ -1,6 +1,7 @@
 package me.raatiniemi.worker.mapper;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
@@ -21,13 +22,17 @@ import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.model.time.TimeCollection;
 
 public class TimeMapper extends AbstractMapper<Time> {
+    private Context mContext;
+
     /**
      * Timestamp for the beginning of the month in milliseconds.
      */
     private final long mBeginningOfMonth;
 
-    public TimeMapper() {
+    public TimeMapper(Context context) {
         super();
+
+        mContext = context;
 
         // Reset the calendar to retrieve timestamp
         // of the beginning of the month.
