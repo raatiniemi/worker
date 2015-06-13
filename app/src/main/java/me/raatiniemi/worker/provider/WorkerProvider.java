@@ -2,10 +2,29 @@ package me.raatiniemi.worker.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 
+import me.raatiniemi.worker.provider.WorkerContract.Projects;
+
 public class WorkerProvider extends ContentProvider {
+    private static final int PROJECTS = 100;
+
+    private static final int PROJECTS_ID = 101;
+
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
+
+    private static UriMatcher buildUriMatcher() {
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = WorkerContract.CONTENT_AUTHORITY;
+
+        matcher.addURI(authority, "projects", PROJECTS);
+        matcher.addURI(authority, "projects/*", PROJECTS_ID);
+
+        return matcher;
+    }
+
     @Override
     public boolean onCreate() {
         return false;
@@ -13,7 +32,15 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PROJECTS:
+                return Projects.CONTENT_TYPE;
+            case PROJECTS_ID:
+                return Projects.CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
     }
 
     @Override

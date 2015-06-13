@@ -3,6 +3,8 @@ package me.raatiniemi.worker.provider;
 import android.provider.BaseColumns;
 
 public class WorkerContract {
+    public static final String CONTENT_AUTHORITY = "me.raatiniemi.worker";
+
     /**
      * Name for the available tables within the database.
      */
@@ -36,5 +38,13 @@ public class WorkerContract {
         String START = "start";
 
         String STOP = "stop";
+    }
+
+    public static class Projects implements ProjectColumns {
+        public static final String CONTENT_TYPE =
+            "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
+
+        public static final String CONTENT_ITEM_TYPE =
+            "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
     }
 }
