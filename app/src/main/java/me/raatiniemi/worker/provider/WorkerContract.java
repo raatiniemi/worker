@@ -54,5 +54,15 @@ public class WorkerContract {
 
         public static final String CONTENT_ITEM_TYPE =
             "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
+
+        /**
+         * Build the URI for retrieving specific project with identifier.
+         *
+         * @param id Numeric id or name for project.
+         * @return URI for retrieving specific project.
+         */
+        public static Uri buildUri(String id) {
+            return CONTENT_URI.buildUpon().appendPath(id).build();
+        }
     }
 }
