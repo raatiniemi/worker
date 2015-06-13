@@ -82,7 +82,7 @@ public class WorkerProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                builder.setTable(Tables.PROJECT);
+                builder.table(Tables.PROJECT);
                 break;
         }
 

@@ -19,11 +19,7 @@ public class SelectionBuilder {
 
     private String mHaving;
 
-    public String getTable() {
-        return mTable;
-    }
-
-    public SelectionBuilder setTable(String table) {
+    public SelectionBuilder table(String table) {
         mTable = table;
         return this;
     }
@@ -49,40 +45,32 @@ public class SelectionBuilder {
         return this;
     }
 
-    public String getSelection() {
+    public String selection() {
         return mSelection.toString();
     }
 
-    public String[] getSelectionArgs() {
+    public String[] selectionArgs() {
         return mSelectionArgs.toArray(new String[mSelectionArgs.size()]);
     }
 
-    public String getGroupBy() {
-        return mGroupBy;
-    }
-
-    public SelectionBuilder setGroupBy(String groupBy) {
+    public SelectionBuilder groupBy(String groupBy) {
         mGroupBy = groupBy;
         return this;
     }
 
-    public String getHaving() {
-        return mHaving;
-    }
-
-    public SelectionBuilder setHaving(String having) {
+    public SelectionBuilder having(String having) {
         mHaving = having;
         return this;
     }
 
     public Cursor query(SQLiteDatabase db, String[] columns, String orderBy) {
         return db.query(
-            getTable(),
+            mTable,
             columns,
-            getSelection(),
-            getSelectionArgs(),
-            getGroupBy(),
-            getHaving(),
+            selection(),
+            selectionArgs(),
+            mGroupBy,
+            mHaving,
             orderBy
         );
     }
