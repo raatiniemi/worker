@@ -64,5 +64,15 @@ public class WorkerContract {
         public static Uri buildUri(String id) {
             return CONTENT_URI.buildUpon().appendPath(id).build();
         }
+
+        /**
+         * Retrieve the identifier from the URI.
+         *
+         * @param uri URI for retrieving specific project.
+         * @return Numeric id or name for project.
+         */
+        public static String getId(Uri uri) {
+            return uri.getLastPathSegment();
+        }
     }
 }
