@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class SelectionBuilder {
     private String mTable;
 
-    private String[] mProjection;
+    private String[] mColumns;
 
     private String mSelection;
 
@@ -27,12 +27,12 @@ public class SelectionBuilder {
         return this;
     }
 
-    public String[] getProjection() {
-        return mProjection;
+    public String[] getColumns() {
+        return mColumns;
     }
 
-    public SelectionBuilder setProjection(String[] projection) {
-        mProjection = projection;
+    public SelectionBuilder setColumns(String[] columns) {
+        mColumns = columns;
         return this;
     }
 
@@ -84,7 +84,7 @@ public class SelectionBuilder {
     public Cursor query(SQLiteDatabase db) {
         return db.query(
             getTable(),
-            getProjection(),
+            getColumns(),
             getSelection(),
             getSelectionArgs(),
             getGroupBy(),
