@@ -51,8 +51,7 @@ public class WorkerProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         return buildSelection(uri)
-            .setSelection(selection)
-            .setSelectionArgs(selectionArgs)
+            .where(selection, selectionArgs)
             .query(mOpenHelper.getReadableDatabase(), projection, sortOrder);
     }
 
