@@ -22,56 +22,63 @@ public class SelectionBuilder {
         return mTable;
     }
 
-    public void setTable(String table) {
+    public SelectionBuilder setTable(String table) {
         mTable = table;
+        return this;
     }
 
     public String[] getProjection() {
         return mProjection;
     }
 
-    public void setProjection(String[] projection) {
+    public SelectionBuilder setProjection(String[] projection) {
         mProjection = projection;
+        return this;
     }
 
     public String getSelection() {
         return mSelection;
     }
 
-    public void setSelection(String selection) {
+    public SelectionBuilder setSelection(String selection) {
         mSelection = selection;
+        return this;
     }
 
     public String[] getSelectionArgs() {
         return mSelectionArgs;
     }
 
-    public void setSelectionArgs(String[] selectionArgs) {
+    public SelectionBuilder setSelectionArgs(String[] selectionArgs) {
         mSelectionArgs = selectionArgs;
+        return this;
     }
 
     public String getGroupBy() {
         return mGroupBy;
     }
 
-    public void setGroupBy(String groupBy) {
+    public SelectionBuilder setGroupBy(String groupBy) {
         mGroupBy = groupBy;
+        return this;
     }
 
     public String getHaving() {
         return mHaving;
     }
 
-    public void setHaving(String having) {
+    public SelectionBuilder setHaving(String having) {
         mHaving = having;
+        return this;
     }
 
     public String getOrderBy() {
         return mOrderBy;
     }
 
-    public void setOrderBy(String orderBy) {
+    public SelectionBuilder setOrderBy(String orderBy) {
         mOrderBy = orderBy;
+        return this;
     }
 
     public Cursor query(SQLiteDatabase db) {
