@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
@@ -57,7 +58,16 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PROJECTS:
+                final long projectId = db.insertOrThrow(Tables.PROJECT, null, values);
+                return Projects.buildUri(String.valueOf(projectId));
+            default:
+                throw new UnsupportedOperationException("Unknown insert uri: " + uri);
+        }
     }
 
     @Override

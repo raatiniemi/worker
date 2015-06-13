@@ -3,6 +3,7 @@ package me.raatiniemi.worker.mapper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.time.Time;
@@ -166,8 +167,8 @@ public class ProjectMapper extends AbstractMapper<Project> {
         values.put(ProjectColumns.NAME, project.getName());
         values.put(ProjectColumns.DESCRIPTION, project.getDescription());
 
-        long id = mDatabase.insert(getTable(), null, values);
-        return find(id);
+        Uri uri = mContext.getContentResolver().insert(Projects.CONTENT_URI, values);
+        return find(Long.valueOf(Projects.getId(uri)));
     }
 
     /**
