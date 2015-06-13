@@ -4,11 +4,11 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.Projects;
+import me.raatiniemi.worker.util.SelectionBuilder;
 
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
@@ -50,9 +50,11 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-
-        return db.query(Tables.PROJECT, projection, selection, selectionArgs, null, null, sortOrder);
+        return buildSelection(uri).setColumns(projection)
+            .setSelection(selection)
+            .setSelectionArgs(selectionArgs)
+            .setOrderBy(sortOrder)
+            .query(mOpenHelper.getReadableDatabase());
     }
 
     @Override
@@ -68,5 +70,24 @@ public class WorkerProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return 0;
+    }
+
+    /**
+     * Build the selection based on the URI.
+     *
+     * @param uri URI for building the selection.
+     * @return Selection ready to be queried.
+     */
+    private SelectionBuilder buildSelection(Uri uri) {
+        SelectionBuilder builder = new SelectionBuilder();
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PROJECTS:
+                builder.setTable(Tables.PROJECT);
+                break;
+        }
+
+        return builder;
     }
 }
