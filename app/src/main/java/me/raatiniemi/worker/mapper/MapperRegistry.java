@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.mapper;
 
+import me.raatiniemi.worker.application.Worker;
+
 /**
  * Registry for classes related to data mapping.
  */
@@ -41,7 +43,10 @@ final public class MapperRegistry {
         MapperRegistry instance = getInstance();
 
         if (null == instance.mProjectMapper) {
-            instance.mProjectMapper = new ProjectMapper(MapperRegistry.getTimeMapper());
+            instance.mProjectMapper = new ProjectMapper(
+                Worker.getContext(),
+                MapperRegistry.getTimeMapper()
+            );
         }
 
         return instance.mProjectMapper;

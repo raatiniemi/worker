@@ -1,6 +1,7 @@
 package me.raatiniemi.worker.mapper;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 import me.raatiniemi.worker.model.project.Project;
@@ -14,11 +15,14 @@ import me.raatiniemi.worker.model.time.TimeCollection;
 public class ProjectMapper extends AbstractMapper<Project> {
     private static final String TAG = "ProjectMapper";
 
+    private Context mContext;
+
     private TimeMapper mTimeMapper;
 
-    public ProjectMapper(TimeMapper timeMapper) {
+    public ProjectMapper(Context context, TimeMapper timeMapper) {
         super();
 
+        mContext = context;
         mTimeMapper = timeMapper;
     }
 
