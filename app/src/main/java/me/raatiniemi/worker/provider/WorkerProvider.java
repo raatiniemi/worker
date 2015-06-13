@@ -53,8 +53,7 @@ public class WorkerProvider extends ContentProvider {
         return buildSelection(uri)
             .setSelection(selection)
             .setSelectionArgs(selectionArgs)
-            .setOrderBy(sortOrder)
-            .query(mOpenHelper.getReadableDatabase(), projection);
+            .query(mOpenHelper.getReadableDatabase(), projection, sortOrder);
     }
 
     @Override

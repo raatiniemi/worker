@@ -14,8 +14,6 @@ public class SelectionBuilder {
 
     private String mHaving;
 
-    private String mOrderBy;
-
     public String getTable() {
         return mTable;
     }
@@ -61,16 +59,7 @@ public class SelectionBuilder {
         return this;
     }
 
-    public String getOrderBy() {
-        return mOrderBy;
-    }
-
-    public SelectionBuilder setOrderBy(String orderBy) {
-        mOrderBy = orderBy;
-        return this;
-    }
-
-    public Cursor query(SQLiteDatabase db, String[] columns) {
+    public Cursor query(SQLiteDatabase db, String[] columns, String orderBy) {
         return db.query(
             getTable(),
             columns,
@@ -78,7 +67,7 @@ public class SelectionBuilder {
             getSelectionArgs(),
             getGroupBy(),
             getHaving(),
-            getOrderBy()
+            orderBy
         );
     }
 }
