@@ -58,7 +58,7 @@ public class WorkerContract {
         /**
          * Build the URI for retrieving specific project with identifier.
          *
-         * @param id Numeric id or name for project.
+         * @param id Id for the project.
          * @return URI for retrieving specific project.
          */
         public static Uri buildUri(String id) {
@@ -69,7 +69,7 @@ public class WorkerContract {
          * Retrieve the identifier from the URI.
          *
          * @param uri URI for retrieving specific project.
-         * @return Numeric id or name for project.
+         * @return Id for the project.
          */
         public static String getId(Uri uri) {
             return uri.getLastPathSegment();
