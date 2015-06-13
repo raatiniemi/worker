@@ -24,7 +24,7 @@ public class WorkerProvider extends ContentProvider {
         final String authority = WorkerContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, "projects", PROJECTS);
-        matcher.addURI(authority, "projects/*", PROJECTS_ID);
+        matcher.addURI(authority, "projects/#", PROJECTS_ID);
 
         return matcher;
     }
@@ -83,6 +83,13 @@ public class WorkerProvider extends ContentProvider {
         switch (match) {
             case PROJECTS:
                 builder.table(Tables.PROJECT);
+                break;
+            case PROJECTS_ID:
+                builder.table(Tables.PROJECT)
+                    .where(
+                        Projects.ID + "=?",
+                        Projects.getId(uri)
+                    );
                 break;
         }
 

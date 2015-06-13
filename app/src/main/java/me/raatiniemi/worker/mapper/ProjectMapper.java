@@ -112,6 +112,24 @@ public class ProjectMapper extends AbstractMapper<Project> {
         return result;
     }
 
+    public Project find(long id) {
+        Project project = null;
+
+        Cursor row = mContext.getContentResolver().query(
+            Projects.buildUri(String.valueOf(id)),
+            getColumns(),
+            null,
+            null,
+            null
+        );
+        if (row.moveToFirst()) {
+            project = load(row);
+        }
+        row.close();
+
+        return project;
+    }
+
     /**
      * Find project by name.
      *
