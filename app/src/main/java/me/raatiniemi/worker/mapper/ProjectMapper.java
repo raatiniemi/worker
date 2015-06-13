@@ -107,6 +107,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
                 result.add(project);
             } while (rows.moveToNext());
         }
+        rows.close();
 
         return result;
     }
