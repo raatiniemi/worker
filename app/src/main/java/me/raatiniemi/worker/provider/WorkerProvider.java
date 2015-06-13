@@ -15,6 +15,8 @@ public class WorkerProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
+    private WorkerDatabase mOpenHelper;
+
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = WorkerContract.CONTENT_AUTHORITY;
@@ -27,7 +29,8 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        return false;
+        mOpenHelper = new WorkerDatabase(getContext());
+        return true;
     }
 
     @Override
