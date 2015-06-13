@@ -1,9 +1,14 @@
 package me.raatiniemi.worker.provider;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class WorkerContract {
     public static final String CONTENT_AUTHORITY = "me.raatiniemi.worker";
+
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+    private static final String PATH_PROJECTS = "projects";
 
     /**
      * Name for the available tables within the database.
@@ -41,6 +46,9 @@ public class WorkerContract {
     }
 
     public static class Projects implements ProjectColumns {
+        public static final Uri CONTENT_URI =
+            BASE_CONTENT_URI.buildUpon().appendPath(PATH_PROJECTS).build();
+
         public static final String CONTENT_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 

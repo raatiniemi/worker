@@ -4,8 +4,10 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.Projects;
 
 public class WorkerProvider extends ContentProvider {
@@ -48,7 +50,9 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+        final SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+
+        return db.query(Tables.PROJECT, projection, selection, selectionArgs, null, null, sortOrder);
     }
 
     @Override
