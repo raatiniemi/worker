@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.util.SelectionBuilder;
 
@@ -15,6 +16,8 @@ public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
 
     private static final int PROJECT = 101;
+
+    private static final int PROJECT_TIME = 102;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -25,6 +28,7 @@ public class WorkerProvider extends ContentProvider {
         final String authority = WorkerContract.AUTHORITY;
 
         matcher.addURI(authority, "projects", PROJECTS);
+        matcher.addURI(authority, "project/#/time", PROJECT_TIME);
         matcher.addURI(authority, "project/#", PROJECT);
 
         return matcher;
@@ -44,6 +48,8 @@ public class WorkerProvider extends ContentProvider {
                 return ProjectContract.STREAM_TYPE;
             case PROJECT:
                 return ProjectContract.ITEM_TYPE;
+            case PROJECT_TIME:
+                return TimeContract.STREAM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -98,6 +104,13 @@ public class WorkerProvider extends ContentProvider {
                 builder.table(Tables.PROJECT)
                     .where(
                         ProjectContract.ID + "=?",
+                        ProjectContract.getItemId(uri)
+                    );
+                break;
+            case PROJECT_TIME:
+                builder.table(Tables.TIME)
+                    .where(
+                        TimeContract.PROJECT_ID + "=?",
                         ProjectContract.getItemId(uri)
                     );
                 break;
