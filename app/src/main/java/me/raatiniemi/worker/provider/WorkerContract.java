@@ -48,10 +48,10 @@ public class WorkerContract {
     }
 
     public static class ProjectContract implements ProjectColumns {
-        public static final String CONTENT_TYPE =
+        public static final String STREAM_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 
-        public static final String CONTENT_ITEM_TYPE =
+        public static final String ITEM_TYPE =
             "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
@@ -89,10 +89,10 @@ public class WorkerContract {
     }
 
     public static class TimeContract implements TimeColumns {
-        public static final String CONTENT_TYPE =
+        public static final String STREAM_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
 
-        public static final String CONTENT_ITEM_TYPE =
+        public static final String ITEM_TYPE =
             "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
     }
 }

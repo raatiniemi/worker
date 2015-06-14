@@ -41,9 +41,9 @@ public class WorkerProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                return ProjectContract.CONTENT_TYPE;
+                return ProjectContract.STREAM_TYPE;
             case PROJECT:
-                return ProjectContract.CONTENT_ITEM_TYPE;
+                return ProjectContract.ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
