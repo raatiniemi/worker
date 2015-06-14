@@ -8,7 +8,7 @@ import android.net.Uri;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.provider.WorkerContract.Projects;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.model.project.ProjectCollection;
@@ -98,7 +98,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
 
         // Exclude projects that have been archived.
         String selection = "COALESCE(" + ProjectColumns.ARCHIVED + ", 0) = 0";
-        Cursor rows = mContext.getContentResolver().query(Projects.CONTENT_URI, getColumns(), selection, null, null);
+        Cursor rows = mContext.getContentResolver().query(ProjectContract.CONTENT_URI, getColumns(), selection, null, null);
         if (rows.moveToFirst()) {
             do {
                 Project project = load(rows);
@@ -117,7 +117,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
         Project project = null;
 
         Cursor row = mContext.getContentResolver().query(
-            Projects.buildUri(String.valueOf(id)),
+            ProjectContract.buildUri(String.valueOf(id)),
             getColumns(),
             null,
             null,
@@ -167,8 +167,8 @@ public class ProjectMapper extends AbstractMapper<Project> {
         values.put(ProjectColumns.NAME, project.getName());
         values.put(ProjectColumns.DESCRIPTION, project.getDescription());
 
-        Uri uri = mContext.getContentResolver().insert(Projects.CONTENT_URI, values);
-        return find(Long.valueOf(Projects.getId(uri)));
+        Uri uri = mContext.getContentResolver().insert(ProjectContract.CONTENT_URI, values);
+        return find(Long.valueOf(ProjectContract.getId(uri)));
     }
 
     /**

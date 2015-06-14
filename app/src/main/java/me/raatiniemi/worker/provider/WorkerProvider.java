@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
-import me.raatiniemi.worker.provider.WorkerContract.Projects;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.util.SelectionBuilder;
 
 public class WorkerProvider extends ContentProvider {
@@ -41,9 +41,9 @@ public class WorkerProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                return Projects.CONTENT_TYPE;
+                return ProjectContract.CONTENT_TYPE;
             case PROJECTS_ID:
-                return Projects.CONTENT_ITEM_TYPE;
+                return ProjectContract.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -64,7 +64,7 @@ public class WorkerProvider extends ContentProvider {
         switch (match) {
             case PROJECTS:
                 final long projectId = db.insertOrThrow(Tables.PROJECT, null, values);
-                return Projects.buildUri(String.valueOf(projectId));
+                return ProjectContract.buildUri(String.valueOf(projectId));
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
         }
@@ -97,8 +97,8 @@ public class WorkerProvider extends ContentProvider {
             case PROJECTS_ID:
                 builder.table(Tables.PROJECT)
                     .where(
-                        Projects.ID + "=?",
-                        Projects.getId(uri)
+                        ProjectContract.ID + "=?",
+                        ProjectContract.getId(uri)
                     );
                 break;
         }

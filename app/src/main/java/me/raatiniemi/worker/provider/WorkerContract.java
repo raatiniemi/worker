@@ -45,7 +45,7 @@ public class WorkerContract {
         String STOP = "stop";
     }
 
-    public static class Projects implements ProjectColumns {
+    public static class ProjectContract implements ProjectColumns {
         public static final Uri CONTENT_URI =
             AUTHORITY_URI.buildUpon().appendPath(PATH_PROJECTS).build();
 
@@ -76,7 +76,7 @@ public class WorkerContract {
         }
     }
 
-    public static class Time implements TimeColumns {
+    public static class TimeContract implements TimeColumns {
         public static final String CONTENT_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
 
