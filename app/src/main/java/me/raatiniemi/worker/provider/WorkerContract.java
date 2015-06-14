@@ -91,7 +91,7 @@ public class WorkerContract {
          * @return Id for the project.
          */
         public static String getItemId(Uri uri) {
-            return uri.getLastPathSegment();
+            return uri.getPathSegments().get(1);
         }
     }
 
