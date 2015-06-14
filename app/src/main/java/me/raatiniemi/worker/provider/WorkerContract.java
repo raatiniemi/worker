@@ -12,6 +12,8 @@ public class WorkerContract {
 
     private static final String PATH_PROJECT = "project";
 
+    private static final String PATH_PROJECT_TIME = "time";
+
     /**
      * Name for the available tables within the database.
      */
@@ -82,6 +84,16 @@ public class WorkerContract {
          */
         public static Uri getItemUri(String id) {
             return Uri.withAppendedPath(ITEM_URI, id);
+        }
+
+        /**
+         * Build the project time stream URI.
+         *
+         * @param id Id for the project.
+         * @return Project time stream URI.
+         */
+        public static Uri getItemTimeUri(String id) {
+            return Uri.withAppendedPath(getItemUri(id), PATH_PROJECT_TIME);
         }
 
         /**

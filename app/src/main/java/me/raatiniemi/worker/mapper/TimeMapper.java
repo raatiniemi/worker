@@ -21,6 +21,7 @@ import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeGroup;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 
 public class TimeMapper extends AbstractMapper<Time> {
     /**
@@ -71,21 +72,24 @@ public class TimeMapper extends AbstractMapper<Time> {
     public TimeCollection findTimeByProject(Project project) {
         TimeCollection result = new TimeCollection();
 
-        // Check that the project actually exists, i.e. it has an value for id.
-        if (project != null && project.getId() != null) {
-            String selection = TimeColumns.PROJECT_ID + "=" + project.getId() + " AND (" + TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0)";
-            String[] selectionArgs = new String[]{ String.valueOf(mBeginningOfMonth) };
-            String orderBy = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
+        if (null == project || null == project.getId()) {
+            return result;
+        }
 
-            Cursor rows = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, orderBy);
-            if (rows.moveToFirst()) {
-                do {
-                    Time time = load(rows);
-                    if (time != null) {
-                        result.add(time);
-                    }
-                } while (rows.moveToNext());
-            }
+        Cursor rows = mContext.getContentResolver().query(
+            ProjectContract.getItemTimeUri(String.valueOf(project.getId())),
+            TimeContract.COLUMNS,
+            TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0",
+            new String[]{ String.valueOf(mBeginningOfMonth) },
+            TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC"
+        );
+        if (rows.moveToFirst()) {
+            do {
+                Time time = load(rows);
+                if (time != null) {
+                    result.add(time);
+                }
+            } while (rows.moveToNext());
         }
 
         return result;
