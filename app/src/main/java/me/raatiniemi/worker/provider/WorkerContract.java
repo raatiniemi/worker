@@ -46,8 +46,7 @@ public class WorkerContract {
     }
 
     public static class ProjectContract implements ProjectColumns {
-        public static final Uri CONTENT_URI =
-            AUTHORITY_URI.buildUpon().appendPath(PATH_PROJECTS).build();
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
         public static final String CONTENT_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
@@ -62,7 +61,7 @@ public class WorkerContract {
          * @return URI for retrieving specific project.
          */
         public static Uri buildUri(String id) {
-            return CONTENT_URI.buildUpon().appendPath(id).build();
+            return Uri.withAppendedPath(CONTENT_URI, id);
         }
 
         /**
