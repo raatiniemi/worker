@@ -48,6 +48,13 @@ public class WorkerContract {
     }
 
     public static class ProjectContract implements ProjectColumns {
+        public static final String[] COLUMNS = {
+            ProjectColumns.ID,
+            ProjectColumns.NAME,
+            ProjectColumns.DESCRIPTION,
+            ProjectColumns.ARCHIVED
+        };
+
         public static final String STREAM_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 

@@ -43,12 +43,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
      * @return Project table columns.
      */
     protected String[] getColumns() {
-        return new String[]{
-            ProjectColumns.ID,
-            ProjectColumns.NAME,
-            ProjectColumns.DESCRIPTION,
-            ProjectColumns.ARCHIVED
-        };
+        return ProjectContract.COLUMNS;
     }
 
     /**
