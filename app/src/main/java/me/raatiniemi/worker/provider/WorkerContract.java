@@ -75,4 +75,12 @@ public class WorkerContract {
             return uri.getLastPathSegment();
         }
     }
+
+    public static class Time implements TimeColumns {
+        public static final String CONTENT_TYPE =
+            "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
+
+        public static final String CONTENT_ITEM_TYPE =
+            "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
+    }
 }
