@@ -5,14 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.provider.WorkerContract.Tables;
+import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
+import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.provider.WorkerContract.Tables;
 
 public class ProjectMapper extends AbstractMapper<Project> {
     private static final String TAG = "ProjectMapper";

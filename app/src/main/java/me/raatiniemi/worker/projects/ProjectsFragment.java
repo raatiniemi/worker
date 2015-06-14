@@ -18,17 +18,17 @@ import java.util.Date;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.base.view.MvpFragment;
-import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
+import me.raatiniemi.worker.model.project.Project;
+import me.raatiniemi.worker.model.project.ProjectCollection;
+import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.project.ProjectActivity;
 import me.raatiniemi.worker.ui.NewProjectFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
-import me.raatiniemi.worker.model.project.ProjectCollection;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectCollection>
     implements ProjectsAdapter.OnClockActivityChangeListener, ListAdapter.OnItemClickListener, ProjectsView {

@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.util.SelectionBuilder;
 
 public class WorkerProvider extends ContentProvider {

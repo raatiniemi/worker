@@ -15,10 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.model.project.Project;
 
 public class NewProjectFragment extends DialogFragment {
     private static final String TAG = "NewProjectFragment";

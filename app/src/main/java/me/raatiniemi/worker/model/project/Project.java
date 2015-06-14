@@ -3,9 +3,9 @@ package me.raatiniemi.worker.model.project;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.DomainObject;
-import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
+import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
 
 /**

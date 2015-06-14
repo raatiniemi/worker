@@ -10,25 +10,25 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.time.Time;
-import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.model.time.TimeCollection;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.Child;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeGroup;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.model.time.TimeCollection;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 
 public class TimeMapper extends AbstractMapper<Time> {
-    private Context mContext;
-
     /**
      * Timestamp for the beginning of the month in milliseconds.
      */
     private final long mBeginningOfMonth;
+
+    private Context mContext;
 
     public TimeMapper(Context context) {
         super();

@@ -6,9 +6,9 @@ import android.util.Log;
 import java.lang.ref.WeakReference;
 
 import me.raatiniemi.worker.mapper.ProjectMapper;
+import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.projects.ProjectsPresenter;
 import me.raatiniemi.worker.util.AsyncTaskResult;
-import me.raatiniemi.worker.model.project.ProjectCollection;
 
 /**
  * Reads projects via the mapper in a background thread.
