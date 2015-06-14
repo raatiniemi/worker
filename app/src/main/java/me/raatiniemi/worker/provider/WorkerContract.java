@@ -4,9 +4,9 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class WorkerContract {
-    public static final String CONTENT_AUTHORITY = "me.raatiniemi.worker";
+    public static final String AUTHORITY = "me.raatiniemi.worker";
 
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
 
     private static final String PATH_PROJECTS = "projects";
 
@@ -47,7 +47,7 @@ public class WorkerContract {
 
     public static class Projects implements ProjectColumns {
         public static final Uri CONTENT_URI =
-            BASE_CONTENT_URI.buildUpon().appendPath(PATH_PROJECTS).build();
+            AUTHORITY_URI.buildUpon().appendPath(PATH_PROJECTS).build();
 
         public static final String CONTENT_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";

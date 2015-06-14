@@ -22,7 +22,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = WorkerContract.CONTENT_AUTHORITY;
+        final String authority = WorkerContract.AUTHORITY;
 
         matcher.addURI(authority, "projects", PROJECTS);
         matcher.addURI(authority, "projects/#", PROJECTS_ID);
