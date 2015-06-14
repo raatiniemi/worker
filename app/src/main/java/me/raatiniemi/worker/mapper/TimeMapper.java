@@ -20,6 +20,7 @@ import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeGroup;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.model.time.TimeCollection;
+import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 
 public class TimeMapper extends AbstractMapper<Time> {
     private Context mContext;
@@ -50,12 +51,7 @@ public class TimeMapper extends AbstractMapper<Time> {
     }
 
     protected String[] getColumns() {
-        return new String[]{
-            TimeColumns.ID,
-            TimeColumns.PROJECT_ID,
-            TimeColumns.START,
-            TimeColumns.STOP
-        };
+        return TimeContract.COLUMNS;
     }
 
     protected Time load(Cursor row) {

@@ -96,6 +96,13 @@ public class WorkerContract {
     }
 
     public static class TimeContract implements TimeColumns {
+        public static final String[] COLUMNS = {
+            TimeColumns.ID,
+            TimeColumns.PROJECT_ID,
+            TimeColumns.START,
+            TimeColumns.STOP
+        };
+
         public static final String STREAM_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
 
