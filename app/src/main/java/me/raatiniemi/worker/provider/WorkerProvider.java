@@ -14,7 +14,7 @@ import me.raatiniemi.worker.util.SelectionBuilder;
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
 
-    private static final int PROJECTS_ID = 101;
+    private static final int PROJECT = 101;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -25,7 +25,7 @@ public class WorkerProvider extends ContentProvider {
         final String authority = WorkerContract.AUTHORITY;
 
         matcher.addURI(authority, "projects", PROJECTS);
-        matcher.addURI(authority, "projects/#", PROJECTS_ID);
+        matcher.addURI(authority, "project/#", PROJECT);
 
         return matcher;
     }
@@ -42,7 +42,7 @@ public class WorkerProvider extends ContentProvider {
         switch (match) {
             case PROJECTS:
                 return ProjectContract.CONTENT_TYPE;
-            case PROJECTS_ID:
+            case PROJECT:
                 return ProjectContract.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -64,7 +64,7 @@ public class WorkerProvider extends ContentProvider {
         switch (match) {
             case PROJECTS:
                 final long projectId = db.insertOrThrow(Tables.PROJECT, null, values);
-                return ProjectContract.buildUri(String.valueOf(projectId));
+                return ProjectContract.getItemUri(String.valueOf(projectId));
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
         }
@@ -94,11 +94,11 @@ public class WorkerProvider extends ContentProvider {
             case PROJECTS:
                 builder.table(Tables.PROJECT);
                 break;
-            case PROJECTS_ID:
+            case PROJECT:
                 builder.table(Tables.PROJECT)
                     .where(
                         ProjectContract.ID + "=?",
-                        ProjectContract.getId(uri)
+                        ProjectContract.getItemId(uri)
                     );
                 break;
         }

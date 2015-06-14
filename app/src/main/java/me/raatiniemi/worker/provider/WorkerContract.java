@@ -10,6 +10,8 @@ public class WorkerContract {
 
     private static final String PATH_PROJECTS = "projects";
 
+    private static final String PATH_PROJECT = "project";
+
     /**
      * Name for the available tables within the database.
      */
@@ -46,31 +48,42 @@ public class WorkerContract {
     }
 
     public static class ProjectContract implements ProjectColumns {
-        public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
-
         public static final String CONTENT_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 
         public static final String CONTENT_ITEM_TYPE =
             "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
+        private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
+
+        private static final Uri ITEM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECT);
+
         /**
-         * Build the URI for retrieving specific project with identifier.
+         * Get the project stream URI.
          *
-         * @param id Id for the project.
-         * @return URI for retrieving specific project.
+         * @return Project stream URI.
          */
-        public static Uri buildUri(String id) {
-            return Uri.withAppendedPath(CONTENT_URI, id);
+        public static Uri getStreamUri() {
+            return STREAM_URI;
         }
 
         /**
-         * Retrieve the identifier from the URI.
+         * Build the URI for working with a specific project.
          *
-         * @param uri URI for retrieving specific project.
+         * @param id Id for the project.
+         * @return URI for working with specific project.
+         */
+        public static Uri getItemUri(String id) {
+            return Uri.withAppendedPath(ITEM_URI, id);
+        }
+
+        /**
+         * Retrieve the identifier from the project URI.
+         *
+         * @param uri URI for working with specific project.
          * @return Id for the project.
          */
-        public static String getId(Uri uri) {
+        public static String getItemId(Uri uri) {
             return uri.getLastPathSegment();
         }
     }

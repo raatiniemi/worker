@@ -98,7 +98,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
 
         // Exclude projects that have been archived.
         String selection = "COALESCE(" + ProjectColumns.ARCHIVED + ", 0) = 0";
-        Cursor rows = mContext.getContentResolver().query(ProjectContract.CONTENT_URI, getColumns(), selection, null, null);
+        Cursor rows = mContext.getContentResolver().query(ProjectContract.getStreamUri(), getColumns(), selection, null, null);
         if (rows.moveToFirst()) {
             do {
                 Project project = load(rows);
@@ -117,7 +117,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
         Project project = null;
 
         Cursor row = mContext.getContentResolver().query(
-            ProjectContract.buildUri(String.valueOf(id)),
+            ProjectContract.getItemUri(String.valueOf(id)),
             getColumns(),
             null,
             null,
@@ -167,8 +167,8 @@ public class ProjectMapper extends AbstractMapper<Project> {
         values.put(ProjectColumns.NAME, project.getName());
         values.put(ProjectColumns.DESCRIPTION, project.getDescription());
 
-        Uri uri = mContext.getContentResolver().insert(ProjectContract.CONTENT_URI, values);
-        return find(Long.valueOf(ProjectContract.getId(uri)));
+        Uri uri = mContext.getContentResolver().insert(ProjectContract.getStreamUri(), values);
+        return find(Long.valueOf(ProjectContract.getItemId(uri)));
     }
 
     /**
