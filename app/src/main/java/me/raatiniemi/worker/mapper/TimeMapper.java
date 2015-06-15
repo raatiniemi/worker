@@ -92,6 +92,7 @@ public class TimeMapper extends AbstractMapper<Time> {
                 }
             } while (rows.moveToNext());
         }
+        rows.close();
 
         return result;
     }
