@@ -99,7 +99,9 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        return buildSelection(uri)
+            .where(selection, selectionArgs)
+            .delete(mOpenHelper.getWritableDatabase());
     }
 
     /**
