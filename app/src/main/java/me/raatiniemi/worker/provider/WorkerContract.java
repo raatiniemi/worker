@@ -14,6 +14,8 @@ public class WorkerContract {
 
     private static final String PATH_PROJECT_TIME = "time";
 
+    private static final String PATH_TIME = "time";
+
     /**
      * Name for the available tables within the database.
      */
@@ -120,5 +122,17 @@ public class WorkerContract {
 
         public static final String ITEM_TYPE =
             "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
+
+        private static final Uri ITEM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
+
+        /**
+         * Build the URI for working with a specific time item.
+         *
+         * @param id Id for the time row.
+         * @return URI for working with specific time item.
+         */
+        public static Uri getItemUri(String id) {
+            return Uri.withAppendedPath(ITEM_URI, id);
+        }
     }
 }
