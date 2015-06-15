@@ -221,9 +221,12 @@ public class TimeMapper extends AbstractMapper<Time> {
         values.put(TimeColumns.START, time.getStart());
         values.put(TimeColumns.STOP, time.getStop());
 
-        String where = TimeColumns.ID + "=" + time.getId();
-
-        mDatabase.update(getTable(), values, where, null);
+        mContext.getContentResolver().update(
+            TimeContract.getItemUri(String.valueOf(time.getId())),
+            values,
+            null,
+            null
+        );
 
         // Retrieve the time item from the database.
         return find(time.getId());

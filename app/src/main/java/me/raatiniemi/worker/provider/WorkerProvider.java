@@ -21,6 +21,8 @@ public class WorkerProvider extends ContentProvider {
 
     private static final int TIMES = 200;
 
+    private static final int TIME = 201;
+
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private WorkerDatabase mOpenHelper;
@@ -33,6 +35,7 @@ public class WorkerProvider extends ContentProvider {
         matcher.addURI(authority, "project/#/time", PROJECT_TIME);
         matcher.addURI(authority, "project/#", PROJECT);
 
+        matcher.addURI(authority, "time/#", TIME);
         matcher.addURI(authority, "time", TIMES);
 
         return matcher;
@@ -56,6 +59,8 @@ public class WorkerProvider extends ContentProvider {
                 return TimeContract.STREAM_TYPE;
             case TIMES:
                 return TimeContract.STREAM_TYPE;
+            case TIME:
+                return TimeContract.ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -123,6 +128,13 @@ public class WorkerProvider extends ContentProvider {
                     .where(
                         TimeContract.PROJECT_ID + "=?",
                         ProjectContract.getItemId(uri)
+                    );
+                break;
+            case TIME:
+                builder.table(Tables.TIME)
+                    .where(
+                        TimeContract.ID + "=?",
+                        TimeContract.getItemId(uri)
                     );
                 break;
         }
