@@ -3,6 +3,7 @@ package me.raatiniemi.worker.mapper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -211,10 +212,8 @@ public class TimeMapper extends AbstractMapper<Time> {
         values.put(TimeColumns.START, time.getStart());
         values.put(TimeColumns.STOP, time.getStop());
 
-        long id = mDatabase.insert(getTable(), null, values);
-
-        // Retrieve the time item from the database.
-        return find(id);
+        Uri uri = mContext.getContentResolver().insert(TimeContract.getStreamUri(), values);
+        return find(Long.valueOf(TimeContract.getItemId(uri)));
     }
 
     public Time update(Time time) {

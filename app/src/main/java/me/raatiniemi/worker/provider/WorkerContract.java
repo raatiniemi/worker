@@ -123,7 +123,18 @@ public class WorkerContract {
         public static final String ITEM_TYPE =
             "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
 
+        private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
+
         private static final Uri ITEM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
+
+        /**
+         * Get the time stream URI.
+         *
+         * @return Time stream URI.
+         */
+        public static Uri getStreamUri() {
+            return STREAM_URI;
+        }
 
         /**
          * Build the URI for working with a specific time item.
@@ -133,6 +144,16 @@ public class WorkerContract {
          */
         public static Uri getItemUri(String id) {
             return Uri.withAppendedPath(ITEM_URI, id);
+        }
+
+        /**
+         * Retrieve the identifier from the time URI.
+         *
+         * @param uri URI for working with specific time item.
+         * @return Id for the time item.
+         */
+        public static String getItemId(Uri uri) {
+            return uri.getPathSegments().get(1);
         }
     }
 }
