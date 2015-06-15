@@ -233,8 +233,10 @@ public class TimeMapper extends AbstractMapper<Time> {
     }
 
     public boolean remove(Time time) {
-        String where = TimeColumns.ID + "=" + time.getId();
-
-        return 0 < mDatabase.delete(getTable(), where, null);
+        return 0 < mContext.getContentResolver().delete(
+            TimeContract.getItemUri(String.valueOf(time.getId())),
+            null,
+            null
+        );
     }
 }
