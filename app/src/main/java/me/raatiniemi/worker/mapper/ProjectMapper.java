@@ -137,12 +137,15 @@ public class ProjectMapper extends AbstractMapper<Project> {
         String selection = ProjectColumns.NAME + "=?";
         String[] selectionArgs = new String[]{ name };
 
-        Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
-        if (!row.moveToFirst()) {
-            return null;
-        }
+        Project project = null;
 
-        return load(row);
+        Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
+        if (row.moveToFirst()) {
+            project = load(row);
+        }
+        row.close();
+
+        return project;
     }
 
     /**
