@@ -84,4 +84,8 @@ public class SelectionBuilder {
             selectionArgs()
         );
     }
+
+    public int delete(SQLiteDatabase db) {
+        return db.delete(mTable, selection(), selectionArgs());
+    }
 }
