@@ -3,6 +3,7 @@ package me.raatiniemi.worker.mapper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.net.Uri;
 
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
@@ -127,28 +128,6 @@ public class ProjectMapper extends AbstractMapper<Project> {
     }
 
     /**
-     * Find project by name.
-     *
-     * @param name Name of the project to find.
-     * @return Project if found, otherwise null.
-     */
-    public Project find(String name) {
-        // Build the selection to find the project by name.
-        String selection = ProjectColumns.NAME + "=?";
-        String[] selectionArgs = new String[]{ name };
-
-        Project project = null;
-
-        Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
-        if (row.moveToFirst()) {
-            project = load(row);
-        }
-        row.close();
-
-        return project;
-    }
-
-    /**
      * Attempt to save new project.
      *
      * @param project Project to be saved.
@@ -156,17 +135,16 @@ public class ProjectMapper extends AbstractMapper<Project> {
      * @throws ProjectAlreadyExistsException If the project name already exists.
      */
     public Project insert(Project project) throws ProjectAlreadyExistsException {
-        // Verify that the project name is unique.
-        if (null != find(project.getName())) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(ProjectColumns.NAME, project.getName());
+            values.put(ProjectColumns.DESCRIPTION, project.getDescription());
+
+            Uri uri = mContext.getContentResolver().insert(ProjectContract.getStreamUri(), values);
+            return find(Long.valueOf(ProjectContract.getItemId(uri)));
+        } catch (SQLiteConstraintException e) {
             throw new ProjectAlreadyExistsException();
         }
-
-        ContentValues values = new ContentValues();
-        values.put(ProjectColumns.NAME, project.getName());
-        values.put(ProjectColumns.DESCRIPTION, project.getDescription());
-
-        Uri uri = mContext.getContentResolver().insert(ProjectContract.getStreamUri(), values);
-        return find(Long.valueOf(ProjectContract.getItemId(uri)));
     }
 
     /**
