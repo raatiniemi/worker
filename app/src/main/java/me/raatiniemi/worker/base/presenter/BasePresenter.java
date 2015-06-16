@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.base.presenter;
 
+import android.content.Context;
+
 import me.raatiniemi.worker.base.view.MvpView;
 
 /**
@@ -9,9 +11,32 @@ import me.raatiniemi.worker.base.view.MvpView;
  */
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     /**
+     * Context used with the presenter.
+     */
+    private Context mContext;
+
+    /**
      * View attached to the presenter.
      */
     private V mView;
+
+    /**
+     * Constructor.
+     *
+     * @param context Context used with the presenter.
+     */
+    public BasePresenter(Context context) {
+        mContext = context;
+    }
+
+    /**
+     * Get the context.
+     *
+     * @return Context used with the presenter.
+     */
+    protected Context getContext() {
+        return mContext;
+    }
 
     /**
      * Retrieve the view attached to the presenter.

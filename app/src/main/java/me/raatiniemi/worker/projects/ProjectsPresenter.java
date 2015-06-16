@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.projects;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,6 +21,15 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
      * Store reference to the read task.
      */
     private ProjectsReadTask mProjectReadTask;
+
+    /**
+     * Constructor.
+     *
+     * @param context Context used with the presenter.
+     */
+    public ProjectsPresenter(Context context) {
+        super(context);
+    }
 
     @Override
     public void detachView() {
