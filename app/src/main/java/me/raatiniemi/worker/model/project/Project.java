@@ -137,6 +137,15 @@ public class Project extends DomainObject {
     }
 
     /**
+     * Add time for the project.
+     *
+     * @param time Time to add to the project.
+     */
+    public void addTime(TimeCollection time) {
+        getTime().addAll(time);
+    }
+
+    /**
      * Summarize the time for the project.
      *
      * @return Registered time in number of milliseconds.

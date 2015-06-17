@@ -9,8 +9,6 @@ import android.net.Uri;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
-import me.raatiniemi.worker.model.time.Time;
-import me.raatiniemi.worker.model.time.TimeCollection;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
@@ -77,10 +75,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
         // If the mapper for time objects is available, we should load
         // the the project time for the default interval.
         if (null != mTimeMapper) {
-            TimeCollection time = mTimeMapper.findTimeByProject(project);
-            for (Time item : time) {
-                project.addTime(item);
-            }
+            project.addTime(mTimeMapper.findTimeByProject(project));
         }
     }
 
