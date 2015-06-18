@@ -24,6 +24,7 @@ import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
+import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.project.ProjectActivity;
 import me.raatiniemi.worker.ui.NewProjectFragment;
@@ -69,12 +70,12 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         mRecyclerView.setAdapter(mAdapter);
 
         getPresenter().attachView(this);
-        getPresenter().getProjects(MapperRegistry.getProjectMapper());
+        getPresenter().getProjects();
     }
 
     @Override
     protected ProjectsPresenter createPresenter() {
-        return new ProjectsPresenter(getActivity());
+        return new ProjectsPresenter(getActivity(), new ProjectProvider());
     }
 
     @Override

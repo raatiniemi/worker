@@ -3,13 +3,11 @@ package me.raatiniemi.worker.projects;
 import android.content.Context;
 
 import me.raatiniemi.worker.base.presenter.BasePresenter;
-import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.model.project.ProjectCollection;
-import rx.Observable;
+import me.raatiniemi.worker.model.project.ProjectProvider;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func0;
 import rx.schedulers.Schedulers;
 
 /**
@@ -21,6 +19,8 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
      */
     private static final String TAG = "ProjectsPresenter";
 
+    private ProjectProvider mProvider;
+
     /**
      * Subscription for the project retrieval observable.
      */
@@ -31,8 +31,10 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
      *
      * @param context Context used with the presenter.
      */
-    public ProjectsPresenter(Context context) {
+    public ProjectsPresenter(Context context, ProjectProvider provider) {
         super(context);
+
+        mProvider = provider;
     }
 
     @Override
@@ -44,18 +46,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
 
     /**
      * Retrieve the projects.
-     *
-     * @param projectMapper Mapper to use for the data loading.
      */
-    public void getProjects(final ProjectMapper projectMapper) {
+    public void getProjects() {
         unsubscribe();
 
-        mSubscription = Observable.defer(new Func0<Observable<ProjectCollection>>() {
-            @Override
-            public Observable<ProjectCollection> call() {
-                return Observable.just(projectMapper.getProjects());
-            }
-        })
+        mSubscription = mProvider.getProjects()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(new Action1<ProjectCollection>() {
