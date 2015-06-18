@@ -15,4 +15,14 @@ public class ProjectProvider {
             }
         });
     }
+
+    public Observable<Project> getProject(final Long id) {
+        return Observable.defer(new Func0<Observable<Project>>() {
+            @Override
+            public Observable<Project> call() {
+                ProjectMapper mapper = MapperRegistry.getProjectMapper();
+                return Observable.just(mapper.find(id));
+            }
+        });
+    }
 }
