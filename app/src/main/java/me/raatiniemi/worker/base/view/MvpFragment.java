@@ -34,6 +34,13 @@ abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragmen
     }
 
     /**
+     * Get the data for the fragment.
+     *
+     * @return Data for the fragment.
+     */
+    abstract public T getData();
+
+    /**
      * Set the data for the fragment.
      *
      * @param data Data for the fragment.
