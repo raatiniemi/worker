@@ -2,7 +2,10 @@ package me.raatiniemi.worker.projects;
 
 import android.content.Context;
 
+import java.util.Date;
+
 import me.raatiniemi.worker.base.presenter.BasePresenter;
+import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import rx.Subscription;
@@ -70,5 +73,26 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
             mSubscription.unsubscribe();
         }
         mSubscription = null;
+    }
+
+    public void clockActivityChange(Project project, Date date) {
+        mProvider.clockActivityChange(project, date)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<Project>() {
+                @Override
+                public void call(Project project) {
+                    if (!isViewAttached()) {
+                        return;
+                    }
+
+                    getView().updateProject(project);
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    getView().showClockActivityError();
+                }
+            });
     }
 }
