@@ -115,32 +115,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
     }
 
-    private void onClockActivityChange(Project project, Date date) {
-        try {
-            // Retrieve the project and time data mappers.
-            ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-            TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-
-            Time time;
-
-            // Depending on whether the project is active,
-            // we're going to clock out or clock in.
-            if (project.isActive()) {
-                time = project.clockOutAt(date);
-                timeMapper.update(time);
-            } else {
-                time = project.clockInAt(date);
-                timeMapper.insert(time);
-            }
-
-            // Retrieve the updated project from the data mapper.
-            project = projectMapper.reload(project.getId());
-            updateProject(project);
-        } catch (DomainException e) {
-            showClockActivityError();
-        }
-    }
-
     void showClockActivityError() {
         new AlertDialog.Builder(getActivity())
             .setTitle(getString(R.string.projects_item_project_clock_out_before_clock_in_title))
@@ -186,7 +160,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                 .setMessage(getString(R.string.confirm_clock_out_message))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        onClockActivityChange(project, new Date());
+                        getPresenter().clockActivityChange(project, new Date());
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
@@ -194,7 +168,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
             return;
         }
 
-        onClockActivityChange(project, new Date());
+        getPresenter().clockActivityChange(project, new Date());
     }
 
     @Override
@@ -203,7 +177,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
             @Override
             public void onClockActivityAt(Calendar calendar) {
-                onClockActivityChange(project, calendar.getTime());
+                getPresenter().clockActivityChange(project, calendar.getTime());
             }
         });
 
