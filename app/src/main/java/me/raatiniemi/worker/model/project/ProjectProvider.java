@@ -12,6 +12,11 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class ProjectProvider {
+    /**
+     * Retrieve the projects.
+     *
+     * @return Observable emitting the projects.
+     */
     public Observable<ProjectCollection> getProjects() {
         return Observable.defer(new Func0<Observable<ProjectCollection>>() {
             @Override
@@ -22,6 +27,12 @@ public class ProjectProvider {
         });
     }
 
+    /**
+     * Retrieve project based on the project id.
+     *
+     * @param id Id for the project.
+     * @return Observable emitting the project.
+     */
     public Observable<Project> getProject(final Long id) {
         return Observable.defer(new Func0<Observable<Project>>() {
             @Override
@@ -32,8 +43,17 @@ public class ProjectProvider {
         });
     }
 
+    /**
+     * Clock in or clock out the project at given date.
+     *
+     * @param project Project to clock in/out.
+     * @param date Date to clock in/out at.
+     * @return Observable emitting the clocked in/out project.
+     */
     public Observable<Project> clockActivityChange(final Project project, final Date date) {
         try {
+            // Depending on whether the project is active we have
+            // to clock in or clock out at the given date.
             Observable<Long> observable;
             if (!project.isActive()) {
                 observable = clockIn(project.clockInAt(date));
@@ -41,9 +61,11 @@ public class ProjectProvider {
                 observable = clockOut(project.clockOutAt(date));
             }
 
+            // With the emitted project id, retrieve the project with time.
             return observable.flatMap(new Func1<Long, Observable<Project>>() {
                 @Override
                 public Observable<Project> call(Long projectId) {
+                    // TODO: Use the getProject, with additional argument for retrieving time.
                     ProjectMapper mapper = MapperRegistry.getProjectMapper();
                     return Observable.just(mapper.reload(projectId));
                 }
@@ -53,6 +75,12 @@ public class ProjectProvider {
         }
     }
 
+    /**
+     * Clock in the project.
+     *
+     * @param time Clock in time for project.
+     * @return Observable emitting the id for the project.
+     */
     private Observable<Long> clockIn(final Time time) {
         return Observable.defer(new Func0<Observable<Long>>() {
             @Override
@@ -65,6 +93,12 @@ public class ProjectProvider {
         });
     }
 
+    /**
+     * Clock out the project.
+     *
+     * @param time Clock out time for project.
+     * @return Observable emitting the id for the project.
+     */
     private Observable<Long> clockOut(final Time time) {
         return Observable.defer(new Func0<Observable<Long>>() {
             @Override
