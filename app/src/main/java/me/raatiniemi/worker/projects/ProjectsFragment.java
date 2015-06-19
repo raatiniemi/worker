@@ -90,6 +90,17 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
     }
 
     @Override
+    public void updateProject(Project project) {
+        int position = mAdapter.findProject(project);
+        if (0 > position) {
+            Log.e(TAG, "Unable to find position for project in the adapter");
+            return;
+        }
+
+        mAdapter.set(position, project);
+    }
+
+    @Override
     public void createNewProject() {
         NewProjectFragment newProject = new NewProjectFragment();
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
@@ -122,16 +133,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                 timeMapper.insert(time);
             }
 
-            // Retrieve the position for the project.
-            int position = mAdapter.findProject(project);
-            if (0 > position) {
-                Log.e(TAG, "Unable to retrieve position for project");
-                return;
-            }
-
             // Retrieve the updated project from the data mapper.
             project = projectMapper.reload(project.getId());
-            mAdapter.set(position, project);
+            updateProject(project);
         } catch (DomainException e) {
             new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.projects_item_project_clock_out_before_clock_in_title))
