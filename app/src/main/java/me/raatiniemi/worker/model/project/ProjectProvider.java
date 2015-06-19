@@ -44,6 +44,26 @@ public class ProjectProvider {
     }
 
     /**
+     * Create new project.
+     *
+     * @param project New project to create.
+     * @return Observable emitting the new project.
+     */
+    public Observable<Project> createProject(final Project project) {
+        return Observable.defer(new Func0<Observable<Project>>() {
+            @Override
+            public Observable<Project> call() {
+                try {
+                    ProjectMapper mapper = MapperRegistry.getProjectMapper();
+                    return Observable.just(mapper.insert(project));
+                } catch (Throwable e) {
+                    return Observable.error(e);
+                }
+            }
+        });
+    }
+
+    /**
      * Clock in or clock out the project at given date.
      *
      * @param project Project to clock in/out.
