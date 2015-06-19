@@ -12,12 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.mapper.MapperRegistry;
-import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.model.project.Project;
 
 public class NewProjectFragment extends DialogFragment {
@@ -84,40 +80,16 @@ public class NewProjectFragment extends DialogFragment {
             return;
         }
 
-        try {
-            Log.d(TAG, "Attempt to create new project with name: " + name);
+        Log.d(TAG, "Attempt to create new project with name: " + name);
 
-            // Attempt to create the new project with supplied name.
-            ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
+        // Create the project, and insert it to the database.
+        Project project = new Project(name);
 
-            // Create the project, and insert it to the database.
-            Project project = new Project(name);
-            project = projectMapper.insert(project);
-
-            // Replay that the project have been created to the activity.
-            if (null != getOnCreateProjectListener()) {
-                getOnCreateProjectListener().onCreateProject(project);
-            } else {
-                Log.w(TAG, "No OnCreateProjectListener have been supplied");
-            }
-
-            String message = getString(R.string.fragment_new_project_create_successful);
-            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-
-            // We are finished with the project creation,
-            // we now have to dismiss the dialog.
-            dismiss();
-        } catch (ProjectAlreadyExistsException e) {
-            // Project name already exists, display error message to user.
-            new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
-                .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
+        // Replay that the project have been created to the activity.
+        if (null != getOnCreateProjectListener()) {
+            getOnCreateProjectListener().onCreateProject(project);
+        } else {
+            Log.w(TAG, "No OnCreateProjectListener have been supplied");
         }
     }
 

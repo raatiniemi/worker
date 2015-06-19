@@ -75,6 +75,27 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
         mSubscription = null;
     }
 
+    public void createNewProject(Project project) {
+        mProvider.createProject(project)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<Project>() {
+                @Override
+                public void call(Project project) {
+                    if (!isViewAttached()) {
+                        return;
+                    }
+
+                    getView().addProject(project);
+                }
+            }, new Action1<Throwable>() {
+                @Override
+                public void call(Throwable throwable) {
+                    getView().showCreateProjectError();
+                }
+            });
+    }
+
     public void clockActivityChange(Project project, Date date) {
         mProvider.clockActivityChange(project, date)
             .subscribeOn(Schedulers.io())

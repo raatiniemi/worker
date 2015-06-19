@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,14 +19,9 @@ import java.util.Date;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.base.view.MvpFragment;
-import me.raatiniemi.worker.exception.DomainException;
-import me.raatiniemi.worker.mapper.MapperRegistry;
-import me.raatiniemi.worker.mapper.ProjectMapper;
-import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.model.project.ProjectProvider;
-import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.project.ProjectActivity;
 import me.raatiniemi.worker.ui.NewProjectFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
@@ -89,6 +85,20 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         mAdapter.notifyDataSetChanged();
     }
 
+    public void addProject(Project project) {
+        int position = mAdapter.add(project);
+        mRecyclerView.scrollToPosition(position);
+
+        String message = getString(R.string.fragment_new_project_create_successful);
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+
+        // TODO: Redesign the dismiss process.
+        NewProjectFragment fragment = (NewProjectFragment) getFragmentManager().findFragmentByTag(FRAGMENT_NEW_PROJECT_TAG);
+        if (null != fragment) {
+            fragment.dismiss();
+        }
+    }
+
     @Override
     public void updateProject(Project project) {
         int position = mAdapter.findProject(project);
@@ -106,13 +116,23 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
             @Override
             public void onCreateProject(Project project) {
-                // Add the project to the adapter, and scroll
-                // down to the new project.
-                int position = mAdapter.add(project);
-                mRecyclerView.scrollToPosition(position);
+                getPresenter().createNewProject(project);
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
+    }
+
+    void showCreateProjectError() {
+        // Project name already exists, display error message to user.
+        new AlertDialog.Builder(getActivity())
+            .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
+            .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing...
+                }
+            })
+            .show();
     }
 
     void showClockActivityError() {
