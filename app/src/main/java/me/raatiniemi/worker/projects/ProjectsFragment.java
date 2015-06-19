@@ -137,16 +137,20 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
             project = projectMapper.reload(project.getId());
             updateProject(project);
         } catch (DomainException e) {
-            new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.projects_item_project_clock_out_before_clock_in_title))
-                .setMessage(getString(R.string.projects_item_project_clock_out_before_clock_in_description))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
+            showClockActivityError();
         }
+    }
+
+    void showClockActivityError() {
+        new AlertDialog.Builder(getActivity())
+            .setTitle(getString(R.string.projects_item_project_clock_out_before_clock_in_title))
+            .setMessage(getString(R.string.projects_item_project_clock_out_before_clock_in_description))
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing...
+                }
+            })
+            .show();
     }
 
     @Override
