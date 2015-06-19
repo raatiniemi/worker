@@ -91,6 +91,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
             }, new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {
+                    // TODO: Better and more extendable error handling.
                     getView().showCreateProjectError();
                 }
             });
@@ -112,6 +113,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
             }, new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {
+                    // TODO: Better and more extendable error handling.
                     getView().showClockActivityError();
                 }
             });
