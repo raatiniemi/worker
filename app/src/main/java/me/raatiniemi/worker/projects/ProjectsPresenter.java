@@ -4,19 +4,17 @@ import android.content.Context;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.base.presenter.BasePresenter;
+import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Presenter for the projects module, handles loading of projects.
  */
-public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
+public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     /**
      * Tag used when logging.
      */
@@ -54,8 +52,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
         unsubscribe();
 
         mSubscription = mProvider.getProjects()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(this.<ProjectCollection>applySchedulers())
             .subscribe(new Action1<ProjectCollection>() {
                 @Override
                 public void call(ProjectCollection projects) {
@@ -77,8 +74,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
 
     public void createNewProject(Project project) {
         mProvider.createProject(project)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(this.<Project>applySchedulers())
             .subscribe(new Action1<Project>() {
                 @Override
                 public void call(Project project) {
@@ -99,8 +95,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsFragment> {
 
     public void clockActivityChange(Project project, Date date) {
         mProvider.clockActivityChange(project, date)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(this.<Project>applySchedulers())
             .subscribe(new Action1<Project>() {
                 @Override
                 public void call(Project project) {
