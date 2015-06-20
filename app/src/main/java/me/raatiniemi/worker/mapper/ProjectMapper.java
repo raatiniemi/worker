@@ -52,18 +52,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
      * @return Project with data.
      */
     protected Project load(Cursor row) {
-        // Retrieve the project data from the cursor.
-        long id = row.getLong(row.getColumnIndex(ProjectColumns.ID));
-        String name = row.getString(row.getColumnIndex(ProjectColumns.NAME));
-        String description = row.getString(row.getColumnIndex(ProjectColumns.DESCRIPTION));
-        long archived = row.getLong(row.getColumnIndex(ProjectColumns.ARCHIVED));
-
-        // Initialize the project with data from the cursor.
-        Project project = new Project(id, name);
-        project.setDescription(description);
-        project.setArchived(archived);
-
-        return project;
+        return map(row);
     }
 
     /**
@@ -78,6 +67,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
             project.addTime(mTimeMapper.findTimeByProject(project));
         }
     }
+
 
     /**
      * Retrieve all of the available projects.
@@ -153,6 +143,29 @@ public class ProjectMapper extends AbstractMapper<Project> {
         if (null != project) {
             loadTime(project);
         }
+
+        return project;
+    }
+
+    /**
+     * Map project from cursor.
+     *
+     * @param cursor Cursor with data to map to Project.
+     * @return Project with data from cursor.
+     */
+    public static Project map(Cursor cursor) {
+        // Map the id and name for the project.
+        long id = cursor.getLong(cursor.getColumnIndex(ProjectColumns.ID));
+        String name = cursor.getString(cursor.getColumnIndex(ProjectColumns.NAME));
+        Project project = new Project(id, name);
+
+        // Map the project description.
+        String desc = cursor.getString(cursor.getColumnIndex(ProjectColumns.DESCRIPTION));
+        project.setDescription(desc);
+
+        // Map the project archive flag.
+        long archived = cursor.getLong(cursor.getColumnIndex(ProjectColumns.ARCHIVED));
+        project.setArchived(archived);
 
         return project;
     }
