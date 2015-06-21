@@ -176,8 +176,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
 
         mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        mTimesheetAdapter = new TimesheetAdapter(mProvider);
-        mTimesheetAdapter.setOnTimesheetListener(this);
+        mTimesheetAdapter = new TimesheetAdapter(mProvider, this);
 
         RecyclerView.Adapter wrapperAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter);
         mRecyclerView.setAdapter(wrapperAdapter);

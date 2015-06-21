@@ -33,28 +33,16 @@ public class TimesheetAdapter
 
     private SimpleDateFormat mTimeFormat;
 
-    private View.OnLongClickListener mOnTimeLongClickListener;
-
     private OnTimesheetListener mOnTimesheetListener;
 
-    public TimesheetAdapter(TimesheetExpandableDataProvider provider) {
+    public TimesheetAdapter(TimesheetExpandableDataProvider provider, OnTimesheetListener listener) {
         mProvider = provider;
+        mOnTimesheetListener = listener;
 
         mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
         mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-        mOnTimeLongClickListener = new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return onTimeLongClick(view);
-            }
-        };
-
         setHasStableIds(true);
-    }
-
-    private boolean onTimeLongClick(View view) {
-        return null != getOnTimesheetListener() && getOnTimesheetListener().onTimeLongClick(view);
     }
 
     public void addGroup(Groupable groupable) {
@@ -130,7 +118,13 @@ public class TimesheetAdapter
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
         // Register the long click listener on the time item.
-        holder.itemView.setOnLongClickListener(mOnTimeLongClickListener);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mOnTimesheetListener.onTimeLongClick(v);
+                return true;
+            }
+        });
 
         TimeChild timeChild = (TimeChild) mProvider.getChildItem(groupPosition, childPosition);
         Time time = timeChild.getTime();
@@ -168,14 +162,6 @@ public class TimesheetAdapter
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
         return true;
-    }
-
-    public OnTimesheetListener getOnTimesheetListener() {
-        return mOnTimesheetListener;
-    }
-
-    public void setOnTimesheetListener(OnTimesheetListener onTimesheetListener) {
-        mOnTimesheetListener = onTimesheetListener;
     }
 
     public interface OnTimesheetListener {
