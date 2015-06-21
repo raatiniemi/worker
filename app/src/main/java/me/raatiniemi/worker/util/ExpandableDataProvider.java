@@ -22,13 +22,34 @@ public abstract class ExpandableDataProvider {
     }
 
     public static abstract class Data {
+        private int mId;
+
+        public Data(int id) {
+            mId = id;
+        }
+
+        public int getId() {
+            return mId;
+        }
     }
 
     public static abstract class Group extends Data {
-        public abstract int getGroupId();
+        public Group(int id) {
+            super(id);
+        }
+
+        public int getGroupId() {
+            return getId();
+        }
     }
 
     public static abstract class Child extends Data {
-        public abstract int getChildId();
+        public Child(int id) {
+            super(id);
+        }
+
+        public int getChildId() {
+            return getId();
+        }
     }
 }

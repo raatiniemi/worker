@@ -66,18 +66,11 @@ public class TimesheetExpandableDataProvider extends ExpandableDataProvider {
     }
 
     public static class TimeGroup extends Group {
-        private int mId;
-
         private Date mDate;
 
         public TimeGroup(int id, Date date) {
-            mId = id;
+            super(id);
             mDate = date;
-        }
-
-        @Override
-        public int getGroupId() {
-            return mId;
         }
 
         public Date getDate() {
@@ -86,18 +79,11 @@ public class TimesheetExpandableDataProvider extends ExpandableDataProvider {
     }
 
     public static class TimeChild extends Child {
-        private int mId;
-
         private Time mTime;
 
         public TimeChild(int id, Time time) {
-            mId = id;
+            super(id);
             mTime = time;
-        }
-
-        @Override
-        public int getChildId() {
-            return mId;
         }
 
         public Time getTime() {
