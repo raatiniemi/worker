@@ -25,6 +25,7 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.Project;
+import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.util.ExpandableDataProvider.Groupable;
@@ -187,7 +188,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
 
     @Override
     protected TimesheetPresenter createPresenter() {
-        return new TimesheetPresenter(getActivity());
+        return new TimesheetPresenter(getActivity(), new ProjectProvider());
     }
 
     @Override
