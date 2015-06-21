@@ -65,29 +65,23 @@ public class TimesheetExpandableDataProvider extends ExpandableDataProvider {
         }
     }
 
-    public static class TimeGroup extends Group {
-        private Date mDate;
-
+    public static class TimeGroup extends Group<Date> {
         public TimeGroup(int id, Date date) {
-            super(id);
-            mDate = date;
+            super(id, date);
         }
 
         public Date getDate() {
-            return mDate;
+            return getData();
         }
     }
 
-    public static class TimeChild extends Child {
-        private Time mTime;
-
+    public static class TimeChild extends Child<Time> {
         public TimeChild(int id, Time time) {
-            super(id);
-            mTime = time;
+            super(id, time);
         }
 
         public Time getTime() {
-            return mTime;
+            return getData();
         }
     }
 }

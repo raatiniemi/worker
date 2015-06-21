@@ -21,21 +21,28 @@ public abstract class ExpandableDataProvider {
         }
     }
 
-    public static abstract class Data {
+    public static abstract class Data<T> {
         private int mId;
 
-        public Data(int id) {
+        private T mData;
+
+        public Data(int id, T data) {
             mId = id;
+            mData = data;
         }
 
         public int getId() {
             return mId;
         }
+
+        public T getData() {
+            return mData;
+        }
     }
 
-    public static abstract class Group extends Data {
-        public Group(int id) {
-            super(id);
+    public static abstract class Group<T> extends Data<T> {
+        public Group(int id, T data) {
+            super(id, data);
         }
 
         public int getGroupId() {
@@ -43,9 +50,9 @@ public abstract class ExpandableDataProvider {
         }
     }
 
-    public static abstract class Child extends Data {
-        public Child(int id) {
-            super(id);
+    public static abstract class Child<T> extends Data<T> {
+        public Child(int id, T data) {
+            super(id, data);
         }
 
         public int getChildId() {
