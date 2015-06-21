@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.provider;
+package me.raatiniemi.worker.util;
 
 import java.util.Date;
 import java.util.List;

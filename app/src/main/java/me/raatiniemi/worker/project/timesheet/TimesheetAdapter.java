@@ -16,11 +16,11 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.model.time.Time;
-import me.raatiniemi.worker.provider.ExpandableDataProvider.Child;
-import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
-import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
-import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
-import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeGroup;
+import me.raatiniemi.worker.util.ExpandableDataProvider.Child;
+import me.raatiniemi.worker.util.ExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter

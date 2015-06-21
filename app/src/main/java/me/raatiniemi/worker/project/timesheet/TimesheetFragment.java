@@ -27,9 +27,9 @@ import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.projects.ProjectsFragment;
-import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
-import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
-import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
+import me.raatiniemi.worker.util.ExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Groupable>>
     implements TimesheetView {
