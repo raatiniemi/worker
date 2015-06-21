@@ -120,12 +120,26 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
         mProject = projectMapper.find(getProjectId());
 
+        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
+        List<Groupable> data = timeMapper.findIntervalByProject(mProject);
+
+        mProvider = new TimesheetExpandableDataProvider(data);
+
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
+
+        mTimesheetAdapter = new TimesheetAdapter(mProvider, this);
+        mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setHasFixedSize(false);
-
+        mRecyclerView.setAdapter(mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
+        mRecyclerView.addItemDecoration(
+            new SimpleListDividerDecorator(
+                getResources().getDrawable(R.drawable.expandable_list_item_divider),
+                true
+            )
+        );
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -168,25 +182,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
                 }
             }
         });
-
-        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-        List<Groupable> data = timeMapper.findIntervalByProject(mProject);
-
-        mProvider = new TimesheetExpandableDataProvider(data);
-
-        mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
-
-        mTimesheetAdapter = new TimesheetAdapter(mProvider, this);
-
-        RecyclerView.Adapter wrapperAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter);
-        mRecyclerView.setAdapter(wrapperAdapter);
-        mRecyclerView.addItemDecoration(
-            new SimpleListDividerDecorator(
-                getResources().getDrawable(R.drawable.expandable_list_item_divider),
-                true
-            )
-        );
-
         mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
     }
 
