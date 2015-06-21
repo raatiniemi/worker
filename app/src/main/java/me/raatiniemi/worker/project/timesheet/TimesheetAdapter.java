@@ -179,7 +179,7 @@ public class TimesheetAdapter
     }
 
     public interface OnTimesheetListener {
-        public boolean onTimeLongClick(View view);
+        boolean onTimeLongClick(View view);
     }
 
     public static class BaseViewHolder extends AbstractExpandableItemViewHolder {
