@@ -32,7 +32,7 @@ import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Groupable>>
-    implements TimesheetView {
+    implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
     private Project mProject;
@@ -177,38 +177,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
         mTimesheetAdapter = new TimesheetAdapter(mProvider);
-        mTimesheetAdapter.setOnTimesheetListener(new TimesheetAdapter.OnTimesheetListener() {
-            @Override
-            public boolean onTimeLongClick(View view) {
-                // The position of the item within the recycler view is referred to as the flat
-                // position. With this position we have to retrieve the expandable position, which
-                // basically is the group and child within bit shifted long.
-                //
-                // From this position we can later on get the actual group and child position.
-                int flatPosition = mRecyclerView.getChildPosition(view);
-                if (RecyclerView.NO_POSITION < flatPosition) {
-                    mExpandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(flatPosition);
-
-                    // If there's already a selected row, we have
-                    // to clear the selection-state.
-                    if (null != mSelectedView) {
-                        mSelectedView.setSelected(false);
-                    }
-
-                    // Save the view for reference and put
-                    // the view in the selection-state.
-                    mSelectedView = view;
-                    mSelectedView.setSelected(true);
-
-                    // Only start the ActionMode if none has already started.
-                    if (null == mActionMode) {
-                        mActionMode = getActivity().startActionMode(mActionModeCallback);
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
+        mTimesheetAdapter.setOnTimesheetListener(this);
 
         RecyclerView.Adapter wrapperAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter);
         mRecyclerView.setAdapter(wrapperAdapter);
@@ -264,5 +233,36 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
             LocalBroadcastManager.getInstance(getActivity())
                 .sendBroadcast(intent);
         }
+    }
+
+    @Override
+    public boolean onTimeLongClick(View view) {
+        // The position of the item within the recycler view is referred to as the flat
+        // position. With this position we have to retrieve the expandable position, which
+        // basically is the group and child within bit shifted long.
+        //
+        // From this position we can later on get the actual group and child position.
+        int flatPosition = mRecyclerView.getChildPosition(view);
+        if (RecyclerView.NO_POSITION < flatPosition) {
+            mExpandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(flatPosition);
+
+            // If there's already a selected row, we have
+            // to clear the selection-state.
+            if (null != mSelectedView) {
+                mSelectedView.setSelected(false);
+            }
+
+            // Save the view for reference and put
+            // the view in the selection-state.
+            mSelectedView = view;
+            mSelectedView.setSelected(true);
+
+            // Only start the ActionMode if none has already started.
+            if (null == mActionMode) {
+                mActionMode = getActivity().startActionMode(mActionModeCallback);
+            }
+            return true;
+        }
+        return false;
     }
 }
