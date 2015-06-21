@@ -21,17 +21,20 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseFragment;
+import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.projects.ProjectsFragment;
+import me.raatiniemi.worker.provider.ExpandableDataProvider;
 import me.raatiniemi.worker.provider.ExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.provider.TimesheetExpandableDataProvider.TimeChild;
 
-public class TimesheetFragment extends BaseFragment {
+public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Groupable>>
+    implements TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
     private Project mProject;
@@ -219,6 +222,20 @@ public class TimesheetFragment extends BaseFragment {
         );
 
         mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
+    }
+
+    @Override
+    protected TimesheetPresenter createPresenter() {
+        return new TimesheetPresenter(getActivity());
+    }
+
+    @Override
+    public List<Groupable> getData() {
+        return null;
+    }
+
+    @Override
+    public void setData(List<Groupable> data) {
     }
 
     private void remove(long expandablePosition) {
