@@ -169,10 +169,15 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Time>>() {
             @Override
             public Observable<Time> call() {
-                TimeMapper mapper = MapperRegistry.getTimeMapper();
-                mapper.update(time);
+                getContext().getContentResolver()
+                    .update(
+                        TimeContract.getItemUri(String.valueOf(time.getId())),
+                        TimeMapper.map(time),
+                        null,
+                        null
+                    );
 
-                return Observable.just(time);
+                return getTime(time.getId());
             }
         });
     }

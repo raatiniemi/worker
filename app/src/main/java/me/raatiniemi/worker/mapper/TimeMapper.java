@@ -219,18 +219,6 @@ public class TimeMapper extends AbstractMapper<Time> {
         return findIntervalByProject(project, 0);
     }
 
-    public Time update(Time time) {
-        mContext.getContentResolver().update(
-            TimeContract.getItemUri(String.valueOf(time.getId())),
-            map(time),
-            null,
-            null
-        );
-
-        // Retrieve the time item from the database.
-        return find(time.getId());
-    }
-
     public boolean remove(Time time) {
         return 0 < mContext.getContentResolver().delete(
             TimeContract.getItemUri(String.valueOf(time.getId())),
