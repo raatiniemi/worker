@@ -46,13 +46,6 @@ abstract public class AbstractMapper<T extends DomainObject> {
     abstract protected String getTable();
 
     /**
-     * Retrieve the column names for the table.
-     *
-     * @return Column names for the table.
-     */
-    abstract protected String[] getColumns();
-
-    /**
      * Load the DomainObject from the data mapper with the database cursor.
      *
      * @param row Database cursor.

@@ -52,10 +52,6 @@ public class TimeMapper extends AbstractMapper<Time> {
         return Tables.TIME;
     }
 
-    protected String[] getColumns() {
-        return TimeContract.COLUMNS;
-    }
-
     protected Time load(Cursor row) {
         long id = row.getLong(row.getColumnIndex(TimeColumns.ID));
         long projectId = row.getLong(row.getColumnIndex(TimeColumns.PROJECT_ID));
@@ -75,7 +71,7 @@ public class TimeMapper extends AbstractMapper<Time> {
 
         Cursor row = mContext.getContentResolver().query(
             TimeContract.getItemUri(String.valueOf(id)),
-            getColumns(),
+            TimeContract.COLUMNS,
             null,
             null,
             null
@@ -144,7 +140,7 @@ public class TimeMapper extends AbstractMapper<Time> {
             for (String id : rows) {
                 selectionArgs = new String[]{ id };
 
-                Cursor row = mDatabase.query(getTable(), getColumns(), selection, selectionArgs, null, null, null);
+                Cursor row = mDatabase.query(getTable(), TimeContract.COLUMNS, selection, selectionArgs, null, null, null);
                 if (row.moveToFirst()) {
                     TimeChild child;
 

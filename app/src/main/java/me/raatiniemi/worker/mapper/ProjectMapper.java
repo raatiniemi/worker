@@ -37,15 +37,6 @@ public class ProjectMapper extends AbstractMapper<Project> {
     }
 
     /**
-     * Retrieve the project table columns.
-     *
-     * @return Project table columns.
-     */
-    protected String[] getColumns() {
-        return ProjectContract.COLUMNS;
-    }
-
-    /**
      * Load the project object from the cursor.
      *
      * @param row Database cursor.
@@ -79,7 +70,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
 
         // Exclude projects that have been archived.
         String selection = "COALESCE(" + ProjectColumns.ARCHIVED + ", 0) = 0";
-        Cursor rows = mContext.getContentResolver().query(ProjectContract.getStreamUri(), getColumns(), selection, null, null);
+        Cursor rows = mContext.getContentResolver().query(ProjectContract.getStreamUri(), ProjectContract.COLUMNS, selection, null, null);
         if (rows.moveToFirst()) {
             do {
                 Project project = load(rows);
@@ -99,7 +90,7 @@ public class ProjectMapper extends AbstractMapper<Project> {
 
         Cursor row = mContext.getContentResolver().query(
             ProjectContract.getItemUri(String.valueOf(id)),
-            getColumns(),
+            ProjectContract.COLUMNS,
             null,
             null,
             null
