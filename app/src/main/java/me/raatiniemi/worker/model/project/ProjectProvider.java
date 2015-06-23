@@ -121,6 +121,22 @@ public class ProjectProvider {
     }
 
     /**
+     * Retrieve time based on the time id.
+     *
+     * @param id Id for the time.
+     * @return Observable emitting the time.
+     */
+    public Observable<Time> getTime(final Long id) {
+        return Observable.defer(new Func0<Observable<Time>>() {
+            @Override
+            public Observable<Time> call() {
+                TimeMapper mapper = MapperRegistry.getTimeMapper();
+                return Observable.just(mapper.find(id));
+            }
+        });
+    }
+
+    /**
      * Add time item.
      *
      * @param time Time item to add.
