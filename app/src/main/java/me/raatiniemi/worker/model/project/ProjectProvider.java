@@ -96,21 +96,37 @@ public class ProjectProvider {
     }
 
     /**
+     * Add time item.
+     *
+     * @param time Time item to add.
+     * @return Observable emitting the created time item.
+     */
+    public Observable<Time> add(final Time time) {
+        return Observable.defer(new Func0<Observable<Time>>() {
+            @Override
+            public Observable<Time> call() {
+                TimeMapper mapper = MapperRegistry.getTimeMapper();
+                mapper.insert(time);
+
+                return Observable.just(time);
+            }
+        });
+    }
+
+    /**
      * Clock in the project.
      *
      * @param time Clock in time for project.
      * @return Observable emitting the id for the project.
      */
     private Observable<Long> clockIn(final Time time) {
-        return Observable.defer(new Func0<Observable<Long>>() {
-            @Override
-            public Observable<Long> call() {
-                TimeMapper mapper = MapperRegistry.getTimeMapper();
-                mapper.insert(time);
-
-                return Observable.just(time.getProjectId());
-            }
-        });
+        return add(time)
+            .flatMap(new Func1<Time, Observable<Long>>() {
+                @Override
+                public Observable<Long> call(Time time) {
+                    return Observable.just(time.getProjectId());
+                }
+            });
     }
 
     /**
