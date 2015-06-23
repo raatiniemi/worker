@@ -70,6 +70,24 @@ public class TimeMapper extends AbstractMapper<Time> {
         }
     }
 
+    public Time find(long id) {
+        Time time = null;
+
+        Cursor row = mContext.getContentResolver().query(
+            TimeContract.getItemUri(String.valueOf(id)),
+            getColumns(),
+            null,
+            null,
+            null
+        );
+        if (row.moveToFirst()) {
+            time = load(row);
+        }
+        row.close();
+
+        return time;
+    }
+
     public TimeCollection findTimeByProject(Project project) {
         TimeCollection result = new TimeCollection();
 
