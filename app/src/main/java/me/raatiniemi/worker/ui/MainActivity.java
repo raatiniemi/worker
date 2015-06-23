@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.actions_projects_new:
+            case R.id.actions_main_create_new_project:
                 openCreateNewProject();
                 return true;
         }

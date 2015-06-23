@@ -3,7 +3,7 @@
     <string name="app_name">Worker</string>
     <string name="projects_title">Projects</string>
 
-    <string name="projects_actions_create_new_project">Create new project</string>
+    <string name="main_actions_create_new_project">Create new project</string>
 
     <string name="projects_item_project_clocked_in_since" formatted="false">Since %s (%s)</string>
     <string name="projects_item_project_clock_in">Clock in now</string>
