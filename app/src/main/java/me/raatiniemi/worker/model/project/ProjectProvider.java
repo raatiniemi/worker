@@ -1,6 +1,7 @@
 package me.raatiniemi.worker.model.project;
 
 import android.content.Context;
+import android.net.Uri;
 
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -146,10 +148,13 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Time>>() {
             @Override
             public Observable<Time> call() {
-                TimeMapper mapper = MapperRegistry.getTimeMapper();
-                mapper.insert(time);
+                Uri uri = getContext().getContentResolver()
+                    .insert(
+                        TimeContract.getStreamUri(),
+                        TimeMapper.map(time)
+                    );
 
-                return Observable.just(time);
+                return getTime(Long.valueOf(TimeContract.getItemId(uri)));
             }
         });
     }

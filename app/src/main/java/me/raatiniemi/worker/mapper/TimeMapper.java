@@ -219,13 +219,6 @@ public class TimeMapper extends AbstractMapper<Time> {
         return findIntervalByProject(project, 0);
     }
 
-    public Time insert(Time time) {
-        // TODO: Check if timer is already active for project, throw exception.
-
-        Uri uri = mContext.getContentResolver().insert(TimeContract.getStreamUri(), map(time));
-        return find(Long.valueOf(TimeContract.getItemId(uri)));
-    }
-
     public Time update(Time time) {
         mContext.getContentResolver().update(
             TimeContract.getItemUri(String.valueOf(time.getId())),
