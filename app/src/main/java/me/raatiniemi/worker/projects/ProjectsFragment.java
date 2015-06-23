@@ -133,7 +133,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
 
     @Override
     protected ProjectsPresenter createPresenter() {
-        return new ProjectsPresenter(getActivity(), new ProjectProvider());
+        return new ProjectsPresenter(getActivity(), new ProjectProvider(getActivity()));
     }
 
     @Override

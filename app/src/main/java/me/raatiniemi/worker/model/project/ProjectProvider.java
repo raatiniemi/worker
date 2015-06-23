@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.model.project;
 
+import android.content.Context;
+
 import java.util.Date;
 
 import me.raatiniemi.worker.exception.DomainException;
@@ -12,6 +14,29 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class ProjectProvider {
+    /**
+     * Context used with the project provider.
+     */
+    private Context mContext;
+
+    /**
+     * Constructor.
+     *
+     * @param context Context used with the project provider.
+     */
+    public ProjectProvider(Context context) {
+        mContext = context;
+    }
+
+    /**
+     * Get the context.
+     *
+     * @return Context used with the project provider.
+     */
+    protected Context getContext() {
+        return mContext;
+    }
+
     /**
      * Retrieve the projects.
      *

@@ -188,7 +188,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
 
     @Override
     protected TimesheetPresenter createPresenter() {
-        return new TimesheetPresenter(getActivity(), new ProjectProvider());
+        return new TimesheetPresenter(getActivity(), new ProjectProvider(getActivity()));
     }
 
     @Override
