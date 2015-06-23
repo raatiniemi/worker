@@ -208,23 +208,14 @@ public class TimeMapper extends AbstractMapper<Time> {
     public Time insert(Time time) {
         // TODO: Check if timer is already active for project, throw exception.
 
-        ContentValues values = new ContentValues();
-        values.put(TimeColumns.PROJECT_ID, time.getProjectId());
-        values.put(TimeColumns.START, time.getStart());
-        values.put(TimeColumns.STOP, time.getStop());
-
-        Uri uri = mContext.getContentResolver().insert(TimeContract.getStreamUri(), values);
+        Uri uri = mContext.getContentResolver().insert(TimeContract.getStreamUri(), map(time));
         return find(Long.valueOf(TimeContract.getItemId(uri)));
     }
 
     public Time update(Time time) {
-        ContentValues values = new ContentValues();
-        values.put(TimeColumns.START, time.getStart());
-        values.put(TimeColumns.STOP, time.getStop());
-
         mContext.getContentResolver().update(
             TimeContract.getItemUri(String.valueOf(time.getId())),
-            values,
+            map(time),
             null,
             null
         );
@@ -239,5 +230,14 @@ public class TimeMapper extends AbstractMapper<Time> {
             null,
             null
         );
+    }
+
+    public static ContentValues map(Time time) {
+        ContentValues values = new ContentValues();
+        values.put(TimeColumns.START, time.getStart());
+        values.put(TimeColumns.STOP, time.getStop());
+        values.put(TimeColumns.PROJECT_ID, time.getProjectId());
+
+        return values;
     }
 }
