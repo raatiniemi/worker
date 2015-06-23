@@ -4,13 +4,13 @@
     >
     <item
         android:id="@+id/actions_project_edit"
-        android:title="@string/actions_project_edit"
+        android:title="@string/project_actions_edit"
         android:icon="@android:drawable/ic_menu_edit"
         android:visible="false"
         />
     <item
         android:id="@+id/actions_project_delete"
-        android:title="@string/actions_project_delete"
+        android:title="@string/project_actions_delete"
         android:icon="@android:drawable/ic_menu_delete"
         />
 </menu>
