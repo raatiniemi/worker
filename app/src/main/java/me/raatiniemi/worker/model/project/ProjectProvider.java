@@ -114,6 +114,24 @@ public class ProjectProvider {
     }
 
     /**
+     * Update time item.
+     *
+     * @param time Time item to update.
+     * @return Observable emitting the updated time item.
+     */
+    public Observable<Time> update(final Time time) {
+        return Observable.defer(new Func0<Observable<Time>>() {
+            @Override
+            public Observable<Time> call() {
+                TimeMapper mapper = MapperRegistry.getTimeMapper();
+                mapper.update(time);
+
+                return Observable.just(time);
+            }
+        });
+    }
+
+    /**
      * Clock in the project.
      *
      * @param time Clock in time for project.
@@ -136,14 +154,12 @@ public class ProjectProvider {
      * @return Observable emitting the id for the project.
      */
     private Observable<Long> clockOut(final Time time) {
-        return Observable.defer(new Func0<Observable<Long>>() {
-            @Override
-            public Observable<Long> call() {
-                TimeMapper mapper = MapperRegistry.getTimeMapper();
-                mapper.update(time);
-
-                return Observable.just(time.getProjectId());
-            }
-        });
+        return update(time)
+            .flatMap(new Func1<Time, Observable<Long>>() {
+                @Override
+                public Observable<Long> call(Time time) {
+                    return Observable.just(time.getProjectId());
+                }
+            });
     }
 }
