@@ -59,21 +59,4 @@ abstract public class AbstractMapper<T extends DomainObject> {
      * @return DomainObject from the data mapper.
      */
     abstract protected T load(Cursor row);
-
-    /**
-     * Retrieve a row from the database with supplied id.
-     *
-     * @param id Id for the row to retrieve.
-     * @return Row from the database with id matching the supplied value.
-     */
-    public T find(long id) {
-        String selection = BaseColumns._ID + "=" + id;
-
-        Cursor row = mDatabase.query(getTable(), getColumns(), selection, null, null, null, null, null);
-        if (!row.moveToFirst()) {
-            return null;
-        }
-
-        return load(row);
-    }
 }
