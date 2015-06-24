@@ -22,9 +22,7 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.mapper.MapperRegistry;
-import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
-import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.projects.ProjectsFragment;
@@ -35,8 +33,6 @@ import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Groupable>>
     implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
-
-    private Project mProject;
 
     private LinearLayoutManager mLinearLayoutManager;
 
@@ -118,11 +114,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ProjectMapper projectMapper = MapperRegistry.getProjectMapper();
-        mProject = projectMapper.find(getProjectId());
-
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-        List<Groupable> data = timeMapper.findIntervalByProject(mProject);
+        List<Groupable> data = timeMapper.findIntervalByProject(getProjectId(), 0);
 
         mProvider = new TimesheetExpandableDataProvider(data);
 
@@ -166,7 +159,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
                         int offset = mTimesheetAdapter.getGroupCount();
 
                         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-                        List<Groupable> data = timeMapper.findIntervalByProject(mProject, offset);
+                        List<Groupable> data = timeMapper.findIntervalByProject(getProjectId(), offset);
 
                         // Check if we retrieved any additional items.
                         //
