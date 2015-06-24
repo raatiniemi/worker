@@ -200,8 +200,21 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Time>>() {
             @Override
             public Observable<Time> call() {
-                TimeMapper mapper = MapperRegistry.getTimeMapper();
-                return Observable.just(mapper.find(id));
+                Time time = null;
+
+                Cursor cursor = mContext.getContentResolver().query(
+                    TimeContract.getItemUri(String.valueOf(id)),
+                    TimeContract.COLUMNS,
+                    null,
+                    null,
+                    null
+                );
+                if (cursor.moveToFirst()) {
+                    time = TimeMapper.map(cursor);
+                }
+                cursor.close();
+
+                return Observable.just(time);
             }
         });
     }
