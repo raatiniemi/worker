@@ -53,17 +53,7 @@ public class TimeMapper extends AbstractMapper<Time> {
     }
 
     protected Time load(Cursor row) {
-        long id = row.getLong(row.getColumnIndex(TimeColumns.ID));
-        long projectId = row.getLong(row.getColumnIndex(TimeColumns.PROJECT_ID));
-        long start = row.getLong(row.getColumnIndex(TimeColumns.START));
-        long stop = row.getLong(row.getColumnIndex(TimeColumns.STOP));
-
-        try {
-            return new Time(id, projectId, start, stop);
-        } catch (DomainException e) {
-            // TODO: Handle DomainException properly.
-            return null;
-        }
+        return map(row);
     }
 
     public Time find(long id) {
@@ -238,6 +228,20 @@ public class TimeMapper extends AbstractMapper<Time> {
             null,
             null
         );
+    }
+
+    public static Time map(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndex(TimeColumns.ID));
+        long projectId = cursor.getLong(cursor.getColumnIndex(TimeColumns.PROJECT_ID));
+        long start = cursor.getLong(cursor.getColumnIndex(TimeColumns.START));
+        long stop = cursor.getLong(cursor.getColumnIndex(TimeColumns.STOP));
+
+        try {
+            return new Time(id, projectId, start, stop);
+        } catch (DomainException e) {
+            // TODO: Handle DomainException properly.
+            return null;
+        }
     }
 
     public static ContentValues map(Time time) {
