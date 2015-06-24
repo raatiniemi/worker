@@ -166,47 +166,60 @@ public class TimeMapper extends AbstractMapper<Time> {
     /**
      * Find and group time as an interval for a specified project.
      *
+     * @param projectId Id for project connected to the time.
+     * @param start Where in the iteration to start, e.g. zero for first iteration.
+     * @return Time grouped as interval for specified project.
+     */
+    public List<Groupable> findIntervalByProject(Long projectId, int start) {
+        List<Groupable> result = new ArrayList<>();
+
+        // We have to group each of the time objects related to the interval.
+        String[] columns = new String[]{
+            "MIN(start) AS date",
+            "GROUP_CONCAT(" + TimeColumns.ID + ")"
+        };
+
+        String selection = TimeColumns.PROJECT_ID + "=" + projectId;
+
+        // Since we're storing everything registered time as milliseconds we have to
+        // convert it to seconds and then group it by the desired interval.
+        String groupBy = "strftime('%Y%m%d', start / 1000, 'unixepoch')";
+        String orderBy = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
+
+        // Build the limit section, the start control where in the
+        // result we should begin fetching the rows.
+        String limit = start + ", 10";
+
+        Cursor intervalRow = mDatabase.query(getTable(), columns, selection, null, groupBy, null, orderBy, limit);
+        if (intervalRow.moveToFirst()) {
+            do {
+                // Attempt to load the grouped interval, might return null
+                // if no rows are available.
+                Groupable groupable = loadGroupable(intervalRow, start);
+                if (null != groupable) {
+                    result.add(groupable);
+                }
+            } while (intervalRow.moveToNext());
+        }
+        intervalRow.close();
+
+        return result;
+    }
+
+    /**
+     * Find and group time as an interval for a specified project.
+     *
      * @param project Project connected to the time.
      * @param start Where in the iteration to start, e.g. zero for first iteration.
      * @return Time grouped as interval for specified project.
      */
     public List<Groupable> findIntervalByProject(Project project, int start) {
-        List<Groupable> result = new ArrayList<>();
-
         // Check that the project is a valid candidate, i.e. it's an existing project.
-        if (null != project && null != project.getId()) {
-            // We have to group each of the time objects related to the interval.
-            String[] columns = new String[]{
-                "MIN(start) AS date",
-                "GROUP_CONCAT(" + TimeColumns.ID + ")"
-            };
-
-            String selection = TimeColumns.PROJECT_ID + "=" + project.getId();
-
-            // Since we're storing everything registered time as milliseconds we have to
-            // convert it to seconds and then group it by the desired interval.
-            String groupBy = "strftime('%Y%m%d', start / 1000, 'unixepoch')";
-            String orderBy = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
-
-            // Build the limit section, the start control where in the
-            // result we should begin fetching the rows.
-            String limit = start + ", 10";
-
-            Cursor intervalRow = mDatabase.query(getTable(), columns, selection, null, groupBy, null, orderBy, limit);
-            if (intervalRow.moveToFirst()) {
-                do {
-                    // Attempt to load the grouped interval, might return null
-                    // if no rows are available.
-                    Groupable groupable = loadGroupable(intervalRow, start);
-                    if (null != groupable) {
-                        result.add(groupable);
-                    }
-                } while (intervalRow.moveToNext());
-            }
-            intervalRow.close();
+        if (null == project || null == project.getId()) {
+            return new ArrayList<>();
         }
 
-        return result;
+        return findIntervalByProject(project.getId(), start);
     }
 
     /**
