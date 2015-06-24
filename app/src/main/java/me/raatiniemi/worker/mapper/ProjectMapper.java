@@ -101,21 +101,6 @@ public class ProjectMapper extends AbstractMapper<Project> {
     }
 
     /**
-     * Reload the project, and re-populate it with the registered time.
-     *
-     * @param id Id for the project to reload.
-     * @return Project with reloaded data.
-     */
-    public Project reload(long id) {
-        Project project = find(id);
-        if (null != project) {
-            loadTime(project);
-        }
-
-        return project;
-    }
-
-    /**
      * Map project from cursor.
      *
      * @param cursor Cursor with data to map to Project.

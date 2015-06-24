@@ -11,6 +11,7 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.model.time.TimeCollection;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import rx.Observable;
@@ -119,14 +120,33 @@ public class ProjectProvider {
             return observable.flatMap(new Func1<Long, Observable<Project>>() {
                 @Override
                 public Observable<Project> call(Long projectId) {
-                    // TODO: Use the getProject, with additional argument for retrieving time.
-                    ProjectMapper mapper = MapperRegistry.getProjectMapper();
-                    return Observable.just(mapper.reload(projectId));
+                    return getProject(projectId)
+                        .map(new Func1<Project, Project>() {
+                            @Override
+                            public Project call(Project project) {
+                                return getTime(project);
+                            }
+                        });
                 }
             });
         } catch (DomainException e) {
             return Observable.error(e);
         }
+    }
+
+    /**
+     * Populate project with registered time.
+     *
+     * @param project Project to populate with registered time.
+     * @return Project populated with registered time.
+     */
+    private Project getTime(final Project project) {
+        TimeMapper mapper = MapperRegistry.getTimeMapper();
+        TimeCollection time = mapper.findTimeByProject(project);
+        if (null != time) {
+            project.addTime(time);
+        }
+        return project;
     }
 
     /**
