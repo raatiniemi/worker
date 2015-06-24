@@ -6,10 +6,12 @@ import android.net.Uri;
 import java.util.Date;
 
 import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.ProjectMapper;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import rx.Observable;
 import rx.functions.Func0;
@@ -81,10 +83,15 @@ public class ProjectProvider {
             @Override
             public Observable<Project> call() {
                 try {
-                    ProjectMapper mapper = MapperRegistry.getProjectMapper();
-                    return Observable.just(mapper.insert(project));
+                    Uri uri = getContext().getContentResolver()
+                        .insert(
+                            ProjectContract.getStreamUri(),
+                            ProjectMapper.map(project)
+                        );
+
+                    return getProject(Long.valueOf(ProjectContract.getItemId(uri)));
                 } catch (Throwable e) {
-                    return Observable.error(e);
+                    return Observable.error(new ProjectAlreadyExistsException());
                 }
             }
         });

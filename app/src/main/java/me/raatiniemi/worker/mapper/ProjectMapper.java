@@ -3,10 +3,7 @@ package me.raatiniemi.worker.mapper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
-import android.net.Uri;
 
-import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
@@ -101,26 +98,6 @@ public class ProjectMapper extends AbstractMapper<Project> {
         row.close();
 
         return project;
-    }
-
-    /**
-     * Attempt to save new project.
-     *
-     * @param project Project to be saved.
-     * @return Newly saved project.
-     * @throws ProjectAlreadyExistsException If the project name already exists.
-     */
-    public Project insert(Project project) throws ProjectAlreadyExistsException {
-        try {
-            ContentValues values = new ContentValues();
-            values.put(ProjectColumns.NAME, project.getName());
-            values.put(ProjectColumns.DESCRIPTION, project.getDescription());
-
-            Uri uri = mContext.getContentResolver().insert(ProjectContract.getStreamUri(), values);
-            return find(Long.valueOf(ProjectContract.getItemId(uri)));
-        } catch (SQLiteConstraintException e) {
-            throw new ProjectAlreadyExistsException();
-        }
     }
 
     /**
