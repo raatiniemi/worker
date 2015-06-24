@@ -160,4 +160,19 @@ public class ProjectMapper extends AbstractMapper<Project> {
 
         return project;
     }
+
+    /**
+     * Map Project to ContentValues.
+     *
+     * @param project Project to map to ContentValues.
+     * @return Mapped ContentValues.
+     */
+    public static ContentValues map(Project project) {
+        ContentValues values = new ContentValues();
+        values.put(ProjectColumns.NAME, project.getName());
+        values.put(ProjectColumns.DESCRIPTION, project.getDescription());
+        values.put(ProjectColumns.ARCHIVED, project.getArchived());
+
+        return values;
+    }
 }
