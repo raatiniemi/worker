@@ -8,7 +8,6 @@ import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.model.project.ProjectProvider;
-import rx.Subscription;
 import rx.functions.Action1;
 
 /**
@@ -23,11 +22,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     private ProjectProvider mProvider;
 
     /**
-     * Subscription for the project retrieval observable.
-     */
-    private Subscription mSubscription;
-
-    /**
      * Constructor.
      *
      * @param context Context used with the presenter.
@@ -36,13 +30,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         super(context);
 
         mProvider = provider;
-    }
-
-    @Override
-    public void detachView() {
-        super.detachView();
-
-        unsubscribe();
     }
 
     /**
@@ -63,13 +50,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                     getView().setData(projects);
                 }
             });
-    }
-
-    protected void unsubscribe() {
-        if (null != mSubscription && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
-        }
-        mSubscription = null;
     }
 
     public void createNewProject(Project project) {
