@@ -1,9 +1,8 @@
-package me.raatiniemi.worker.mapper;
+package me.raatiniemi.worker.model.project;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 
 public class ProjectMapper {
