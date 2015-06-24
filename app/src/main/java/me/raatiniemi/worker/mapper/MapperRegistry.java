@@ -12,11 +12,6 @@ final public class MapperRegistry {
     private static MapperRegistry mInstance;
 
     /**
-     * Instance for project mapper.
-     */
-    private ProjectMapper mProjectMapper;
-
-    /**
      * Instance for the time mapper.
      */
     private TimeMapper mTimeMapper;
@@ -32,24 +27,6 @@ final public class MapperRegistry {
         }
 
         return mInstance;
-    }
-
-    /**
-     * Retrieve the instance for the project mapper.
-     *
-     * @return Project mapper instance.
-     */
-    public static ProjectMapper getProjectMapper() {
-        MapperRegistry instance = getInstance();
-
-        if (null == instance.mProjectMapper) {
-            instance.mProjectMapper = new ProjectMapper(
-                Worker.getContext(),
-                MapperRegistry.getTimeMapper()
-            );
-        }
-
-        return instance.mProjectMapper;
     }
 
     /**
