@@ -95,8 +95,21 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Project>>() {
             @Override
             public Observable<Project> call() {
-                ProjectMapper mapper = MapperRegistry.getProjectMapper();
-                return Observable.just(mapper.find(id));
+                Project project = null;
+
+                Cursor cursor = getContext().getContentResolver().query(
+                    ProjectContract.getItemUri(String.valueOf(id)),
+                    ProjectContract.COLUMNS,
+                    null,
+                    null,
+                    null
+                );
+                if (cursor.moveToFirst()) {
+                    project = ProjectMapper.map(cursor);
+                }
+                cursor.close();
+
+                return Observable.just(project);
             }
         });
     }
