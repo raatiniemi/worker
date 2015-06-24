@@ -56,24 +56,6 @@ public class TimeMapper extends AbstractMapper<Time> {
         return map(row);
     }
 
-    public Time find(long id) {
-        Time time = null;
-
-        Cursor row = mContext.getContentResolver().query(
-            TimeContract.getItemUri(String.valueOf(id)),
-            TimeContract.COLUMNS,
-            null,
-            null,
-            null
-        );
-        if (row.moveToFirst()) {
-            time = load(row);
-        }
-        row.close();
-
-        return time;
-    }
-
     public TimeCollection findTimeByProject(Project project) {
         TimeCollection result = new TimeCollection();
 
@@ -194,32 +176,6 @@ public class TimeMapper extends AbstractMapper<Time> {
         intervalRow.close();
 
         return result;
-    }
-
-    /**
-     * Find and group time as an interval for a specified project.
-     *
-     * @param project Project connected to the time.
-     * @param start Where in the iteration to start, e.g. zero for first iteration.
-     * @return Time grouped as interval for specified project.
-     */
-    public List<Groupable> findIntervalByProject(Project project, int start) {
-        // Check that the project is a valid candidate, i.e. it's an existing project.
-        if (null == project || null == project.getId()) {
-            return new ArrayList<>();
-        }
-
-        return findIntervalByProject(project.getId(), start);
-    }
-
-    /**
-     * Find and group time as an interval for a specified project.
-     *
-     * @param project Project connected to the time.
-     * @return Time grouped as interval for specified project.
-     */
-    public List<Groupable> findIntervalByProject(Project project) {
-        return findIntervalByProject(project, 0);
     }
 
     public boolean remove(Time time) {
