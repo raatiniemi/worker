@@ -144,7 +144,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
     @Override
     public void setData(ProjectCollection data) {
         mAdapter.setItems(data);
-        mAdapter.notifyDataSetChanged();
     }
 
     public void addProject(Project project) {

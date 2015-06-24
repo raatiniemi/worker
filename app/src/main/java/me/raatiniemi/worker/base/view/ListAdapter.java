@@ -75,6 +75,7 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
      */
     public void setItems(C items) {
         mItems = items;
+        notifyDataSetChanged();
     }
 
     /**
