@@ -1,6 +1,7 @@
 package me.raatiniemi.worker.model.project;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
 import java.util.Date;
@@ -51,8 +52,35 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<ProjectCollection>>() {
             @Override
             public Observable<ProjectCollection> call() {
-                ProjectMapper mapper = MapperRegistry.getProjectMapper();
-                return Observable.just(mapper.getProjects());
+                ProjectCollection projects = new ProjectCollection();
+
+                Cursor cursor = getContext().getContentResolver()
+                    .query(
+                        ProjectContract.getStreamUri(),
+                        ProjectContract.COLUMNS,
+                        null,
+                        null,
+                        null
+                    );
+                if (cursor.moveToFirst()) {
+                    do {
+                        projects.add(ProjectMapper.map(cursor));
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+
+                return Observable.just(projects);
+            }
+        }).map(new Func1<ProjectCollection, ProjectCollection>() {
+            @Override
+            public ProjectCollection call(ProjectCollection projects) {
+                // Populate the projects with the registered time.
+                for (Project project : projects) {
+                    int index = projects.indexOf(project);
+                    projects.set(index, getTime(project));
+                }
+
+                return projects;
             }
         });
     }
