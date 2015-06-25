@@ -18,20 +18,8 @@ public class TimesheetExpandableDataProvider {
         return mData.size();
     }
 
-    public TimeGroup getGroupItem(int groupPosition) {
-        if (groupPosition < 0 || groupPosition >= getGroupCount()) {
-            throw new IndexOutOfBoundsException("Group position " + groupPosition);
-        }
-
-        return mData.get(groupPosition).first;
-    }
-
-    public void addGroupItem(Groupable groupable) {
-        mData.add(groupable);
-    }
-
-    public void removeGroupItem(int groupPosition) {
-        mData.remove(groupPosition);
+    public int getChildCount(int groupPosition) {
+        return getChildItems(groupPosition).size();
     }
 
     public List<TimeChild> getChildItems(int groupPosition) {
@@ -42,8 +30,12 @@ public class TimesheetExpandableDataProvider {
         return mData.get(groupPosition).second;
     }
 
-    public int getChildCount(int groupPosition) {
-        return getChildItems(groupPosition).size();
+    public TimeGroup getGroupItem(int groupPosition) {
+        if (groupPosition < 0 || groupPosition >= getGroupCount()) {
+            throw new IndexOutOfBoundsException("Group position " + groupPosition);
+        }
+
+        return mData.get(groupPosition).first;
     }
 
     public TimeChild getChildItem(int groupPosition, int childPosition) {
@@ -52,6 +44,14 @@ public class TimesheetExpandableDataProvider {
         }
 
         return getChildItems(groupPosition).get(childPosition);
+    }
+
+    public void addGroupItem(Groupable groupable) {
+        mData.add(groupable);
+    }
+
+    public void removeGroupItem(int groupPosition) {
+        mData.remove(groupPosition);
     }
 
     public void removeChildItem(int groupPosition, int childPosition) {
