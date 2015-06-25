@@ -58,7 +58,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Table structure for the projects.
         db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
-            ProjectColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            ProjectColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ProjectColumns.NAME + " TEXT NOT NULL, " +
             ProjectColumns.DESCRIPTION + " TEXT NULL, " +
             ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
@@ -66,7 +66,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
 
         // Table structure for the registered time.
         db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
-            TimeColumns.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
             TimeColumns.START + " INTEGER NOT NULL, " +
             TimeColumns.STOP + " INTEGER DEFAULT 0)");

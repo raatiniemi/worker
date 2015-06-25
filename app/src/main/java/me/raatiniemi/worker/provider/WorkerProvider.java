@@ -121,7 +121,7 @@ public class WorkerProvider extends ContentProvider {
             case PROJECT:
                 builder.table(Tables.PROJECT)
                     .where(
-                        ProjectContract.ID + "=?",
+                        ProjectContract._ID + "=?",
                         ProjectContract.getItemId(uri)
                     );
                 break;
@@ -135,7 +135,7 @@ public class WorkerProvider extends ContentProvider {
             case TIME:
                 builder.table(Tables.TIME)
                     .where(
-                        TimeContract.ID + "=?",
+                        TimeContract._ID + "=?",
                         TimeContract.getItemId(uri)
                     );
                 break;

@@ -20,7 +20,7 @@ public class ProjectMapper {
      */
     public static Project map(Cursor cursor) {
         // Map the id and name for the project.
-        long id = cursor.getLong(cursor.getColumnIndex(ProjectColumns.ID));
+        long id = cursor.getLong(cursor.getColumnIndex(ProjectColumns._ID));
         String name = cursor.getString(cursor.getColumnIndex(ProjectColumns.NAME));
         Project project = new Project(id, name);
 

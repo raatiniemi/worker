@@ -31,9 +31,7 @@ public class WorkerContract {
         String TIME = "time";
     }
 
-    public interface ProjectColumns {
-        String ID = BaseColumns._ID;
-
+    public interface ProjectColumns extends BaseColumns {
         String NAME = "name";
 
         String DESCRIPTION = "description";
@@ -41,9 +39,7 @@ public class WorkerContract {
         String ARCHIVED = "archived";
     }
 
-    public interface TimeColumns {
-        String ID = BaseColumns._ID;
-
+    public interface TimeColumns extends BaseColumns {
         String PROJECT_ID = "project_id";
 
         String START = "start";
@@ -53,7 +49,7 @@ public class WorkerContract {
 
     public static class ProjectContract implements ProjectColumns {
         public static final String[] COLUMNS = {
-            ProjectColumns.ID,
+            ProjectColumns._ID,
             ProjectColumns.NAME,
             ProjectColumns.DESCRIPTION,
             ProjectColumns.ARCHIVED
@@ -111,7 +107,7 @@ public class WorkerContract {
 
     public static class TimeContract implements TimeColumns {
         public static final String[] COLUMNS = {
-            TimeColumns.ID,
+            TimeColumns._ID,
             TimeColumns.PROJECT_ID,
             TimeColumns.START,
             TimeColumns.STOP

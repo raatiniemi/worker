@@ -104,7 +104,7 @@ public class TimeMapper extends AbstractMapper<Time> {
 
             ArrayList<TimeChild> children = new ArrayList<>();
 
-            String selection = TimeColumns.ID + " = ?";
+            String selection = TimeColumns._ID + " = ?";
             String[] selectionArgs;
 
             // Iterate through and retrieve each row.
@@ -147,7 +147,7 @@ public class TimeMapper extends AbstractMapper<Time> {
         // We have to group each of the time objects related to the interval.
         String[] columns = new String[]{
             "MIN(start) AS date",
-            "GROUP_CONCAT(" + TimeColumns.ID + ")"
+            "GROUP_CONCAT(" + TimeColumns._ID + ")"
         };
 
         String selection = TimeColumns.PROJECT_ID + "=" + projectId;
@@ -186,7 +186,7 @@ public class TimeMapper extends AbstractMapper<Time> {
     }
 
     public static Time map(Cursor cursor) {
-        long id = cursor.getLong(cursor.getColumnIndex(TimeColumns.ID));
+        long id = cursor.getLong(cursor.getColumnIndex(TimeColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndex(TimeColumns.PROJECT_ID));
         long start = cursor.getLong(cursor.getColumnIndex(TimeColumns.START));
         long stop = cursor.getLong(cursor.getColumnIndex(TimeColumns.STOP));
