@@ -14,51 +14,51 @@ public class TimesheetExpandableDataProvider {
         mData = data;
     }
 
-    public int getGroupCount() {
+    public int getCount() {
         return mData.size();
     }
 
-    public int getChildCount(int groupPosition) {
-        return getChildItems(groupPosition).size();
+    public int getCount(int group) {
+        return getItems(group).size();
     }
 
-    public List<TimeChild> getChildItems(int groupPosition) {
-        if (groupPosition < 0 || groupPosition >= getGroupCount()) {
-            throw new IndexOutOfBoundsException("Group position " + groupPosition);
+    public List<TimeChild> getItems(int group) {
+        if (group < 0 || group >= getCount()) {
+            throw new IndexOutOfBoundsException("Group position " + group);
         }
 
-        return mData.get(groupPosition).second;
+        return mData.get(group).second;
     }
 
-    public TimeGroup getGroupItem(int groupPosition) {
-        if (groupPosition < 0 || groupPosition >= getGroupCount()) {
-            throw new IndexOutOfBoundsException("Group position " + groupPosition);
+    public TimeGroup get(int group) {
+        if (group < 0 || group >= getCount()) {
+            throw new IndexOutOfBoundsException("Group position " + group);
         }
 
-        return mData.get(groupPosition).first;
+        return mData.get(group).first;
     }
 
-    public TimeChild getChildItem(int groupPosition, int childPosition) {
-        if (childPosition < 0 || childPosition >= getChildCount(groupPosition)) {
-            throw new IndexOutOfBoundsException("Child position " + childPosition);
+    public TimeChild get(int group, int child) {
+        if (child < 0 || child >= getCount(group)) {
+            throw new IndexOutOfBoundsException("Child position " + child);
         }
 
-        return getChildItems(groupPosition).get(childPosition);
+        return getItems(group).get(child);
     }
 
-    public void addGroupItem(Groupable groupable) {
+    public void add(Groupable groupable) {
         mData.add(groupable);
     }
 
-    public void removeGroupItem(int groupPosition) {
-        mData.remove(groupPosition);
+    public void remove(int group) {
+        mData.remove(group);
     }
 
-    public void removeChildItem(int groupPosition, int childPosition) {
-        getChildItems(groupPosition).remove(childPosition);
+    public void remove(int group, int child) {
+        getItems(group).remove(child);
 
-        if (0 == getChildCount(groupPosition)) {
-            removeGroupItem(groupPosition);
+        if (0 == getCount(group)) {
+            remove(group);
         }
     }
 

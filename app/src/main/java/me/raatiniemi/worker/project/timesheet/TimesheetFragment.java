@@ -198,7 +198,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         int childPosition = RecyclerViewExpandableItemManager.getPackedPositionChild(expandablePosition);
 
         // TODO: Migrate the mapper remove call to the provider?
-        TimeChild child = mProvider.getChildItem(groupPosition, childPosition);
+        TimeChild child = mProvider.get(groupPosition, childPosition);
         Time time = child.getTime();
 
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();

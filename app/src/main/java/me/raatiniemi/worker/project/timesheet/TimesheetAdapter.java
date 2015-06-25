@@ -45,12 +45,12 @@ public class TimesheetAdapter
     }
 
     public void addGroup(Groupable groupable) {
-        mProvider.addGroupItem(groupable);
+        mProvider.add(groupable);
         notifyDataSetChanged();
     }
 
     public void remove(int groupPosition, int childPosition) {
-        mProvider.removeChildItem(groupPosition, childPosition);
+        mProvider.remove(groupPosition, childPosition);
         notifyDataSetChanged();
     }
 
@@ -66,12 +66,12 @@ public class TimesheetAdapter
     public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType) {
         holder.itemView.setClickable(true);
 
-        TimeGroup group = mProvider.getGroupItem(groupPosition);
+        TimeGroup group = mProvider.get(groupPosition);
         holder.mTitle.setText(mDateFormat.format(group.getDate()));
 
         long interval = 0;
 
-        List<TimeChild> childItems = mProvider.getChildItems(groupPosition);
+        List<TimeChild> childItems = mProvider.getItems(groupPosition);
         for (TimeChild child : childItems) {
             Time time = child.getTime();
             interval += time.getInterval();
@@ -93,7 +93,7 @@ public class TimesheetAdapter
 
     @Override
     public int getGroupCount() {
-        return mProvider.getGroupCount();
+        return mProvider.getCount();
     }
 
     @Override
@@ -103,7 +103,7 @@ public class TimesheetAdapter
 
     @Override
     public long getGroupId(int groupPosition) {
-        return mProvider.getGroupItem(groupPosition).getGroupId();
+        return mProvider.get(groupPosition).getGroupId();
     }
 
     @Override
@@ -125,7 +125,7 @@ public class TimesheetAdapter
             }
         });
 
-        TimeChild timeChild = mProvider.getChildItem(groupPosition, childPosition);
+        TimeChild timeChild = mProvider.get(groupPosition, childPosition);
         Time time = timeChild.getTime();
 
         String title = mTimeFormat.format(new Date(time.getStart()));
@@ -145,7 +145,7 @@ public class TimesheetAdapter
 
     @Override
     public int getChildCount(int groupPosition) {
-        return mProvider.getChildCount(groupPosition);
+        return mProvider.getCount(groupPosition);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class TimesheetAdapter
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return mProvider.getChildItem(groupPosition, childPosition).getChildId();
+        return mProvider.get(groupPosition, childPosition).getChildId();
     }
 
     @Override
