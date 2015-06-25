@@ -16,8 +16,7 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.model.time.Time;
-import me.raatiniemi.worker.util.ExpandableDataProvider.Child;
-import me.raatiniemi.worker.util.ExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
@@ -67,14 +66,14 @@ public class TimesheetAdapter
     public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType) {
         holder.itemView.setClickable(true);
 
-        TimeGroup group = (TimeGroup) mProvider.getGroupItem(groupPosition);
+        TimeGroup group = mProvider.getGroupItem(groupPosition);
         holder.mTitle.setText(mDateFormat.format(group.getDate()));
 
         long interval = 0;
 
-        List<Child> childItems = mProvider.getChildItems(groupPosition);
-        for (Child child : childItems) {
-            Time time = ((TimeChild) child).getTime();
+        List<TimeChild> childItems = mProvider.getChildItems(groupPosition);
+        for (TimeChild child : childItems) {
+            Time time = child.getTime();
             interval += time.getInterval();
         }
 
@@ -126,7 +125,7 @@ public class TimesheetAdapter
             }
         });
 
-        TimeChild timeChild = (TimeChild) mProvider.getChildItem(groupPosition, childPosition);
+        TimeChild timeChild = mProvider.getChildItem(groupPosition, childPosition);
         Time time = timeChild.getTime();
 
         String title = mTimeFormat.format(new Date(time.getStart()));

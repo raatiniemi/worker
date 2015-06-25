@@ -26,7 +26,7 @@ import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.projects.ProjectsFragment;
-import me.raatiniemi.worker.util.ExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 
@@ -198,7 +198,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         int childPosition = RecyclerViewExpandableItemManager.getPackedPositionChild(expandablePosition);
 
         // TODO: Migrate the mapper remove call to the provider?
-        TimeChild child = (TimeChild) mProvider.getChildItem(groupPosition, childPosition);
+        TimeChild child = mProvider.getChildItem(groupPosition, childPosition);
         Time time = child.getTime();
 
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();

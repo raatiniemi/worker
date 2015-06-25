@@ -15,8 +15,7 @@ import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
-import me.raatiniemi.worker.util.ExpandableDataProvider.Child;
-import me.raatiniemi.worker.util.ExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
@@ -103,7 +102,7 @@ public class TimeMapper extends AbstractMapper<Time> {
                 new Date(intervalRow.getLong(0))
             );
 
-            ArrayList<Child> children = new ArrayList<>();
+            ArrayList<TimeChild> children = new ArrayList<>();
 
             String selection = TimeColumns.ID + " = ?";
             String[] selectionArgs;
