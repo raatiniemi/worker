@@ -115,8 +115,6 @@ public class WorkerContract {
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
 
-        private static final Uri ITEM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
-
         /**
          * Get the time stream URI.
          *
@@ -133,7 +131,7 @@ public class WorkerContract {
          * @return URI for working with specific time item.
          */
         public static Uri getItemUri(String id) {
-            return Uri.withAppendedPath(ITEM_URI, id);
+            return Uri.withAppendedPath(getStreamUri(), id);
         }
 
         /**
