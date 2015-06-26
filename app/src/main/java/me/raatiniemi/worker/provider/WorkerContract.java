@@ -10,8 +10,6 @@ public class WorkerContract {
 
     private static final String PATH_PROJECTS = "projects";
 
-    private static final String PATH_PROJECT_TIME = "time";
-
     private static final String PATH_TIME = "time";
 
     /**
@@ -87,7 +85,7 @@ public class WorkerContract {
          * @return Project time stream URI.
          */
         public static Uri getItemTimeUri(String id) {
-            return Uri.withAppendedPath(getItemUri(id), PATH_PROJECT_TIME);
+            return Uri.withAppendedPath(getItemUri(id), PATH_TIME);
         }
 
         /**
