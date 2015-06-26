@@ -32,11 +32,11 @@ public class WorkerProvider extends ContentProvider {
         final String authority = WorkerContract.AUTHORITY;
 
         matcher.addURI(authority, "projects", PROJECTS);
-        matcher.addURI(authority, "projects/#/time", PROJECTS_TIME);
         matcher.addURI(authority, "projects/#", PROJECTS_ID);
+        matcher.addURI(authority, "projects/#/time", PROJECTS_TIME);
 
-        matcher.addURI(authority, "time/#", TIME_ID);
         matcher.addURI(authority, "time", TIME);
+        matcher.addURI(authority, "time/#", TIME_ID);
 
         return matcher;
     }
