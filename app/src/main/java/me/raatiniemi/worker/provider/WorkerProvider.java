@@ -19,9 +19,9 @@ public class WorkerProvider extends ContentProvider {
 
     private static final int PROJECTS_TIME = 102;
 
-    private static final int TIMES = 200;
+    private static final int TIME = 200;
 
-    private static final int TIME = 201;
+    private static final int TIME_ID = 201;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -35,8 +35,8 @@ public class WorkerProvider extends ContentProvider {
         matcher.addURI(authority, "projects/#/time", PROJECTS_TIME);
         matcher.addURI(authority, "projects/#", PROJECTS_ID);
 
-        matcher.addURI(authority, "time/#", TIME);
-        matcher.addURI(authority, "time", TIMES);
+        matcher.addURI(authority, "time/#", TIME_ID);
+        matcher.addURI(authority, "time", TIME);
 
         return matcher;
     }
@@ -57,9 +57,9 @@ public class WorkerProvider extends ContentProvider {
                 return ProjectContract.ITEM_TYPE;
             case PROJECTS_TIME:
                 return TimeContract.STREAM_TYPE;
-            case TIMES:
-                return TimeContract.STREAM_TYPE;
             case TIME:
+                return TimeContract.STREAM_TYPE;
+            case TIME_ID:
                 return TimeContract.ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -82,7 +82,7 @@ public class WorkerProvider extends ContentProvider {
             case PROJECTS:
                 final long projectId = db.insertOrThrow(Tables.PROJECT, null, values);
                 return ProjectContract.getItemUri(String.valueOf(projectId));
-            case TIMES:
+            case TIME:
                 final long timeId = db.insertOrThrow(Tables.TIME, null, values);
                 return TimeContract.getItemUri(String.valueOf(timeId));
             default:
@@ -132,7 +132,7 @@ public class WorkerProvider extends ContentProvider {
                         ProjectContract.getItemId(uri)
                     );
                 break;
-            case TIME:
+            case TIME_ID:
                 builder.table(Tables.TIME)
                     .where(
                         TimeContract._ID + "=?",
