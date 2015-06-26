@@ -15,9 +15,9 @@ import me.raatiniemi.worker.util.SelectionBuilder;
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
 
-    private static final int PROJECT = 101;
+    private static final int PROJECTS_ID = 101;
 
-    private static final int PROJECT_TIME = 102;
+    private static final int PROJECTS_TIME = 102;
 
     private static final int TIMES = 200;
 
@@ -32,8 +32,8 @@ public class WorkerProvider extends ContentProvider {
         final String authority = WorkerContract.AUTHORITY;
 
         matcher.addURI(authority, "projects", PROJECTS);
-        matcher.addURI(authority, "project/#/time", PROJECT_TIME);
-        matcher.addURI(authority, "project/#", PROJECT);
+        matcher.addURI(authority, "projects/#/time", PROJECTS_TIME);
+        matcher.addURI(authority, "projects/#", PROJECTS_ID);
 
         matcher.addURI(authority, "time/#", TIME);
         matcher.addURI(authority, "time", TIMES);
@@ -53,9 +53,9 @@ public class WorkerProvider extends ContentProvider {
         switch (match) {
             case PROJECTS:
                 return ProjectContract.STREAM_TYPE;
-            case PROJECT:
+            case PROJECTS_ID:
                 return ProjectContract.ITEM_TYPE;
-            case PROJECT_TIME:
+            case PROJECTS_TIME:
                 return TimeContract.STREAM_TYPE;
             case TIMES:
                 return TimeContract.STREAM_TYPE;
@@ -118,14 +118,14 @@ public class WorkerProvider extends ContentProvider {
             case PROJECTS:
                 builder.table(Tables.PROJECT);
                 break;
-            case PROJECT:
+            case PROJECTS_ID:
                 builder.table(Tables.PROJECT)
                     .where(
                         ProjectContract._ID + "=?",
                         ProjectContract.getItemId(uri)
                     );
                 break;
-            case PROJECT_TIME:
+            case PROJECTS_TIME:
                 builder.table(Tables.TIME)
                     .where(
                         TimeContract.PROJECT_ID + "=?",

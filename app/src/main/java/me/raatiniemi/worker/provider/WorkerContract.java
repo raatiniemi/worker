@@ -10,8 +10,6 @@ public class WorkerContract {
 
     private static final String PATH_PROJECTS = "projects";
 
-    private static final String PATH_PROJECT = "project";
-
     private static final String PATH_PROJECT_TIME = "time";
 
     private static final String PATH_TIME = "time";
@@ -63,8 +61,6 @@ public class WorkerContract {
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
-        private static final Uri ITEM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECT);
-
         /**
          * Get the project stream URI.
          *
@@ -81,7 +77,7 @@ public class WorkerContract {
          * @return URI for working with specific project.
          */
         public static Uri getItemUri(String id) {
-            return Uri.withAppendedPath(ITEM_URI, id);
+            return Uri.withAppendedPath(getStreamUri(), id);
         }
 
         /**
