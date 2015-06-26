@@ -1,7 +1,5 @@
 package me.raatiniemi.worker.util;
 
-import android.util.Pair;
-
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class TimesheetExpandableDataProvider {
             throw new IndexOutOfBoundsException("Group position " + group);
         }
 
-        return mData.get(group).second;
+        return mData.get(group).getItems();
     }
 
     public TimeGroup get(int group) {
@@ -35,7 +33,7 @@ public class TimesheetExpandableDataProvider {
             throw new IndexOutOfBoundsException("Group position " + group);
         }
 
-        return mData.get(group).first;
+        return mData.get(group).getHeader();
     }
 
     public TimeChild get(int group, int child) {
@@ -62,17 +60,22 @@ public class TimesheetExpandableDataProvider {
         }
     }
 
-    public static class Groupable extends Pair<TimeGroup, List<TimeChild>> {
-        public Groupable(TimeGroup group, List<TimeChild> children) {
-            super(group, children);
+    public static class Groupable {
+        private TimeGroup mHeader;
+
+        private List<TimeChild> mItems;
+
+        public Groupable(TimeGroup header, List<TimeChild> items) {
+            mHeader = header;
+            mItems = items;
         }
 
         public TimeGroup getHeader() {
-            return first;
+            return mHeader;
         }
 
         public List<TimeChild> getItems() {
-            return second;
+            return mItems;
         }
     }
 
