@@ -19,6 +19,8 @@ public class WorkerProvider extends ContentProvider {
 
     private static final int PROJECTS_TIME = 102;
 
+    private static final int PROJECTS_TIMESHEET = 103;
+
     private static final int TIME = 200;
 
     private static final int TIME_ID = 201;
@@ -34,6 +36,7 @@ public class WorkerProvider extends ContentProvider {
         matcher.addURI(authority, "projects", PROJECTS);
         matcher.addURI(authority, "projects/#", PROJECTS_ID);
         matcher.addURI(authority, "projects/#/time", PROJECTS_TIME);
+        matcher.addURI(authority, "projects/#/timesheet", PROJECTS_TIMESHEET);
 
         matcher.addURI(authority, "time", TIME);
         matcher.addURI(authority, "time/#", TIME_ID);
