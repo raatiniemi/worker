@@ -66,6 +66,14 @@ public class TimesheetExpandableDataProvider {
         public Groupable(TimeGroup group, List<TimeChild> children) {
             super(group, children);
         }
+
+        public TimeGroup getHeader() {
+            return first;
+        }
+
+        public List<TimeChild> getItems() {
+            return second;
+        }
     }
 
     public static abstract class Data<T> {
