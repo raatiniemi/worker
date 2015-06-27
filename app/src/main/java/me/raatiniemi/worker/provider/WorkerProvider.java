@@ -140,6 +140,14 @@ public class WorkerProvider extends ContentProvider {
                         ProjectContract.getItemId(uri)
                     );
                 break;
+            case PROJECTS_TIMESHEET:
+                builder.table(Tables.TIME)
+                    .where(
+                        TimeContract.PROJECT_ID + "=?",
+                        ProjectContract.getItemId(uri)
+                    )
+                    .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+                break;
             case TIME_ID:
                 builder.table(Tables.TIME)
                     .where(
