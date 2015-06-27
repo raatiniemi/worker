@@ -53,6 +53,11 @@ public class WorkerContract {
             ProjectColumns.ARCHIVED
         };
 
+        public static final String[] COLUMNS_TIMESHEET = {
+            "MIN(" + TimeContract.START + ") AS date",
+            "GROUP_CONCAT(" + TimeContract._ID + ")"
+        };
+
         public static final String STREAM_TYPE =
             "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 

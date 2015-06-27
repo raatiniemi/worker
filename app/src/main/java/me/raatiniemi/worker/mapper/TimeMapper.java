@@ -144,12 +144,6 @@ public class TimeMapper extends AbstractMapper<Time> {
     public List<Groupable> findIntervalByProject(Long projectId, int start) {
         List<Groupable> result = new ArrayList<>();
 
-        // We have to group each of the time objects related to the interval.
-        String[] columns = new String[]{
-            "MIN(start) AS date",
-            "GROUP_CONCAT(" + TimeColumns._ID + ")"
-        };
-
         String selection = TimeColumns.PROJECT_ID + "=" + projectId;
 
         // Since we're storing everything registered time as milliseconds we have to
@@ -161,7 +155,7 @@ public class TimeMapper extends AbstractMapper<Time> {
         // result we should begin fetching the rows.
         String limit = start + ", 10";
 
-        Cursor intervalRow = mDatabase.query(getTable(), columns, selection, null, groupBy, null, orderBy, limit);
+        Cursor intervalRow = mDatabase.query(getTable(), ProjectContract.COLUMNS_TIMESHEET, selection, null, groupBy, null, orderBy, limit);
         if (intervalRow.moveToFirst()) {
             do {
                 // Attempt to load the grouped interval, might return null
