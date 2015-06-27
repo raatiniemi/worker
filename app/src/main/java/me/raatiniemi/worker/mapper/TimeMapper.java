@@ -155,18 +155,18 @@ public class TimeMapper extends AbstractMapper<Time> {
         // result we should begin fetching the rows.
         String limit = start + ", 10";
 
-        Cursor intervalRow = mDatabase.query(getTable(), ProjectContract.COLUMNS_TIMESHEET, selection, null, groupBy, null, orderBy, limit);
-        if (intervalRow.moveToFirst()) {
+        Cursor cursor = mDatabase.query(getTable(), ProjectContract.COLUMNS_TIMESHEET, selection, null, groupBy, null, orderBy, limit);
+        if (cursor.moveToFirst()) {
             do {
                 // Attempt to load the grouped interval, might return null
                 // if no rows are available.
-                Groupable groupable = loadGroupable(intervalRow, start);
+                Groupable groupable = loadGroupable(cursor, start);
                 if (null != groupable) {
                     result.add(groupable);
                 }
-            } while (intervalRow.moveToNext());
+            } while (cursor.moveToNext());
         }
-        intervalRow.close();
+        cursor.close();
 
         return result;
     }
