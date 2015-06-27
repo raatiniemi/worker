@@ -46,11 +46,11 @@ public class SelectionBuilder {
         return this;
     }
 
-    public String selection() {
+    private String selection() {
         return mSelection.toString();
     }
 
-    public String[] selectionArgs() {
+    private String[] selectionArgs() {
         return mSelectionArgs.toArray(new String[mSelectionArgs.size()]);
     }
 
