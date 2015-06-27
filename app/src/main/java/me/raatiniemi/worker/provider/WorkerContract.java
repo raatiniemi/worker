@@ -10,6 +10,8 @@ public class WorkerContract {
 
     private static final String PATH_PROJECTS = "projects";
 
+    private static final String PATH_TIMESHEET = "timesheet";
+
     private static final String PATH_TIME = "time";
 
     /**
@@ -98,6 +100,16 @@ public class WorkerContract {
          */
         public static Uri getItemTimeUri(String id) {
             return Uri.withAppendedPath(getItemUri(id), PATH_TIME);
+        }
+
+        /**
+         * Build the project timesheet stream URI.
+         *
+         * @param id Id for the project.
+         * @return Project timesheet stream URI.
+         */
+        public static Uri getItemTimesheetUri(String id) {
+            return Uri.withAppendedPath(getItemUri(id), PATH_TIMESHEET);
         }
 
         /**
