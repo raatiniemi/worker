@@ -154,8 +154,8 @@ public class TimeMapper extends AbstractMapper<Time> {
 
         // Since we're storing everything registered time as milliseconds we have to
         // convert it to seconds and then group it by the desired interval.
-        String groupBy = "strftime('%Y%m%d', start / 1000, 'unixepoch')";
-        String orderBy = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
+        String groupBy = ProjectContract.GROUP_BY_TIMESHEET;
+        String orderBy = ProjectContract.ORDER_BY_TIMESHEET;
 
         // Build the limit section, the start control where in the
         // result we should begin fetching the rows.

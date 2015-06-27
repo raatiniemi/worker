@@ -57,6 +57,18 @@ public class WorkerContract {
         public static final String ITEM_TYPE =
             "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
+        /**
+         * Group by clause for timesheet.
+         */
+        public static final String GROUP_BY_TIMESHEET =
+            "strftime('%Y%m%d', " + TimeContract.START + " / 1000, 'unixepoch')";
+
+        /**
+         * Order by clause for timesheet.
+         */
+        public static final String ORDER_BY_TIMESHEET =
+            TimeContract.START + " DESC," + TimeContract.STOP + " DESC";
+
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
         /**
