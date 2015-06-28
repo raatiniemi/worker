@@ -105,14 +105,16 @@ public class TimeMapper extends AbstractMapper<Time> {
 
             ArrayList<TimeChild> children = new ArrayList<>();
 
-            String selection = TimeColumns._ID + " = ?";
-            String[] selectionArgs;
-
             // Iterate through and retrieve each row.
             for (String id : rows) {
-                selectionArgs = new String[]{ id };
-
-                Cursor row = mDatabase.query(getTable(), TimeContract.COLUMNS, selection, selectionArgs, null, null, null);
+                Cursor row = mContext.getContentResolver()
+                    .query(
+                        TimeContract.getItemUri(id),
+                        TimeContract.COLUMNS,
+                        null,
+                        null,
+                        null
+                    );
                 if (row.moveToFirst()) {
                     TimeChild child;
 
