@@ -19,7 +19,6 @@ import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
-import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
@@ -46,10 +45,6 @@ public class TimeMapper extends AbstractMapper<Time> {
         calendar.set(Calendar.SECOND, 0);
 
         mBeginningOfMonth = calendar.getTimeInMillis();
-    }
-
-    protected String getTable() {
-        return Tables.TIME;
     }
 
     public TimeCollection findTimeByProject(Project project) {

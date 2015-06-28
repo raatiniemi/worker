@@ -37,11 +37,4 @@ abstract public class AbstractMapper<T extends DomainObject> {
     public AbstractMapper() {
         this(WorkerDatabase.getInstance());
     }
-
-    /**
-     * Retrieve the table name connected to the data mapper.
-     *
-     * @return Table name connected to the data mapper.
-     */
-    abstract protected String getTable();
 }
