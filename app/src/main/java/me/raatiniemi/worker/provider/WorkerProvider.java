@@ -71,9 +71,20 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        // Build the limit section of the query, with the offset.
+        // TODO: Add proper validation and additional controls.
+        // TODO: Simplify the process of retrieving offset and limit.
+        String limit = null;
+        if (null != uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT)) {
+            if (null != uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET)) {
+                limit = uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET) + ",";
+            }
+            limit = limit + uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT);
+        }
+
         return buildSelection(uri)
             .where(selection, selectionArgs)
-            .query(mOpenHelper.getReadableDatabase(), projection, sortOrder);
+            .query(mOpenHelper.getReadableDatabase(), projection, sortOrder, limit);
     }
 
     @Override
