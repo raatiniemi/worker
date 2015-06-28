@@ -15,6 +15,7 @@ import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
+import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
@@ -144,18 +145,21 @@ public class TimeMapper extends AbstractMapper<Time> {
     public List<Groupable> findIntervalByProject(Long projectId, int start) {
         List<Groupable> result = new ArrayList<>();
 
-        String selection = TimeColumns.PROJECT_ID + "=" + projectId;
+        // TODO: Simplify the builing of the URI with query parameters.
+        Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(projectId))
+            .buildUpon()
+            .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(start))
+            .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
+            .build();
 
-        // Since we're storing everything registered time as milliseconds we have to
-        // convert it to seconds and then group it by the desired interval.
-        String groupBy = ProjectContract.GROUP_BY_TIMESHEET;
-        String orderBy = ProjectContract.ORDER_BY_TIMESHEET;
-
-        // Build the limit section, the start control where in the
-        // result we should begin fetching the rows.
-        String limit = start + ", 10";
-
-        Cursor cursor = mDatabase.query(getTable(), ProjectContract.COLUMNS_TIMESHEET, selection, null, groupBy, null, orderBy, limit);
+        Cursor cursor = mContext.getContentResolver()
+            .query(
+                uri,
+                ProjectContract.COLUMNS_TIMESHEET,
+                null,
+                null,
+                ProjectContract.ORDER_BY_TIMESHEET
+            );
         if (cursor.moveToFirst()) {
             do {
                 // Attempt to load the grouped interval, might return null
