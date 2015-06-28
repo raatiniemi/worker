@@ -66,43 +66,43 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder holder, int index) {
+    public void onBindViewHolder(final ItemViewHolder vh, int index) {
         final Project project = get(index);
 
         // Add the on click listener for the card view.
         // Will open the single project activity.
-        holder.itemView.setOnClickListener(getOnClickListener());
+        vh.itemView.setOnClickListener(getOnClickListener());
 
         String summarize = DateIntervalFormat.format(project.summarizeTime());
 
-        holder.mName.setText(project.getName());
-        holder.mTime.setText(summarize);
-        holder.mDescription.setText(project.getDescription());
+        vh.mName.setText(project.getName());
+        vh.mTime.setText(summarize);
+        vh.mDescription.setText(project.getDescription());
 
         // If the project description is empty the view should be hidden.
         int visibility = View.VISIBLE;
         if (TextUtils.isEmpty(project.getDescription())) {
             visibility = View.GONE;
         }
-        holder.mDescription.setVisibility(visibility);
+        vh.mDescription.setVisibility(visibility);
 
-        holder.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
+        vh.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mOnClockActivityChangeListener.onClockActivityToggle(project);
             }
         });
-        holder.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
-        holder.mClockActivityToggle.setActivated(project.isActive());
+        vh.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
+        vh.mClockActivityToggle.setActivated(project.isActive());
 
         // Add the onClickListener to the "Clock [in|out] at..." item.
-        holder.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
+        vh.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mOnClockActivityChangeListener.onClockActivityAt(project);
             }
         });
-        holder.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
+        vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
 
         // Retrieve the resource instance.
         Resources resources = getContext().getResources();
@@ -120,10 +120,10 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
         }
 
         String clockActivityToggle = resources.getString(clockActivityToggleId);
-        holder.mClockActivityToggle.setContentDescription(clockActivityToggle);
+        vh.mClockActivityToggle.setContentDescription(clockActivityToggle);
 
         String clockActivityAt = resources.getString(clockActivityAtId);
-        holder.mClockActivityAt.setContentDescription(clockActivityAt);
+        vh.mClockActivityAt.setContentDescription(clockActivityAt);
 
         // Retrieve the time that the active session was clocked in.
         // TODO: Handle if the time session overlap days.
@@ -142,8 +142,8 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, Pro
                 )
             );
         }
-        holder.mClockedInSince.setText(clockedInSinceText);
-        holder.mClockedInSince.setVisibility(clockedInSinceVisibility);
+        vh.mClockedInSince.setText(clockedInSinceText);
+        vh.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 
     public int findProject(Project project) {
