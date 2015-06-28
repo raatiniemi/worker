@@ -72,7 +72,7 @@ public class TimeMapper extends AbstractMapper<Time> {
         );
         if (rows.moveToFirst()) {
             do {
-                Time time = load(rows);
+                Time time = map(rows);
                 if (time != null) {
                     result.add(time);
                 }
@@ -119,7 +119,7 @@ public class TimeMapper extends AbstractMapper<Time> {
                     TimeChild child;
 
                     do {
-                        Time time = load(row);
+                        Time time = map(row);
                         if (null != time) {
                             child = new TimeChild((row.getPosition() + positionOffset), time);
                             children.add(child);
