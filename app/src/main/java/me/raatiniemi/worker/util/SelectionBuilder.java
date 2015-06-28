@@ -65,6 +65,10 @@ public class SelectionBuilder {
     }
 
     public Cursor query(SQLiteDatabase db, String[] columns, String orderBy) {
+        return query(db, columns, orderBy, null);
+    }
+
+    public Cursor query(SQLiteDatabase db, String[] columns, String orderBy, String limit) {
         return db.query(
             mTable,
             columns,
@@ -72,7 +76,8 @@ public class SelectionBuilder {
             selectionArgs(),
             mGroupBy,
             mHaving,
-            orderBy
+            orderBy,
+            limit
         );
     }
 
