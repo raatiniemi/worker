@@ -23,7 +23,7 @@ import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 
-public class TimeMapper extends AbstractMapper<Time> {
+public class TimeMapper {
     /**
      * Timestamp for the beginning of the month in milliseconds.
      */
