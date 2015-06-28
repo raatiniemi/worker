@@ -44,12 +44,4 @@ abstract public class AbstractMapper<T extends DomainObject> {
      * @return Table name connected to the data mapper.
      */
     abstract protected String getTable();
-
-    /**
-     * Load the DomainObject from the data mapper with the database cursor.
-     *
-     * @param row Database cursor.
-     * @return DomainObject from the data mapper.
-     */
-    abstract protected T load(Cursor row);
 }

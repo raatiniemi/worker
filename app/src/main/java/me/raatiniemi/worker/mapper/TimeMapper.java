@@ -52,10 +52,6 @@ public class TimeMapper extends AbstractMapper<Time> {
         return Tables.TIME;
     }
 
-    protected Time load(Cursor row) {
-        return map(row);
-    }
-
     public TimeCollection findTimeByProject(Project project) {
         TimeCollection result = new TimeCollection();
 
