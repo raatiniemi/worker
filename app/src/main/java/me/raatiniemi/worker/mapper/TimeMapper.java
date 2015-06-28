@@ -59,7 +59,7 @@ public class TimeMapper {
             TimeContract.COLUMNS,
             TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0",
             new String[]{ String.valueOf(mBeginningOfMonth) },
-            TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC"
+            ProjectContract.ORDER_BY_TIME
         );
         if (rows.moveToFirst()) {
             do {

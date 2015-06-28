@@ -75,6 +75,12 @@ public class WorkerContract {
             "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
         /**
+         * Order by clause for project time.
+         */
+        public static final String ORDER_BY_TIME =
+            TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
+
+        /**
          * Group by clause for timesheet.
          */
         public static final String GROUP_BY_TIMESHEET =
