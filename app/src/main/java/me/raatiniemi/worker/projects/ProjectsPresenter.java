@@ -3,13 +3,21 @@ package me.raatiniemi.worker.projects;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.model.project.ProjectProvider;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Presenter for the projects module, handles loading of projects.
@@ -26,6 +34,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     private ProjectProvider mProvider;
 
     /**
+     * Interval iterator for refreshing active projects.
+     */
+    private Subscription mRefreshProjects;
+
+    /**
      * Constructor.
      *
      * @param context Context used with the presenter.
@@ -34,6 +47,78 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         super(context);
 
         mProvider = provider;
+
+        Log.d(TAG, "Subscribe to refresh for active projects");
+        mRefreshProjects = refreshActiveProjects();
+    }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+
+        // Before detaching we have to unsubscribe to the refresh of active
+        // projects, if it is available and active.
+        if (null != mRefreshProjects && !mRefreshProjects.isUnsubscribed()) {
+            Log.d(TAG, "Unsubscribe to refresh active projects");
+            mRefreshProjects.unsubscribe();
+        }
+        mRefreshProjects = null;
+    }
+
+    private Subscription refreshActiveProjects() {
+        // Before we create a new subscription for refreshing active projects
+        // we have to unsubscribe to the existing one, if one is available.
+        if (null != mRefreshProjects && !mRefreshProjects.isUnsubscribed()) {
+            Log.d(TAG, "Unsubscribe to refresh active projects, setup new subscription");
+            mRefreshProjects.unsubscribe();
+        }
+        mRefreshProjects = null;
+
+        return Observable.interval(60, TimeUnit.SECONDS)
+            .flatMap(new Func1<Long, Observable<List<Integer>>>() {
+                @Override
+                public Observable<List<Integer>> call(Long aLong) {
+                    List<Integer> positions = new ArrayList<>();
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip checking active projects");
+                        return Observable.just(positions);
+                    }
+
+                    // Iterate the projects and collect the index of active projects.
+                    ProjectCollection data = getView().getData();
+                    for (Project project : data) {
+                        if (project.isActive()) {
+                            Log.d(TAG, "Queuing refresh of project: " + project.getName());
+                            positions.add(data.indexOf(project));
+                        }
+                    }
+                    return Observable.just(positions);
+                }
+            })
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Action1<List<Integer>>() {
+                @Override
+                public void call(List<Integer> positions) {
+                    // Check that we have found active projects to refresh.
+                    if (positions.isEmpty()) {
+                        Log.d(TAG, "No projects are active, nothing to refresh");
+                        return;
+                    }
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip refreshing active projects");
+                        return;
+                    }
+
+                    // Refresh the active projects that have been found.
+                    Log.d(TAG, "Refreshing active projects");
+                    getView().refreshPositions(positions);
+                }
+            });
     }
 
     /**

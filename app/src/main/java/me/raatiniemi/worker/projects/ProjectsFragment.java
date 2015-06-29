@@ -13,11 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
@@ -29,12 +27,6 @@ import me.raatiniemi.worker.project.ProjectActivity;
 import me.raatiniemi.worker.ui.NewProjectFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectCollection>
     implements ProjectsAdapter.OnClockActivityChangeListener, ListAdapter.OnItemClickListener, ProjectsView {
@@ -52,11 +44,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
     private RecyclerView mRecyclerView;
 
     private ProjectsAdapter mAdapter;
-
-    /**
-     * Subscription for refreshing active projects.
-     */
-    private Subscription mRefreshActiveProjects;
 
     public ProjectsFragment() {
         super();
@@ -81,52 +68,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
 
         getPresenter().attachView(this);
         getPresenter().getProjects();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Log.d(TAG, "Subscribe to refresh for active projects");
-        mRefreshActiveProjects = Observable.interval(60, TimeUnit.SECONDS)
-            .flatMap(new Func1<Long, Observable<List<Integer>>>() {
-                @Override
-                public Observable<List<Integer>> call(Long aLong) {
-                    List<Integer> positions = new ArrayList<>();
-                    ProjectCollection data = getData();
-                    for (Project project : data) {
-                        if (project.isActive()) {
-                            Log.d(TAG, "Queuing refresh of project: " + project.getName());
-                            positions.add(data.indexOf(project));
-                        }
-                    }
-                    return Observable.just(positions);
-                }
-            })
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Action1<List<Integer>>() {
-                @Override
-                public void call(List<Integer> positions) {
-                    if (positions.isEmpty()) {
-                        Log.d(TAG, "No projects are active, nothing to refresh");
-                        return;
-                    }
-
-                    refreshPositions(positions);
-                }
-            });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (null != mRefreshActiveProjects && !mRefreshActiveProjects.isUnsubscribed()) {
-            Log.d(TAG, "Unsubscribe to refresh for active projects");
-            mRefreshActiveProjects.unsubscribe();
-        }
-        mRefreshActiveProjects = null;
     }
 
     @Override
