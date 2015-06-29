@@ -8,5 +8,7 @@ import me.raatiniemi.worker.model.project.Project;
 public interface ProjectsView {
     void createNewProject();
 
+    void addProject(Project project);
+
     void updateProject(Project project);
 }

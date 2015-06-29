@@ -146,6 +146,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
         mAdapter.setItems(data);
     }
 
+    @Override
     public void addProject(Project project) {
         int position = mAdapter.add(project);
         mRecyclerView.scrollToPosition(position);
