@@ -2,6 +2,8 @@ package me.raatiniemi.worker.base.presenter;
 
 import android.content.Context;
 
+import java.lang.ref.WeakReference;
+
 import me.raatiniemi.worker.base.view.MvpView;
 
 /**
@@ -16,9 +18,9 @@ abstract public class BasePresenter<V extends MvpView> implements MvpPresenter<V
     private Context mContext;
 
     /**
-     * View attached to the presenter.
+     * Weak reference for the view attached to the presenter.
      */
-    private V mView;
+    private WeakReference<V> mViewReference;
 
     /**
      * Constructor.
@@ -44,7 +46,7 @@ abstract public class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @return Attached view if available, otherwise null.
      */
     public V getView() {
-        return mView;
+        return null != mViewReference ? mViewReference.get() : null;
     }
 
     /**
@@ -63,7 +65,7 @@ abstract public class BasePresenter<V extends MvpView> implements MvpPresenter<V
      */
     @Override
     public void attachView(V view) {
-        mView = view;
+        mViewReference = new WeakReference<>(view);
     }
 
     /**
@@ -71,6 +73,9 @@ abstract public class BasePresenter<V extends MvpView> implements MvpPresenter<V
      */
     @Override
     public void detachView() {
-        mView = null;
+        if (null != mViewReference) {
+            mViewReference.clear();
+            mViewReference = null;
+        }
     }
 }
