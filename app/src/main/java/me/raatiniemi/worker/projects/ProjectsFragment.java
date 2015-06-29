@@ -113,9 +113,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
                         return;
                     }
 
-                    for (Integer position : positions) {
-                        mAdapter.notifyItemChanged(position);
-                    }
+                    refreshPositions(positions);
                 }
             });
     }
@@ -182,6 +180,23 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
+    }
+
+    @Override
+    public void refreshPositions(List<Integer> positions) {
+        // Check that we have positions to refresh.
+        if (positions.isEmpty()) {
+            // We should never reach this code since there are supposed to be
+            // checks for positions before the refreshPositions-method is called.
+            Log.w(TAG, "No positions, skip refreshing projects");
+            return;
+        }
+
+        // Iterate and refresh every position.
+        Log.d(TAG, "Refreshing " + positions.size() + " projects");
+        for (Integer position : positions) {
+            mAdapter.notifyItemChanged(position);
+        }
     }
 
     void showCreateProjectError() {

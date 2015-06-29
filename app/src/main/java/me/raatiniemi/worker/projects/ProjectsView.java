@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.projects;
 
+import java.util.List;
+
 import me.raatiniemi.worker.model.project.Project;
 
 /**
@@ -24,4 +26,11 @@ public interface ProjectsView {
      * Open the dialog for creating a new project.
      */
     void createNewProject();
+
+    /**
+     * Refresh view for projects within the adapter.
+     *
+     * @param positions Positions for the project to refresh.
+     */
+    void refreshPositions(List<Integer> positions);
 }
