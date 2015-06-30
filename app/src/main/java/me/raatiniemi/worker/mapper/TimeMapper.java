@@ -75,60 +75,6 @@ public class TimeMapper {
     }
 
     /**
-     * Load a batch of time items grouped as an interval.
-     *
-     * @param intervalRow Cursor for grouped interval.
-     * @param positionOffset Offset for the cursor position.
-     * @return Time grouped as interval, or null if no rows are available.
-     */
-    private Groupable loadGroupable(Cursor intervalRow, int positionOffset) {
-        // We're getting the id for the time objects as a comma-separated string column.
-        // We have to split the value before attempting to retrieve each individual row.
-        String grouped = intervalRow.getString(1);
-        String[] rows = grouped.split(",");
-        if (0 < rows.length) {
-            // Instantiate the group. The first column should be
-            // the lowest timestamp within the interval.
-            TimeGroup group = new TimeGroup(
-                (intervalRow.getPosition() + positionOffset),
-                new Date(intervalRow.getLong(0))
-            );
-
-            ArrayList<TimeChild> children = new ArrayList<>();
-
-            // Iterate through and retrieve each row.
-            for (String id : rows) {
-                Cursor row = mContext.getContentResolver()
-                    .query(
-                        TimeContract.getItemUri(id),
-                        TimeContract.COLUMNS,
-                        null,
-                        null,
-                        null
-                    );
-                if (row.moveToFirst()) {
-                    TimeChild child;
-
-                    do {
-                        Time time = map(row);
-                        if (null != time) {
-                            child = new TimeChild((row.getPosition() + positionOffset), time);
-                            children.add(child);
-                        }
-                    } while (row.moveToNext());
-                }
-                row.close();
-            }
-
-            // Reverse the order of the children to put the latest
-            // item at the top of the list.
-            Collections.reverse(children);
-            return new Groupable(group, children);
-        }
-        return null;
-    }
-
-    /**
      * Find and group time as an interval for a specified project.
      *
      * @param projectId Id for project connected to the time.
@@ -155,11 +101,47 @@ public class TimeMapper {
             );
         if (cursor.moveToFirst()) {
             do {
-                // Attempt to load the grouped interval, might return null
-                // if no rows are available.
-                Groupable groupable = loadGroupable(cursor, offset);
-                if (null != groupable) {
-                    result.add(groupable);
+                // We're getting the id for the time objects as a comma-separated string column.
+                // We have to split the value before attempting to retrieve each individual row.
+                String grouped = cursor.getString(1);
+                String[] rows = grouped.split(",");
+                if (0 < rows.length) {
+                    // Instantiate the group. The first column should be
+                    // the lowest timestamp within the interval.
+                    TimeGroup group = new TimeGroup(
+                        (cursor.getPosition() + offset),
+                        new Date(cursor.getLong(0))
+                    );
+
+                    ArrayList<TimeChild> children = new ArrayList<>();
+
+                    for (String id : rows) {
+                        Cursor row = mContext.getContentResolver()
+                            .query(
+                                TimeContract.getItemUri(id),
+                                TimeContract.COLUMNS,
+                                null,
+                                null,
+                                null
+                            );
+                        if (row.moveToFirst()) {
+                            TimeChild child;
+
+                            do {
+                                Time time = map(row);
+                                if (null != time) {
+                                    child = new TimeChild((row.getPosition() + offset), time);
+                                    children.add(child);
+                                }
+                            } while (row.moveToNext());
+                        }
+                        row.close();
+                    }
+
+                    // Reverse the order of the children to put the latest
+                    // item at the top of the list.
+                    Collections.reverse(children);
+                    result.add(new Groupable(group, children));
                 }
             } while (cursor.moveToNext());
         }
