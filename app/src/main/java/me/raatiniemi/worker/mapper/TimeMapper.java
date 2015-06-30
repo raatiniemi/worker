@@ -132,16 +132,16 @@ public class TimeMapper {
      * Find and group time as an interval for a specified project.
      *
      * @param projectId Id for project connected to the time.
-     * @param start Where in the iteration to start, e.g. zero for first iteration.
+     * @param offset Where in the iteration to start, e.g. zero for first iteration.
      * @return Time grouped as interval for specified project.
      */
-    public List<Groupable> findIntervalByProject(Long projectId, int start) {
+    public List<Groupable> findIntervalByProject(Long projectId, int offset) {
         List<Groupable> result = new ArrayList<>();
 
         // TODO: Simplify the builing of the URI with query parameters.
         Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(projectId))
             .buildUpon()
-            .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(start))
+            .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
             .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
             .build();
 
@@ -157,7 +157,7 @@ public class TimeMapper {
             do {
                 // Attempt to load the grouped interval, might return null
                 // if no rows are available.
-                Groupable groupable = loadGroupable(cursor, start);
+                Groupable groupable = loadGroupable(cursor, offset);
                 if (null != groupable) {
                     result.add(groupable);
                 }
