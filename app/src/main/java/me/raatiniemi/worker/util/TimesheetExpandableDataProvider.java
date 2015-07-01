@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.util;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,8 +9,9 @@ import me.raatiniemi.worker.model.time.Time;
 public class TimesheetExpandableDataProvider {
     private List<Groupable> mData;
 
-    public TimesheetExpandableDataProvider(List<Groupable> data) {
-        mData = data;
+    public TimesheetExpandableDataProvider() {
+        // TODO: Instead of initializing the class field, check null value in methods.
+        mData = new ArrayList<>();
     }
 
     public int getCount() {
@@ -26,6 +28,10 @@ public class TimesheetExpandableDataProvider {
         }
 
         return mData.get(group).getItems();
+    }
+
+    public void set(List<Groupable> data) {
+        mData = data;
     }
 
     public TimeGroup get(int group) {

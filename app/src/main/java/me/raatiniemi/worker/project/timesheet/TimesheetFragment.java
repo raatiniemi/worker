@@ -117,7 +117,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         TimeMapper timeMapper = MapperRegistry.getTimeMapper();
         List<Groupable> data = timeMapper.findIntervalByProject(getProjectId(), 0);
 
-        mProvider = new TimesheetExpandableDataProvider(data);
+        mProvider = new TimesheetExpandableDataProvider();
+        mProvider.set(data);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
