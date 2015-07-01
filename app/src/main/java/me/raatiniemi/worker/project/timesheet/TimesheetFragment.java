@@ -26,8 +26,8 @@ import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.projects.ProjectsFragment;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Groupable>>
@@ -114,11 +114,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-        List<Groupable> data = timeMapper.findIntervalByProject(getProjectId(), 0);
-
         mProvider = new TimesheetExpandableDataProvider();
-        mProvider.set(data);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -159,23 +155,16 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
                         // exclude the children otherwise the offset will be wrong.
                         int offset = mTimesheetAdapter.getGroupCount();
 
-                        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-                        List<Groupable> data = timeMapper.findIntervalByProject(getProjectId(), offset);
-
-                        // Check if we retrieved any additional items.
-                        //
-                        // If we didn't, we're at the end of the available data,
-                        // there's no reason to unlock the loading (i.e. mLoading
-                        // should continue to be true).
-                        if (0 < data.size()) {
-                            addData(data);
-                            mLoading = false;
-                        }
+                        // Retrieve additional timesheet items with offset.
+                        getPresenter().getTimesheet(getProjectId(), offset);
                     }
                 }
             }
         });
         mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
+
+        getPresenter().attachView(this);
+        getPresenter().getTimesheet(getProjectId(), 0);
     }
 
     @Override
@@ -201,6 +190,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         for (Groupable group : data) {
             mTimesheetAdapter.addGroup(group);
         }
+
+        // If we are adding addional data we have to unlock the loading,
+        // otherwise additional data will not be loaded.
+        mLoading = false;
     }
 
     private void remove(long expandablePosition) {
