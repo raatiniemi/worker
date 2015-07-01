@@ -167,9 +167,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
                         // there's no reason to unlock the loading (i.e. mLoading
                         // should continue to be true).
                         if (0 < data.size()) {
-                            for (Groupable groupable : data) {
-                                mTimesheetAdapter.addGroup(groupable);
-                            }
+                            addData(data);
                             mLoading = false;
                         }
                     }
@@ -191,6 +189,17 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
 
     @Override
     public void setData(List<Groupable> data) {
+    }
+
+    public void addData(List<Groupable> data) {
+        if (0 == data.size()) {
+            Log.d(TAG, "No data to add");
+            return;
+        }
+
+        for (Groupable group : data) {
+            mTimesheetAdapter.addGroup(group);
+        }
     }
 
     private void remove(long expandablePosition) {
