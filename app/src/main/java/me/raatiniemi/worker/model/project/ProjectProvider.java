@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import java.util.Date;
+import java.util.List;
 
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
@@ -14,6 +15,7 @@ import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -292,5 +294,15 @@ public class ProjectProvider {
                     return Observable.just(time.getProjectId());
                 }
             });
+    }
+
+    public Observable<List<Groupable>> getTimesheet(final Long id, final int offset) {
+        return Observable.defer(new Func0<Observable<List<Groupable>>>() {
+            @Override
+            public Observable<List<Groupable>> call() {
+                TimeMapper mapper = MapperRegistry.getTimeMapper();
+                return Observable.just(mapper.findIntervalByProject(id, offset));
+            }
+        });
     }
 }
