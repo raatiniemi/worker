@@ -20,6 +20,7 @@ import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import rx.Observable;
 import rx.functions.Func0;
@@ -361,12 +362,12 @@ public class ProjectProvider {
                         if (0 < rows.length) {
                             // Instantiate the group. The first column should be
                             // the lowest timestamp within the interval.
-                            TimesheetExpandableDataProvider.TimeGroup group = new TimesheetExpandableDataProvider.TimeGroup(
+                            TimeGroup group = new TimeGroup(
                                 (cursor.getPosition() + offset),
                                 new Date(cursor.getLong(0))
                             );
 
-                            ArrayList<TimesheetExpandableDataProvider.TimeChild> children = new ArrayList<>();
+                            ArrayList<TimeChild> children = new ArrayList<>();
 
                             for (String id : rows) {
                                 Cursor row = mContext.getContentResolver()
