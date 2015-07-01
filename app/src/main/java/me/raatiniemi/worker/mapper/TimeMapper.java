@@ -24,54 +24,12 @@ import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 
 public class TimeMapper {
-    /**
-     * Timestamp for the beginning of the month in milliseconds.
-     */
-    private final long mBeginningOfMonth;
-
     private Context mContext;
 
     public TimeMapper(Context context) {
         super();
 
         mContext = context;
-
-        // Reset the calendar to retrieve timestamp
-        // of the beginning of the month.
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
-        mBeginningOfMonth = calendar.getTimeInMillis();
-    }
-
-    public TimeCollection findTimeByProject(Project project) {
-        TimeCollection result = new TimeCollection();
-
-        if (null == project || null == project.getId()) {
-            return result;
-        }
-
-        Cursor rows = mContext.getContentResolver().query(
-            ProjectContract.getItemTimeUri(String.valueOf(project.getId())),
-            TimeContract.COLUMNS,
-            TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0",
-            new String[]{ String.valueOf(mBeginningOfMonth) },
-            ProjectContract.ORDER_BY_TIME
-        );
-        if (rows.moveToFirst()) {
-            do {
-                Time time = map(rows);
-                if (time != null) {
-                    result.add(time);
-                }
-            } while (rows.moveToNext());
-        }
-        rows.close();
-
-        return result;
     }
 
     /**

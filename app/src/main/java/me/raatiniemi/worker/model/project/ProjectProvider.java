@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
+import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
@@ -183,11 +185,41 @@ public class ProjectProvider {
      * @return Project populated with registered time.
      */
     private Project getTime(final Project project) {
-        TimeMapper mapper = MapperRegistry.getTimeMapper();
-        TimeCollection time = mapper.findTimeByProject(project);
-        if (null != time) {
-            project.addTime(time);
+        // If the project id is null then it's a new project,
+        // i.e. it will not have any registered time.
+        if (null == project.getId()) {
+            return project;
         }
+
+        TimeCollection result = new TimeCollection();
+
+        // Reset the calendar to retrieve timestamp
+        // of the beginning of the month.
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        Cursor cursor = getContext().getContentResolver()
+            .query(
+                ProjectContract.getItemTimeUri(String.valueOf(project.getId())),
+                TimeContract.COLUMNS,
+                TimeContract.START + ">=? OR " + TimeContract.STOP + " = 0",
+                new String[]{ String.valueOf(calendar.getTimeInMillis()) },
+                ProjectContract.ORDER_BY_TIME
+            );
+        if (cursor.moveToFirst()) {
+            do {
+                Time time = TimeMapper.map(cursor);
+                if (null != time) {
+                    result.add(time);
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        project.addTime(result);
         return project;
     }
 
