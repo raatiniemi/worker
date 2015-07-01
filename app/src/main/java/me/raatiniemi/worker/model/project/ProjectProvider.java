@@ -4,20 +4,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
 import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -332,8 +335,72 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<List<Groupable>>>() {
             @Override
             public Observable<List<Groupable>> call() {
-                TimeMapper mapper = MapperRegistry.getTimeMapper();
-                return Observable.just(mapper.findIntervalByProject(id, offset));
+                List<Groupable> result = new ArrayList<>();
+
+                // TODO: Simplify the builing of the URI with query parameters.
+                Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(id))
+                    .buildUpon()
+                    .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
+                    .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
+                    .build();
+
+                Cursor cursor = mContext.getContentResolver()
+                    .query(
+                        uri,
+                        ProjectContract.COLUMNS_TIMESHEET,
+                        null,
+                        null,
+                        ProjectContract.ORDER_BY_TIMESHEET
+                    );
+                if (cursor.moveToFirst()) {
+                    do {
+                        // We're getting the id for the time objects as a comma-separated string column.
+                        // We have to split the value before attempting to retrieve each individual row.
+                        String grouped = cursor.getString(1);
+                        String[] rows = grouped.split(",");
+                        if (0 < rows.length) {
+                            // Instantiate the group. The first column should be
+                            // the lowest timestamp within the interval.
+                            TimesheetExpandableDataProvider.TimeGroup group = new TimesheetExpandableDataProvider.TimeGroup(
+                                (cursor.getPosition() + offset),
+                                new Date(cursor.getLong(0))
+                            );
+
+                            ArrayList<TimesheetExpandableDataProvider.TimeChild> children = new ArrayList<>();
+
+                            for (String id : rows) {
+                                Cursor row = mContext.getContentResolver()
+                                    .query(
+                                        TimeContract.getItemUri(id),
+                                        TimeContract.COLUMNS,
+                                        null,
+                                        null,
+                                        null
+                                    );
+                                if (row.moveToFirst()) {
+                                    TimeChild child;
+
+                                    do {
+                                        Time time = TimeMapper.map(row);
+                                        if (null != time) {
+                                            child = new TimeChild((row.getPosition() + offset), time);
+                                            children.add(child);
+                                        }
+                                    } while (row.moveToNext());
+                                }
+                                row.close();
+                            }
+
+                            // Reverse the order of the children to put the latest
+                            // item at the top of the list.
+                            Collections.reverse(children);
+                            result.add(new Groupable(group, children));
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+
+                return Observable.just(result);
             }
         });
     }
