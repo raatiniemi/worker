@@ -13,6 +13,12 @@ public class TimeMapper {
     private TimeMapper() {
     }
 
+    /**
+     * Map Time from cursor.
+     *
+     * @param cursor Cursor with data to map to Time.
+     * @return Time with data from cursor.
+     */
     public static Time map(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndex(TimeColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndex(TimeColumns.PROJECT_ID));
@@ -27,6 +33,12 @@ public class TimeMapper {
         }
     }
 
+    /**
+     * Map Time to ContentValues.
+     *
+     * @param time Time to map to ContentValues.
+     * @return Mapped ContentValues.
+     */
     public static ContentValues map(Time time) {
         ContentValues values = new ContentValues();
         values.put(TimeColumns.START, time.getStart());
