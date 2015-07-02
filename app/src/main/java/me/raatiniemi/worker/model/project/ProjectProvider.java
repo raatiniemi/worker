@@ -12,7 +12,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.mapper.TimeMapper;
+import me.raatiniemi.worker.model.time.TimeMapper;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
 import me.raatiniemi.worker.provider.WorkerContract;

@@ -1,31 +1,13 @@
-package me.raatiniemi.worker.mapper;
+package me.raatiniemi.worker.model.time;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 
 public class TimeMapper {
-    private Context mContext;
-
-    public TimeMapper(Context context) {
-        super();
-
-        mContext = context;
-    }
-
-    public boolean remove(Time time) {
-        return 0 < mContext.getContentResolver().delete(
-            TimeContract.getItemUri(String.valueOf(time.getId())),
-            null,
-            null
-        );
-    }
-
     public static Time map(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndex(TimeColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndex(TimeColumns.PROJECT_ID));
