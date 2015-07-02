@@ -131,6 +131,20 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
         // Setup the subscription for retrieving projects.
         mSubscription = mProvider.getProjects()
+            .map(new Func1<ProjectCollection, ProjectCollection>() {
+                @Override
+                public ProjectCollection call(ProjectCollection projects) {
+                    // Populate the projects with the registered time.
+                    for (Project project : projects) {
+                        int index = projects.indexOf(project);
+
+                        project = mProvider.getTime(project);
+                        projects.set(index, project);
+                    }
+
+                    return projects;
+                }
+            })
             .compose(this.<ProjectCollection>applySchedulers())
             .subscribe(new Action1<ProjectCollection>() {
                 @Override

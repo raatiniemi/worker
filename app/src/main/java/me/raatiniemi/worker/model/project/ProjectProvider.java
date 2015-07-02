@@ -77,17 +77,6 @@ public class ProjectProvider {
 
                 return Observable.just(projects);
             }
-        }).map(new Func1<ProjectCollection, ProjectCollection>() {
-            @Override
-            public ProjectCollection call(ProjectCollection projects) {
-                // Populate the projects with the registered time.
-                for (Project project : projects) {
-                    int index = projects.indexOf(project);
-                    projects.set(index, getTime(project));
-                }
-
-                return projects;
-            }
         });
     }
 
@@ -187,7 +176,7 @@ public class ProjectProvider {
      * @param project Project to populate with registered time.
      * @return Project populated with registered time.
      */
-    private Project getTime(final Project project) {
+    public Project getTime(final Project project) {
         // If the project id is null then it's a new project,
         // i.e. it will not have any registered time.
         if (null == project.getId()) {
