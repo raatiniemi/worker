@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import me.raatiniemi.worker.exception.DomainException;
-import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 
 public class TimeMapper {

@@ -16,11 +16,11 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.model.time.Time;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
-import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter
     extends AbstractExpandableItemAdapter<TimesheetAdapter.GroupViewHolder, TimesheetAdapter.ChildViewHolder> {

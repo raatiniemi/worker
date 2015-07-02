@@ -20,12 +20,10 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.model.project.ProjectProvider;
-import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Groupable>>
     implements TimesheetAdapter.OnTimesheetListener, TimesheetView {

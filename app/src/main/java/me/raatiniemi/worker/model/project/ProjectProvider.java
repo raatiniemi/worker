@@ -12,16 +12,15 @@ import java.util.List;
 
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.model.time.TimeMapper;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
+import me.raatiniemi.worker.model.time.TimeMapper;
 import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
+import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
