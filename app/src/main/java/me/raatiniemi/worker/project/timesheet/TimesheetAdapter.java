@@ -63,6 +63,14 @@ public class TimesheetAdapter
     }
 
     @Override
+    public ChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View view = inflater.inflate(viewType, viewGroup, false);
+
+        return new ChildViewHolder(view);
+    }
+
+    @Override
     public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType) {
         holder.itemView.setClickable(true);
 
@@ -89,29 +97,6 @@ public class TimesheetAdapter
         }
 
         holder.mSummarize.setText(summarize);
-    }
-
-    @Override
-    public int getGroupCount() {
-        return mProvider.getCount();
-    }
-
-    @Override
-    public int getGroupItemViewType(int groupPosition) {
-        return R.layout.fragment_timesheet_group_item;
-    }
-
-    @Override
-    public long getGroupId(int groupPosition) {
-        return mProvider.get(groupPosition).getGroupId();
-    }
-
-    @Override
-    public ChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(viewType, viewGroup, false);
-
-        return new ChildViewHolder(view);
     }
 
     @Override
@@ -145,13 +130,28 @@ public class TimesheetAdapter
     }
 
     @Override
+    public int getGroupCount() {
+        return mProvider.getCount();
+    }
+
+    @Override
     public int getChildCount(int groupPosition) {
         return mProvider.getCount(groupPosition);
     }
 
     @Override
+    public int getGroupItemViewType(int groupPosition) {
+        return R.layout.fragment_timesheet_group_item;
+    }
+
+    @Override
     public int getChildItemViewType(int groupPosition, int childPosition) {
         return R.layout.fragment_timesheet_child_item;
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return mProvider.get(groupPosition).getGroupId();
     }
 
     @Override
