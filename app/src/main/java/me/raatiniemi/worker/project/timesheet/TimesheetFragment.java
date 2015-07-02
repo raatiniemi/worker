@@ -19,7 +19,6 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpFragment;
-import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
