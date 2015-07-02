@@ -217,26 +217,28 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         //
         // From this position we can later on get the actual group and child position.
         int flatPosition = mRecyclerView.getChildPosition(view);
-        if (RecyclerView.NO_POSITION < flatPosition) {
-            mExpandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(flatPosition);
-
-            // If there's already a selected row, we have
-            // to clear the selection-state.
-            if (null != mSelectedView) {
-                mSelectedView.setSelected(false);
-            }
-
-            // Save the view for reference and put
-            // the view in the selection-state.
-            mSelectedView = view;
-            mSelectedView.setSelected(true);
-
-            // Only start the ActionMode if none has already started.
-            if (null == mActionMode) {
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
-            }
-            return true;
+        if (RecyclerView.NO_POSITION == flatPosition) {
+            Log.i(TAG, "Unable to find position for view");
+            return false;
         }
-        return false;
+
+        mExpandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(flatPosition);
+
+        // If there's already a selected row, we have
+        // to clear the selection-state.
+        if (null != mSelectedView) {
+            mSelectedView.setSelected(false);
+        }
+
+        // Save the view for reference and put
+        // the view in the selection-state.
+        mSelectedView = view;
+        mSelectedView.setSelected(true);
+
+        // Only start the ActionMode if none has already started.
+        if (null == mActionMode) {
+            mActionMode = getActivity().startActionMode(mActionModeCallback);
+        }
+        return true;
     }
 }
