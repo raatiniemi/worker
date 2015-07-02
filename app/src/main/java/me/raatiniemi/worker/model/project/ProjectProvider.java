@@ -277,6 +277,22 @@ public class ProjectProvider {
         });
     }
 
+    public Observable<Time> remove(final Time time) {
+        return Observable.defer(new Func0<Observable<Time>>() {
+            @Override
+            public Observable<Time> call() {
+                getContext().getContentResolver()
+                    .delete(
+                        TimeContract.getItemUri(String.valueOf(time.getId())),
+                        null,
+                        null
+                    );
+
+                return Observable.just(time);
+            }
+        });
+    }
+
     /**
      * Update time item.
      *

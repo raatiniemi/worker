@@ -115,18 +115,19 @@ public class TimesheetAdapter
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
+    public void onBindChildViewHolder(ChildViewHolder holder, final int groupPosition, final int childPosition, int viewType) {
+        TimeChild timeChild = mProvider.get(groupPosition, childPosition);
+        final Time time = timeChild.getTime();
+
         // Register the long click listener on the time item.
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mOnTimesheetListener.onTimeLongClick(v);
+                TimeInAdapterResult result = new TimeInAdapterResult(groupPosition, childPosition, time);
+                mOnTimesheetListener.onTimeLongClick(v, result);
                 return true;
             }
         });
-
-        TimeChild timeChild = mProvider.get(groupPosition, childPosition);
-        Time time = timeChild.getTime();
 
         String title = mTimeFormat.format(new Date(time.getStart()));
         if (!time.isActive()) {
@@ -164,7 +165,7 @@ public class TimesheetAdapter
     }
 
     public interface OnTimesheetListener {
-        boolean onTimeLongClick(View view);
+        boolean onTimeLongClick(View view, TimeInAdapterResult result);
     }
 
     public static class BaseViewHolder extends AbstractExpandableItemViewHolder {
@@ -196,6 +197,32 @@ public class TimesheetAdapter
             mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_child_item);
             mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
             mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
+        }
+    }
+
+    public final static class TimeInAdapterResult {
+        private int mGroup;
+
+        private int mChild;
+
+        private Time mTime;
+
+        public TimeInAdapterResult(int group, int child, Time time) {
+            mGroup = group;
+            mChild = child;
+            mTime = time;
+        }
+
+        public int getGroup() {
+            return mGroup;
+        }
+
+        public int getChild() {
+            return mChild;
+        }
+
+        public Time getTime() {
+            return mTime;
         }
     }
 }

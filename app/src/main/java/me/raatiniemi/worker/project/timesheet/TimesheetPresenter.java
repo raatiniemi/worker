@@ -7,6 +7,8 @@ import java.util.List;
 
 import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.project.ProjectProvider;
+import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import rx.functions.Action1;
 
@@ -44,6 +46,17 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                     // Push the data to the view.
                     // TODO: Differentiate between set and add?
                     getView().addData(groupables);
+                }
+            });
+    }
+
+    public void remove(final TimeInAdapterResult result) {
+        mProvider.remove(result.getTime())
+            .compose(this.<Time>applySchedulers())
+            .subscribe(new Action1<Time>() {
+                @Override
+                public void call(Time time) {
+                    getView().remove(result);
                 }
             });
     }

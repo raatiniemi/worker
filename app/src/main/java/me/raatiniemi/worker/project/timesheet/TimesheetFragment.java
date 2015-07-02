@@ -23,6 +23,7 @@ import me.raatiniemi.worker.mapper.MapperRegistry;
 import me.raatiniemi.worker.mapper.TimeMapper;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
@@ -42,7 +43,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
 
     private RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager;
 
-    private long mExpandablePosition = -1;
+    private TimeInAdapterResult mSelectedItem;
 
     private View mSelectedView;
 
@@ -66,10 +67,9 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
             boolean finish = false;
 
-            long expandablePosition = mExpandablePosition;
             switch (item.getItemId()) {
                 case R.id.actions_project_delete:
-                    remove(expandablePosition);
+                    getPresenter().remove(mSelectedItem);
                     finish = true;
                     break;
                 default:
@@ -77,7 +77,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
                     break;
             }
 
-            mExpandablePosition = -1;
+            mSelectedItem = null;
             if (finish) {
                 actionMode.finish();
             }
@@ -194,35 +194,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
         mLoading = false;
     }
 
-    private void remove(long expandablePosition) {
-        int groupPosition = RecyclerViewExpandableItemManager.getPackedPositionGroup(expandablePosition);
-        int childPosition = RecyclerViewExpandableItemManager.getPackedPositionChild(expandablePosition);
-
-        // TODO: Migrate the mapper remove call to the provider?
-        TimeChild child = mProvider.get(groupPosition, childPosition);
-        Time time = child.getTime();
-
-        TimeMapper timeMapper = MapperRegistry.getTimeMapper();
-        if (timeMapper.remove(time)) {
-            Log.d(TAG, "Removing item: " + groupPosition + ":" + childPosition);
-            mTimesheetAdapter.remove(groupPosition, childPosition);
-        }
+    public void remove(TimeInAdapterResult result) {
+        mTimesheetAdapter.remove(result.getGroup(), result.getChild());
     }
 
     @Override
-    public boolean onTimeLongClick(View view) {
-        // The position of the item within the recycler view is referred to as the flat
-        // position. With this position we have to retrieve the expandable position, which
-        // basically is the group and child within bit shifted long.
-        //
-        // From this position we can later on get the actual group and child position.
-        int flatPosition = mRecyclerView.getChildPosition(view);
-        if (RecyclerView.NO_POSITION == flatPosition) {
-            Log.i(TAG, "Unable to find position for view");
-            return false;
-        }
-
-        mExpandablePosition = mRecyclerViewExpandableItemManager.getExpandablePosition(flatPosition);
+    public boolean onTimeLongClick(View view, TimeInAdapterResult result) {
+        mSelectedItem = result;
 
         // If there's already a selected row, we have
         // to clear the selection-state.
