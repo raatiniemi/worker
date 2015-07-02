@@ -7,6 +7,12 @@ import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 
 public class TimeMapper {
+    /**
+     * Private constructor, instantiation is not allowed.
+     */
+    private TimeMapper() {
+    }
+
     public static Time map(Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndex(TimeColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndex(TimeColumns.PROJECT_ID));
