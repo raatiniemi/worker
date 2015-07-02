@@ -384,7 +384,7 @@ public class ProjectProvider {
                                     do {
                                         Time time = TimeMapper.map(row);
                                         if (null != time) {
-                                            child = new TimeChild((row.getPosition() + offset), time);
+                                            child = new TimeChild(Long.valueOf(id), time);
                                             children.add(child);
                                         }
                                     } while (row.moveToNext());

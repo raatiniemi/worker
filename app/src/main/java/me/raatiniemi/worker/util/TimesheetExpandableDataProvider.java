@@ -86,16 +86,16 @@ public class TimesheetExpandableDataProvider {
     }
 
     public static abstract class Data<T> {
-        private int mId;
+        private long mId;
 
         private T mData;
 
-        public Data(int id, T data) {
+        public Data(long id, T data) {
             mId = id;
             mData = data;
         }
 
-        public int getId() {
+        public long getId() {
             return mId;
         }
 
@@ -105,11 +105,11 @@ public class TimesheetExpandableDataProvider {
     }
 
     public static class TimeGroup extends Data<Date> {
-        public TimeGroup(int id, Date date) {
+        public TimeGroup(long id, Date date) {
             super(id, date);
         }
 
-        public int getGroupId() {
+        public long getGroupId() {
             return getId();
         }
 
@@ -119,11 +119,11 @@ public class TimesheetExpandableDataProvider {
     }
 
     public static class TimeChild extends Data<Time> {
-        public TimeChild(int id, Time time) {
+        public TimeChild(long id, Time time) {
             super(id, time);
         }
 
-        public int getChildId() {
+        public long getChildId() {
             return getId();
         }
 
