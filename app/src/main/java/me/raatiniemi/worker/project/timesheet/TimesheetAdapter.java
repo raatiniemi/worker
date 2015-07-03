@@ -23,6 +23,8 @@ import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
+        TimeGroup,
+        TimeChild,
         ExpandableListAdapter.ExpandableItem<TimeChild>,
         TimesheetAdapter.GroupViewHolder,
         TimesheetAdapter.ChildViewHolder

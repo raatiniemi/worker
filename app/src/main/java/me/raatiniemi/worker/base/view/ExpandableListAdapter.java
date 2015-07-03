@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 abstract public class ExpandableListAdapter<
-    T extends ExpandableListAdapter.ExpandableItem,
+    G,
+    C,
+    T extends ExpandableListAdapter.ExpandableItem<C>,
     GVH extends ViewHolder, // View holder for the group item
     CVH extends ViewHolder // View holder for the child item
     >
