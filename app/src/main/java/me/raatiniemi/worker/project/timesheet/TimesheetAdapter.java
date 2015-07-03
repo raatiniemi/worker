@@ -25,7 +25,7 @@ import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 public class TimesheetAdapter extends ExpandableListAdapter<
         TimeGroup,
         TimeChild,
-        ExpandableListAdapter.ExpandableItem<TimeGroup, TimeChild>,
+        TimesheetAdapter.TimesheetItem,
         TimesheetAdapter.GroupViewHolder,
         TimesheetAdapter.ChildViewHolder
     > {
@@ -171,6 +171,12 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     public interface OnTimesheetListener {
         boolean onTimeLongClick(View view, TimeInAdapterResult result);
+    }
+
+    public static class TimesheetItem extends ExpandableListAdapter.ExpandableItem<TimeGroup, TimeChild> {
+        public TimesheetItem(TimeGroup group) {
+            super(group);
+        }
     }
 
     public static class BaseViewHolder extends AbstractExpandableItemViewHolder {
