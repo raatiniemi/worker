@@ -169,11 +169,12 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     @Override
     public List<TimesheetItem> getData() {
-        return null;
+        return mTimesheetAdapter.getItems();
     }
 
     @Override
     public void setData(List<TimesheetItem> data) {
+        mTimesheetAdapter.setItems(data);
     }
 
     public void addData(List<Groupable> data) {
