@@ -55,6 +55,18 @@ abstract public class ExpandableListAdapter<
         notifyDataSetChanged();
     }
 
+    public void add(List<T> items) {
+        // Check that the items have been initialized.
+        if (null == getItems()) {
+            Log.w(TAG, "Unable to add items, items have not been initialized");
+            return;
+        }
+
+        // Add the items and notify the adapter.
+        getItems().addAll(items);
+        notifyDataSetChanged();
+    }
+
     public void remove(int group, int child) {
         // Check that the items have been initialized.
         if (null == getItems()) {
