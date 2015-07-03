@@ -22,11 +22,11 @@ import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
-        TimeGroup,
-        TimeChild,
-        TimesheetAdapter.TimesheetItem,
-        TimesheetAdapter.GroupViewHolder,
-        TimesheetAdapter.ChildViewHolder
+    TimeGroup,
+    TimeChild,
+    TimesheetAdapter.TimesheetItem,
+    TimesheetAdapter.GroupViewHolder,
+    TimesheetAdapter.ChildViewHolder
     > {
     private static final String TAG = "TimesheetAdapter";
 
