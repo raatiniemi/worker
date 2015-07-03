@@ -93,6 +93,23 @@ abstract public class ExpandableListAdapter<
         return get(group).getGroup();
     }
 
+    /**
+     * Get the child item.
+     *
+     * @param group Index for the group.
+     * @param child Index for the child.
+     * @return Child item.
+     */
+    public C get(int group, int child) {
+        // Check that the group and child indexes exists
+        // before attempting to use them.
+        if (!has(group, child)) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        return get(group).get(child);
+    }
+
     public void add(T item) {
         // Check that the items have been initialized.
         if (null == getItems()) {
