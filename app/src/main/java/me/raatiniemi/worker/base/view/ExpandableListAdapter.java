@@ -38,12 +38,8 @@ abstract public class ExpandableListAdapter<
     }
 
     @Override
-    public int getChildCount(int index) {
-        // Check that the group item actually exists
-        // before attempting to use it.
-        boolean exists = -1 < index && getGroupCount() > index;
-
-        return exists ? getItems().get(index).size() : 0;
+    public int getChildCount(int group) {
+        return has(group) ? get(group).size() : 0;
     }
 
     /**
@@ -124,7 +120,7 @@ abstract public class ExpandableListAdapter<
 
     public void remove(int group, int child) {
         // Check that the child index exists.
-        if (0 > child || getChildCount(group) < child) {
+        if (!has(group, child)) {
             Log.w(TAG, "Unable to remove item, it do not exists");
             return;
         }
