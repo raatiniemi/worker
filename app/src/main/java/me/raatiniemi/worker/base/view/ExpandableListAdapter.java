@@ -23,6 +23,20 @@ abstract public class ExpandableListAdapter<
         mItems = items;
     }
 
+    @Override
+    public int getGroupCount() {
+        return null != getItems() ? getItems().size() : 0;
+    }
+
+    @Override
+    public int getChildCount(int index) {
+        // Check that the group item actually exists
+        // before attempting to use it.
+        boolean exists = -1 < index && getGroupCount() > index;
+
+        return exists ? getItems().get(index).size() : 0;
+    }
+
     public static class ExpandableItem<C> extends ArrayList<C> {
     }
 }
