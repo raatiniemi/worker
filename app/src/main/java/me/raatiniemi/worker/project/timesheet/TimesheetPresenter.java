@@ -9,7 +9,7 @@ import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import rx.functions.Action1;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
@@ -42,19 +42,21 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
 
         // Setup the subscription for retrieving timesheet.
         mSubscription = mProvider.getTimesheet(id, offset)
-            .compose(this.<List<Groupable>>applySchedulers())
-            .subscribe(new Action1<List<Groupable>>() {
+            .compose(this.<List<TimesheetItem>>applySchedulers())
+            .subscribe(new Action1<List<TimesheetItem>>() {
                 @Override
-                public void call(List<Groupable> groupables) {
+                public void call(List<TimesheetItem> items) {
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
                         Log.d(TAG, "View is not attached, skip pushing timesheet");
                         return;
                     }
 
-                    // Push the data to the view.
-                    // TODO: Differentiate between set and add?
-                    getView().addData(groupables);
+                    if (0 == offset) {
+                        getView().setData(items);
+                        return;
+                    }
+                    getView().addData(items);
                 }
             });
     }

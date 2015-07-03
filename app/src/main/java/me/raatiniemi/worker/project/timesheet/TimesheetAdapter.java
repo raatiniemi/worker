@@ -10,7 +10,6 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
@@ -54,11 +53,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         notifyDataSetChanged();
     }
 
-    public void remove(int groupPosition, int childPosition) {
-        mProvider.remove(groupPosition, childPosition);
-        notifyDataSetChanged();
-    }
-
     @Override
     public GroupViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -79,13 +73,13 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType) {
         holder.itemView.setClickable(true);
 
-        TimeGroup group = mProvider.get(groupPosition);
+        TimesheetItem item = getItems().get(groupPosition);
+        TimeGroup group = item.getGroup();
         holder.mTitle.setText(mDateFormat.format(group.getDate()));
 
         long interval = 0;
 
-        List<TimeChild> childItems = mProvider.getItems(groupPosition);
-        for (TimeChild child : childItems) {
+        for (TimeChild child : item) {
             Time time = child.getTime();
             interval += time.getInterval();
         }
@@ -106,7 +100,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, final int groupPosition, final int childPosition, int viewType) {
-        TimeChild timeChild = mProvider.get(groupPosition, childPosition);
+        TimesheetItem item = getItems().get(groupPosition);
+        TimeChild timeChild = item.get(childPosition);
         final Time time = timeChild.getTime();
 
         // Register the long click listener on the time item.
@@ -135,16 +130,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public int getGroupCount() {
-        return mProvider.getCount();
-    }
-
-    @Override
-    public int getChildCount(int groupPosition) {
-        return mProvider.getCount(groupPosition);
-    }
-
-    @Override
     public int getGroupItemViewType(int groupPosition) {
         return R.layout.fragment_timesheet_group_item;
     }
@@ -156,12 +141,14 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getGroupId(int groupPosition) {
-        return mProvider.get(groupPosition).getGroupId();
+        TimesheetItem item = getItems().get(groupPosition);
+        return item.getGroup().getId();
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return mProvider.get(groupPosition, childPosition).getChildId();
+        TimeChild item = getItems().get(groupPosition).get(childPosition);
+        return item.getId();
     }
 
     @Override

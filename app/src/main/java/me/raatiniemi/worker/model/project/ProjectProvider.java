@@ -15,10 +15,10 @@ import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.model.time.TimeCollection;
 import me.raatiniemi.worker.model.time.TimeMapper;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 import rx.Observable;
@@ -336,11 +336,11 @@ public class ProjectProvider {
             });
     }
 
-    public Observable<List<Groupable>> getTimesheet(final Long id, final int offset) {
-        return Observable.defer(new Func0<Observable<List<Groupable>>>() {
+    public Observable<List<TimesheetItem>> getTimesheet(final Long id, final int offset) {
+        return Observable.defer(new Func0<Observable<List<TimesheetItem>>>() {
             @Override
-            public Observable<List<Groupable>> call() {
-                List<Groupable> result = new ArrayList<>();
+            public Observable<List<TimesheetItem>> call() {
+                List<TimesheetItem> items = new ArrayList<>();
 
                 // TODO: Simplify the builing of the URI with query parameters.
                 Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(id))
@@ -370,8 +370,7 @@ public class ProjectProvider {
                                 (cursor.getPosition() + offset),
                                 new Date(cursor.getLong(0))
                             );
-
-                            ArrayList<TimeChild> children = new ArrayList<>();
+                            TimesheetItem item = new TimesheetItem(group);
 
                             for (String id : rows) {
                                 Cursor row = mContext.getContentResolver()
@@ -389,7 +388,7 @@ public class ProjectProvider {
                                         Time time = TimeMapper.map(row);
                                         if (null != time) {
                                             child = new TimeChild(Long.valueOf(id), time);
-                                            children.add(child);
+                                            item.add(child);
                                         }
                                     } while (row.moveToNext());
                                 }
@@ -398,14 +397,14 @@ public class ProjectProvider {
 
                             // Reverse the order of the children to put the latest
                             // item at the top of the list.
-                            Collections.reverse(children);
-                            result.add(new Groupable(group, children));
+                            Collections.reverse(item);
+                            items.add(item);
                         }
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
 
-                return Observable.just(result);
+                return Observable.just(items);
             }
         });
     }

@@ -24,7 +24,6 @@ import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>
     implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
@@ -177,15 +176,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mTimesheetAdapter.setItems(data);
     }
 
-    public void addData(List<Groupable> data) {
+    public void addData(List<TimesheetItem> data) {
         if (0 == data.size()) {
             Log.d(TAG, "No data to add");
             return;
         }
 
-        for (Groupable group : data) {
-            mTimesheetAdapter.addGroup(group);
-        }
+        mTimesheetAdapter.add(data);
 
         // If we are adding addional data we have to unlock the loading,
         // otherwise additional data will not be loaded.
