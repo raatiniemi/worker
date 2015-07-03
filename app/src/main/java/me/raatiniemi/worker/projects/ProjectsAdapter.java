@@ -25,7 +25,7 @@ import me.raatiniemi.worker.util.HintedImageButtonListener;
 /**
  * Adapter for listing available projects.
  */
-public class ProjectsAdapter extends ListAdapter<Project, ProjectCollection, ProjectsAdapter.ItemViewHolder> {
+public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemViewHolder> {
     /**
      * Tag for logging within the ProjectsAdapter.
      */

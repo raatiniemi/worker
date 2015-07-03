@@ -21,14 +21,13 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.project.ProjectActivity;
 import me.raatiniemi.worker.ui.NewProjectFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 
-public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectCollection>
+public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
     implements ProjectsAdapter.OnClockActivityChangeListener, ListAdapter.OnItemClickListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
@@ -76,12 +75,12 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, ProjectColl
     }
 
     @Override
-    public ProjectCollection getData() {
+    public List<Project> getData() {
         return mAdapter.getItems();
     }
 
     @Override
-    public void setData(ProjectCollection data) {
+    public void setData(List<Project> data) {
         mAdapter.setItems(data);
     }
 

@@ -11,10 +11,9 @@ import java.util.List;
  * Base adapter for working with the RecyclerView.
  *
  * @param <T> Reference type for a single item within the list collection.
- * @param <C> Reference type for the list collection.
  * @param <V> Reference type for the view holder.
  */
-abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.ViewHolder>
+abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<V> {
     /**
      * Tag for logging within the ListAdapter.
@@ -29,7 +28,7 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
     /**
      * Data items for the adapter to display.
      */
-    private C mItems;
+    private List<T> mItems;
 
     /**
      * On click listener for list items.
@@ -64,7 +63,7 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
      *
      * @return Data items for the adapter.
      */
-    public C getItems() {
+    public List<T> getItems() {
         return mItems;
     }
 
@@ -73,7 +72,7 @@ abstract public class ListAdapter<T, C extends List<T>, V extends RecyclerView.V
      *
      * @param items Data items for the adapter.
      */
-    public void setItems(C items) {
+    public void setItems(List<T> items) {
         mItems = items;
         notifyDataSetChanged();
     }

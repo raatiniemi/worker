@@ -88,7 +88,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                     }
 
                     // Iterate the projects and collect the index of active projects.
-                    ProjectCollection data = getView().getData();
+                    List<Project> data = getView().getData();
                     for (Project project : data) {
                         if (project.isActive()) {
                             Log.d(TAG, "Queuing refresh of project: " + project.getName());
