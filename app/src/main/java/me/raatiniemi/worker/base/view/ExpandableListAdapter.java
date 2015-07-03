@@ -21,6 +21,9 @@ abstract public class ExpandableListAdapter<
     private List<T> mItems;
 
     public List<T> getItems() {
+        if (null == mItems) {
+            mItems = new ArrayList<>();
+        }
         return mItems;
     }
 
