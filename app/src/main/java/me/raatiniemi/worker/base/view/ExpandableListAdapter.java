@@ -34,7 +34,7 @@ abstract public class ExpandableListAdapter<
 
     @Override
     public int getGroupCount() {
-        return null != getItems() ? getItems().size() : 0;
+        return getItems().size();
     }
 
     @Override
@@ -111,36 +111,18 @@ abstract public class ExpandableListAdapter<
     }
 
     public void add(T item) {
-        // Check that the items have been initialized.
-        if (null == getItems()) {
-            Log.w(TAG, "Unable to add item, items have not been initialized");
-            return;
-        }
-
         // Add the item and notify the adapter.
         getItems().add(item);
         notifyDataSetChanged();
     }
 
     public void add(List<T> items) {
-        // Check that the items have been initialized.
-        if (null == getItems()) {
-            Log.w(TAG, "Unable to add items, items have not been initialized");
-            return;
-        }
-
         // Add the items and notify the adapter.
         getItems().addAll(items);
         notifyDataSetChanged();
     }
 
     public void remove(int group, int child) {
-        // Check that the items have been initialized.
-        if (null == getItems()) {
-            Log.w(TAG, "Unable to remove item, items have not been initialized");
-            return;
-        }
-
         // Check that the child index exists.
         if (0 > child || getChildCount(group) < child) {
             Log.w(TAG, "Unable to remove item, it do not exists");
