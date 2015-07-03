@@ -54,6 +54,32 @@ abstract public class ExpandableListAdapter<
         notifyDataSetChanged();
     }
 
+    public void remove(int group, int child) {
+        // Check that the items have been initialized.
+        if (null == getItems()) {
+            Log.w(TAG, "Unable to remove item, items have not been initialized");
+            return;
+        }
+
+        // Check that the child index exists.
+        if (0 > child || getChildCount(group) < child) {
+            Log.w(TAG, "Unable to remove item, it do not exists");
+            return;
+        }
+
+        // Remove the child item from the group.
+        getItems().get(group).remove(child);
+
+        // If there are no more child items within the
+        // group, remove the group aswell.
+        if (0 == getChildCount(group)) {
+            getItems().remove(group);
+        }
+
+        // Notify the adapter.
+        notifyDataSetChanged();
+    }
+
     public static class ExpandableItem<C> extends ArrayList<C> {
     }
 }
