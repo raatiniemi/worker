@@ -67,6 +67,22 @@ abstract public class ExpandableListAdapter<
         return has(group) && 0 <= child && getChildCount(group) > child;
     }
 
+    /**
+     * Get the expandable item.
+     *
+     * @param group Index for the group.
+     * @return The expandable item.
+     */
+    public T get(int group) {
+        // Check that the group index exists before
+        // attempting to retrieve it.
+        if (!has(group)) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        return getItems().get(group);
+    }
+
     public void add(T item) {
         // Check that the items have been initialized.
         if (null == getItems()) {
