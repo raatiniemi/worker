@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,6 +65,9 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
      * @return Data items for the adapter.
      */
     public List<T> getItems() {
+        if (null == mItems) {
+            mItems = new ArrayList<>();
+        }
         return mItems;
     }
 
@@ -84,7 +88,7 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
      */
     @Override
     public int getItemCount() {
-        return null != getItems() ? getItems().size() : 0;
+        return getItems().size();
     }
 
     /**
