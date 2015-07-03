@@ -56,6 +56,17 @@ abstract public class ExpandableListAdapter<
         return 0 <= group && getGroupCount() > group;
     }
 
+    /**
+     * Check whether a child index within a group exists.
+     *
+     * @param group Index for the group.
+     * @param child Child index to check.
+     * @return True if child index exists within the group, otherwise false.
+     */
+    public boolean has(int group, int child) {
+        return has(group) && 0 <= child && getChildCount(group) > child;
+    }
+
     public void add(T item) {
         // Check that the items have been initialized.
         if (null == getItems()) {
