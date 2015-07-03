@@ -20,12 +20,13 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.model.project.ProjectProvider;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 
-public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Groupable>>
+public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>
     implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
@@ -167,12 +168,12 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Grou
     }
 
     @Override
-    public List<Groupable> getData() {
+    public List<TimesheetItem> getData() {
         return null;
     }
 
     @Override
-    public void setData(List<Groupable> data) {
+    public void setData(List<TimesheetItem> data) {
     }
 
     public void addData(List<Groupable> data) {
