@@ -1,10 +1,9 @@
 package me.raatiniemi.worker.util;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter;
 
 public class TimesheetExpandableDataProvider {
     private List<Groupable> mData;
@@ -22,7 +21,7 @@ public class TimesheetExpandableDataProvider {
         return getItems(group).size();
     }
 
-    public List<TimeChild> getItems(int group) {
+    public List<TimesheetAdapter.TimeChild> getItems(int group) {
         if (group < 0 || group >= getCount()) {
             throw new IndexOutOfBoundsException("Group position " + group);
         }
@@ -34,7 +33,7 @@ public class TimesheetExpandableDataProvider {
         mData = data;
     }
 
-    public TimeGroup get(int group) {
+    public TimesheetAdapter.TimeGroup get(int group) {
         if (group < 0 || group >= getCount()) {
             throw new IndexOutOfBoundsException("Group position " + group);
         }
@@ -42,7 +41,7 @@ public class TimesheetExpandableDataProvider {
         return mData.get(group).getHeader();
     }
 
-    public TimeChild get(int group, int child) {
+    public TimesheetAdapter.TimeChild get(int group, int child) {
         if (child < 0 || child >= getCount(group)) {
             throw new IndexOutOfBoundsException("Child position " + child);
         }
@@ -67,68 +66,22 @@ public class TimesheetExpandableDataProvider {
     }
 
     public static class Groupable {
-        private TimeGroup mHeader;
+        private TimesheetAdapter.TimeGroup mHeader;
 
-        private List<TimeChild> mItems;
+        private List<TimesheetAdapter.TimeChild> mItems;
 
-        public Groupable(TimeGroup header, List<TimeChild> items) {
+        public Groupable(TimesheetAdapter.TimeGroup header, List<TimesheetAdapter.TimeChild> items) {
             mHeader = header;
             mItems = items;
         }
 
-        public TimeGroup getHeader() {
+        public TimesheetAdapter.TimeGroup getHeader() {
             return mHeader;
         }
 
-        public List<TimeChild> getItems() {
+        public List<TimesheetAdapter.TimeChild> getItems() {
             return mItems;
         }
     }
 
-    public static abstract class Data<T> {
-        private long mId;
-
-        private T mData;
-
-        public Data(long id, T data) {
-            mId = id;
-            mData = data;
-        }
-
-        public long getId() {
-            return mId;
-        }
-
-        public T getData() {
-            return mData;
-        }
-    }
-
-    public static class TimeGroup extends Data<Date> {
-        public TimeGroup(long id, Date date) {
-            super(id, date);
-        }
-
-        public long getGroupId() {
-            return getId();
-        }
-
-        public Date getDate() {
-            return getData();
-        }
-    }
-
-    public static class TimeChild extends Data<Time> {
-        public TimeChild(long id, Time time) {
-            super(id, time);
-        }
-
-        public long getChildId() {
-            return getId();
-        }
-
-        public Time getTime() {
-            return getData();
-        }
-    }
 }

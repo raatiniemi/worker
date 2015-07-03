@@ -15,11 +15,11 @@ import java.util.Locale;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ExpandableListAdapter;
 import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeChild;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeGroup;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
     TimeGroup,
@@ -221,6 +221,53 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         public Time getTime() {
             return mTime;
+        }
+    }
+
+    public static abstract class Data<T> {
+        private long mId;
+
+        private T mData;
+
+        public Data(long id, T data) {
+            mId = id;
+            mData = data;
+        }
+
+        public long getId() {
+            return mId;
+        }
+
+        public T getData() {
+            return mData;
+        }
+    }
+
+    public static class TimeGroup extends Data<Date> {
+        public TimeGroup(long id, Date date) {
+            super(id, date);
+        }
+
+        public long getGroupId() {
+            return getId();
+        }
+
+        public Date getDate() {
+            return getData();
+        }
+    }
+
+    public static class TimeChild extends Data<Time> {
+        public TimeChild(long id, Time time) {
+            super(id, time);
+        }
+
+        public long getChildId() {
+            return getId();
+        }
+
+        public Time getTime() {
+            return getData();
         }
     }
 }
