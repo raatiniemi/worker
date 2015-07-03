@@ -17,7 +17,6 @@ import java.util.Date;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.model.project.ProjectComparator;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;

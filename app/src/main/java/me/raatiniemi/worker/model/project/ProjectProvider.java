@@ -54,11 +54,11 @@ public class ProjectProvider {
      *
      * @return Observable emitting the projects.
      */
-    public Observable<ProjectCollection> getProjects() {
-        return Observable.defer(new Func0<Observable<ProjectCollection>>() {
+    public Observable<List<Project>> getProjects() {
+        return Observable.defer(new Func0<Observable<List<Project>>>() {
             @Override
-            public Observable<ProjectCollection> call() {
-                ProjectCollection projects = new ProjectCollection();
+            public Observable<List<Project>> call() {
+                List<Project> projects = new ArrayList<>();
 
                 Cursor cursor = getContext().getContentResolver()
                     .query(

@@ -10,7 +10,6 @@ import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.model.project.ProjectCollection;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import rx.Observable;
 import rx.Subscription;
@@ -132,9 +131,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
         // Setup the subscription for retrieving projects.
         mSubscription = mProvider.getProjects()
-            .map(new Func1<ProjectCollection, ProjectCollection>() {
+            .map(new Func1<List<Project>, List<Project>>() {
                 @Override
-                public ProjectCollection call(ProjectCollection projects) {
+                public List<Project> call(List<Project> projects) {
                     // Populate the projects with the registered time.
                     for (Project project : projects) {
                         int index = projects.indexOf(project);
@@ -146,10 +145,10 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                     return projects;
                 }
             })
-            .compose(this.<ProjectCollection>applySchedulers())
-            .subscribe(new Action1<ProjectCollection>() {
+            .compose(this.<List<Project>>applySchedulers())
+            .subscribe(new Action1<List<Project>>() {
                 @Override
-                public void call(ProjectCollection projects) {
+                public void call(List<Project> projects) {
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
                         Log.d(TAG, "View is not attached, skip pushing projects");
