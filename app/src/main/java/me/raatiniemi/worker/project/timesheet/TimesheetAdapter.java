@@ -18,8 +18,6 @@ import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeChild;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeGroup;
 import me.raatiniemi.worker.util.DateIntervalFormat;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
     TimeGroup,
@@ -30,27 +28,19 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     > {
     private static final String TAG = "TimesheetAdapter";
 
-    private TimesheetExpandableDataProvider mProvider;
-
     private SimpleDateFormat mDateFormat;
 
     private SimpleDateFormat mTimeFormat;
 
     private OnTimesheetListener mOnTimesheetListener;
 
-    public TimesheetAdapter(TimesheetExpandableDataProvider provider, OnTimesheetListener listener) {
-        mProvider = provider;
+    public TimesheetAdapter(OnTimesheetListener listener) {
         mOnTimesheetListener = listener;
 
         mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
         mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         setHasStableIds(true);
-    }
-
-    public void addGroup(Groupable groupable) {
-        mProvider.add(groupable);
-        notifyDataSetChanged();
     }
 
     @Override

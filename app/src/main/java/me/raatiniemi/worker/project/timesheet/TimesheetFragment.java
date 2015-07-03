@@ -23,7 +23,6 @@ import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.projects.ProjectsFragment;
-import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>
     implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
@@ -32,8 +31,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     private LinearLayoutManager mLinearLayoutManager;
 
     private RecyclerView mRecyclerView;
-
-    private TimesheetExpandableDataProvider mProvider;
 
     private TimesheetAdapter mTimesheetAdapter;
 
@@ -108,11 +105,9 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mProvider = new TimesheetExpandableDataProvider();
-
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
-        mTimesheetAdapter = new TimesheetAdapter(mProvider, this);
+        mTimesheetAdapter = new TimesheetAdapter(this);
         mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
