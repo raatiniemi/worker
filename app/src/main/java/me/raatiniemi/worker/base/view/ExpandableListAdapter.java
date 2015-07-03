@@ -83,6 +83,16 @@ abstract public class ExpandableListAdapter<
         return getItems().get(group);
     }
 
+    /**
+     * Get the group item.
+     *
+     * @param group Index for the group.
+     * @return Group item.
+     */
+    public G getGroup(int group) {
+        return get(group).getGroup();
+    }
+
     public void add(T item) {
         // Check that the items have been initialized.
         if (null == getItems()) {
