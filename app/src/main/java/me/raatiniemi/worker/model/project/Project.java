@@ -1,12 +1,13 @@
 package me.raatiniemi.worker.model.project;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import me.raatiniemi.worker.domain.DomainObject;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
 import me.raatiniemi.worker.model.time.Time;
-import me.raatiniemi.worker.model.time.TimeCollection;
 
 /**
  * Domain object for the Project.
@@ -30,7 +31,7 @@ public class Project extends DomainObject {
     /**
      * Time registered for the project.
      */
-    private TimeCollection mTime;
+    private List<Time> mTime;
 
     /**
      * Initialize an existing project.
@@ -42,7 +43,7 @@ public class Project extends DomainObject {
         super(id);
 
         setName(name);
-        setTime(new TimeCollection());
+        setTime(new ArrayList<Time>());
         setArchived((long) 0);
     }
 
@@ -114,7 +115,7 @@ public class Project extends DomainObject {
      *
      * @return Project time.
      */
-    public TimeCollection getTime() {
+    public List<Time> getTime() {
         return mTime;
     }
 
@@ -123,7 +124,7 @@ public class Project extends DomainObject {
      *
      * @param time Project time.
      */
-    private void setTime(TimeCollection time) {
+    private void setTime(List<Time> time) {
         mTime = time;
     }
 
@@ -141,7 +142,7 @@ public class Project extends DomainObject {
      *
      * @param time Time to add to the project.
      */
-    public void addTime(TimeCollection time) {
+    public void addTime(List<Time> time) {
         getTime().addAll(time);
     }
 
@@ -154,7 +155,7 @@ public class Project extends DomainObject {
         // Total time in number of seconds.
         long total = 0;
 
-        TimeCollection time = getTime();
+        List<Time> time = getTime();
         if (null != time && !time.isEmpty()) {
             // Iterate of the registered time and
             // retrieve the time interval.
@@ -191,7 +192,7 @@ public class Project extends DomainObject {
      * @return Time domain object, or null if no time have been registered.
      */
     private Time getActiveTime() {
-        TimeCollection time = getTime();
+        List<Time> time = getTime();
 
         if (time == null || time.isEmpty()) {
             return null;
