@@ -15,11 +15,10 @@ import java.util.Locale;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ExpandableListAdapter;
 import me.raatiniemi.worker.model.time.Time;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeGroup;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
-    TimeGroup,
+    Date,
     Time,
     TimesheetAdapter.TimesheetItem,
     TimesheetAdapter.GroupViewHolder,
@@ -63,8 +62,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         holder.itemView.setClickable(true);
 
         TimesheetItem item = getItems().get(groupPosition);
-        TimeGroup group = item.getGroup();
-        holder.mTitle.setText(mDateFormat.format(group.getDate()));
+        Date date = item.getGroup();
+        holder.mTitle.setText(mDateFormat.format(date));
 
         long interval = 0;
 
@@ -128,8 +127,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getGroupId(int groupPosition) {
-        TimesheetItem item = getItems().get(groupPosition);
-        return item.getGroup().getId();
+        Date item = getItems().get(groupPosition).getGroup();
+        return item.getTime();
     }
 
     @Override
@@ -147,8 +146,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         boolean onTimeLongClick(View view, TimeInAdapterResult result);
     }
 
-    public static class TimesheetItem extends ExpandableListAdapter.ExpandableItem<TimeGroup, Time> {
-        public TimesheetItem(TimeGroup group) {
+    public static class TimesheetItem extends ExpandableListAdapter.ExpandableItem<Date, Time> {
+        public TimesheetItem(Date group) {
             super(group);
         }
     }
@@ -208,35 +207,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         public Time getTime() {
             return mTime;
-        }
-    }
-
-    public static abstract class Data<T> {
-        private long mId;
-
-        private T mData;
-
-        public Data(long id, T data) {
-            mId = id;
-            mData = data;
-        }
-
-        public long getId() {
-            return mId;
-        }
-
-        public T getData() {
-            return mData;
-        }
-    }
-
-    public static class TimeGroup extends Data<Date> {
-        public TimeGroup(long id, Date date) {
-            super(id, date);
-        }
-
-        public Date getDate() {
-            return getData();
         }
     }
 }

@@ -18,7 +18,6 @@ import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeGroup;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -362,13 +361,9 @@ public class ProjectProvider {
                         String grouped = cursor.getString(1);
                         String[] rows = grouped.split(",");
                         if (0 < rows.length) {
-                            // Instantiate the group. The first column should be
-                            // the lowest timestamp within the interval.
-                            TimeGroup group = new TimeGroup(
-                                (cursor.getPosition() + offset),
+                            TimesheetItem item = new TimesheetItem(
                                 new Date(cursor.getLong(0))
                             );
-                            TimesheetItem item = new TimesheetItem(group);
 
                             for (String id : rows) {
                                 Cursor row = mContext.getContentResolver()
