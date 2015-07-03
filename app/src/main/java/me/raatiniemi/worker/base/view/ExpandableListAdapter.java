@@ -26,6 +26,7 @@ abstract public class ExpandableListAdapter<
 
     public void setItems(List<T> items) {
         mItems = items;
+        notifyDataSetChanged();
     }
 
     @Override
