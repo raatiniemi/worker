@@ -87,5 +87,9 @@ abstract public class ExpandableListAdapter<
         public ExpandableItem(G group) {
             mGroup = group;
         }
+
+        public G getGroup() {
+            return mGroup;
+        }
     }
 }
