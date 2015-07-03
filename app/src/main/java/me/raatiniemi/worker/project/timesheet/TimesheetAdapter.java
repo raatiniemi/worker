@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.text.SimpleDateFormat;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.base.view.ExpandableListAdapter;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider;
@@ -22,8 +22,10 @@ import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.Groupable;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeChild;
 import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 
-public class TimesheetAdapter
-    extends AbstractExpandableItemAdapter<TimesheetAdapter.GroupViewHolder, TimesheetAdapter.ChildViewHolder> {
+public class TimesheetAdapter extends ExpandableListAdapter<
+        TimesheetAdapter.GroupViewHolder,
+        TimesheetAdapter.ChildViewHolder
+    > {
     private static final String TAG = "TimesheetAdapter";
 
     private TimesheetExpandableDataProvider mProvider;
