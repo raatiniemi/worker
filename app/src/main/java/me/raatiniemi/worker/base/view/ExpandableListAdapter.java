@@ -11,7 +11,7 @@ import java.util.List;
 abstract public class ExpandableListAdapter<
     G,
     C,
-    T extends ExpandableListAdapter.ExpandableItem<C>,
+    T extends ExpandableListAdapter.ExpandableItem<G, C>,
     GVH extends ViewHolder, // View holder for the group item
     CVH extends ViewHolder // View holder for the child item
     >
@@ -80,6 +80,11 @@ abstract public class ExpandableListAdapter<
         notifyDataSetChanged();
     }
 
-    public static class ExpandableItem<C> extends ArrayList<C> {
+    public static class ExpandableItem<G, C> extends ArrayList<C> {
+        private G mGroup;
+
+        public ExpandableItem(G group) {
+            mGroup = group;
+        }
     }
 }

@@ -25,7 +25,7 @@ import me.raatiniemi.worker.util.TimesheetExpandableDataProvider.TimeGroup;
 public class TimesheetAdapter extends ExpandableListAdapter<
         TimeGroup,
         TimeChild,
-        ExpandableListAdapter.ExpandableItem<TimeChild>,
+        ExpandableListAdapter.ExpandableItem<TimeGroup, TimeChild>,
         TimesheetAdapter.GroupViewHolder,
         TimesheetAdapter.ChildViewHolder
     > {
