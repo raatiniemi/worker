@@ -42,6 +42,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
      * Constructor.
      *
      * @param context Context used with the presenter.
+     * @param provider Provider for working with projects.
      */
     public ProjectsPresenter(Context context, ProjectProvider provider) {
         super(context);
