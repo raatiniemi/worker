@@ -18,7 +18,6 @@ import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeChild;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeGroup;
 import rx.Observable;
 import rx.functions.Func0;
@@ -381,13 +380,10 @@ public class ProjectProvider {
                                         null
                                     );
                                 if (row.moveToFirst()) {
-                                    TimeChild child;
-
                                     do {
                                         Time time = TimeMapper.map(row);
                                         if (null != time) {
-                                            child = new TimeChild(Long.valueOf(id), time);
-                                            item.add(child);
+                                            item.add(time);
                                         }
                                     } while (row.moveToNext());
                                 }

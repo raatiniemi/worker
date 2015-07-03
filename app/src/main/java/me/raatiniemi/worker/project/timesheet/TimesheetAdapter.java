@@ -15,13 +15,12 @@ import java.util.Locale;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ExpandableListAdapter;
 import me.raatiniemi.worker.model.time.Time;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeChild;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeGroup;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
     TimeGroup,
-    TimeChild,
+    Time,
     TimesheetAdapter.TimesheetItem,
     TimesheetAdapter.GroupViewHolder,
     TimesheetAdapter.ChildViewHolder
@@ -69,8 +68,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         long interval = 0;
 
-        for (TimeChild child : item) {
-            Time time = child.getTime();
+        for (Time time : item) {
             interval += time.getInterval();
         }
 
@@ -91,8 +89,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, final int groupPosition, final int childPosition, int viewType) {
         TimesheetItem item = getItems().get(groupPosition);
-        TimeChild timeChild = item.get(childPosition);
-        final Time time = timeChild.getTime();
+        final Time time = item.get(childPosition);
 
         // Register the long click listener on the time item.
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -137,7 +134,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        TimeChild item = getItems().get(groupPosition).get(childPosition);
+        Time item = getItems().get(groupPosition).get(childPosition);
         return item.getId();
     }
 
@@ -150,7 +147,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         boolean onTimeLongClick(View view, TimeInAdapterResult result);
     }
 
-    public static class TimesheetItem extends ExpandableListAdapter.ExpandableItem<TimeGroup, TimeChild> {
+    public static class TimesheetItem extends ExpandableListAdapter.ExpandableItem<TimeGroup, Time> {
         public TimesheetItem(TimeGroup group) {
             super(group);
         }
@@ -239,16 +236,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         }
 
         public Date getDate() {
-            return getData();
-        }
-    }
-
-    public static class TimeChild extends Data<Time> {
-        public TimeChild(long id, Time time) {
-            super(id, time);
-        }
-
-        public Time getTime() {
             return getData();
         }
     }
