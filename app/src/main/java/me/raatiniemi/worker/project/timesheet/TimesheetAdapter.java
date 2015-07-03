@@ -238,10 +238,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
             super(id, date);
         }
 
-        public long getGroupId() {
-            return getId();
-        }
-
         public Date getDate() {
             return getData();
         }
@@ -250,10 +246,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     public static class TimeChild extends Data<Time> {
         public TimeChild(long id, Time time) {
             super(id, time);
-        }
-
-        public long getChildId() {
-            return getId();
         }
 
         public Time getTime() {
