@@ -46,6 +46,16 @@ abstract public class ExpandableListAdapter<
         return exists ? getItems().get(index).size() : 0;
     }
 
+    /**
+     * Check whether a group index exists.
+     *
+     * @param group Group index to check.
+     * @return True if group index exists, otherwise false.
+     */
+    public boolean has(int group) {
+        return 0 <= group && getGroupCount() > group;
+    }
+
     public void add(T item) {
         // Check that the items have been initialized.
         if (null == getItems()) {
