@@ -18,8 +18,17 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
      */
     private static final String TAG = "TimesheetPresenter";
 
+    /**
+     * Provider for working with projects.
+     */
     private ProjectProvider mProvider;
 
+    /**
+     * Constructor.
+     *
+     * @param context Context used with the presenter.
+     * @param provider Provider for working with projects.
+     */
     public TimesheetPresenter(Context context, ProjectProvider provider) {
         super(context);
 
