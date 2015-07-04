@@ -134,6 +134,20 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
+     * Add collection of items to the adapter.
+     *
+     * @param items Items to add to the adapter.
+     */
+    public int add(List<T> items) {
+        int position = getItemCount();
+        getItems().addAll(items);
+
+        notifyItemRangeInserted(position, items.size());
+
+        return position;
+    }
+
+    /**
      * Retrieve the click listener for list items.
      *
      * @return Click listener for list items, or null if none has been supplied.
