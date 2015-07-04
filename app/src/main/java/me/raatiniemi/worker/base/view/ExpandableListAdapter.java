@@ -165,6 +165,23 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
+     * Remove group item in the adapter.
+     *
+     * @param group Index for group to be removed.
+     */
+    public void remove(int group) {
+        // Check that the group index exists.
+        if (!has(group)) {
+            Log.w(TAG, "Unable to remove group, it do not exists");
+            return;
+        }
+
+        // Remove the group and notify the change.
+        getItems().remove(group);
+        notifyDataSetChanged();
+    }
+
+    /**
      * Remove child item from group in the adapter.
      *
      * @param group Index for group containing the child.
