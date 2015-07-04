@@ -195,12 +195,12 @@ abstract public class ExpandableListAdapter<
         }
 
         // Remove the child item from the group.
-        getItems().get(group).remove(child);
+        get(group).remove(child);
 
         // If there are no more child items within the
         // group, remove the group aswell.
         if (0 == getChildCount(group)) {
-            getItems().remove(group);
+            remove(group);
         }
 
         // Notify the adapter.
