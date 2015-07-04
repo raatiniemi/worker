@@ -22,12 +22,12 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     private static final String TAG = "ListAdapter";
 
     /**
-     * Context to use.
+     * Context used with the adapter.
      */
     private Context mContext;
 
     /**
-     * Data items for the adapter to display.
+     * Items for the adapter to display.
      */
     private List<T> mItems;
 
@@ -44,23 +44,23 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * Construct the ListAdapter.
      *
-     * @param context Context to use.
+     * @param context Context used with the adapter.
      */
     public ListAdapter(Context context) {
         mContext = context;
     }
 
     /**
-     * Retrieve the context to use.
+     * Get the adapter context.
      *
-     * @return Context to use.
+     * @return Adapter context.
      */
     protected Context getContext() {
         return mContext;
     }
 
     /**
-     * Get the items from the adapter.
+     * Get the items from the adapter, initialize items if uninitialized.
      *
      * @return Items from the adapter.
      */
@@ -82,9 +82,9 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Retrieve the number of items.
+     * Get the number of items within the adapter.
      *
-     * @return Number of items.
+     * @return Number of items within the adapter.
      */
     @Override
     public int getItemCount() {
@@ -92,59 +92,64 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Get item from the data container.
+     * Get item from the adapter.
      *
-     * @param position Position of the item to retrieve.
-     * @return Item at the supplied position.
+     * @param index Index of the item to retrieve.
+     * @return Item at the supplied index.
      */
-    public T get(int position) {
-        return getItems().get(position);
+    public T get(int index) {
+        return getItems().get(index);
     }
 
     /**
-     * Update item at a given position within the data container.
+     * Update item at a given index within the adapter.
      *
-     * @param position Position of the item to update.
-     * @param item Item to update the data container position.
+     * @param index Index of the item to update.
+     * @param item Item to update at the index within the adapter.
      */
-    public void set(int position, T item) {
-        getItems().set(position, item);
+    public void set(int index, T item) {
+        getItems().set(index, item);
 
         // Notify the adapter that data item have changed.
-        notifyItemChanged(position);
+        notifyItemChanged(index);
     }
 
     /**
-     * Add an item to the data container.
+     * Add an item to the adapter.
      *
-     * @param item Item to add to the data container.
-     * @return Position of the new item within the container.fa
+     * @param item Item to add to the adapter.
+     * @return Index of the new item within the adapter.
      */
     public int add(T item) {
-        // Retrieve the position for the new item by retrieving the number of
-        // items within the container before adding the new item.
-        int position = getItemCount();
+        // Retrieve the index for the new item by retrieving the number of
+        // items within the adapter before adding the new item.
+        int index = getItemCount();
         getItems().add(item);
 
         // Notify the adapter a new item have been added.
-        notifyItemInserted(position);
+        notifyItemInserted(index);
 
-        // Return the position for the new item.
-        return position;
+        // Return the index for the new item.
+        return index;
     }
 
     /**
      * Add collection of items to the adapter.
      *
      * @param items Items to add to the adapter.
+     * @return Index at which the new items are being inserted.
      */
     public int add(List<T> items) {
-        int position = getItemCount();
+        // Retrieve the current count to have a reference point
+        // at which location the new items will be inserted.
+        int index = getItemCount();
         getItems().addAll(items);
 
-        notifyItemRangeInserted(position, items.size());
+        // Notify and refresh the new items.
+        notifyItemRangeInserted(index, items.size());
 
-        return position;
+        // Return the reference point for the location of the new items.
+        return index;
     }
 
     /**
