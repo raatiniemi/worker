@@ -2,6 +2,11 @@ package me.raatiniemi.worker.base.view;
 
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
 
+/**
+ * Base for the model-view-presenter activity.
+ *
+ * @param <P> Presenter used with the activity.
+ */
 abstract public class MvpActivity<P extends MvpPresenter> extends BaseActivity implements MvpView {
     /**
      * Instance for the presenter.

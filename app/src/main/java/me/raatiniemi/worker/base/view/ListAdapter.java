@@ -17,7 +17,7 @@ import java.util.List;
 abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     extends RecyclerView.Adapter<V> {
     /**
-     * Tag for logging within the ListAdapter.
+     * Tag for logging.
      */
     private static final String TAG = "ListAdapter";
 
@@ -60,9 +60,9 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Retrieve the data items for the adapter.
+     * Get the items from the adapter.
      *
-     * @return Data items for the adapter.
+     * @return Items from the adapter.
      */
     public List<T> getItems() {
         if (null == mItems) {
@@ -72,9 +72,9 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Set the data items for the adapter.
+     * Set items for the adapter.
      *
-     * @param items Data items for the adapter.
+     * @param items Items for the adapter.
      */
     public void setItems(List<T> items) {
         mItems = items;
@@ -82,9 +82,9 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Retrieve the number of items within the data container.
+     * Retrieve the number of items.
      *
-     * @return Number of items within the data container.
+     * @return Number of items.
      */
     @Override
     public int getItemCount() {
