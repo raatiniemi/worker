@@ -58,12 +58,12 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType) {
-        holder.itemView.setClickable(true);
+    public void onBindGroupViewHolder(GroupViewHolder vh, int group, int viewType) {
+        vh.itemView.setClickable(true);
 
-        TimesheetItem item = getItems().get(groupPosition);
+        TimesheetItem item = getItems().get(group);
         Date date = item.getGroup();
-        holder.mTitle.setText(mDateFormat.format(date));
+        vh.mTitle.setText(mDateFormat.format(date));
 
         long interval = 0;
 
@@ -82,19 +82,19 @@ public class TimesheetAdapter extends ExpandableListAdapter<
             summarize += String.format(format, difference);
         }
 
-        holder.mSummarize.setText(summarize);
+        vh.mSummarize.setText(summarize);
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder holder, final int groupPosition, final int childPosition, int viewType) {
-        TimesheetItem item = getItems().get(groupPosition);
-        final Time time = item.get(childPosition);
+    public void onBindChildViewHolder(ChildViewHolder vh, final int group, final int child, int viewType) {
+        TimesheetItem item = getItems().get(group);
+        final Time time = item.get(child);
 
         // Register the long click listener on the time item.
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                TimeInAdapterResult result = new TimeInAdapterResult(groupPosition, childPosition, time);
+                TimeInAdapterResult result = new TimeInAdapterResult(group, child, time);
                 mOnTimesheetListener.onTimeLongClick(v, result);
                 return true;
             }
@@ -104,9 +104,9 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         if (!time.isActive()) {
             title += " - " + mTimeFormat.format(new Date(time.getStop()));
         }
-        holder.mTitle.setText(title);
+        vh.mTitle.setText(title);
 
-        holder.mSummarize.setText(
+        vh.mSummarize.setText(
             DateIntervalFormat.format(
                 time.getInterval(),
                 DateIntervalFormat.Type.FRACTION_HOURS
@@ -116,29 +116,29 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public int getGroupItemViewType(int groupPosition) {
+    public int getGroupItemViewType(int group) {
         return R.layout.fragment_timesheet_group_item;
     }
 
     @Override
-    public int getChildItemViewType(int groupPosition, int childPosition) {
+    public int getChildItemViewType(int group, int child) {
         return R.layout.fragment_timesheet_child_item;
     }
 
     @Override
-    public long getGroupId(int groupPosition) {
-        Date item = getItems().get(groupPosition).getGroup();
+    public long getGroupId(int group) {
+        Date item = getItems().get(group).getGroup();
         return item.getTime();
     }
 
     @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        Time item = getItems().get(groupPosition).get(childPosition);
+    public long getChildId(int group, int child) {
+        Time item = getItems().get(group).get(child);
         return item.getId();
     }
 
     @Override
-    public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
+    public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder vh, int group, int x, int y, boolean expand) {
         return true;
     }
 
