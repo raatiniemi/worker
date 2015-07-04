@@ -61,13 +61,12 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     public void onBindGroupViewHolder(GroupViewHolder vh, int group, int viewType) {
         vh.itemView.setClickable(true);
 
-        TimesheetItem item = getItems().get(group);
-        Date date = item.getGroup();
+        Date date = getGroup(group);
         vh.mTitle.setText(mDateFormat.format(date));
 
         long interval = 0;
 
-        for (Time time : item) {
+        for (Time time : get(group)) {
             interval += time.getInterval();
         }
 
@@ -87,8 +86,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindChildViewHolder(ChildViewHolder vh, final int group, final int child, int viewType) {
-        TimesheetItem item = getItems().get(group);
-        final Time time = item.get(child);
+        final Time time = get(group, child);
 
         // Register the long click listener on the time item.
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -127,14 +125,14 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getGroupId(int group) {
-        Date item = getItems().get(group).getGroup();
-        return item.getTime();
+        Date date = getGroup(group);
+        return date.getTime();
     }
 
     @Override
     public long getChildId(int group, int child) {
-        Time item = getItems().get(group).get(child);
-        return item.getId();
+        Time time = get(group, child);
+        return time.getId();
     }
 
     @Override
