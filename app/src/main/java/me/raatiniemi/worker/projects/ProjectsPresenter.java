@@ -184,8 +184,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
             }, new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {
-                    // TODO: Better and more extendable error handling.
-                    getView().showCreateProjectError();
+                    getView().showError(throwable);
                 }
             });
     }
@@ -214,8 +213,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
             }, new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {
-                    // TODO: Better and more extendable error handling.
-                    getView().showClockActivityError();
+                    getView().showError(throwable);
                 }
             });
     }

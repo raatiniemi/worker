@@ -20,6 +20,8 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.base.view.MvpFragment;
+import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectProvider;
 import me.raatiniemi.worker.project.ProjectActivity;
@@ -72,6 +74,31 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     @Override
     protected ProjectsPresenter createPresenter() {
         return new ProjectsPresenter(getActivity(), new ProjectProvider(getActivity()));
+    }
+
+    @Override
+    public void showError(Throwable e) {
+        if (!(e instanceof ProjectAlreadyExistsException) && !(e instanceof DomainException)) {
+            super.showError(e);
+            return;
+        }
+
+        int title = R.string.projects_item_project_clock_out_before_clock_in_title;
+        int message = R.string.projects_item_project_clock_out_before_clock_in_description;
+        if (e instanceof ProjectAlreadyExistsException) {
+            title = R.string.fragment_new_project_create_project_already_exists_title;
+            message = R.string.fragment_new_project_create_project_already_exists_description;
+        }
+
+        new AlertDialog.Builder(getActivity())
+            .setTitle(getString(title))
+            .setMessage(getString(message))
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing...
+                }
+            })
+            .show();
     }
 
     @Override
@@ -137,31 +164,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         for (Integer position : positions) {
             mAdapter.notifyItemChanged(position);
         }
-    }
-
-    void showCreateProjectError() {
-        // Project name already exists, display error message to user.
-        new AlertDialog.Builder(getActivity())
-            .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
-            .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // Do nothing...
-                }
-            })
-            .show();
-    }
-
-    void showClockActivityError() {
-        new AlertDialog.Builder(getActivity())
-            .setTitle(getString(R.string.projects_item_project_clock_out_before_clock_in_title))
-            .setMessage(getString(R.string.projects_item_project_clock_out_before_clock_in_description))
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // Do nothing...
-                }
-            })
-            .show();
     }
 
     @Override
