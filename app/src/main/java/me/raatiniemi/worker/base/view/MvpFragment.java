@@ -1,5 +1,8 @@
 package me.raatiniemi.worker.base.view;
 
+import android.text.TextUtils;
+import android.widget.Toast;
+
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
 
 /**
@@ -46,6 +49,23 @@ abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragmen
      * @param data Data for the fragment.
      */
     abstract public void setData(T data);
+
+    /**
+     * Display an error message to the user.
+     *
+     * @param e Exception has been thrown.
+     */
+    public void showError(Throwable e) {
+        // Check if the exception message have been populated,
+        // otherwise use the default error message.
+        String message = e.getMessage();
+        if (TextUtils.isEmpty(message)) {
+            message = "An unknown error has occurred";
+        }
+
+        // Display the error message.
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * Handles clean up when the fragment view is destroyed.
