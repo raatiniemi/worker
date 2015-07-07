@@ -304,19 +304,26 @@ public class ProjectProvider {
     }
 
     public Observable<Time> remove(final Time time) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                getContext().getContentResolver()
-                    .delete(
-                        TimeContract.getItemUri(String.valueOf(time.getId())),
-                        null,
-                        null
-                    );
+        return Observable.just(time)
+            .map(new Func1<Time, String>() {
+                @Override
+                public String call(Time time) {
+                    return String.valueOf(time.getId());
+                }
+            })
+            .map(new Func1<String, Time>() {
+                @Override
+                public Time call(String id) {
+                    getContext().getContentResolver()
+                        .delete(
+                            TimeContract.getItemUri(id),
+                            null,
+                            null
+                        );
 
-                return Observable.just(time);
-            }
-        });
+                    return time;
+                }
+            });
     }
 
     /**
