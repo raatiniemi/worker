@@ -19,6 +19,7 @@ import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import rx.Observable;
+import rx.android.content.ContentObservable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
@@ -52,11 +53,9 @@ public class ProjectProvider {
      * @return Observable emitting the projects.
      */
     public Observable<List<Project>> getProjects() {
-        return Observable.defer(new Func0<Observable<List<Project>>>() {
+        return Observable.defer(new Func0<Observable<Cursor>>() {
             @Override
-            public Observable<List<Project>> call() {
-                List<Project> projects = new ArrayList<>();
-
+            public Observable<Cursor> call() {
                 Cursor cursor = getContext().getContentResolver()
                     .query(
                         ProjectContract.getStreamUri(),
@@ -65,16 +64,15 @@ public class ProjectProvider {
                         null,
                         null
                     );
-                if (cursor.moveToFirst()) {
-                    do {
-                        projects.add(ProjectMapper.map(cursor));
-                    } while (cursor.moveToNext());
-                }
-                cursor.close();
 
-                return Observable.just(projects);
+                return ContentObservable.fromCursor(cursor);
             }
-        });
+        }).map(new Func1<Cursor, Project>() {
+            @Override
+            public Project call(Cursor cursor) {
+                return ProjectMapper.map(cursor);
+            }
+        }).toList();
     }
 
     /**
