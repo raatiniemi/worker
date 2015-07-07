@@ -82,26 +82,28 @@ public class ProjectProvider {
      * @return Observable emitting the project.
      */
     public Observable<Project> getProject(final Long id) {
-        return Observable.defer(new Func0<Observable<Project>>() {
-            @Override
-            public Observable<Project> call() {
-                Project project = null;
+        return Observable.just(String.valueOf(id))
+            .flatMap(new Func1<String, Observable<Cursor>>() {
+                @Override
+                public Observable<Cursor> call(String id) {
+                    Cursor cursor = getContext().getContentResolver().query(
+                        ProjectContract.getItemUri(id),
+                        ProjectContract.COLUMNS,
+                        null,
+                        null,
+                        null
+                    );
 
-                Cursor cursor = getContext().getContentResolver().query(
-                    ProjectContract.getItemUri(String.valueOf(id)),
-                    ProjectContract.COLUMNS,
-                    null,
-                    null,
-                    null
-                );
-                if (cursor.moveToFirst()) {
-                    project = ProjectMapper.map(cursor);
+                    return ContentObservable.fromCursor(cursor);
                 }
-                cursor.close();
-
-                return Observable.just(project);
-            }
-        });
+            })
+            .map(new Func1<Cursor, Project>() {
+                @Override
+                public Project call(Cursor cursor) {
+                    return ProjectMapper.map(cursor);
+                }
+            })
+            .first();
     }
 
     /**
