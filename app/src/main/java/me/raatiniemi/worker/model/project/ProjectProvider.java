@@ -239,26 +239,28 @@ public class ProjectProvider {
      * @return Observable emitting the time.
      */
     public Observable<Time> getTime(final Long id) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                Time time = null;
+        return Observable.just(String.valueOf(id))
+            .flatMap(new Func1<String, Observable<Cursor>>() {
+                @Override
+                public Observable<Cursor> call(String id) {
+                    Cursor cursor = getContext().getContentResolver()
+                        .query(
+                            TimeContract.getItemUri(id),
+                            TimeContract.COLUMNS,
+                            null,
+                            null,
+                            null
+                        );
 
-                Cursor cursor = mContext.getContentResolver().query(
-                    TimeContract.getItemUri(String.valueOf(id)),
-                    TimeContract.COLUMNS,
-                    null,
-                    null,
-                    null
-                );
-                if (cursor.moveToFirst()) {
-                    time = TimeMapper.map(cursor);
+                    return ContentObservable.fromCursor(cursor);
                 }
-                cursor.close();
-
-                return Observable.just(time);
-            }
-        });
+            })
+            .map(new Func1<Cursor, Time>() {
+                @Override
+                public Time call(Cursor cursor) {
+                    return TimeMapper.map(cursor);
+                }
+            });
     }
 
     /**
