@@ -78,21 +78,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
     @Override
     public void showError(Throwable e) {
-        if (!(e instanceof ProjectAlreadyExistsException) && !(e instanceof DomainException)) {
+        if (!(e instanceof ProjectAlreadyExistsException)) {
             super.showError(e);
             return;
         }
 
-        int title = R.string.projects_item_project_clock_out_before_clock_in_title;
-        int message = R.string.projects_item_project_clock_out_before_clock_in_description;
-        if (e instanceof ProjectAlreadyExistsException) {
-            title = R.string.fragment_new_project_create_project_already_exists_title;
-            message = R.string.fragment_new_project_create_project_already_exists_description;
-        }
-
         new AlertDialog.Builder(getActivity())
-            .setTitle(getString(title))
-            .setMessage(getString(message))
+            .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
+            .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     // Do nothing...
