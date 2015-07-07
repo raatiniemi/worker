@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.model.project;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -113,22 +114,41 @@ public class ProjectProvider {
      * @return Observable emitting the new project.
      */
     public Observable<Project> createProject(final Project project) {
-        return Observable.defer(new Func0<Observable<Project>>() {
-            @Override
-            public Observable<Project> call() {
-                try {
-                    Uri uri = getContext().getContentResolver()
-                        .insert(
-                            ProjectContract.getStreamUri(),
-                            ProjectMapper.map(project)
-                        );
-
-                    return getProject(Long.valueOf(ProjectContract.getItemId(uri)));
-                } catch (Throwable e) {
-                    return Observable.error(new ProjectAlreadyExistsException());
+        return Observable.just(project)
+            .map(new Func1<Project, ContentValues>() {
+                @Override
+                public ContentValues call(Project project) {
+                    return ProjectMapper.map(project);
                 }
-            }
-        });
+            })
+            .flatMap(new Func1<ContentValues, Observable<String>>() {
+                @Override
+                public Observable<String> call(ContentValues values) {
+                    try {
+                        Uri uri = getContext().getContentResolver()
+                            .insert(
+                                ProjectContract.getStreamUri(),
+                                values
+                            );
+
+                        return Observable.just(ProjectContract.getItemId(uri));
+                    } catch (Throwable e) {
+                        return Observable.error(new ProjectAlreadyExistsException());
+                    }
+                }
+            })
+            .map(new Func1<String, Long>() {
+                @Override
+                public Long call(String id) {
+                    return Long.valueOf(id);
+                }
+            })
+            .flatMap(new Func1<Long, Observable<Project>>() {
+                @Override
+                public Observable<Project> call(Long id) {
+                    return getProject(id);
+                }
+            });
     }
 
     /**
