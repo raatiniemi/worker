@@ -3,7 +3,7 @@ package me.raatiniemi.worker.model.time;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.DomainObject;
-import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
 
 /**
  * Domain object for Time items.
@@ -31,9 +31,9 @@ public class Time extends DomainObject {
      * @param projectId Id for the project.
      * @param start Timestamp for start time.
      * @param stop Timestamp for stop time.
-     * @throws DomainException If stop time is before start time, and stop is not zero.
+     * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
-    public Time(Long id, long projectId, long start, long stop) throws DomainException {
+    public Time(Long id, long projectId, long start, long stop) throws ClockOutBeforeClockInException {
         super(id);
 
         setProjectId(projectId);
@@ -50,9 +50,9 @@ public class Time extends DomainObject {
      * Constructor, short hand for clock in activity.
      *
      * @param projectId Id for the project.
-     * @throws DomainException If stop time is before start time.
+     * @throws ClockOutBeforeClockInException If stop time is before start time.
      */
-    public Time(Long projectId) throws DomainException {
+    public Time(Long projectId) throws ClockOutBeforeClockInException {
         this(null, projectId, (new Date()).getTime(), (long) 0);
     }
 
@@ -109,13 +109,15 @@ public class Time extends DomainObject {
      * at which the object was considered clocked out.
      *
      * @param stop Stop time in milliseconds.
-     * @throws DomainException If the value for stop is less than the value for start.
+     * @throws ClockOutBeforeClockInException If the value for stop is less than the value for start.
      */
-    public void setStop(long stop) throws DomainException {
+    public void setStop(long stop) throws ClockOutBeforeClockInException {
         // Check that the stop value is lager than the start value,
         // should not be able to clock out before clocked in.
         if (stop < getStart()) {
-            throw new DomainException();
+            throw new ClockOutBeforeClockInException(
+                "Clock out occur before clock in"
+            );
         }
 
         mStop = stop;
@@ -134,9 +136,9 @@ public class Time extends DomainObject {
      * Set clock out at given date.
      *
      * @param date Date to clock out.
-     * @throws DomainException If clock out date is before clock in date.
+     * @throws ClockOutBeforeClockInException If clock out date is before clock in date.
      */
-    public void clockOutAt(Date date) throws DomainException {
+    public void clockOutAt(Date date) throws ClockOutBeforeClockInException {
         setStop(date.getTime());
     }
 
