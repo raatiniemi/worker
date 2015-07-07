@@ -270,18 +270,37 @@ public class ProjectProvider {
      * @return Observable emitting the created time item.
      */
     public Observable<Time> add(final Time time) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                Uri uri = getContext().getContentResolver()
-                    .insert(
-                        TimeContract.getStreamUri(),
-                        TimeMapper.map(time)
-                    );
+        return Observable.just(time)
+            .map(new Func1<Time, ContentValues>() {
+                @Override
+                public ContentValues call(Time time) {
+                    return TimeMapper.map(time);
+                }
+            })
+            .map(new Func1<ContentValues, String>() {
+                @Override
+                public String call(ContentValues values) {
+                    Uri uri = getContext().getContentResolver()
+                        .insert(
+                            TimeContract.getStreamUri(),
+                            values
+                        );
 
-                return getTime(Long.valueOf(TimeContract.getItemId(uri)));
-            }
-        });
+                    return TimeContract.getItemId(uri);
+                }
+            })
+            .map(new Func1<String, Long>() {
+                @Override
+                public Long call(String id) {
+                    return Long.valueOf(id);
+                }
+            })
+            .flatMap(new Func1<Long, Observable<Time>>() {
+                @Override
+                public Observable<Time> call(Long id) {
+                    return getTime(id);
+                }
+            });
     }
 
     public Observable<Time> remove(final Time time) {
