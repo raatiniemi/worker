@@ -64,7 +64,7 @@ abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragmen
         }
 
         // Display the error message.
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
     /**
