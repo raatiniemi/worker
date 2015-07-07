@@ -174,13 +174,12 @@ public class ProjectProvider {
             return observable.flatMap(new Func1<Long, Observable<Project>>() {
                 @Override
                 public Observable<Project> call(Long projectId) {
-                    return getProject(projectId)
-                        .map(new Func1<Project, Project>() {
-                            @Override
-                            public Project call(Project project) {
-                                return getTime(project);
-                            }
-                        });
+                    return getProject(projectId);
+                }
+            }).map(new Func1<Project, Project>() {
+                @Override
+                public Project call(Project project) {
+                    return getTime(project);
                 }
             });
         } catch (DomainException e) {
