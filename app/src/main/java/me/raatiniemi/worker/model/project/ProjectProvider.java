@@ -21,6 +21,7 @@ import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
 import rx.Observable;
 import rx.android.content.ContentObservable;
+import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
@@ -375,68 +376,64 @@ public class ProjectProvider {
     }
 
     public Observable<List<TimesheetItem>> getTimesheet(final Long id, final int offset) {
-        return Observable.defer(new Func0<Observable<List<TimesheetItem>>>() {
-            @Override
-            public Observable<List<TimesheetItem>> call() {
-                List<TimesheetItem> items = new ArrayList<>();
+        // TODO: Simplify the builing of the URI with query parameters.
+        Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(id))
+            .buildUpon()
+            .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
+            .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
+            .build();
 
-                // TODO: Simplify the builing of the URI with query parameters.
-                Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(id))
-                    .buildUpon()
-                    .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
-                    .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
-                    .build();
+        return Observable.just(uri)
+            .flatMap(new Func1<Uri, Observable<Cursor>>() {
+                @Override
+                public Observable<Cursor> call(Uri uri) {
+                    Cursor cursor = getContext().getContentResolver()
+                        .query(
+                            uri,
+                            ProjectContract.COLUMNS_TIMESHEET,
+                            null,
+                            null,
+                            ProjectContract.ORDER_BY_TIMESHEET
+                        );
 
-                Cursor cursor = mContext.getContentResolver()
-                    .query(
-                        uri,
-                        ProjectContract.COLUMNS_TIMESHEET,
-                        null,
-                        null,
-                        ProjectContract.ORDER_BY_TIMESHEET
-                    );
-                if (cursor.moveToFirst()) {
-                    do {
-                        // We're getting the id for the time objects as a comma-separated string column.
-                        // We have to split the value before attempting to retrieve each individual row.
-                        String grouped = cursor.getString(1);
-                        String[] rows = grouped.split(",");
-                        if (0 < rows.length) {
-                            TimesheetItem item = new TimesheetItem(
-                                new Date(cursor.getLong(0))
-                            );
-
-                            for (String id : rows) {
-                                Cursor row = mContext.getContentResolver()
-                                    .query(
-                                        TimeContract.getItemUri(id),
-                                        TimeContract.COLUMNS,
-                                        null,
-                                        null,
-                                        null
-                                    );
-                                if (row.moveToFirst()) {
-                                    do {
-                                        Time time = TimeMapper.map(row);
-                                        if (null != time) {
-                                            item.add(time);
-                                        }
-                                    } while (row.moveToNext());
-                                }
-                                row.close();
-                            }
-
-                            // Reverse the order of the children to put the latest
-                            // item at the top of the list.
-                            Collections.reverse(item);
-                            items.add(item);
-                        }
-                    } while (cursor.moveToNext());
+                    return ContentObservable.fromCursor(cursor);
                 }
-                cursor.close();
+            })
+            .map(new Func1<Cursor, TimesheetItem>() {
+                @Override
+                public TimesheetItem call(Cursor cursor) {
+                    final TimesheetItem item = new TimesheetItem(
+                        new Date(cursor.getLong(0))
+                    );
 
-                return Observable.just(items);
-            }
-        });
+                    // We're getting the id for the time objects as a comma-separated string column.
+                    // We have to split the value before attempting to retrieve each individual row.
+                    String grouped = cursor.getString(1);
+                    String[] rows = grouped.split(",");
+                    if (0 < rows.length) {
+                        for (String id : rows) {
+                            getTime(Long.valueOf(id))
+                                .filter(new Func1<Time, Boolean>() {
+                                    @Override
+                                    public Boolean call(Time time) {
+                                        return time != null;
+                                    }
+                                })
+                                .subscribe(new Action1<Time>() {
+                                    @Override
+                                    public void call(Time time) {
+                                        item.add(time);
+                                    }
+                                });
+                        }
+
+                        // Reverse the order of the children to put the latest
+                        // item at the top of the list.
+                        Collections.reverse(item);
+                    }
+                    return item;
+                }
+            })
+            .toList();
     }
 }
