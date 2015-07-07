@@ -200,7 +200,7 @@ public class ProjectProvider {
             return project;
         }
 
-        List<Time> result = new ArrayList<>();
+        final List<Time> result = new ArrayList<>();
 
         // Reset the calendar to retrieve timestamp
         // of the beginning of the month.
@@ -218,15 +218,26 @@ public class ProjectProvider {
                 new String[]{ String.valueOf(calendar.getTimeInMillis()) },
                 ProjectContract.ORDER_BY_TIME
             );
-        if (cursor.moveToFirst()) {
-            do {
-                Time time = TimeMapper.map(cursor);
-                if (null != time) {
+
+        ContentObservable.fromCursor(cursor)
+            .map(new Func1<Cursor, Time>() {
+                @Override
+                public Time call(Cursor cursor) {
+                    return TimeMapper.map(cursor);
+                }
+            })
+            .filter(new Func1<Time, Boolean>() {
+                @Override
+                public Boolean call(Time time) {
+                    return null != time;
+                }
+            })
+            .subscribe(new Action1<Time>() {
+                @Override
+                public void call(Time time) {
                     result.add(time);
                 }
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
+            });
 
         project.addTime(result);
         return project;
