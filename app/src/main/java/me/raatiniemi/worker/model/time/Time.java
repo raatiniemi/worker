@@ -5,24 +5,53 @@ import java.util.Date;
 import me.raatiniemi.worker.domain.DomainObject;
 import me.raatiniemi.worker.exception.DomainException;
 
+/**
+ * Domain object for Time items.
+ */
 public class Time extends DomainObject {
+    /**
+     * Id for the project connected to the time item.
+     */
     private long mProjectId;
 
+    /**
+     * Timestamp when time item starts.
+     */
     private long mStart;
 
+    /**
+     * Timestamp when time item stops, or zero if still active.
+     */
     private long mStop;
 
+    /**
+     * Constructor.
+     *
+     * @param id Id for the time item.
+     * @param projectId Id for the project.
+     * @param start Timestamp for start time.
+     * @param stop Timestamp for stop time.
+     * @throws DomainException If stop time is before start time, and stop is not zero.
+     */
     public Time(Long id, long projectId, long start, long stop) throws DomainException {
         super(id);
 
         setProjectId(projectId);
         setStart(start);
 
+        // Only set the stop time if the time is not active,
+        // otherwise an exception will be thrown.
         if (stop > 0) {
             setStop(stop);
         }
     }
 
+    /**
+     * Constructor, short hand for clock in activity.
+     *
+     * @param projectId Id for the project.
+     * @throws DomainException If stop time is before start time.
+     */
     public Time(Long projectId) throws DomainException {
         this(null, projectId, (new Date()).getTime(), (long) 0);
     }
