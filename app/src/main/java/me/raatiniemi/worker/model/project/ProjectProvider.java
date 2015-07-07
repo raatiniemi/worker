@@ -350,10 +350,10 @@ public class ProjectProvider {
      */
     private Observable<Long> clockIn(final Time time) {
         return add(time)
-            .flatMap(new Func1<Time, Observable<Long>>() {
+            .map(new Func1<Time, Long>() {
                 @Override
-                public Observable<Long> call(Time time) {
-                    return Observable.just(time.getProjectId());
+                public Long call(Time time) {
+                    return time.getProjectId();
                 }
             });
     }
@@ -366,10 +366,10 @@ public class ProjectProvider {
      */
     private Observable<Long> clockOut(final Time time) {
         return update(time)
-            .flatMap(new Func1<Time, Observable<Long>>() {
+            .map(new Func1<Time, Long>() {
                 @Override
-                public Observable<Long> call(Time time) {
-                    return Observable.just(time.getProjectId());
+                public Long call(Time time) {
+                    return time.getProjectId();
                 }
             });
     }
