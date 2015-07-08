@@ -8,6 +8,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
@@ -63,7 +64,8 @@ public class SettingsActivity extends BaseActivity {
         switch (key) {
             case SETTINGS_DATA_KEY:
                 getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new DataFragment())
+                    .replace(R.id.fragment_container, new DataFragment(), key)
+                    .addToBackStack(key)
                     .commit();
                 break;
             default:
@@ -74,6 +76,17 @@ public class SettingsActivity extends BaseActivity {
                     .show();
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Override the toolbar back button to behave as the back button.
+        if (android.R.id.home == item.getItemId()) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
