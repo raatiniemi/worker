@@ -110,7 +110,15 @@ public class SettingsActivity extends BaseActivity {
         }
     }
 
-    public static class BasePreferenceFragment extends PreferenceFragment {
+    public abstract static class BasePreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onResume() {
+            super.onResume();
+
+            // Set the title for the preference fragment.
+            getActivity().setTitle(getTitle());
+        }
+
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -119,6 +127,13 @@ public class SettingsActivity extends BaseActivity {
             }
             return false;
         }
+
+        /**
+         * Get the resource id for the preference fragment title.
+         *
+         * @return Resource id for the preference fragment title.
+         */
+        abstract public int getTitle();
     }
 
     public static class SettingsFragment extends BasePreferenceFragment {
@@ -130,10 +145,8 @@ public class SettingsActivity extends BaseActivity {
         }
 
         @Override
-        public void onResume() {
-            super.onResume();
-
-            getActivity().setTitle(R.string.settings_category_preferences);
+        public int getTitle() {
+            return R.string.settings_category_preferences;
         }
     }
 
@@ -146,10 +159,8 @@ public class SettingsActivity extends BaseActivity {
         }
 
         @Override
-        public void onResume() {
-            super.onResume();
-
-            getActivity().setTitle(R.string.settings_screen_data);
+        public int getTitle() {
+            return R.string.settings_screen_data;
         }
 
         @Override
