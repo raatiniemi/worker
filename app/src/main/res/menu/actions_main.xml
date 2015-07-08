@@ -7,4 +7,10 @@
         android:title="@string/main_actions_create_new_project"
         android:icon="@android:drawable/ic_menu_add"
         />
+
+    <item
+        android:id="@+id/actions_main_settings"
+        android:title="@string/main_actions_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        />
 </menu>

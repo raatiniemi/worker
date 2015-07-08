@@ -25,6 +25,11 @@
             android:parentActivityName=".ui.MainActivity"
             />
 
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:parentActivityName=".ui.MainActivity"
+            />
+
         <provider
             android:label="@string/app_name"
             android:name=".provider.WorkerProvider"

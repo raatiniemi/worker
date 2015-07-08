@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.projects.ProjectsView;
+import me.raatiniemi.worker.settings.SettingsActivity;
 
 public class MainActivity extends BaseActivity {
     /**
@@ -46,6 +48,9 @@ public class MainActivity extends BaseActivity {
             case R.id.actions_main_create_new_project:
                 openCreateNewProject();
                 return true;
+            case R.id.actions_main_settings:
+                openSettings();
+                return true;
         }
         return super.onOptionsItemSelected(menuItem);
     }
@@ -66,5 +71,13 @@ public class MainActivity extends BaseActivity {
             // just print the exception and continue.
             Log.e(TAG, "Unable to cast projects fragment: " + e.getMessage());
         }
+    }
+
+    /**
+     * Open the settings.
+     */
+    private void openSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }
