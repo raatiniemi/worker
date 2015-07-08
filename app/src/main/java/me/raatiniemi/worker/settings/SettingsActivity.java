@@ -61,21 +61,27 @@ public class SettingsActivity extends BaseActivity {
      * @param key Key for the new preference screen.
      */
     void switchPreferenceScreen(String key) {
+        Fragment fragment = null;
         switch (key) {
             case SETTINGS_DATA_KEY:
-                getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new DataFragment(), key)
-                    .addToBackStack(key)
-                    .commit();
-                break;
-            default:
-                String message = "Switch to preference screen '" + key + "' is not implemented";
-                Log.w(TAG, message);
-
-                Toast.makeText(this, message, Toast.LENGTH_SHORT)
-                    .show();
+                fragment = new DataFragment();
                 break;
         }
+
+        if (null == fragment) {
+            String message = "Switch to preference screen '" + key + "' is not implemented";
+            Log.w(TAG, message);
+
+            Toast.makeText(this, message, Toast.LENGTH_SHORT)
+                .show();
+
+            return;
+        }
+
+        getFragmentManager().beginTransaction()
+            .replace(R.id.fragment_container, fragment, key)
+            .addToBackStack(key)
+            .commit();
     }
 
     @Override
