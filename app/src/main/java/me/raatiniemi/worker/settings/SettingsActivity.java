@@ -124,6 +124,12 @@ public class SettingsActivity extends BaseActivity {
             super.onPreferenceTreeClick(preferenceScreen, preference);
             if (preference instanceof PreferenceScreen) {
                 getInstance().switchPreferenceScreen(preference.getKey());
+            } else {
+                String message = "Preference '" + preference.getTitle() + "' is not implemented";
+                Log.d(TAG, message);
+
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+                    .show();
             }
             return false;
         }
@@ -161,20 +167,6 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public int getTitle() {
             return R.string.settings_screen_data;
-        }
-
-        @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-            if (preference instanceof PreferenceScreen) {
-                super.onPreferenceTreeClick(preferenceScreen, preference);
-            } else {
-                String message = "Preference '" + preference.getTitle() + "' is not implemented";
-                Log.d(TAG, message);
-
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
-                    .show();
-            }
-            return false;
         }
     }
 }
