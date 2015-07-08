@@ -20,6 +20,11 @@ public class SettingsActivity extends BaseActivity {
     private static final String TAG = "SettingsActivity";
 
     /**
+     * Key for the data preference.
+     */
+    private static final String SETTINGS_DATA_KEY = "settings_data";
+
+    /**
      * Instance for the SettingsActivity.
      */
     private static SettingsActivity sInstance;
@@ -55,11 +60,20 @@ public class SettingsActivity extends BaseActivity {
      * @param key Key for the new preference screen.
      */
     void switchPreferenceScreen(String key) {
-        // TODO: Actually switch the preference screen.
-        Log.d(TAG, "Switching to preference screen: " + key);
+        switch (key) {
+            case SETTINGS_DATA_KEY:
+                getFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new DataFragment())
+                    .commit();
+                break;
+            default:
+                String message = "Switch to preference screen '" + key + "' is not implemented";
+                Log.w(TAG, message);
 
-        Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT)
-            .show();
+                Toast.makeText(this, message, Toast.LENGTH_SHORT)
+                    .show();
+                break;
+        }
     }
 
     @Override
@@ -95,6 +109,30 @@ public class SettingsActivity extends BaseActivity {
 
             getActivity().setTitle(R.string.settings_category_preferences);
             addPreferencesFromResource(R.xml.settings);
+        }
+    }
+
+    public static class DataFragment extends BasePreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            getActivity().setTitle(R.string.settings_screen_data);
+            addPreferencesFromResource(R.xml.settings_data);
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
+            if (preference instanceof PreferenceScreen) {
+                super.onPreferenceTreeClick(preferenceScreen, preference);
+            } else {
+                String message = "Preference '" + preference.getTitle() + "' is not implemented";
+                Log.d(TAG, message);
+
+                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
+                    .show();
+            }
+            return false;
         }
     }
 }
