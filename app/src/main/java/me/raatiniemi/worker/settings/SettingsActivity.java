@@ -126,8 +126,14 @@ public class SettingsActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            getActivity().setTitle(R.string.settings_category_preferences);
             addPreferencesFromResource(R.xml.settings);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+
+            getActivity().setTitle(R.string.settings_category_preferences);
         }
     }
 
@@ -136,8 +142,14 @@ public class SettingsActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            getActivity().setTitle(R.string.settings_screen_data);
             addPreferencesFromResource(R.xml.settings_data);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+
+            getActivity().setTitle(R.string.settings_screen_data);
         }
 
         @Override
