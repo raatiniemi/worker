@@ -15,8 +15,9 @@ import android.widget.TextView;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.model.project.Project;
+import me.raatiniemi.worker.util.Keyboard;
 
-public class NewProjectFragment extends DialogFragment {
+public class NewProjectFragment extends DialogFragment implements DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";
 
     /**
@@ -57,6 +58,14 @@ public class NewProjectFragment extends DialogFragment {
                 dismiss();
             }
         });
+
+        getDialog().setOnShowListener(this);
+    }
+
+    @Override
+    public void onShow(DialogInterface dialog) {
+        // Force the keyboard to show when the dialog is showing.
+        Keyboard.show(getActivity());
     }
 
     /**

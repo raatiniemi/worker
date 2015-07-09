@@ -29,7 +29,9 @@
         android:textSize="@dimen/fragment_new_project_name_text_size"
         android:layout_marginTop="5dp"
         android:backgroundTint="@color/accent"
-        />
+        >
+        <requestFocus />
+    </EditText>
 
     <RelativeLayout
         android:layout_width="fill_parent"
