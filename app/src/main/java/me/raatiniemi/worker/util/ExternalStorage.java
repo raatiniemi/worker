@@ -1,11 +1,20 @@
 package me.raatiniemi.worker.util;
 
 import android.os.Environment;
+import android.support.annotation.Nullable;
+import android.util.Log;
+
+import java.io.File;
 
 /**
  * Methods for working with the device external storage.
  */
 public class ExternalStorage {
+    /**
+     * Tag for logging.
+     */
+    private static final String TAG = "ExternalStorage";
+
     /**
      * Checks if the external storage is writable.
      *
@@ -24,5 +33,21 @@ public class ExternalStorage {
     public static boolean isReadable() {
         String state = Environment.getExternalStorageState();
         return isWritable() || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
+    }
+
+    /**
+     * Get the application directory on the external storage. If it do not
+     * exists, it will be created.
+     *
+     * @return Application directory, or null if it can't be created.
+     */
+    @Nullable
+    public static File getDirectory() {
+        File directory = new File(Environment.getExternalStorageDirectory(), "worker");
+        if (!directory.exists() && !directory.mkdir()) {
+            Log.w(TAG, "Unable to create non existing directory");
+            return null;
+        }
+        return directory;
     }
 }
