@@ -10,6 +10,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.util.ExternalStorage;
 import me.raatiniemi.worker.util.FileUtils;
+import me.raatiniemi.worker.util.Worker;
 
 /**
  * Service for running data operations.
@@ -94,8 +95,8 @@ public class DataIntentService extends IntentService {
 
         try {
             // Retrieve the source and destination file locations.
-            File from = getDatabasePath("worker");
-            File to = new File(directory, "worker");
+            File from = getDatabasePath(Worker.DATABASE_NAME);
+            File to = new File(directory, Worker.DATABASE_NAME);
 
             // Perform the file copy.
             FileUtils.copy(from, to);
