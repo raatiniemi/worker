@@ -112,8 +112,8 @@ public class DataIntentService extends IntentService {
             // Send the "Backup complete" notification to the user.
             notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_backup_white_24dp)
-                .setContentTitle("Backup complete")
-                .setContentText("Backup to external storage was successful.");
+                .setContentTitle(getString(R.string.data_intent_service_backup_complete_title))
+                .setContentText(getString(R.string.data_intent_service_backup_complete_message));
         } catch (IOException e) {
             Log.w(TAG, "Unable to backup: " + e.getMessage());
 
@@ -121,8 +121,8 @@ public class DataIntentService extends IntentService {
             // Send the "Backup failed" notification to the user.
             notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                .setContentTitle("Backup failed")
-                .setContentText("Backup to external storage failed.");
+                .setContentTitle(getString(R.string.data_intent_service_backup_failed_title))
+                .setContentText(getString(R.string.data_intent_service_backup_failed_message));
         } catch (ClassCastException e) {
             Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
         } finally {
