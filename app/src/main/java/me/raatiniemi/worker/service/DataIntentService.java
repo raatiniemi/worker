@@ -10,7 +10,6 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.util.ExternalStorage;
@@ -91,13 +90,8 @@ public class DataIntentService extends IntentService {
                 throw new IOException("External storage is not writable");
             }
 
-            // Build the backup folder name with the current timestamp to prevent
-            // running multiple backups against the same directory, which would
-            // effectively override any previous backups.
-            String backupName = "backup-" + (new Date()).getTime();
-            File directory = ExternalStorage.getBackupDirectory(backupName);
-
             // Check that the backup directory is available.
+            File directory = ExternalStorage.getBackupDirectory();
             if (null == directory) {
                 throw new FileNotFoundException("Directory for backup is not available");
             }

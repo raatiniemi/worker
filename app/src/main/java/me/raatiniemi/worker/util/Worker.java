@@ -23,4 +23,9 @@ public final class Worker {
      * Id for the notifications from the DataIntentService-class.
      */
     public static final int NOTIFICATION_DATA_INTENT_SERVICE_ID = 1;
+
+    /**
+     * Prefix for backup directories.
+     */
+    public static final String STORAGE_BACKUP_DIRECTORY_PREFIX = "backup-";
 }

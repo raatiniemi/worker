@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.File;
+import java.util.Date;
 
 /**
  * Methods for working with the device external storage.
@@ -53,26 +54,41 @@ public class ExternalStorage {
     }
 
     /**
-     * Get the backup directory on the external storage. If it do not exists,
-     * it will be created.
+     * Get directory within the application directory on the external storage.
+     * If it do not exists, it will be created.
      *
-     * @param backupName Name of the backup directory.
-     * @return Backup directory, or null if it can't be created.
+     * @param name Name of the directory.
+     * @return Directory within the application directory, or null if it can't be created.
      */
     @Nullable
-    public static File getBackupDirectory(@NonNull String backupName) {
+    public static File getDirectory(@NonNull String name) {
         File directory = getDirectory();
         if (null == directory) {
             Log.w(TAG, "Unable to retrieve the application directory");
             return null;
         }
 
-        // Build the backup directory within the application directory.
-        directory = new File(directory, backupName);
+        // Build the directory within the application directory.
+        directory = new File(directory, name);
         if (!directory.exists() && !directory.mkdir()) {
-            Log.w(TAG, "Unable to create backup directory");
+            Log.w(TAG, "Unable to create directory");
             return null;
         }
         return directory;
+    }
+
+    /**
+     * Get the backup directory on the external storage. If it do not exists,
+     * it will be created.
+     *
+     * @return Backup directory, or null if it can't be created.
+     */
+    @Nullable
+    public static File getBackupDirectory() {
+        // Build the backup folder name with the current timestamp to prevent
+        // running multiple backups against the same directory, which would
+        // effectively override any previous backups.
+        String name = Worker.STORAGE_BACKUP_DIRECTORY_PREFIX + (new Date()).getTime();
+        return getDirectory(name);
     }
 }
