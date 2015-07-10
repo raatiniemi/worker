@@ -5,6 +5,11 @@ package me.raatiniemi.worker.util;
  */
 public final class Worker {
     /**
+     * Package for the application.
+     */
+    public static final String PACKAGE = "me.raatiniemi.worker";
+
+    /**
      * Name of the application database.
      */
     public static final String DATABASE_NAME = "worker";
