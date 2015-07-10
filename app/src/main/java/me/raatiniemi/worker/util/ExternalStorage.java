@@ -44,7 +44,7 @@ public class ExternalStorage {
      */
     @Nullable
     public static File getDirectory() {
-        File directory = new File(Environment.getExternalStorageDirectory(), "worker");
+        File directory = new File(Environment.getExternalStorageDirectory(), Worker.PACKAGE);
         if (!directory.exists() && !directory.mkdir()) {
             Log.w(TAG, "Unable to create non existing directory");
             return null;
