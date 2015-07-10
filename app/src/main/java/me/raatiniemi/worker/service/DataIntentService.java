@@ -117,6 +117,13 @@ public class DataIntentService extends IntentService {
                 .setContentText("Backup to external storage was successful.");
         } catch (IOException e) {
             Log.w(TAG, "Unable to backup: " + e.getMessage());
+
+            // TODO: Display what was the cause of the backup failure.
+            // Send the "Backup failed" notification to the user.
+            notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
+                .setContentTitle("Backup failed")
+                .setContentText("Backup to external storage failed.");
         } catch (ClassCastException e) {
             Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
         } finally {
