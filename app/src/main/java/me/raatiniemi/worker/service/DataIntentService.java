@@ -1,13 +1,17 @@
 package me.raatiniemi.worker.service;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.util.ExternalStorage;
 import me.raatiniemi.worker.util.FileUtils;
 import me.raatiniemi.worker.util.Worker;
@@ -93,15 +97,37 @@ public class DataIntentService extends IntentService {
             return;
         }
 
+        NotificationManager manager = null;
+        NotificationCompat.Builder notification = null;
+
         try {
+            manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
             // Retrieve the source and destination file locations.
             File from = getDatabasePath(Worker.DATABASE_NAME);
             File to = new File(directory, Worker.DATABASE_NAME);
 
             // Perform the file copy.
             FileUtils.copy(from, to);
+
+            // Send the "Backup complete" notification to the user.
+            notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_backup_white_24dp)
+                .setContentTitle("Backup complete")
+                .setContentText("Backup to external storage was successful.");
         } catch (IOException e) {
             Log.w(TAG, "Unable to backup: " + e.getMessage());
+        } catch (ClassCastException e) {
+            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
+        } finally {
+            // Both the notification and notification manager must be
+            // available, otherwise we can't display the notification.
+            //
+            // The notification manager won't be available if a
+            // ClassCastException have been thrown.
+            if (null != manager && null != notification) {
+                manager.notify(11, notification.build());
+            }
         }
     }
 
