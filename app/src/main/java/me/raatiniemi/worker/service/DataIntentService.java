@@ -8,6 +8,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 
@@ -79,29 +80,27 @@ public class DataIntentService extends IntentService {
      * directory on the external storage.
      */
     private synchronized void backup() {
-        // Check that the external storage is writable.
-        if (!ExternalStorage.isWritable()) {
-            Log.w(TAG, "Unable to backup, external storage is not writable");
-            return;
-        }
-
-        // Build the backup folder name with the current timestamp to prevent
-        // running multiple backups against the same directory, which would
-        // effectively override any previous backups.
-        String backupName = "backup-" + (new Date()).getTime();
-        File directory = ExternalStorage.getBackupDirectory(backupName);
-
-        // Check that the backup directory is available.
-        if (null == directory) {
-            Log.w(TAG, "Directory for backup is not available");
-            return;
-        }
-
         NotificationManager manager = null;
         NotificationCompat.Builder notification = null;
 
         try {
             manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            // Check that the external storage is writable.
+            if (!ExternalStorage.isWritable()) {
+                throw new IOException("External storage is not writable");
+            }
+
+            // Build the backup folder name with the current timestamp to prevent
+            // running multiple backups against the same directory, which would
+            // effectively override any previous backups.
+            String backupName = "backup-" + (new Date()).getTime();
+            File directory = ExternalStorage.getBackupDirectory(backupName);
+
+            // Check that the backup directory is available.
+            if (null == directory) {
+                throw new FileNotFoundException("Directory for backup is not available");
+            }
 
             // Retrieve the source and destination file locations.
             File from = getDatabasePath(Worker.DATABASE_NAME);
