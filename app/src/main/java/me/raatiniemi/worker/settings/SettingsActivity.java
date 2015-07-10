@@ -193,6 +193,9 @@ public class SettingsActivity extends BaseActivity {
                 return false;
             }
 
+            Toast.makeText(getActivity(), "Backing up data...", Toast.LENGTH_SHORT)
+                .show();
+
             // Start the backup data operation.
             Intent intent = new Intent(getActivity(), DataIntentService.class);
             intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
