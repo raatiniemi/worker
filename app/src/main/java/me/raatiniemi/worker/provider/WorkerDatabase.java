@@ -7,28 +7,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.util.Worker;
 
 /**
  * Handler for the worker sqlite database.
  */
 public class WorkerDatabase extends SQLiteOpenHelper {
     /**
-     * Name of the database.
-     */
-    private static final String DATABASE_NAME = "worker";
-
-    /**
-     * Version of the database structure.
-     */
-    private static final int DATABASE_VERSION = 1;
-
-    /**
      * Instantiate the database helper with the application context.
      *
      * @param context Application context.
      */
     public WorkerDatabase(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, Worker.DATABASE_NAME, null, Worker.DATABASE_VERSION);
     }
 
     /**
