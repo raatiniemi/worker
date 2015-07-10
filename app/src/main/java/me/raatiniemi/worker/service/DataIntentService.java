@@ -133,7 +133,10 @@ public class DataIntentService extends IntentService {
             // The notification manager won't be available if a
             // ClassCastException have been thrown.
             if (null != manager && null != notification) {
-                manager.notify(11, notification.build());
+                manager.notify(
+                    Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
+                    notification.build()
+                );
             }
         }
     }

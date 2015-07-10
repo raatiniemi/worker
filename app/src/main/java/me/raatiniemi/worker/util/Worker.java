@@ -18,4 +18,9 @@ public final class Worker {
      * Version of the application database structure.
      */
     public static final int DATABASE_VERSION = 1;
+
+    /**
+     * Id for the notifications from the DataIntentService-class.
+     */
+    public static final int NOTIFICATION_DATA_INTENT_SERVICE_ID = 1;
 }
