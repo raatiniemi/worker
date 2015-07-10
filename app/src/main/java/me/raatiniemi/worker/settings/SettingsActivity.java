@@ -2,6 +2,7 @@ package me.raatiniemi.worker.settings;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
+import me.raatiniemi.worker.service.DataIntentService;
 
 public class SettingsActivity extends BaseActivity {
     /**
@@ -24,6 +26,11 @@ public class SettingsActivity extends BaseActivity {
      * Key for the data preference.
      */
     private static final String SETTINGS_DATA_KEY = "settings_data";
+
+    /**
+     * Key for the data backup preference.
+     */
+    private static final String SETTINGS_DATA_BACKUP_KEY = "settings_data_backup";
 
     /**
      * Instance for the SettingsActivity.
@@ -162,6 +169,36 @@ public class SettingsActivity extends BaseActivity {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.settings_data);
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
+            // Check if we support the user action, if not, send it to the
+            // parent which will handle it.
+            if (!SETTINGS_DATA_BACKUP_KEY.equals(preference.getKey())) {
+                return super.onPreferenceTreeClick(preferenceScreen, preference);
+            }
+
+            // Check that no other data operation is already running, we
+            // wouldn't want backup and restore running simultaneously.
+            if (DataIntentService.RUNNING.NONE != DataIntentService.getRunning()) {
+                Toast.makeText(
+                    getActivity(),
+                    "Data operation is already running...",
+                    Toast.LENGTH_LONG
+                ).show();
+
+                // No need to go any futher, we can't allow for any
+                // additional data operation to start.
+                return false;
+            }
+
+            // Start the backup data operation.
+            Intent intent = new Intent(getActivity(), DataIntentService.class);
+            intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
+            getActivity().startService(intent);
+
+            return false;
         }
 
         @Override
