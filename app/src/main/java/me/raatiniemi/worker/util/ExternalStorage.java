@@ -1,6 +1,7 @@
 package me.raatiniemi.worker.util;
 
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -46,6 +47,30 @@ public class ExternalStorage {
         File directory = new File(Environment.getExternalStorageDirectory(), "worker");
         if (!directory.exists() && !directory.mkdir()) {
             Log.w(TAG, "Unable to create non existing directory");
+            return null;
+        }
+        return directory;
+    }
+
+    /**
+     * Get the backup directory on the external storage. If it do not exists,
+     * it will be created.
+     *
+     * @param backupName Name of the backup directory.
+     * @return Backup directory, or null if it can't be created.
+     */
+    @Nullable
+    public static File getBackupDirectory(@NonNull String backupName) {
+        File directory = getDirectory();
+        if (null == directory) {
+            Log.w(TAG, "Unable to retrieve the application directory");
+            return null;
+        }
+
+        // Build the backup directory within the application directory.
+        directory = new File(directory, backupName);
+        if (!directory.exists() && !directory.mkdir()) {
+            Log.w(TAG, "Unable to create backup directory");
             return null;
         }
         return directory;
