@@ -47,9 +47,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         super(context);
 
         mProvider = provider;
-
-        Log.d(TAG, "Subscribe to refresh for active projects");
-        mRefreshProjects = refreshActiveProjects();
+        refreshActiveProjects();
     }
 
     @Override
@@ -61,12 +59,16 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         stopRefreshActiveProjects();
     }
 
-    private Subscription refreshActiveProjects() {
+    /**
+     * Setup the subscription for refreshing active projects.
+     */
+    public void refreshActiveProjects() {
         // Before we create a new subscription for refreshing active projects
         // we have to unsubscribe to the existing one, if one is available.
         stopRefreshActiveProjects();
 
-        return Observable.interval(60, TimeUnit.SECONDS)
+        Log.d(TAG, "Subscribe to refresh for active projects");
+        mRefreshProjects = Observable.interval(60, TimeUnit.SECONDS)
             .flatMap(new Func1<Long, Observable<List<Integer>>>() {
                 @Override
                 public Observable<List<Integer>> call(Long aLong) {
