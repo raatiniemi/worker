@@ -57,7 +57,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         // we have to unsubscribe to the existing one, if one is available.
         stopRefreshActiveProjects();
 
-        Log.d(TAG, "Subscribe to refresh for active projects");
+        Log.d(TAG, "Subscribe to the refresh of active projects");
         mRefreshProjects = Observable.interval(60, TimeUnit.SECONDS)
             .flatMap(new Func1<Long, Observable<List<Integer>>>() {
                 @Override
@@ -110,7 +110,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
      */
     public void stopRefreshActiveProjects() {
         if (null != mRefreshProjects && !mRefreshProjects.isUnsubscribed()) {
-            Log.d(TAG, "Unsubscribe to refresh active projects");
+            Log.d(TAG, "Unsubscribe to the refresh of active projects");
             mRefreshProjects.unsubscribe();
         }
         mRefreshProjects = null;
