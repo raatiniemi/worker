@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -139,5 +140,26 @@ public class ExternalStorage {
         }
 
         return new ArrayList<>(Arrays.asList(directories));
+    }
+
+    /**
+     * Get the last created backup directory.
+     *
+     * @return Last created backup directory, or null if none can be found.
+     */
+    @Nullable
+    public static File getLatestBackupDirectory() {
+        List<File> directories = ExternalStorage.getBackupDirectories();
+        if (directories.isEmpty()) {
+            return null;
+        }
+
+        // Sort the directories and reverse the order, i.e. the last created
+        // first since we are looking for the latest directory.
+        Collections.sort(directories);
+        Collections.reverse(directories);
+
+        // Return the first directory entry.
+        return directories.get(0);
     }
 }
