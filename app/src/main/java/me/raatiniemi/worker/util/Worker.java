@@ -28,4 +28,10 @@ public final class Worker {
      * Prefix for backup directories.
      */
     public static final String STORAGE_BACKUP_DIRECTORY_PREFIX = "backup-";
+
+    /**
+     * Pattern for the backup directories.
+     */
+    public static final String STORAGE_BACKUP_DIRECTORY_PATTERN
+        = Worker.STORAGE_BACKUP_DIRECTORY_PREFIX + "(\\d+)";
 }
