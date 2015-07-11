@@ -13,10 +13,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.base.view.BaseActivity;
+import me.raatiniemi.worker.base.view.MvpActivity;
 import me.raatiniemi.worker.service.DataIntentService;
 
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends MvpActivity<SettingsPresenter> {
     /**
      * Tag for logging.
      */
@@ -60,6 +60,13 @@ public class SettingsActivity extends BaseActivity {
                 .replace(R.id.fragment_container, new SettingsFragment())
                 .commit();
         }
+
+        getPresenter().attachView(this);
+    }
+
+    @Override
+    protected SettingsPresenter createPresenter() {
+        return new SettingsPresenter(this);
     }
 
     /**
