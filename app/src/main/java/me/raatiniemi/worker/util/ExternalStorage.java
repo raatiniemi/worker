@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.Date;
 
 /**
@@ -90,5 +91,27 @@ public class ExternalStorage {
         // effectively override any previous backups.
         String name = Worker.STORAGE_BACKUP_DIRECTORY_PREFIX + (new Date()).getTime();
         return getDirectory(name);
+    }
+
+    /**
+     * Get a list of directories from the application directory on the external storage.
+     *
+     * @return List of directories within the application directory.
+     */
+    @NonNull
+    public static File[] getDirectories() {
+        File[] directories = {};
+
+        File directory = getDirectory();
+        if (null != directory) {
+            directories = directory.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File file) {
+                    return file.isDirectory();
+                }
+            });
+        }
+
+        return directories;
     }
 }
