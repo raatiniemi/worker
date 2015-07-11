@@ -72,6 +72,22 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        // Setup the subscription for refreshing active projects.
+        getPresenter().refreshActiveProjects();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Unsubscribe to the refreshing of active projects.
+        getPresenter().stopRefreshActiveProjects();
+    }
+
+    @Override
     protected ProjectsPresenter createPresenter() {
         return new ProjectsPresenter(getActivity(), new ProjectProvider(getActivity()));
     }

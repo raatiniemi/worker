@@ -47,16 +47,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         super(context);
 
         mProvider = provider;
-        refreshActiveProjects();
-    }
-
-    @Override
-    public void detachView() {
-        super.detachView();
-
-        // Before detaching we have to unsubscribe to the refresh of active
-        // projects, if it is available and active.
-        stopRefreshActiveProjects();
     }
 
     /**
