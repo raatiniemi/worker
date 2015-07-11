@@ -58,21 +58,13 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
         // Before detaching we have to unsubscribe to the refresh of active
         // projects, if it is available and active.
-        if (null != mRefreshProjects && !mRefreshProjects.isUnsubscribed()) {
-            Log.d(TAG, "Unsubscribe to refresh active projects");
-            mRefreshProjects.unsubscribe();
-        }
-        mRefreshProjects = null;
+        stopRefreshActiveProjects();
     }
 
     private Subscription refreshActiveProjects() {
         // Before we create a new subscription for refreshing active projects
         // we have to unsubscribe to the existing one, if one is available.
-        if (null != mRefreshProjects && !mRefreshProjects.isUnsubscribed()) {
-            Log.d(TAG, "Unsubscribe to refresh active projects, setup new subscription");
-            mRefreshProjects.unsubscribe();
-        }
-        mRefreshProjects = null;
+        stopRefreshActiveProjects();
 
         return Observable.interval(60, TimeUnit.SECONDS)
             .flatMap(new Func1<Long, Observable<List<Integer>>>() {
@@ -119,6 +111,17 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                     getView().refreshPositions(positions);
                 }
             });
+    }
+
+    /**
+     * Unsubscribe to the refresh of active projects.
+     */
+    public void stopRefreshActiveProjects() {
+        if (null != mRefreshProjects && !mRefreshProjects.isUnsubscribed()) {
+            Log.d(TAG, "Unsubscribe to refresh active projects");
+            mRefreshProjects.unsubscribe();
+        }
+        mRefreshProjects = null;
     }
 
     /**
