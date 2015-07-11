@@ -223,8 +223,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
             // Check if we support the user action, if not, send it to the
             // parent which will handle it.
-            if (!SETTINGS_DATA_BACKUP_KEY.equals(preference.getKey())) {
-                return super.onPreferenceTreeClick(preferenceScreen, preference);
+            switch (preference.getKey()) {
+                case SETTINGS_DATA_BACKUP_KEY:
+                    break;
+                default:
+                    return super.onPreferenceTreeClick(preferenceScreen, preference);
             }
 
             // Check that no other data operation is already running, we
