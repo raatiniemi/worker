@@ -52,6 +52,7 @@ public class ExternalStorage {
     public static File getDirectory() {
         File directory = new File(Environment.getExternalStorageDirectory(), Worker.PACKAGE);
         if (!directory.exists() && !directory.mkdir()) {
+            // TODO: Throw exception, avoiding checks for null everywhere.
             Log.w(TAG, "Unable to create non existing directory");
             return null;
         }
@@ -69,6 +70,7 @@ public class ExternalStorage {
     public static File getDirectory(@NonNull String name) {
         File directory = getDirectory();
         if (null == directory) {
+            // TODO: Throw exception, avoiding checks for null everywhere.
             Log.w(TAG, "Unable to retrieve the application directory");
             return null;
         }
@@ -76,6 +78,7 @@ public class ExternalStorage {
         // Build the directory within the application directory.
         directory = new File(directory, name);
         if (!directory.exists() && !directory.mkdir()) {
+            // TODO: Throw exception, avoiding checks for null everywhere.
             Log.w(TAG, "Unable to create directory");
             return null;
         }
