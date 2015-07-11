@@ -124,6 +124,42 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
         }
     }
 
+    /**
+     * Set the summary for the backup preference.
+     *
+     * @param summary Summary for the backup preference.
+     */
+    public void setBackupSummary(String summary) {
+        try {
+            // Retrieve the DataFragment which has the Backup-preference.
+            DataFragment fragment = (DataFragment)
+                getFragmentManager().findFragmentByTag(SETTINGS_DATA_KEY);
+            if (null == fragment) {
+                // This should only be an informational log message since the
+                // user might have navigated up the SettingsActivity fragment
+                // stack, i.e. the DataFragment have been detached.
+                //
+                // This is especially true if the storage examination takes
+                // longer than normal, e.g. if other operations are also using
+                // on the IO-scheduler.
+                Log.i(TAG, "Unable to find the DataFragment");
+                return;
+            }
+
+            // Retrieve the Backup-preference from the DataFragment.
+            Preference preference = fragment.findPreference(SETTINGS_DATA_BACKUP_KEY);
+            if (null == preference) {
+                Log.w(TAG, "Unable to find the Backup-preference");
+                return;
+            }
+
+            // Set the summary for the Backup-preference.
+            preference.setSummary(summary);
+        } catch (ClassCastException e) {
+            Log.w(TAG, "Unable to cast fragment to DataFragment: " + e.getMessage());
+        }
+    }
+
     public abstract static class BasePreferenceFragment extends PreferenceFragment {
         @Override
         public void onResume() {
@@ -176,6 +212,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.settings_data);
+
+            // Tell the settings activity to fetch the
+            // backup summary via the presenter.
+            getInstance().getPresenter()
+                .getBackupSummary();
         }
 
         @Override
@@ -207,6 +248,8 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
             Intent intent = new Intent(getActivity(), DataIntentService.class);
             intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
             getActivity().startService(intent);
+
+            // TODO: Refresh the backup summary, if the backup is successful.
 
             return false;
         }
