@@ -33,6 +33,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
     private static final String SETTINGS_DATA_BACKUP_KEY = "settings_data_backup";
 
     /**
+     * Key for the data restore preference.
+     */
+    private static final String SETTINGS_DATA_RESTORE_KEY = "settings_data_restore";
+
+    /**
      * Instance for the SettingsActivity.
      */
     private static SettingsActivity sInstance;
@@ -221,10 +226,20 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
 
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
+            String intentAction;
+            String message;
+
             // Check if we support the user action, if not, send it to the
             // parent which will handle it.
             switch (preference.getKey()) {
                 case SETTINGS_DATA_BACKUP_KEY:
+                    // TODO: Refresh the backup summary, if the backup is successful.
+                    intentAction = DataIntentService.INTENT_ACTION_BACKUP;
+                    message = "Backing up data...";
+                    break;
+                case SETTINGS_DATA_RESTORE_KEY:
+                    intentAction = DataIntentService.INTENT_ACTION_RESTORE;
+                    message = "Restoring data...";
                     break;
                 default:
                     return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -244,15 +259,12 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
                 return false;
             }
 
-            Toast.makeText(getActivity(), "Backing up data...", Toast.LENGTH_SHORT)
-                .show();
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
             // Start the backup data operation.
             Intent intent = new Intent(getActivity(), DataIntentService.class);
-            intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
+            intent.setAction(intentAction);
             getActivity().startService(intent);
-
-            // TODO: Refresh the backup summary, if the backup is successful.
 
             return false;
         }

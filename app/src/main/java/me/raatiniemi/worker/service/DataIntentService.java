@@ -26,6 +26,11 @@ public class DataIntentService extends IntentService {
     public static final String INTENT_ACTION_BACKUP = "backup";
 
     /**
+     * Intent action for running the restore operation.
+     */
+    public static final String INTENT_ACTION_RESTORE = "restore";
+
+    /**
      * Tag for logging.
      */
     private static final String TAG = "DataIntentService";
@@ -66,6 +71,10 @@ public class DataIntentService extends IntentService {
             case INTENT_ACTION_BACKUP:
                 sRunning = RUNNING.BACKUP;
                 backup();
+                break;
+            case INTENT_ACTION_RESTORE:
+                sRunning = RUNNING.RESTORE;
+                restore();
                 break;
             default:
                 Log.w(TAG, "Received unknown action: " + action);
@@ -135,10 +144,39 @@ public class DataIntentService extends IntentService {
     }
 
     /**
+     * Run the restore operation. Copies the SQLite database from the latest
+     * backup directory on the external storage to the database location.
+     */
+    private synchronized void restore() {
+        try {
+            // Check that the external storage is readable.
+            if (!ExternalStorage.isReadable()) {
+                throw new IOException("External storage is not readable");
+            }
+
+            // Check that we have backup to restore from.
+            File directory = ExternalStorage.getLatestBackupDirectory();
+            if (null == directory) {
+                throw new FileNotFoundException("Unable to find backup from which to restore");
+            }
+
+            // Retrieve the source and destination file locations.
+            File from = new File(directory, Worker.DATABASE_NAME);
+            File to = getDatabasePath(Worker.DATABASE_NAME);
+
+            // Perform the file copy.
+            FileUtils.copy(from, to);
+        } catch (IOException e) {
+            Log.w(TAG, "Unable to restore backup: " + e.getMessage());
+        }
+    }
+
+    /**
      * Available types of runnable data operations.
      */
     public enum RUNNING {
         NONE,
-        BACKUP
+        BACKUP,
+        RESTORE
     }
 }
