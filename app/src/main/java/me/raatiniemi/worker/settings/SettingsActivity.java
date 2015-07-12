@@ -165,6 +165,44 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
         }
     }
 
+    /**
+     * Set the summary for the restore preference.
+     *
+     * @param summary Summary for the restore preference.
+     * @param enable Should the preference be enabled.
+     */
+    public void setRestoreSummary(String summary, boolean enable) {
+        try {
+            // Retrieve the DataFragment which has the Restore-preference.
+            DataFragment fragment = (DataFragment)
+                getFragmentManager().findFragmentByTag(SETTINGS_DATA_KEY);
+            if (null == fragment) {
+                // This should only be an informational log message since the
+                // user might have navigated up the SettingsActivity fragment
+                // stack, i.e. the DataFragment have been detached.
+                //
+                // This is especially true if the storage examination takes
+                // longer than normal, e.g. if other operations are also using
+                // on the IO-scheduler.
+                Log.i(TAG, "Unable to find the DataFragment");
+                return;
+            }
+
+            // Retrieve the Restore-preference from the DataFragment.
+            Preference preference = fragment.findPreference(SETTINGS_DATA_RESTORE_KEY);
+            if (null == preference) {
+                Log.w(TAG, "Unable to find the Restore-preference");
+                return;
+            }
+
+            // Set the summary for the Restore-preference.
+            preference.setSummary(summary);
+            preference.setEnabled(enable);
+        } catch (ClassCastException e) {
+            Log.w(TAG, "Unable to cast fragment to DataFragment: " + e.getMessage());
+        }
+    }
+
     public abstract static class BasePreferenceFragment extends PreferenceFragment {
         @Override
         public void onResume() {
@@ -222,6 +260,8 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
             // backup summary via the presenter.
             getInstance().getPresenter()
                 .getBackupSummary();
+            getInstance().getPresenter()
+                .getRestoreSummary();
         }
 
         @Override
