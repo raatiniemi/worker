@@ -11,7 +11,7 @@
 
         <item name="colorButtonNormal">@color/accent</item>
 
-        <item name="android:textColor">@color/text</item>
+        <item name="android:textColor">@drawable/color_text</item>
         <item name="android:textColorSecondary">@color/textSecondary</item>
 
         <item name="android:dialogTheme">@style/Theme.Dialog</item>

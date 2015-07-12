@@ -9,6 +9,7 @@
     <color name="accent">#FF4081</color>
 
     <color name="text">#757575</color>
+    <color name="textDisabled">#9E9E9E</color>
     <color name="textSecondary">#9E9E9E</color>
 
     <color name="actionIconTint">#BDBDBD</color>
