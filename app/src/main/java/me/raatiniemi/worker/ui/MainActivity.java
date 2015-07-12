@@ -1,5 +1,8 @@
 package me.raatiniemi.worker.ui;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +15,7 @@ import me.raatiniemi.worker.base.view.BaseActivity;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.projects.ProjectsView;
 import me.raatiniemi.worker.settings.SettingsActivity;
+import me.raatiniemi.worker.util.Worker;
 
 public class MainActivity extends BaseActivity {
     /**
@@ -25,6 +29,14 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Check if we have received the restart intent.
+        Intent intent = getIntent();
+        if (null != intent && null != intent.getAction()) {
+            if (Worker.INTENT_ACTION_RESTART.equals(intent.getAction())) {
+                restart();
+            }
+        }
 
         if (null == savedInstanceState) {
             ProjectsFragment fragment = new ProjectsFragment();
@@ -79,5 +91,31 @@ public class MainActivity extends BaseActivity {
     private void openSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Restart the application.
+     */
+    private void restart() {
+        try {
+            // The AlarmManager will allow us to send the start intent after
+            // we have stopped the application, i.e. it will restart.
+            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT
+            );
+
+            manager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
+        } catch (ClassCastException e) {
+            Log.w(TAG, "Unable to cast the AlarmManager: " + e.getMessage());
+        }
+
+        finish();
+        System.exit(0);
     }
 }
