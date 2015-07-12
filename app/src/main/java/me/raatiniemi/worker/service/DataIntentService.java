@@ -148,7 +148,12 @@ public class DataIntentService extends IntentService {
      * backup directory on the external storage to the database location.
      */
     private synchronized void restore() {
+        NotificationManager manager = null;
+        NotificationCompat.Builder notification = null;
+
         try {
+            manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
             // Check that the external storage is readable.
             if (!ExternalStorage.isReadable()) {
                 throw new IOException("External storage is not readable");
@@ -166,8 +171,35 @@ public class DataIntentService extends IntentService {
 
             // Perform the file copy.
             FileUtils.copy(from, to);
+
+            // Send the "Restore complete" notification to the user.
+            notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_restore_white_24dp)
+                .setContentTitle(getString(R.string.data_intent_service_restore_complete_title))
+                .setContentText(getString(R.string.data_intent_service_restore_complete_message));
         } catch (IOException e) {
             Log.w(TAG, "Unable to restore backup: " + e.getMessage());
+
+            // TODO: Display what was the cause of the restore failure.
+            // Send the "Restore failed" notification to the user.
+            notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
+                .setContentTitle(getString(R.string.data_intent_service_restore_failed_title))
+                .setContentText(getString(R.string.data_intent_service_restore_failed_message));
+        } catch (ClassCastException e) {
+            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
+        } finally {
+            // Both the notification and notification manager must be
+            // available, otherwise we can't display the notification.
+            //
+            // The notification manager won't be available if a
+            // ClassCastException have been thrown.
+            if (null != manager && null != notification) {
+                manager.notify(
+                    Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
+                    notification.build()
+                );
+            }
         }
     }
 

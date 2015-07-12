@@ -46,4 +46,9 @@
     <string name="data_intent_service_backup_complete_message">Backup to external storage was successful.</string>
     <string name="data_intent_service_backup_failed_title">Backup failed</string>
     <string name="data_intent_service_backup_failed_message">Backup to external storage failed.</string>
+
+    <string name="data_intent_service_restore_complete_title">Restore complete</string>
+    <string name="data_intent_service_restore_complete_message">Data restore from backup was successful.</string>
+    <string name="data_intent_service_restore_failed_title">Restore failed</string>
+    <string name="data_intent_service_restore_failed_message">Data restore from backup failed.</string>
 </resources>
