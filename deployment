@@ -12,9 +12,9 @@ HOST="android-deployment";
 
 # Clean the build related files, these will be generated
 # again when the release is assembled.
-[ -d $BUILD ] && rm -r $BUILD;
-[ -f $REALEASE_APK ] && rm $RELEASE_APK;
-[ -f $UNALIGNED_APK ] && rm $UNALIGNED_APK;
+[ -d $BUILD ] && rm -fr $BUILD;
+[ -f $REALEASE_APK ] && rm -f $RELEASE_APK;
+[ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;
 
 # Assemble the release.
 ./gradlew assembleRelease
@@ -22,8 +22,8 @@ HOST="android-deployment";
 # Before we start deploying the APK for signing we have to do
 # some initial clean up. Removing the unsigned and unaligned
 # files from the deployment host, if they still exists.
-$(ssh $HOST rm $UNSIGNED_APK &>/dev/null);
-$(ssh $HOST rm $UNALIGNED_APK &>/dev/null);
+$(ssh $HOST rm -f $UNSIGNED_APK &>/dev/null);
+$(ssh $HOST rm -f $UNALIGNED_APK &>/dev/null);
 
 # Send the unsigned release APK to the signing host.
 scp "${OUTPUT}/${UNSIGNED_APK}" "${HOST}:${UNSIGNED_APK}";
@@ -47,5 +47,5 @@ scp "${HOST}:${UNALIGNED_APK}" $UNALIGNED_APK;
 zipalign -v 4 $UNALIGNED_APK $RELEASE_APK;
 
 # Do some clean up and exit.
-[ -f $UNALIGNED_APK ] && rm $UNALIGNED_APK;
+[ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;
 exit 0;
