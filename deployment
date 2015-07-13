@@ -1,7 +1,7 @@
 #!/bin/bash
 # Path for build related folders.
 BUILD="./app/build";
-OUTPUT="${BUILD}/outputs/apk/";
+OUTPUT="${BUILD}/outputs/apk";
 
 UNSIGNED_APK="app-release-unsigned.apk";
 UNALIGNED_APK="app-release-unaligned.apk";
