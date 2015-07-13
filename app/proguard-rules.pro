@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# RxAndroid
+-dontwarn rx.internal.util.unsafe.**
