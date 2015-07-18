@@ -76,6 +76,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
         // Setup the subscription for refreshing active projects.
         getPresenter().beginRefreshingActiveProjects();
+
+        // Initiate the refresh of active projects.
+        getPresenter().refreshActiveProjects();
     }
 
     @Override

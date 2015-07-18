@@ -15,6 +15,7 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -132,6 +133,25 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
             mRefreshProjects.unsubscribe();
         }
         mRefreshProjects = null;
+    }
+
+    /**
+     * Refresh active projects.
+     */
+    public void refreshActiveProjects() {
+        Log.d(TAG, "Refreshing active projects");
+        Observable.defer(new Func0<Observable<List<Integer>>>() {
+            @Override
+            public Observable<List<Integer>> call() {
+                return Observable.just(getPositionsForActiveProjects());
+            }
+        }).compose(this.<List<Integer>>applySchedulers())
+            .subscribe(new Action1<List<Integer>>() {
+                @Override
+                public void call(List<Integer> positions) {
+                    refreshActiveProjects(positions);
+                }
+            });
     }
 
     /**
