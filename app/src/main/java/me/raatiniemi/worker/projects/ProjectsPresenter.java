@@ -50,6 +50,54 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     }
 
     /**
+     * Get the positions for the active projects from the view.
+     *
+     * @return Positions for the active projects.
+     */
+    private List<Integer> getPositionsForActiveProjects() {
+        List<Integer> positions = new ArrayList<>();
+
+        // Check that we still have the view attached.
+        if (!isViewAttached()) {
+            Log.d(TAG, "View is not attached, skip checking active projects");
+            return positions;
+        }
+
+        // Iterate the projects and collect the index of active projects.
+        List<Project> data = getView().getData();
+        for (Project project : data) {
+            if (project.isActive()) {
+                Log.d(TAG, "Queuing refresh of project: " + project.getName());
+                positions.add(data.indexOf(project));
+            }
+        }
+        return positions;
+    }
+
+    /**
+     * Refresh the project positions on the view.
+     *
+     * @param positions Positions on the view to refresh.
+     */
+    private void refreshActiveProjects(List<Integer> positions) {
+        // Check that we have found active projects to refresh.
+        if (positions.isEmpty()) {
+            Log.d(TAG, "No projects are active, nothing to refresh");
+            return;
+        }
+
+        // Check that we still have the view attached.
+        if (!isViewAttached()) {
+            Log.d(TAG, "View is not attached, skip refreshing active projects");
+            return;
+        }
+
+        // Refresh the active projects that have been found.
+        Log.d(TAG, "Refreshing active projects");
+        getView().refreshPositions(positions);
+    }
+
+    /**
      * Setup the subscription for refreshing active projects.
      */
     public void refreshActiveProjects() {
@@ -62,23 +110,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
             .map(new Func1<Long, List<Integer>>() {
                 @Override
                 public List<Integer> call(Long aLong) {
-                    List<Integer> positions = new ArrayList<>();
-
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip checking active projects");
-                        return positions;
-                    }
-
-                    // Iterate the projects and collect the index of active projects.
-                    List<Project> data = getView().getData();
-                    for (Project project : data) {
-                        if (project.isActive()) {
-                            Log.d(TAG, "Queuing refresh of project: " + project.getName());
-                            positions.add(data.indexOf(project));
-                        }
-                    }
-                    return positions;
+                    return getPositionsForActiveProjects();
                 }
             })
             .subscribeOn(Schedulers.newThread())
@@ -86,21 +118,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
             .subscribe(new Action1<List<Integer>>() {
                 @Override
                 public void call(List<Integer> positions) {
-                    // Check that we have found active projects to refresh.
-                    if (positions.isEmpty()) {
-                        Log.d(TAG, "No projects are active, nothing to refresh");
-                        return;
-                    }
-
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip refreshing active projects");
-                        return;
-                    }
-
-                    // Refresh the active projects that have been found.
-                    Log.d(TAG, "Refreshing active projects");
-                    getView().refreshPositions(positions);
+                    refreshActiveProjects(positions);
                 }
             });
     }
