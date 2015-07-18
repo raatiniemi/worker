@@ -20,7 +20,6 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.base.view.MvpFragment;
-import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.project.Project;
 import me.raatiniemi.worker.model.project.ProjectProvider;
@@ -76,6 +75,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         super.onResume();
 
         // Setup the subscription for refreshing active projects.
+        getPresenter().beginRefreshingActiveProjects();
+
+        // Initiate the refresh of active projects.
         getPresenter().refreshActiveProjects();
     }
 
@@ -84,7 +86,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         super.onPause();
 
         // Unsubscribe to the refreshing of active projects.
-        getPresenter().stopRefreshActiveProjects();
+        getPresenter().stopRefreshingActiveProjects();
     }
 
     @Override
