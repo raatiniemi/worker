@@ -59,15 +59,15 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
         Log.d(TAG, "Subscribe to the refresh of active projects");
         mRefreshProjects = Observable.interval(60, TimeUnit.SECONDS)
-            .flatMap(new Func1<Long, Observable<List<Integer>>>() {
+            .map(new Func1<Long, List<Integer>>() {
                 @Override
-                public Observable<List<Integer>> call(Long aLong) {
+                public List<Integer> call(Long aLong) {
                     List<Integer> positions = new ArrayList<>();
 
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
                         Log.d(TAG, "View is not attached, skip checking active projects");
-                        return Observable.just(positions);
+                        return positions;
                     }
 
                     // Iterate the projects and collect the index of active projects.
@@ -78,7 +78,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                             positions.add(data.indexOf(project));
                         }
                     }
-                    return Observable.just(positions);
+                    return positions;
                 }
             })
             .subscribeOn(Schedulers.newThread())
