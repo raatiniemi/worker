@@ -100,10 +100,10 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     /**
      * Setup the subscription for refreshing active projects.
      */
-    public void refreshActiveProjects() {
+    public void beginRefreshingActiveProjects() {
         // Before we create a new subscription for refreshing active projects
         // we have to unsubscribe to the existing one, if one is available.
-        stopRefreshActiveProjects();
+        stopRefreshingActiveProjects();
 
         Log.d(TAG, "Subscribe to the refresh of active projects");
         mRefreshProjects = Observable.interval(60, TimeUnit.SECONDS)
@@ -126,7 +126,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     /**
      * Unsubscribe to the refresh of active projects.
      */
-    public void stopRefreshActiveProjects() {
+    public void stopRefreshingActiveProjects() {
         if (null != mRefreshProjects && !mRefreshProjects.isUnsubscribed()) {
             Log.d(TAG, "Unsubscribe to the refresh of active projects");
             mRefreshProjects.unsubscribe();
