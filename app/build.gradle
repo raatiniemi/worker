@@ -25,5 +25,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'io.reactivex:rxandroid:0.25.0'
     compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.6.2'
+    compile 'de.greenrobot:eventbus:2.4.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
