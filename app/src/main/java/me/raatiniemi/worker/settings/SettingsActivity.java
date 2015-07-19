@@ -283,7 +283,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
-            // Start the backup data operation.
+            // Start the data operation.
             Intent intent = new Intent(getActivity(), DataIntentService.class);
             intent.setAction(intentAction);
             getActivity().startService(intent);
