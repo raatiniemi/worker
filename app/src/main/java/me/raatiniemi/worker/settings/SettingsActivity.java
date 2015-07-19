@@ -13,8 +13,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpActivity;
+import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter> {
@@ -168,52 +173,15 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
         return getPreferenceFragment(SETTINGS_DATA_KEY);
     }
 
-    /**
-     * Set the summary for the backup preference.
-     *
-     * @param summary Summary for the backup preference.
-     */
-    public void setBackupSummary(String summary) {
+    public void setLatestBackup(@Nullable Backup backup) {
         DataFragment fragment = getDataFragment();
         if (null == fragment) {
             Log.d(TAG, "DataFragment is not available");
             return;
         }
 
-        // Retrieve the Backup-preference from the DataFragment.
-        Preference preference = fragment.findPreference(SETTINGS_DATA_BACKUP_KEY);
-        if (null == preference) {
-            Log.w(TAG, "Unable to find the Backup-preference");
-            return;
-        }
-
-        // Set the summary for the Backup-preference.
-        preference.setSummary(summary);
-    }
-
-    /**
-     * Set the summary for the restore preference.
-     *
-     * @param summary Summary for the restore preference.
-     * @param enable Should the preference be enabled.
-     */
-    public void setRestoreSummary(String summary, boolean enable) {
-        DataFragment fragment = getDataFragment();
-        if (null == fragment) {
-            Log.d(TAG, "DataFragment is not available");
-            return;
-        }
-
-        // Retrieve the Restore-preference from the DataFragment.
-        Preference preference = fragment.findPreference(SETTINGS_DATA_RESTORE_KEY);
-        if (null == preference) {
-            Log.w(TAG, "Unable to find the Restore-preference");
-            return;
-        }
-
-        // Set the summary for the Restore-preference.
-        preference.setSummary(summary);
-        preference.setEnabled(enable);
+        fragment.setBackupSummary(backup);
+        fragment.setRestoreSummary(backup);
     }
 
     public abstract static class BasePreferenceFragment extends PreferenceFragment {
@@ -263,18 +231,17 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
     }
 
     public static class DataFragment extends BasePreferenceFragment {
+        private static final SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.settings_data);
 
-            // Tell the settings activity to fetch the
-            // backup summary via the presenter.
+            // Tell the SettingsActivity to fetch the latest backup.
             getInstance().getPresenter()
-                .getBackupSummary();
-            getInstance().getPresenter()
-                .getRestoreSummary();
+                .getLatestBackup();
         }
 
         @Override
@@ -325,6 +292,59 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
         @Override
         public int getTitle() {
             return R.string.settings_screen_data;
+        }
+
+        /**
+         * Set the backup summary based on the latest backup.
+         *
+         * @param backup Latest available backup.
+         */
+        void setBackupSummary(@Nullable Backup backup) {
+            Preference preference = findPreference(SETTINGS_DATA_BACKUP_KEY);
+            if (null == preference) {
+                Log.w(TAG, "Unable to find preference with key: " + SETTINGS_DATA_BACKUP_KEY);
+                return;
+            }
+
+            String text = "Unable to locate latest backup.";
+            if (null != backup) {
+                text = "No backup have been performed.";
+
+                Date date = backup.getDate();
+                if (null != date) {
+                    text = "Last backup was performed at " + mFormat.format(date) + ".";
+                }
+            }
+
+            preference.setSummary(text);
+        }
+
+        /**
+         * Set the restore summary based on the latest backup.
+         *
+         * @param backup Latest available backup.
+         */
+        void setRestoreSummary(@Nullable Backup backup) {
+            Preference preference = findPreference(SETTINGS_DATA_RESTORE_KEY);
+            if (null == preference) {
+                Log.w(TAG, "Unable to find preference with key: " + SETTINGS_DATA_RESTORE_KEY);
+                return;
+            }
+
+            String text = "Unable to restore, failed to locate backups.";
+            boolean enable = false;
+            if (null != backup) {
+                text = "Nothing to restore, no backup is available.";
+
+                Date date = backup.getDate();
+                if (null != date) {
+                    text = "Restore backup from " + mFormat.format(date) + ".";
+                    enable = true;
+                }
+            }
+
+            preference.setSummary(text);
+            preference.setEnabled(enable);
         }
     }
 }
