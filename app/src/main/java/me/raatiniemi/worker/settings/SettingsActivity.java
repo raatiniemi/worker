@@ -174,34 +174,21 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
      * @param summary Summary for the backup preference.
      */
     public void setBackupSummary(String summary) {
-        try {
-            // Retrieve the DataFragment which has the Backup-preference.
-            DataFragment fragment = (DataFragment)
-                getFragmentManager().findFragmentByTag(SETTINGS_DATA_KEY);
-            if (null == fragment) {
-                // This should only be an informational log message since the
-                // user might have navigated up the SettingsActivity fragment
-                // stack, i.e. the DataFragment have been detached.
-                //
-                // This is especially true if the storage examination takes
-                // longer than normal, e.g. if other operations are also using
-                // on the IO-scheduler.
-                Log.i(TAG, "Unable to find the DataFragment");
-                return;
-            }
-
-            // Retrieve the Backup-preference from the DataFragment.
-            Preference preference = fragment.findPreference(SETTINGS_DATA_BACKUP_KEY);
-            if (null == preference) {
-                Log.w(TAG, "Unable to find the Backup-preference");
-                return;
-            }
-
-            // Set the summary for the Backup-preference.
-            preference.setSummary(summary);
-        } catch (ClassCastException e) {
-            Log.w(TAG, "Unable to cast fragment to DataFragment: " + e.getMessage());
+        DataFragment fragment = getDataFragment();
+        if (null == fragment) {
+            Log.d(TAG, "DataFragment is not available");
+            return;
         }
+
+        // Retrieve the Backup-preference from the DataFragment.
+        Preference preference = fragment.findPreference(SETTINGS_DATA_BACKUP_KEY);
+        if (null == preference) {
+            Log.w(TAG, "Unable to find the Backup-preference");
+            return;
+        }
+
+        // Set the summary for the Backup-preference.
+        preference.setSummary(summary);
     }
 
     /**
@@ -211,35 +198,22 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
      * @param enable Should the preference be enabled.
      */
     public void setRestoreSummary(String summary, boolean enable) {
-        try {
-            // Retrieve the DataFragment which has the Restore-preference.
-            DataFragment fragment = (DataFragment)
-                getFragmentManager().findFragmentByTag(SETTINGS_DATA_KEY);
-            if (null == fragment) {
-                // This should only be an informational log message since the
-                // user might have navigated up the SettingsActivity fragment
-                // stack, i.e. the DataFragment have been detached.
-                //
-                // This is especially true if the storage examination takes
-                // longer than normal, e.g. if other operations are also using
-                // on the IO-scheduler.
-                Log.i(TAG, "Unable to find the DataFragment");
-                return;
-            }
-
-            // Retrieve the Restore-preference from the DataFragment.
-            Preference preference = fragment.findPreference(SETTINGS_DATA_RESTORE_KEY);
-            if (null == preference) {
-                Log.w(TAG, "Unable to find the Restore-preference");
-                return;
-            }
-
-            // Set the summary for the Restore-preference.
-            preference.setSummary(summary);
-            preference.setEnabled(enable);
-        } catch (ClassCastException e) {
-            Log.w(TAG, "Unable to cast fragment to DataFragment: " + e.getMessage());
+        DataFragment fragment = getDataFragment();
+        if (null == fragment) {
+            Log.d(TAG, "DataFragment is not available");
+            return;
         }
+
+        // Retrieve the Restore-preference from the DataFragment.
+        Preference preference = fragment.findPreference(SETTINGS_DATA_RESTORE_KEY);
+        if (null == preference) {
+            Log.w(TAG, "Unable to find the Restore-preference");
+            return;
+        }
+
+        // Set the summary for the Restore-preference.
+        preference.setSummary(summary);
+        preference.setEnabled(enable);
     }
 
     public abstract static class BasePreferenceFragment extends PreferenceFragment {
