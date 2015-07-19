@@ -8,15 +8,22 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpActivity;
+import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
 
-public class SettingsActivity extends MvpActivity<SettingsPresenter> {
+public class SettingsActivity extends MvpActivity<SettingsPresenter>
+    implements SettingsView {
     /**
      * Tag for logging.
      */
@@ -130,77 +137,53 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
     }
 
     /**
-     * Set the summary for the backup preference.
+     * Get preference fragment by tag.
      *
-     * @param summary Summary for the backup preference.
+     * @param tag Tag for the fragment.
+     * @param <T> Type of the fragment.
+     * @return Preference fragment, or null if unable to retrieve fragment.
      */
-    public void setBackupSummary(String summary) {
+    @Nullable
+    @SuppressWarnings("unchecked")
+    private <T extends BasePreferenceFragment> T getPreferenceFragment(String tag) {
+        T fragment = null;
+
         try {
-            // Retrieve the DataFragment which has the Backup-preference.
-            DataFragment fragment = (DataFragment)
-                getFragmentManager().findFragmentByTag(SETTINGS_DATA_KEY);
+            fragment = (T) getFragmentManager().findFragmentByTag(tag);
             if (null == fragment) {
-                // This should only be an informational log message since the
-                // user might have navigated up the SettingsActivity fragment
-                // stack, i.e. the DataFragment have been detached.
-                //
-                // This is especially true if the storage examination takes
-                // longer than normal, e.g. if other operations are also using
-                // on the IO-scheduler.
-                Log.i(TAG, "Unable to find the DataFragment");
-                return;
+                // Should only be an informational log message since
+                // the activity is working with multiple fragments
+                // and the user can navigate up or down before the
+                // background operations are finished.
+                Log.i(TAG, "Unable to find fragment with tag: " + tag);
             }
-
-            // Retrieve the Backup-preference from the DataFragment.
-            Preference preference = fragment.findPreference(SETTINGS_DATA_BACKUP_KEY);
-            if (null == preference) {
-                Log.w(TAG, "Unable to find the Backup-preference");
-                return;
-            }
-
-            // Set the summary for the Backup-preference.
-            preference.setSummary(summary);
         } catch (ClassCastException e) {
-            Log.w(TAG, "Unable to cast fragment to DataFragment: " + e.getMessage());
+            Log.w(TAG, "Unable to cast preference fragment: " + e.getMessage());
         }
+
+        return fragment;
     }
 
     /**
-     * Set the summary for the restore preference.
+     * Get the data fragment.
      *
-     * @param summary Summary for the restore preference.
-     * @param enable Should the preference be enabled.
+     * @return Data fragment, or null if unable to get fragment.
      */
-    public void setRestoreSummary(String summary, boolean enable) {
-        try {
-            // Retrieve the DataFragment which has the Restore-preference.
-            DataFragment fragment = (DataFragment)
-                getFragmentManager().findFragmentByTag(SETTINGS_DATA_KEY);
-            if (null == fragment) {
-                // This should only be an informational log message since the
-                // user might have navigated up the SettingsActivity fragment
-                // stack, i.e. the DataFragment have been detached.
-                //
-                // This is especially true if the storage examination takes
-                // longer than normal, e.g. if other operations are also using
-                // on the IO-scheduler.
-                Log.i(TAG, "Unable to find the DataFragment");
-                return;
-            }
+    @Nullable
+    private DataFragment getDataFragment() {
+        return getPreferenceFragment(SETTINGS_DATA_KEY);
+    }
 
-            // Retrieve the Restore-preference from the DataFragment.
-            Preference preference = fragment.findPreference(SETTINGS_DATA_RESTORE_KEY);
-            if (null == preference) {
-                Log.w(TAG, "Unable to find the Restore-preference");
-                return;
-            }
-
-            // Set the summary for the Restore-preference.
-            preference.setSummary(summary);
-            preference.setEnabled(enable);
-        } catch (ClassCastException e) {
-            Log.w(TAG, "Unable to cast fragment to DataFragment: " + e.getMessage());
+    @Override
+    public void setLatestBackup(@Nullable Backup backup) {
+        DataFragment fragment = getDataFragment();
+        if (null == fragment) {
+            Log.d(TAG, "DataFragment is not available");
+            return;
         }
+
+        fragment.setBackupSummary(backup);
+        fragment.setRestoreSummary(backup);
     }
 
     public abstract static class BasePreferenceFragment extends PreferenceFragment {
@@ -250,18 +233,17 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
     }
 
     public static class DataFragment extends BasePreferenceFragment {
+        private static final SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.settings_data);
 
-            // Tell the settings activity to fetch the
-            // backup summary via the presenter.
+            // Tell the SettingsActivity to fetch the latest backup.
             getInstance().getPresenter()
-                .getBackupSummary();
-            getInstance().getPresenter()
-                .getRestoreSummary();
+                .getLatestBackup();
         }
 
         @Override
@@ -301,7 +283,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
 
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
-            // Start the backup data operation.
+            // Start the data operation.
             Intent intent = new Intent(getActivity(), DataIntentService.class);
             intent.setAction(intentAction);
             getActivity().startService(intent);
@@ -312,6 +294,59 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
         @Override
         public int getTitle() {
             return R.string.settings_screen_data;
+        }
+
+        /**
+         * Set the backup summary based on the latest backup.
+         *
+         * @param backup Latest available backup.
+         */
+        void setBackupSummary(@Nullable Backup backup) {
+            Preference preference = findPreference(SETTINGS_DATA_BACKUP_KEY);
+            if (null == preference) {
+                Log.w(TAG, "Unable to find preference with key: " + SETTINGS_DATA_BACKUP_KEY);
+                return;
+            }
+
+            String text = "Unable to locate latest backup.";
+            if (null != backup) {
+                text = "No backup have been performed.";
+
+                Date date = backup.getDate();
+                if (null != date) {
+                    text = "Last backup was performed at " + mFormat.format(date) + ".";
+                }
+            }
+
+            preference.setSummary(text);
+        }
+
+        /**
+         * Set the restore summary based on the latest backup.
+         *
+         * @param backup Latest available backup.
+         */
+        void setRestoreSummary(@Nullable Backup backup) {
+            Preference preference = findPreference(SETTINGS_DATA_RESTORE_KEY);
+            if (null == preference) {
+                Log.w(TAG, "Unable to find preference with key: " + SETTINGS_DATA_RESTORE_KEY);
+                return;
+            }
+
+            String text = "Unable to restore, failed to locate backups.";
+            boolean enable = false;
+            if (null != backup) {
+                text = "Nothing to restore, no backup is available.";
+
+                Date date = backup.getDate();
+                if (null != date) {
+                    text = "Restore backup from " + mFormat.format(date) + ".";
+                    enable = true;
+                }
+            }
+
+            preference.setSummary(text);
+            preference.setEnabled(enable);
         }
     }
 }
