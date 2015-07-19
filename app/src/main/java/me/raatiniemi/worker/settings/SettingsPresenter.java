@@ -12,7 +12,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func0;
 
-public class SettingsPresenter extends RxPresenter<SettingsActivity> {
+public class SettingsPresenter extends RxPresenter<SettingsView> {
     /**
      * Tag for logging.
      */

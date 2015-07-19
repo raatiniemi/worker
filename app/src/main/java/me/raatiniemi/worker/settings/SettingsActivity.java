@@ -22,7 +22,8 @@ import me.raatiniemi.worker.base.view.MvpActivity;
 import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
 
-public class SettingsActivity extends MvpActivity<SettingsPresenter> {
+public class SettingsActivity extends MvpActivity<SettingsPresenter>
+    implements SettingsView {
     /**
      * Tag for logging.
      */
@@ -173,6 +174,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
         return getPreferenceFragment(SETTINGS_DATA_KEY);
     }
 
+    @Override
     public void setLatestBackup(@Nullable Backup backup) {
         DataFragment fragment = getDataFragment();
         if (null == fragment) {
