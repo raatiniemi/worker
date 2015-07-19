@@ -12,7 +12,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.model.backup.Backup;
+import me.raatiniemi.worker.model.event.BackupSuccessfulEvent;
 import me.raatiniemi.worker.ui.MainActivity;
 import me.raatiniemi.worker.util.ExternalStorage;
 import me.raatiniemi.worker.util.FileUtils;
@@ -42,11 +45,15 @@ public class DataIntentService extends IntentService {
      */
     private static RUNNING sRunning = RUNNING.NONE;
 
+    private EventBus mEventBus;
+
     /**
      * Constructor.
      */
     public DataIntentService() {
         super(TAG);
+
+        mEventBus = EventBus.getDefault();
     }
 
     /**
@@ -119,6 +126,10 @@ public class DataIntentService extends IntentService {
                 .setSmallIcon(R.drawable.ic_backup_white_24dp)
                 .setContentTitle(getString(R.string.data_intent_service_backup_complete_title))
                 .setContentText(getString(R.string.data_intent_service_backup_complete_message));
+
+            // Assemble and post the successful backup event.
+            Backup backup = new Backup(directory);
+            mEventBus.post(new BackupSuccessfulEvent(backup));
         } catch (IOException e) {
             Log.w(TAG, "Unable to backup: " + e.getMessage());
 

@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpActivity;
 import me.raatiniemi.worker.model.backup.Backup;
@@ -78,7 +79,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
     @Override
     protected SettingsPresenter createPresenter() {
-        return new SettingsPresenter(this);
+        return new SettingsPresenter(this, EventBus.getDefault());
     }
 
     /**
