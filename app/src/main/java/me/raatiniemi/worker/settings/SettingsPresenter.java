@@ -63,6 +63,8 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                         return;
                     }
 
+                    // Push null as the latest backup to indicate
+                    // that an error has occurred.
                     getView().setLatestBackup(null);
                 }
 
