@@ -8,6 +8,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -127,6 +128,44 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter> {
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     * Get preference fragment by tag.
+     *
+     * @param tag Tag for the fragment.
+     * @param <T> Type of the fragment.
+     * @return Preference fragment, or null if unable to retrieve fragment.
+     */
+    @Nullable
+    @SuppressWarnings("unchecked")
+    private <T extends BasePreferenceFragment> T getPreferenceFragment(String tag) {
+        T fragment = null;
+
+        try {
+            fragment = (T) getFragmentManager().findFragmentByTag(tag);
+            if (null == fragment) {
+                // Should only be an informational log message since
+                // the activity is working with multiple fragments
+                // and the user can navigate up or down before the
+                // background operations are finished.
+                Log.i(TAG, "Unable to find fragment with tag: " + tag);
+            }
+        } catch (ClassCastException e) {
+            Log.w(TAG, "Unable to cast preference fragment: " + e.getMessage());
+        }
+
+        return fragment;
+    }
+
+    /**
+     * Get the data fragment.
+     *
+     * @return Data fragment, or null if unable to get fragment.
+     */
+    @Nullable
+    private DataFragment getDataFragment() {
+        return getPreferenceFragment(SETTINGS_DATA_KEY);
     }
 
     /**
