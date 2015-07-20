@@ -18,3 +18,8 @@
 
 # RxAndroid
 -dontwarn rx.internal.util.unsafe.**
+
+# EventBus
+-keepclassmembers class ** {
+    public void onEvent*(**);
+}
