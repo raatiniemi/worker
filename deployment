@@ -10,6 +10,20 @@ RELEASE_APK="app-release.apk";
 # Name of the signing host.
 HOST="android-deployment";
 
+# Check if command is available in the path.
+function isCommandAvailable {
+    # Check that the command is available.
+    $(which $1 >/dev/null 2>/dev/null);
+    if [ $? -eq 1 ]; then
+        echo "Unable to locate $1";
+        exit;
+    fi;
+}
+
+# Check that required commands are available.
+isCommandAvailable java;
+isCommandAvailable zipalign;
+
 # Clean the build related files, these will be generated
 # again when the release is assembled.
 [ -d $BUILD ] && rm -fr $BUILD;
