@@ -34,12 +34,13 @@ fi;
 
 # Clean the build related files, these will be generated
 # again when the release is assembled.
-[ -d $BUILD ] && rm -fr $BUILD;
 [ -f $REALEASE_APK ] && rm -f $RELEASE_APK;
 [ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;
 
 # Assemble the release.
-./gradlew assembleRelease
+./gradlew \
+    clean \
+    assembleRelease
 
 # Check if we should send the APK to the deployment server for signing.
 if [ $sign = true ]; then
