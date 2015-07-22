@@ -37,10 +37,11 @@ fi;
 [ -f $REALEASE_APK ] && rm -f $RELEASE_APK;
 [ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;
 
-# Assemble the release.
+# Clean, test, and assemble the APK.
 ./gradlew \
     clean \
-    assembleRelease
+    test \
+    assemble
 
 # Check if we should send the APK to the deployment server for signing.
 if [ $sign = true ]; then
