@@ -1,5 +1,5 @@
 build:
     script:
-        - "./gradlew assembleRelease"
+        - "./build.sh --no-sign"
     only:
         - master
