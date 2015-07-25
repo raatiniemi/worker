@@ -34,7 +34,7 @@ public class ProjectTest {
 
     @Test
     public void testSetDescription() {
-        Project project = new Project(1L, null);
+        Project project = new Project(1L, "Foo");
         project.setDescription("Foobar");
 
         assertEquals("Foobar", project.getDescription());
@@ -42,7 +42,7 @@ public class ProjectTest {
 
     @Test
     public void testGetArchived() {
-        Project project = new Project(1L, null);
+        Project project = new Project(1L, "Foo");
 
         Long archived = 0L;
 
@@ -51,7 +51,7 @@ public class ProjectTest {
 
     @Test
     public void testSetArchived() {
-        Project project = new Project(1L, null);
+        Project project = new Project(1L, "Foo");
 
         Long archived = 1L;
         project.setArchived(archived);
