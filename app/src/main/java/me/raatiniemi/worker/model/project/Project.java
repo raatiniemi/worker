@@ -241,16 +241,14 @@ public class Project extends DomainObject {
      * @return The clocked out time domain object, or null if project is not active.
      */
     public Time clockOutAt(Date date) throws DomainException {
-        // If the project is not active, we can't clock out.
-        if (!isActive()) {
-            throw new ClockActivityException("Unable to clock out, project is not active");
-        }
-
-        // Retrieve the active Time domain object,
-        // and clock out with the supplied date.
+        // Retrieve the active Time domain object, and clock
+        // out with the supplied date.
+        //
+        // If none is available, i.e. we have not clocked in,
+        // we can't clock out.
         Time time = getActiveTime();
-        if (null == time) {
-            return null;
+        if (null == time || !time.isActive()) {
+            throw new ClockActivityException("Unable to clock out, project is not active");
         }
 
         time.clockOutAt(date);
