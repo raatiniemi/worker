@@ -5,7 +5,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.exception.DomainException;
@@ -26,22 +28,42 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ProjectTest {
     @Test
-    public void testCreateNewProject() {
-        Project project = new Project("Foo");
+    public void testConstructorWithIdAndName() {
+        Project project = new Project(1L, "Foo");
 
+        // Asserting against the literal directly will result
+        // in an ambiguous method call.
+        Long id = 1L;
+        assertEquals(id, project.getId());
         assertEquals("Foo", project.getName());
     }
 
     @Test
-    public void testRenameProject() {
-        Project project = new Project(1L, "Foo");
-        project.setName("Bar");
+    public void testConstructorWithName() {
+        Project project = new Project("Foo");
 
+        assertNull(project.getId());
+        assertEquals("Foo", project.getName());
+    }
+
+    @Test
+    public void testSetName() {
+        Project project = new Project(1L, "Foo");
+
+        assertEquals("Foo", project.getName());
+        project.setName("Bar");
         assertEquals("Bar", project.getName());
     }
 
     @Test
-    public void testSetAndGetDescription() {
+    public void testGetDefaultDescription() {
+        Project project = new Project(1L, "Foo");
+
+        assertNull(project.getDescription());
+    }
+
+    @Test
+    public void testSetDescription() {
         Project project = new Project(1L, "Foo");
         project.setDescription("Bar");
 
@@ -49,62 +71,75 @@ public class ProjectTest {
     }
 
     @Test
-    public void testGetEmptyDescription() {
-        Project project = new Project(1L, "Foo");
-
-        assertNull(project.getDescription());
-    }
-
-    @Test
     public void testGetArchived() {
         Project project = new Project(1L, "Foo");
 
-        // Asserting against '0L' directly will result
+        // Asserting against the literal directly will result
         // in an ambiguous method call.
         Long archived = 0L;
-
         assertEquals(archived, project.getArchived());
     }
 
     @Test
     public void testSetArchived() {
         Project project = new Project(1L, "Foo");
+        project.setArchived(1L);
 
-        // Asserting against '1L' directly will result
+        // Asserting against the literal directly will result
         // in an ambiguous method call.
         Long archived = 1L;
-        project.setArchived(archived);
-
         assertEquals(archived, project.getArchived());
     }
 
     @Test
-    public void testGetEmptyTime() {
+    public void testGetTime() {
         Project project = new Project(1L, "Foo");
 
         assertNotNull(project.getTime());
-        assertEquals(project.getTime().size(), 0);
+        assertEquals(0, project.getTime().size());
     }
 
     @Test
     public void testAddTime() {
         Project project = new Project(1L, "Foo");
 
-        assertEquals(project.getTime().size(), 0);
+        Time time = mock(Time.class);
 
-        project.addTime(mock(Time.class));
+        List<Time> list = project.getTime();
+        assertEquals(0, list.size());
+        project.addTime(time);
 
-        assertEquals(project.getTime().size(), 1);
+        list = project.getTime();
+        assertEquals(1, list.size());
+        assertEquals(time, list.get(0));
+
     }
 
     @Test
-    public void testSummarizeSingleTime() {
+    public void testAddTimeList() {
+        Project project = new Project(1L, "Foo");
+
+        Time time1 = mock(Time.class);
+        Time time2 = mock(Time.class);
+
+        List<Time> list = new ArrayList<>();
+        list.add(time1);
+        list.add(time2);
+        project.addTime(list);
+
+        list = project.getTime();
+        assertEquals(2, list.size());
+        assertEquals(time1, list.get(0));
+        assertEquals(time2, list.get(1));
+    }
+
+    @Test
+    public void testSummarizeTime() {
         Project project = new Project(1L, "Foo");
 
         Time time = mock(Time.class);
         when(time.getTime())
             .thenReturn(60000L);
-
         project.addTime(time);
 
         assertEquals(60000L, project.summarizeTime());
@@ -190,7 +225,75 @@ public class ProjectTest {
     }
 
     @Test
-    public void testClockOut() throws DomainException {
+    public void testGetElapsedWithoutTime() {
+        Project project = new Project(1L, "Foo");
+
+        assertEquals(0L, project.getElapsed());
+    }
+
+    @Test
+    public void testGetElapsedWhenInactive() {
+        Project project = new Project(1L, "Foo");
+
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(false);
+
+        project.addTime(time);
+        assertEquals(0L, project.getElapsed());
+    }
+
+    @Test
+    public void testGetElapsedWhenActive() {
+        Project project = new Project(1L, "Foo");
+
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(true);
+        when(time.getInterval())
+            .thenReturn(50000L);
+
+        project.addTime(time);
+        assertEquals(50000L, project.getElapsed());
+    }
+
+    @Test
+    public void testGetClockedInSinceWithoutTime() {
+        Project project = new Project(1L, "Foo");
+
+        assertNull(project.getClockedInSince());
+    }
+
+    @Test
+    public void testGetClockedInSinceWhenInactive() {
+        Project project = new Project(1L, "Foo");
+
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(false);
+
+        project.addTime(time);
+        assertNull(project.getClockedInSince());
+    }
+
+    @Test
+    public void testGetClockedInSince() {
+        Project project = new Project(1L, "Foo");
+
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(true);
+        when(time.getStart())
+            .thenReturn(500000L);
+
+        project.addTime(time);
+
+        Date date = project.getClockedInSince();
+        assertEquals(500000L, date.getTime());
+    }
+
+    @Test
+    public void testClockOutAt() throws DomainException {
         Project project = new Project(1L, "Foo");
         Date date = new Date();
 
@@ -201,29 +304,34 @@ public class ProjectTest {
         project.addTime(time);
 
         assertEquals(time, project.clockOutAt(date));
-        verify(time, times(1)).clockOutAt(date);
+        verify(time, times(1))
+            .clockOutAt(date);
     }
 
     @Test(expected = ClockActivityException.class)
-    public void testClockOutWithoutActiveTime() throws DomainException {
+    public void testClockOutAtWithoutActiveTime() throws DomainException {
         Project project = new Project(1L, "Foo");
 
         Time time = mock(Time.class);
         when(time.isActive())
             .thenReturn(false);
 
-        project.clockOut();
+        project.addTime(time);
+
+        Date date = new Date();
+        project.clockOutAt(date);
     }
 
     @Test(expected = ClockActivityException.class)
-    public void testClockOutWithoutTime() throws DomainException {
+    public void testClockOutAtWithoutTime() throws DomainException {
         Project project = new Project(1L, "Foo");
 
-        project.clockOut();
+        Date date = new Date();
+        project.clockOutAt(date);
     }
 
     @Test
-    public void testIsActiveWithActiveTime() {
+    public void testIfProjectIsActiveWithActiveTime() {
         Project project = new Project(1L, "Foo");
 
         Time time = mock(Time.class);
@@ -236,7 +344,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void testIsActiveWithoutActiveTime() {
+    public void testIfProjectIsActiveWithoutActiveTime() {
         Project project = new Project(1L, "Foo");
 
         Time time = mock(Time.class);
@@ -249,7 +357,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void testIsActiveWithoutTime() {
+    public void testIfProjectIsActiveWithoutTime() {
         Project project = new Project(1L, "Foo");
 
         assertFalse(project.isActive());
