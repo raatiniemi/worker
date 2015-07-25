@@ -52,6 +52,8 @@ public class ProjectTest {
     public void testGetArchived() {
         Project project = new Project(1L, "Foo");
 
+        // Asserting against '0L' directly will result
+        // in an ambiguous method call.
         Long archived = 0L;
 
         assertEquals(archived, project.getArchived());
@@ -61,6 +63,8 @@ public class ProjectTest {
     public void testSetArchived() {
         Project project = new Project(1L, "Foo");
 
+        // Asserting against '1L' directly will result
+        // in an ambiguous method call.
         Long archived = 1L;
         project.setArchived(archived);
 
