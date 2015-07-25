@@ -1,0 +1,31 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    // Using a later version did not generate the actual coverage, everything
+    // was at 0%. So, for now we are sticking with an older version.
+    toolVersion = '0.7.1.201405082137'
+}
+
+def coverageSourceDirectories = [
+    'src/main/java',
+    'src/gen'
+]
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebug']) {
+    reports {
+        html.enabled = true
+        html.destination = "${buildDir}/reports/coverage/html"
+    }
+
+    classDirectories = fileTree(
+        dir: "${buildDir}/intermediates/classes/debug",
+        excludes: [
+            '**/R*.class',
+            '**/R$*.class',
+            'me.raatiniemi.worker/BuildConfig.class'
+        ]
+    )
+
+    sourceDirectories = files(coverageSourceDirectories)
+    executionData = files("${buildDir}/jacoco/testDebug.exec")
+}
