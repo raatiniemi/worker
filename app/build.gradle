@@ -27,9 +27,7 @@ dependencies {
     compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.6.2'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.0'
 }
 
+apply from: "${rootProject.getRootDir()}/robolectric.gradle"
 apply from: "${rootProject.getRootDir()}/jacoco.gradle"
