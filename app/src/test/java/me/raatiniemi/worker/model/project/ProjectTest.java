@@ -12,8 +12,11 @@ import me.raatiniemi.worker.model.time.Time;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
@@ -72,36 +75,35 @@ public class ProjectTest {
     }
 
     @Test
-    public void testGetTime() {
+    public void testGetEmptyTime() {
         Project project = new Project(1L, "Foo");
 
-        assertTrue(null != project.getTime());
-        assertTrue(0 == project.getTime().size());
+        assertNotNull(project.getTime());
+        assertEquals(project.getTime().size(), 0);
     }
 
     @Test
     public void testAddTime() {
-        try {
-            Project project = new Project(1L, "Foo");
+        Project project = new Project(1L, "Foo");
 
-            assertTrue(0 == project.getTime().size());
-            project.addTime(new Time(project.getId()));
-            assertTrue(1 == project.getTime().size());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        assertEquals(project.getTime().size(), 0);
+
+        project.addTime(mock(Time.class));
+
+        assertEquals(project.getTime().size(), 1);
     }
 
     @Test
     public void testSummarizeSingleTime() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 0L, 60000L));
+        Project project = new Project(1L, "Foo");
 
-            assertEquals(60000L, project.summarizeTime());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time = mock(Time.class);
+        when(time.getTime())
+            .thenReturn(60000L);
+
+        project.addTime(time);
+
+        assertEquals(60000L, project.summarizeTime());
     }
 
     @Test
@@ -113,54 +115,74 @@ public class ProjectTest {
 
     @Test
     public void testSummarizeTimeWithActiveTime() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 0L, 60000L));
-            project.addTime(new Time(null, project.getId(), 60000L, 0L));
+        Project project = new Project(1L, "Foo");
 
-            assertEquals(60000L, project.summarizeTime());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time1 = mock(Time.class);
+        when(time1.getTime())
+            .thenReturn(60000L);
+
+        Time time2 = mock(Time.class);
+        when(time2.getTime())
+            .thenReturn(0L);
+
+        project.addTime(time1);
+        project.addTime(time2);
+
+        assertEquals(60000L, project.summarizeTime());
     }
 
     @Test
     public void testSummarizeTimeWithRoundUp() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 0L, 60000L));
-            project.addTime(new Time(null, project.getId(), 60000L, 90000L));
+        Project project = new Project(1L, "Foo");
 
-            assertEquals(90000L, project.summarizeTime());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time1 = mock(Time.class);
+        when(time1.getTime())
+            .thenReturn(60000L);
+
+        Time time2 = mock(Time.class);
+        when(time2.getTime())
+            .thenReturn(30000L);
+
+        project.addTime(time1);
+        project.addTime(time2);
+
+        assertEquals(90000L, project.summarizeTime());
     }
 
     @Test
     public void testSummarizeTimeWithRoundDown() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 0L, 60000L));
-            project.addTime(new Time(null, project.getId(), 60000L, 89000L));
+        Project project = new Project(1L, "Foo");
 
-            assertEquals(89000L, project.summarizeTime());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time1 = mock(Time.class);
+        when(time1.getTime())
+            .thenReturn(60000L);
+
+        Time time2 = mock(Time.class);
+        when(time2.getTime())
+            .thenReturn(29000L);
+
+        project.addTime(time1);
+        project.addTime(time2);
+
+        assertEquals(89000L, project.summarizeTime());
     }
 
     @Test
     public void testSummarizeTimeWithHours() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 3600000L, 7200000L));
-            project.addTime(new Time(null, project.getId(), 7200000L, 9000000L));
+        Project project = new Project(1L, "Foo");
 
-            assertEquals(5400000L, project.summarizeTime());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time1 = mock(Time.class);
+        when(time1.getTime())
+            .thenReturn(3600000L);
+
+        Time time2 = mock(Time.class);
+        when(time2.getTime())
+            .thenReturn(1800000L);
+
+        project.addTime(time1);
+        project.addTime(time2);
+
+        assertEquals(5400000L, project.summarizeTime());
     }
 
     @Test
