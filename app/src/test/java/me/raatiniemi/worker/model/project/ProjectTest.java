@@ -25,11 +25,11 @@ public class ProjectTest {
     }
 
     @Test
-    public void testSetName() {
-        Project project = new Project(1L, null);
-        project.setName("Foo");
+    public void testRenameProject() {
+        Project project = new Project(1L, "Foo");
+        project.setName("Bar");
 
-        assertEquals("Foo", project.getName());
+        assertEquals("Bar", project.getName());
     }
 
     @Test
