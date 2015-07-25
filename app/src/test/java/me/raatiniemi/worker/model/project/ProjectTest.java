@@ -226,26 +226,28 @@ public class ProjectTest {
 
     @Test
     public void testIsActiveWithActiveTime() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 60000L, 0L));
+        Project project = new Project(1L, "Foo");
 
-            assertTrue(project.isActive());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(true);
+
+        project.addTime(time);
+
+        assertTrue(project.isActive());
     }
 
     @Test
     public void testIsActiveWithoutActiveTime() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 60000L, 120000L));
+        Project project = new Project(1L, "Foo");
 
-            assertFalse(project.isActive());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(false);
+
+        project.addTime(time);
+
+        assertFalse(project.isActive());
     }
 
     @Test
