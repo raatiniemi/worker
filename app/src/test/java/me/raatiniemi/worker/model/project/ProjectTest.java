@@ -26,8 +26,8 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ProjectTest {
     @Test
-    public void testGetName() {
-        Project project = new Project(1L, "Foo");
+    public void testCreateNewProject() {
+        Project project = new Project("Foo");
 
         assertEquals("Foo", project.getName());
     }
