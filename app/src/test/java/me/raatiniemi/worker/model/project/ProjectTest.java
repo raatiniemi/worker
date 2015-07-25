@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.Date;
+
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
@@ -16,6 +18,8 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
@@ -186,42 +190,36 @@ public class ProjectTest {
     }
 
     @Test
-    public void testClockOut() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 60000L, 0L));
+    public void testClockOut() throws DomainException {
+        Project project = new Project(1L, "Foo");
+        Date date = new Date();
 
-            assertTrue(null != project.clockOut());
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(true);
+
+        project.addTime(time);
+
+        assertEquals(time, project.clockOutAt(date));
+        verify(time, times(1)).clockOutAt(date);
     }
 
-    @Test
-    public void testClockOutWithoutActiveTime() {
-        try {
-            Project project = new Project(1L, "Foo");
-            project.addTime(new Time(null, project.getId(), 60000L, 120000L));
+    @Test(expected = ClockActivityException.class)
+    public void testClockOutWithoutActiveTime() throws DomainException {
+        Project project = new Project(1L, "Foo");
 
-            assertTrue(null == project.clockOut());
-        } catch (ClockActivityException e) {
-            assertTrue(true);
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(false);
+
+        project.clockOut();
     }
 
-    @Test
-    public void testClockOutWithoutTime() {
-        try {
-            Project project = new Project(1L, "Foo");
+    @Test(expected = ClockActivityException.class)
+    public void testClockOutWithoutTime() throws DomainException {
+        Project project = new Project(1L, "Foo");
 
-            project.clockOut();
-        } catch (ClockActivityException e) {
-            assertTrue(true);
-        } catch (DomainException e) {
-            assertFalse(true);
-        }
+        project.clockOut();
     }
 
     @Test
