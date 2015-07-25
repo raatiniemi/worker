@@ -205,14 +205,9 @@ public class Project extends DomainObject {
      * @return Time when project was clocked in, or null if project is not active.
      */
     public Date getClockedInSince() {
-        // If the project is not active, there's nothing to do.
-        if (!isActive()) {
-            return null;
-        }
-
         // Retrieve the last time, i.e. the active time session.
         Time time = getActiveTime();
-        if (null == time) {
+        if (null == time || !time.isActive()) {
             return null;
         }
 
