@@ -44,7 +44,7 @@ public class Project extends DomainObject {
 
         setName(name);
         setTime(new ArrayList<Time>());
-        setArchived((long) 0);
+        setArchived(0L);
     }
 
     /**
