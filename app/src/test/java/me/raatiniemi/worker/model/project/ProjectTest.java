@@ -12,6 +12,7 @@ import me.raatiniemi.worker.model.time.Time;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(RobolectricGradleTestRunner.class)
@@ -33,11 +34,18 @@ public class ProjectTest {
     }
 
     @Test
-    public void testSetDescription() {
+    public void testSetAndGetDescription() {
         Project project = new Project(1L, "Foo");
-        project.setDescription("Foobar");
+        project.setDescription("Bar");
 
-        assertEquals("Foobar", project.getDescription());
+        assertEquals("Bar", project.getDescription());
+    }
+
+    @Test
+    public void testGetEmptyDescription() {
+        Project project = new Project(1L, "Foo");
+
+        assertNull(project.getDescription());
     }
 
     @Test
