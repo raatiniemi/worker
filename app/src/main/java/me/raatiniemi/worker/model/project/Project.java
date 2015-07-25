@@ -175,12 +175,10 @@ public class Project extends DomainObject {
     public long getElapsed() {
         long elapsed = 0;
 
-        if (isActive()) {
-            // Retrieve the interval for the active time.
-            Time time = getActiveTime();
-            if (null != time) {
-                elapsed = time.getInterval();
-            }
+        // Retrieve the interval for the active time.
+        Time time = getActiveTime();
+        if (null != time && time.isActive()) {
+            elapsed = time.getInterval();
         }
 
         return elapsed;
