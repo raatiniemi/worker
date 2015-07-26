@@ -59,7 +59,7 @@ public class Time extends DomainObject {
      * @throws ClockOutBeforeClockInException If stop time is before start time.
      */
     public Time(Long projectId) throws ClockOutBeforeClockInException {
-        this(null, projectId, (new Date()).getTime(), (long) 0);
+        this(null, projectId, (new Date()).getTime(), 0L);
     }
 
     /**
@@ -150,7 +150,7 @@ public class Time extends DomainObject {
      * @return True if time interval is active, otherwise false.
      */
     public boolean isActive() {
-        return getStop() == 0;
+        return 0 == getStop();
     }
 
     /**
