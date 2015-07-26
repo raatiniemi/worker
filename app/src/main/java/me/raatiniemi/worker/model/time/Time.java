@@ -6,31 +6,37 @@ import me.raatiniemi.worker.domain.DomainObject;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
 
 /**
- * Domain object for Time items.
+ * Represent a time interval registered to a project.
  */
 public class Time extends DomainObject {
     /**
-     * Id for the project connected to the time item.
+     * Id for the project connected to the time interval.
      */
     private long mProjectId;
 
     /**
-     * Timestamp when time item starts.
+     * Timestamp for when the time interval starts.
+     * <p>
+     * UNIX timestamp, in milliseconds, representing the date and time at
+     * which the interval was considered clocked in.
      */
     private long mStart;
 
     /**
-     * Timestamp when time item stops, or zero if still active.
+     * Timestamp for when the time interval ends, or zero if active.
+     * <p>
+     * UNIX timestamp, in milliseconds, representing the date and time at
+     * which the interval was considered clocked out.
      */
     private long mStop;
 
     /**
      * Constructor.
      *
-     * @param id Id for the time item.
-     * @param projectId Id for the project.
-     * @param start Timestamp for start time.
-     * @param stop Timestamp for stop time.
+     * @param id Id for the time interval.
+     * @param projectId Id for the project connected to the time interval.
+     * @param start Timestamp for when the interval starts.
+     * @param stop Timestamp for when the interval ends, or zero if active.
      * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
     public Time(Long id, long projectId, long start, long stop) throws ClockOutBeforeClockInException {
@@ -49,7 +55,7 @@ public class Time extends DomainObject {
     /**
      * Constructor, short hand for clock in activity.
      *
-     * @param projectId Id for the project.
+     * @param projectId Id for the project connected to the time interval.
      * @throws ClockOutBeforeClockInException If stop time is before start time.
      */
     public Time(Long projectId) throws ClockOutBeforeClockInException {
@@ -57,59 +63,55 @@ public class Time extends DomainObject {
     }
 
     /**
-     * Get the project id to which the time is connected to.
+     * Getter method for the project id.
      *
-     * @return Id for connected project.
+     * @return Id for the project connected to the time interval.
      */
     public long getProjectId() {
         return mProjectId;
     }
 
     /**
-     * Set the project id to which the time is connected to.
+     * Internal setter method for the project id.
      *
-     * @param projectId Id for connected project.
+     * @param projectId Id for the project connected to the time interval.
      */
     private void setProjectId(long projectId) {
         mProjectId = projectId;
     }
 
     /**
-     * Get the start time in milliseconds, represent the date and time
-     * at which the object was considered clocked in.
+     * Getter method for timestamp when the time interval start.
      *
-     * @return Start time in milliseconds.
+     * @return Timestamp for time interval start, in milliseconds.
      */
     public long getStart() {
         return mStart;
     }
 
     /**
-     * Set the start time in milliseconds, represent the date and time (UNIX)
-     * at which the object was considered clocked in.
+     * Setter method for timestamp when the time interval start.
      *
-     * @param start Start time in milliseconds.
+     * @param start Timestamp for time interval start, in milliseconds.
      */
     public void setStart(long start) {
         mStart = start;
     }
 
     /**
-     * Get the stop time in milliseconds, represent the date and time (UNIX)
-     * at which the object was considered clocked out.
+     * Getter method for timestamp when the time interval ends.
      *
-     * @return Stop time in milliseconds.
+     * @return Timestamp for time interval end, in milliseconds, or zero if active.
      */
     public long getStop() {
         return mStop;
     }
 
     /**
-     * Set the stop time in milliseconds, represent the date and time (UNIX)
-     * at which the object was considered clocked out.
+     * Setter method for timestamp when the time interval ends.
      *
-     * @param stop Stop time in milliseconds.
-     * @throws ClockOutBeforeClockInException If the value for stop is less than the value for start.
+     * @param stop Timestamp for time interval end, in milliseconds.
+     * @throws ClockOutBeforeClockInException If value for stop is less than value for start.
      */
     public void setStop(long stop) throws ClockOutBeforeClockInException {
         // Check that the stop value is lager than the start value,
@@ -124,37 +126,40 @@ public class Time extends DomainObject {
     }
 
     /**
-     * Set clock in at given date.
+     * Set the clock in timestamp at a given date.
      *
-     * @param date Date to clock in.
+     * @param date Date at which to clock in.
      */
     public void clockInAt(Date date) {
         setStart(date.getTime());
     }
 
     /**
-     * Set clock out at given date.
+     * Set the clock out timestamp at given date.
      *
-     * @param date Date to clock out.
-     * @throws ClockOutBeforeClockInException If clock out date is before clock in date.
+     * @param date Date at which to clock out.
+     * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
     public void clockOutAt(Date date) throws ClockOutBeforeClockInException {
         setStop(date.getTime());
     }
 
     /**
-     * Check whether the time is active.
+     * Check if the time interval is active.
      *
-     * @return True if time is active, otherwise false.
+     * @return True if time interval is active, otherwise false.
      */
     public boolean isActive() {
         return getStop() == 0;
     }
 
     /**
-     * Retrieve the time in milliseconds between start and stop, or zero if time is active.
+     * Get the registered time.
+     * <p>
+     * The time is only considered registered if the interval is not active,
+     * i.e. both the start and stop values must be valid (not zero).
      *
-     * @return Time in milliseconds between start and stop.
+     * @return Registered time in milliseconds, or zero if interval is active.
      */
     public long getTime() {
         long time = 0;
@@ -167,9 +172,10 @@ public class Time extends DomainObject {
     }
 
     /**
-     * Calculate the interval difference between start and stop. If time is
-     * active the current time should be used, this way we can calculate the
-     * elapsed time from when the time was clocked in.
+     * Get the time interval.
+     * <p>
+     * If the interval is active, the current time will be used to calculate
+     * the time between start and now.
      *
      * @return Interval in milliseconds.
      */
