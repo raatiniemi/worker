@@ -292,6 +292,37 @@ public class ProjectTest {
         assertEquals(500000L, date.getTime());
     }
 
+    @Test(expected = ClockActivityException.class)
+    public void testClockInAtWhenActive() throws DomainException {
+        Project project = new Project(1L, "Foo");
+
+        Time time = mock(Time.class);
+        when(time.isActive())
+            .thenReturn(true);
+
+        project.addTime(time);
+
+        Date date = mock(Date.class);
+        project.clockInAt(date);
+    }
+
+    @Test
+    public void testClockInAt() throws DomainException {
+        Project project = new Project(1L, "Foo");
+
+        Date date = mock(Date.class);
+        when(date.getTime())
+            .thenReturn(100L);
+
+        Time time = project.clockInAt(date);
+
+        assertNotNull(time);
+        assertNull(time.getId());
+        assertEquals(1L, time.getProjectId());
+        assertEquals(100L, time.getStart());
+        assertEquals(0L, time.getStop());
+    }
+
     @Test
     public void testClockOutAt() throws DomainException {
         Project project = new Project(1L, "Foo");
