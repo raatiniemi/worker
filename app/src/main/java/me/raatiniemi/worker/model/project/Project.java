@@ -256,15 +256,6 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Clock out the active project, if the project is not active nothing happens.
-     *
-     * @return The clocked out time domain object, or null if project is not active.
-     */
-    public Time clockOut() throws DomainException {
-        return clockOutAt(new Date());
-    }
-
-    /**
      * Check if the project is active.
      *
      * @return True if the project is active, otherwise false.
