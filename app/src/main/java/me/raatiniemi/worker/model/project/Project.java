@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.model.project;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -89,6 +91,11 @@ public class Project extends DomainObject {
      * @param description Project description.
      */
     public void setDescription(String description) {
+        // If the description is empty we should reset it to null.
+        if (TextUtils.isEmpty(description)) {
+            description = null;
+        }
+
         mDescription = description;
     }
 

@@ -71,6 +71,24 @@ public class ProjectTest {
     }
 
     @Test
+    public void testResetDescriptionToEmptyString() {
+        Project project = new Project(1L, "Foo");
+        project.setDescription("");
+
+        // The description should always reset
+        // to null if the text is empty.
+        assertNull(project.getDescription());
+    }
+
+    @Test
+    public void testResetDescription() {
+        Project project = new Project(1L, "Foo");
+        project.setDescription(null);
+
+        assertNull(project.getDescription());
+    }
+
+    @Test
     public void testGetArchived() {
         Project project = new Project(1L, "Foo");
 
