@@ -152,6 +152,17 @@ public class ProjectTest {
     }
 
     @Test
+    public void testAddEmptyTimeList() {
+        Project project = new Project(1L, "Foo");
+
+        List<Time> list = new ArrayList<>();
+        project.addTime(list);
+
+        list = project.getTime();
+        assertTrue(list.isEmpty());
+    }
+
+    @Test
     public void testSummarizeTime() {
         Project project = new Project(1L, "Foo");
 

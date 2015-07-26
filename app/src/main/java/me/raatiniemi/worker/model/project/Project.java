@@ -150,6 +150,12 @@ public class Project extends DomainObject {
      * @param time Time to add to the project.
      */
     public void addTime(List<Time> time) {
+        // If the list with items are empty, there's no
+        // need to attempt to add them.
+        if (time.isEmpty()) {
+            return;
+        }
+
         getTime().addAll(time);
     }
 
