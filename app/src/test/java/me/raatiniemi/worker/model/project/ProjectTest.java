@@ -270,6 +270,8 @@ public class ProjectTest {
 
         project.addTime(time);
         assertEquals(0L, project.getElapsed());
+
+        verify(time, times(1)).isActive();
     }
 
     @Test
@@ -284,6 +286,9 @@ public class ProjectTest {
 
         project.addTime(time);
         assertEquals(50000L, project.getElapsed());
+
+        verify(time, times(1)).isActive();
+        verify(time, times(1)).getInterval();
     }
 
     @Test
@@ -303,6 +308,8 @@ public class ProjectTest {
 
         project.addTime(time);
         assertNull(project.getClockedInSince());
+
+        verify(time, times(1)).isActive();
     }
 
     @Test
@@ -320,6 +327,9 @@ public class ProjectTest {
         Date date = project.getClockedInSince();
         assertNotNull(date);
         assertEquals(500000L, date.getTime());
+
+        verify(time, times(1)).isActive();
+        verify(time, times(1)).getStart();
     }
 
     @Test(expected = ClockActivityException.class)
@@ -334,6 +344,8 @@ public class ProjectTest {
 
         Date date = mock(Date.class);
         project.clockInAt(date);
+
+        verify(time, times(1)).isActive();
     }
 
     @Test
@@ -351,6 +363,8 @@ public class ProjectTest {
         assertEquals(1L, time.getProjectId());
         assertEquals(100L, time.getStart());
         assertEquals(0L, time.getStop());
+
+        verify(date, times(1)).getTime();
     }
 
     @Test
@@ -365,8 +379,7 @@ public class ProjectTest {
         project.addTime(time);
 
         assertEquals(time, project.clockOutAt(date));
-        verify(time, times(1))
-            .clockOutAt(date);
+        verify(time, times(1)).clockOutAt(date);
     }
 
     @Test(expected = ClockActivityException.class)
@@ -381,6 +394,8 @@ public class ProjectTest {
 
         Date date = new Date();
         project.clockOutAt(date);
+
+        verify(time, times(1)).isActive();
     }
 
     @Test(expected = ClockActivityException.class)
@@ -402,6 +417,8 @@ public class ProjectTest {
         project.addTime(time);
 
         assertTrue(project.isActive());
+
+        verify(time, times(1)).isActive();
     }
 
     @Test
@@ -415,6 +432,8 @@ public class ProjectTest {
         project.addTime(time);
 
         assertFalse(project.isActive());
+
+        verify(time, times(1)).isActive();
     }
 
     @Test

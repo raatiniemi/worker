@@ -195,7 +195,7 @@ public class Project extends DomainObject {
 
         // Retrieve the interval for the active time.
         Time time = getActiveTime();
-        if (null != time && time.isActive()) {
+        if (null != time) {
             elapsed = time.getInterval();
         }
 
@@ -203,18 +203,25 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Retrieve the time domain object that might be active.
+     * Retrieve the active time, if available.
      *
-     * @return Time domain object, or null if no time have been registered.
+     * @return Active time, or null if project is not active.
      */
     @Nullable
     private Time getActiveTime() {
-        List<Time> time = getTime();
-        if (time.isEmpty()) {
+        // If no time is registered, the project can't be active.
+        List<Time> list = getTime();
+        if (list.isEmpty()) {
             return null;
         }
 
-        return time.get(0);
+        // If the first item is not active, the project is not active.
+        Time time = list.get(0);
+        if (!time.isActive()) {
+            return null;
+        }
+
+        return time;
     }
 
     /**
@@ -226,7 +233,7 @@ public class Project extends DomainObject {
     public Date getClockedInSince() {
         // Retrieve the last time, i.e. the active time session.
         Time time = getActiveTime();
-        if (null == time || !time.isActive()) {
+        if (null == time) {
             return null;
         }
 
@@ -271,7 +278,7 @@ public class Project extends DomainObject {
         // If none is available, i.e. we have not clocked in,
         // we can't clock out.
         Time time = getActiveTime();
-        if (null == time || !time.isActive()) {
+        if (null == time) {
             throw new ClockActivityException("Unable to clock out, project is not active");
         }
 
@@ -285,15 +292,6 @@ public class Project extends DomainObject {
      * @return True if the project is active, otherwise false.
      */
     public boolean isActive() {
-        boolean active = false;
-
-        // Retrieve the last element of the time array and check if the
-        // item is active, hence defines if the project is active.
-        Time time = getActiveTime();
-        if (null != time) {
-            active = time.isActive();
-        }
-
-        return active;
+        return null != getActiveTime();
     }
 }
