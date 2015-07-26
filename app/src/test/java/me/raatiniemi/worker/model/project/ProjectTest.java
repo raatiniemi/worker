@@ -370,7 +370,6 @@ public class ProjectTest {
     @Test
     public void testClockOutAt() throws DomainException {
         Project project = new Project(1L, "Foo");
-        Date date = new Date();
 
         Time time = mock(Time.class);
         when(time.isActive())
@@ -378,6 +377,7 @@ public class ProjectTest {
 
         project.addTime(time);
 
+        Date date = mock(Date.class);
         assertEquals(time, project.clockOutAt(date));
         verify(time, times(1)).clockOutAt(date);
     }
@@ -392,7 +392,7 @@ public class ProjectTest {
 
         project.addTime(time);
 
-        Date date = new Date();
+        Date date = mock(Date.class);
         project.clockOutAt(date);
 
         verify(time, times(1)).isActive();
@@ -402,7 +402,7 @@ public class ProjectTest {
     public void testClockOutAtWithoutTime() throws DomainException {
         Project project = new Project(1L, "Foo");
 
-        Date date = new Date();
+        Date date = mock(Date.class);
         project.clockOutAt(date);
     }
 
