@@ -318,6 +318,7 @@ public class ProjectTest {
         project.addTime(time);
 
         Date date = project.getClockedInSince();
+        assertNotNull(date);
         assertEquals(500000L, date.getTime());
     }
 

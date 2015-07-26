@@ -1,5 +1,7 @@
 package me.raatiniemi.worker.model.project;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class Project extends DomainObject {
      * @param id Id for the project.
      * @param name Name of the project.
      */
-    public Project(Long id, String name) {
+    public Project(@Nullable Long id, @NonNull String name) {
         super(id);
 
         setName(name);
@@ -54,7 +56,7 @@ public class Project extends DomainObject {
      *
      * @param name Name of the project.
      */
-    public Project(String name) {
+    public Project(@NonNull String name) {
         this(null, name);
     }
 
@@ -63,6 +65,7 @@ public class Project extends DomainObject {
      *
      * @return Project name.
      */
+    @NonNull
     public String getName() {
         return mName;
     }
@@ -72,7 +75,7 @@ public class Project extends DomainObject {
      *
      * @param name Project name.
      */
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         mName = name;
     }
 
@@ -81,6 +84,7 @@ public class Project extends DomainObject {
      *
      * @return Project description.
      */
+    @Nullable
     public String getDescription() {
         return mDescription;
     }
@@ -90,7 +94,7 @@ public class Project extends DomainObject {
      *
      * @param description Project description.
      */
-    public void setDescription(String description) {
+    public void setDescription(@Nullable String description) {
         // If the description is empty we should reset it to null.
         if (TextUtils.isEmpty(description)) {
             description = null;
@@ -122,6 +126,7 @@ public class Project extends DomainObject {
      *
      * @return Project time.
      */
+    @NonNull
     public List<Time> getTime() {
         return mTime;
     }
@@ -131,7 +136,7 @@ public class Project extends DomainObject {
      *
      * @param time Project time.
      */
-    private void setTime(List<Time> time) {
+    private void setTime(@NonNull List<Time> time) {
         mTime = time;
     }
 
@@ -140,7 +145,7 @@ public class Project extends DomainObject {
      *
      * @param time Time to add to the project.
      */
-    public void addTime(Time time) {
+    public void addTime(@NonNull Time time) {
         getTime().add(time);
     }
 
@@ -149,7 +154,7 @@ public class Project extends DomainObject {
      *
      * @param time Time to add to the project.
      */
-    public void addTime(List<Time> time) {
+    public void addTime(@NonNull List<Time> time) {
         // If the list with items are empty, there's no
         // need to attempt to add them.
         if (time.isEmpty()) {
@@ -169,7 +174,7 @@ public class Project extends DomainObject {
         long total = 0;
 
         List<Time> time = getTime();
-        if (null != time && !time.isEmpty()) {
+        if (!time.isEmpty()) {
             // Iterate of the registered time and
             // retrieve the time interval.
             for (Time item : time) {
@@ -202,10 +207,10 @@ public class Project extends DomainObject {
      *
      * @return Time domain object, or null if no time have been registered.
      */
+    @Nullable
     private Time getActiveTime() {
         List<Time> time = getTime();
-
-        if (time == null || time.isEmpty()) {
+        if (time.isEmpty()) {
             return null;
         }
 
@@ -217,6 +222,7 @@ public class Project extends DomainObject {
      *
      * @return Time when project was clocked in, or null if project is not active.
      */
+    @Nullable
     public Date getClockedInSince() {
         // Retrieve the last time, i.e. the active time session.
         Time time = getActiveTime();
@@ -233,7 +239,8 @@ public class Project extends DomainObject {
      * @param date Date and time for when to clock in the project.
      * @return The clocked time domain object, or null if project is active.
      */
-    public Time clockInAt(Date date) throws DomainException {
+    @NonNull
+    public Time clockInAt(@NonNull Date date) throws DomainException {
         // If the project is already active, we can't clock in.
         if (isActive()) {
             throw new ClockActivityException("Unable to clock in, project is already active");
@@ -253,7 +260,8 @@ public class Project extends DomainObject {
      * @param date Date and time for when to clock out the project.
      * @return The clocked out time domain object, or null if project is not active.
      */
-    public Time clockOutAt(Date date) throws DomainException {
+    @NonNull
+    public Time clockOutAt(@NonNull Date date) throws DomainException {
         // Retrieve the active Time domain object, and clock
         // out with the supplied date.
         //
@@ -279,7 +287,7 @@ public class Project extends DomainObject {
         // Retrieve the last element of the time array and check if the
         // item is active, hence defines if the project is active.
         Time time = getActiveTime();
-        if (time != null) {
+        if (null != time) {
             active = time.isActive();
         }
 
