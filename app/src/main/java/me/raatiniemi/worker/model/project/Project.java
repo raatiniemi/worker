@@ -14,7 +14,7 @@ import me.raatiniemi.worker.exception.domain.ClockActivityException;
 import me.raatiniemi.worker.model.time.Time;
 
 /**
- * Domain object for the Project.
+ * Represent a project.
  */
 public class Project extends DomainObject {
     /**
@@ -38,7 +38,7 @@ public class Project extends DomainObject {
     private List<Time> mTime;
 
     /**
-     * Initialize an existing project.
+     * Constructor.
      *
      * @param id Id for the project.
      * @param name Name of the project.
@@ -52,7 +52,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Initialize a new project without an id.
+     * Constructor, used for creating new projects.
      *
      * @param name Name of the project.
      */
@@ -61,7 +61,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Retrieve the project name.
+     * Getter method for the project name.
      *
      * @return Project name.
      */
@@ -71,7 +71,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Set the project name.
+     * Setter method for the project name.
      *
      * @param name Project name.
      */
@@ -80,7 +80,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Retrieve the project description.
+     * Getter method for the project description.
      *
      * @return Project description.
      */
@@ -90,7 +90,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Set the project description.
+     * Setter method for the project description.
      *
      * @param description Project description.
      */
@@ -104,7 +104,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Retrieve the flag for archived project.
+     * Getter method for the archived project flag.
      *
      * @return Flag for archived project.
      */
@@ -113,7 +113,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Set the flag for archived project.
+     * Setter method for archived project flag.
      *
      * @param archived Flag for archived project.
      */
@@ -122,7 +122,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Getter for the project time.
+     * Getter method for the project time.
      *
      * @return Project time.
      */
@@ -132,7 +132,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Setter for the project time.
+     * Internal setter method for the project time.
      *
      * @param time Project time.
      */
@@ -141,7 +141,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Add additional time for the project.
+     * Add time for the project.
      *
      * @param time Time to add to the project.
      */
@@ -150,7 +150,7 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Add time for the project.
+     * Add time for the project from a list.
      *
      * @param time Time to add to the project.
      */
@@ -165,9 +165,9 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Summarize the time for the project.
+     * Summarize the registered time for the project in milliseconds.
      *
-     * @return Registered time in number of milliseconds.
+     * @return Registered time in milliseconds.
      */
     public long summarizeTime() {
         // Total time in number of seconds.
@@ -218,9 +218,9 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Retrieve the time when the project was clocked in.
+     * Retrieve the date when the project was clocked in.
      *
-     * @return Time when project was clocked in, or null if project is not active.
+     * @return Date when project was clocked in, or null if project is not active.
      */
     @Nullable
     public Date getClockedInSince() {
@@ -230,14 +230,16 @@ public class Project extends DomainObject {
             return null;
         }
 
+        // TODO: Do not instantiate inside method, return value from get start?
         return new Date(time.getStart());
     }
 
     /**
-     * Clock in project at a given date and time, if project is active nothing happens.
+     * Clock in project at a given date and time.
      *
      * @param date Date and time for when to clock in the project.
-     * @return The clocked time domain object, or null if project is active.
+     * @throws ClockActivityException If the project is already active.
+     * @return The clocked in Time.
      */
     @NonNull
     public Time clockInAt(@NonNull Date date) throws DomainException {
@@ -255,10 +257,11 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Clock out project at a given date and time, if project is not active nothing happens.
+     * Clock out project at a given date and time.
      *
      * @param date Date and time for when to clock out the project.
-     * @return The clocked out time domain object, or null if project is not active.
+     * @throws ClockActivityException If the project is not active.
+     * @return The clocked out Time.
      */
     @NonNull
     public Time clockOutAt(@NonNull Date date) throws DomainException {
