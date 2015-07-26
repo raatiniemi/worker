@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.DomainObject;
-import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
+import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.model.time.Time;
 
 /**
@@ -245,11 +245,13 @@ public class Project extends DomainObject {
      * Clock in project at a given date and time.
      *
      * @param date Date and time for when to clock in the project.
-     * @throws ClockActivityException If the project is already active.
      * @return The clocked in Time.
+     * @throws ClockActivityException If the project is active.
+     * @throws ClockOutBeforeClockInException If clock in occur after clock out.
      */
     @NonNull
-    public Time clockInAt(@NonNull Date date) throws DomainException {
+    public Time clockInAt(@NonNull Date date)
+        throws ClockActivityException, ClockOutBeforeClockInException {
         // If the project is already active, we can't clock in.
         if (isActive()) {
             throw new ClockActivityException("Unable to clock in, project is already active");
@@ -267,11 +269,13 @@ public class Project extends DomainObject {
      * Clock out project at a given date and time.
      *
      * @param date Date and time for when to clock out the project.
-     * @throws ClockActivityException If the project is not active.
      * @return The clocked out Time.
+     * @throws ClockActivityException If the project is not active.
+     * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
     @NonNull
-    public Time clockOutAt(@NonNull Date date) throws DomainException {
+    public Time clockOutAt(@NonNull Date date)
+        throws ClockActivityException, ClockOutBeforeClockInException {
         // Retrieve the active Time domain object, and clock
         // out with the supplied date.
         //
