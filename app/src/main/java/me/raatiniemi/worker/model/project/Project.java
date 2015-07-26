@@ -44,7 +44,7 @@ public class Project extends DomainObject {
 
         setName(name);
         setTime(new ArrayList<Time>());
-        setArchived((long) 0);
+        setArchived(0L);
     }
 
     /**
@@ -175,12 +175,10 @@ public class Project extends DomainObject {
     public long getElapsed() {
         long elapsed = 0;
 
-        if (isActive()) {
-            // Retrieve the interval for the active time.
-            Time time = getActiveTime();
-            if (null != time) {
-                elapsed = time.getInterval();
-            }
+        // Retrieve the interval for the active time.
+        Time time = getActiveTime();
+        if (null != time && time.isActive()) {
+            elapsed = time.getInterval();
         }
 
         return elapsed;
@@ -207,14 +205,9 @@ public class Project extends DomainObject {
      * @return Time when project was clocked in, or null if project is not active.
      */
     public Date getClockedInSince() {
-        // If the project is not active, there's nothing to do.
-        if (!isActive()) {
-            return null;
-        }
-
         // Retrieve the last time, i.e. the active time session.
         Time time = getActiveTime();
-        if (null == time) {
+        if (null == time || !time.isActive()) {
             return null;
         }
 
@@ -248,29 +241,18 @@ public class Project extends DomainObject {
      * @return The clocked out time domain object, or null if project is not active.
      */
     public Time clockOutAt(Date date) throws DomainException {
-        // If the project is not active, we can't clock out.
-        if (!isActive()) {
-            throw new ClockActivityException("Unable to clock out, project is not active");
-        }
-
-        // Retrieve the active Time domain object,
-        // and clock out with the supplied date.
+        // Retrieve the active Time domain object, and clock
+        // out with the supplied date.
+        //
+        // If none is available, i.e. we have not clocked in,
+        // we can't clock out.
         Time time = getActiveTime();
-        if (null == time) {
-            return null;
+        if (null == time || !time.isActive()) {
+            throw new ClockActivityException("Unable to clock out, project is not active");
         }
 
         time.clockOutAt(date);
         return time;
-    }
-
-    /**
-     * Clock out the active project, if the project is not active nothing happens.
-     *
-     * @return The clocked out time domain object, or null if project is not active.
-     */
-    public Time clockOut() throws DomainException {
-        return clockOutAt(new Date());
     }
 
     /**

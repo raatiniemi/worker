@@ -15,7 +15,7 @@ public class DomainObject {
      * @param id Id for the domain object.
      */
     public DomainObject(Long id) {
-        mId = id;
+        setId(id);
     }
 
     /**
@@ -25,5 +25,14 @@ public class DomainObject {
      */
     public Long getId() {
         return mId;
+    }
+
+    /**
+     * Internal setter method for the id.
+     *
+     * @param id Id for the domain object.
+     */
+    private void setId(Long id) {
+        mId = id;
     }
 }
