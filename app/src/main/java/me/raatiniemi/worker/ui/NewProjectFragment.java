@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.model.project.Project;
+import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.util.Keyboard;
 
 public class NewProjectFragment extends DialogFragment implements DialogInterface.OnShowListener {

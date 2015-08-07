@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.model.project;
+package me.raatiniemi.worker.model.domain.project;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

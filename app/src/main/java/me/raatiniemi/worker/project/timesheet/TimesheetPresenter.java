@@ -6,7 +6,7 @@ import android.util.Log;
 import java.util.List;
 
 import me.raatiniemi.worker.base.presenter.RxPresenter;
-import me.raatiniemi.worker.model.project.ProjectProvider;
+import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.model.time.Time;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
