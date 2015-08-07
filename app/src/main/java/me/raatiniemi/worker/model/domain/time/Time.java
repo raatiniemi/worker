@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.model.time;
+package me.raatiniemi.worker.model.domain.time;
 
 import java.util.Date;
 

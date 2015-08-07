@@ -11,7 +11,7 @@ import java.util.List;
 import me.raatiniemi.worker.model.domain.DomainObject;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.model.domain.time.Time;
 
 /**
  * Represent a project.
