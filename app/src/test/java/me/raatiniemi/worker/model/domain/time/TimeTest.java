@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.model.time;
+package me.raatiniemi.worker.model.domain.time;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,7 +2,7 @@ package me.raatiniemi.worker.projects;
 
 import java.util.List;
 
-import me.raatiniemi.worker.model.project.Project;
+import me.raatiniemi.worker.model.domain.project.Project;
 
 /**
  * Methods related to handling of the project view.

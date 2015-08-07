@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.base.presenter.RxPresenter;
-import me.raatiniemi.worker.model.project.Project;
-import me.raatiniemi.worker.model.project.ProjectProvider;
+import me.raatiniemi.worker.model.domain.project.Project;
+import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

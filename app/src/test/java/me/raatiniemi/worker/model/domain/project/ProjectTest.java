@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.model.project;
+package me.raatiniemi.worker.model.domain.project;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,7 @@ import java.util.List;
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
-import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.model.domain.time.Time;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;

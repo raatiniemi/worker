@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.model.project;
+package me.raatiniemi.worker.model.domain.project;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.DomainObject;
+import me.raatiniemi.worker.model.domain.DomainObject;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.model.time.Time;
+import me.raatiniemi.worker.model.domain.time.Time;
 
 /**
  * Represent a project.
