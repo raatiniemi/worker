@@ -2,7 +2,7 @@ package me.raatiniemi.worker.model.time;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.domain.DomainObject;
+import me.raatiniemi.worker.model.domain.DomainObject;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
 
 /**

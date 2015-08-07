@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.domain;
+package me.raatiniemi.worker.model.domain;
 
 /**
  * Base class for the domain objects.
