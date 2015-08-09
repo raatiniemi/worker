@@ -38,7 +38,7 @@ abstract public class DomainObject {
      *
      * @param id Id for the domain object.
      */
-    private void setId(Long id) {
+    public void setId(Long id) {
         mId = id;
     }
 }
