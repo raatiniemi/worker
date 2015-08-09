@@ -31,6 +31,13 @@ public class Time extends DomainObject {
     private long mStop;
 
     /**
+     * Default constructor.
+     */
+    public Time() {
+        super();
+    }
+
+    /**
      * Constructor.
      *
      * @param id Id for the time interval.

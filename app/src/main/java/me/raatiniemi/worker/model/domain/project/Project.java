@@ -38,6 +38,13 @@ public class Project extends DomainObject {
     private List<Time> mTime;
 
     /**
+     * Default constructor.
+     */
+    public Project() {
+        super();
+    }
+
+    /**
      * Constructor.
      *
      * @param id Id for the project.

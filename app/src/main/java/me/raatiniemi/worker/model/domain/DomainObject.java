@@ -10,6 +10,12 @@ abstract public class DomainObject {
     private Long mId;
 
     /**
+     * Default constructor.
+     */
+    public DomainObject() {
+    }
+
+    /**
      * Instantiate the domain object with id.
      *
      * @param id Id for the domain object.
