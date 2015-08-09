@@ -3,7 +3,7 @@ package me.raatiniemi.worker.model.domain;
 /**
  * Base class for the domain objects.
  */
-public class DomainObject {
+abstract public class DomainObject {
     /**
      * Id for the domain object.
      */
