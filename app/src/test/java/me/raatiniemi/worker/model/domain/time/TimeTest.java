@@ -22,22 +22,25 @@ import static org.mockito.Mockito.when;
 public class TimeTest {
     @Test
     public void testConstructor() throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L);
-
         Long id = 1L;
+        Long projectId = 2L;
+
+        Time time = new Time(id, projectId, 3L, 4L);
         assertEquals(id, time.getId());
-        assertEquals(2L, time.getProjectId());
-        assertEquals(3L, time.getStart());
-        assertEquals(4L, time.getStop());
+        assertEquals(projectId, time.getProjectId());
+        assertEquals(Long.valueOf(3L), time.getStart());
+        assertEquals(Long.valueOf(4L), time.getStop());
     }
 
     @Test
     public void testConstructorWithProjectId() throws ClockOutBeforeClockInException {
-        Time time = new Time(2L);
+        Long projectId = 2L;
+
+        Time time = new Time(projectId);
 
         assertNull(time.getId());
-        assertEquals(2L, time.getProjectId());
-        assertEquals(0L, time.getStop());
+        assertEquals(projectId, time.getProjectId());
+        assertEquals(Long.valueOf(0L), time.getStop());
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
@@ -54,7 +57,7 @@ public class TimeTest {
         Time time = new Time(1L);
         time.clockInAt(date);
 
-        assertEquals(3L, time.getStart());
+        assertEquals(Long.valueOf(3L), time.getStart());
     }
 
     @Test
@@ -67,7 +70,7 @@ public class TimeTest {
         time.setStart(2L);
         time.clockOutAt(date);
 
-        assertEquals(3L, time.getStop());
+        assertEquals(Long.valueOf(3L), time.getStop());
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
@@ -99,21 +102,21 @@ public class TimeTest {
     public void testGetTimeWhenActive() throws ClockOutBeforeClockInException {
         Time time = new Time(1L);
 
-        assertEquals(0L, time.getTime());
+        assertEquals(Long.valueOf(0L), time.getTime());
     }
 
     @Test
     public void testGetTime() throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 1L, 1L, 11L);
 
-        assertEquals(10L, time.getTime());
+        assertEquals(Long.valueOf(10L), time.getTime());
     }
 
     @Test
     public void testGetInterval() throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 1L, 1L, 11L);
 
-        assertEquals(10L, time.getInterval());
+        assertEquals(Long.valueOf(10L), time.getInterval());
     }
 
     @Test

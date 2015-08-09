@@ -12,7 +12,7 @@ public class Time extends DomainObject {
     /**
      * Id for the project connected to the time interval.
      */
-    private long mProjectId;
+    private Long mProjectId;
 
     /**
      * Timestamp for when the time interval starts.
@@ -20,7 +20,7 @@ public class Time extends DomainObject {
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked in.
      */
-    private long mStart;
+    private Long mStart;
 
     /**
      * Timestamp for when the time interval ends, or zero if active.
@@ -28,7 +28,7 @@ public class Time extends DomainObject {
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked out.
      */
-    private long mStop;
+    private Long mStop;
 
     /**
      * Default constructor.
@@ -46,7 +46,7 @@ public class Time extends DomainObject {
      * @param stop Timestamp for when the interval ends, or zero if active.
      * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
-    public Time(Long id, long projectId, long start, long stop) throws ClockOutBeforeClockInException {
+    public Time(Long id, Long projectId, Long start, Long stop) throws ClockOutBeforeClockInException {
         super(id);
 
         setProjectId(projectId);
@@ -74,7 +74,7 @@ public class Time extends DomainObject {
      *
      * @return Id for the project connected to the time interval.
      */
-    public long getProjectId() {
+    public Long getProjectId() {
         return mProjectId;
     }
 
@@ -83,7 +83,7 @@ public class Time extends DomainObject {
      *
      * @param projectId Id for the project connected to the time interval.
      */
-    private void setProjectId(long projectId) {
+    private void setProjectId(Long projectId) {
         mProjectId = projectId;
     }
 
@@ -92,7 +92,7 @@ public class Time extends DomainObject {
      *
      * @return Timestamp for time interval start, in milliseconds.
      */
-    public long getStart() {
+    public Long getStart() {
         return mStart;
     }
 
@@ -101,7 +101,7 @@ public class Time extends DomainObject {
      *
      * @param start Timestamp for time interval start, in milliseconds.
      */
-    public void setStart(long start) {
+    public void setStart(Long start) {
         mStart = start;
     }
 
@@ -110,7 +110,11 @@ public class Time extends DomainObject {
      *
      * @return Timestamp for time interval end, in milliseconds, or zero if active.
      */
-    public long getStop() {
+    public Long getStop() {
+        if (null == mStop) {
+            mStop = 0L;
+        }
+
         return mStop;
     }
 
@@ -120,7 +124,7 @@ public class Time extends DomainObject {
      * @param stop Timestamp for time interval end, in milliseconds.
      * @throws ClockOutBeforeClockInException If value for stop is less than value for start.
      */
-    public void setStop(long stop) throws ClockOutBeforeClockInException {
+    public void setStop(Long stop) throws ClockOutBeforeClockInException {
         // Check that the stop value is lager than the start value,
         // should not be able to clock out before clocked in.
         if (stop < getStart()) {
@@ -168,8 +172,8 @@ public class Time extends DomainObject {
      *
      * @return Registered time in milliseconds, or zero if interval is active.
      */
-    public long getTime() {
-        long time = 0;
+    public Long getTime() {
+        Long time = 0L;
 
         if (!isActive()) {
             time = getStop() - getStart();
@@ -186,8 +190,8 @@ public class Time extends DomainObject {
      *
      * @return Interval in milliseconds.
      */
-    public long getInterval() {
-        long stop = getStop();
+    public Long getInterval() {
+        Long stop = getStop();
 
         if (isActive()) {
             stop = (new Date()).getTime();

@@ -393,9 +393,9 @@ public class ProjectTest {
 
         assertNotNull(time);
         assertNull(time.getId());
-        assertEquals(id, Long.valueOf(time.getProjectId()));
-        assertEquals(start, Long.valueOf(time.getStart()));
-        assertEquals(stop, Long.valueOf(time.getStop()));
+        assertEquals(id, time.getProjectId());
+        assertEquals(start, time.getStart());
+        assertEquals(stop, time.getStop());
         verify(date, times(1)).getTime();
     }
 
