@@ -12,7 +12,6 @@ import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,110 +20,94 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TimeTest {
     @Test
-    public void testConstructor() throws ClockOutBeforeClockInException {
-        Long id = 1L;
-        Long projectId = 2L;
-
-        Time time = new Time(id, projectId, 3L, 4L);
-        assertEquals(id, time.getId());
-        assertEquals(projectId, time.getProjectId());
-        assertEquals(Long.valueOf(3L), time.getStart());
-        assertEquals(Long.valueOf(4L), time.getStop());
-    }
-
-    @Test
-    public void testConstructorWithProjectId() throws ClockOutBeforeClockInException {
-        Long projectId = 2L;
-
-        Time time = new Time(projectId);
-
-        assertNull(time.getId());
-        assertEquals(projectId, time.getProjectId());
-        assertEquals(Long.valueOf(0L), time.getStop());
-    }
-
-    @Test(expected = ClockOutBeforeClockInException.class)
-    public void testConstructorWithStopBeforeStart() throws ClockOutBeforeClockInException {
-        new Time(1L, 2L, 3L, 1L);
-    }
-
-    @Test
-    public void testClockInAt() throws ClockOutBeforeClockInException {
+    public void clockInAt_WhenInactive_True() {
         Date date = mock(Date.class);
-        when(date.getTime())
-            .thenReturn(3L);
+        when(date.getTime()).thenReturn(1L);
 
-        Time time = new Time(1L);
+        Time time = new Time();
         time.clockInAt(date);
 
-        assertEquals(Long.valueOf(3L), time.getStart());
-    }
-
-    @Test
-    public void testClockOutAt() throws ClockOutBeforeClockInException {
-        Date date = mock(Date.class);
-        when(date.getTime())
-            .thenReturn(3L);
-
-        Time time = new Time(1L);
-        time.setStart(2L);
-        time.clockOutAt(date);
-
-        assertEquals(Long.valueOf(3L), time.getStop());
+        assertEquals(Long.valueOf(1L), time.getStart());
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
-    public void testClockOutBeforeClockIn() throws ClockOutBeforeClockInException {
+    public void clockOutAt_ClockOutBeforeClockIn_ThrowException()
+        throws ClockOutBeforeClockInException {
         Date date = mock(Date.class);
-        when(date.getTime())
-            .thenReturn(3L);
+        when(date.getTime()).thenReturn(1L);
 
-        Time time = new Time(1L);
-        time.setStart(4L);
+        Time time = new Time();
+        time.setStart(2L);
         time.clockOutAt(date);
     }
 
     @Test
-    public void testIsActive() throws ClockOutBeforeClockInException {
-        Time time = new Time(1L);
+    public void clockOutAt_ClockOutAfterClockIn_True()
+        throws ClockOutBeforeClockInException {
+        Date date = mock(Date.class);
+        when(date.getTime()).thenReturn(2L);
+
+        Time time = new Time();
+        time.setStart(1L);
+        time.clockOutAt(date);
+
+        assertEquals(Long.valueOf(2L), time.getStop());
+    }
+
+    @Test
+    public void isActive_WhenActive_True() {
+        Time time = new Time();
+        time.setStart(1L);
 
         assertTrue(time.isActive());
     }
 
     @Test
-    public void testIsNotActive() throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L);
+    public void isActive_WhenInactive_False()
+        throws ClockOutBeforeClockInException {
+        Time time = new Time();
+        time.setStart(1L);
+        time.setStop(11L);
 
         assertFalse(time.isActive());
     }
 
     @Test
-    public void testGetTimeWhenActive() throws ClockOutBeforeClockInException {
-        Time time = new Time(1L);
+    public void getTime_WhenActive_True() {
+        Time time = new Time();
+        time.setStart(1L);
 
         assertEquals(Long.valueOf(0L), time.getTime());
     }
 
     @Test
-    public void testGetTime() throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 11L);
+    public void getTime_WhenInactive_True()
+        throws ClockOutBeforeClockInException {
+        Time time = new Time();
+        time.setStart(1L);
+        time.setStop(11L);
 
         assertEquals(Long.valueOf(10L), time.getTime());
     }
 
     @Test
-    public void testGetInterval() throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 11L);
-
-        assertEquals(Long.valueOf(10L), time.getInterval());
-    }
-
-    @Test
-    public void testGetIntervalWhenActive() throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 0L);
+    public void getInterval_WhenActive_True()
+        throws ClockOutBeforeClockInException {
+        Time time = new Time();
+        time.setStart(1L);
 
         // TODO: Fix better interval measurement when active.
         // Currently unable because of the instantiation within getInterval.
         assertTrue(1L < time.getInterval());
+    }
+
+    @Test
+    public void getInterval_WhenInactive_True()
+        throws ClockOutBeforeClockInException {
+        Time time = new Time();
+        time.setStart(1L);
+        time.setStop(11L);
+
+        assertEquals(Long.valueOf(10L), time.getInterval());
     }
 }
