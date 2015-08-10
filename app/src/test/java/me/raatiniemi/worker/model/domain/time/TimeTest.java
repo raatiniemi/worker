@@ -19,6 +19,19 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TimeTest {
+    @Test(expected = ClockOutBeforeClockInException.class)
+    public void clockInAt_ClockInAfterClockOut_ThrowException()
+        throws ClockOutBeforeClockInException {
+        Date date = mock(Date.class);
+        when(date.getTime()).thenReturn(2L);
+
+        Time time = new Time();
+        time.setStop(1L);
+        time.clockInAt(date);
+
+        assertEquals(Long.valueOf(2L), time.getStart());
+    }
+
     @Test
     public void clockInAt_ClockInBeforeClockOut_True()
         throws ClockOutBeforeClockInException {
@@ -33,7 +46,8 @@ public class TimeTest {
     }
 
     @Test
-    public void clockInAt_WhenInactive_True() {
+    public void clockInAt_WhenInactive_True()
+        throws ClockOutBeforeClockInException {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(1L);
 
@@ -68,7 +82,8 @@ public class TimeTest {
     }
 
     @Test
-    public void isActive_WhenActive_True() {
+    public void isActive_WhenActive_True()
+        throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
 
@@ -86,7 +101,8 @@ public class TimeTest {
     }
 
     @Test
-    public void getTime_WhenActive_True() {
+    public void getTime_WhenActive_True()
+        throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
 

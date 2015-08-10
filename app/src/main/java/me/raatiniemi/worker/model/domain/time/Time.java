@@ -104,8 +104,18 @@ public class Time extends DomainObject {
      * Setter method for timestamp when the time interval start.
      *
      * @param start Timestamp for time interval start, in milliseconds.
+     * @throws ClockOutBeforeClockInException If value for start is more than value for stop.
      */
-    public void setStart(Long start) {
+    public void setStart(Long start) throws ClockOutBeforeClockInException {
+        // Check that the start value is less than the stop value, but only
+        // if the stop value is not zero. Should not be able to change clock
+        // in to occur after clock out.
+        if (!isActive() && start > getStop()) {
+            throw new ClockOutBeforeClockInException(
+                "Clock in occur after clock out"
+            );
+        }
+
         mStart = start;
     }
 
@@ -144,8 +154,9 @@ public class Time extends DomainObject {
      * Set the clock in timestamp at a given date.
      *
      * @param date Date at which to clock in.
+     * @throws ClockOutBeforeClockInException If clock in occur after clock out.
      */
-    public void clockInAt(Date date) {
+    public void clockInAt(Date date) throws ClockOutBeforeClockInException {
         setStart(date.getTime());
     }
 
