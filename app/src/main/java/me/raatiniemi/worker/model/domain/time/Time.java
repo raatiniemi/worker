@@ -83,7 +83,7 @@ public class Time extends DomainObject {
      *
      * @param projectId Id for the project connected to the time interval.
      */
-    private void setProjectId(Long projectId) {
+    public void setProjectId(Long projectId) {
         mProjectId = projectId;
     }
 
