@@ -93,6 +93,10 @@ public class Time extends DomainObject {
      * @return Timestamp for time interval start, in milliseconds.
      */
     public Long getStart() {
+        if (null == mStart) {
+            mStart = 0L;
+        }
+
         return mStart;
     }
 

@@ -20,6 +20,19 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TimeTest {
     @Test
+    public void clockInAt_ClockInBeforeClockOut_True()
+        throws ClockOutBeforeClockInException {
+        Date date = mock(Date.class);
+        when(date.getTime()).thenReturn(1L);
+
+        Time time = new Time();
+        time.setStop(2L);
+        time.clockInAt(date);
+
+        assertEquals(Long.valueOf(1L), time.getStart());
+    }
+
+    @Test
     public void clockInAt_WhenInactive_True() {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(1L);
