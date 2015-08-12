@@ -34,22 +34,18 @@ public class ProjectTest {
         assertNull(project.getId());
         assertNull(project.getName());
 
-        Long archived = 0L;
-        assertEquals(archived, project.getArchived());
+        assertEquals(Long.valueOf(0L), project.getArchived());
         assertTrue(project.getTime().isEmpty());
     }
 
     @Test
     public void Project_DefaultValueFromIdNameConstructor_True() {
-        Long id = 2L;
+        Project project = new Project(2L, "Project name");
 
-        Project project = new Project(id, "Project name");
-
-        assertEquals(id, project.getId());
+        assertEquals(Long.valueOf(2L), project.getId());
         assertEquals("Project name", project.getName());
 
-        Long archived = 0L;
-        assertEquals(archived, project.getArchived());
+        assertEquals(Long.valueOf(0L), project.getArchived());
         assertTrue(project.getTime().isEmpty());
     }
 
@@ -60,8 +56,7 @@ public class ProjectTest {
         assertNull(project.getId());
         assertEquals("Project name", project.getName());
 
-        Long archived = 0L;
-        assertEquals(archived, project.getArchived());
+        assertEquals(Long.valueOf(0L), project.getArchived());
         assertTrue(project.getTime().isEmpty());
     }
 
@@ -126,18 +121,15 @@ public class ProjectTest {
     public void getArchived_DefaultValue_False() {
         Project project = new Project();
 
-        Long archived = 0L;
-        assertEquals(archived, project.getArchived());
+        assertEquals(Long.valueOf(0L), project.getArchived());
     }
 
     @Test
     public void getArchived_ValueFromSetter_True() {
-        Long archived = 1L;
-
         Project project = new Project();
-        project.setArchived(archived);
+        project.setArchived(1L);
 
-        assertEquals(archived, project.getArchived());
+        assertEquals(Long.valueOf(1L), project.getArchived());
     }
 
     @Test
@@ -197,8 +189,7 @@ public class ProjectTest {
     public void summarizeTime_WithoutTime_True() {
         Project project = new Project();
 
-        Long summary = 0L;
-        assertEquals(summary, Long.valueOf(project.summarizeTime()));
+        assertEquals(Long.valueOf(0L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
@@ -214,8 +205,7 @@ public class ProjectTest {
         project.addTime(time1);
         project.addTime(time2);
 
-        Long summary = 60000L;
-        assertEquals(summary, Long.valueOf(project.summarizeTime()));
+        assertEquals(Long.valueOf(60000L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
@@ -227,8 +217,7 @@ public class ProjectTest {
 
         project.addTime(time);
 
-        Long summary = 60000L;
-        assertEquals(summary, Long.valueOf(project.summarizeTime()));
+        assertEquals(Long.valueOf(60000L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
@@ -244,8 +233,7 @@ public class ProjectTest {
         project.addTime(time1);
         project.addTime(time2);
 
-        Long summary = 90000L;
-        assertEquals(summary, Long.valueOf(project.summarizeTime()));
+        assertEquals(Long.valueOf(90000L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
@@ -261,8 +249,7 @@ public class ProjectTest {
         project.addTime(time1);
         project.addTime(time2);
 
-        Long summary = 89000L;
-        assertEquals(summary, Long.valueOf(project.summarizeTime()));
+        assertEquals(Long.valueOf(89000L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
@@ -278,16 +265,14 @@ public class ProjectTest {
         project.addTime(time1);
         project.addTime(time2);
 
-        Long summary = 5400000L;
-        assertEquals(summary, Long.valueOf(project.summarizeTime()));
+        assertEquals(Long.valueOf(5400000L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
     public void getElapsed_WithoutTime_True() {
         Project project = new Project();
 
-        Long interval = 0L;
-        assertEquals(interval, Long.valueOf(project.getElapsed()));
+        assertEquals(Long.valueOf(0L), Long.valueOf(project.getElapsed()));
     }
 
     @Test
@@ -299,24 +284,21 @@ public class ProjectTest {
 
         project.addTime(time);
 
-        Long interval = 0L;
-        assertEquals(interval, Long.valueOf(project.getElapsed()));
+        assertEquals(Long.valueOf(0L), Long.valueOf(project.getElapsed()));
         verify(time, times(1)).isActive();
     }
 
     @Test
     public void getElapsed_WithActiveTime_True() {
-        Long interval = 50000L;
-
         Project project = new Project();
 
         Time time = mock(Time.class);
         when(time.isActive()).thenReturn(true);
-        when(time.getInterval()).thenReturn(interval);
+        when(time.getInterval()).thenReturn(50000L);
 
         project.addTime(time);
 
-        assertEquals(interval, Long.valueOf(project.getElapsed()));
+        assertEquals(Long.valueOf(50000L), Long.valueOf(project.getElapsed()));
         verify(time, times(1)).isActive();
         verify(time, times(1)).getInterval();
     }
@@ -343,20 +325,18 @@ public class ProjectTest {
 
     @Test
     public void getClockedInSince_WithActiveTime_True() {
-        Long start = 500000L;
-
         Project project = new Project();
 
         Time time = mock(Time.class);
         when(time.isActive()).thenReturn(true);
-        when(time.getStart()).thenReturn(start);
+        when(time.getStart()).thenReturn(500000L);
 
         project.addTime(time);
 
         Date date = project.getClockedInSince();
 
         assertNotNull(date);
-        assertEquals(start, Long.valueOf(date.getTime()));
+        assertEquals(Long.valueOf(500000L), Long.valueOf(date.getTime()));
         verify(time, times(1)).isActive();
         verify(time, times(1)).getStart();
     }
@@ -379,23 +359,19 @@ public class ProjectTest {
 
     @Test
     public void clockInAt_WithoutActiveTime_True() throws DomainException {
-        Long id = 1L;
-        Long start = 100L;
-        Long stop = 0L;
-
         Project project = new Project();
-        project.setId(id);
+        project.setId(1L);
 
         Date date = mock(Date.class);
-        when(date.getTime()).thenReturn(start);
+        when(date.getTime()).thenReturn(100L);
 
         Time time = project.clockInAt(date);
 
         assertNotNull(time);
         assertNull(time.getId());
-        assertEquals(id, time.getProjectId());
-        assertEquals(start, time.getStart());
-        assertEquals(stop, time.getStop());
+        assertEquals(Long.valueOf(1L), time.getProjectId());
+        assertEquals(Long.valueOf(100L), time.getStart());
+        assertEquals(Long.valueOf(0L), time.getStop());
         verify(date, times(1)).getTime();
     }
 
