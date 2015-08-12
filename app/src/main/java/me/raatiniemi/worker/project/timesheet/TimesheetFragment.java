@@ -20,8 +20,8 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>

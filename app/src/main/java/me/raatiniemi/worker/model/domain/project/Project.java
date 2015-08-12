@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.model.domain.DomainObject;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
+import me.raatiniemi.worker.model.domain.DomainObject;
 import me.raatiniemi.worker.model.domain.time.Time;
 
 /**

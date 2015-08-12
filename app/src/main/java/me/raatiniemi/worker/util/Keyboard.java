@@ -33,8 +33,8 @@ public class Keyboard {
             } catch (ClassCastException e) {
                 Log.w(
                     TAG,
-                    "Unable to cast the Context.INPUT_METHOD_SERVICE to "+
-                    "InputMethodManager: " + e.getMessage()
+                    "Unable to cast the Context.INPUT_METHOD_SERVICE to " +
+                        "InputMethodManager: " + e.getMessage()
                 );
             }
         }

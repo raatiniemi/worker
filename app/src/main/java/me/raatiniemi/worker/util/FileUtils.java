@@ -54,7 +54,7 @@ public class FileUtils {
                 Log.w(
                     TAG,
                     "Number of bytes copied (" + bytes + ") do not match " +
-                    "the source file (" + size + ")"
+                        "the source file (" + size + ")"
                 );
             } else {
                 Log.d(TAG, bytes + " have been successfully copied");
