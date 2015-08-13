@@ -1,5 +1,8 @@
 package me.raatiniemi.worker.model.domain.time;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.Date;
 
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
@@ -46,7 +49,7 @@ public class Time extends DomainObject {
      * @param stop Timestamp for when the interval ends, or zero if active.
      * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
-    public Time(Long id, Long projectId, Long start, Long stop) throws ClockOutBeforeClockInException {
+    public Time(@Nullable Long id, @NonNull Long projectId, @NonNull Long start, @NonNull Long stop) throws ClockOutBeforeClockInException {
         super(id);
 
         setProjectId(projectId);
@@ -65,7 +68,7 @@ public class Time extends DomainObject {
      * @param projectId Id for the project connected to the time interval.
      * @throws ClockOutBeforeClockInException If stop time is before start time.
      */
-    public Time(Long projectId) throws ClockOutBeforeClockInException {
+    public Time(@NonNull Long projectId) throws ClockOutBeforeClockInException {
         this(null, projectId, (new Date()).getTime(), 0L);
     }
 
@@ -74,6 +77,7 @@ public class Time extends DomainObject {
      *
      * @return Id for the project connected to the time interval.
      */
+    @Nullable
     public Long getProjectId() {
         return mProjectId;
     }
@@ -83,7 +87,7 @@ public class Time extends DomainObject {
      *
      * @param projectId Id for the project connected to the time interval.
      */
-    public void setProjectId(Long projectId) {
+    public void setProjectId(@NonNull Long projectId) {
         mProjectId = projectId;
     }
 
@@ -92,6 +96,7 @@ public class Time extends DomainObject {
      *
      * @return Timestamp for time interval start, in milliseconds.
      */
+    @NonNull
     public Long getStart() {
         if (null == mStart) {
             mStart = 0L;
@@ -106,7 +111,7 @@ public class Time extends DomainObject {
      * @param start Timestamp for time interval start, in milliseconds.
      * @throws ClockOutBeforeClockInException If value for start is more than value for stop.
      */
-    public void setStart(Long start) throws ClockOutBeforeClockInException {
+    public void setStart(@NonNull Long start) throws ClockOutBeforeClockInException {
         // Check that the start value is less than the stop value, but only
         // if the stop value is not zero. Should not be able to change clock
         // in to occur after clock out.
@@ -124,6 +129,7 @@ public class Time extends DomainObject {
      *
      * @return Timestamp for time interval end, in milliseconds, or zero if active.
      */
+    @NonNull
     public Long getStop() {
         if (null == mStop) {
             mStop = 0L;
@@ -138,7 +144,7 @@ public class Time extends DomainObject {
      * @param stop Timestamp for time interval end, in milliseconds.
      * @throws ClockOutBeforeClockInException If value for stop is less than value for start.
      */
-    public void setStop(Long stop) throws ClockOutBeforeClockInException {
+    public void setStop(@NonNull Long stop) throws ClockOutBeforeClockInException {
         // Check that the stop value is lager than the start value,
         // should not be able to clock out before clocked in.
         if (stop < getStart()) {
@@ -156,7 +162,7 @@ public class Time extends DomainObject {
      * @param date Date at which to clock in.
      * @throws ClockOutBeforeClockInException If clock in occur after clock out.
      */
-    public void clockInAt(Date date) throws ClockOutBeforeClockInException {
+    public void clockInAt(@NonNull Date date) throws ClockOutBeforeClockInException {
         setStart(date.getTime());
     }
 
@@ -166,7 +172,7 @@ public class Time extends DomainObject {
      * @param date Date at which to clock out.
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
-    public void clockOutAt(Date date) throws ClockOutBeforeClockInException {
+    public void clockOutAt(@NonNull Date date) throws ClockOutBeforeClockInException {
         setStop(date.getTime());
     }
 
@@ -187,6 +193,7 @@ public class Time extends DomainObject {
      *
      * @return Registered time in milliseconds, or zero if interval is active.
      */
+    @NonNull
     public Long getTime() {
         Long time = 0L;
 
@@ -205,6 +212,7 @@ public class Time extends DomainObject {
      *
      * @return Interval in milliseconds.
      */
+    @NonNull
     public Long getInterval() {
         Long stop = getStop();
 
