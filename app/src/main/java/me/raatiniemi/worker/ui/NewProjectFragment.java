@@ -115,6 +115,9 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted have been reached");
+
+                        // The project have been created, we can dismiss the fragment.
+                        dismiss();
                     }
                 });
         } else {

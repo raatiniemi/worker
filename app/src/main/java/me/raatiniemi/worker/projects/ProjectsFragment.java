@@ -111,12 +111,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
         String message = getString(R.string.fragment_new_project_create_successful);
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-
-        // TODO: Redesign the dismiss process.
-        NewProjectFragment fragment = (NewProjectFragment) getFragmentManager().findFragmentByTag(FRAGMENT_NEW_PROJECT_TAG);
-        if (null != fragment) {
-            fragment.dismiss();
-        }
     }
 
     @Override
