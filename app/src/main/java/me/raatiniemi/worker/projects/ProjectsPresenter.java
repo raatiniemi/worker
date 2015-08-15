@@ -198,11 +198,12 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
      * Create a new project and update the view.
      *
      * @param project Project to create.
+     * @return Observable emitting the created project.
      */
-    public void createNewProject(Project project) {
-        mProvider.createProject(project)
+    public Observable<Project> createNewProject(Project project) {
+        return mProvider.createProject(project)
             .compose(this.<Project>applySchedulers())
-            .subscribe(new Action1<Project>() {
+            .doOnNext(new Action1<Project>() {
                 @Override
                 public void call(Project project) {
                     // Check that we still have the view attached.
@@ -213,11 +214,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
                     // Add the new project to the view.
                     getView().addProject(project);
-                }
-            }, new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    getView().showError(throwable);
                 }
             });
     }

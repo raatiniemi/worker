@@ -50,5 +50,7 @@
     <string name="data_intent_service_restore_failed_title">Restore failed</string>
     <string name="data_intent_service_restore_failed_message">Data restore from backup failed.</string>
 
+    <string name="error.message.unknown">An unknown error has occurred</string>
     <string name="error.message.project_name_missing">You have to supply a name</string>
+    <string name="error.message.project_name_already_exists">Project name already exists</string>
 </resources>
