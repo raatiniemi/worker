@@ -1,5 +1,6 @@
 package me.raatiniemi.worker.ui;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -26,6 +27,18 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
      * Callback handler for the "OnCreateProjectListener".
      */
     private OnCreateProjectListener mOnCreateProjectListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // Check that we actually have a listener available, otherwise we
+        // should not attempt to create new projects.
+        if (null == getOnCreateProjectListener()) {
+            Log.w(TAG, "No OnCreateProjectListener have been supplied");
+            dismiss();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +79,13 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
 
     @Override
     public void onShow(DialogInterface dialog) {
+        // We might have dismissed the dialog, we have to make sure that the
+        // dialog and activity are still available before we can continue.
+        if (null == dialog || null == getActivity()) {
+            Log.d(TAG, "No dialog/activity available, exiting...");
+            return;
+        }
+
         // Force the keyboard to show when the dialog is showing.
         Keyboard.show(getActivity());
     }
@@ -89,40 +109,34 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
 
         // Create the project, and insert it to the database.
         Project project = new Project(name);
+        getOnCreateProjectListener().onCreateProject(project)
+            .subscribe(new Subscriber<Project>() {
+                @Override
+                public void onNext(Project project) {
+                    Log.d(TAG, "onNext have been reached");
+                }
 
-        // Replay that the project have been created to the activity.
-        if (null != getOnCreateProjectListener()) {
-            getOnCreateProjectListener().onCreateProject(project)
-                .subscribe(new Subscriber<Project>() {
-                    @Override
-                    public void onNext(Project project) {
-                        Log.d(TAG, "onNext have been reached");
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "onError have been reached");
+
+                    if (e instanceof ProjectAlreadyExistsException) {
+                        view.setError(getString(R.string.error_message_project_name_already_exists));
+                        return;
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError have been reached");
+                    view.setError(getString(R.string.error_message_unknown));
+                    Log.w(TAG, "Unknown error occurred: " + e.getMessage());
+                }
 
-                        if (e instanceof ProjectAlreadyExistsException) {
-                            view.setError(getString(R.string.error_message_project_name_already_exists));
-                            return;
-                        }
+                @Override
+                public void onCompleted() {
+                    Log.d(TAG, "onCompleted have been reached");
 
-                        view.setError(getString(R.string.error_message_unknown));
-                        Log.w(TAG, "Unknown error occurred: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "onCompleted have been reached");
-
-                        // The project have been created, we can dismiss the fragment.
-                        dismiss();
-                    }
-                });
-        } else {
-            Log.w(TAG, "No OnCreateProjectListener have been supplied");
-        }
+                    // The project have been created, we can dismiss the fragment.
+                    dismiss();
+                }
+            });
     }
 
     public OnCreateProjectListener getOnCreateProjectListener() {
