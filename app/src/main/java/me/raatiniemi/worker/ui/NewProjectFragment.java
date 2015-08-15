@@ -45,8 +45,8 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Retrieve the project name from the text field.
-                createNewProject(projectName.getText().toString());
+                // Send the text field to create the new project.
+                createNewProject(projectName);
             }
         });
 
@@ -71,9 +71,11 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
     /**
      * Create a new project.
      *
-     * @param name Name of the project to create.
+     * @param view Project name text field.
      */
-    private void createNewProject(String name) {
+    private void createNewProject(EditText view) {
+        // Retrieve the project name from the text field.
+        String name = view.getText().toString();
         if (TextUtils.isEmpty(name)) {
             new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.fragment_new_project_create_without_name_title)
