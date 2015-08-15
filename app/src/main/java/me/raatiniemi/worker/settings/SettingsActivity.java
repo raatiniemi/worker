@@ -341,7 +341,8 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
                 Date date = backup.getDate();
                 if (null != date) {
-                    text = "Restore backup from " + mFormat.format(date) + ".";
+                    text = "Restore backup from " + mFormat.format(date) + ".\n" +
+                        "After restore you have to restart the application.";
                     enable = true;
                 }
             }
