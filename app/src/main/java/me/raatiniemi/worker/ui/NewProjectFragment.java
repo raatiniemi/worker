@@ -1,6 +1,5 @@
 package me.raatiniemi.worker.ui;
 
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -77,15 +76,7 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
         // Retrieve the project name from the text field.
         String name = view.getText().toString();
         if (TextUtils.isEmpty(name)) {
-            new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.fragment_new_project_create_without_name_title)
-                .setMessage(R.string.fragment_new_project_create_without_name_description)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
+            view.setError(getString(R.string.error_message_project_name_missing));
 
             Log.i(TAG, "No project name have been supplied");
             return;
