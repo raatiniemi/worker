@@ -19,8 +19,6 @@
     <string name="fragment_new_project_create">Create</string>
     <string name="fragment_new_project_class_cast_exception_title">Unable to create project</string>
     <string name="fragment_new_project_class_cast_exception_description">An internal error occurred when the project dialog was created.</string>
-    <string name="fragment_new_project_create_without_name_title">No project name supplied</string>
-    <string name="fragment_new_project_create_without_name_description">You have to supply a project name when creating a new project.\n\nNote, the name have to be unique.</string>
     <string name="fragment_new_project_create_project_already_exists_title">Project name already exists</string>
     <string name="fragment_new_project_create_project_already_exists_description">A project with that name already exists, every project must have a unique name.</string>
     <string name="fragment_new_project_create_successful">New project have been created</string>
@@ -51,4 +49,8 @@
     <string name="data_intent_service_restore_complete_message">Data restore from backup was successful.</string>
     <string name="data_intent_service_restore_failed_title">Restore failed</string>
     <string name="data_intent_service_restore_failed_message">Data restore from backup failed.</string>
+
+    <string name="error.message.unknown">An unknown error has occurred</string>
+    <string name="error.message.project_name_missing">You have to supply a name</string>
+    <string name="error.message.project_name_already_exists">Project name already exists</string>
 </resources>

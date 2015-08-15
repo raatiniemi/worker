@@ -20,13 +20,13 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.base.view.MvpFragment;
-import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.project.ProjectActivity;
 import me.raatiniemi.worker.ui.NewProjectFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
+import rx.Observable;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
     implements ProjectsAdapter.OnClockActivityChangeListener, ListAdapter.OnItemClickListener, ProjectsView {
@@ -95,24 +95,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void showError(Throwable e) {
-        if (!(e instanceof ProjectAlreadyExistsException)) {
-            super.showError(e);
-            return;
-        }
-
-        new AlertDialog.Builder(getActivity())
-            .setTitle(getString(R.string.fragment_new_project_create_project_already_exists_title))
-            .setMessage(getString(R.string.fragment_new_project_create_project_already_exists_description))
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // Do nothing...
-                }
-            })
-            .show();
-    }
-
-    @Override
     public List<Project> getData() {
         return mAdapter.getItems();
     }
@@ -153,8 +135,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         NewProjectFragment newProject = new NewProjectFragment();
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
             @Override
-            public void onCreateProject(Project project) {
-                getPresenter().createNewProject(project);
+            public Observable<Project> onCreateProject(Project project) {
+                return getPresenter().createNewProject(project);
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);

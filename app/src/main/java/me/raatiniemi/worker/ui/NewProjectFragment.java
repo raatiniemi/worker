@@ -1,6 +1,5 @@
 package me.raatiniemi.worker.ui;
 
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,8 +13,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.util.Keyboard;
+import rx.Observable;
+import rx.Subscriber;
 
 public class NewProjectFragment extends DialogFragment implements DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";
@@ -45,8 +47,8 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Retrieve the project name from the text field.
-                createNewProject(projectName.getText().toString());
+                // Send the text field to create the new project.
+                createNewProject(projectName);
             }
         });
 
@@ -71,19 +73,13 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
     /**
      * Create a new project.
      *
-     * @param name Name of the project to create.
+     * @param view Project name text field.
      */
-    private void createNewProject(String name) {
+    private void createNewProject(final EditText view) {
+        // Retrieve the project name from the text field.
+        String name = view.getText().toString();
         if (TextUtils.isEmpty(name)) {
-            new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.fragment_new_project_create_without_name_title)
-                .setMessage(R.string.fragment_new_project_create_without_name_description)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
+            view.setError(getString(R.string.error_message_project_name_missing));
 
             Log.i(TAG, "No project name have been supplied");
             return;
@@ -96,7 +92,31 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
 
         // Replay that the project have been created to the activity.
         if (null != getOnCreateProjectListener()) {
-            getOnCreateProjectListener().onCreateProject(project);
+            getOnCreateProjectListener().onCreateProject(project)
+                .subscribe(new Subscriber<Project>() {
+                    @Override
+                    public void onNext(Project project) {
+                        Log.d(TAG, "onNext have been reached");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError have been reached");
+
+                        if (e instanceof ProjectAlreadyExistsException) {
+                            view.setError(getString(R.string.error_message_project_name_already_exists));
+                            return;
+                        }
+
+                        view.setError(getString(R.string.error_message_unknown));
+                        Log.w(TAG, "Unknown error occurred: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "onCompleted have been reached");
+                    }
+                });
         } else {
             Log.w(TAG, "No OnCreateProjectListener have been supplied");
         }
@@ -118,7 +138,8 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
          * When a new project have been created the project is sent to this method.
          *
          * @param project The newly created project.
+         * @return Observable emitting the created project.
          */
-        void onCreateProject(Project project);
+        Observable<Project> onCreateProject(Project project);
     }
 }
