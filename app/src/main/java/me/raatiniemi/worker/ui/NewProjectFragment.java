@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
@@ -35,6 +36,13 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
         // Check that we actually have a listener available, otherwise we
         // should not attempt to create new projects.
         if (null == getOnCreateProjectListener()) {
+            // The real reason for failure is to technical to display to the
+            // user, hence the unknown error message.
+            //
+            // And, the listener should always be available in the production
+            // version, i.e. this should just be seen as developer feedback.
+            Toast.makeText(activity, R.string.error_message_unknown, Toast.LENGTH_SHORT).show();
+
             Log.w(TAG, "No OnCreateProjectListener have been supplied");
             dismiss();
         }
