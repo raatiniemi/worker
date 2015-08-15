@@ -256,7 +256,6 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             // parent which will handle it.
             switch (preference.getKey()) {
                 case SETTINGS_DATA_BACKUP_KEY:
-                    // TODO: Refresh the backup summary, if the backup is successful.
                     intentAction = DataIntentService.INTENT_ACTION_BACKUP;
                     message = "Backing up data...";
                     break;
