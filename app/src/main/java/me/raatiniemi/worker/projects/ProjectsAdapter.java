@@ -36,6 +36,11 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     private OnClockActivityChangeListener mOnClockActivityChangeListener;
 
     /**
+     * Listener for project deletion.
+     */
+    private OnProjectDeleteListener mOnProjectDeleteListener;
+
+    /**
      * Listener for hinting images.
      */
     private HintedImageButtonListener mHintedImageButtonListener;
@@ -46,9 +51,10 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
      * @param context Context to use.
      * @param clockActivityChangeListener Listener for clock activity changes.
      */
-    public ProjectsAdapter(Context context, OnClockActivityChangeListener clockActivityChangeListener) {
+    public ProjectsAdapter(Context context, OnClockActivityChangeListener clockActivityChangeListener, OnProjectDeleteListener projectDeleteListener) {
         super(context);
         mOnClockActivityChangeListener = clockActivityChangeListener;
+        mOnProjectDeleteListener = projectDeleteListener;
     }
 
     @Override
@@ -99,6 +105,15 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
             @Override
             public void onClick(View view) {
                 mOnClockActivityChangeListener.onClockActivityAt(project);
+            }
+        });
+        vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
+
+        // Add the onClickListener to the "Delete project" item.
+        vh.mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnProjectDeleteListener.onProjectDelete(project);
             }
         });
         vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
@@ -186,6 +201,10 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         void onClockActivityAt(Project project);
     }
 
+    public interface OnProjectDeleteListener {
+        void onProjectDelete(Project project);
+    }
+
     /**
      * View holder for the project item view.
      */
@@ -216,6 +235,11 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         public ImageButton mClockActivityAt;
 
         /**
+         * Icon for deleting project.
+         */
+        public ImageButton mDelete;
+
+        /**
          * Field for the time when the project was clocked in.
          */
         public TextView mClockedInSince;
@@ -228,6 +252,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
             mDescription = (TextView) view.findViewById(R.id.fragment_project_description);
             mClockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_toggle);
             mClockActivityAt = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_at);
+            mDelete = (ImageButton) view.findViewById(R.id.fragment_project_delete);
             mClockedInSince = (TextView) view.findViewById(R.id.fragment_project_clocked_in_since);
         }
     }

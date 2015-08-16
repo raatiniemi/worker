@@ -29,7 +29,7 @@ import me.raatiniemi.worker.util.HintedImageButtonListener;
 import rx.Observable;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
-    implements ProjectsAdapter.OnClockActivityChangeListener, ListAdapter.OnItemClickListener, ProjectsView {
+    implements ProjectsAdapter.OnClockActivityChangeListener, ProjectsAdapter.OnProjectDeleteListener, ListAdapter.OnItemClickListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     public static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
@@ -61,7 +61,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new ProjectsAdapter(getActivity(), this);
+        mAdapter = new ProjectsAdapter(getActivity(), this, this);
         mAdapter.setHintedImageButtonListener(new HintedImageButtonListener(getActivity()));
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -214,5 +214,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         getFragmentManager().beginTransaction()
             .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
             .commit();
+    }
+
+    @Override
+    public void onProjectDelete(Project project) {
     }
 }
