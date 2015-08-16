@@ -228,7 +228,17 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void onProjectDelete(Project project) {
-        getPresenter().deleteProject(project);
+    public void onProjectDelete(final Project project) {
+        new AlertDialog.Builder(getActivity())
+            .setTitle(R.string.confirm_title_delete_project)
+            .setMessage(R.string.confirm_message_delete_project)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getPresenter().deleteProject(project);
+                }
+            })
+            .setNegativeButton(android.R.string.no, null)
+            .show();
     }
 }
