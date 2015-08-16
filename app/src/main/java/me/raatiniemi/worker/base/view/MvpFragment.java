@@ -1,7 +1,7 @@
 package me.raatiniemi.worker.base.view;
 
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
 
@@ -64,7 +64,11 @@ abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragmen
         }
 
         // Display the error message.
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        Snackbar.make(
+            getActivity().findViewById(android.R.id.content),
+            message,
+            Snackbar.LENGTH_LONG
+        ).show();
     }
 
     /**

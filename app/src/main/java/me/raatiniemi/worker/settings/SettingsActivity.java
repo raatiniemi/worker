@@ -9,9 +9,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -99,8 +99,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             String message = "Switch to preference screen '" + key + "' is not implemented";
             Log.w(TAG, message);
 
-            Toast.makeText(this, message, Toast.LENGTH_SHORT)
-                .show();
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                message,
+                Snackbar.LENGTH_SHORT
+            ).show();
 
             return;
         }
@@ -205,8 +208,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 String message = "Preference '" + preference.getTitle() + "' is not implemented";
                 Log.d(TAG, message);
 
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
-                    .show();
+                Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    message,
+                    Snackbar.LENGTH_SHORT
+                ).show();
             }
             return false;
         }
@@ -270,10 +276,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             // Check that no other data operation is already running, we
             // wouldn't want backup and restore running simultaneously.
             if (DataIntentService.RUNNING.NONE != DataIntentService.getRunning()) {
-                Toast.makeText(
-                    getActivity(),
+                Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
                     "Data operation is already running...",
-                    Toast.LENGTH_LONG
+                    Snackbar.LENGTH_LONG
                 ).show();
 
                 // No need to go any futher, we can't allow for any
@@ -281,7 +287,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 return false;
             }
 
-            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+            Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                message,
+                Snackbar.LENGTH_SHORT
+            ).show();
 
             // Start the data operation.
             Intent intent = new Intent(getActivity(), DataIntentService.class);
