@@ -12,6 +12,7 @@ import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -214,6 +215,49 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
                     // Add the new project to the view.
                     getView().addProject(project);
+                }
+            });
+    }
+
+    /**
+     * Delete project with registered time.
+     *
+     * @param project Project to be deleted.
+     */
+    public void deleteProject(Project project) {
+        mProvider.deleteProject(project)
+            .compose(this.<Project>applySchedulers())
+            .subscribe(new Subscriber<Project>() {
+                @Override
+                public void onNext(Project project) {
+                    Log.d(TAG, "onNext have been reached");
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing project deletion");
+                        return;
+                    }
+
+                    // Attempt to delete the project from view.
+                    getView().deleteProject(project);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "onError have been reached");
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing project deletion");
+                        return;
+                    }
+
+                    getView().showError(e);
+                }
+
+                @Override
+                public void onCompleted() {
+                    Log.d(TAG, "onComplete have been reached");
                 }
             });
     }

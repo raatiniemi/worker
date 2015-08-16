@@ -11,6 +11,7 @@
     <string name="projects_item_project_clock_out">Clock out now</string>
     <string name="projects_item_project_clock_in_at">Clock in at given date and time</string>
     <string name="projects_item_project_clock_out_at">Clock out at given date and time</string>
+    <string name="projects_item_project_delete">Delete project</string>
 
     <string name="fragment_new_project_title">Create new project</string>
     <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
@@ -31,6 +32,11 @@
 
     <string name="confirm_clock_out_title">You are about to clock out</string>
     <string name="confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
+
+    <string name="confirm.title.delete_project">Delete project</string>
+    <string name="confirm.message.delete_project">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
+
+    <string name="message.project_deleted">Project have been deleted</string>
 
     <string name="project_actions_edit">Edit</string>
     <string name="project_actions_delete">Delete</string>

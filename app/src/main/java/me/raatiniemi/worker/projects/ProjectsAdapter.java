@@ -31,9 +31,9 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     private static final String TAG = "ProjectsAdapter";
 
     /**
-     * Listener for toggling the clock activity.
+     * Listener for project actions.
      */
-    private OnClockActivityChangeListener mOnClockActivityChangeListener;
+    private OnProjectActionListener mOnProjectActionListener;
 
     /**
      * Listener for hinting images.
@@ -44,11 +44,11 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
      * Construct the ProjectsAdapter.
      *
      * @param context Context to use.
-     * @param clockActivityChangeListener Listener for clock activity changes.
+     * @param projectActionListener Listener for project actions.
      */
-    public ProjectsAdapter(Context context, OnClockActivityChangeListener clockActivityChangeListener) {
+    public ProjectsAdapter(Context context, OnProjectActionListener projectActionListener) {
         super(context);
-        mOnClockActivityChangeListener = clockActivityChangeListener;
+        mOnProjectActionListener = projectActionListener;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         vh.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClockActivityChangeListener.onClockActivityToggle(project);
+                mOnProjectActionListener.onClockActivityToggle(project);
             }
         });
         vh.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
@@ -98,7 +98,16 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         vh.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnClockActivityChangeListener.onClockActivityAt(project);
+                mOnProjectActionListener.onClockActivityAt(project);
+            }
+        });
+        vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
+
+        // Add the onClickListener to the "Delete project" item.
+        vh.mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnProjectActionListener.onDelete(project);
             }
         });
         vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
@@ -168,9 +177,9 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     }
 
     /**
-     * Listener interface for toggling the clock activity.
+     * Listener for project actions.
      */
-    public interface OnClockActivityChangeListener {
+    public interface OnProjectActionListener {
         /**
          * Toggle the clock activity change.
          *
@@ -184,6 +193,8 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
          * @param project Project to change the clock activity.
          */
         void onClockActivityAt(Project project);
+
+        void onDelete(Project project);
     }
 
     /**
@@ -216,6 +227,11 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         public ImageButton mClockActivityAt;
 
         /**
+         * Icon for deleting project.
+         */
+        public ImageButton mDelete;
+
+        /**
          * Field for the time when the project was clocked in.
          */
         public TextView mClockedInSince;
@@ -228,6 +244,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
             mDescription = (TextView) view.findViewById(R.id.fragment_project_description);
             mClockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_toggle);
             mClockActivityAt = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_at);
+            mDelete = (ImageButton) view.findViewById(R.id.fragment_project_delete);
             mClockedInSince = (TextView) view.findViewById(R.id.fragment_project_clocked_in_since);
         }
     }

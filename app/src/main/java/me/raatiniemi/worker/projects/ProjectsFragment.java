@@ -29,7 +29,7 @@ import me.raatiniemi.worker.util.HintedImageButtonListener;
 import rx.Observable;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
-    implements ProjectsAdapter.OnClockActivityChangeListener, ListAdapter.OnItemClickListener, ProjectsView {
+    implements ProjectsAdapter.OnProjectActionListener, ListAdapter.OnItemClickListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     public static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
@@ -129,6 +129,23 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
+    public void deleteProject(Project project) {
+        int position = mAdapter.findProject(project);
+        if (0 > position) {
+            Log.w(TAG, "Unable to find position for project in the adapter");
+            return;
+        }
+
+        mAdapter.remove(position);
+
+        Snackbar.make(
+            getActivity().findViewById(android.R.id.content),
+            R.string.message_project_deleted,
+            Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    @Override
     public void createNewProject() {
         NewProjectFragment newProject = new NewProjectFragment();
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
@@ -214,5 +231,20 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         getFragmentManager().beginTransaction()
             .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
             .commit();
+    }
+
+    @Override
+    public void onDelete(final Project project) {
+        new AlertDialog.Builder(getActivity())
+            .setTitle(R.string.confirm_title_delete_project)
+            .setMessage(R.string.confirm_message_delete_project)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    getPresenter().deleteProject(project);
+                }
+            })
+            .setNegativeButton(android.R.string.no, null)
+            .show();
     }
 }

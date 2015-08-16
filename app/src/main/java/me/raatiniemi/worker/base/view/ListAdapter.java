@@ -153,6 +153,23 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
+     * Remove an item from the adapter.
+     *
+     * @param index Index of the item to remove.
+     * @return Item removed from the adapter.
+     */
+    public T remove(int index) {
+        // Remove the item from the internal data container.
+        T item = getItems().remove(index);
+
+        // Notify the adapter of the deletion.
+        notifyItemRemoved(index);
+
+        // Return the removed item.
+        return item;
+    }
+
+    /**
      * Retrieve the click listener for list items.
      *
      * @return Click listener for list items, or null if none has been supplied.

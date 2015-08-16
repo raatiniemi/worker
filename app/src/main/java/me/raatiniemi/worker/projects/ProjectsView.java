@@ -23,6 +23,13 @@ public interface ProjectsView {
     void updateProject(Project project);
 
     /**
+     * Delete project from the list.
+     *
+     * @param project Project to be deleted from the list.
+     */
+    void deleteProject(Project project);
+
+    /**
      * Open the dialog for creating a new project.
      */
     void createNewProject();
