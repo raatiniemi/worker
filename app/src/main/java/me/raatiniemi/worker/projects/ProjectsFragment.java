@@ -137,6 +137,12 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         }
 
         mAdapter.remove(position);
+
+        Snackbar.make(
+            getActivity().findViewById(android.R.id.content),
+            R.string.message_project_deleted,
+            Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     @Override

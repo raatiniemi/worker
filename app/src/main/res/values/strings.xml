@@ -36,6 +36,8 @@
     <string name="confirm.title.delete_project">Delete project</string>
     <string name="confirm.message.delete_project">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
 
+    <string name="message.project_deleted">Project have been deleted</string>
+
     <string name="project_actions_edit">Edit</string>
     <string name="project_actions_delete">Delete</string>
 
