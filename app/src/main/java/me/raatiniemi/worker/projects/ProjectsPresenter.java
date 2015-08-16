@@ -231,6 +231,15 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                 @Override
                 public void onNext(Project project) {
                     Log.d(TAG, "onNext have been reached");
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing project deletion");
+                        return;
+                    }
+
+                    // Attempt to delete the project from view.
+                    getView().deleteProject(project);
                 }
 
                 @Override

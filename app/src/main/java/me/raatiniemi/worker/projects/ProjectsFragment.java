@@ -129,6 +129,17 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
+    public void deleteProject(Project project) {
+        int position = mAdapter.findProject(project);
+        if (0 > position) {
+            Log.w(TAG, "Unable to find position for project in the adapter");
+            return;
+        }
+
+        mAdapter.remove(position);
+    }
+
+    @Override
     public void createNewProject() {
         NewProjectFragment newProject = new NewProjectFragment();
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
