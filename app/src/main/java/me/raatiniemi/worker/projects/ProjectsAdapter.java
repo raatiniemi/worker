@@ -31,14 +31,9 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     private static final String TAG = "ProjectsAdapter";
 
     /**
-     * Listener for toggling the clock activity.
+     * Listener for project actions.
      */
-    private OnClockActivityChangeListener mOnClockActivityChangeListener;
-
-    /**
-     * Listener for project deletion.
-     */
-    private OnProjectDeleteListener mOnProjectDeleteListener;
+    private OnProjectActionListener mOnProjectActionListener;
 
     /**
      * Listener for hinting images.
@@ -49,12 +44,11 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
      * Construct the ProjectsAdapter.
      *
      * @param context Context to use.
-     * @param clockActivityChangeListener Listener for clock activity changes.
+     * @param projectActionListener Listener for project actions.
      */
-    public ProjectsAdapter(Context context, OnClockActivityChangeListener clockActivityChangeListener, OnProjectDeleteListener projectDeleteListener) {
+    public ProjectsAdapter(Context context, OnProjectActionListener projectActionListener) {
         super(context);
-        mOnClockActivityChangeListener = clockActivityChangeListener;
-        mOnProjectDeleteListener = projectDeleteListener;
+        mOnProjectActionListener = projectActionListener;
     }
 
     @Override
@@ -94,7 +88,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         vh.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClockActivityChangeListener.onClockActivityToggle(project);
+                mOnProjectActionListener.onClockActivityToggle(project);
             }
         });
         vh.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
@@ -104,7 +98,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         vh.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnClockActivityChangeListener.onClockActivityAt(project);
+                mOnProjectActionListener.onClockActivityAt(project);
             }
         });
         vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
@@ -113,7 +107,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         vh.mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnProjectDeleteListener.onProjectDelete(project);
+                mOnProjectActionListener.onDelete(project);
             }
         });
         vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
@@ -183,9 +177,9 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     }
 
     /**
-     * Listener interface for toggling the clock activity.
+     * Listener for project actions.
      */
-    public interface OnClockActivityChangeListener {
+    public interface OnProjectActionListener {
         /**
          * Toggle the clock activity change.
          *
@@ -199,10 +193,8 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
          * @param project Project to change the clock activity.
          */
         void onClockActivityAt(Project project);
-    }
 
-    public interface OnProjectDeleteListener {
-        void onProjectDelete(Project project);
+        void onDelete(Project project);
     }
 
     /**
