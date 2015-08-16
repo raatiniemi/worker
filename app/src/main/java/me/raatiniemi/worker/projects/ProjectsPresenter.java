@@ -236,6 +236,14 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                 @Override
                 public void onError(Throwable e) {
                     Log.d(TAG, "onError have been reached");
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing project deletion");
+                        return;
+                    }
+
+                    getView().showError(e);
                 }
 
                 @Override
