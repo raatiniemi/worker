@@ -218,5 +218,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
     @Override
     public void onProjectDelete(Project project) {
+        getPresenter().deleteProject(project);
     }
 }
