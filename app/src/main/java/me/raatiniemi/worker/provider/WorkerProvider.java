@@ -1,11 +1,17 @@
 package me.raatiniemi.worker.provider;
 
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import java.util.ArrayList;
 
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.Tables;
@@ -121,6 +127,26 @@ public class WorkerProvider extends ContentProvider {
         return buildSelection(uri)
             .where(selection, selectionArgs)
             .delete(mOpenHelper.getWritableDatabase());
+    }
+
+    @Override
+    public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations)
+        throws OperationApplicationException {
+
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            final int numberOfOperations = operations.size();
+            final ContentProviderResult[] results = new ContentProviderResult[numberOfOperations];
+            for (int i = 0; i < numberOfOperations; i++) {
+                results[i] = operations.get(i).apply(this, results, i);
+            }
+            db.setTransactionSuccessful();
+
+            return results;
+        } finally {
+            db.endTransaction();
+        }
     }
 
     /**
