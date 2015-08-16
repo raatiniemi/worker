@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
@@ -41,7 +41,11 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
             //
             // And, the listener should always be available in the production
             // version, i.e. this should just be seen as developer feedback.
-            Toast.makeText(activity, R.string.error_message_unknown, Toast.LENGTH_SHORT).show();
+            Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_unknown,
+                Snackbar.LENGTH_SHORT
+            ).show();
 
             Log.w(TAG, "No OnCreateProjectListener have been supplied");
             dismiss();

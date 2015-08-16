@@ -5,13 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -109,8 +109,12 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         int position = mAdapter.add(project);
         mRecyclerView.scrollToPosition(position);
 
-        String message = getString(R.string.fragment_new_project_create_successful);
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        // TODO: Add support for "undo", i.e. remove created project.
+        Snackbar.make(
+            getActivity().findViewById(android.R.id.content),
+            R.string.fragment_new_project_create_successful,
+            Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     @Override
