@@ -125,25 +125,26 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
             .subscribe(new Subscriber<Project>() {
                 @Override
                 public void onNext(Project project) {
-                    Log.d(TAG, "onNext have been reached");
+                    Log.d(TAG, "createNewProject onNext");
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.d(TAG, "onError have been reached");
+                    Log.d(TAG, "createNewProject onError");
 
                     if (e instanceof ProjectAlreadyExistsException) {
+                        Log.d(TAG, "Unable to create project, duplicate name");
                         view.setError(getString(R.string.error_message_project_name_already_exists));
                         return;
                     }
 
+                    Log.w(TAG, "Unable to create project: " + e.getMessage());
                     view.setError(getString(R.string.error_message_unknown));
-                    Log.w(TAG, "Unknown error occurred: " + e.getMessage());
                 }
 
                 @Override
                 public void onCompleted() {
-                    Log.d(TAG, "onCompleted have been reached");
+                    Log.d(TAG, "createNewProject onCompleted");
 
                     // The project have been created, we can dismiss the fragment.
                     dismiss();
