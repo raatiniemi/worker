@@ -117,10 +117,35 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
             })
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Action1<List<Integer>>() {
+            .subscribe(new Subscriber<List<Integer>>() {
                 @Override
-                public void call(List<Integer> positions) {
+                public void onNext(List<Integer> positions) {
+                    Log.d(TAG, "beginRefreshingActiveProjects onNext");
+
+                    // Push the data to the view.
                     refreshActiveProjects(positions);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "beginRefreshingActiveProjects onError");
+
+                    // Log the error even if the view have been detached.
+                    Log.w(TAG, "Failed to get positions: " + e.getMessage());
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing error");
+                        return;
+                    }
+
+                    // Push the error to the view.
+                    getView().showError(e);
+                }
+
+                @Override
+                public void onCompleted() {
+                    Log.d(TAG, "beginRefreshingActiveProjects onCompleted");
                 }
             });
     }
@@ -147,10 +172,35 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                 return Observable.just(getPositionsForActiveProjects());
             }
         }).compose(this.<List<Integer>>applySchedulers())
-            .subscribe(new Action1<List<Integer>>() {
+            .subscribe(new Subscriber<List<Integer>>() {
                 @Override
-                public void call(List<Integer> positions) {
+                public void onNext(List<Integer> positions) {
+                    Log.d(TAG, "refreshActiveProjects onNext");
+
+                    // Push the data to the view.
                     refreshActiveProjects(positions);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "refreshActiveProjects onError");
+
+                    // Log the error even if the view have been detached.
+                    Log.w(TAG, "Failed to get positions: " + e.getMessage());
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing error");
+                        return;
+                    }
+
+                    // Push the error to the view.
+                    getView().showError(e);
+                }
+
+                @Override
+                public void onCompleted() {
+                    Log.d(TAG, "refreshActiveProjects onCompleted");
                 }
             });
     }
@@ -180,9 +230,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                 }
             })
             .compose(this.<List<Project>>applySchedulers())
-            .subscribe(new Action1<List<Project>>() {
+            .subscribe(new Subscriber<List<Project>>() {
                 @Override
-                public void call(List<Project> projects) {
+                public void onNext(List<Project> projects) {
+                    Log.d(TAG, "getProjects onNext");
+
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
                         Log.d(TAG, "View is not attached, skip pushing projects");
@@ -191,6 +243,28 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
                     // Push the data to the view.
                     getView().setData(projects);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "getProjects onError");
+
+                    // Log the error even if the view have been detached.
+                    Log.w(TAG, "Failed to get projects: " + e.getMessage());
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing error");
+                        return;
+                    }
+
+                    // Push the error to the view.
+                    getView().showError(e);
+                }
+
+                @Override
+                public void onCompleted() {
+                    Log.d(TAG, "getProjects onCompleted");
                 }
             });
     }
@@ -207,6 +281,8 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
             .doOnNext(new Action1<Project>() {
                 @Override
                 public void call(Project project) {
+                    Log.d(TAG, "createNewProject onNext");
+
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
                         Log.d(TAG, "View is not attached, skip pushing new project");
@@ -230,7 +306,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
             .subscribe(new Subscriber<Project>() {
                 @Override
                 public void onNext(Project project) {
-                    Log.d(TAG, "onNext have been reached");
+                    Log.d(TAG, "deleteProject onNext");
 
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
@@ -238,26 +314,30 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                         return;
                     }
 
-                    // Attempt to delete the project from view.
+                    // Attempt to delete the project from the view.
                     getView().deleteProject(project);
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.d(TAG, "onError have been reached");
+                    Log.d(TAG, "deleteProject onError");
+
+                    // Log the error even if the view have been detached.
+                    Log.w(TAG, "Failed to delete project: " + e.getMessage());
 
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing project deletion");
+                        Log.d(TAG, "View is not attached, skip pushing error");
                         return;
                     }
 
+                    // Push the error to the view.
                     getView().showError(e);
                 }
 
                 @Override
                 public void onCompleted() {
-                    Log.d(TAG, "onComplete have been reached");
+                    Log.d(TAG, "deleteProject onCompleted");
                 }
             });
     }
@@ -271,9 +351,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     public void clockActivityChange(Project project, Date date) {
         mProvider.clockActivityChange(project, date)
             .compose(this.<Project>applySchedulers())
-            .subscribe(new Action1<Project>() {
+            .subscribe(new Subscriber<Project>() {
                 @Override
-                public void call(Project project) {
+                public void onNext(Project project) {
+                    Log.d(TAG, "clockActivityChange onNext");
+
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
                         Log.d(TAG, "View is not attached, skip updating project");
@@ -283,10 +365,27 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                     // Update the project.
                     getView().updateProject(project);
                 }
-            }, new Action1<Throwable>() {
+
                 @Override
-                public void call(Throwable throwable) {
-                    getView().showError(throwable);
+                public void onError(Throwable e) {
+                    Log.d(TAG, "clockActivityChange onError");
+
+                    // Log the error even if the view have been detached.
+                    Log.w(TAG, "Failed to change clock activity: " + e.getMessage());
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing error");
+                        return;
+                    }
+
+                    // Push the error to the view.
+                    getView().showError(e);
+                }
+
+                @Override
+                public void onCompleted() {
+                    Log.d(TAG, "clockActivityChange onCompleted");
                 }
             });
     }
