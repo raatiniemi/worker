@@ -61,20 +61,23 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
             .subscribe(new Subscriber<Backup>() {
                 @Override
                 public void onNext(Backup backup) {
+                    Log.d(TAG, "getLatestBackup onNext");
+
                     // Check that we still have the view attached.
                     if (!isViewAttached()) {
                         Log.d(TAG, "View is not attached, skip pushing the latest backup");
                         return;
                     }
 
-                    // Push the latest backup to the view for update.
+                    // Push the data to the view.
                     getView().setLatestBackup(backup);
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    // Something has gone wrong when fetching the latest backup.
-                    // We'd want to log the failure, even if the view is detached.
+                    Log.d(TAG, "getLatestBackup onError");
+
+                    // Log the error even if the view have been detached.
                     Log.w(TAG, "Failed to get latest backup: " + e.getMessage());
 
                     // Check that we still have the view attached.
@@ -90,7 +93,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
 
                 @Override
                 public void onCompleted() {
-                    Log.d(TAG, "onCompleted for getLatestBackup was reached");
+                    Log.d(TAG, "getLatestBackup onCompleted");
                 }
             });
     }
