@@ -145,7 +145,7 @@
                 android:layout_marginEnd="4dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:gravity="right|center_vertical"
+                android:gravity="end|center_vertical"
                 android:textColor="@color/textSecondary"
                 tools:text="Since 07:45 (8h 50m)"
                 />
