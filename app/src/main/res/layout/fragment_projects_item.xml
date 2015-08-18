@@ -82,7 +82,7 @@
             >
 
             <ImageButton
-                android:id="@+id/fragment_project_clock_activity_toggle"
+                android:id="@+id/fragment_projects_item_action_clock_activity_toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -92,49 +92,49 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
-                android:contentDescription="@string/projects_item_project_clock_in"
-                android:background="@drawable/projects_item_clock_activity_toggle_background"
-                android:src="@drawable/projects_item_clock_activity_toggle"
+                android:contentDescription="@string/projects_item_action_clock_in"
+                android:background="@drawable/projects_item_action_clock_activity_toggle_background"
+                android:src="@drawable/projects_item_action_clock_activity_toggle"
                 />
 
             <ImageButton
-                android:id="@+id/fragment_project_clock_activity_at"
+                android:id="@+id/fragment_projects_item_action_clock_activity_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/fragment_project_clock_activity_toggle"
-                android:layout_toEndOf="@+id/fragment_project_clock_activity_toggle"
+                android:layout_toRightOf="@+id/fragment_projects_item_action_clock_activity_toggle"
+                android:layout_toEndOf="@+id/fragment_projects_item_action_clock_activity_toggle"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
-                android:contentDescription="@string/projects_item_project_clock_in_at"
+                android:contentDescription="@string/projects_item_action_clock_in_at"
                 android:background="@android:color/transparent"
-                android:src="@drawable/projects_item_clock_activity_at"
+                android:src="@drawable/projects_item_action_clock_activity_at"
                 />
 
             <ImageButton
-                android:id="@+id/fragment_project_delete"
+                android:id="@+id/fragment_projects_item_action_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/fragment_project_clock_activity_at"
-                android:layout_toEndOf="@+id/fragment_project_clock_activity_at"
+                android:layout_toRightOf="@+id/fragment_projects_item_action_clock_activity_at"
+                android:layout_toEndOf="@+id/fragment_projects_item_action_clock_activity_at"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
-                android:contentDescription="@string/projects_item_project_delete"
+                android:contentDescription="@string/projects_item_action_delete"
                 android:background="@android:color/transparent"
-                android:src="@drawable/projects_item_delete"
+                android:src="@drawable/projects_item_action_delete"
                 />
 
             <TextView
                 android:id="@+id/fragment_project_clocked_in_since"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_toRightOf="@+id/fragment_project_delete"
-                android:layout_toEndOf="@+id/fragment_project_delete"
+                android:layout_toRightOf="@+id/fragment_projects_item_action_delete"
+                android:layout_toEndOf="@+id/fragment_projects_item_action_delete"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginLeft="4dp"

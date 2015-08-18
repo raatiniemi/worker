@@ -8,11 +8,11 @@
     <string name="main_actions_settings">Settings</string>
 
     <string name="projects_item_project_clocked_in_since" formatted="false">Since %s (%s)</string>
-    <string name="projects_item_project_clock_in">Clock in now</string>
-    <string name="projects_item_project_clock_out">Clock out now</string>
-    <string name="projects_item_project_clock_in_at">Clock in at given date and time</string>
-    <string name="projects_item_project_clock_out_at">Clock out at given date and time</string>
-    <string name="projects_item_project_delete">Delete project</string>
+    <string name="projects_item_action_clock_in">Clock in now</string>
+    <string name="projects_item_action_clock_out">Clock out now</string>
+    <string name="projects_item_action_clock_in_at">Clock in at given date and time</string>
+    <string name="projects_item_action_clock_out_at">Clock out at given date and time</string>
+    <string name="projects_item_action_delete">Delete project</string>
 
     <string name="fragment_new_project_title">Create new project</string>
     <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>

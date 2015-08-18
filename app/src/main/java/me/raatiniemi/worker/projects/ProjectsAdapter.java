@@ -119,11 +119,11 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         // for the clock activity view should be altered, and
         // visibility for the clocked activity view.
         int clockedInSinceVisibility = View.GONE;
-        int clockActivityToggleId = R.string.projects_item_project_clock_in;
-        int clockActivityAtId = R.string.projects_item_project_clock_in_at;
+        int clockActivityToggleId = R.string.projects_item_action_clock_in;
+        int clockActivityAtId = R.string.projects_item_action_clock_in_at;
         if (project.isActive()) {
-            clockActivityToggleId = R.string.projects_item_project_clock_out;
-            clockActivityAtId = R.string.projects_item_project_clock_out_at;
+            clockActivityToggleId = R.string.projects_item_action_clock_out;
+            clockActivityAtId = R.string.projects_item_action_clock_out_at;
             clockedInSinceVisibility = View.VISIBLE;
         }
 
@@ -242,9 +242,9 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
             mName = (TextView) view.findViewById(R.id.fragment_project_name);
             mTime = (TextView) view.findViewById(R.id.fragment_project_time);
             mDescription = (TextView) view.findViewById(R.id.fragment_project_description);
-            mClockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_toggle);
-            mClockActivityAt = (ImageButton) view.findViewById(R.id.fragment_project_clock_activity_at);
-            mDelete = (ImageButton) view.findViewById(R.id.fragment_project_delete);
+            mClockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_toggle);
+            mClockActivityAt = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_at);
+            mDelete = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_delete);
             mClockedInSince = (TextView) view.findViewById(R.id.fragment_project_clocked_in_since);
         }
     }
