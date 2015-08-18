@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     tools:context="me.raatiniemi.worker.project.ProjectActivity"
     >
+
     <FrameLayout
-        android:id="@+id/fragment_timesheet"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+
 </RelativeLayout>

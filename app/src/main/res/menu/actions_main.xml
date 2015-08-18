@@ -2,6 +2,7 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
+
     <item
         android:id="@+id/actions_main_create_new_project"
         android:title="@string/main_actions_create_new_project"
@@ -13,4 +14,5 @@
         android:title="@string/main_actions_settings"
         android:icon="@android:drawable/ic_menu_preferences"
         />
+
 </menu>
