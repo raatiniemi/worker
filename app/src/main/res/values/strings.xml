@@ -19,10 +19,6 @@
     <string name="fragment_new_project_name_hint">Project name&#8230;</string>
     <string name="fragment_new_project_cancel">Cancel</string>
     <string name="fragment_new_project_create">Create</string>
-    <string name="fragment_new_project_class_cast_exception_title">Unable to create project</string>
-    <string name="fragment_new_project_class_cast_exception_description">An internal error occurred when the project dialog was created.</string>
-    <string name="fragment_new_project_create_project_already_exists_title">Project name already exists</string>
-    <string name="fragment_new_project_create_project_already_exists_description">A project with that name already exists, every project must have a unique name.</string>
     <string name="fragment_new_project_create_successful">New project have been created</string>
 
     <string name="date_picker_fragment_no_listener_title">Unable to set date</string>
