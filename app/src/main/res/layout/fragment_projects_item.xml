@@ -68,7 +68,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/fragment_projects_item_actions"
+            android:id="@+id/fragment_projects_item_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_projects_item_content"
@@ -78,7 +78,7 @@
             android:paddingEnd="2dp"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:background="@drawable/projects_item_action_divider"
+            android:background="@drawable/projects_item_toolbar_divider"
             >
 
             <ImageButton
