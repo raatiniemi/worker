@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <dimen name="projects_item_card_view_margin_horizontal">10dp</dimen>
     <dimen name="projects_item_card_view_margin_vertical">5dp</dimen>
 
@@ -26,4 +27,5 @@
     <dimen name="expandable_child_item_height">44dp</dimen>
     <dimen name="expandable_child_item_padding_left">20dp</dimen>
     <dimen name="expandable_child_item_padding_right">20dp</dimen>
+
 </resources>

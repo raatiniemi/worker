@@ -10,10 +10,12 @@
     android:layout_marginLeft="@dimen/projects_item_card_view_margin_horizontal"
     android:layout_marginRight="@dimen/projects_item_card_view_margin_horizontal"
     >
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         >
+
         <RelativeLayout
             android:id="@+id/fragment_projects_item_content"
             android:layout_width="match_parent"
@@ -69,6 +71,7 @@
                 />
 
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/fragment_projects_item_actions"
             android:layout_width="match_parent"
@@ -149,6 +152,9 @@
                 android:textColor="@color/textSecondary"
                 tools:text="Since 07:45 (8h 50m)"
                 />
+
         </RelativeLayout>
+
     </RelativeLayout>
+
 </android.support.v7.widget.CardView>

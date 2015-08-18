@@ -2,12 +2,15 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
+
     <item
         >
+
         <bitmap
             android:src="@drawable/ic_event_black_24dp"
             android:tint="@color/actionIconTint"
             />
+
     </item>
 
 </selector>
