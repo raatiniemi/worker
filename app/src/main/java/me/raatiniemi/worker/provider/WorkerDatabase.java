@@ -51,8 +51,53 @@ public class WorkerDatabase extends SQLiteOpenHelper {
      * @param db Instance for the database.
      * @param oldVersion Old version of the structure.
      * @param newVersion New version of the structure.
+     * @throws IllegalArgumentException If oldVersion is less than 1.
+     * @throws IllegalArgumentException If newVersion is more than `Worker.DATABASE_VERSION`.
+     * @throws IllegalArgumentException If newVersion is less than oldVersion, i.e. downgrade.
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Since the first version of the structure was 1, upgrading from any
+        // value less than 1 is not allowed.
+        if (1 > oldVersion) {
+            throw new IllegalArgumentException(
+                "oldVersion cannot be less than 1"
+            );
+        }
+
+        // Check the state of the newVersion, we cannot allow to upgrade past
+        // the latest available version (i.e. `Worker.DATABASE_VERSION`).
+        if (Worker.DATABASE_VERSION < newVersion) {
+            throw new IllegalArgumentException(
+                "newVersion cannot be more than " + Worker.DATABASE_VERSION
+            );
+        }
+
+        // Check the relation between oldVersion and newVersion, downgrade via
+        // the `onUpgrade`-method is not allowed.
+        if (oldVersion > newVersion) {
+            throw new IllegalArgumentException(
+                "newVersion cannot be less than oldVersion"
+            );
+        }
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Since the first version of the structure was 1, downgrading to any
+        // value less than 1 is not allowed.
+        if (1 > newVersion) {
+            throw new IllegalArgumentException(
+                "newVersion cannot be less than 1"
+            );
+        }
+
+        // Check the relation between oldVersion and newVersion, upgrade via
+        // the `onDowngrade`-method is not allowed.
+        if (oldVersion < newVersion) {
+            throw new IllegalArgumentException(
+                "oldVersion cannot be less than newVersion"
+            );
+        }
     }
 }
