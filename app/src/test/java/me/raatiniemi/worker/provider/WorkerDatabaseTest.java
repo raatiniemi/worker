@@ -11,6 +11,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.util.Worker;
 
 import static org.mockito.Mockito.mock;
 
@@ -44,5 +45,30 @@ public class WorkerDatabaseTest {
         WorkerDatabase helper = new WorkerDatabase(context);
 
         helper.onCreate(mDatabase);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void onUpgrade_OldVersionIsLessThan1_ThrowException() {
+        Context context = mock(Context.class);
+        WorkerDatabase helper = new WorkerDatabase(context);
+
+        helper.onUpgrade(mDatabase, 0, 1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void onUpgrade_NewVersionIsMoreThanLatestVersion_ThrowException() {
+        Context context = mock(Context.class);
+        WorkerDatabase helper = new WorkerDatabase(context);
+
+        int newVersion = Worker.DATABASE_VERSION + 1;
+        helper.onUpgrade(mDatabase, 1, newVersion);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void onUpgrade_NewVersionIsLessThanOldVersion_ThrowException() {
+        Context context = mock(Context.class);
+        WorkerDatabase helper = new WorkerDatabase(context);
+
+        helper.onUpgrade(mDatabase, 2, 1);
     }
 }
