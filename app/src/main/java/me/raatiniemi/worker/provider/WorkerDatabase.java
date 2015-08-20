@@ -81,4 +81,23 @@ public class WorkerDatabase extends SQLiteOpenHelper {
             );
         }
     }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Since the first version of the structure was 1, downgrading to any
+        // value less than 1 is not allowed.
+        if (1 > newVersion) {
+            throw new IllegalArgumentException(
+                "newVersion cannot be less than 1"
+            );
+        }
+
+        // Check the relation between oldVersion and newVersion, upgrade via
+        // the `onDowngrade`-method is not allowed.
+        if (oldVersion < newVersion) {
+            throw new IllegalArgumentException(
+                "oldVersion cannot be less than newVersion"
+            );
+        }
+    }
 }

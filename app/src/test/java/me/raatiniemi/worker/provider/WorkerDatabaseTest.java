@@ -71,4 +71,20 @@ public class WorkerDatabaseTest {
 
         helper.onUpgrade(mDatabase, 2, 1);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void onDowngrade_NewVersionIsLessThan1_ThrowException() {
+        Context context = mock(Context.class);
+        WorkerDatabase helper = new WorkerDatabase(context);
+
+        helper.onDowngrade(mDatabase, 1, 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void onDowngrade_OldVersionIsLessThanNewVersion_ThrowException() {
+        Context context = mock(Context.class);
+        WorkerDatabase helper = new WorkerDatabase(context);
+
+        helper.onDowngrade(mDatabase, 1, 2);
+    }
 }
