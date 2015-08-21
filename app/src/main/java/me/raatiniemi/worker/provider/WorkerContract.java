@@ -53,6 +53,8 @@ public class WorkerContract {
         String START = "start";
 
         String STOP = "stop";
+
+        String REGISTERED = "registered";
     }
 
     public static class ProjectContract implements ProjectColumns {
@@ -179,7 +181,8 @@ public class WorkerContract {
             TimeColumns._ID,
             TimeColumns.PROJECT_ID,
             TimeColumns.START,
-            TimeColumns.STOP
+            TimeColumns.STOP,
+            TimeColumns.REGISTERED
         };
 
         public static final String STREAM_TYPE =

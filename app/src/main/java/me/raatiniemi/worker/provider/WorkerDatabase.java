@@ -38,7 +38,8 @@ public class WorkerDatabase extends SQLiteOpenHelper {
             TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
             TimeColumns.START + " INTEGER NOT NULL, " +
-            TimeColumns.STOP + " INTEGER DEFAULT 0)");
+            TimeColumns.STOP + " INTEGER DEFAULT 0, " +
+            TimeColumns.REGISTERED + " INTEGER NOT NULL DEFAULT 0)");
     }
 
     /**
@@ -76,6 +77,11 @@ public class WorkerDatabase extends SQLiteOpenHelper {
                 "newVersion cannot be less than oldVersion"
             );
         }
+
+        // Add the `registered`-column to the `time`-table.
+        db.execSQL("ALTER TABLE " + Tables.TIME +
+            " ADD COLUMN " + TimeColumns.REGISTERED +
+            " INTEGER NOT NULL DEFAULT 0");
     }
 
     /**
