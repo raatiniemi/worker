@@ -40,6 +40,9 @@ public class TimeMapperTest {
         when(cursor.getColumnIndex(TimeColumns.STOP)).thenReturn(3);
         when(cursor.getLong(3)).thenReturn(4L);
 
+        when(cursor.getColumnIndex(TimeColumns.REGISTERED)).thenReturn(4);
+        when(cursor.getLong(4)).thenReturn(1L);
+
         Time time = TimeMapper.map(cursor);
 
         assertNotNull(time);
@@ -47,6 +50,7 @@ public class TimeMapperTest {
         assertEquals(Long.valueOf(2L), time.getProjectId());
         assertEquals(Long.valueOf(3L), time.getStart());
         assertEquals(Long.valueOf(4L), time.getStop());
+        assertEquals(Long.valueOf(1L), time.getRegistered());
     }
 
     @Test

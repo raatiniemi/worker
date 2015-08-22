@@ -24,9 +24,13 @@ public class TimeMapper {
         long projectId = cursor.getLong(cursor.getColumnIndex(TimeColumns.PROJECT_ID));
         long start = cursor.getLong(cursor.getColumnIndex(TimeColumns.START));
         long stop = cursor.getLong(cursor.getColumnIndex(TimeColumns.STOP));
+        long registered = cursor.getLong(cursor.getColumnIndex(TimeColumns.REGISTERED));
 
         try {
-            return new Time(id, projectId, start, stop);
+            Time time = new Time(id, projectId, start, stop);
+            time.setRegistered(registered);
+
+            return time;
         } catch (DomainException e) {
             // TODO: Handle DomainException properly.
             return null;
