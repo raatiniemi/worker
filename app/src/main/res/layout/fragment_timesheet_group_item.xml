@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/expandable_group_item_height"
+    android:background="@drawable/timesheet_group_item_background"
     >
 
     <RelativeLayout

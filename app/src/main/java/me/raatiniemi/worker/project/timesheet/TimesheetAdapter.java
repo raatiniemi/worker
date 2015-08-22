@@ -65,10 +65,19 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.mTitle.setText(mDateFormat.format(date));
 
         long interval = 0;
+        boolean registered = true;
 
         for (Time time : get(group)) {
+            // If a single child is not registered, the group should not be
+            // considered registered.
+            if (0L == time.getRegistered()) {
+                registered = false;
+            }
+
             interval += time.getInterval();
         }
+
+        vh.itemView.setActivated(registered);
 
         String summarize = DateIntervalFormat.format(
             interval,
