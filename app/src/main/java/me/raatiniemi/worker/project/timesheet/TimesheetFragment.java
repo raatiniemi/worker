@@ -211,6 +211,11 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mSelectedView = view;
         mSelectedView.setSelected(true);
 
+        // Regardless of whether the time for the view have been registered the
+        // view should be deactivated. The selected background color should
+        // take precedence of the activated.
+        mSelectedView.setActivated(false);
+
         // Only start the ActionMode if none has already started.
         if (null == mActionMode) {
             mActionMode = getActivity().startActionMode(mActionModeCallback);
