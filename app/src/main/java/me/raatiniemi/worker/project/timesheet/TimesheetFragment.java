@@ -65,6 +65,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                     getPresenter().remove(mSelectedItem);
                     finish = true;
                     break;
+                case R.id.actions_project_register:
+                    getPresenter().register(mSelectedItem);
+                    finish = true;
+                    break;
                 default:
                     Log.w(TAG, "Undefined action: " + item.getItemId());
                     break;
@@ -186,6 +190,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     public void remove(TimeInAdapterResult result) {
         mTimesheetAdapter.remove(result.getGroup(), result.getChild());
+    }
+
+    public void update(TimeInAdapterResult result) {
+        mTimesheetAdapter.update(result.getGroup(), result.getChild(), result.getTime());
     }
 
     @Override
