@@ -28,6 +28,7 @@ public class TimeTest {
         assertNull(time.getProjectId());
         assertEquals(Long.valueOf(0L), time.getStart());
         assertEquals(Long.valueOf(0L), time.getStop());
+        assertEquals(Long.valueOf(0L), time.getRegistered());
     }
 
     @Test
@@ -39,6 +40,7 @@ public class TimeTest {
         assertEquals(Long.valueOf(2L), time.getProjectId());
         assertEquals(Long.valueOf(3L), time.getStart());
         assertEquals(Long.valueOf(4L), time.getStop());
+        assertEquals(Long.valueOf(0L), time.getRegistered());
     }
 
     @Test
@@ -130,6 +132,21 @@ public class TimeTest {
         Time time = new Time();
         time.setStart(10L);
         time.setStop(1L);
+    }
+
+    @Test
+    public void getRegistered_DefaultValue_False() {
+        Time time = new Time();
+
+        assertEquals(Long.valueOf(0L), time.getRegistered());
+    }
+
+    @Test
+    public void getRegistered_ValueFromSetter_True() {
+        Time time = new Time();
+        time.setRegistered(1L);
+
+        assertEquals(Long.valueOf(1L), time.getRegistered());
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)

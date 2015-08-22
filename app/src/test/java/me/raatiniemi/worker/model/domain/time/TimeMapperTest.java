@@ -40,6 +40,9 @@ public class TimeMapperTest {
         when(cursor.getColumnIndex(TimeColumns.STOP)).thenReturn(3);
         when(cursor.getLong(3)).thenReturn(4L);
 
+        when(cursor.getColumnIndex(TimeColumns.REGISTERED)).thenReturn(4);
+        when(cursor.getLong(4)).thenReturn(1L);
+
         Time time = TimeMapper.map(cursor);
 
         assertNotNull(time);
@@ -47,11 +50,13 @@ public class TimeMapperTest {
         assertEquals(Long.valueOf(2L), time.getProjectId());
         assertEquals(Long.valueOf(3L), time.getStart());
         assertEquals(Long.valueOf(4L), time.getStop());
+        assertEquals(Long.valueOf(1L), time.getRegistered());
     }
 
     @Test
     public void map_TimeToContentValues_True() throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
+        time.setRegistered(1L);
 
         ContentValues contentValues = TimeMapper.map(time);
 
@@ -59,5 +64,6 @@ public class TimeMapperTest {
         assertEquals(Long.valueOf(2L), contentValues.getAsLong(TimeColumns.PROJECT_ID));
         assertEquals(Long.valueOf(3L), contentValues.getAsLong(TimeColumns.START));
         assertEquals(Long.valueOf(4L), contentValues.getAsLong(TimeColumns.STOP));
+        assertEquals(Long.valueOf(1L), contentValues.getAsLong(TimeColumns.REGISTERED));
     }
 }

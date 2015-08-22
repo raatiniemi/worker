@@ -34,6 +34,11 @@ public class Time extends DomainObject {
     private Long mStop;
 
     /**
+     * Flag for registered time.
+     */
+    private Long mRegistered;
+
+    /**
      * Default constructor.
      */
     public Time() {
@@ -154,6 +159,29 @@ public class Time extends DomainObject {
         }
 
         mStop = stop;
+    }
+
+    /**
+     * Getter method for the registered time flag.
+     *
+     * @return Flag for registered time.
+     */
+    @NonNull
+    public Long getRegistered() {
+        if (null == mRegistered) {
+            mRegistered = 0L;
+        }
+
+        return mRegistered;
+    }
+
+    /**
+     * Setter method for registered time flag.
+     *
+     * @param registered Flag for registered time.
+     */
+    public void setRegistered(@NonNull Long registered) {
+        mRegistered = registered;
     }
 
     /**

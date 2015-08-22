@@ -208,6 +208,46 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
+     * Update group item in the adapter.
+     *
+     * @param group Index for group to be updated.
+     * @param item Item to update the adapter.
+     */
+    public void update(int group, T item) {
+        // Check that the group index exists.
+        if (!has(group)) {
+            Log.w(TAG, "Unable to update group, it do not exists");
+            return;
+        }
+
+        // Update the group item and notify the adapter.
+        getItems().set(group, item);
+        notifyItemChanged(group);
+    }
+
+    /**
+     * Update child item in the adapter.
+     *
+     * @param group Index for group containing the child.
+     * @param child Index for child to be updated.
+     * @param item Item to update the adapter.
+     */
+    public void update(int group, int child, C item) {
+        // Check that the group/child index exists.
+        if (!has(group, child)) {
+            Log.w(TAG, "Unable to update child, it do not exists");
+            return;
+        }
+
+        // Update the child item within the group item.
+        T groupItem = get(group);
+        groupItem.set(child, item);
+
+        // Trigger the adapter update on the group item.
+        update(group, groupItem);
+    }
+
+    /**
      * Base type for the combined group and child item.
      *
      * @param <G> Reference type for the group item.

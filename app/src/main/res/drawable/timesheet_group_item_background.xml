@@ -13,14 +13,4 @@
 
     </item>
 
-    <item
-        android:state_selected="true"
-        >
-
-        <color
-            android:color="@color/primaryLight"
-            />
-
-    </item>
-
 </selector>

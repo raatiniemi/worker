@@ -132,4 +132,52 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                 }
             });
     }
+
+    public void register(final TimeInAdapterResult result) {
+        // Set the registered flag on the time object.
+        Time time = result.getTime();
+        time.setRegistered(1L);
+
+        mProvider.update(time)
+            .compose(this.<Time>applySchedulers())
+            .subscribe(new Subscriber<Time>() {
+                @Override
+                public void onNext(Time time) {
+                    Log.d(TAG, "register onNext");
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing time update");
+                        return;
+                    }
+
+                    // Update the time item within the adapter result and send
+                    // it to the view for update.
+                    result.setTime(time);
+                    getView().update(result);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "register onError");
+
+                    // Log the error even if the view have been detached.
+                    Log.w(TAG, "Failed to mark time as registered: " + e.getMessage());
+
+                    // Check that we still have the view attached.
+                    if (!isViewAttached()) {
+                        Log.d(TAG, "View is not attached, skip pushing error");
+                        return;
+                    }
+
+                    // Push the error to the view.
+                    getView().showError(e);
+                }
+
+                @Override
+                public void onCompleted() {
+                    Log.d(TAG, "register onCompleted");
+                }
+            });
+    }
 }

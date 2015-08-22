@@ -65,10 +65,19 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.mTitle.setText(mDateFormat.format(date));
 
         long interval = 0;
+        boolean registered = true;
 
         for (Time time : get(group)) {
+            // If a single child is not registered, the group should not be
+            // considered registered.
+            if (0L == time.getRegistered()) {
+                registered = false;
+            }
+
             interval += time.getInterval();
         }
+
+        vh.itemView.setActivated(registered);
 
         String summarize = DateIntervalFormat.format(
             interval,
@@ -97,6 +106,13 @@ public class TimesheetAdapter extends ExpandableListAdapter<
                 return true;
             }
         });
+
+        // In case the item have been selected, we should not activate
+        // it. The selected background color should take precedence.
+        vh.itemView.setActivated(false);
+        if (!vh.itemView.isSelected()) {
+            vh.itemView.setActivated(1L == time.getRegistered());
+        }
 
         String title = mTimeFormat.format(new Date(time.getStart()));
         if (!time.isActive()) {
@@ -205,6 +221,10 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         public Time getTime() {
             return mTime;
+        }
+
+        public void setTime(Time time) {
+            mTime = time;
         }
     }
 }

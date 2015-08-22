@@ -11,6 +11,9 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.provider.WorkerContract.Tables;
+import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.util.Worker;
 
 import static org.mockito.Mockito.mock;
@@ -72,6 +75,16 @@ public class WorkerDatabaseTest {
         helper.onUpgrade(mDatabase, 2, 1);
     }
 
+    @Test
+    public void onUpgrade_UpgradeFromBaseToLatest_Upgraded() {
+        Context context = mock(Context.class);
+        WorkerBaseDatabase helper = new WorkerBaseDatabase(context);
+        helper.onCreate(mDatabase);
+
+        // If no exceptions have been thrown the test should be considered OK.
+        helper.onUpgrade(mDatabase, 1, Worker.DATABASE_VERSION);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void onDowngrade_NewVersionIsLessThan1_ThrowException() {
         Context context = mock(Context.class);
@@ -86,5 +99,32 @@ public class WorkerDatabaseTest {
         WorkerDatabase helper = new WorkerDatabase(context);
 
         helper.onDowngrade(mDatabase, 1, 2);
+    }
+
+    /**
+     * Represent the base database, used primarily for upgrade related tests.
+     */
+    private class WorkerBaseDatabase extends WorkerDatabase {
+        public WorkerBaseDatabase(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            // Create the structure for the `project`-table.
+            db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
+                ProjectColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ProjectColumns.NAME + " TEXT NOT NULL, " +
+                ProjectColumns.DESCRIPTION + " TEXT NULL, " +
+                ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
+                "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
+
+            // Create the structure for the `time`-table.
+            db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
+                TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
+                TimeColumns.START + " INTEGER NOT NULL, " +
+                TimeColumns.STOP + " INTEGER DEFAULT 0)");
+        }
     }
 }

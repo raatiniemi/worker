@@ -36,6 +36,7 @@
     <string name="message.project_deleted">Project have been deleted</string>
 
     <string name="project_actions_edit">Edit</string>
+    <string name="project_actions_register">Mark as registered</string>
     <string name="project_actions_delete">Delete</string>
 
     <string name="settings_category_preferences">Preferences</string>
