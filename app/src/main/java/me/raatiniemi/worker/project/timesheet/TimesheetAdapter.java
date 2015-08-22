@@ -206,5 +206,9 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         public Time getTime() {
             return mTime;
         }
+
+        public void setTime(Time time) {
+            mTime = time;
+        }
     }
 }
