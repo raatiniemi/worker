@@ -20,6 +20,7 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
+import me.raatiniemi.worker.model.domain.time.Time;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.projects.ProjectsFragment;
@@ -198,11 +199,22 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     @Override
     public boolean onTimeLongClick(View view, TimeInAdapterResult result) {
+        boolean registered = false;
+
+        // If we already have a selected item, we need to check the registered
+        // status of the item. If it is registered we have to restore the
+        // activated state for the view.
+        if (null != mSelectedItem) {
+            Time time = mSelectedItem.getTime();
+            registered = 1L == time.getRegistered();
+        }
+
         mSelectedItem = result;
 
         // If there's already a selected row, we have
         // to clear the selection-state.
         if (null != mSelectedView) {
+            mSelectedView.setActivated(registered);
             mSelectedView.setSelected(false);
         }
 
