@@ -56,6 +56,7 @@ public class TimeMapperTest {
     @Test
     public void map_TimeToContentValues_True() throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
+        time.setRegistered(1L);
 
         ContentValues contentValues = TimeMapper.map(time);
 
@@ -63,5 +64,6 @@ public class TimeMapperTest {
         assertEquals(Long.valueOf(2L), contentValues.getAsLong(TimeColumns.PROJECT_ID));
         assertEquals(Long.valueOf(3L), contentValues.getAsLong(TimeColumns.START));
         assertEquals(Long.valueOf(4L), contentValues.getAsLong(TimeColumns.STOP));
+        assertEquals(Long.valueOf(1L), contentValues.getAsLong(TimeColumns.REGISTERED));
     }
 }
