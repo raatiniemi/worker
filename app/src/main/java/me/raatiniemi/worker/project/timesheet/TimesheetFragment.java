@@ -75,7 +75,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                     break;
             }
 
-            mSelectedItem = null;
             if (finish) {
                 actionMode.finish();
             }
@@ -87,10 +86,16 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
             // If there's a selected row, we have
             // to clear the selection-state.
             if (null != mSelectedView) {
+                // If the selected time is registered we have to restore the
+                // activated state incase the user dismissed the action mode.
+                Time time = mSelectedItem.getTime();
+                mSelectedView.setActivated(1L == time.getRegistered());
+
                 mSelectedView.setSelected(false);
                 mSelectedView = null;
             }
 
+            mSelectedItem = null;
             mActionMode = null;
         }
     };
