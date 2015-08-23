@@ -165,6 +165,10 @@ public class TimeTest {
         time.setRegistered(true);
 
         assertTrue(time.isRegistered());
+
+        time.setRegistered(false);
+
+        assertFalse(time.isRegistered());
     }
 
     @Test
@@ -180,6 +184,10 @@ public class TimeTest {
         time.setRegistered(1L);
 
         assertEquals(Long.valueOf(1L), time.getRegistered());
+
+        time.setRegistered(0L);
+
+        assertEquals(Long.valueOf(0L), time.getRegistered());
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
