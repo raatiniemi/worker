@@ -132,6 +132,15 @@ public class Project extends DomainObject {
     }
 
     /**
+     * Getter method for archived project flag.
+     *
+     * @return True if project is archived, otherwise false.
+     */
+    public boolean isArchived() {
+        return 1L == getArchived();
+    }
+
+    /**
      * Getter method for the archived project flag.
      *
      * @return Flag for archived project.
