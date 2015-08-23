@@ -19,6 +19,7 @@ package me.raatiniemi.worker.base.view;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 
+import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
 
 /**
@@ -76,7 +77,7 @@ abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragmen
         // otherwise use the default error message.
         String message = e.getMessage();
         if (TextUtils.isEmpty(message)) {
-            message = "An unknown error has occurred";
+            message = getString(R.string.error_message_unknown);
         }
 
         // Display the error message.
