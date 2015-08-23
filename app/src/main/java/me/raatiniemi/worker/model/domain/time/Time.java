@@ -211,6 +211,7 @@ public class Time extends DomainObject {
      *
      * @param registered Flag for registered time.
      */
+    @Deprecated
     public void setRegistered(@NonNull Long registered) {
         setRegistered(1L == registered);
     }
