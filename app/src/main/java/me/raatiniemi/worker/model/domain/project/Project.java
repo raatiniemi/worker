@@ -152,6 +152,15 @@ public class Project extends DomainObject {
     /**
      * Setter method for archived project flag.
      *
+     * @param archived True if project is archived, otherwise false.
+     */
+    public void setArchived(boolean archived) {
+        setArchived(archived ? 1L : 0L);
+    }
+
+    /**
+     * Setter method for archived project flag.
+     *
      * @param archived Flag for archived project.
      */
     public void setArchived(Long archived) {

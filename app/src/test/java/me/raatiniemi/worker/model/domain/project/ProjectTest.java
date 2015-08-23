@@ -146,7 +146,7 @@ public class ProjectTest {
     @Test
     public void isArchived_ValueFromSetter_True() {
         Project project = new Project();
-        project.setArchived(1L);
+        project.setArchived(true);
 
         assertTrue(project.isArchived());
     }
