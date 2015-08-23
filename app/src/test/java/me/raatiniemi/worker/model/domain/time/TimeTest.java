@@ -162,7 +162,7 @@ public class TimeTest {
     @Test
     public void isRegistered_ValueFromSetter_True() {
         Time time = new Time();
-        time.setRegistered(1L);
+        time.setRegistered(true);
 
         assertTrue(time.isRegistered());
     }

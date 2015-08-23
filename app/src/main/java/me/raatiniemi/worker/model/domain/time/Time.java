@@ -203,6 +203,15 @@ public class Time extends DomainObject {
     /**
      * Setter method for registered time flag.
      *
+     * @param registered True if time is registered, otherwise false.
+     */
+    public void setRegistered(boolean registered) {
+        setRegistered(registered ? 1L : 0L);
+    }
+
+    /**
+     * Setter method for registered time flag.
+     *
      * @param registered Flag for registered time.
      */
     public void setRegistered(@NonNull Long registered) {
