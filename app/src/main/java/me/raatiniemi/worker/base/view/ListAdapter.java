@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.base.view;
 
 import android.content.Context;
@@ -15,7 +31,7 @@ import java.util.List;
  * @param <V> Reference type for the view holder.
  */
 abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
-    extends RecyclerView.Adapter<V> {
+        extends RecyclerView.Adapter<V> {
     /**
      * Tag for logging.
      */
@@ -105,7 +121,7 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
      * Update item at a given index within the adapter.
      *
      * @param index Index of the item to update.
-     * @param item Item to update at the index within the adapter.
+     * @param item  Item to update at the index within the adapter.
      */
     public void set(int index, T item) {
         getItems().set(index, item);

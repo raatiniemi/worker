@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.util;
 
 import android.app.Activity;
@@ -46,15 +62,15 @@ public class DatePickerFragment extends DialogFragment {
             // We're unable to use the DatePickerFragment
             // since we do not have listener.
             new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.date_picker_fragment_no_listener_title))
-                .setMessage(getString(R.string.date_picker_fragment_no_listener_description))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
+                    .setTitle(getString(R.string.date_picker_fragment_no_listener_title))
+                    .setMessage(getString(R.string.date_picker_fragment_no_listener_description))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing...
+                        }
+                    })
+                    .show();
 
             // Dismiss the dialog since we are unable
             // to properly handle events with it.
@@ -66,11 +82,11 @@ public class DatePickerFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog dialog = new DatePickerDialog(
-            getActivity(),
-            getOnDateSetListener(),
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+                getActivity(),
+                getOnDateSetListener(),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
         );
 
         // If a minimum date is available we have

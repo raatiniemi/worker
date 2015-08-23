@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.provider;
 
 import android.content.ContentProvider;
@@ -89,8 +105,8 @@ public class WorkerProvider extends ContentProvider {
         }
 
         return buildSelection(uri)
-            .where(selection, selectionArgs)
-            .query(mOpenHelper.getReadableDatabase(), projection, sortOrder, limit);
+                .where(selection, selectionArgs)
+                .query(mOpenHelper.getReadableDatabase(), projection, sortOrder, limit);
     }
 
     @Override
@@ -118,20 +134,20 @@ public class WorkerProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return buildSelection(uri)
-            .where(selection, selectionArgs)
-            .update(mOpenHelper.getWritableDatabase(), values);
+                .where(selection, selectionArgs)
+                .update(mOpenHelper.getWritableDatabase(), values);
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return buildSelection(uri)
-            .where(selection, selectionArgs)
-            .delete(mOpenHelper.getWritableDatabase());
+                .where(selection, selectionArgs)
+                .delete(mOpenHelper.getWritableDatabase());
     }
 
     @Override
     public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations)
-        throws OperationApplicationException {
+            throws OperationApplicationException {
 
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         db.beginTransaction();
@@ -165,32 +181,32 @@ public class WorkerProvider extends ContentProvider {
                 break;
             case PROJECTS_ID:
                 builder.table(Tables.PROJECT)
-                    .where(
-                        ProjectContract._ID + "=?",
-                        ProjectContract.getItemId(uri)
-                    );
+                        .where(
+                                ProjectContract._ID + "=?",
+                                ProjectContract.getItemId(uri)
+                        );
                 break;
             case PROJECTS_TIME:
                 builder.table(Tables.TIME)
-                    .where(
-                        TimeContract.PROJECT_ID + "=?",
-                        ProjectContract.getItemId(uri)
-                    );
+                        .where(
+                                TimeContract.PROJECT_ID + "=?",
+                                ProjectContract.getItemId(uri)
+                        );
                 break;
             case PROJECTS_TIMESHEET:
                 builder.table(Tables.TIME)
-                    .where(
-                        TimeContract.PROJECT_ID + "=?",
-                        ProjectContract.getItemId(uri)
-                    )
-                    .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+                        .where(
+                                TimeContract.PROJECT_ID + "=?",
+                                ProjectContract.getItemId(uri)
+                        )
+                        .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
                 break;
             case TIME_ID:
                 builder.table(Tables.TIME)
-                    .where(
-                        TimeContract._ID + "=?",
-                        TimeContract.getItemId(uri)
-                    );
+                        .where(
+                                TimeContract._ID + "=?",
+                                TimeContract.getItemId(uri)
+                        );
                 break;
         }
 

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.service;
 
 import android.app.IntentService;
@@ -123,9 +139,9 @@ public class DataIntentService extends IntentService {
 
             // Send the "Backup complete" notification to the user.
             notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_backup_white_24dp)
-                .setContentTitle(getString(R.string.data_intent_service_backup_complete_title))
-                .setContentText(getString(R.string.data_intent_service_backup_complete_message));
+                    .setSmallIcon(R.drawable.ic_backup_white_24dp)
+                    .setContentTitle(getString(R.string.data_intent_service_backup_complete_title))
+                    .setContentText(getString(R.string.data_intent_service_backup_complete_message));
 
             // Assemble and post the successful backup event.
             Backup backup = new Backup(directory);
@@ -136,9 +152,9 @@ public class DataIntentService extends IntentService {
             // TODO: Display what was the cause of the backup failure.
             // Send the "Backup failed" notification to the user.
             notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                .setContentTitle(getString(R.string.data_intent_service_backup_failed_title))
-                .setContentText(getString(R.string.data_intent_service_backup_failed_message));
+                    .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
+                    .setContentTitle(getString(R.string.data_intent_service_backup_failed_title))
+                    .setContentText(getString(R.string.data_intent_service_backup_failed_message));
         } catch (ClassCastException e) {
             Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
         } finally {
@@ -149,8 +165,8 @@ public class DataIntentService extends IntentService {
             // ClassCastException have been thrown.
             if (null != manager && null != notification) {
                 manager.notify(
-                    Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
-                    notification.build()
+                        Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
+                        notification.build()
                 );
             }
         }
@@ -191,25 +207,25 @@ public class DataIntentService extends IntentService {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                    this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT
             );
 
             // Send the "Restore complete" notification to the user.
             notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_restore_white_24dp)
-                .setContentTitle(getString(R.string.data_intent_service_restore_complete_title))
-                .setContentText(getString(R.string.data_intent_service_restore_complete_message))
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+                    .setSmallIcon(R.drawable.ic_restore_white_24dp)
+                    .setContentTitle(getString(R.string.data_intent_service_restore_complete_title))
+                    .setContentText(getString(R.string.data_intent_service_restore_complete_message))
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
         } catch (IOException e) {
             Log.w(TAG, "Unable to restore backup: " + e.getMessage());
 
             // TODO: Display what was the cause of the restore failure.
             // Send the "Restore failed" notification to the user.
             notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                .setContentTitle(getString(R.string.data_intent_service_restore_failed_title))
-                .setContentText(getString(R.string.data_intent_service_restore_failed_message));
+                    .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
+                    .setContentTitle(getString(R.string.data_intent_service_restore_failed_title))
+                    .setContentText(getString(R.string.data_intent_service_restore_failed_message));
         } catch (ClassCastException e) {
             Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
         } finally {
@@ -220,8 +236,8 @@ public class DataIntentService extends IntentService {
             // ClassCastException have been thrown.
             if (null != manager && null != notification) {
                 manager.notify(
-                    Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
-                    notification.build()
+                        Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
+                        notification.build()
                 );
             }
         }

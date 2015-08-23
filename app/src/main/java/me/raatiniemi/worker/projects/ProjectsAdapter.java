@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.projects;
 
 import android.content.Context;
@@ -43,7 +59,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     /**
      * Construct the ProjectsAdapter.
      *
-     * @param context Context to use.
+     * @param context               Context to use.
      * @param projectActionListener Listener for project actions.
      */
     public ProjectsAdapter(Context context, OnProjectActionListener projectActionListener) {
@@ -142,12 +158,12 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         if (null != clockedInSince) {
             clockedInSinceText = resources.getString(R.string.projects_item_clocked_in_since);
             clockedInSinceText = String.format(
-                clockedInSinceText,
-                (new SimpleDateFormat("HH:mm")).format(clockedInSince),
-                DateIntervalFormat.format(
-                    project.getElapsed(),
-                    DateIntervalFormat.Type.HOURS_MINUTES
-                )
+                    clockedInSinceText,
+                    (new SimpleDateFormat("HH:mm")).format(clockedInSince),
+                    DateIntervalFormat.format(
+                            project.getElapsed(),
+                            DateIntervalFormat.Type.HOURS_MINUTES
+                    )
             );
         }
         vh.mClockedInSince.setText(clockedInSinceText);

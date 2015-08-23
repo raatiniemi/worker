@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.project.timesheet;
 
 import android.os.Bundle;
@@ -26,7 +42,7 @@ import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>
-    implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
+        implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
     private LinearLayoutManager mLinearLayoutManager;
@@ -125,10 +141,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setAdapter(mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
         mRecyclerView.addItemDecoration(
-            new SimpleListDividerDecorator(
-                getResources().getDrawable(R.drawable.expandable_list_item_divider),
-                true
-            )
+                new SimpleListDividerDecorator(
+                        getResources().getDrawable(R.drawable.expandable_list_item_divider),
+                        true
+                )
         );
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

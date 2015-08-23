@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.util;
 
 import android.support.annotation.NonNull;
@@ -23,7 +39,7 @@ public class FileUtils {
      * file do not exists, it will be created.
      *
      * @param from The source file.
-     * @param to The destination file.
+     * @param to   The destination file.
      * @return Number of bytes copied between the locations.
      * @throws IOException
      */
@@ -52,9 +68,9 @@ public class FileUtils {
             // different, something is wrong.
             if (size != bytes) {
                 Log.w(
-                    TAG,
-                    "Number of bytes copied (" + bytes + ") do not match " +
-                        "the source file (" + size + ")"
+                        TAG,
+                        "Number of bytes copied (" + bytes + ") do not match " +
+                                "the source file (" + size + ")"
                 );
             } else {
                 Log.d(TAG, bytes + " have been successfully copied");

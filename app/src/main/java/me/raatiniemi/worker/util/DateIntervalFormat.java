@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.util;
 
 /**
@@ -13,7 +29,7 @@ public class DateIntervalFormat {
     /**
      * Format the interval with fractal hours, e.g. "8.25" for 8 hours and 15 minutes.
      *
-     * @param hours Hours to apply to the format.
+     * @param hours   Hours to apply to the format.
      * @param minutes Minutes to apply to the format.
      * @return Interval formatted with fractal hours.
      */
@@ -28,7 +44,7 @@ public class DateIntervalFormat {
     /**
      * Format interval with hours and minutes.
      *
-     * @param hours Hours to apply to the format.
+     * @param hours   Hours to apply to the format.
      * @param minutes Minutes to apply to the format.
      * @return Interval formatted with hours and minutes.
      */
@@ -47,7 +63,7 @@ public class DateIntervalFormat {
      * Format the interval with given format type.
      *
      * @param interval Interval in milliseconds to format.
-     * @param type Type of format to use.
+     * @param type     Type of format to use.
      * @return Interval formatted with given type.
      */
     public static String format(long interval, Type type) {

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.ui;
 
 import android.app.AlarmManager;
@@ -42,8 +58,8 @@ public class MainActivity extends BaseActivity {
             ProjectsFragment fragment = new ProjectsFragment();
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
-                .commit();
+                    .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
+                    .commit();
         }
     }
 
@@ -74,7 +90,7 @@ public class MainActivity extends BaseActivity {
         try {
             // Attempt to retrieve the projects fragment.
             ProjectsView fragment = (ProjectsView) getFragmentManager()
-                .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
+                    .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
 
             // Dispatch the create new project to the fragment.
             fragment.createNewProject();
@@ -107,7 +123,7 @@ public class MainActivity extends BaseActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT
+                    this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT
             );
 
             manager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);

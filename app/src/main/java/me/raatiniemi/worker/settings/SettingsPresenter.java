@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.settings;
 
 import android.content.Context;
@@ -58,44 +74,44 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                 return Observable.just(new Backup(directory));
             }
         }).compose(this.<Backup>applySchedulers())
-            .subscribe(new Subscriber<Backup>() {
-                @Override
-                public void onNext(Backup backup) {
-                    Log.d(TAG, "getLatestBackup onNext");
+                .subscribe(new Subscriber<Backup>() {
+                    @Override
+                    public void onNext(Backup backup) {
+                        Log.d(TAG, "getLatestBackup onNext");
 
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing the latest backup");
-                        return;
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing the latest backup");
+                            return;
+                        }
+
+                        // Push the data to the view.
+                        getView().setLatestBackup(backup);
                     }
 
-                    // Push the data to the view.
-                    getView().setLatestBackup(backup);
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "getLatestBackup onError");
 
-                @Override
-                public void onError(Throwable e) {
-                    Log.d(TAG, "getLatestBackup onError");
+                        // Log the error even if the view have been detached.
+                        Log.w(TAG, "Failed to get latest backup: " + e.getMessage());
 
-                    // Log the error even if the view have been detached.
-                    Log.w(TAG, "Failed to get latest backup: " + e.getMessage());
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing the latest backup");
+                            return;
+                        }
 
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing the latest backup");
-                        return;
+                        // Push null as the latest backup to indicate
+                        // that an error has occurred.
+                        getView().setLatestBackup(null);
                     }
 
-                    // Push null as the latest backup to indicate
-                    // that an error has occurred.
-                    getView().setLatestBackup(null);
-                }
-
-                @Override
-                public void onCompleted() {
-                    Log.d(TAG, "getLatestBackup onCompleted");
-                }
-            });
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "getLatestBackup onCompleted");
+                    }
+                });
     }
 
     @SuppressWarnings("unused")

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.base.view;
 
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -11,20 +27,20 @@ import java.util.List;
 /**
  * Base adapter for working with the expandable RecyclerView.
  *
- * @param <G> Reference type for the group item.
- * @param <C> Reference type for the child item.
- * @param <T> Reference type for the combined group/child item.
+ * @param <G>   Reference type for the group item.
+ * @param <C>   Reference type for the child item.
+ * @param <T>   Reference type for the combined group/child item.
  * @param <GVH> Reference type for the group item view holder.
  * @param <CVH> Reference type for the child item view holder.
  */
 abstract public class ExpandableListAdapter<
-    G,
-    C,
-    T extends ExpandableListAdapter.ExpandableItem<G, C>,
-    GVH extends ViewHolder,
-    CVH extends ViewHolder
-    >
-    extends AbstractExpandableItemAdapter<GVH, CVH> {
+        G,
+        C,
+        T extends ExpandableListAdapter.ExpandableItem<G, C>,
+        GVH extends ViewHolder,
+        CVH extends ViewHolder
+        >
+        extends AbstractExpandableItemAdapter<GVH, CVH> {
     /**
      * Tag for logging.
      */
@@ -211,7 +227,7 @@ abstract public class ExpandableListAdapter<
      * Update group item in the adapter.
      *
      * @param group Index for group to be updated.
-     * @param item Item to update the adapter.
+     * @param item  Item to update the adapter.
      */
     public void update(int group, T item) {
         // Check that the group index exists.
@@ -230,7 +246,7 @@ abstract public class ExpandableListAdapter<
      *
      * @param group Index for group containing the child.
      * @param child Index for child to be updated.
-     * @param item Item to update the adapter.
+     * @param item  Item to update the adapter.
      */
     public void update(int group, int child, C item) {
         // Check that the group/child index exists.

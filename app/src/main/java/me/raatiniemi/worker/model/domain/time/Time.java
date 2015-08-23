@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.model.domain.time;
 
 import android.support.annotation.NonNull;
@@ -19,7 +35,7 @@ public class Time extends DomainObject {
 
     /**
      * Timestamp for when the time interval starts.
-     * <p/>
+     * <p>
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked in.
      */
@@ -27,7 +43,7 @@ public class Time extends DomainObject {
 
     /**
      * Timestamp for when the time interval ends, or zero if active.
-     * <p/>
+     * <p>
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked out.
      */
@@ -48,10 +64,10 @@ public class Time extends DomainObject {
     /**
      * Constructor.
      *
-     * @param id Id for the time interval.
+     * @param id        Id for the time interval.
      * @param projectId Id for the project connected to the time interval.
-     * @param start Timestamp for when the interval starts.
-     * @param stop Timestamp for when the interval ends, or zero if active.
+     * @param start     Timestamp for when the interval starts.
+     * @param stop      Timestamp for when the interval ends, or zero if active.
      * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
     public Time(@Nullable Long id, @NonNull Long projectId, @NonNull Long start, @NonNull Long stop) throws ClockOutBeforeClockInException {
@@ -122,7 +138,7 @@ public class Time extends DomainObject {
         // in to occur after clock out.
         if (!isActive() && start > getStop()) {
             throw new ClockOutBeforeClockInException(
-                "Clock in occur after clock out"
+                    "Clock in occur after clock out"
             );
         }
 
@@ -154,7 +170,7 @@ public class Time extends DomainObject {
         // should not be able to clock out before clocked in.
         if (stop < getStart()) {
             throw new ClockOutBeforeClockInException(
-                "Clock out occur before clock in"
+                    "Clock out occur before clock in"
             );
         }
 
@@ -215,7 +231,7 @@ public class Time extends DomainObject {
 
     /**
      * Get the registered time.
-     * <p/>
+     * <p>
      * The time is only considered registered if the interval is not active,
      * i.e. both the start and stop values must be valid (not zero).
      *
@@ -234,7 +250,7 @@ public class Time extends DomainObject {
 
     /**
      * Get the time interval.
-     * <p/>
+     * <p>
      * If the interval is active, the current time will be used to calculate
      * the time between start and now.
      *

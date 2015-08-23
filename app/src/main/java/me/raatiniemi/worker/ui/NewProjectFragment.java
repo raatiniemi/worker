@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package me.raatiniemi.worker.ui;
 
 import android.app.Activity;
@@ -42,9 +58,9 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
             // And, the listener should always be available in the production
             // version, i.e. this should just be seen as developer feedback.
             Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.error_message_unknown,
-                Snackbar.LENGTH_SHORT
+                    getActivity().findViewById(android.R.id.content),
+                    R.string.error_message_unknown,
+                    Snackbar.LENGTH_SHORT
             ).show();
 
             Log.w(TAG, "No OnCreateProjectListener have been supplied");
@@ -122,34 +138,34 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
         // Create the project, and insert it to the database.
         Project project = new Project(name);
         getOnCreateProjectListener().onCreateProject(project)
-            .subscribe(new Subscriber<Project>() {
-                @Override
-                public void onNext(Project project) {
-                    Log.d(TAG, "createNewProject onNext");
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.d(TAG, "createNewProject onError");
-
-                    if (e instanceof ProjectAlreadyExistsException) {
-                        Log.d(TAG, "Unable to create project, duplicate name");
-                        view.setError(getString(R.string.error_message_project_name_already_exists));
-                        return;
+                .subscribe(new Subscriber<Project>() {
+                    @Override
+                    public void onNext(Project project) {
+                        Log.d(TAG, "createNewProject onNext");
                     }
 
-                    Log.w(TAG, "Unable to create project: " + e.getMessage());
-                    view.setError(getString(R.string.error_message_unknown));
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "createNewProject onError");
 
-                @Override
-                public void onCompleted() {
-                    Log.d(TAG, "createNewProject onCompleted");
+                        if (e instanceof ProjectAlreadyExistsException) {
+                            Log.d(TAG, "Unable to create project, duplicate name");
+                            view.setError(getString(R.string.error_message_project_name_already_exists));
+                            return;
+                        }
 
-                    // The project have been created, we can dismiss the fragment.
-                    dismiss();
-                }
-            });
+                        Log.w(TAG, "Unable to create project: " + e.getMessage());
+                        view.setError(getString(R.string.error_message_unknown));
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "createNewProject onCompleted");
+
+                        // The project have been created, we can dismiss the fragment.
+                        dismiss();
+                    }
+                });
     }
 
     public OnCreateProjectListener getOnCreateProjectListener() {
