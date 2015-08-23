@@ -164,6 +164,7 @@ public class Project extends DomainObject {
      *
      * @param archived Flag for archived project.
      */
+    @Deprecated
     public void setArchived(Long archived) {
         setArchived(1L == archived);
     }
