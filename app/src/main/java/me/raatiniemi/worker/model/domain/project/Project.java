@@ -145,6 +145,7 @@ public class Project extends DomainObject {
      *
      * @return Flag for archived project.
      */
+    @Deprecated
     public Long getArchived() {
         return isArchived() ? 1L : 0L;
     }
