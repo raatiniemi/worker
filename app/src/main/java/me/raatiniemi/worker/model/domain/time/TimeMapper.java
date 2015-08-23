@@ -44,7 +44,7 @@ public class TimeMapper {
 
         try {
             Time time = new Time(id, projectId, start, stop);
-            time.setRegistered(registered);
+            time.setRegistered(0 != registered);
 
             return time;
         } catch (DomainException e) {
@@ -64,7 +64,7 @@ public class TimeMapper {
         values.put(TimeColumns.START, time.getStart());
         values.put(TimeColumns.STOP, time.getStop());
         values.put(TimeColumns.PROJECT_ID, time.getProjectId());
-        values.put(TimeColumns.REGISTERED, time.getRegistered());
+        values.put(TimeColumns.REGISTERED, time.isRegistered() ? 1L : 0L);
 
         return values;
     }

@@ -31,6 +31,7 @@ import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -63,13 +64,14 @@ public class TimeMapperTest {
         assertEquals(Long.valueOf(2L), time.getProjectId());
         assertEquals(Long.valueOf(3L), time.getStart());
         assertEquals(Long.valueOf(4L), time.getStop());
+        assertTrue(time.isRegistered());
         assertEquals(Long.valueOf(1L), time.getRegistered());
     }
 
     @Test
     public void map_TimeToContentValues_True() throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
-        time.setRegistered(1L);
+        time.setRegistered(true);
 
         ContentValues contentValues = TimeMapper.map(time);
 

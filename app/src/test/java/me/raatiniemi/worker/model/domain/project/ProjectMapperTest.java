@@ -29,6 +29,7 @@ import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -56,6 +57,7 @@ public class ProjectMapperTest {
         assertEquals(Long.valueOf(1L), project.getId());
         assertEquals("Project name", project.getName());
         assertEquals("Project description", project.getDescription());
+        assertTrue(project.isArchived());
         assertEquals(Long.valueOf(1L), project.getArchived());
     }
 
@@ -63,7 +65,7 @@ public class ProjectMapperTest {
     public void map_ProjectToContentValues_True() {
         Project project = new Project(1L, "Project name");
         project.setDescription("Project description");
-        project.setArchived(1L);
+        project.setArchived(true);
 
         ContentValues contentValues = ProjectMapper.map(project);
 

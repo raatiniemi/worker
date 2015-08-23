@@ -52,7 +52,7 @@ public class Time extends DomainObject {
     /**
      * Flag for registered time.
      */
-    private Long mRegistered;
+    private boolean mRegistered;
 
     /**
      * Default constructor.
@@ -178,17 +178,32 @@ public class Time extends DomainObject {
     }
 
     /**
+     * Getter method for registered time flag.
+     *
+     * @return True if time is registered, otherwise false.
+     */
+    public boolean isRegistered() {
+        return mRegistered;
+    }
+
+    /**
      * Getter method for the registered time flag.
      *
      * @return Flag for registered time.
      */
     @NonNull
+    @Deprecated
     public Long getRegistered() {
-        if (null == mRegistered) {
-            mRegistered = 0L;
-        }
+        return isRegistered() ? 1L : 0L;
+    }
 
-        return mRegistered;
+    /**
+     * Setter method for registered time flag.
+     *
+     * @param registered True if time is registered, otherwise false.
+     */
+    public void setRegistered(boolean registered) {
+        mRegistered = registered;
     }
 
     /**
@@ -196,8 +211,9 @@ public class Time extends DomainObject {
      *
      * @param registered Flag for registered time.
      */
+    @Deprecated
     public void setRegistered(@NonNull Long registered) {
-        mRegistered = registered;
+        setRegistered(1L == registered);
     }
 
     /**
