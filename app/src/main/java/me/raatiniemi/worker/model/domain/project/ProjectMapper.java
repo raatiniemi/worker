@@ -46,7 +46,7 @@ public class ProjectMapper {
 
         // Map the project archive flag.
         long archived = cursor.getLong(cursor.getColumnIndex(ProjectColumns.ARCHIVED));
-        project.setArchived(archived);
+        project.setArchived(0 != archived);
 
         return project;
     }
