@@ -178,6 +178,15 @@ public class Time extends DomainObject {
     }
 
     /**
+     * Getter method for registered time flag.
+     *
+     * @return True if time is registered, otherwise false.
+     */
+    public boolean isRegistered() {
+        return 1L == getRegistered();
+    }
+
+    /**
      * Getter method for the registered time flag.
      *
      * @return Flag for registered time.
