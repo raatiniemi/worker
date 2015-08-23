@@ -46,7 +46,7 @@ public class Project extends DomainObject {
     /**
      * Flag for archived project.
      */
-    private Long mArchived;
+    private boolean mArchived;
 
     /**
      * Time registered for the project.
@@ -61,7 +61,7 @@ public class Project extends DomainObject {
 
         // Set default value for non-constructor arguments.
         setTime(new ArrayList<Time>());
-        setArchived(0L);
+        setArchived(false);
     }
 
     /**
@@ -137,7 +137,7 @@ public class Project extends DomainObject {
      * @return True if project is archived, otherwise false.
      */
     public boolean isArchived() {
-        return 1L == getArchived();
+        return mArchived;
     }
 
     /**
@@ -146,7 +146,7 @@ public class Project extends DomainObject {
      * @return Flag for archived project.
      */
     public Long getArchived() {
-        return mArchived;
+        return isArchived() ? 1L : 0L;
     }
 
     /**
@@ -155,7 +155,7 @@ public class Project extends DomainObject {
      * @param archived True if project is archived, otherwise false.
      */
     public void setArchived(boolean archived) {
-        setArchived(archived ? 1L : 0L);
+        mArchived = archived;
     }
 
     /**
@@ -164,7 +164,7 @@ public class Project extends DomainObject {
      * @param archived Flag for archived project.
      */
     public void setArchived(Long archived) {
-        mArchived = archived;
+        setArchived(1L == archived);
     }
 
     /**

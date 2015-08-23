@@ -149,6 +149,10 @@ public class ProjectTest {
         project.setArchived(true);
 
         assertTrue(project.isArchived());
+
+        project.setArchived(false);
+
+        assertFalse(project.isArchived());
     }
 
     @Test
@@ -164,6 +168,10 @@ public class ProjectTest {
         project.setArchived(1L);
 
         assertEquals(Long.valueOf(1L), project.getArchived());
+
+        project.setArchived(0L);
+
+        assertEquals(Long.valueOf(0L), project.getArchived());
     }
 
     @Test
