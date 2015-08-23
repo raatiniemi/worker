@@ -61,7 +61,7 @@ public class ProjectMapper {
         ContentValues values = new ContentValues();
         values.put(ProjectColumns.NAME, project.getName());
         values.put(ProjectColumns.DESCRIPTION, project.getDescription());
-        values.put(ProjectColumns.ARCHIVED, project.getArchived());
+        values.put(ProjectColumns.ARCHIVED, project.isArchived() ? 1L : 0L);
 
         return values;
     }

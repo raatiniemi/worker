@@ -65,7 +65,7 @@ public class ProjectMapperTest {
     public void map_ProjectToContentValues_True() {
         Project project = new Project(1L, "Project name");
         project.setDescription("Project description");
-        project.setArchived(1L);
+        project.setArchived(true);
 
         ContentValues contentValues = ProjectMapper.map(project);
 
