@@ -222,7 +222,7 @@ abstract public class ExpandableListAdapter<
 
         // Update the group item and notify the adapter.
         getItems().set(group, item);
-        notifyItemChanged(group);
+        notifyDataSetChanged();
     }
 
     /**
