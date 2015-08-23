@@ -192,6 +192,7 @@ public class Time extends DomainObject {
      * @return Flag for registered time.
      */
     @NonNull
+    @Deprecated
     public Long getRegistered() {
         return isRegistered() ? 1L : 0L;
     }
