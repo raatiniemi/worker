@@ -71,7 +71,7 @@ public class TimeMapperTest {
     @Test
     public void map_TimeToContentValues_True() throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
-        time.setRegistered(1L);
+        time.setRegistered(true);
 
         ContentValues contentValues = TimeMapper.map(time);
 

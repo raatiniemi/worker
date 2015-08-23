@@ -64,7 +64,7 @@ public class TimeMapper {
         values.put(TimeColumns.START, time.getStart());
         values.put(TimeColumns.STOP, time.getStop());
         values.put(TimeColumns.PROJECT_ID, time.getProjectId());
-        values.put(TimeColumns.REGISTERED, time.getRegistered());
+        values.put(TimeColumns.REGISTERED, time.isRegistered() ? 1L : 0L);
 
         return values;
     }
