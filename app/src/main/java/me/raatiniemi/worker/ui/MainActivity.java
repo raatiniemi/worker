@@ -42,8 +42,8 @@ public class MainActivity extends BaseActivity {
             ProjectsFragment fragment = new ProjectsFragment();
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
-                .commit();
+                    .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
+                    .commit();
         }
     }
 
@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity {
         try {
             // Attempt to retrieve the projects fragment.
             ProjectsView fragment = (ProjectsView) getFragmentManager()
-                .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
+                    .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
 
             // Dispatch the create new project to the fragment.
             fragment.createNewProject();
@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT
+                    this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT
             );
 
             manager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);

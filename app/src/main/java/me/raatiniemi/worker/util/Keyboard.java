@@ -32,9 +32,9 @@ public class Keyboard {
                 mInputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             } catch (ClassCastException e) {
                 Log.w(
-                    TAG,
-                    "Unable to cast the Context.INPUT_METHOD_SERVICE to " +
-                        "InputMethodManager: " + e.getMessage()
+                        TAG,
+                        "Unable to cast the Context.INPUT_METHOD_SERVICE to " +
+                                "InputMethodManager: " + e.getMessage()
                 );
             }
         }

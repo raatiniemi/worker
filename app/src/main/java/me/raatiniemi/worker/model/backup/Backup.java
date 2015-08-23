@@ -50,8 +50,8 @@ public class Backup {
         }
 
         String timestamp = getBackup().getName().replaceFirst(
-            Worker.STORAGE_BACKUP_DIRECTORY_PATTERN,
-            "$1"
+                Worker.STORAGE_BACKUP_DIRECTORY_PATTERN,
+                "$1"
         );
 
         return Long.valueOf(timestamp);

@@ -13,7 +13,7 @@ public class DateIntervalFormat {
     /**
      * Format the interval with fractal hours, e.g. "8.25" for 8 hours and 15 minutes.
      *
-     * @param hours Hours to apply to the format.
+     * @param hours   Hours to apply to the format.
      * @param minutes Minutes to apply to the format.
      * @return Interval formatted with fractal hours.
      */
@@ -28,7 +28,7 @@ public class DateIntervalFormat {
     /**
      * Format interval with hours and minutes.
      *
-     * @param hours Hours to apply to the format.
+     * @param hours   Hours to apply to the format.
      * @param minutes Minutes to apply to the format.
      * @return Interval formatted with hours and minutes.
      */
@@ -47,7 +47,7 @@ public class DateIntervalFormat {
      * Format the interval with given format type.
      *
      * @param interval Interval in milliseconds to format.
-     * @param type Type of format to use.
+     * @param type     Type of format to use.
      * @return Interval formatted with given type.
      */
     public static String format(long interval, Type type) {

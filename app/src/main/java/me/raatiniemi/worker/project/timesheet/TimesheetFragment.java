@@ -26,7 +26,7 @@ import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>
-    implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
+        implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
     private LinearLayoutManager mLinearLayoutManager;
@@ -125,10 +125,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setAdapter(mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
         mRecyclerView.addItemDecoration(
-            new SimpleListDividerDecorator(
-                getResources().getDrawable(R.drawable.expandable_list_item_divider),
-                true
-            )
+                new SimpleListDividerDecorator(
+                        getResources().getDrawable(R.drawable.expandable_list_item_divider),
+                        true
+                )
         );
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

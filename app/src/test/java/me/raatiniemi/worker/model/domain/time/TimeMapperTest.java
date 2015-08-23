@@ -10,9 +10,6 @@ import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.model.domain.project.Project;
-import me.raatiniemi.worker.model.domain.project.ProjectMapper;
-import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 
 import static junit.framework.Assert.assertEquals;

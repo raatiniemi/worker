@@ -22,8 +22,8 @@ public class ProjectActivity extends BaseActivity {
             fragment.setArguments(getIntent().getExtras());
 
             getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, ProjectActivity.FRAGMENT_TIMESHEET_TAG)
-                .commit();
+                    .replace(R.id.fragment_container, fragment, ProjectActivity.FRAGMENT_TIMESHEET_TAG)
+                    .commit();
         }
     }
 }

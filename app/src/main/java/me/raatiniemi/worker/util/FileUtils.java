@@ -23,7 +23,7 @@ public class FileUtils {
      * file do not exists, it will be created.
      *
      * @param from The source file.
-     * @param to The destination file.
+     * @param to   The destination file.
      * @return Number of bytes copied between the locations.
      * @throws IOException
      */
@@ -52,9 +52,9 @@ public class FileUtils {
             // different, something is wrong.
             if (size != bytes) {
                 Log.w(
-                    TAG,
-                    "Number of bytes copied (" + bytes + ") do not match " +
-                        "the source file (" + size + ")"
+                        TAG,
+                        "Number of bytes copied (" + bytes + ") do not match " +
+                                "the source file (" + size + ")"
                 );
             } else {
                 Log.d(TAG, bytes + " have been successfully copied");

@@ -22,30 +22,32 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         super(context, Worker.DATABASE_NAME, null, Worker.DATABASE_VERSION);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create the structure for the `project`-table.
         db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
-            ProjectColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            ProjectColumns.NAME + " TEXT NOT NULL, " +
-            ProjectColumns.DESCRIPTION + " TEXT NULL, " +
-            ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
-            "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
+                ProjectColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ProjectColumns.NAME + " TEXT NOT NULL, " +
+                ProjectColumns.DESCRIPTION + " TEXT NULL, " +
+                ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
+                "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
 
         // Create the structure for the `time`-table.
         db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
-            TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
-            TimeColumns.START + " INTEGER NOT NULL, " +
-            TimeColumns.STOP + " INTEGER DEFAULT 0, " +
-            TimeColumns.REGISTERED + " INTEGER NOT NULL DEFAULT 0)");
+                TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
+                TimeColumns.START + " INTEGER NOT NULL, " +
+                TimeColumns.STOP + " INTEGER DEFAULT 0, " +
+                TimeColumns.REGISTERED + " INTEGER NOT NULL DEFAULT 0)");
     }
 
     /**
      * Upgrade the database.
      *
-     * @param db The database.
+     * @param db         The database.
      * @param oldVersion The old database version.
      * @param newVersion The new database version.
      * @throws IllegalArgumentException If oldVersion is less than 1.
@@ -58,7 +60,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         // value less than 1 is not allowed.
         if (1 > oldVersion) {
             throw new IllegalArgumentException(
-                "oldVersion cannot be less than 1"
+                    "oldVersion cannot be less than 1"
             );
         }
 
@@ -66,7 +68,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         // the latest available version (i.e. `Worker.DATABASE_VERSION`).
         if (Worker.DATABASE_VERSION < newVersion) {
             throw new IllegalArgumentException(
-                "newVersion cannot be more than " + Worker.DATABASE_VERSION
+                    "newVersion cannot be more than " + Worker.DATABASE_VERSION
             );
         }
 
@@ -74,20 +76,20 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         // the `onUpgrade`-method is not allowed.
         if (oldVersion > newVersion) {
             throw new IllegalArgumentException(
-                "newVersion cannot be less than oldVersion"
+                    "newVersion cannot be less than oldVersion"
             );
         }
 
         // Add the `registered`-column to the `time`-table.
         db.execSQL("ALTER TABLE " + Tables.TIME +
-            " ADD COLUMN " + TimeColumns.REGISTERED +
-            " INTEGER NOT NULL DEFAULT 0");
+                " ADD COLUMN " + TimeColumns.REGISTERED +
+                " INTEGER NOT NULL DEFAULT 0");
     }
 
     /**
      * Downgrade the database.
      *
-     * @param db The database.
+     * @param db         The database.
      * @param oldVersion The old database version.
      * @param newVersion The new database version.
      * @throws IllegalArgumentException If newVersion is less than 1.
@@ -99,7 +101,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         // value less than 1 is not allowed.
         if (1 > newVersion) {
             throw new IllegalArgumentException(
-                "newVersion cannot be less than 1"
+                    "newVersion cannot be less than 1"
             );
         }
 
@@ -107,7 +109,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         // the `onDowngrade`-method is not allowed.
         if (oldVersion < newVersion) {
             throw new IllegalArgumentException(
-                "oldVersion cannot be less than newVersion"
+                    "oldVersion cannot be less than newVersion"
             );
         }
     }

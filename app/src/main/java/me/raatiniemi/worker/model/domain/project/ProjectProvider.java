@@ -62,13 +62,13 @@ public class ProjectProvider {
             @Override
             public Observable<Cursor> call() {
                 Cursor cursor = getContext().getContentResolver()
-                    .query(
-                        ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
-                        null,
-                        null,
-                        null
-                    );
+                        .query(
+                                ProjectContract.getStreamUri(),
+                                ProjectContract.COLUMNS,
+                                null,
+                                null,
+                                null
+                        );
 
                 return ContentObservable.fromCursor(cursor);
             }
@@ -88,27 +88,27 @@ public class ProjectProvider {
      */
     public Observable<Project> getProject(final Long id) {
         return Observable.just(String.valueOf(id))
-            .flatMap(new Func1<String, Observable<Cursor>>() {
-                @Override
-                public Observable<Cursor> call(String id) {
-                    Cursor cursor = getContext().getContentResolver().query(
-                        ProjectContract.getItemUri(id),
-                        ProjectContract.COLUMNS,
-                        null,
-                        null,
-                        null
-                    );
+                .flatMap(new Func1<String, Observable<Cursor>>() {
+                    @Override
+                    public Observable<Cursor> call(String id) {
+                        Cursor cursor = getContext().getContentResolver().query(
+                                ProjectContract.getItemUri(id),
+                                ProjectContract.COLUMNS,
+                                null,
+                                null,
+                                null
+                        );
 
-                    return ContentObservable.fromCursor(cursor);
-                }
-            })
-            .map(new Func1<Cursor, Project>() {
-                @Override
-                public Project call(Cursor cursor) {
-                    return ProjectMapper.map(cursor);
-                }
-            })
-            .first();
+                        return ContentObservable.fromCursor(cursor);
+                    }
+                })
+                .map(new Func1<Cursor, Project>() {
+                    @Override
+                    public Project call(Cursor cursor) {
+                        return ProjectMapper.map(cursor);
+                    }
+                })
+                .first();
     }
 
     /**
@@ -119,40 +119,40 @@ public class ProjectProvider {
      */
     public Observable<Project> createProject(final Project project) {
         return Observable.just(project)
-            .map(new Func1<Project, ContentValues>() {
-                @Override
-                public ContentValues call(Project project) {
-                    return ProjectMapper.map(project);
-                }
-            })
-            .flatMap(new Func1<ContentValues, Observable<String>>() {
-                @Override
-                public Observable<String> call(ContentValues values) {
-                    try {
-                        Uri uri = getContext().getContentResolver()
-                            .insert(
-                                ProjectContract.getStreamUri(),
-                                values
-                            );
-
-                        return Observable.just(ProjectContract.getItemId(uri));
-                    } catch (Throwable e) {
-                        return Observable.error(new ProjectAlreadyExistsException());
+                .map(new Func1<Project, ContentValues>() {
+                    @Override
+                    public ContentValues call(Project project) {
+                        return ProjectMapper.map(project);
                     }
-                }
-            })
-            .map(new Func1<String, Long>() {
-                @Override
-                public Long call(String id) {
-                    return Long.valueOf(id);
-                }
-            })
-            .flatMap(new Func1<Long, Observable<Project>>() {
-                @Override
-                public Observable<Project> call(Long id) {
-                    return getProject(id);
-                }
-            });
+                })
+                .flatMap(new Func1<ContentValues, Observable<String>>() {
+                    @Override
+                    public Observable<String> call(ContentValues values) {
+                        try {
+                            Uri uri = getContext().getContentResolver()
+                                    .insert(
+                                            ProjectContract.getStreamUri(),
+                                            values
+                                    );
+
+                            return Observable.just(ProjectContract.getItemId(uri));
+                        } catch (Throwable e) {
+                            return Observable.error(new ProjectAlreadyExistsException());
+                        }
+                    }
+                })
+                .map(new Func1<String, Long>() {
+                    @Override
+                    public Long call(String id) {
+                        return Long.valueOf(id);
+                    }
+                })
+                .flatMap(new Func1<Long, Observable<Project>>() {
+                    @Override
+                    public Observable<Project> call(Long id) {
+                        return getProject(id);
+                    }
+                });
     }
 
     /**
@@ -163,48 +163,48 @@ public class ProjectProvider {
      */
     public Observable<Project> deleteProject(final Project project) {
         return Observable.just(project)
-            .flatMap(new Func1<Project, Observable<Project>>() {
-                @Override
-                public Observable<Project> call(Project project) {
-                    ArrayList<ContentProviderOperation> batch = new ArrayList<>();
+                .flatMap(new Func1<Project, Observable<Project>>() {
+                    @Override
+                    public Observable<Project> call(Project project) {
+                        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
-                    // Add operation for removing the registered time for the
-                    // project. The operation have to be performed before the
-                    // actual project deletion.
-                    Uri uri = ProjectContract.getItemTimeUri(project.getId());
-                    batch.add(
-                        ContentProviderOperation.newDelete(uri)
-                            .build()
-                    );
+                        // Add operation for removing the registered time for the
+                        // project. The operation have to be performed before the
+                        // actual project deletion.
+                        Uri uri = ProjectContract.getItemTimeUri(project.getId());
+                        batch.add(
+                                ContentProviderOperation.newDelete(uri)
+                                        .build()
+                        );
 
-                    // Add operation for removing the project.
-                    uri = ProjectContract.getItemUri(project.getId());
-                    batch.add(
-                        ContentProviderOperation.newDelete(uri)
-                            .build()
-                    );
+                        // Add operation for removing the project.
+                        uri = ProjectContract.getItemUri(project.getId());
+                        batch.add(
+                                ContentProviderOperation.newDelete(uri)
+                                        .build()
+                        );
 
-                    try {
-                        // Attempt to remove the registered time and project
-                        // within a single transactional operation.
-                        getContext().getContentResolver()
-                            .applyBatch(WorkerContract.AUTHORITY, batch);
-                    } catch (RemoteException e) {
-                        return Observable.error(e);
-                    } catch (OperationApplicationException e) {
-                        return Observable.error(e);
+                        try {
+                            // Attempt to remove the registered time and project
+                            // within a single transactional operation.
+                            getContext().getContentResolver()
+                                    .applyBatch(WorkerContract.AUTHORITY, batch);
+                        } catch (RemoteException e) {
+                            return Observable.error(e);
+                        } catch (OperationApplicationException e) {
+                            return Observable.error(e);
+                        }
+
+                        return Observable.just(project);
                     }
-
-                    return Observable.just(project);
-                }
-            });
+                });
     }
 
     /**
      * Clock in or clock out the project at given date.
      *
      * @param project Project to clock in/out.
-     * @param date Date to clock in/out at.
+     * @param date    Date to clock in/out at.
      * @return Observable emitting the clocked in/out project.
      */
     public Observable<Project> clockActivityChange(final Project project, final Date date) {
@@ -259,33 +259,33 @@ public class ProjectProvider {
         calendar.set(Calendar.SECOND, 0);
 
         Cursor cursor = getContext().getContentResolver()
-            .query(
-                ProjectContract.getItemTimeUri(String.valueOf(project.getId())),
-                TimeContract.COLUMNS,
-                TimeContract.START + ">=? OR " + TimeContract.STOP + " = 0",
-                new String[]{ String.valueOf(calendar.getTimeInMillis()) },
-                ProjectContract.ORDER_BY_TIME
-            );
+                .query(
+                        ProjectContract.getItemTimeUri(String.valueOf(project.getId())),
+                        TimeContract.COLUMNS,
+                        TimeContract.START + ">=? OR " + TimeContract.STOP + " = 0",
+                        new String[]{String.valueOf(calendar.getTimeInMillis())},
+                        ProjectContract.ORDER_BY_TIME
+                );
 
         ContentObservable.fromCursor(cursor)
-            .map(new Func1<Cursor, Time>() {
-                @Override
-                public Time call(Cursor cursor) {
-                    return TimeMapper.map(cursor);
-                }
-            })
-            .filter(new Func1<Time, Boolean>() {
-                @Override
-                public Boolean call(Time time) {
-                    return null != time;
-                }
-            })
-            .subscribe(new Action1<Time>() {
-                @Override
-                public void call(Time time) {
-                    result.add(time);
-                }
-            });
+                .map(new Func1<Cursor, Time>() {
+                    @Override
+                    public Time call(Cursor cursor) {
+                        return TimeMapper.map(cursor);
+                    }
+                })
+                .filter(new Func1<Time, Boolean>() {
+                    @Override
+                    public Boolean call(Time time) {
+                        return null != time;
+                    }
+                })
+                .subscribe(new Action1<Time>() {
+                    @Override
+                    public void call(Time time) {
+                        result.add(time);
+                    }
+                });
 
         project.addTime(result);
         return project;
@@ -299,27 +299,27 @@ public class ProjectProvider {
      */
     public Observable<Time> getTime(final Long id) {
         return Observable.just(String.valueOf(id))
-            .flatMap(new Func1<String, Observable<Cursor>>() {
-                @Override
-                public Observable<Cursor> call(String id) {
-                    Cursor cursor = getContext().getContentResolver()
-                        .query(
-                            TimeContract.getItemUri(id),
-                            TimeContract.COLUMNS,
-                            null,
-                            null,
-                            null
-                        );
+                .flatMap(new Func1<String, Observable<Cursor>>() {
+                    @Override
+                    public Observable<Cursor> call(String id) {
+                        Cursor cursor = getContext().getContentResolver()
+                                .query(
+                                        TimeContract.getItemUri(id),
+                                        TimeContract.COLUMNS,
+                                        null,
+                                        null,
+                                        null
+                                );
 
-                    return ContentObservable.fromCursor(cursor);
-                }
-            })
-            .map(new Func1<Cursor, Time>() {
-                @Override
-                public Time call(Cursor cursor) {
-                    return TimeMapper.map(cursor);
-                }
-            });
+                        return ContentObservable.fromCursor(cursor);
+                    }
+                })
+                .map(new Func1<Cursor, Time>() {
+                    @Override
+                    public Time call(Cursor cursor) {
+                        return TimeMapper.map(cursor);
+                    }
+                });
     }
 
     /**
@@ -330,59 +330,59 @@ public class ProjectProvider {
      */
     public Observable<Time> add(final Time time) {
         return Observable.just(time)
-            .map(new Func1<Time, ContentValues>() {
-                @Override
-                public ContentValues call(Time time) {
-                    return TimeMapper.map(time);
-                }
-            })
-            .map(new Func1<ContentValues, String>() {
-                @Override
-                public String call(ContentValues values) {
-                    Uri uri = getContext().getContentResolver()
-                        .insert(
-                            TimeContract.getStreamUri(),
-                            values
-                        );
+                .map(new Func1<Time, ContentValues>() {
+                    @Override
+                    public ContentValues call(Time time) {
+                        return TimeMapper.map(time);
+                    }
+                })
+                .map(new Func1<ContentValues, String>() {
+                    @Override
+                    public String call(ContentValues values) {
+                        Uri uri = getContext().getContentResolver()
+                                .insert(
+                                        TimeContract.getStreamUri(),
+                                        values
+                                );
 
-                    return TimeContract.getItemId(uri);
-                }
-            })
-            .map(new Func1<String, Long>() {
-                @Override
-                public Long call(String id) {
-                    return Long.valueOf(id);
-                }
-            })
-            .flatMap(new Func1<Long, Observable<Time>>() {
-                @Override
-                public Observable<Time> call(Long id) {
-                    return getTime(id);
-                }
-            });
+                        return TimeContract.getItemId(uri);
+                    }
+                })
+                .map(new Func1<String, Long>() {
+                    @Override
+                    public Long call(String id) {
+                        return Long.valueOf(id);
+                    }
+                })
+                .flatMap(new Func1<Long, Observable<Time>>() {
+                    @Override
+                    public Observable<Time> call(Long id) {
+                        return getTime(id);
+                    }
+                });
     }
 
     public Observable<Time> remove(final Time time) {
         return Observable.just(time)
-            .map(new Func1<Time, String>() {
-                @Override
-                public String call(Time time) {
-                    return String.valueOf(time.getId());
-                }
-            })
-            .map(new Func1<String, Time>() {
-                @Override
-                public Time call(String id) {
-                    getContext().getContentResolver()
-                        .delete(
-                            TimeContract.getItemUri(id),
-                            null,
-                            null
-                        );
+                .map(new Func1<Time, String>() {
+                    @Override
+                    public String call(Time time) {
+                        return String.valueOf(time.getId());
+                    }
+                })
+                .map(new Func1<String, Time>() {
+                    @Override
+                    public Time call(String id) {
+                        getContext().getContentResolver()
+                                .delete(
+                                        TimeContract.getItemUri(id),
+                                        null,
+                                        null
+                                );
 
-                    return time;
-                }
-            });
+                        return time;
+                    }
+                });
     }
 
     /**
@@ -396,12 +396,12 @@ public class ProjectProvider {
             @Override
             public Observable<Time> call() {
                 getContext().getContentResolver()
-                    .update(
-                        TimeContract.getItemUri(String.valueOf(time.getId())),
-                        TimeMapper.map(time),
-                        null,
-                        null
-                    );
+                        .update(
+                                TimeContract.getItemUri(String.valueOf(time.getId())),
+                                TimeMapper.map(time),
+                                null,
+                                null
+                        );
 
                 return getTime(time.getId());
             }
@@ -416,12 +416,12 @@ public class ProjectProvider {
      */
     private Observable<Long> clockIn(final Time time) {
         return add(time)
-            .map(new Func1<Time, Long>() {
-                @Override
-                public Long call(Time time) {
-                    return time.getProjectId();
-                }
-            });
+                .map(new Func1<Time, Long>() {
+                    @Override
+                    public Long call(Time time) {
+                        return time.getProjectId();
+                    }
+                });
     }
 
     /**
@@ -432,73 +432,73 @@ public class ProjectProvider {
      */
     private Observable<Long> clockOut(final Time time) {
         return update(time)
-            .map(new Func1<Time, Long>() {
-                @Override
-                public Long call(Time time) {
-                    return time.getProjectId();
-                }
-            });
+                .map(new Func1<Time, Long>() {
+                    @Override
+                    public Long call(Time time) {
+                        return time.getProjectId();
+                    }
+                });
     }
 
     public Observable<List<TimesheetItem>> getTimesheet(final Long id, final int offset) {
         // TODO: Simplify the builing of the URI with query parameters.
         Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(id))
-            .buildUpon()
-            .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
-            .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
-            .build();
+                .buildUpon()
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
+                .build();
 
         return Observable.just(uri)
-            .flatMap(new Func1<Uri, Observable<Cursor>>() {
-                @Override
-                public Observable<Cursor> call(Uri uri) {
-                    Cursor cursor = getContext().getContentResolver()
-                        .query(
-                            uri,
-                            ProjectContract.COLUMNS_TIMESHEET,
-                            null,
-                            null,
-                            ProjectContract.ORDER_BY_TIMESHEET
+                .flatMap(new Func1<Uri, Observable<Cursor>>() {
+                    @Override
+                    public Observable<Cursor> call(Uri uri) {
+                        Cursor cursor = getContext().getContentResolver()
+                                .query(
+                                        uri,
+                                        ProjectContract.COLUMNS_TIMESHEET,
+                                        null,
+                                        null,
+                                        ProjectContract.ORDER_BY_TIMESHEET
+                                );
+
+                        return ContentObservable.fromCursor(cursor);
+                    }
+                })
+                .map(new Func1<Cursor, TimesheetItem>() {
+                    @Override
+                    public TimesheetItem call(Cursor cursor) {
+                        final TimesheetItem item = new TimesheetItem(
+                                new Date(cursor.getLong(0))
                         );
 
-                    return ContentObservable.fromCursor(cursor);
-                }
-            })
-            .map(new Func1<Cursor, TimesheetItem>() {
-                @Override
-                public TimesheetItem call(Cursor cursor) {
-                    final TimesheetItem item = new TimesheetItem(
-                        new Date(cursor.getLong(0))
-                    );
+                        // We're getting the id for the time objects as a comma-separated string column.
+                        // We have to split the value before attempting to retrieve each individual row.
+                        String grouped = cursor.getString(1);
+                        String[] rows = grouped.split(",");
+                        if (0 < rows.length) {
+                            for (String id : rows) {
+                                getTime(Long.valueOf(id))
+                                        .filter(new Func1<Time, Boolean>() {
+                                            @Override
+                                            public Boolean call(Time time) {
+                                                return time != null;
+                                            }
+                                        })
+                                        .subscribe(new Action1<Time>() {
+                                            @Override
+                                            public void call(Time time) {
+                                                item.add(time);
+                                            }
+                                        });
+                            }
 
-                    // We're getting the id for the time objects as a comma-separated string column.
-                    // We have to split the value before attempting to retrieve each individual row.
-                    String grouped = cursor.getString(1);
-                    String[] rows = grouped.split(",");
-                    if (0 < rows.length) {
-                        for (String id : rows) {
-                            getTime(Long.valueOf(id))
-                                .filter(new Func1<Time, Boolean>() {
-                                    @Override
-                                    public Boolean call(Time time) {
-                                        return time != null;
-                                    }
-                                })
-                                .subscribe(new Action1<Time>() {
-                                    @Override
-                                    public void call(Time time) {
-                                        item.add(time);
-                                    }
-                                });
+                            // Reverse the order of the children to put the latest
+                            // item at the top of the list.
+                            Collections.reverse(item);
                         }
-
-                        // Reverse the order of the children to put the latest
-                        // item at the top of the list.
-                        Collections.reverse(item);
+                        return item;
                     }
-                    return item;
-                }
-            })
-            .toList();
+                })
+                .toList();
     }
 }

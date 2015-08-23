@@ -137,7 +137,7 @@ public class ExternalStorage {
                 @Override
                 public boolean accept(File file) {
                     return file.isDirectory() &&
-                        file.getName().matches(Worker.STORAGE_BACKUP_DIRECTORY_PATTERN);
+                            file.getName().matches(Worker.STORAGE_BACKUP_DIRECTORY_PATTERN);
                 }
             });
         }

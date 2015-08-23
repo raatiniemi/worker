@@ -51,7 +51,7 @@ public class Project extends DomainObject {
     /**
      * Constructor.
      *
-     * @param id Id for the project.
+     * @param id   Id for the project.
      * @param name Name of the project.
      */
     public Project(@NonNull Long id, @NonNull String name) {
@@ -258,12 +258,12 @@ public class Project extends DomainObject {
      *
      * @param date Date and time for when to clock in the project.
      * @return The clocked in Time.
-     * @throws ClockActivityException If the project is active.
+     * @throws ClockActivityException         If the project is active.
      * @throws ClockOutBeforeClockInException If clock in occur after clock out.
      */
     @NonNull
     public Time clockInAt(@NonNull Date date)
-        throws ClockActivityException, ClockOutBeforeClockInException {
+            throws ClockActivityException, ClockOutBeforeClockInException {
         // If the project is already active, we can't clock in.
         if (isActive()) {
             throw new ClockActivityException("Unable to clock in, project is already active");
@@ -282,12 +282,12 @@ public class Project extends DomainObject {
      *
      * @param date Date and time for when to clock out the project.
      * @return The clocked out Time.
-     * @throws ClockActivityException If the project is not active.
+     * @throws ClockActivityException         If the project is not active.
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
     @NonNull
     public Time clockOutAt(@NonNull Date date)
-        throws ClockActivityException, ClockOutBeforeClockInException {
+            throws ClockActivityException, ClockOutBeforeClockInException {
         // Retrieve the active Time domain object, and clock
         // out with the supplied date.
         //

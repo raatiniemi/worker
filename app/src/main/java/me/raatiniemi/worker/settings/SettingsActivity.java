@@ -24,7 +24,7 @@ import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
-    implements SettingsView {
+        implements SettingsView {
     /**
      * Tag for logging.
      */
@@ -70,8 +70,8 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new SettingsFragment())
-                .commit();
+                    .replace(R.id.fragment_container, new SettingsFragment())
+                    .commit();
         }
 
         getPresenter().attachView(this);
@@ -100,18 +100,18 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             Log.w(TAG, message);
 
             Snackbar.make(
-                findViewById(android.R.id.content),
-                message,
-                Snackbar.LENGTH_SHORT
+                    findViewById(android.R.id.content),
+                    message,
+                    Snackbar.LENGTH_SHORT
             ).show();
 
             return;
         }
 
         getFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, fragment, key)
-            .addToBackStack(key)
-            .commit();
+                .replace(R.id.fragment_container, fragment, key)
+                .addToBackStack(key)
+                .commit();
     }
 
     @Override
@@ -209,9 +209,9 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 Log.d(TAG, message);
 
                 Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    message,
-                    Snackbar.LENGTH_SHORT
+                        getActivity().findViewById(android.R.id.content),
+                        message,
+                        Snackbar.LENGTH_SHORT
                 ).show();
             }
             return false;
@@ -250,7 +250,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             // Tell the SettingsActivity to fetch the latest backup.
             getInstance().getPresenter()
-                .getLatestBackup();
+                    .getLatestBackup();
         }
 
         @Override
@@ -277,9 +277,9 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             // wouldn't want backup and restore running simultaneously.
             if (DataIntentService.RUNNING.NONE != DataIntentService.getRunning()) {
                 Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    "Data operation is already running...",
-                    Snackbar.LENGTH_LONG
+                        getActivity().findViewById(android.R.id.content),
+                        "Data operation is already running...",
+                        Snackbar.LENGTH_LONG
                 ).show();
 
                 // No need to go any futher, we can't allow for any
@@ -288,9 +288,9 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             }
 
             Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                message,
-                Snackbar.LENGTH_SHORT
+                    getActivity().findViewById(android.R.id.content),
+                    message,
+                    Snackbar.LENGTH_SHORT
             ).show();
 
             // Start the data operation.
@@ -351,7 +351,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 Date date = backup.getDate();
                 if (null != date) {
                     text = "Restore backup from " + mFormat.format(date) + ".\n" +
-                        "After restore you have to restart the application.";
+                            "After restore you have to restart the application.";
                     enable = true;
                 }
             }

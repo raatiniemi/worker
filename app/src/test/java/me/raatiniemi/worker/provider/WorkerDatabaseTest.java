@@ -27,9 +27,9 @@ public class WorkerDatabaseTest {
     public void setUp() {
         // Create an in-memory database used for running unit tests.
         mDatabase = SQLiteDatabase.openDatabase(
-            ":memory:",
-            null,
-            SQLiteDatabase.CREATE_IF_NECESSARY
+                ":memory:",
+                null,
+                SQLiteDatabase.CREATE_IF_NECESSARY
         );
     }
 
@@ -113,18 +113,18 @@ public class WorkerDatabaseTest {
         public void onCreate(SQLiteDatabase db) {
             // Create the structure for the `project`-table.
             db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
-                ProjectColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ProjectColumns.NAME + " TEXT NOT NULL, " +
-                ProjectColumns.DESCRIPTION + " TEXT NULL, " +
-                ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
-                "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
+                    ProjectColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    ProjectColumns.NAME + " TEXT NOT NULL, " +
+                    ProjectColumns.DESCRIPTION + " TEXT NULL, " +
+                    ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
+                    "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
 
             // Create the structure for the `time`-table.
             db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
-                TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
-                TimeColumns.START + " INTEGER NOT NULL, " +
-                TimeColumns.STOP + " INTEGER DEFAULT 0)");
+                    TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
+                    TimeColumns.START + " INTEGER NOT NULL, " +
+                    TimeColumns.STOP + " INTEGER DEFAULT 0)");
         }
     }
 }

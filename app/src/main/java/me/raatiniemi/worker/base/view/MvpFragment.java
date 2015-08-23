@@ -65,9 +65,9 @@ abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragmen
 
         // Display the error message.
         Snackbar.make(
-            getActivity().findViewById(android.R.id.content),
-            message,
-            Snackbar.LENGTH_LONG
+                getActivity().findViewById(android.R.id.content),
+                message,
+                Snackbar.LENGTH_LONG
         ).show();
     }
 

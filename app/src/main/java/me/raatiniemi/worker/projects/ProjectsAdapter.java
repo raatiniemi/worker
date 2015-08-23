@@ -43,7 +43,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     /**
      * Construct the ProjectsAdapter.
      *
-     * @param context Context to use.
+     * @param context               Context to use.
      * @param projectActionListener Listener for project actions.
      */
     public ProjectsAdapter(Context context, OnProjectActionListener projectActionListener) {
@@ -142,12 +142,12 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         if (null != clockedInSince) {
             clockedInSinceText = resources.getString(R.string.projects_item_clocked_in_since);
             clockedInSinceText = String.format(
-                clockedInSinceText,
-                (new SimpleDateFormat("HH:mm")).format(clockedInSince),
-                DateIntervalFormat.format(
-                    project.getElapsed(),
-                    DateIntervalFormat.Type.HOURS_MINUTES
-                )
+                    clockedInSinceText,
+                    (new SimpleDateFormat("HH:mm")).format(clockedInSince),
+                    DateIntervalFormat.format(
+                            project.getElapsed(),
+                            DateIntervalFormat.Type.HOURS_MINUTES
+                    )
             );
         }
         vh.mClockedInSince.setText(clockedInSinceText);

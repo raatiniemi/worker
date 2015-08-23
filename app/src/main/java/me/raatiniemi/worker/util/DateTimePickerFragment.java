@@ -13,7 +13,7 @@ import java.util.Calendar;
 import me.raatiniemi.worker.base.view.BaseFragment;
 
 public class DateTimePickerFragment extends BaseFragment
-    implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+        implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String TAG = "DateTimePickerFragment";
 
     private static final String FRAGMENT_DATE_PICKER_TAG = "date picker";
@@ -52,13 +52,13 @@ public class DateTimePickerFragment extends BaseFragment
 
     /**
      * Dismiss the DateTimePickerFragment.
-     * <p/>
+     * <p>
      * Triggers the onDetach-method for additional clean up.
      */
     private void dismiss() {
         getFragmentManager().beginTransaction()
-            .remove(this)
-            .commit();
+                .remove(this)
+                .commit();
     }
 
     /**
@@ -120,8 +120,8 @@ public class DateTimePickerFragment extends BaseFragment
         mDatePicker.setMinDate(getMinDate());
 
         mDatePicker.show(
-            getFragmentManager().beginTransaction(),
-            FRAGMENT_DATE_PICKER_TAG
+                getFragmentManager().beginTransaction(),
+                FRAGMENT_DATE_PICKER_TAG
         );
     }
 
@@ -131,15 +131,15 @@ public class DateTimePickerFragment extends BaseFragment
 
         if (null != mDatePicker) {
             getFragmentManager().beginTransaction()
-                .remove(mDatePicker)
-                .commit();
+                    .remove(mDatePicker)
+                    .commit();
         }
         mDatePicker = null;
 
         if (null != mTimePicker) {
             getFragmentManager().beginTransaction()
-                .remove(mTimePicker)
-                .commit();
+                    .remove(mTimePicker)
+                    .commit();
         }
         mTimePicker = null;
     }
@@ -167,8 +167,8 @@ public class DateTimePickerFragment extends BaseFragment
         });
 
         mTimePicker.show(
-            getFragmentManager().beginTransaction(),
-            FRAGMENT_TIME_PICKER_TAG
+                getFragmentManager().beginTransaction(),
+                FRAGMENT_TIME_PICKER_TAG
         );
     }
 

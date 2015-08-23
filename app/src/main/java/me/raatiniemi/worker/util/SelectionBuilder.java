@@ -70,23 +70,23 @@ public class SelectionBuilder {
 
     public Cursor query(SQLiteDatabase db, String[] columns, String orderBy, String limit) {
         return db.query(
-            mTable,
-            columns,
-            selection(),
-            selectionArgs(),
-            mGroupBy,
-            mHaving,
-            orderBy,
-            limit
+                mTable,
+                columns,
+                selection(),
+                selectionArgs(),
+                mGroupBy,
+                mHaving,
+                orderBy,
+                limit
         );
     }
 
     public int update(SQLiteDatabase db, ContentValues values) {
         return db.update(
-            mTable,
-            values,
-            selection(),
-            selectionArgs()
+                mTable,
+                values,
+                selection(),
+                selectionArgs()
         );
     }
 

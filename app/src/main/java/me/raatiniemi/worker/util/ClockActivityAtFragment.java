@@ -8,7 +8,7 @@ import java.util.Calendar;
 import me.raatiniemi.worker.model.domain.project.Project;
 
 public class ClockActivityAtFragment extends DateTimePickerFragment
-    implements DateTimePickerFragment.OnDateTimeSetListener {
+        implements DateTimePickerFragment.OnDateTimeSetListener {
     private static final String TAG = "ClockActivityAtFragment";
 
     /**

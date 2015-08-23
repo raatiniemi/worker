@@ -11,20 +11,20 @@ import java.util.List;
 /**
  * Base adapter for working with the expandable RecyclerView.
  *
- * @param <G> Reference type for the group item.
- * @param <C> Reference type for the child item.
- * @param <T> Reference type for the combined group/child item.
+ * @param <G>   Reference type for the group item.
+ * @param <C>   Reference type for the child item.
+ * @param <T>   Reference type for the combined group/child item.
  * @param <GVH> Reference type for the group item view holder.
  * @param <CVH> Reference type for the child item view holder.
  */
 abstract public class ExpandableListAdapter<
-    G,
-    C,
-    T extends ExpandableListAdapter.ExpandableItem<G, C>,
-    GVH extends ViewHolder,
-    CVH extends ViewHolder
-    >
-    extends AbstractExpandableItemAdapter<GVH, CVH> {
+        G,
+        C,
+        T extends ExpandableListAdapter.ExpandableItem<G, C>,
+        GVH extends ViewHolder,
+        CVH extends ViewHolder
+        >
+        extends AbstractExpandableItemAdapter<GVH, CVH> {
     /**
      * Tag for logging.
      */
@@ -211,7 +211,7 @@ abstract public class ExpandableListAdapter<
      * Update group item in the adapter.
      *
      * @param group Index for group to be updated.
-     * @param item Item to update the adapter.
+     * @param item  Item to update the adapter.
      */
     public void update(int group, T item) {
         // Check that the group index exists.
@@ -230,7 +230,7 @@ abstract public class ExpandableListAdapter<
      *
      * @param group Index for group containing the child.
      * @param child Index for child to be updated.
-     * @param item Item to update the adapter.
+     * @param item  Item to update the adapter.
      */
     public void update(int group, int child, C item) {
         // Check that the group/child index exists.

@@ -59,7 +59,7 @@ abstract public class RxPresenter<V extends MvpView> extends BasePresenter<V> {
             @Override
             public Observable<T> call(Observable<T> observable) {
                 return observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                        .observeOn(AndroidSchedulers.mainThread());
             }
         };
     }

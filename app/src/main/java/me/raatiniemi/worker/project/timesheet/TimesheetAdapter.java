@@ -18,12 +18,12 @@ import me.raatiniemi.worker.model.domain.time.Time;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
-    Date,
-    Time,
-    TimesheetAdapter.TimesheetItem,
-    TimesheetAdapter.GroupViewHolder,
-    TimesheetAdapter.ChildViewHolder
-    > {
+        Date,
+        Time,
+        TimesheetAdapter.TimesheetItem,
+        TimesheetAdapter.GroupViewHolder,
+        TimesheetAdapter.ChildViewHolder
+        > {
     private static final String TAG = "TimesheetAdapter";
 
     private SimpleDateFormat mDateFormat;
@@ -80,8 +80,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.itemView.setActivated(registered);
 
         String summarize = DateIntervalFormat.format(
-            interval,
-            DateIntervalFormat.Type.FRACTION_HOURS
+                interval,
+                DateIntervalFormat.Type.FRACTION_HOURS
         );
 
         Float difference = Float.valueOf(summarize) - 8;
@@ -121,10 +121,10 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.mTitle.setText(title);
 
         vh.mSummarize.setText(
-            DateIntervalFormat.format(
-                time.getInterval(),
-                DateIntervalFormat.Type.FRACTION_HOURS
-            )
+                DateIntervalFormat.format(
+                        time.getInterval(),
+                        DateIntervalFormat.Type.FRACTION_HOURS
+                )
         );
 
     }

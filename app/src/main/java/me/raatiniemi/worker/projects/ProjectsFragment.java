@@ -29,7 +29,7 @@ import me.raatiniemi.worker.util.HintedImageButtonListener;
 import rx.Observable;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
-    implements ProjectsAdapter.OnProjectActionListener, ListAdapter.OnItemClickListener, ProjectsView {
+        implements ProjectsAdapter.OnProjectActionListener, ListAdapter.OnItemClickListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     public static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
@@ -111,9 +111,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
         // TODO: Add support for "undo", i.e. remove created project.
         Snackbar.make(
-            getActivity().findViewById(android.R.id.content),
-            R.string.fragment_new_project_create_successful,
-            Snackbar.LENGTH_SHORT
+                getActivity().findViewById(android.R.id.content),
+                R.string.fragment_new_project_create_successful,
+                Snackbar.LENGTH_SHORT
         ).show();
     }
 
@@ -139,9 +139,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         mAdapter.remove(position);
 
         Snackbar.make(
-            getActivity().findViewById(android.R.id.content),
-            R.string.message_project_deleted,
-            Snackbar.LENGTH_SHORT
+                getActivity().findViewById(android.R.id.content),
+                R.string.message_project_deleted,
+                Snackbar.LENGTH_SHORT
         ).show();
     }
 
@@ -203,15 +203,15 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         // have to confirm the clock out.
         if (project.isActive()) {
             new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.confirm_clock_out_title))
-                .setMessage(getString(R.string.confirm_clock_out_message))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        getPresenter().clockActivityChange(project, new Date());
-                    }
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .show();
+                    .setTitle(getString(R.string.confirm_clock_out_title))
+                    .setMessage(getString(R.string.confirm_clock_out_message))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            getPresenter().clockActivityChange(project, new Date());
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
             return;
         }
 
@@ -229,22 +229,22 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         });
 
         getFragmentManager().beginTransaction()
-            .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
-            .commit();
+                .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
+                .commit();
     }
 
     @Override
     public void onDelete(final Project project) {
         new AlertDialog.Builder(getActivity())
-            .setTitle(R.string.confirm_title_delete_project)
-            .setMessage(R.string.confirm_message_delete_project)
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    getPresenter().deleteProject(project);
-                }
-            })
-            .setNegativeButton(android.R.string.no, null)
-            .show();
+                .setTitle(R.string.confirm_title_delete_project)
+                .setMessage(R.string.confirm_message_delete_project)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getPresenter().deleteProject(project);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
     }
 }

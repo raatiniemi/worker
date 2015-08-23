@@ -89,8 +89,8 @@ public class WorkerProvider extends ContentProvider {
         }
 
         return buildSelection(uri)
-            .where(selection, selectionArgs)
-            .query(mOpenHelper.getReadableDatabase(), projection, sortOrder, limit);
+                .where(selection, selectionArgs)
+                .query(mOpenHelper.getReadableDatabase(), projection, sortOrder, limit);
     }
 
     @Override
@@ -118,20 +118,20 @@ public class WorkerProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return buildSelection(uri)
-            .where(selection, selectionArgs)
-            .update(mOpenHelper.getWritableDatabase(), values);
+                .where(selection, selectionArgs)
+                .update(mOpenHelper.getWritableDatabase(), values);
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         return buildSelection(uri)
-            .where(selection, selectionArgs)
-            .delete(mOpenHelper.getWritableDatabase());
+                .where(selection, selectionArgs)
+                .delete(mOpenHelper.getWritableDatabase());
     }
 
     @Override
     public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations)
-        throws OperationApplicationException {
+            throws OperationApplicationException {
 
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         db.beginTransaction();
@@ -165,32 +165,32 @@ public class WorkerProvider extends ContentProvider {
                 break;
             case PROJECTS_ID:
                 builder.table(Tables.PROJECT)
-                    .where(
-                        ProjectContract._ID + "=?",
-                        ProjectContract.getItemId(uri)
-                    );
+                        .where(
+                                ProjectContract._ID + "=?",
+                                ProjectContract.getItemId(uri)
+                        );
                 break;
             case PROJECTS_TIME:
                 builder.table(Tables.TIME)
-                    .where(
-                        TimeContract.PROJECT_ID + "=?",
-                        ProjectContract.getItemId(uri)
-                    );
+                        .where(
+                                TimeContract.PROJECT_ID + "=?",
+                                ProjectContract.getItemId(uri)
+                        );
                 break;
             case PROJECTS_TIMESHEET:
                 builder.table(Tables.TIME)
-                    .where(
-                        TimeContract.PROJECT_ID + "=?",
-                        ProjectContract.getItemId(uri)
-                    )
-                    .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+                        .where(
+                                TimeContract.PROJECT_ID + "=?",
+                                ProjectContract.getItemId(uri)
+                        )
+                        .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
                 break;
             case TIME_ID:
                 builder.table(Tables.TIME)
-                    .where(
-                        TimeContract._ID + "=?",
-                        TimeContract.getItemId(uri)
-                    );
+                        .where(
+                                TimeContract._ID + "=?",
+                                TimeContract.getItemId(uri)
+                        );
                 break;
         }
 

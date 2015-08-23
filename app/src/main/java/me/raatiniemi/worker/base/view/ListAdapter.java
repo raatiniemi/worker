@@ -15,7 +15,7 @@ import java.util.List;
  * @param <V> Reference type for the view holder.
  */
 abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
-    extends RecyclerView.Adapter<V> {
+        extends RecyclerView.Adapter<V> {
     /**
      * Tag for logging.
      */
@@ -105,7 +105,7 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
      * Update item at a given index within the adapter.
      *
      * @param index Index of the item to update.
-     * @param item Item to update at the index within the adapter.
+     * @param item  Item to update at the index within the adapter.
      */
     public void set(int index, T item) {
         getItems().set(index, item);

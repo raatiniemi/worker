@@ -46,15 +46,15 @@ public class DatePickerFragment extends DialogFragment {
             // We're unable to use the DatePickerFragment
             // since we do not have listener.
             new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.date_picker_fragment_no_listener_title))
-                .setMessage(getString(R.string.date_picker_fragment_no_listener_description))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
+                    .setTitle(getString(R.string.date_picker_fragment_no_listener_title))
+                    .setMessage(getString(R.string.date_picker_fragment_no_listener_description))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing...
+                        }
+                    })
+                    .show();
 
             // Dismiss the dialog since we are unable
             // to properly handle events with it.
@@ -66,11 +66,11 @@ public class DatePickerFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog dialog = new DatePickerDialog(
-            getActivity(),
-            getOnDateSetListener(),
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+                getActivity(),
+                getOnDateSetListener(),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
         );
 
         // If a minimum date is available we have

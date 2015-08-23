@@ -33,7 +33,7 @@ public final class Worker {
      * Pattern for the backup directories.
      */
     public static final String STORAGE_BACKUP_DIRECTORY_PATTERN
-        = Worker.STORAGE_BACKUP_DIRECTORY_PREFIX + "(\\d+)";
+            = Worker.STORAGE_BACKUP_DIRECTORY_PREFIX + "(\\d+)";
 
     /**
      * Intent action for restarting the application.

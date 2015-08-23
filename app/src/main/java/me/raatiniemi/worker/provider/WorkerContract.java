@@ -59,40 +59,40 @@ public class WorkerContract {
 
     public static class ProjectContract implements ProjectColumns {
         public static final String[] COLUMNS = {
-            ProjectColumns._ID,
-            ProjectColumns.NAME,
-            ProjectColumns.DESCRIPTION,
-            ProjectColumns.ARCHIVED
+                ProjectColumns._ID,
+                ProjectColumns.NAME,
+                ProjectColumns.DESCRIPTION,
+                ProjectColumns.ARCHIVED
         };
 
         public static final String[] COLUMNS_TIMESHEET = {
-            "MIN(" + TimeContract.START + ") AS date",
-            "GROUP_CONCAT(" + TimeContract._ID + ")"
+                "MIN(" + TimeContract.START + ") AS date",
+                "GROUP_CONCAT(" + TimeContract._ID + ")"
         };
 
         public static final String STREAM_TYPE =
-            "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
+                "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 
         public static final String ITEM_TYPE =
-            "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
+                "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
         /**
          * Order by clause for project time.
          */
         public static final String ORDER_BY_TIME =
-            TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
+                TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
 
         /**
          * Group by clause for timesheet.
          */
         public static final String GROUP_BY_TIMESHEET =
-            "strftime('%Y%m%d', " + TimeContract.START + " / 1000, 'unixepoch')";
+                "strftime('%Y%m%d', " + TimeContract.START + " / 1000, 'unixepoch')";
 
         /**
          * Order by clause for timesheet.
          */
         public static final String ORDER_BY_TIMESHEET =
-            TimeContract.START + " DESC," + TimeContract.STOP + " DESC";
+                TimeContract.START + " DESC," + TimeContract.STOP + " DESC";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
@@ -178,18 +178,18 @@ public class WorkerContract {
 
     public static class TimeContract implements TimeColumns {
         public static final String[] COLUMNS = {
-            TimeColumns._ID,
-            TimeColumns.PROJECT_ID,
-            TimeColumns.START,
-            TimeColumns.STOP,
-            TimeColumns.REGISTERED
+                TimeColumns._ID,
+                TimeColumns.PROJECT_ID,
+                TimeColumns.START,
+                TimeColumns.STOP,
+                TimeColumns.REGISTERED
         };
 
         public static final String STREAM_TYPE =
-            "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
+                "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
 
         public static final String ITEM_TYPE =
-            "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
+                "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
 

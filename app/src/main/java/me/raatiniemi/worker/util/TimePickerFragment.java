@@ -37,15 +37,15 @@ public class TimePickerFragment extends DialogFragment {
             // We're unable to use the TimePickerFragment
             // since we do not have listener.
             new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.time_picker_fragment_no_listener_title))
-                .setMessage(getString(R.string.time_picker_fragment_no_listener_description))
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing...
-                    }
-                })
-                .show();
+                    .setTitle(getString(R.string.time_picker_fragment_no_listener_title))
+                    .setMessage(getString(R.string.time_picker_fragment_no_listener_description))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing...
+                        }
+                    })
+                    .show();
 
             // Dismiss the dialog since we are unable
             // to properly handle events with it.
@@ -57,11 +57,11 @@ public class TimePickerFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
         TimePickerDialog dialog = new TimePickerDialog(
-            getActivity(),
-            getOnTimeSetListener(),
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
-            DateFormat.is24HourFormat(getActivity())
+                getActivity(),
+                getOnTimeSetListener(),
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                DateFormat.is24HourFormat(getActivity())
         );
 
         return dialog;

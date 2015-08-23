@@ -11,7 +11,6 @@ import me.raatiniemi.worker.model.domain.time.Time;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import rx.Subscriber;
-import rx.functions.Action1;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     /**
@@ -27,7 +26,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     /**
      * Constructor.
      *
-     * @param context Context used with the presenter.
+     * @param context  Context used with the presenter.
      * @param provider Provider for working with projects.
      */
     public TimesheetPresenter(Context context, ProjectProvider provider) {
@@ -43,94 +42,94 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
 
         // Setup the subscription for retrieving timesheet.
         mSubscription = mProvider.getTimesheet(id, offset)
-            .compose(this.<List<TimesheetItem>>applySchedulers())
-            .subscribe(new Subscriber<List<TimesheetItem>>() {
-                @Override
-                public void onNext(List<TimesheetItem> items) {
-                    Log.d(TAG, "getTimesheet onNext");
+                .compose(this.<List<TimesheetItem>>applySchedulers())
+                .subscribe(new Subscriber<List<TimesheetItem>>() {
+                    @Override
+                    public void onNext(List<TimesheetItem> items) {
+                        Log.d(TAG, "getTimesheet onNext");
 
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing timesheet");
-                        return;
-                    }
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing timesheet");
+                            return;
+                        }
 
-                    // Depending on the offset we have to set the initial data
-                    // or add data to the existing collection.
-                    if (0 == offset) {
+                        // Depending on the offset we have to set the initial data
+                        // or add data to the existing collection.
+                        if (0 == offset) {
+                            // Push the data to the view.
+                            getView().setData(items);
+                            return;
+                        }
+
                         // Push the data to the view.
-                        getView().setData(items);
-                        return;
+                        getView().addData(items);
                     }
 
-                    // Push the data to the view.
-                    getView().addData(items);
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "getTimesheet onError");
 
-                @Override
-                public void onError(Throwable e) {
-                    Log.d(TAG, "getTimesheet onError");
+                        // Log the error even if the view have been detached.
+                        Log.w(TAG, "Failed to get timesheet: " + e.getMessage());
 
-                    // Log the error even if the view have been detached.
-                    Log.w(TAG, "Failed to get timesheet: " + e.getMessage());
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing error");
+                            return;
+                        }
 
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing error");
-                        return;
+                        // Push the error to the view.
+                        getView().showError(e);
                     }
 
-                    // Push the error to the view.
-                    getView().showError(e);
-                }
-
-                @Override
-                public void onCompleted() {
-                    Log.d(TAG, "getTimesheet onCompleted");
-                }
-            });
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "getTimesheet onCompleted");
+                    }
+                });
     }
 
     public void remove(final TimeInAdapterResult result) {
         mProvider.remove(result.getTime())
-            .compose(this.<Time>applySchedulers())
-            .subscribe(new Subscriber<Time>() {
-                @Override
-                public void onNext(Time time) {
-                    Log.d(TAG, "remove onNext");
+                .compose(this.<Time>applySchedulers())
+                .subscribe(new Subscriber<Time>() {
+                    @Override
+                    public void onNext(Time time) {
+                        Log.d(TAG, "remove onNext");
 
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing time deletion");
-                        return;
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing time deletion");
+                            return;
+                        }
+
+                        // Attempt to remove the result from view.
+                        getView().remove(result);
                     }
 
-                    // Attempt to remove the result from view.
-                    getView().remove(result);
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "remove onError");
 
-                @Override
-                public void onError(Throwable e) {
-                    Log.d(TAG, "remove onError");
+                        // Log the error even if the view have been detached.
+                        Log.w(TAG, "Failed to remove time: " + e.getMessage());
 
-                    // Log the error even if the view have been detached.
-                    Log.w(TAG, "Failed to remove time: " + e.getMessage());
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing error");
+                            return;
+                        }
 
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing error");
-                        return;
+                        // Push the error to the view.
+                        getView().showError(e);
                     }
 
-                    // Push the error to the view.
-                    getView().showError(e);
-                }
-
-                @Override
-                public void onCompleted() {
-                    Log.d(TAG, "remove onCompleted");
-                }
-            });
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "remove onCompleted");
+                    }
+                });
     }
 
     public void register(final TimeInAdapterResult result) {
@@ -139,45 +138,45 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
         time.setRegistered(1L);
 
         mProvider.update(time)
-            .compose(this.<Time>applySchedulers())
-            .subscribe(new Subscriber<Time>() {
-                @Override
-                public void onNext(Time time) {
-                    Log.d(TAG, "register onNext");
+                .compose(this.<Time>applySchedulers())
+                .subscribe(new Subscriber<Time>() {
+                    @Override
+                    public void onNext(Time time) {
+                        Log.d(TAG, "register onNext");
 
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing time update");
-                        return;
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing time update");
+                            return;
+                        }
+
+                        // Update the time item within the adapter result and send
+                        // it to the view for update.
+                        result.setTime(time);
+                        getView().update(result);
                     }
 
-                    // Update the time item within the adapter result and send
-                    // it to the view for update.
-                    result.setTime(time);
-                    getView().update(result);
-                }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "register onError");
 
-                @Override
-                public void onError(Throwable e) {
-                    Log.d(TAG, "register onError");
+                        // Log the error even if the view have been detached.
+                        Log.w(TAG, "Failed to mark time as registered: " + e.getMessage());
 
-                    // Log the error even if the view have been detached.
-                    Log.w(TAG, "Failed to mark time as registered: " + e.getMessage());
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing error");
+                            return;
+                        }
 
-                    // Check that we still have the view attached.
-                    if (!isViewAttached()) {
-                        Log.d(TAG, "View is not attached, skip pushing error");
-                        return;
+                        // Push the error to the view.
+                        getView().showError(e);
                     }
 
-                    // Push the error to the view.
-                    getView().showError(e);
-                }
-
-                @Override
-                public void onCompleted() {
-                    Log.d(TAG, "register onCompleted");
-                }
-            });
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "register onCompleted");
+                    }
+                });
     }
 }
