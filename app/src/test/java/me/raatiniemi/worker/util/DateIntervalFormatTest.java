@@ -28,7 +28,7 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(DataProviderRunner.class)
 public class DateIntervalFormatTest {
     @DataProvider
-    public static Object[][] format_HourMinutes() {
+    public static Object[][] format_hourMinutesDataProvider() {
         return new Object[][]{
                 {60000L, "1m"},
                 {600000L, "10m"},
@@ -42,7 +42,7 @@ public class DateIntervalFormatTest {
     }
 
     @DataProvider
-    public static Object[][] format_FractionHours() {
+    public static Object[][] format_fractionHoursDataProvider() {
         return new Object[][]{
                 {900000L, "0.25"},
                 {3600000L, "1.00"},
@@ -54,16 +54,16 @@ public class DateIntervalFormatTest {
     }
 
     @Test
-    @UseDataProvider("format_HourMinutes")
-    public void format_HourMinutesAssertEqualValue_True(Long interval, String expected) {
+    @UseDataProvider("format_hourMinutesDataProvider")
+    public void format_hourMinutes(Long interval, String expected) {
         String value = DateIntervalFormat.format(interval);
 
         assertEquals(expected, value);
     }
 
     @Test
-    @UseDataProvider("format_FractionHours")
-    public void format_FractionHoursAssertEqualValue_True(Long interval, String expected) {
+    @UseDataProvider("format_fractionHoursDataProvider")
+    public void format_fractionHours(Long interval, String expected) {
         String value = DateIntervalFormat.format(
                 interval,
                 DateIntervalFormat.Type.FRACTION_HOURS

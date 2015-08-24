@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ProjectMapperTest {
     @Test
-    public void map_CursorToProject_True() {
+    public void map_cursorToProject() {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndex(ProjectColumns._ID)).thenReturn(0);
@@ -62,7 +62,7 @@ public class ProjectMapperTest {
     }
 
     @Test
-    public void map_ProjectToContentValues_True() {
+    public void map_projectToContentValues() {
         Project project = new Project(1L, "Project name");
         project.setDescription("Project description");
         project.setArchived(true);

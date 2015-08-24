@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TimeMapperTest {
     @Test
-    public void map_CursorToProject_True() {
+    public void map_cursorToTime() {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndex(TimeColumns._ID)).thenReturn(0);
@@ -69,7 +69,7 @@ public class TimeMapperTest {
     }
 
     @Test
-    public void map_TimeToContentValues_True() throws ClockOutBeforeClockInException {
+    public void map_timeToContentValues() throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
         time.setRegistered(true);
 

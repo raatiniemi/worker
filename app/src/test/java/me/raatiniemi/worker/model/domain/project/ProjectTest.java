@@ -44,7 +44,7 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ProjectTest {
     @Test
-    public void Project_DefaultValueFromDefaultConstructor_True() {
+    public void Project_defaultValueFromDefaultConstructor() {
         Project project = new Project();
 
         assertNull(project.getId());
@@ -56,7 +56,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void Project_DefaultValueFromIdNameConstructor_True() {
+    public void Project_defaultValueFromIdNameConstructor() {
         Project project = new Project(2L, "Project name");
 
         assertEquals(Long.valueOf(2L), project.getId());
@@ -68,7 +68,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void Project_DefaultValueFromNameConstructor_True() {
+    public void Project_defaultValueFromNameConstructor() {
         Project project = new Project("Project name");
 
         assertNull(project.getId());
@@ -80,14 +80,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void getName_DefaultValue_Null() {
+    public void getName_defaultValue() {
         Project project = new Project();
 
         assertNull(project.getName());
     }
 
     @Test
-    public void getName_ValueFromConstructor_True() {
+    public void getName_valueFromConstructor() {
         Project project = new Project("Project name");
 
         assertEquals("Project name", project.getName());
@@ -98,7 +98,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getName_ValueFromSetter_True() {
+    public void getName_valueFromSetter() {
         Project project = new Project("Project name");
         project.setName("New project name");
 
@@ -106,14 +106,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void getDescription_DefaultValue_Null() {
+    public void getDescription_defaultValue() {
         Project project = new Project();
 
         assertNull(project.getDescription());
     }
 
     @Test
-    public void getDescription_ValueFromSetter_True() {
+    public void getDescription_valueFromSetter() {
         Project project = new Project();
         project.setDescription("Project description");
 
@@ -121,7 +121,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void setDescription_WithEmptyString_Null() {
+    public void setDescription_withEmptyString() {
         Project project = new Project();
         project.setDescription("");
 
@@ -129,7 +129,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void setDescription_WithNull_Null() {
+    public void setDescription_withNull() {
         Project project = new Project();
         project.setDescription(null);
 
@@ -137,14 +137,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void isArchived_DefaultValue_False() {
+    public void isArchived_defaultValue() {
         Project project = new Project();
 
         assertFalse(project.isArchived());
     }
 
     @Test
-    public void isArchived_ValueFromSetter_True() {
+    public void isArchived_valueFromSetter() {
         Project project = new Project();
         project.setArchived(true);
 
@@ -156,14 +156,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void getArchived_DefaultValue_False() {
+    public void getArchived_defaultValue() {
         Project project = new Project();
 
         assertEquals(Long.valueOf(0L), project.getArchived());
     }
 
     @Test
-    public void getArchived_ValueFromSetter_True() {
+    public void getArchived_valueFromSetter() {
         Project project = new Project();
         project.setArchived(1L);
 
@@ -175,7 +175,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getTime_WithoutTime_True() {
+    public void getTime_withoutTime() {
         Project project = new Project();
 
         assertNotNull(project.getTime());
@@ -183,7 +183,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getTime_ValueFromAddTimeList_True() {
+    public void getTime_valueFromAddTimeList() {
         Project project = new Project();
 
         List<Time> times = project.getTime();
@@ -198,7 +198,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getTime_ValuesFromAddTimeList_True() {
+    public void getTime_valuesFromAddTimeList() {
         Project project = new Project();
 
         List<Time> times = new ArrayList<>();
@@ -218,7 +218,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void addTime_WithEmptyTimeList_True() {
+    public void addTime_withEmptyTimeList() {
         Project project = new Project();
 
         List<Time> times = new ArrayList<>();
@@ -228,14 +228,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_WithoutTime_True() {
+    public void summarizeTime_withoutTime() {
         Project project = new Project();
 
         assertEquals(Long.valueOf(0L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
-    public void summarizeTime_WithActiveTime_True() {
+    public void summarizeTime_withActiveTime() {
         Project project = new Project();
 
         Time time1 = mock(Time.class);
@@ -251,7 +251,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_WithSingleItem_True() {
+    public void summarizeTime_withSingleItem() {
         Project project = new Project();
 
         Time time = mock(Time.class);
@@ -263,7 +263,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_WithValueRoundUp_True() {
+    public void summarizeTime_withValueRoundUp() {
         Project project = new Project();
 
         Time time1 = mock(Time.class);
@@ -279,7 +279,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_WithValueRoundDown_True() {
+    public void summarizeTime_withValueRoundDown() {
         Project project = new Project();
 
         Time time1 = mock(Time.class);
@@ -295,7 +295,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_MultipleItems_True() {
+    public void summarizeTime_multipleItems() {
         Project project = new Project();
 
         Time time1 = mock(Time.class);
@@ -311,14 +311,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void getElapsed_WithoutTime_True() {
+    public void getElapsed_withoutTime() {
         Project project = new Project();
 
         assertEquals(Long.valueOf(0L), Long.valueOf(project.getElapsed()));
     }
 
     @Test
-    public void getElapsed_WithoutActiveTime_True() {
+    public void getElapsed_withoutActiveTime() {
         Project project = new Project();
 
         Time time = mock(Time.class);
@@ -331,7 +331,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getElapsed_WithActiveTime_True() {
+    public void getElapsed_withActiveTime() {
         Project project = new Project();
 
         Time time = mock(Time.class);
@@ -346,14 +346,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void getClockedInSince_WithoutTime_Null() {
+    public void getClockedInSince_withoutTime() {
         Project project = new Project();
 
         assertNull(project.getClockedInSince());
     }
 
     @Test
-    public void getClockedInSince_WithoutActiveTime_Null() {
+    public void getClockedInSince_withoutActiveTime() {
         Project project = new Project();
 
         Time time = mock(Time.class);
@@ -366,7 +366,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getClockedInSince_WithActiveTime_True() {
+    public void getClockedInSince_withActiveTime() {
         Project project = new Project();
 
         Time time = mock(Time.class);
@@ -384,7 +384,7 @@ public class ProjectTest {
     }
 
     @Test(expected = ClockActivityException.class)
-    public void clockInAt_WithActiveTime_ThrowException() throws DomainException {
+    public void clockInAt_withActiveTime() throws DomainException {
         Project project = new Project();
 
         // Setup the time object to return true for the `isActive`-call.
@@ -400,7 +400,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void clockInAt_WithoutActiveTime_True() throws DomainException {
+    public void clockInAt_withoutActiveTime() throws DomainException {
         Project project = new Project();
         project.setId(1L);
 
@@ -418,7 +418,7 @@ public class ProjectTest {
     }
 
     @Test(expected = ClockActivityException.class)
-    public void clockOutAt_WithoutTime_ThrowException() throws DomainException {
+    public void clockOutAt_withoutTime() throws DomainException {
         Project project = new Project();
 
         Date date = mock(Date.class);
@@ -426,7 +426,7 @@ public class ProjectTest {
     }
 
     @Test(expected = ClockActivityException.class)
-    public void clockOutAt_WithoutActiveTime_ThrowException() throws DomainException {
+    public void clockOutAt_withoutActiveTime() throws DomainException {
         Project project = new Project();
 
         // Setup the time object to return true for the `isActive`-call.
@@ -442,7 +442,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void clockOutAt_WithActiveTime_True() throws DomainException {
+    public void clockOutAt_withActiveTime() throws DomainException {
         Project project = new Project();
 
         Time time = mock(Time.class);
@@ -456,14 +456,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void isActive_WithoutTime_False() {
+    public void isActive_withoutTime() {
         Project project = new Project();
 
         assertFalse(project.isActive());
     }
 
     @Test
-    public void isActive_WithoutActiveTime_False() {
+    public void isActive_withoutActiveTime() {
         Project project = new Project();
 
         // Setup the time object to return false for the `isActive`-call.
@@ -477,7 +477,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void isActive_WithActiveTime_True() {
+    public void isActive_withActiveTime() {
         Project project = new Project();
 
         // Setup the time object to return true for the `isActive`-call.

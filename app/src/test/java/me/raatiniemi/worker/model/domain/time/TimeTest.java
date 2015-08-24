@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TimeTest {
     @Test
-    public void Time_DefaultValueFromDefaultConstructor_True() {
+    public void Time_defaultValueFromDefaultConstructor() {
         Time time = new Time();
 
         assertNull(time.getId());
@@ -49,7 +49,7 @@ public class TimeTest {
     }
 
     @Test
-    public void Time_DefaultValueFromConstructor_True()
+    public void Time_defaultValueFromConstructor()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
 
@@ -62,14 +62,14 @@ public class TimeTest {
     }
 
     @Test
-    public void getProjectId_DefaultValue_Null() {
+    public void getProjectId_defaultValue() {
         Time time = new Time();
 
         assertNull(time.getProjectId());
     }
 
     @Test
-    public void getProjectId_ValueFromConstructor_True()
+    public void getProjectId_valueFromConstructor()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
 
@@ -81,7 +81,7 @@ public class TimeTest {
     }
 
     @Test
-    public void getProjectId_ValueFromSetter_True() {
+    public void getProjectId_valueFromSetter() {
         Time time = new Time();
         time.setProjectId(1L);
 
@@ -89,14 +89,14 @@ public class TimeTest {
     }
 
     @Test
-    public void getStart_DefaultValue_True() {
+    public void getStart_defaultValue() {
         Time time = new Time();
 
         assertEquals(Long.valueOf(0L), time.getStop());
     }
 
     @Test
-    public void getStart_ValueFromConstructor_True()
+    public void getStart_valueFromConstructor()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
 
@@ -104,7 +104,7 @@ public class TimeTest {
     }
 
     @Test
-    public void getStart_ValueFromSetter_True()
+    public void getStart_valueFromSetter()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
@@ -113,7 +113,7 @@ public class TimeTest {
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
-    public void getStart_StopLessThanStart_ThrowException()
+    public void getStart_stopLessThanStart()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStop(1L);
@@ -121,14 +121,14 @@ public class TimeTest {
     }
 
     @Test
-    public void getStop_DefaultValue_True() {
+    public void getStop_defaultValue() {
         Time time = new Time();
 
         assertEquals(Long.valueOf(0L), time.getStop());
     }
 
     @Test
-    public void getStop_ValueFromConstructor_True()
+    public void getStop_valueFromConstructor()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
 
@@ -136,7 +136,7 @@ public class TimeTest {
     }
 
     @Test
-    public void getStop_ValueFromSetter_True()
+    public void getStop_valueFromSetter()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStop(1L);
@@ -145,7 +145,7 @@ public class TimeTest {
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
-    public void setStop_StopLessThanStart_ThrowException()
+    public void setStop_stopLessThanStart()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(10L);
@@ -153,14 +153,14 @@ public class TimeTest {
     }
 
     @Test
-    public void isRegistered_DefaultValue_False() {
+    public void isRegistered_defaultValue() {
         Time time = new Time();
 
         assertFalse(time.isRegistered());
     }
 
     @Test
-    public void isRegistered_ValueFromSetter_True() {
+    public void isRegistered_valueFromSetter() {
         Time time = new Time();
         time.setRegistered(true);
 
@@ -172,14 +172,14 @@ public class TimeTest {
     }
 
     @Test
-    public void getRegistered_DefaultValue_False() {
+    public void getRegistered_defaultValue() {
         Time time = new Time();
 
         assertEquals(Long.valueOf(0L), time.getRegistered());
     }
 
     @Test
-    public void getRegistered_ValueFromSetter_True() {
+    public void getRegistered_valueFromSetter() {
         Time time = new Time();
         time.setRegistered(1L);
 
@@ -191,7 +191,7 @@ public class TimeTest {
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
-    public void clockInAt_ClockInAfterClockOut_ThrowException()
+    public void clockInAt_clockInAfterClockOut()
             throws ClockOutBeforeClockInException {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(2L);
@@ -204,7 +204,7 @@ public class TimeTest {
     }
 
     @Test
-    public void clockInAt_ClockInBeforeClockOut_True()
+    public void clockInAt_clockInBeforeClockOut()
             throws ClockOutBeforeClockInException {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(1L);
@@ -217,7 +217,7 @@ public class TimeTest {
     }
 
     @Test
-    public void clockInAt_WhenInactive_True()
+    public void clockInAt_whenInactive()
             throws ClockOutBeforeClockInException {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(1L);
@@ -229,7 +229,7 @@ public class TimeTest {
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
-    public void clockOutAt_ClockOutBeforeClockIn_ThrowException()
+    public void clockOutAt_clockOutBeforeClockIn()
             throws ClockOutBeforeClockInException {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(1L);
@@ -240,7 +240,7 @@ public class TimeTest {
     }
 
     @Test
-    public void clockOutAt_ClockOutAfterClockIn_True()
+    public void clockOutAt_clockOutAfterClockIn()
             throws ClockOutBeforeClockInException {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(2L);
@@ -253,7 +253,7 @@ public class TimeTest {
     }
 
     @Test
-    public void isActive_WhenActive_True()
+    public void isActive_whenActive()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
@@ -262,7 +262,7 @@ public class TimeTest {
     }
 
     @Test
-    public void isActive_WhenInactive_False()
+    public void isActive_whenInactive()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
@@ -272,7 +272,7 @@ public class TimeTest {
     }
 
     @Test
-    public void getTime_WhenActive_True()
+    public void getTime_whenActive()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
@@ -281,7 +281,7 @@ public class TimeTest {
     }
 
     @Test
-    public void getTime_WhenInactive_True()
+    public void getTime_whenInactive()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
@@ -291,7 +291,7 @@ public class TimeTest {
     }
 
     @Test
-    public void getInterval_WhenActive_True()
+    public void getInterval_whenActive()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
@@ -302,7 +302,7 @@ public class TimeTest {
     }
 
     @Test
-    public void getInterval_WhenInactive_True()
+    public void getInterval_whenInactive()
             throws ClockOutBeforeClockInException {
         Time time = new Time();
         time.setStart(1L);
