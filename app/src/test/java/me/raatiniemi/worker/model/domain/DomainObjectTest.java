@@ -30,7 +30,7 @@ import static junit.framework.Assert.assertNull;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class DomainObjectTest {
     @Test
-    public void getId_DefaultValue_Null() {
+    public void getId_defaultValue() {
         DomainObject object = new DomainObject() {
         };
 
@@ -38,7 +38,7 @@ public class DomainObjectTest {
     }
 
     @Test
-    public void getId_ValueFromConstructor_True() {
+    public void getId_valueFromConstructor() {
         Long id = 1L;
 
         DomainObject object = new DomainObject(id) {
@@ -48,7 +48,7 @@ public class DomainObjectTest {
     }
 
     @Test
-    public void getId_ValueFromSetter_True() {
+    public void getId_valueFromSetter() {
         Long id = 1L;
 
         DomainObject object = new DomainObject() {
