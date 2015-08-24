@@ -58,4 +58,6 @@
     <string name="error.message.project_name_missing">You have to supply a name</string>
     <string name="error.message.project_name_already_exists">Project name already exists</string>
 
+    <string name="menu.title.actions">Actions</string>
+
 </resources>

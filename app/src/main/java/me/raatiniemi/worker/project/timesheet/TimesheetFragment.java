@@ -62,8 +62,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            // TODO: Retrieve title from resources, for localization support.
-            actionMode.setTitle("Actions");
+            actionMode.setTitle(R.string.menu_title_actions);
             actionMode.getMenuInflater().inflate(R.menu.actions_project, menu);
             return true;
         }
