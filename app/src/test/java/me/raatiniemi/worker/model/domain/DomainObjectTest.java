@@ -39,22 +39,18 @@ public class DomainObjectTest {
 
     @Test
     public void getId_valueFromConstructor() {
-        Long id = 1L;
-
-        DomainObject object = new DomainObject(id) {
+        DomainObject object = new DomainObject(1L) {
         };
 
-        assertEquals(id, object.getId());
+        assertEquals(Long.valueOf(1L), object.getId());
     }
 
     @Test
     public void getId_valueFromSetter() {
-        Long id = 1L;
-
         DomainObject object = new DomainObject() {
         };
-        object.setId(id);
+        object.setId(1L);
 
-        assertEquals(id, object.getId());
+        assertEquals(Long.valueOf(1L), object.getId());
     }
 }
