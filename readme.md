@@ -2,6 +2,13 @@
 ![license](https://img.shields.io/badge/license-GPLv2-blue.svg)
 [![build status](http://gitlab-ci.raatiniemi.me/projects/6/status.png?ref=master)](http://gitlab-ci.raatiniemi.me/projects/6?ref=master)
 
+## Contributing
+
+The project have defined code and git style guidelines that are expected to be followed.
+
+* [Code style](https://source.android.com/source/code-style.html)
+* [Git style](https://github.com/agis-/git-style-guide)
+
 ## License
 
 Copyright (C) 2015 Worker Project
