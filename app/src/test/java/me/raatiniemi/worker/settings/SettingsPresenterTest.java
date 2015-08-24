@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class SettingsPresenterTest {
     @Test
-    public void testRegisterEventBusWhenAttachView() {
+    public void attachView_registerEventBus() {
         Context context = mock(Context.class);
         EventBus eventBus = mock(EventBus.class);
         SettingsView view = mock(SettingsView.class);
@@ -50,7 +50,7 @@ public class SettingsPresenterTest {
     }
 
     @Test
-    public void testUnregisterEventBusWhenDetachView() {
+    public void detachView_unregisterEventBus() {
         Context context = mock(Context.class);
         EventBus eventBus = mock(EventBus.class);
 
@@ -61,7 +61,7 @@ public class SettingsPresenterTest {
     }
 
     @Test
-    public void testBackupSuccessfulEvent() {
+    public void onEventMainThread_successfulBackupEvent() {
         Context context = mock(Context.class);
         EventBus eventBus = mock(EventBus.class);
         SettingsView view = mock(SettingsView.class);
@@ -78,7 +78,7 @@ public class SettingsPresenterTest {
     }
 
     @Test
-    public void testBackupSuccessfulEventWithoutView() {
+    public void onEventMainThread_successfulBackupEventWithoutView() {
         Context context = mock(Context.class);
         EventBus eventBus = mock(EventBus.class);
         SettingsView view = mock(SettingsView.class);
