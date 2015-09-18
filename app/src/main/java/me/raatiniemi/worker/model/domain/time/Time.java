@@ -196,16 +196,6 @@ public class Time extends DomainObject {
     }
 
     /**
-     * Setter method for registered time flag.
-     *
-     * @param registered Flag for registered time.
-     */
-    @Deprecated
-    public void setRegistered(@NonNull Long registered) {
-        setRegistered(1L == registered);
-    }
-
-    /**
      * Set the clock in timestamp at a given date.
      *
      * @param date Date at which to clock in.
