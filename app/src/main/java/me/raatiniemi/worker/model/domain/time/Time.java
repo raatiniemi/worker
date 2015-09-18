@@ -187,33 +187,12 @@ public class Time extends DomainObject {
     }
 
     /**
-     * Getter method for the registered time flag.
-     *
-     * @return Flag for registered time.
-     */
-    @NonNull
-    @Deprecated
-    public Long getRegistered() {
-        return isRegistered() ? 1L : 0L;
-    }
-
-    /**
      * Setter method for registered time flag.
      *
      * @param registered True if time is registered, otherwise false.
      */
     public void setRegistered(boolean registered) {
         mRegistered = registered;
-    }
-
-    /**
-     * Setter method for registered time flag.
-     *
-     * @param registered Flag for registered time.
-     */
-    @Deprecated
-    public void setRegistered(@NonNull Long registered) {
-        setRegistered(1L == registered);
     }
 
     /**

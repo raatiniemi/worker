@@ -151,7 +151,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     public void register(final TimeInAdapterResult result) {
         // Set the registered flag on the time object.
         Time time = result.getTime();
-        time.setRegistered(1L);
+        time.setRegistered(true);
 
         mProvider.update(time)
                 .compose(this.<Time>applySchedulers())

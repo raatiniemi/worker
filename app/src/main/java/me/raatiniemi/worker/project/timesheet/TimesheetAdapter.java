@@ -86,7 +86,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         for (Time time : get(group)) {
             // If a single child is not registered, the group should not be
             // considered registered.
-            if (0L == time.getRegistered()) {
+            if (!time.isRegistered()) {
                 registered = false;
             }
 
@@ -127,7 +127,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         // it. The selected background color should take precedence.
         vh.itemView.setActivated(false);
         if (!vh.itemView.isSelected()) {
-            vh.itemView.setActivated(1L == time.getRegistered());
+            vh.itemView.setActivated(time.isRegistered());
         }
 
         String title = mTimeFormat.format(new Date(time.getStart()));
