@@ -65,7 +65,6 @@ public class TimeMapperTest {
         assertEquals(Long.valueOf(3L), time.getStart());
         assertEquals(Long.valueOf(4L), time.getStop());
         assertTrue(time.isRegistered());
-        assertEquals(Long.valueOf(1L), time.getRegistered());
     }
 
     @Test

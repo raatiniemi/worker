@@ -104,7 +104,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                 // If the selected time is registered we have to restore the
                 // activated state incase the user dismissed the action mode.
                 Time time = mSelectedItem.getTime();
-                mSelectedView.setActivated(1L == time.getRegistered());
+                mSelectedView.setActivated(time.isRegistered());
 
                 mSelectedView.setSelected(false);
                 mSelectedView = null;
@@ -226,7 +226,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         // activated state for the view.
         if (null != mSelectedItem) {
             Time time = mSelectedItem.getTime();
-            registered = 1L == time.getRegistered();
+            registered = time.isRegistered();
         }
 
         mSelectedItem = result;
