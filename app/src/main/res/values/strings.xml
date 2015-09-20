@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Worker</string>
-    <string name="projects_title">Projects</string>
 
     <string name="menu.title.actions">Actions</string>
 
