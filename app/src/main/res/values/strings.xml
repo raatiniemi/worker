@@ -19,12 +19,12 @@
     <string name="projects_item_action_clock_out_at">Clock out at given date and time</string>
     <string name="projects_item_action_delete">Delete project</string>
 
-    <string name="fragment_new_project_title">Create new project</string>
-    <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
-    <string name="fragment_new_project_name_hint">Project name&#8230;</string>
-    <string name="fragment_new_project_cancel">Cancel</string>
-    <string name="fragment_new_project_create">Create</string>
-    <string name="fragment_new_project_create_successful">New project have been created</string>
+    <string name="fragment.new_project.title">Create new project</string>
+    <string name="fragment.new_project.description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
+    <string name="fragment.new_project.name_hint">Project name&#8230;</string>
+    <string name="fragment.new_project.cancel">Cancel</string>
+    <string name="fragment.new_project.create">Create</string>
+    <string name="message.project_created">New project have been created</string>
 
     <string name="confirm.clock_out.title">You are about to clock out</string>
     <string name="confirm.clock_out.message">Are you sure you\'d like to clock out?</string>

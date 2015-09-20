@@ -128,7 +128,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         // TODO: Add support for "undo", i.e. remove created project.
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                R.string.fragment_new_project_create_successful,
+                R.string.message_project_created,
                 Snackbar.LENGTH_SHORT
         ).show();
     }
