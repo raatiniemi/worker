@@ -24,8 +24,8 @@
     <string name="confirm_clock_out_title">You are about to clock out</string>
     <string name="confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
 
-    <string name="confirm.title.delete_project">Delete project</string>
-    <string name="confirm.message.delete_project">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
+    <string name="confirm.delete_project.title">Delete project</string>
+    <string name="confirm.delete_project.message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
 
     <string name="message.project_deleted">Project have been deleted</string>
 
