@@ -213,8 +213,8 @@ public class DataIntentService extends IntentService {
             // Send the "Restore complete" notification to the user.
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_restore_white_24dp)
-                    .setContentTitle(getString(R.string.data_intent_service_restore_complete_title))
-                    .setContentText(getString(R.string.data_intent_service_restore_complete_message))
+                    .setContentTitle(getString(R.string.notification_restore_title))
+                    .setContentText(getString(R.string.notification_restore_message))
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
         } catch (IOException e) {

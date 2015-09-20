@@ -43,8 +43,8 @@
     <string name="notification.backup.title">Backup complete</string>
     <string name="notification.backup.message">Backup to external storage was successful.</string>
 
-    <string name="data_intent_service_restore_complete_title">Restore complete</string>
-    <string name="data_intent_service_restore_complete_message">Press notification to restart application.</string>
+    <string name="notification.restore.title">Restore complete</string>
+    <string name="notification.restore.message">Press notification to restart application.</string>
 
     <string name="error.message.unknown">An unknown error has occurred</string>
     <string name="error.message.project_name_missing">You have to supply a name</string>
