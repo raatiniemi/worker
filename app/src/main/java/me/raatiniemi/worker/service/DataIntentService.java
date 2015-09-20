@@ -224,8 +224,8 @@ public class DataIntentService extends IntentService {
             // Send the "Restore failed" notification to the user.
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                    .setContentTitle(getString(R.string.data_intent_service_restore_failed_title))
-                    .setContentText(getString(R.string.data_intent_service_restore_failed_message));
+                    .setContentTitle(getString(R.string.error_notification_restore_title))
+                    .setContentText(getString(R.string.error_notification_restore_message));
         } catch (ClassCastException e) {
             Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
         } finally {
