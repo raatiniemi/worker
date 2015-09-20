@@ -22,9 +22,8 @@
     <string name="fragment.new_project.title">Create new project</string>
     <string name="fragment.new_project.description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
     <string name="fragment.new_project.name_hint">Project name&#8230;</string>
-    <string name="fragment.new_project.cancel">Cancel</string>
     <string name="fragment.new_project.create">Create</string>
-    <string name="message.project_created">New project have been created</string>
+    <string name="fragment.new_project.cancel">Cancel</string>
 
     <string name="confirm.clock_out.title">You are about to clock out</string>
     <string name="confirm.clock_out.message">Are you sure you\'d like to clock out?</string>
@@ -32,6 +31,7 @@
     <string name="confirm.delete_project.title">Delete project</string>
     <string name="confirm.delete_project.message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
 
+    <string name="message.project_created">New project have been created</string>
     <string name="message.project_deleted">Project have been deleted</string>
 
     <string name="activity.settings.preferences">Preferences</string>
