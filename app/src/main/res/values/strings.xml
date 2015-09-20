@@ -21,9 +21,6 @@
     <string name="fragment_new_project_create">Create</string>
     <string name="fragment_new_project_create_successful">New project have been created</string>
 
-    <string name="date_picker_fragment_no_listener_title">Unable to set date</string>
-    <string name="date_picker_fragment_no_listener_description">An internal error occurred when the date dialog was created.</string>
-
     <string name="time_picker_fragment_no_listener_title">Unable to set time</string>
     <string name="time_picker_fragment_no_listener_description">An internal error occurred when the time dialog was created.</string>
 
