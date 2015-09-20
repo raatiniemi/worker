@@ -135,11 +135,11 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         // for the clock activity view should be altered, and
         // visibility for the clocked activity view.
         int clockedInSinceVisibility = View.GONE;
-        int clockActivityToggleId = R.string.projects_item_action_clock_in;
-        int clockActivityAtId = R.string.projects_item_action_clock_in_at;
+        int clockActivityToggleId = R.string.fragment_projects_item_clock_in;
+        int clockActivityAtId = R.string.fragment_projects_item_clock_in_at;
         if (project.isActive()) {
-            clockActivityToggleId = R.string.projects_item_action_clock_out;
-            clockActivityAtId = R.string.projects_item_action_clock_out_at;
+            clockActivityToggleId = R.string.fragment_projects_item_clock_out;
+            clockActivityAtId = R.string.fragment_projects_item_clock_out_at;
             clockedInSinceVisibility = View.VISIBLE;
         }
 
@@ -156,7 +156,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         Date clockedInSince = project.getClockedInSince();
         String clockedInSinceText = null;
         if (null != clockedInSince) {
-            clockedInSinceText = resources.getString(R.string.projects_item_clocked_in_since);
+            clockedInSinceText = resources.getString(R.string.fragment_projects_item_clocked_in_since);
             clockedInSinceText = String.format(
                     clockedInSinceText,
                     (new SimpleDateFormat("HH:mm")).format(clockedInSince),

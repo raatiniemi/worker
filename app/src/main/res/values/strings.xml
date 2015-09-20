@@ -12,12 +12,12 @@
     <string name="menu.actions.project.register">Mark as registered</string>
     <string name="menu.actions.project.delete">Delete</string>
 
-    <string name="projects_item_clocked_in_since" formatted="false">Since %s (%s)</string>
-    <string name="projects_item_action_clock_in">Clock in now</string>
-    <string name="projects_item_action_clock_out">Clock out now</string>
-    <string name="projects_item_action_clock_in_at">Clock in at given date and time</string>
-    <string name="projects_item_action_clock_out_at">Clock out at given date and time</string>
-    <string name="projects_item_action_delete">Delete project</string>
+    <string name="fragment.projects_item.clocked_in_since" formatted="false">Since %s (%s)</string>
+    <string name="fragment.projects_item.clock_in">Clock in now</string>
+    <string name="fragment.projects_item.clock_out">Clock out now</string>
+    <string name="fragment.projects_item.clock_in_at">Clock in at given date and time</string>
+    <string name="fragment.projects_item.clock_out_at">Clock out at given date and time</string>
+    <string name="fragment.projects_item.delete">Delete project</string>
 
     <string name="fragment.new_project.title">Create new project</string>
     <string name="fragment.new_project.description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
