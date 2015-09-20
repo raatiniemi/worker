@@ -153,8 +153,8 @@ public class DataIntentService extends IntentService {
             // Send the "Backup failed" notification to the user.
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                    .setContentTitle(getString(R.string.data_intent_service_backup_failed_title))
-                    .setContentText(getString(R.string.data_intent_service_backup_failed_message));
+                    .setContentTitle(getString(R.string.error_notification_backup_title))
+                    .setContentText(getString(R.string.error_notification_backup_message));
         } catch (ClassCastException e) {
             Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
         } finally {
