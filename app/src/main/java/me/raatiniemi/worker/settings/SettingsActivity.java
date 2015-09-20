@@ -251,7 +251,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         @Override
         public int getTitle() {
-            return R.string.settings_category_preferences;
+            return R.string.activity_settings_preferences;
         }
     }
 
@@ -319,7 +319,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         @Override
         public int getTitle() {
-            return R.string.settings_screen_data;
+            return R.string.activity_settings_data;
         }
 
         /**

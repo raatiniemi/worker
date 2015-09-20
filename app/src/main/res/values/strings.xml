@@ -34,10 +34,10 @@
 
     <string name="message.project_deleted">Project have been deleted</string>
 
-    <string name="settings_category_preferences">Preferences</string>
-    <string name="settings_screen_data">Data</string>
-    <string name="settings_backup">Backup</string>
-    <string name="settings_restore">Restore</string>
+    <string name="activity.settings.preferences">Preferences</string>
+    <string name="activity.settings.data">Data</string>
+    <string name="activity.settings.backup">Backup</string>
+    <string name="activity.settings.restore">Restore</string>
 
     <string name="notification.backup.title">Backup complete</string>
     <string name="notification.backup.message">Backup to external storage was successful.</string>

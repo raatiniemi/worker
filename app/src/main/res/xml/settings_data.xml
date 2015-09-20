@@ -5,12 +5,12 @@
 
     <Preference
         android:key="settings_data_backup"
-        android:title="@string/settings_backup"
+        android:title="@string/activity.settings.backup"
         />
 
     <Preference
         android:key="settings_data_restore"
-        android:title="@string/settings_restore"
+        android:title="@string/activity.settings.restore"
         android:enabled="false"
         />
 
