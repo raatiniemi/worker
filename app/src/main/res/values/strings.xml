@@ -1,57 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Worker</string>
-    <string name="projects_title">Projects</string>
+    <string name="name">Worker</string>
 
-    <string name="main_actions_create_new_project">Create new project</string>
-    <string name="main_actions_settings">Settings</string>
+    <string name="menu.title.actions">Actions</string>
 
-    <string name="projects_item_clocked_in_since" formatted="false">Since %s (%s)</string>
-    <string name="projects_item_action_clock_in">Clock in now</string>
-    <string name="projects_item_action_clock_out">Clock out now</string>
-    <string name="projects_item_action_clock_in_at">Clock in at given date and time</string>
-    <string name="projects_item_action_clock_out_at">Clock out at given date and time</string>
-    <string name="projects_item_action_delete">Delete project</string>
+    <string name="menu.actions.main.create_new_project">Create new project</string>
+    <string name="menu.actions.main.settings">Settings</string>
 
-    <string name="fragment_new_project_title">Create new project</string>
-    <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
-    <string name="fragment_new_project_name_hint">Project name&#8230;</string>
-    <string name="fragment_new_project_cancel">Cancel</string>
-    <string name="fragment_new_project_create">Create</string>
-    <string name="fragment_new_project_create_successful">New project have been created</string>
+    <string name="menu.actions.project.edit">Edit</string>
+    <string name="menu.actions.project.register">Mark as registered</string>
+    <string name="menu.actions.project.delete">Delete</string>
 
-    <string name="confirm_clock_out_title">You are about to clock out</string>
-    <string name="confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
+    <string name="fragment.projects_item.clocked_in_since" formatted="false">Since %s (%s)</string>
+    <string name="fragment.projects_item.clock_in">Clock in now</string>
+    <string name="fragment.projects_item.clock_out">Clock out now</string>
+    <string name="fragment.projects_item.clock_in_at">Clock in at given date and time</string>
+    <string name="fragment.projects_item.clock_out_at">Clock out at given date and time</string>
+    <string name="fragment.projects_item.delete">Delete project</string>
 
-    <string name="confirm.title.delete_project">Delete project</string>
-    <string name="confirm.message.delete_project">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
+    <string name="fragment.new_project.title">Create new project</string>
+    <string name="fragment.new_project.description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
+    <string name="fragment.new_project.name_hint">Project name&#8230;</string>
+    <string name="fragment.new_project.create">Create</string>
+    <string name="fragment.new_project.cancel">Cancel</string>
 
+    <string name="confirm.clock_out.title">You are about to clock out</string>
+    <string name="confirm.clock_out.message">Are you sure you\'d like to clock out?</string>
+
+    <string name="confirm.delete_project.title">Delete project</string>
+    <string name="confirm.delete_project.message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
+
+    <string name="message.project_created">New project have been created</string>
     <string name="message.project_deleted">Project have been deleted</string>
 
-    <string name="project_actions_edit">Edit</string>
-    <string name="project_actions_register">Mark as registered</string>
-    <string name="project_actions_delete">Delete</string>
+    <string name="activity.settings.preferences">Preferences</string>
+    <string name="activity.settings.data">Data</string>
+    <string name="activity.settings.backup">Backup</string>
+    <string name="activity.settings.restore">Restore</string>
 
-    <string name="settings_category_preferences">Preferences</string>
-    <string name="settings_screen_data">Data</string>
-    <string name="settings_backup">Backup</string>
-    <string name="settings_restore">Restore</string>
+    <string name="notification.backup.title">Backup complete</string>
+    <string name="notification.backup.message">Backup to external storage was successful.</string>
 
-    <string name="data_intent_service_backup_complete_title">Backup complete</string>
-    <string name="data_intent_service_backup_complete_message">Backup to external storage was successful.</string>
-    <string name="data_intent_service_backup_failed_title">Backup failed</string>
-    <string name="data_intent_service_backup_failed_message">Backup to external storage failed.</string>
-
-    <string name="data_intent_service_restore_complete_title">Restore complete</string>
-    <string name="data_intent_service_restore_complete_message">Press notification to restart application.</string>
-    <string name="data_intent_service_restore_failed_title">Restore failed</string>
-    <string name="data_intent_service_restore_failed_message">Data restore from backup failed.</string>
+    <string name="notification.restore.title">Restore complete</string>
+    <string name="notification.restore.message">Press notification to restart application.</string>
 
     <string name="error.message.unknown">An unknown error has occurred</string>
     <string name="error.message.project_name_missing">You have to supply a name</string>
     <string name="error.message.project_name_already_exists">Project name already exists</string>
 
-    <string name="menu.title.actions">Actions</string>
+    <string name="error.notification.backup.title">Backup failed</string>
+    <string name="error.notification.backup.message">Backup to external storage failed.</string>
+
+    <string name="error.notification.restore.title">Restore failed</string>
+    <string name="error.notification.restore.message">Data restore from backup failed.</string>
 
 </resources>
