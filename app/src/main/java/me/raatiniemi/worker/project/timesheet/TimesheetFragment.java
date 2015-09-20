@@ -141,7 +141,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mRecyclerView.setAdapter(mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
         mRecyclerView.addItemDecoration(
                 new SimpleListDividerDecorator(
-                        getResources().getDrawable(R.drawable.expandable_list_item_divider),
+                        getResources().getDrawable(R.drawable.list_item_divider),
                         true
                 )
         );
