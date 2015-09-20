@@ -23,6 +23,7 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.format.DateFormat;
 import android.util.Log;
 
@@ -46,25 +47,20 @@ public class TimePickerFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        // Check if we have a callback listener.
+        // Check that we actually have a listener available.
         if (null == getOnTimeSetListener()) {
-            Log.e(TAG, "No listener have been supplied for the TimePickerFragment");
+            // The real reason for failure is to technical to display to the
+            // user, hence the unknown error message.
+            //
+            // And, the listener should always be available in the production
+            // version, i.e. this should just be seen as developer feedback.
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    R.string.error_message_unknown,
+                    Snackbar.LENGTH_SHORT
+            ).show();
 
-            // We're unable to use the TimePickerFragment
-            // since we do not have listener.
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(getString(R.string.time_picker_fragment_no_listener_title))
-                    .setMessage(getString(R.string.time_picker_fragment_no_listener_description))
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Do nothing...
-                        }
-                    })
-                    .show();
-
-            // Dismiss the dialog since we are unable
-            // to properly handle events with it.
+            Log.w(TAG, "No OnTimeSetListener have been supplied");
             dismiss();
         }
     }
