@@ -4,8 +4,14 @@
     <string name="app_name">Worker</string>
     <string name="projects_title">Projects</string>
 
+    <string name="menu.title.actions">Actions</string>
+
     <string name="menu.actions.main.create_new_project">Create new project</string>
     <string name="menu.actions.main.settings">Settings</string>
+
+    <string name="menu.actions.project.edit">Edit</string>
+    <string name="menu.actions.project.register">Mark as registered</string>
+    <string name="menu.actions.project.delete">Delete</string>
 
     <string name="projects_item_clocked_in_since" formatted="false">Since %s (%s)</string>
     <string name="projects_item_action_clock_in">Clock in now</string>
@@ -29,10 +35,6 @@
 
     <string name="message.project_deleted">Project have been deleted</string>
 
-    <string name="menu.actions.project.edit">Edit</string>
-    <string name="menu.actions.project.register">Mark as registered</string>
-    <string name="menu.actions.project.delete">Delete</string>
-
     <string name="settings_category_preferences">Preferences</string>
     <string name="settings_screen_data">Data</string>
     <string name="settings_backup">Backup</string>
@@ -51,7 +53,5 @@
     <string name="error.message.unknown">An unknown error has occurred</string>
     <string name="error.message.project_name_missing">You have to supply a name</string>
     <string name="error.message.project_name_already_exists">Project name already exists</string>
-
-    <string name="menu.title.actions">Actions</string>
 
 </resources>
