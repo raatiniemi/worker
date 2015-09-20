@@ -140,8 +140,8 @@ public class DataIntentService extends IntentService {
             // Send the "Backup complete" notification to the user.
             notification = new NotificationCompat.Builder(this)
                     .setSmallIcon(R.drawable.ic_backup_white_24dp)
-                    .setContentTitle(getString(R.string.data_intent_service_backup_complete_title))
-                    .setContentText(getString(R.string.data_intent_service_backup_complete_message));
+                    .setContentTitle(getString(R.string.notification_backup_title))
+                    .setContentText(getString(R.string.notification_backup_message));
 
             // Assemble and post the successful backup event.
             Backup backup = new Backup(directory);
