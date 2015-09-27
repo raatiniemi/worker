@@ -1,6 +1,6 @@
 # Worker
 ![license](https://img.shields.io/badge/license-GPLv2-blue.svg)
-[![build status](http://gitlab.raatiniemi.me/ci/projects/6/status.png?ref=master)](http://gitlab.raatiniemi.me/ci/projects/6?ref=master)
+[![build status](https://gitlab.raatiniemi.me/ci/projects/9/status.png?ref=master)](https://gitlab.raatiniemi.me/ci/projects/9?ref=master)
 
 ## Contributing
 
