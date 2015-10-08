@@ -73,7 +73,7 @@ public class WorkerProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
@@ -92,7 +92,7 @@ public class WorkerProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         // Build the limit section of the query, with the offset.
         // TODO: Add proper validation and additional controls.
         // TODO: Simplify the process of retrieving offset and limit.
@@ -110,7 +110,7 @@ public class WorkerProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 
         final long id;
@@ -132,20 +132,21 @@ public class WorkerProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return buildSelection(uri)
                 .where(selection, selectionArgs)
                 .update(mOpenHelper.getWritableDatabase(), values);
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         return buildSelection(uri)
                 .where(selection, selectionArgs)
                 .delete(mOpenHelper.getWritableDatabase());
     }
 
     @Override
+    @NonNull
     public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations)
             throws OperationApplicationException {
 
