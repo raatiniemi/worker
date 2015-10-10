@@ -20,7 +20,7 @@ function isCommandAvailable {
     $(which $1 >/dev/null 2>/dev/null);
     if [ $? -eq 1 ]; then
         echo "Unable to locate $1";
-        exit;
+        exit 1;
     fi;
 }
 
