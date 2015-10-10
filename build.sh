@@ -38,10 +38,10 @@ fi;
 [ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;
 
 # Clean, test, and assemble the APK.
-./gradlew \
-    clean \
-    test \
-    assemble
+./gradlew clean test assemble;
+if [ $? -eq 1 ]; then
+    exit 1;
+fi;
 
 # Check if we should send the APK to the deployment server for signing.
 if [ $sign = true ]; then
