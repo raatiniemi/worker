@@ -58,7 +58,6 @@ public class ProjectMapperTest {
         assertEquals("Project name", project.getName());
         assertEquals("Project description", project.getDescription());
         assertTrue(project.isArchived());
-        assertEquals(Long.valueOf(1L), project.getArchived());
     }
 
     @Test

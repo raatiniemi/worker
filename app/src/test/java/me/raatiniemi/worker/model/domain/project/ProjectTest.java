@@ -51,7 +51,6 @@ public class ProjectTest {
         assertNull(project.getName());
 
         assertFalse(project.isArchived());
-        assertEquals(Long.valueOf(0L), project.getArchived());
         assertTrue(project.getTime().isEmpty());
     }
 
@@ -63,7 +62,6 @@ public class ProjectTest {
         assertEquals("Project name", project.getName());
 
         assertFalse(project.isArchived());
-        assertEquals(Long.valueOf(0L), project.getArchived());
         assertTrue(project.getTime().isEmpty());
     }
 
@@ -75,7 +73,6 @@ public class ProjectTest {
         assertEquals("Project name", project.getName());
 
         assertFalse(project.isArchived());
-        assertEquals(Long.valueOf(0L), project.getArchived());
         assertTrue(project.getTime().isEmpty());
     }
 
@@ -153,25 +150,6 @@ public class ProjectTest {
         project.setArchived(false);
 
         assertFalse(project.isArchived());
-    }
-
-    @Test
-    public void getArchived_defaultValue() {
-        Project project = new Project();
-
-        assertEquals(Long.valueOf(0L), project.getArchived());
-    }
-
-    @Test
-    public void getArchived_valueFromSetter() {
-        Project project = new Project();
-        project.setArchived(1L);
-
-        assertEquals(Long.valueOf(1L), project.getArchived());
-
-        project.setArchived(0L);
-
-        assertEquals(Long.valueOf(0L), project.getArchived());
     }
 
     @Test
