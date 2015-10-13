@@ -193,7 +193,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     @Override
     public void onItemClick(View view) {
         // Retrieve the position for the project from the RecyclerView.
-        final int position = mRecyclerView.getChildPosition(view);
+        final int position = mRecyclerView.getChildAdapterPosition(view);
         if (RecyclerView.NO_POSITION == position) {
             Log.w(TAG, "Unable to retrieve project position for onItemClick");
             return;
