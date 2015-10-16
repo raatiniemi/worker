@@ -47,11 +47,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     private LinearLayoutManager mLinearLayoutManager;
 
-    private RecyclerView mRecyclerView;
-
     private TimesheetAdapter mTimesheetAdapter;
-
-    private RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager;
 
     private TimeInAdapterResult mSelectedItem;
 
@@ -133,9 +129,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
         mTimesheetAdapter = new TimesheetAdapter(this);
-        mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
+        RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager
+                = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setAdapter(mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
