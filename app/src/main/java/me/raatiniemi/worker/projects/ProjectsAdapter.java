@@ -29,6 +29,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
@@ -159,7 +160,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
             clockedInSinceText = resources.getString(R.string.fragment_projects_item_clocked_in_since);
             clockedInSinceText = String.format(
                     clockedInSinceText,
-                    (new SimpleDateFormat("HH:mm")).format(clockedInSince),
+                    (new SimpleDateFormat("HH:mm", Locale.getDefault())).format(clockedInSince),
                     DateIntervalFormat.format(
                             project.getElapsed(),
                             DateIntervalFormat.Type.HOURS_MINUTES
