@@ -42,7 +42,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
 
         // If the project is active we have to set the minimum date for clocking out.
-        if (null != project && project.isActive()) {
+        if (null != project && null != project.getClockedInSince()) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(project.getClockedInSince());
             fragment.setMinDate(calendar);
