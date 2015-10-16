@@ -13,6 +13,7 @@
         android:label="@string/name"
         android:icon="@drawable/ic_launcher"
         android:theme="@style/Theme"
+        android:supportsRtl="true"
         >
 
         <activity
