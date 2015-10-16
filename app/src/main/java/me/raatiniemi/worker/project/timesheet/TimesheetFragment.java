@@ -55,7 +55,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     private ActionMode mActionMode;
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             actionMode.setTitle(R.string.menu_title_actions);

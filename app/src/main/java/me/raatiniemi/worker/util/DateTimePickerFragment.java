@@ -39,7 +39,7 @@ public class DateTimePickerFragment extends BaseFragment
     /**
      * Date and time set by the "DateTimePickerFragment".
      */
-    private Calendar mCalendar = Calendar.getInstance();
+    private final Calendar mCalendar = Calendar.getInstance();
 
     /**
      * Listener for the selected date and time.

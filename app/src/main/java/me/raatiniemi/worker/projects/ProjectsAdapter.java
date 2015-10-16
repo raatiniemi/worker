@@ -50,7 +50,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     /**
      * Listener for project actions.
      */
-    private OnProjectActionListener mOnProjectActionListener;
+    private final OnProjectActionListener mOnProjectActionListener;
 
     /**
      * Listener for hinting images.
@@ -221,37 +221,37 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         /**
          * Field for the project name.
          */
-        public TextView mName;
+        public final TextView mName;
 
         /**
          * Field for the registered project time.
          */
-        public TextView mTime;
+        public final TextView mTime;
 
         /**
          * Field for the project description.
          */
-        public TextView mDescription;
+        public final TextView mDescription;
 
         /**
          * Icon for toggling the project activity.
          */
-        public ImageButton mClockActivityToggle;
+        public final ImageButton mClockActivityToggle;
 
         /**
          * Icon for toggling the project activity, with date and time.
          */
-        public ImageButton mClockActivityAt;
+        public final ImageButton mClockActivityAt;
 
         /**
          * Icon for deleting project.
          */
-        public ImageButton mDelete;
+        public final ImageButton mDelete;
 
         /**
          * Field for the time when the project was clocked in.
          */
-        public TextView mClockedInSince;
+        public final TextView mClockedInSince;
 
         public ItemViewHolder(View view) {
             super(view);

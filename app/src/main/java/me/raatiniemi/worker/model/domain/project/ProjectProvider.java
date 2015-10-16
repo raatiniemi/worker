@@ -48,7 +48,7 @@ public class ProjectProvider {
     /**
      * Context used with the project provider.
      */
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Constructor.

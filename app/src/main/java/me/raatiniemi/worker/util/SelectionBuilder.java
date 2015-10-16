@@ -28,9 +28,9 @@ import java.util.List;
 public class SelectionBuilder {
     private String mTable;
 
-    private StringBuilder mSelection = new StringBuilder();
+    private final StringBuilder mSelection = new StringBuilder();
 
-    private List<String> mSelectionArgs = new ArrayList<>();
+    private final List<String> mSelectionArgs = new ArrayList<>();
 
     private String mGroupBy;
 

@@ -273,7 +273,7 @@ abstract public class ExpandableListAdapter<
         /**
          * Group item.
          */
-        private G mGroup;
+        private final G mGroup;
 
         /**
          * Constructor, initialize with the group item.

@@ -37,7 +37,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     /**
      * Provider for working with projects.
      */
-    private ProjectProvider mProvider;
+    private final ProjectProvider mProvider;
 
     /**
      * Constructor.
