@@ -147,7 +147,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                         true
                 )
         );
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 // Make sure we're not loading data before checking the position.
