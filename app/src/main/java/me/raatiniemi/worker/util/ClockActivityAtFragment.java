@@ -16,7 +16,10 @@
 
 package me.raatiniemi.worker.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -51,11 +54,34 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         return fragment;
     }
 
+    /**
+     * Setup the fragment, this method is primarily used as a single setup
+     * between API versions.
+     */
+    private void setup() {
+        setOnDateTimeSetListener(this);
+    }
+
+    @TargetApi(23)
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        setup();
+    }
+
+    /**
+     * TODO: Remove method call when `minSdkVersion` is +23.
+     */
+    @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        setOnDateTimeSetListener(this);
+        // In API +23 the `setup` is called from the `onAttach(Context)`.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            setup();
+        }
     }
 
     @Override

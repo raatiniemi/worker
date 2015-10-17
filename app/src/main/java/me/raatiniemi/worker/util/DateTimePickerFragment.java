@@ -16,10 +16,13 @@
 
 package me.raatiniemi.worker.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -113,10 +116,11 @@ public class DateTimePickerFragment extends BaseFragment
         mMaxDate = maxDate;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
+    /**
+     * Setup the fragment, this method is primarily used as a single setup
+     * between API versions.
+     */
+    private void setup() {
         mDatePicker = new DatePickerFragment();
         mDatePicker.setOnDateSetListener(this);
 
@@ -139,6 +143,28 @@ public class DateTimePickerFragment extends BaseFragment
                 getFragmentManager().beginTransaction(),
                 FRAGMENT_DATE_PICKER_TAG
         );
+    }
+
+    @TargetApi(23)
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        setup();
+    }
+
+    /**
+     * TODO: Remove method call when `minSdkVersion` is +23.
+     */
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // In API +23 the `setup` is called from the `onAttach(Context)`.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            setup();
+        }
     }
 
     @Override
