@@ -63,7 +63,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             actionMode.setTitle(R.string.menu_title_actions);
-            actionMode.getMenuInflater().inflate(R.menu.actions_project, menu);
+            actionMode.getMenuInflater().inflate(R.menu.actions_project_timesheet, menu);
             return true;
         }
 
@@ -77,7 +77,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
             boolean finish = false;
 
             switch (item.getItemId()) {
-                case R.id.actions_project_delete:
+                case R.id.actions_project_timesheet_delete:
                     // Before we remove the time, the user have to confirm this
                     // action since the remove and register is fairly close.
                     new AlertDialog.Builder(getActivity())
@@ -99,7 +99,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                     // finish the action here.
                     finish = false;
                     break;
-                case R.id.actions_project_register:
+                case R.id.actions_project_timesheet_register:
                     getPresenter().register(mSelectedItem);
                     finish = true;
                     break;
