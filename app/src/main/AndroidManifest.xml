@@ -10,6 +10,7 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_scheme"
         android:label="@string/name"
         android:icon="@drawable/ic_launcher"
         android:theme="@style/Theme"
