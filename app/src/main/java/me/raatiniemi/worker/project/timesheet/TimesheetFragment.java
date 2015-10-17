@@ -41,6 +41,8 @@ import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResu
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 
+import static me.raatiniemi.worker.R.drawable.list_item_divider;
+
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>
         implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
@@ -138,7 +140,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mRecyclerView.setAdapter(mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
         mRecyclerView.addItemDecoration(
                 new SimpleListDividerDecorator(
-                        getResources().getDrawable(R.drawable.list_item_divider),
+                        getResources().getDrawable(list_item_divider),
                         true
                 )
         );
