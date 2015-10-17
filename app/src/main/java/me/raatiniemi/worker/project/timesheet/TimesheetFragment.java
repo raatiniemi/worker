@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.project.timesheet;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,13 +73,31 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode actionMode, MenuItem item) {
             boolean finish = false;
 
             switch (item.getItemId()) {
                 case R.id.actions_project_delete:
-                    getPresenter().remove(mSelectedItem);
-                    finish = true;
+                    // Before we remove the time, the user have to confirm this
+                    // action since the remove and register is fairly close.
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.confirm_delete_time_title)
+                            .setMessage(R.string.confirm_delete_time_message)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    getPresenter().remove(mSelectedItem);
+
+                                    // Since the item have been removed, we can finish the action.
+                                    actionMode.finish();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null)
+                            .show();
+
+                    // Since we are waiting for the user to confirm the action, we are unable to
+                    // finish the action here.
+                    finish = false;
                     break;
                 case R.id.actions_project_register:
                     getPresenter().register(mSelectedItem);
