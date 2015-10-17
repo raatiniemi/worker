@@ -42,11 +42,11 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         > {
     private static final String TAG = "TimesheetAdapter";
 
-    private SimpleDateFormat mDateFormat;
+    private final SimpleDateFormat mDateFormat;
 
-    private SimpleDateFormat mTimeFormat;
+    private final SimpleDateFormat mTimeFormat;
 
-    private OnTimesheetListener mOnTimesheetListener;
+    private final OnTimesheetListener mOnTimesheetListener;
 
     public TimesheetAdapter(OnTimesheetListener listener) {
         mOnTimesheetListener = listener;
@@ -215,9 +215,9 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     public final static class TimeInAdapterResult {
-        private int mGroup;
+        private final int mGroup;
 
-        private int mChild;
+        private final int mChild;
 
         private Time mTime;
 

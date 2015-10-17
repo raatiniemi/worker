@@ -48,7 +48,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     /**
      * Provider for working with projects.
      */
-    private ProjectProvider mProvider;
+    private final ProjectProvider mProvider;
 
     /**
      * Interval iterator for refreshing active projects.

@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 import me.raatiniemi.worker.model.backup.Backup;
 
 public class BackupSuccessfulEvent {
-    private Backup mBackup;
+    private final Backup mBackup;
 
     public BackupSuccessfulEvent(@NonNull Backup backup) {
         mBackup = backup;

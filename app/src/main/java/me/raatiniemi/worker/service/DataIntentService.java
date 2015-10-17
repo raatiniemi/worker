@@ -61,7 +61,7 @@ public class DataIntentService extends IntentService {
      */
     private static RUNNING sRunning = RUNNING.NONE;
 
-    private EventBus mEventBus;
+    private final EventBus mEventBus;
 
     /**
      * Constructor.

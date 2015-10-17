@@ -11,7 +11,6 @@
     android:paddingRight="@dimen/fragment_new_project_padding_end"
     android:paddingEnd="@dimen/fragment_new_project_padding_end"
     android:paddingBottom="@dimen/fragment_new_project_padding_vertical"
-    android:minWidth="@dimen/dialog_fixed_width_minor"
     >
 
     <TextView

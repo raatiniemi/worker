@@ -29,6 +29,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ListAdapter;
@@ -49,7 +50,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
     /**
      * Listener for project actions.
      */
-    private OnProjectActionListener mOnProjectActionListener;
+    private final OnProjectActionListener mOnProjectActionListener;
 
     /**
      * Listener for hinting images.
@@ -159,7 +160,7 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
             clockedInSinceText = resources.getString(R.string.fragment_projects_item_clocked_in_since);
             clockedInSinceText = String.format(
                     clockedInSinceText,
-                    (new SimpleDateFormat("HH:mm")).format(clockedInSince),
+                    (new SimpleDateFormat("HH:mm", Locale.getDefault())).format(clockedInSince),
                     DateIntervalFormat.format(
                             project.getElapsed(),
                             DateIntervalFormat.Type.HOURS_MINUTES
@@ -220,37 +221,37 @@ public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemVi
         /**
          * Field for the project name.
          */
-        public TextView mName;
+        public final TextView mName;
 
         /**
          * Field for the registered project time.
          */
-        public TextView mTime;
+        public final TextView mTime;
 
         /**
          * Field for the project description.
          */
-        public TextView mDescription;
+        public final TextView mDescription;
 
         /**
          * Icon for toggling the project activity.
          */
-        public ImageButton mClockActivityToggle;
+        public final ImageButton mClockActivityToggle;
 
         /**
          * Icon for toggling the project activity, with date and time.
          */
-        public ImageButton mClockActivityAt;
+        public final ImageButton mClockActivityAt;
 
         /**
          * Icon for deleting project.
          */
-        public ImageButton mDelete;
+        public final ImageButton mDelete;
 
         /**
          * Field for the time when the project was clocked in.
          */
-        public TextView mClockedInSince;
+        public final TextView mClockedInSince;
 
         public ItemViewHolder(View view) {
             super(view);

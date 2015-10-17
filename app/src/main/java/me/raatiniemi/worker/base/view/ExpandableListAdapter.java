@@ -111,6 +111,7 @@ abstract public class ExpandableListAdapter<
      * @param child Child index to check.
      * @return True if child index exists within the group, otherwise false.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean has(int group, int child) {
         return has(group) && 0 <= child && getChildCount(group) > child;
     }
@@ -273,7 +274,7 @@ abstract public class ExpandableListAdapter<
         /**
          * Group item.
          */
-        private G mGroup;
+        private final G mGroup;
 
         /**
          * Constructor, initialize with the group item.

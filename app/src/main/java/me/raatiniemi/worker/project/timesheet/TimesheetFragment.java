@@ -41,17 +41,15 @@ import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResu
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 
+import static me.raatiniemi.worker.R.drawable.list_item_divider;
+
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>
         implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
     private LinearLayoutManager mLinearLayoutManager;
 
-    private RecyclerView mRecyclerView;
-
     private TimesheetAdapter mTimesheetAdapter;
-
-    private RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager;
 
     private TimeInAdapterResult mSelectedItem;
 
@@ -59,7 +57,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     private ActionMode mActionMode;
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             actionMode.setTitle(R.string.menu_title_actions);
@@ -133,19 +131,23 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
         mTimesheetAdapter = new TimesheetAdapter(this);
-        mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(savedInstanceState);
+        RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager
+                = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setAdapter(mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
         mRecyclerView.addItemDecoration(
                 new SimpleListDividerDecorator(
-                        getResources().getDrawable(R.drawable.list_item_divider),
+                        getResources().getDrawable(
+                                list_item_divider,
+                                getActivity().getTheme()
+                        ),
                         true
                 )
         );
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 // Make sure we're not loading data before checking the position.

@@ -141,32 +141,12 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Getter method for the archived project flag.
-     *
-     * @return Flag for archived project.
-     */
-    @Deprecated
-    public Long getArchived() {
-        return isArchived() ? 1L : 0L;
-    }
-
-    /**
      * Setter method for archived project flag.
      *
      * @param archived True if project is archived, otherwise false.
      */
     public void setArchived(boolean archived) {
         mArchived = archived;
-    }
-
-    /**
-     * Setter method for archived project flag.
-     *
-     * @param archived Flag for archived project.
-     */
-    @Deprecated
-    public void setArchived(Long archived) {
-        setArchived(1L == archived);
     }
 
     /**

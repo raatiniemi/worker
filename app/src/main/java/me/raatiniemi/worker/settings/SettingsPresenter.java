@@ -36,7 +36,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
      */
     private static final String TAG = "SettingsPresenter";
 
-    private EventBus mEventBus;
+    private final EventBus mEventBus;
 
     /**
      * Constructor.

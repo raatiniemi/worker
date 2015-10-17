@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.util;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -68,15 +67,13 @@ public class TimePickerFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
-        TimePickerDialog dialog = new TimePickerDialog(
+        return new TimePickerDialog(
                 getActivity(),
                 getOnTimeSetListener(),
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(getActivity())
         );
-
-        return dialog;
     }
 
     @Override

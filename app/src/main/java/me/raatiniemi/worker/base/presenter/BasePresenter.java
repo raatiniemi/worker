@@ -31,7 +31,7 @@ abstract public class BasePresenter<V extends MvpView> implements MvpPresenter<V
     /**
      * Context used with the presenter.
      */
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Weak reference for the view attached to the presenter.
@@ -70,6 +70,7 @@ abstract public class BasePresenter<V extends MvpView> implements MvpPresenter<V
      *
      * @return True if a view is attached, otherwise false.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isViewAttached() {
         return null != getView();
     }

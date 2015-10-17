@@ -40,7 +40,7 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * Context used with the adapter.
      */
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Items for the adapter to display.
@@ -55,7 +55,7 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * On click listener for views within the ListAdapter.
      */
-    private OnClickListener mOnClickListener = new OnClickListener();
+    private final OnClickListener mOnClickListener = new OnClickListener();
 
     /**
      * Construct the ListAdapter.

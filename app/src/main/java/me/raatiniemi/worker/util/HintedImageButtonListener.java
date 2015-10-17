@@ -26,7 +26,7 @@ import android.widget.Toast;
  * Display hint for the image via long click.
  */
 public class HintedImageButtonListener implements View.OnLongClickListener {
-    protected Context mContext;
+    protected final Context mContext;
 
     /**
      * Construct the hinted image button listener.
