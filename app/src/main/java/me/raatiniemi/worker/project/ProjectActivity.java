@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.project;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
@@ -41,5 +43,25 @@ public class ProjectActivity extends BaseActivity {
                     .replace(R.id.fragment_container, fragment, ProjectActivity.FRAGMENT_TIMESHEET_TAG)
                     .commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actions_project, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actions_project_hide_registered:
+                item.setChecked(!item.isChecked());
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 }
