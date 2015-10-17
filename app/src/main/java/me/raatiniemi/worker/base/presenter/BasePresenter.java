@@ -70,6 +70,7 @@ abstract public class BasePresenter<V extends MvpView> implements MvpPresenter<V
      *
      * @return True if a view is attached, otherwise false.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isViewAttached() {
         return null != getView();
     }
