@@ -19,8 +19,6 @@ package me.raatiniemi.worker.project.timesheet;
 import android.content.Context;
 import android.util.Log;
 
-import java.util.List;
-
 import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.model.domain.time.Time;
@@ -59,28 +57,20 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
 
         // Setup the subscription for retrieving timesheet.
         mSubscription = mProvider.getTimesheet(id, offset)
-                .compose(this.<List<TimesheetItem>>applySchedulers())
-                .subscribe(new Subscriber<List<TimesheetItem>>() {
+                .compose(this.<TimesheetItem>applySchedulers())
+                .subscribe(new Subscriber<TimesheetItem>() {
                     @Override
-                    public void onNext(List<TimesheetItem> items) {
+                    public void onNext(TimesheetItem item) {
                         Log.d(TAG, "getTimesheet onNext");
 
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {
-                            Log.d(TAG, "View is not attached, skip pushing timesheet");
-                            return;
-                        }
-
-                        // Depending on the offset we have to set the initial data
-                        // or add data to the existing collection.
-                        if (0 == offset) {
-                            // Push the data to the view.
-                            getView().setData(items);
+                            Log.d(TAG, "View is not attached, skip pushing item");
                             return;
                         }
 
                         // Push the data to the view.
-                        getView().addData(items);
+                        getView().add(item);
                     }
 
                     @Override
@@ -103,6 +93,15 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "getTimesheet onCompleted");
+
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing finish");
+                            return;
+                        }
+
+                        // Available data have been pushed.
+                        getView().finishLoading();
                     }
                 });
     }

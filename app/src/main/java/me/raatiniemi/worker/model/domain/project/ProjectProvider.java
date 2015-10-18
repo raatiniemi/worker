@@ -457,7 +457,7 @@ public class ProjectProvider {
                 });
     }
 
-    public Observable<List<TimesheetItem>> getTimesheet(final Long id, final int offset) {
+    public Observable<TimesheetItem> getTimesheet(final Long id, final int offset) {
         // TODO: Simplify the builing of the URI with query parameters.
         Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(id))
                 .buildUpon()
@@ -523,7 +523,6 @@ public class ProjectProvider {
                         }
                         return item;
                     }
-                })
-                .toList();
+                });
     }
 }

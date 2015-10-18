@@ -16,9 +16,23 @@
 
 package me.raatiniemi.worker.project.timesheet;
 
+import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
+
 public interface TimesheetView {
     /**
      * Initiate refresh of the view.
      */
     void refresh();
+
+    /**
+     * Add single item to the view.
+     *
+     * @param item Item to add to the view.
+     */
+    void add(TimesheetItem item);
+
+    /**
+     * The view have finished loading data.
+     */
+    void finishLoading();
 }

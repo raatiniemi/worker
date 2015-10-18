@@ -218,16 +218,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mTimesheetAdapter.setItems(data);
     }
 
-    public void addData(List<TimesheetItem> data) {
-        if (0 == data.size()) {
-            Log.d(TAG, "No data to add");
-            return;
-        }
+    @Override
+    public void add(TimesheetItem item) {
+        mTimesheetAdapter.add(item);
+    }
 
-        mTimesheetAdapter.add(data);
-
-        // If we are adding addional data we have to unlock the loading,
-        // otherwise additional data will not be loaded.
+    @Override
+    public void finishLoading() {
         mLoading = false;
     }
 
