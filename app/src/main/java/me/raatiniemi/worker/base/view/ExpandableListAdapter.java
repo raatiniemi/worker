@@ -165,9 +165,11 @@ abstract public class ExpandableListAdapter<
      * @param item Item to add to the adapter.
      */
     public void add(T item) {
-        // Add the item and notify the adapter.
+        // Before adding the item, we need to check the size, i.e. the position of the new item.
+        int position = getItems().size();
+
         getItems().add(item);
-        notifyDataSetChanged();
+        notifyItemInserted(position);
     }
 
     /**
