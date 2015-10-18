@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
 import me.raatiniemi.worker.project.timesheet.TimesheetFragment;
+import me.raatiniemi.worker.util.Settings;
 
 public class ProjectActivity extends BaseActivity {
     /**
@@ -49,6 +50,13 @@ public class ProjectActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actions_project, menu);
 
+        // Set the selected value for the option, otherwise the value will be set to default each
+        // time the activity is created.
+        MenuItem hideRegistered = menu.findItem(R.id.actions_project_hide_registered);
+        if (null != hideRegistered) {
+            hideRegistered.setChecked(Settings.shouldHideRegisteredTime(this));
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -57,6 +65,9 @@ public class ProjectActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.actions_project_hide_registered:
                 item.setChecked(!item.isChecked());
+
+                // Save the hide preference to the SharedPreferences.
+                Settings.setHideRegisteredTime(this, item.isChecked());
                 break;
             default:
                 return super.onOptionsItemSelected(item);

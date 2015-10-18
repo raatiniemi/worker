@@ -38,6 +38,7 @@ import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;
+import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Action1;
@@ -468,12 +469,20 @@ public class ProjectProvider {
                 .flatMap(new Func1<Uri, Observable<Cursor>>() {
                     @Override
                     public Observable<Cursor> call(Uri uri) {
+                        String selection = null;
+                        String[] selectionArgs = null;
+
+                        if (Settings.shouldHideRegisteredTime(getContext())) {
+                            selection = TimeContract.REGISTERED + "=?";
+                            selectionArgs = new String[]{"0"};
+                        }
+
                         Cursor cursor = getContext().getContentResolver()
                                 .query(
                                         uri,
                                         ProjectContract.COLUMNS_TIMESHEET,
-                                        null,
-                                        null,
+                                        selection,
+                                        selectionArgs,
                                         ProjectContract.ORDER_BY_TIMESHEET
                                 );
 
