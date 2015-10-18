@@ -26,6 +26,7 @@ import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.model.domain.time.Time;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
+import me.raatiniemi.worker.util.Settings;
 import rx.Subscriber;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
@@ -163,6 +164,13 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {
                             Log.d(TAG, "View is not attached, skip pushing time update");
+                            return;
+                        }
+
+                        // If we should hide registered time, we should remove
+                        // the item rather than updating it.
+                        if (Settings.shouldHideRegisteredTime(getContext())) {
+                            getView().remove(result);
                             return;
                         }
 
