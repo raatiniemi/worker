@@ -17,10 +17,13 @@
 package me.raatiniemi.worker.project;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
 import me.raatiniemi.worker.project.timesheet.TimesheetFragment;
+import me.raatiniemi.worker.util.Settings;
 
 public class ProjectActivity extends BaseActivity {
     /**
@@ -28,18 +31,69 @@ public class ProjectActivity extends BaseActivity {
      */
     public static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
 
+    /**
+     * Reference to the timesheet fragment.
+     */
+    private TimesheetFragment mTimesheetFragment;
+
+    /**
+     * Get the timesheet fragment, handles construction if needed.
+     *
+     * @return Timesheet fragment.
+     */
+    private TimesheetFragment getTimesheetFragment() {
+        if (null == mTimesheetFragment) {
+            mTimesheetFragment = new TimesheetFragment();
+            mTimesheetFragment.setArguments(getIntent().getExtras());
+        }
+
+        return mTimesheetFragment;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
         if (null == savedInstanceState) {
-            TimesheetFragment fragment = new TimesheetFragment();
-            fragment.setArguments(getIntent().getExtras());
-
             getFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment, ProjectActivity.FRAGMENT_TIMESHEET_TAG)
+                    .replace(
+                            R.id.fragment_container,
+                            getTimesheetFragment(),
+                            ProjectActivity.FRAGMENT_TIMESHEET_TAG
+                    )
                     .commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actions_project, menu);
+
+        // Set the selected value for the option, otherwise the value will be set to default each
+        // time the activity is created.
+        MenuItem hideRegistered = menu.findItem(R.id.actions_project_hide_registered);
+        if (null != hideRegistered) {
+            hideRegistered.setChecked(Settings.shouldHideRegisteredTime(this));
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actions_project_hide_registered:
+                item.setChecked(!item.isChecked());
+
+                // Save the hide preference to the SharedPreferences.
+                Settings.setHideRegisteredTime(this, item.isChecked());
+                getTimesheetFragment().refresh();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 }

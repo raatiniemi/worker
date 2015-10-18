@@ -17,4 +17,8 @@
 package me.raatiniemi.worker.project.timesheet;
 
 public interface TimesheetView {
+    /**
+     * Initiate refresh of the view.
+     */
+    void refresh();
 }

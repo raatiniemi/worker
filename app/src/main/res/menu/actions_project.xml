@@ -4,22 +4,10 @@
     >
 
     <item
-        android:id="@+id/actions_project_edit"
-        android:title="@string/menu.actions.project.edit"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:visible="false"
-        />
-
-    <item
-        android:id="@+id/actions_project_register"
-        android:title="@string/menu.actions.project.register"
-        android:icon="@drawable/ic_check_circle_white_24dp"
-        />
-
-    <item
-        android:id="@+id/actions_project_delete"
-        android:title="@string/menu.actions.project.delete"
-        android:icon="@android:drawable/ic_menu_delete"
+        android:id="@+id/actions_project_hide_registered"
+        android:title="@string/menu.actions.project.hide_registered"
+        android:checked="false"
+        android:checkable="true"
         />
 
 </menu>
