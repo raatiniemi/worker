@@ -151,14 +151,14 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
         mTimesheetAdapter = new TimesheetAdapter(this);
-        RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager
+        RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
                 = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mRecyclerView.setHasFixedSize(false);
-        mRecyclerView.setAdapter(mRecyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
-        mRecyclerView.addItemDecoration(
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
+        recyclerView.setLayoutManager(mLinearLayoutManager);
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
+        recyclerView.addItemDecoration(
                 new SimpleListDividerDecorator(
                         getResources().getDrawable(
                                 list_item_divider,
@@ -167,7 +167,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                         true
                 )
         );
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 // Make sure we're not loading data before checking the position.
@@ -197,7 +197,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                 }
             }
         });
-        mRecyclerViewExpandableItemManager.attachRecyclerView(mRecyclerView);
+        recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
         getPresenter().attachView(this);
         getPresenter().getTimesheet(getProjectId(), 0);
