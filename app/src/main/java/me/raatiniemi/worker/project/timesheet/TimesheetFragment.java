@@ -231,6 +231,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         mLoading = false;
     }
 
+    @Override
+    public void refresh() {
+        // Clear the items from the list and start loading from the beginning...
+        mTimesheetAdapter.clear();
+        getPresenter().getTimesheet(getProjectId(), 0);
+    }
+
     public void remove(TimeInAdapterResult result) {
         mTimesheetAdapter.remove(result.getGroup(), result.getChild());
     }

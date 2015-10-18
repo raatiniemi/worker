@@ -265,6 +265,14 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
+     * Clear the items from the adapter.
+     */
+    public void clear() {
+        getItems().clear();
+        notifyDataSetChanged();
+    }
+
+    /**
      * Base type for the combined group and child item.
      *
      * @param <G> Reference type for the group item.
