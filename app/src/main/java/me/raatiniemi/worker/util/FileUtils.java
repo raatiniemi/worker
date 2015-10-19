@@ -44,22 +44,17 @@ public class FileUtils {
      * @throws IOException
      */
     public static long copy(@NonNull File from, @NonNull File to) throws IOException {
-        // Number of bytes copied between the locations.
-        long bytes = -1;
-
         Log.d(TAG, "Copy file from " + from.getPath() + " to " + to.getParent());
 
-        // Source and destination file channels, needs to be defined before the
-        // try-block otherwise we won't be able to close them in finally.
-        FileChannel source = null;
-        FileChannel destination = null;
+        // Number of bytes copied between the locations.
+        long bytes;
 
-        try {
-            // Open the read and write file channels for the source and
-            // destination locations.
-            source = new FileInputStream(from).getChannel();
-            destination = new FileOutputStream(to).getChannel();
-
+        try (
+                // Open the read and write file channels for the source and
+                // destination locations.
+                FileChannel source = new FileInputStream(from).getChannel();
+                FileChannel destination = new FileOutputStream(to).getChannel()
+        ) {
             // Begin copying the source file to the destination file.
             long size = source.size();
             bytes = destination.transferFrom(source, 0, size);
@@ -74,18 +69,6 @@ public class FileUtils {
                 );
             } else {
                 Log.d(TAG, bytes + " have been successfully copied");
-            }
-        } finally {
-            // If the source file channel is open, it needs to be closed.
-            if (null != source && source.isOpen()) {
-                Log.d(TAG, "Close the source file channel");
-                source.close();
-            }
-
-            // If the destination file channel is open, it needs to be closed.
-            if (null != destination && destination.isOpen()) {
-                Log.d(TAG, "Close the destination file channel");
-                destination.close();
             }
         }
 
