@@ -30,6 +30,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,7 +45,7 @@ import me.raatiniemi.worker.service.DataIntentService;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
-        implements SettingsView {
+        implements SettingsView, ActivityCompat.OnRequestPermissionsResultCallback {
     /**
      * Tag for logging.
      */
@@ -64,6 +65,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      * Key for the data restore preference.
      */
     private static final String SETTINGS_DATA_RESTORE_KEY = "settings_data_restore";
+
+    /**
+     * Code for requesting permission for reading external storage.
+     */
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     /**
      * Instance for the SettingsActivity.
@@ -100,6 +106,25 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     @Override
     protected SettingsPresenter createPresenter() {
         return new SettingsPresenter(this, EventBus.getDefault());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ) {
+        if (REQUEST_READ_EXTERNAL_STORAGE == requestCode) {
+            DataFragment fragment = getDataFragment();
+            if (null != fragment) {
+                // Whether we've been granted read permission or not a call to
+                // the `checkLatestBackup` will handle both scenario.
+                fragment.checkLatestBackup();
+            }
+            return;
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**
@@ -372,12 +397,32 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED;
             if (havePermission) {
-                Log.d(TAG, "Permission for reading external storage is granted");
-
                 // Tell the SettingsActivity to fetch the latest backup.
+                Log.d(TAG, "Permission for reading external storage is granted");
                 getInstance().getPresenter()
                         .getLatestBackup();
+
+                // No need to go any further.
+                return;
             }
+
+            // We have not been granted permission to read the external storage. Display the
+            // permission message and allow the user to initiate the permission request.
+            Log.d(TAG, "Permission for reading external storage is not granted");
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    R.string.message_permission_read_backup,
+                    Snackbar.LENGTH_INDEFINITE
+            ).setAction(android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityCompat.requestPermissions(
+                            getActivity(),
+                            new String[]{READ_EXTERNAL_STORAGE},
+                            REQUEST_READ_EXTERNAL_STORAGE
+                    );
+                }
+            }).show();
         }
 
         /**

@@ -39,6 +39,8 @@
     <string name="message.project_created">New project have been created</string>
     <string name="message.project_deleted">Project have been deleted</string>
 
+    <string name="message.permission.read_backup">Need permission to read backup.</string>
+
     <string name="activity.settings.preferences">Preferences</string>
     <string name="activity.settings.data">Data</string>
     <string name="activity.settings.backup">Backup</string>
