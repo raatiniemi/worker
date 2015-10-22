@@ -19,6 +19,7 @@ package me.raatiniemi.worker.settings;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -26,6 +27,7 @@ import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -38,6 +40,8 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpActivity;
 import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
         implements SettingsView {
@@ -264,9 +268,8 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             addPreferencesFromResource(R.xml.settings_data);
 
-            // Tell the SettingsActivity to fetch the latest backup.
-            getInstance().getPresenter()
-                    .getLatestBackup();
+            // Check for the latest backup.
+            checkLatestBackup();
         }
 
         @Override
@@ -320,6 +323,25 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         @Override
         public int getTitle() {
             return R.string.activity_settings_data;
+        }
+
+        /**
+         * Get the latest backup, if permission have been granted.
+         */
+        private void checkLatestBackup() {
+            // We should only attempt to check the latest backup if permission
+            // to read the external storage have been granted.
+            boolean havePermission = ActivityCompat.checkSelfPermission(
+                    getActivity(),
+                    READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED;
+            if (havePermission) {
+                Log.d(TAG, "Permission for reading external storage is granted");
+
+                // Tell the SettingsActivity to fetch the latest backup.
+                getInstance().getPresenter()
+                        .getLatestBackup();
+            }
         }
 
         /**
