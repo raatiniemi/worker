@@ -274,48 +274,18 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-            String intentAction;
-            String message;
-
             // Check if we support the user action, if not, send it to the
             // parent which will handle it.
             switch (preference.getKey()) {
                 case SETTINGS_DATA_BACKUP_KEY:
-                    intentAction = DataIntentService.INTENT_ACTION_BACKUP;
-                    message = "Backing up data...";
+                    runBackup();
                     break;
                 case SETTINGS_DATA_RESTORE_KEY:
-                    intentAction = DataIntentService.INTENT_ACTION_RESTORE;
-                    message = "Restoring data...";
+                    runRestore();
                     break;
                 default:
                     return super.onPreferenceTreeClick(preferenceScreen, preference);
             }
-
-            // Check that no other data operation is already running, we
-            // wouldn't want backup and restore running simultaneously.
-            if (DataIntentService.RUNNING.NONE != DataIntentService.getRunning()) {
-                Snackbar.make(
-                        getActivity().findViewById(android.R.id.content),
-                        "Data operation is already running...",
-                        Snackbar.LENGTH_LONG
-                ).show();
-
-                // No need to go any futher, we can't allow for any
-                // additional data operation to start.
-                return false;
-            }
-
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    message,
-                    Snackbar.LENGTH_SHORT
-            ).show();
-
-            // Start the data operation.
-            Intent intent = new Intent(getActivity(), DataIntentService.class);
-            intent.setAction(intentAction);
-            getActivity().startService(intent);
 
             return false;
         }
@@ -323,6 +293,72 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         @Override
         public int getTitle() {
             return R.string.activity_settings_data;
+        }
+
+        /**
+         * Check if a backup/restore action is already running.
+         *
+         * @return true if action is running, otherwise false.
+         */
+        private boolean checkRunningAction() {
+            // Check that no other data operation is already running, we
+            // don't want two actions to run simultaneously.
+            boolean isRunning = DataIntentService.RUNNING.NONE != DataIntentService.getRunning();
+            if (isRunning) {
+                Snackbar.make(
+                        getActivity().findViewById(android.R.id.content),
+                        "Data operation is already running...",
+                        Snackbar.LENGTH_LONG
+                ).show();
+            }
+
+            return isRunning;
+        }
+
+        /**
+         * Initiate the backup action.
+         */
+        private void runBackup() {
+            // Check if a action is already running, we don't want two actions
+            // to run simultaneously.
+            if (checkRunningAction()) {
+                // Another action is running, no need to go any further.
+                return;
+            }
+
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    "Backing up data...",
+                    Snackbar.LENGTH_SHORT
+            ).show();
+
+            // Start the backup action.
+            Intent intent = new Intent(getActivity(), DataIntentService.class);
+            intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
+            getActivity().startService(intent);
+        }
+
+        /**
+         * Initiate the restore action.
+         */
+        private void runRestore() {
+            // Check if a action is already running, we don't want two actions
+            // to run simultaneously.
+            if (checkRunningAction()) {
+                // Another action is running, no need to go any further.
+                return;
+            }
+
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    "Restoring data...",
+                    Snackbar.LENGTH_SHORT
+            ).show();
+
+            // Start the restore action.
+            Intent intent = new Intent(getActivity(), DataIntentService.class);
+            intent.setAction(DataIntentService.INTENT_ACTION_RESTORE);
+            getActivity().startService(intent);
         }
 
         /**
