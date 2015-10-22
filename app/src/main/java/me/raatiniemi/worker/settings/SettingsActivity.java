@@ -43,6 +43,7 @@ import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
         implements SettingsView, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -351,16 +352,25 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 return;
             }
 
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    "Backing up data...",
-                    Snackbar.LENGTH_SHORT
-            ).show();
+            // We should only attempt to backup if permission to write
+            // to the external storage have been granted.
+            boolean havePermission = ActivityCompat.checkSelfPermission(
+                    getActivity(),
+                    WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED;
+            if (havePermission) {
+                Log.d(TAG, "Permission for writing to external storage is granted");
+                Snackbar.make(
+                        getActivity().findViewById(android.R.id.content),
+                        "Backing up data...",
+                        Snackbar.LENGTH_SHORT
+                ).show();
 
-            // Start the backup action.
-            Intent intent = new Intent(getActivity(), DataIntentService.class);
-            intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
-            getActivity().startService(intent);
+                // Start the backup action.
+                Intent intent = new Intent(getActivity(), DataIntentService.class);
+                intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
+                getActivity().startService(intent);
+            }
         }
 
         /**
