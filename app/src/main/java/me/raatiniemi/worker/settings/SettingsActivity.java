@@ -73,6 +73,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     /**
+     * Code for requesting permission for writing to external storage.
+     */
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+
+    /**
      * Instance for the SettingsActivity.
      */
     private static SettingsActivity sInstance;
@@ -115,17 +120,37 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             @NonNull String[] permissions,
             @NonNull int[] grantResults
     ) {
-        if (REQUEST_READ_EXTERNAL_STORAGE == requestCode) {
-            DataFragment fragment = getDataFragment();
-            if (null != fragment) {
-                // Whether we've been granted read permission or not a call to
-                // the `checkLatestBackup` will handle both scenario.
-                fragment.checkLatestBackup();
-            }
+        // Both of the permission requests require that the `DataFragment` is
+        // available, no ned to go any further if the fragment is not available.
+        DataFragment fragment = getDataFragment();
+        if (null == fragment) {
+            super.onRequestPermissionsResult(
+                    requestCode,
+                    permissions,
+                    grantResults
+            );
             return;
         }
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_READ_EXTERNAL_STORAGE:
+                // Whether we've been granted read permission or not, a call to
+                // the `checkLatestBackup` will handle both scenarios.
+                fragment.checkLatestBackup();
+                break;
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                // Only if we've been granted write permission should we backup.
+                // We should not display the permission message again unless the
+                // user attempt to backup.
+                if (1 == grantResults.length
+                        && PackageManager.PERMISSION_GRANTED == grantResults[0]) {
+                    fragment.runBackup();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
+        }
     }
 
     /**
@@ -370,7 +395,28 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 Intent intent = new Intent(getActivity(), DataIntentService.class);
                 intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
                 getActivity().startService(intent);
+
+                // No need to go any further.
+                return;
             }
+
+            // We have not been granted permission to write to the external storage. Display
+            // the permission message and allow the user to initiate the permission request.
+            Log.d(TAG, "Permission for writing to external storage is not granted");
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    R.string.message_permission_write_backup,
+                    Snackbar.LENGTH_INDEFINITE
+            ).setAction(android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityCompat.requestPermissions(
+                            getActivity(),
+                            new String[]{WRITE_EXTERNAL_STORAGE},
+                            REQUEST_WRITE_EXTERNAL_STORAGE
+                    );
+                }
+            }).show();
         }
 
         /**
