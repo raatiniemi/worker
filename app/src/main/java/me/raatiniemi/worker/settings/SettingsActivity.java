@@ -26,8 +26,10 @@ import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,9 +40,13 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpActivity;
 import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
+import me.raatiniemi.worker.util.PermissionUtil;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
-        implements SettingsView {
+        implements SettingsView, ActivityCompat.OnRequestPermissionsResultCallback {
     /**
      * Tag for logging.
      */
@@ -60,6 +66,16 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      * Key for the data restore preference.
      */
     private static final String SETTINGS_DATA_RESTORE_KEY = "settings_data_restore";
+
+    /**
+     * Code for requesting permission for reading external storage.
+     */
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
+
+    /**
+     * Code for requesting permission for writing to external storage.
+     */
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     /**
      * Instance for the SettingsActivity.
@@ -96,6 +112,44 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     @Override
     protected SettingsPresenter createPresenter() {
         return new SettingsPresenter(this, EventBus.getDefault());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ) {
+        // Both of the permission requests require that the `DataFragment` is
+        // available, no ned to go any further if the fragment is not available.
+        DataFragment fragment = getDataFragment();
+        if (null == fragment) {
+            super.onRequestPermissionsResult(
+                    requestCode,
+                    permissions,
+                    grantResults
+            );
+            return;
+        }
+
+        switch (requestCode) {
+            case REQUEST_READ_EXTERNAL_STORAGE:
+                // Whether we've been granted read permission or not, a call to
+                // the `checkLatestBackup` will handle both scenarios.
+                fragment.checkLatestBackup();
+                break;
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                // Only if we've been granted write permission should we backup.
+                // We should not display the permission message again unless the
+                // user attempt to backup.
+                if (PermissionUtil.verifyPermissions(grantResults)) {
+                    fragment.runBackup();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
+        }
     }
 
     /**
@@ -264,55 +318,24 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             addPreferencesFromResource(R.xml.settings_data);
 
-            // Tell the SettingsActivity to fetch the latest backup.
-            getInstance().getPresenter()
-                    .getLatestBackup();
+            // Check for the latest backup.
+            checkLatestBackup();
         }
 
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-            String intentAction;
-            String message;
-
             // Check if we support the user action, if not, send it to the
             // parent which will handle it.
             switch (preference.getKey()) {
                 case SETTINGS_DATA_BACKUP_KEY:
-                    intentAction = DataIntentService.INTENT_ACTION_BACKUP;
-                    message = "Backing up data...";
+                    runBackup();
                     break;
                 case SETTINGS_DATA_RESTORE_KEY:
-                    intentAction = DataIntentService.INTENT_ACTION_RESTORE;
-                    message = "Restoring data...";
+                    runRestore();
                     break;
                 default:
                     return super.onPreferenceTreeClick(preferenceScreen, preference);
             }
-
-            // Check that no other data operation is already running, we
-            // wouldn't want backup and restore running simultaneously.
-            if (DataIntentService.RUNNING.NONE != DataIntentService.getRunning()) {
-                Snackbar.make(
-                        getActivity().findViewById(android.R.id.content),
-                        "Data operation is already running...",
-                        Snackbar.LENGTH_LONG
-                ).show();
-
-                // No need to go any futher, we can't allow for any
-                // additional data operation to start.
-                return false;
-            }
-
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    message,
-                    Snackbar.LENGTH_SHORT
-            ).show();
-
-            // Start the data operation.
-            Intent intent = new Intent(getActivity(), DataIntentService.class);
-            intent.setAction(intentAction);
-            getActivity().startService(intent);
 
             return false;
         }
@@ -320,6 +343,133 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         @Override
         public int getTitle() {
             return R.string.activity_settings_data;
+        }
+
+        /**
+         * Check if a backup/restore action is already running.
+         *
+         * @return true if action is running, otherwise false.
+         */
+        private boolean checkRunningAction() {
+            // Check that no other data operation is already running, we
+            // don't want two actions to run simultaneously.
+            boolean isRunning = DataIntentService.RUNNING.NONE != DataIntentService.getRunning();
+            if (isRunning) {
+                Snackbar.make(
+                        getActivity().findViewById(android.R.id.content),
+                        "Data operation is already running...",
+                        Snackbar.LENGTH_LONG
+                ).show();
+            }
+
+            return isRunning;
+        }
+
+        /**
+         * Initiate the backup action.
+         */
+        private void runBackup() {
+            // Check if a action is already running, we don't want two actions
+            // to run simultaneously.
+            if (checkRunningAction()) {
+                // Another action is running, no need to go any further.
+                return;
+            }
+
+            // We should only attempt to backup if permission to write
+            // to the external storage have been granted.
+            if (PermissionUtil.havePermission(getActivity(), WRITE_EXTERNAL_STORAGE)) {
+                Log.d(TAG, "Permission for writing to external storage is granted");
+                Snackbar.make(
+                        getActivity().findViewById(android.R.id.content),
+                        "Backing up data...",
+                        Snackbar.LENGTH_SHORT
+                ).show();
+
+                // Start the backup action.
+                Intent intent = new Intent(getActivity(), DataIntentService.class);
+                intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
+                getActivity().startService(intent);
+
+                // No need to go any further.
+                return;
+            }
+
+            // We have not been granted permission to write to the external storage. Display
+            // the permission message and allow the user to initiate the permission request.
+            Log.d(TAG, "Permission for writing to external storage is not granted");
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    R.string.message_permission_write_backup,
+                    Snackbar.LENGTH_INDEFINITE
+            ).setAction(android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityCompat.requestPermissions(
+                            getActivity(),
+                            new String[]{WRITE_EXTERNAL_STORAGE},
+                            REQUEST_WRITE_EXTERNAL_STORAGE
+                    );
+                }
+            }).show();
+        }
+
+        /**
+         * Initiate the restore action.
+         */
+        private void runRestore() {
+            // Check if a action is already running, we don't want two actions
+            // to run simultaneously.
+            if (checkRunningAction()) {
+                // Another action is running, no need to go any further.
+                return;
+            }
+
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    "Restoring data...",
+                    Snackbar.LENGTH_SHORT
+            ).show();
+
+            // Start the restore action.
+            Intent intent = new Intent(getActivity(), DataIntentService.class);
+            intent.setAction(DataIntentService.INTENT_ACTION_RESTORE);
+            getActivity().startService(intent);
+        }
+
+        /**
+         * Get the latest backup, if permission have been granted.
+         */
+        private void checkLatestBackup() {
+            // We should only attempt to check the latest backup if permission
+            // to read the external storage have been granted.
+            if (PermissionUtil.havePermission(getActivity(), READ_EXTERNAL_STORAGE)) {
+                // Tell the SettingsActivity to fetch the latest backup.
+                Log.d(TAG, "Permission for reading external storage is granted");
+                getInstance().getPresenter()
+                        .getLatestBackup();
+
+                // No need to go any further.
+                return;
+            }
+
+            // We have not been granted permission to read the external storage. Display the
+            // permission message and allow the user to initiate the permission request.
+            Log.d(TAG, "Permission for reading external storage is not granted");
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    R.string.message_permission_read_backup,
+                    Snackbar.LENGTH_INDEFINITE
+            ).setAction(android.R.string.ok, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityCompat.requestPermissions(
+                            getActivity(),
+                            new String[]{READ_EXTERNAL_STORAGE},
+                            REQUEST_READ_EXTERNAL_STORAGE
+                    );
+                }
+            }).show();
         }
 
         /**
