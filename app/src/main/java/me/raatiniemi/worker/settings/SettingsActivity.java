@@ -19,7 +19,6 @@ package me.raatiniemi.worker.settings;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -41,6 +40,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpActivity;
 import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
+import me.raatiniemi.worker.util.PermissionUtil;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -142,8 +142,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 // Only if we've been granted write permission should we backup.
                 // We should not display the permission message again unless the
                 // user attempt to backup.
-                if (1 == grantResults.length
-                        && PackageManager.PERMISSION_GRANTED == grantResults[0]) {
+                if (PermissionUtil.verifyPermissions(grantResults)) {
                     fragment.runBackup();
                 }
                 break;
@@ -379,11 +378,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             // We should only attempt to backup if permission to write
             // to the external storage have been granted.
-            boolean havePermission = ActivityCompat.checkSelfPermission(
-                    getActivity(),
-                    WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED;
-            if (havePermission) {
+            if (PermissionUtil.havePermission(getActivity(), WRITE_EXTERNAL_STORAGE)) {
                 Log.d(TAG, "Permission for writing to external storage is granted");
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
@@ -448,11 +443,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         private void checkLatestBackup() {
             // We should only attempt to check the latest backup if permission
             // to read the external storage have been granted.
-            boolean havePermission = ActivityCompat.checkSelfPermission(
-                    getActivity(),
-                    READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED;
-            if (havePermission) {
+            if (PermissionUtil.havePermission(getActivity(), READ_EXTERNAL_STORAGE)) {
                 // Tell the SettingsActivity to fetch the latest backup.
                 Log.d(TAG, "Permission for reading external storage is granted");
                 getInstance().getPresenter()
