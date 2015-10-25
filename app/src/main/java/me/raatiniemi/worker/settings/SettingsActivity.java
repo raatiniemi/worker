@@ -166,12 +166,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         }
 
         if (null == fragment) {
-            String message = "Switch to preference screen '" + key + "' is not implemented";
-            Log.w(TAG, message);
-
+            Log.w(TAG, "Switch to preference screen '" + key + "' is not implemented");
             Snackbar.make(
                     findViewById(android.R.id.content),
-                    message,
+                    R.string.error_message_preference_screen_not_implemented,
                     Snackbar.LENGTH_SHORT
             ).show();
 
@@ -275,12 +273,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             if (preference instanceof PreferenceScreen) {
                 getInstance().switchPreferenceScreen(preference.getKey());
             } else {
-                String message = "Preference '" + preference.getTitle() + "' is not implemented";
-                Log.d(TAG, message);
-
+                Log.d(TAG, "Preference '" + preference.getTitle() + "' is not implemented");
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
-                        message,
+                        R.string.error_message_preference_not_implemented,
                         Snackbar.LENGTH_SHORT
                 ).show();
             }
@@ -357,7 +353,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             if (isRunning) {
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
-                        "Data operation is already running...",
+                        R.string.error_message_data_operation_already_running,
                         Snackbar.LENGTH_LONG
                 ).show();
             }
@@ -382,7 +378,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 Log.d(TAG, "Permission for writing to external storage is granted");
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
-                        "Backing up data...",
+                        R.string.message_backing_up_data,
                         Snackbar.LENGTH_SHORT
                 ).show();
 
@@ -427,7 +423,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             Snackbar.make(
                     getActivity().findViewById(android.R.id.content),
-                    "Restoring data...",
+                    R.string.message_restoring_data,
                     Snackbar.LENGTH_SHORT
             ).show();
 
@@ -484,13 +480,16 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 return;
             }
 
-            String text = "Unable to locate latest backup.";
+            String text = getString(R.string.activity_settings_backup_unable_to_find);
             if (null != backup) {
-                text = "No backup have been performed.";
+                text = getString(R.string.activity_settings_backup_none_available);
 
                 Date date = backup.getDate();
                 if (null != date) {
-                    text = "Last backup was performed at " + mFormat.format(date) + ".";
+                    text = getString(
+                            R.string.activity_settings_backup_performed_at,
+                            mFormat.format(date)
+                    );
                 }
             }
 
@@ -509,15 +508,17 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 return;
             }
 
-            String text = "Unable to restore, failed to locate backups.";
+            String text = getString(R.string.activity_settings_restore_unable_to_find);
             boolean enable = false;
             if (null != backup) {
-                text = "Nothing to restore, no backup is available.";
+                text = getString(R.string.activity_settings_restore_none_available);
 
                 Date date = backup.getDate();
                 if (null != date) {
-                    text = "Restore backup from " + mFormat.format(date) + ".\n" +
-                            "After restore you have to restart the application.";
+                    text = getString(
+                            R.string.activity_settings_restore_from,
+                            mFormat.format(date)
+                    );
                     enable = true;
                 }
             }

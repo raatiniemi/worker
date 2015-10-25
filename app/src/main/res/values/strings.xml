@@ -42,10 +42,19 @@
     <string name="message.permission.write_backup">Need permission to backup.</string>
     <string name="message.permission.read_backup">Need permission to read backup.</string>
 
+    <string name="message.backing_up_data">Backing up data…</string>
+    <string name="message.restoring_data">Restoring data…</string>
+
     <string name="activity.settings.preferences">Preferences</string>
     <string name="activity.settings.data">Data</string>
     <string name="activity.settings.backup">Backup</string>
+    <string name="activity.settings.backup.unable_to_find">Unable to locate latest backup.</string>
+    <string name="activity.settings.backup.none_available">No backup have been performed.</string>
+    <string name="activity.settings.backup.performed_at" formatted="false">Last backup was performed at %s.</string>
     <string name="activity.settings.restore">Restore</string>
+    <string name="activity.settings.restore.unable_to_find">Unable to restore, failed to locate backups.</string>
+    <string name="activity.settings.restore.none_available">Nothing to restore, no backup is available.</string>
+    <string name="activity.settings.restore.from" formatted="false">Restore backup from %s.\nAfter restore you have to restart the application.</string>
 
     <string name="notification.backup.title">Backup complete</string>
     <string name="notification.backup.message">Backup to external storage was successful.</string>
@@ -56,6 +65,11 @@
     <string name="error.message.unknown">An unknown error has occurred</string>
     <string name="error.message.project_name_missing">You have to supply a name</string>
     <string name="error.message.project_name_already_exists">Project name already exists</string>
+
+    <string name="error.message.preference_screen_not_implemented">Preference screen is not implemented.</string>
+    <string name="error.message.preference_not_implemented">Preference is not implemented.</string>
+
+    <string name="error.message.data_operation_already_running">Data operation is already running…</string>
 
     <string name="error.notification.backup.title">Backup failed</string>
     <string name="error.notification.backup.message">Backup to external storage failed.</string>
