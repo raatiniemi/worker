@@ -378,7 +378,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 Log.d(TAG, "Permission for writing to external storage is granted");
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
-                        "Backing up data...",
+                        R.string.message_backing_up_data,
                         Snackbar.LENGTH_SHORT
                 ).show();
 
