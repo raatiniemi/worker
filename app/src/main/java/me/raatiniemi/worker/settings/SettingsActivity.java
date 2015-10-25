@@ -353,7 +353,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             if (isRunning) {
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
-                        "Data operation is already running...",
+                        R.string.error_message_data_operation_already_running,
                         Snackbar.LENGTH_LONG
                 ).show();
             }
