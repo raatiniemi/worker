@@ -508,15 +508,17 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 return;
             }
 
-            String text = "Unable to restore, failed to locate backups.";
+            String text = getString(R.string.activity_settings_restore_unable_to_find);
             boolean enable = false;
             if (null != backup) {
-                text = "Nothing to restore, no backup is available.";
+                text = getString(R.string.activity_settings_restore_none_available);
 
                 Date date = backup.getDate();
                 if (null != date) {
-                    text = "Restore backup from " + mFormat.format(date) + ".\n" +
-                            "After restore you have to restart the application.";
+                    text = getString(
+                            R.string.activity_settings_restore_from,
+                            mFormat.format(date)
+                    );
                     enable = true;
                 }
             }
