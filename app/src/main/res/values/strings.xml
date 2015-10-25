@@ -57,6 +57,9 @@
     <string name="error.message.project_name_missing">You have to supply a name</string>
     <string name="error.message.project_name_already_exists">Project name already exists</string>
 
+    <string name="error.message.preference_screen_not_implemented">Preference screen is not implemented.</string>
+    <string name="error.message.preference_not_implemented">Preference is not implemented.</string>
+
     <string name="error.notification.backup.title">Backup failed</string>
     <string name="error.notification.backup.message">Backup to external storage failed.</string>
 

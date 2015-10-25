@@ -166,12 +166,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         }
 
         if (null == fragment) {
-            String message = "Switch to preference screen '" + key + "' is not implemented";
-            Log.w(TAG, message);
-
+            Log.w(TAG, "Switch to preference screen '" + key + "' is not implemented");
             Snackbar.make(
                     findViewById(android.R.id.content),
-                    message,
+                    R.string.error_message_preference_screen_not_implemented,
                     Snackbar.LENGTH_SHORT
             ).show();
 
@@ -275,12 +273,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             if (preference instanceof PreferenceScreen) {
                 getInstance().switchPreferenceScreen(preference.getKey());
             } else {
-                String message = "Preference '" + preference.getTitle() + "' is not implemented";
-                Log.d(TAG, message);
-
+                Log.d(TAG, "Preference '" + preference.getTitle() + "' is not implemented");
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
-                        message,
+                        R.string.error_message_preference_not_implemented,
                         Snackbar.LENGTH_SHORT
                 ).show();
             }
