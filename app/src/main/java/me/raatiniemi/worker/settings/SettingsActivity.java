@@ -423,7 +423,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             Snackbar.make(
                     getActivity().findViewById(android.R.id.content),
-                    "Restoring data...",
+                    R.string.message_restoring_data,
                     Snackbar.LENGTH_SHORT
             ).show();
 

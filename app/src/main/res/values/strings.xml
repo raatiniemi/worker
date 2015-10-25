@@ -43,6 +43,7 @@
     <string name="message.permission.read_backup">Need permission to read backup.</string>
 
     <string name="message.backing_up_data">Backing up data…</string>
+    <string name="message.restoring_data">Restoring data…</string>
 
     <string name="activity.settings.preferences">Preferences</string>
     <string name="activity.settings.data">Data</string>
