@@ -48,6 +48,9 @@
     <string name="activity.settings.preferences">Preferences</string>
     <string name="activity.settings.data">Data</string>
     <string name="activity.settings.backup">Backup</string>
+    <string name="activity.settings.backup.unable_to_find">Unable to locate latest backup.</string>
+    <string name="activity.settings.backup.none_available">No backup have been performed.</string>
+    <string name="activity.settings.backup.performed_at" formatted="false">Last backup was performed at %s.</string>
     <string name="activity.settings.restore">Restore</string>
 
     <string name="notification.backup.title">Backup complete</string>

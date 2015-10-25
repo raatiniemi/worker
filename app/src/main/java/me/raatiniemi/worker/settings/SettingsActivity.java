@@ -480,13 +480,16 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 return;
             }
 
-            String text = "Unable to locate latest backup.";
+            String text = getString(R.string.activity_settings_backup_unable_to_find);
             if (null != backup) {
-                text = "No backup have been performed.";
+                text = getString(R.string.activity_settings_backup_none_available);
 
                 Date date = backup.getDate();
                 if (null != date) {
-                    text = "Last backup was performed at " + mFormat.format(date) + ".";
+                    text = getString(
+                            R.string.activity_settings_backup_performed_at,
+                            mFormat.format(date)
+                    );
                 }
             }
 
