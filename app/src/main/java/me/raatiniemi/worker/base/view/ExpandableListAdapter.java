@@ -195,20 +195,21 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Remove group item in the adapter.
-     *
-     * @param group Index for group to be removed.
+     * @inheritDoc
      */
-    public void remove(int group) {
+    @Override
+    public T remove(int index) {
         // Check that the group index exists.
-        if (!has(group)) {
+        if (!has(index)) {
             Log.w(TAG, "Unable to remove group, it do not exists");
-            return;
+            return null;
         }
 
         // Remove the group and notify the change.
-        getItems().remove(group);
+        T item = getItems().remove(index);
         notifyDataSetChanged();
+
+        return item;
     }
 
     /**

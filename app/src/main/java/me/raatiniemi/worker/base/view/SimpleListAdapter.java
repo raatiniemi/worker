@@ -163,11 +163,9 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Remove an item from the adapter.
-     *
-     * @param index Index of the item to remove.
-     * @return Item removed from the adapter.
+     * @inheritDoc
      */
+    @Override
     public T remove(int index) {
         // Remove the item from the internal data container.
         T item = getItems().remove(index);

@@ -69,4 +69,12 @@ public interface ListAdapter<T> {
      * @return Index of the first new item.
      */
     int add(List<T> items);
+
+    /**
+     * Remove item at index from the adapter.
+     *
+     * @param index Index of the item to remove.
+     * @return Item removed from the adapter.
+     */
+    T remove(int index);
 }
