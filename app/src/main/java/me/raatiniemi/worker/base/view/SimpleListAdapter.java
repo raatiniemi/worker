@@ -109,9 +109,10 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * Get item from the adapter.
      *
-     * @param index Index of the item to retrieve.
-     * @return Item at the supplied index.
+     * @param index Index of the item to get.
+     * @return Item at the index.
      */
+    @Override
     public T get(int index) {
         return getItems().get(index);
     }

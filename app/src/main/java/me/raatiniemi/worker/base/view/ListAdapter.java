@@ -37,4 +37,12 @@ public interface ListAdapter<T> {
      * @param items Items for the adapter.
      */
     void setItems(List<T> items);
+
+    /**
+     * Get item from the adapter.
+     *
+     * @param index Index of the item to get.
+     * @return Item at the index.
+     */
+    T get(int index);
 }

@@ -116,19 +116,21 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Get the combined group and child item at given index.
+     * Get item from the adapter.
      *
-     * @param group Index for the group.
-     * @return Combined group and child item.
+     * @param index Index of the item to get.
+     * @return Item at the index.
+     * @throws IndexOutOfBoundsException if index is not found within items.
      */
-    public T get(int group) {
+    @Override
+    public T get(int index) {
         // Check that the group index exists before
         // attempting to retrieve it.
-        if (!has(group)) {
+        if (!has(index)) {
             throw new IndexOutOfBoundsException();
         }
 
-        return getItems().get(group);
+        return getItems().get(index);
     }
 
     /**
