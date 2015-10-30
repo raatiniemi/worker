@@ -228,20 +228,18 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Update group item in the adapter.
-     *
-     * @param group Index for group to be updated.
-     * @param item  Item to update the adapter.
+     * @inheritDoc
      */
-    public void update(int group, T item) {
+    @Override
+    public void set(int index, T item) {
         // Check that the group index exists.
-        if (!has(group)) {
-            Log.w(TAG, "Unable to update group, it do not exists");
+        if (!has(index)) {
+            Log.w(TAG, "Unable to set group, it do not exists");
             return;
         }
 
         // Update the group item and notify the adapter.
-        getItems().set(group, item);
+        getItems().set(index, item);
         notifyDataSetChanged();
     }
 
@@ -264,7 +262,7 @@ abstract public class ExpandableListAdapter<
         groupItem.set(child, item);
 
         // Trigger the adapter update on the group item.
-        update(group, groupItem);
+        set(group, groupItem);
     }
 
     /**
