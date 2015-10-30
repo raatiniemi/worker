@@ -31,7 +31,8 @@ import java.util.List;
  * @param <V> Reference type for the view holder.
  */
 abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
-        extends RecyclerView.Adapter<V> {
+        extends RecyclerView.Adapter<V>
+        implements ListAdapter<T> {
     /**
      * Tag for logging.
      */

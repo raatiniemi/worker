@@ -40,7 +40,8 @@ abstract public class ExpandableListAdapter<
         GVH extends ViewHolder,
         CVH extends ViewHolder
         >
-        extends AbstractExpandableItemAdapter<GVH, CVH> {
+        extends AbstractExpandableItemAdapter<GVH, CVH>
+        implements ListAdapter<T> {
     /**
      * Tag for logging.
      */
