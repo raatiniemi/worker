@@ -77,10 +77,9 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Get the items from the adapter, initialize items if uninitialized.
-     *
-     * @return Items from the adapter.
+     * @inheritDoc
      */
+    @Override
     public List<T> getItems() {
         if (null == mItems) {
             mItems = new ArrayList<>();

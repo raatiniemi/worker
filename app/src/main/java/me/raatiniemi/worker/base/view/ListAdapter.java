@@ -16,10 +16,18 @@
 
 package me.raatiniemi.worker.base.view;
 
+import java.util.List;
+
 /**
  * Generic interface for working with list adapters.
  *
  * @param <T> Type of item stored within the list adapter.
  */
 public interface ListAdapter<T> {
+    /**
+     * Get items from the adapter.
+     *
+     * @return Items from the adapter.
+     */
+    List<T> getItems();
 }

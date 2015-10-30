@@ -53,10 +53,9 @@ abstract public class ExpandableListAdapter<
     private List<T> mItems;
 
     /**
-     * Get the items from the adapater.
-     *
-     * @return Items from the adapter.
+     * @inheritDoc
      */
+    @Override
     public List<T> getItems() {
         if (null == mItems) {
             mItems = new ArrayList<>();
