@@ -53,4 +53,12 @@ public interface ListAdapter<T> {
      * @param item  Item to update at the index.
      */
     void set(int index, T item);
+
+    /**
+     * Add item to the adapter.
+     *
+     * @param item Item to add.
+     * @return Index of the new item.
+     */
+    int add(T item);
 }

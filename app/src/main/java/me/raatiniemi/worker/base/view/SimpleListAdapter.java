@@ -129,11 +129,9 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Add an item to the adapter.
-     *
-     * @param item Item to add to the adapter.
-     * @return Index of the new item within the adapter.
+     * @inheritDoc
      */
+    @Override
     public int add(T item) {
         // Retrieve the index for the new item by retrieving the number of
         // items within the adapter before adding the new item.

@@ -161,16 +161,20 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Add single item to the adapter.
-     *
-     * @param item Item to add to the adapter.
+     * @inheritDoc
      */
-    public void add(T item) {
-        // Before adding the item, we need to check the size, i.e. the position of the new item.
-        int position = getItems().size();
-
+    @Override
+    public int add(T item) {
+        // Retrieve the index of the new item by retrieving the number of
+        // items within the adapter before adding the new item.
+        int index = getItems().size();
         getItems().add(item);
-        notifyItemInserted(position);
+
+        // Notify the adapter, a new item have been added.
+        notifyItemInserted(index);
+
+        // Return the index for the new item.
+        return index;
     }
 
     /**
