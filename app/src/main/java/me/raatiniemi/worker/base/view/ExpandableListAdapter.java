@@ -64,10 +64,9 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Set items for the adapter.
-     *
-     * @param items Items for the adapter.
+     * @inheritDoc
      */
+    @Override
     public void setItems(List<T> items) {
         mItems = items;
         notifyDataSetChanged();

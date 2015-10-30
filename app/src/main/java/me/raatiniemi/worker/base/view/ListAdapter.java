@@ -30,4 +30,11 @@ public interface ListAdapter<T> {
      * @return Items from the adapter.
      */
     List<T> getItems();
+
+    /**
+     * Set items for the adapter.
+     *
+     * @param items Items for the adapter.
+     */
+    void setItems(List<T> items);
 }

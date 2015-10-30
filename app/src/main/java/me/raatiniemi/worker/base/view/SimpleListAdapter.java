@@ -88,10 +88,9 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Set items for the adapter.
-     *
-     * @param items Items for the adapter.
+     * @inheritDoc
      */
+    @Override
     public void setItems(List<T> items) {
         mItems = items;
         notifyDataSetChanged();
