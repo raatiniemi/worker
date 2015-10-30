@@ -178,14 +178,20 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Add collection of items to the adapter.
-     *
-     * @param items Collection of items to add to the adapter.
+     * @inheritDoc
      */
-    public void add(List<T> items) {
-        // Add the items and notify the adapter.
+    @Override
+    public int add(List<T> items) {
+        // Retrieve the current count to have a reference point
+        // at which location the new items will be inserted.
+        int index = getItemCount();
         getItems().addAll(items);
+
+        // Notify the adapter of the new items.
         notifyDataSetChanged();
+
+        // Return the reference point for the location of the new items.
+        return index;
     }
 
     /**

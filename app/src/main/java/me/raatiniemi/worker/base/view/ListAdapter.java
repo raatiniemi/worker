@@ -61,4 +61,12 @@ public interface ListAdapter<T> {
      * @return Index of the new item.
      */
     int add(T item);
+
+    /**
+     * Add items to the adapter.
+     *
+     * @param items Items to add.
+     * @return Index of the first new item.
+     */
+    int add(List<T> items);
 }
