@@ -30,12 +30,12 @@ import java.util.List;
  * @param <T> Reference type for a single item within the list collection.
  * @param <V> Reference type for the view holder.
  */
-abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
+abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<V> {
     /**
      * Tag for logging.
      */
-    private static final String TAG = "ListAdapter";
+    private static final String TAG = "SimpleListAdapter";
 
     /**
      * Context used with the adapter.
@@ -53,16 +53,16 @@ abstract public class ListAdapter<T, V extends RecyclerView.ViewHolder>
     private OnItemClickListener mOnItemClickListener;
 
     /**
-     * On click listener for views within the ListAdapter.
+     * On click listener for views within the SimpleListAdapter.
      */
     private final OnClickListener mOnClickListener = new OnClickListener();
 
     /**
-     * Construct the ListAdapter.
+     * Construct the SimpleListAdapter.
      *
      * @param context Context used with the adapter.
      */
-    public ListAdapter(Context context) {
+    public SimpleListAdapter(Context context) {
         mContext = context;
     }
 
