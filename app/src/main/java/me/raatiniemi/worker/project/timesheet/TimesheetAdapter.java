@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.project.timesheet;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemVie
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
@@ -48,7 +50,12 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     private final OnTimesheetListener mOnTimesheetListener;
 
-    public TimesheetAdapter(OnTimesheetListener listener) {
+    public TimesheetAdapter(
+            @NonNull List<TimesheetItem> items,
+            OnTimesheetListener listener
+    ) {
+        super(items);
+
         mOnTimesheetListener = listener;
 
         mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());

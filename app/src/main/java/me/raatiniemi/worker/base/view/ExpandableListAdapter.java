@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.base.view;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
 
@@ -53,13 +54,19 @@ abstract public class ExpandableListAdapter<
     private List<T> mItems;
 
     /**
+     * Constructor.
+     *
+     * @param items Items for the adapter.
+     */
+    public ExpandableListAdapter(@NonNull List<T> items) {
+        mItems = items;
+    }
+
+    /**
      * @inheritDoc
      */
     @Override
     public List<T> getItems() {
-        if (null == mItems) {
-            mItems = new ArrayList<>();
-        }
         return mItems;
     }
 
