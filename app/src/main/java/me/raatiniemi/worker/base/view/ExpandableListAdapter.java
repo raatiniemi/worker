@@ -180,12 +180,16 @@ abstract public class ExpandableListAdapter<
      * @param group Index for group containing the child.
      * @param child Index for child to be updated.
      * @param item  Item to update the adapter.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     public void set(int group, int child, C item) {
         // Check that the group/child index exists.
         if (!has(group, child)) {
-            Log.w(TAG, "Unable to set child, it do not exists");
-            return;
+            throw new IndexOutOfBoundsException(
+                    "Invalid index [" + group + "][" + child + "] size is "
+                            + "[" + getGroupCount() + "]"
+                            + "[" + getChildCount(group) + "]"
+            );
         }
 
         // Update the child item within the group item.
