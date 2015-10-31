@@ -125,11 +125,7 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Get item from the adapter.
-     *
-     * @param index Index of the item to get.
-     * @return Item at the index.
-     * @throws IndexOutOfBoundsException if index is not found within items.
+     * @inheritDoc
      */
     @Override
     public T get(int index) {

@@ -43,6 +43,7 @@ public interface ListAdapter<T> {
      *
      * @param index Index of the item to get.
      * @return Item at the index.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     T get(int index);
 

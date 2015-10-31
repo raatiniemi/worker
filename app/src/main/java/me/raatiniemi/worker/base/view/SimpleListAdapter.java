@@ -118,11 +118,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Get item from the adapter.
-     *
-     * @param index Index of the item to get.
-     * @return Item at the index.
-     * @throws IndexOutOfBoundsException if index do not exists.
+     * @inheritDoc
      */
     @Override
     public T get(int index) {
