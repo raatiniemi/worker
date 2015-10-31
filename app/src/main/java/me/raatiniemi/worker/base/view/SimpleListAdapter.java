@@ -18,6 +18,7 @@ package me.raatiniemi.worker.base.view;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -64,7 +65,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @param context Context used with the adapter.
      * @param items   Initial list of items.
      */
-    public SimpleListAdapter(Context context, @NonNull List<T> items) {
+    public SimpleListAdapter(@NonNull Context context, @NonNull List<T> items) {
         mContext = context;
         setItems(items);
     }
@@ -74,6 +75,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @return Adapter context.
      */
+    @NonNull
     protected Context getContext() {
         return mContext;
     }
@@ -218,6 +220,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @return Click listener for list items, or null if none has been supplied.
      */
+    @Nullable
     public OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
     }
@@ -227,7 +230,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @param onItemClickListener Click listener for list items.
      */
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(@NonNull OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
@@ -236,6 +239,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @return Click listener for list item views.
      */
+    @NonNull
     protected OnClickListener getOnClickListener() {
         return mOnClickListener;
     }
@@ -249,7 +253,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
          *
          * @param view View that has been clicked.
          */
-        void onItemClick(View view);
+        void onItemClick(@NonNull View view);
     }
 
     /**
@@ -262,7 +266,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
          * @param view List item that have been clicked.
          */
         @Override
-        public void onClick(View view) {
+        public void onClick(@NonNull View view) {
             // Check that the OnItemClickListener have been supplied.
             if (null == getOnItemClickListener()) {
                 Log.e(TAG, "No OnItemClickListener have been supplied");
