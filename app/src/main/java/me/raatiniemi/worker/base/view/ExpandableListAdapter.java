@@ -232,10 +232,10 @@ abstract public class ExpandableListAdapter<
      */
     @Override
     public T remove(int index) {
-        // Check that the group index exists.
         if (!has(index)) {
-            Log.w(TAG, "Unable to remove group, it do not exists");
-            return null;
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getGroupCount()
+            );
         }
 
         // Remove the group and notify the change.

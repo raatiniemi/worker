@@ -186,6 +186,12 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      */
     @Override
     public T remove(int index) {
+        if (!has(index)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getItemCount()
+            );
+        }
+
         // Remove the item from the internal data container.
         T item = getItems().remove(index);
 

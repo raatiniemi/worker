@@ -77,6 +77,7 @@ public interface ListAdapter<T> {
      *
      * @param index Index of the item to remove.
      * @return Item removed from the adapter.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     T remove(int index);
 
