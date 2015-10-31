@@ -122,9 +122,16 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @param index Index of the item to get.
      * @return Item at the index.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     @Override
     public T get(int index) {
+        if (!has(index)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getItemCount()
+            );
+        }
+
         return getItems().get(index);
     }
 
