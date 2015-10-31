@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.base.view.ListAdapter;
+import me.raatiniemi.worker.base.view.SimpleListAdapter;
 import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectComparator;
 import me.raatiniemi.worker.util.DateIntervalFormat;
@@ -41,7 +41,7 @@ import me.raatiniemi.worker.util.HintedImageButtonListener;
 /**
  * Adapter for listing available projects.
  */
-public class ProjectsAdapter extends ListAdapter<Project, ProjectsAdapter.ItemViewHolder> {
+public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.ItemViewHolder> {
     /**
      * Tag for logging within the ProjectsAdapter.
      */

@@ -34,8 +34,8 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.base.view.ListAdapter;
 import me.raatiniemi.worker.base.view.MvpFragment;
+import me.raatiniemi.worker.base.view.SimpleListAdapter;
 import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.project.ProjectActivity;
@@ -45,7 +45,7 @@ import me.raatiniemi.worker.util.HintedImageButtonListener;
 import rx.Observable;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
-        implements ProjectsAdapter.OnProjectActionListener, ListAdapter.OnItemClickListener, ProjectsView {
+        implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     public static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";

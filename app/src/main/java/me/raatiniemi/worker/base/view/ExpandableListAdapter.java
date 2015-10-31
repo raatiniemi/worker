@@ -40,7 +40,8 @@ abstract public class ExpandableListAdapter<
         GVH extends ViewHolder,
         CVH extends ViewHolder
         >
-        extends AbstractExpandableItemAdapter<GVH, CVH> {
+        extends AbstractExpandableItemAdapter<GVH, CVH>
+        implements ListAdapter<T> {
     /**
      * Tag for logging.
      */
@@ -52,10 +53,9 @@ abstract public class ExpandableListAdapter<
     private List<T> mItems;
 
     /**
-     * Get the items from the adapater.
-     *
-     * @return Items from the adapter.
+     * @inheritDoc
      */
+    @Override
     public List<T> getItems() {
         if (null == mItems) {
             mItems = new ArrayList<>();
@@ -64,10 +64,9 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Set items for the adapter.
-     *
-     * @param items Items for the adapter.
+     * @inheritDoc
      */
+    @Override
     public void setItems(List<T> items) {
         mItems = items;
         notifyDataSetChanged();
@@ -117,19 +116,21 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Get the combined group and child item at given index.
+     * Get item from the adapter.
      *
-     * @param group Index for the group.
-     * @return Combined group and child item.
+     * @param index Index of the item to get.
+     * @return Item at the index.
+     * @throws IndexOutOfBoundsException if index is not found within items.
      */
-    public T get(int group) {
+    @Override
+    public T get(int index) {
         // Check that the group index exists before
         // attempting to retrieve it.
-        if (!has(group)) {
+        if (!has(index)) {
             throw new IndexOutOfBoundsException();
         }
 
-        return getItems().get(group);
+        return getItems().get(index);
     }
 
     /**
@@ -160,44 +161,55 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Add single item to the adapter.
-     *
-     * @param item Item to add to the adapter.
+     * @inheritDoc
      */
-    public void add(T item) {
-        // Before adding the item, we need to check the size, i.e. the position of the new item.
-        int position = getItems().size();
-
+    @Override
+    public int add(T item) {
+        // Retrieve the index of the new item by retrieving the number of
+        // items within the adapter before adding the new item.
+        int index = getItems().size();
         getItems().add(item);
-        notifyItemInserted(position);
+
+        // Notify the adapter, a new item have been added.
+        notifyItemInserted(index);
+
+        // Return the index for the new item.
+        return index;
     }
 
     /**
-     * Add collection of items to the adapter.
-     *
-     * @param items Collection of items to add to the adapter.
+     * @inheritDoc
      */
-    public void add(List<T> items) {
-        // Add the items and notify the adapter.
+    @Override
+    public int add(List<T> items) {
+        // Retrieve the current count to have a reference point
+        // at which location the new items will be inserted.
+        int index = getItemCount();
         getItems().addAll(items);
+
+        // Notify the adapter of the new items.
         notifyDataSetChanged();
+
+        // Return the reference point for the location of the new items.
+        return index;
     }
 
     /**
-     * Remove group item in the adapter.
-     *
-     * @param group Index for group to be removed.
+     * @inheritDoc
      */
-    public void remove(int group) {
+    @Override
+    public T remove(int index) {
         // Check that the group index exists.
-        if (!has(group)) {
+        if (!has(index)) {
             Log.w(TAG, "Unable to remove group, it do not exists");
-            return;
+            return null;
         }
 
         // Remove the group and notify the change.
-        getItems().remove(group);
+        T item = getItems().remove(index);
         notifyDataSetChanged();
+
+        return item;
     }
 
     /**
@@ -227,20 +239,18 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Update group item in the adapter.
-     *
-     * @param group Index for group to be updated.
-     * @param item  Item to update the adapter.
+     * @inheritDoc
      */
-    public void update(int group, T item) {
+    @Override
+    public void set(int index, T item) {
         // Check that the group index exists.
-        if (!has(group)) {
-            Log.w(TAG, "Unable to update group, it do not exists");
+        if (!has(index)) {
+            Log.w(TAG, "Unable to set group, it do not exists");
             return;
         }
 
         // Update the group item and notify the adapter.
-        getItems().set(group, item);
+        getItems().set(index, item);
         notifyDataSetChanged();
     }
 
@@ -263,12 +273,13 @@ abstract public class ExpandableListAdapter<
         groupItem.set(child, item);
 
         // Trigger the adapter update on the group item.
-        update(group, groupItem);
+        set(group, groupItem);
     }
 
     /**
-     * Clear the items from the adapter.
+     * @inheritDoc
      */
+    @Override
     public void clear() {
         getItems().clear();
         notifyDataSetChanged();
