@@ -18,7 +18,6 @@ package me.raatiniemi.worker.base.view;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.util.Log;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 
@@ -257,12 +256,15 @@ abstract public class ExpandableListAdapter<
      *
      * @param group Index for group containing the child.
      * @param child Index for child to be removed.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     public void remove(int group, int child) {
-        // Check that the child index exists.
         if (!has(group, child)) {
-            Log.w(TAG, "Unable to remove item, it do not exists");
-            return;
+            throw new IndexOutOfBoundsException(
+                    "Invalid index [" + group + "][" + child + "] size is "
+                            + "[" + getGroupCount() + "]"
+                            + "[" + getChildCount(group) + "]"
+            );
         }
 
         // Remove the child item from the group.
