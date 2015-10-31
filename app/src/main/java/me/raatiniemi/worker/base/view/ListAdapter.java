@@ -77,4 +77,9 @@ public interface ListAdapter<T> {
      * @return Item removed from the adapter.
      */
     T remove(int index);
+
+    /**
+     * Clear items from the adapter.
+     */
+    void clear();
 }

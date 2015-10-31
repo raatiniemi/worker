@@ -277,8 +277,9 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Clear the items from the adapter.
+     * @inheritDoc
      */
+    @Override
     public void clear() {
         getItems().clear();
         notifyDataSetChanged();

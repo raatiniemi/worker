@@ -178,6 +178,15 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
+     * @inheritDoc
+     */
+    @Override
+    public void clear() {
+        getItems().clear();
+        notifyDataSetChanged();
+    }
+
+    /**
      * Retrieve the click listener for list items.
      *
      * @return Click listener for list items, or null if none has been supplied.
