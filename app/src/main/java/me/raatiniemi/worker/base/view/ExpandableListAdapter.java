@@ -160,13 +160,13 @@ abstract public class ExpandableListAdapter<
      */
     @Override
     public void set(int index, T item) {
-        // Check that the group index exists.
         if (!has(index)) {
-            Log.w(TAG, "Unable to set group, it do not exists");
-            return;
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getGroupCount()
+            );
         }
 
-        // Update the group item and notify the adapter.
+        // Update the item and notify the adapter.
         getItems().set(index, item);
         notifyDataSetChanged();
     }

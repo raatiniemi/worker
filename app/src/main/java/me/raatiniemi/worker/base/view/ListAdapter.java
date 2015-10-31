@@ -52,6 +52,7 @@ public interface ListAdapter<T> {
      *
      * @param index Index of the item to update.
      * @param item  Item to update at the index.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     void set(int index, T item);
 

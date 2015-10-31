@@ -136,9 +136,14 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      */
     @Override
     public void set(int index, T item) {
-        getItems().set(index, item);
+        if (!has(index)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getItemCount()
+            );
+        }
 
-        // Notify the adapter that data item have changed.
+        // Update the item and notify the adapter.
+        getItems().set(index, item);
         notifyItemChanged(index);
     }
 
