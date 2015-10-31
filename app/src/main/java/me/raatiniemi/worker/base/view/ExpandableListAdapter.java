@@ -48,21 +48,21 @@ abstract public class ExpandableListAdapter<
     private static final String TAG = "ExpandableListAdapter";
 
     /**
-     * Data items for the adapter to display.
+     * Available items.
      */
     private List<T> mItems;
 
     /**
      * Constructor.
      *
-     * @param items Items for the adapter.
+     * @param items Initial list of items.
      */
     public ExpandableListAdapter(@NonNull List<T> items) {
         mItems = items;
     }
 
     /**
-     * Retrieve the number of group items.
+     * Get number of groups.
      *
      * @return Number of group items.
      */
@@ -72,10 +72,10 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Retrieve the number of child items within a group.
+     * Get number of children within a group.
      *
-     * @param group Index for the group.
-     * @return Number of child items within the group.
+     * @param group Index for group.
+     * @return Number of children within a group.
      */
     @Override
     public int getChildCount(int group) {
@@ -102,7 +102,7 @@ abstract public class ExpandableListAdapter<
     /**
      * Check whether an index exists.
      *
-     * @param index Index to check.
+     * @param index Group index to check.
      * @return True if index exists, otherwise false.
      */
     protected boolean has(int index) {
@@ -113,7 +113,7 @@ abstract public class ExpandableListAdapter<
     /**
      * Check whether a combined index exists.
      *
-     * @param index Index to check.
+     * @param index Group index to check.
      * @param child Child index to check.
      * @return True if index exists, otherwise false.
      */
@@ -138,7 +138,7 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Get item with combined index.
+     * Get item at combined index.
      *
      * @param group Index of the group.
      * @param child Index of the child.
@@ -174,11 +174,11 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Update child item in the adapter.
+     * Update item at combined index.
      *
-     * @param group Index for group containing the child.
-     * @param child Index for child to be updated.
-     * @param item  Item to update the adapter.
+     * @param group Index of the group.
+     * @param child Index of the child.
+     * @param item  Item to update.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
     public void set(int group, int child, C item) {
@@ -252,10 +252,10 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Remove child item from group in the adapter.
+     * Remove item at combined index.
      *
-     * @param group Index for group containing the child.
-     * @param child Index for child to be removed.
+     * @param group Index of the group.
+     * @param child Index of the child.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
     public void remove(int group, int child) {
@@ -294,6 +294,7 @@ abstract public class ExpandableListAdapter<
      *
      * @param group Index for the group.
      * @return Group item.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     public G getGroup(int group) {
         return get(group).getGroup();

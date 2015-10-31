@@ -44,25 +44,25 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     private final Context mContext;
 
     /**
-     * On click listener for views within the SimpleListAdapter.
+     * On click listener for views.
      */
     private final OnClickListener mOnClickListener = new OnClickListener();
 
     /**
-     * Items for the adapter to display.
+     * Available items.
      */
     private List<T> mItems;
 
     /**
-     * On click listener for list items.
+     * On click listener for items.
      */
     private OnItemClickListener mOnItemClickListener;
 
     /**
-     * Construct the SimpleListAdapter.
+     * Constructor.
      *
      * @param context Context used with the adapter.
-     * @param items   Items for the adapter.
+     * @param items   Initial list of items.
      */
     public SimpleListAdapter(Context context, @NonNull List<T> items) {
         mContext = context;
