@@ -147,6 +147,7 @@ abstract public class ExpandableListAdapter<
      * @return Item at the combined index.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
+    @NonNull
     public C get(int group, int child) {
         if (!has(group, child)) {
             throw new IndexOutOfBoundsException(
@@ -183,7 +184,7 @@ abstract public class ExpandableListAdapter<
      * @param item  Item to update.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
-    public void set(int group, int child, C item) {
+    public void set(int group, int child, @NonNull C item) {
         // Check that the group/child index exists.
         if (!has(group, child)) {
             throw new IndexOutOfBoundsException(
@@ -299,6 +300,7 @@ abstract public class ExpandableListAdapter<
      * @return Group item.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
+    @NonNull
     public G getGroup(int group) {
         return get(group).getGroup();
     }
@@ -320,7 +322,7 @@ abstract public class ExpandableListAdapter<
          *
          * @param group Group item.
          */
-        public ExpandableItem(G group) {
+        public ExpandableItem(@NonNull G group) {
             mGroup = group;
         }
 
@@ -329,6 +331,7 @@ abstract public class ExpandableListAdapter<
          *
          * @return Group item.
          */
+        @NonNull
         public G getGroup() {
             return mGroup;
         }
