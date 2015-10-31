@@ -63,23 +63,6 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * @inheritDoc
-     */
-    @Override
-    public List<T> getItems() {
-        return mItems;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void setItems(List<T> items) {
-        mItems = items;
-        notifyDataSetChanged();
-    }
-
-    /**
      * Retrieve the number of group items.
      *
      * @return Number of group items.
@@ -98,6 +81,23 @@ abstract public class ExpandableListAdapter<
     @Override
     public int getChildCount(int group) {
         return has(group) ? get(group).size() : 0;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public List<T> getItems() {
+        return mItems;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void setItems(List<T> items) {
+        mItems = items;
+        notifyDataSetChanged();
     }
 
     /**
@@ -141,16 +141,6 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Get the group item at given index.
-     *
-     * @param group Index for the group.
-     * @return Group item.
-     */
-    public G getGroup(int group) {
-        return get(group).getGroup();
-    }
-
-    /**
      * Get the child item at given index.
      *
      * @param group Index for the group.
@@ -165,6 +155,44 @@ abstract public class ExpandableListAdapter<
         }
 
         return get(group).get(child);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void set(int index, T item) {
+        // Check that the group index exists.
+        if (!has(index)) {
+            Log.w(TAG, "Unable to set group, it do not exists");
+            return;
+        }
+
+        // Update the group item and notify the adapter.
+        getItems().set(index, item);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Update child item in the adapter.
+     *
+     * @param group Index for group containing the child.
+     * @param child Index for child to be updated.
+     * @param item  Item to update the adapter.
+     */
+    public void set(int group, int child, C item) {
+        // Check that the group/child index exists.
+        if (!has(group, child)) {
+            Log.w(TAG, "Unable to set child, it do not exists");
+            return;
+        }
+
+        // Update the child item within the group item.
+        T groupItem = get(group);
+        groupItem.set(child, item);
+
+        // Trigger the adapter update on the group item.
+        set(group, groupItem);
     }
 
     /**
@@ -249,47 +277,19 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public void set(int index, T item) {
-        // Check that the group index exists.
-        if (!has(index)) {
-            Log.w(TAG, "Unable to set group, it do not exists");
-            return;
-        }
-
-        // Update the group item and notify the adapter.
-        getItems().set(index, item);
-        notifyDataSetChanged();
-    }
-
-    /**
-     * Update child item in the adapter.
-     *
-     * @param group Index for group containing the child.
-     * @param child Index for child to be updated.
-     * @param item  Item to update the adapter.
-     */
-    public void set(int group, int child, C item) {
-        // Check that the group/child index exists.
-        if (!has(group, child)) {
-            Log.w(TAG, "Unable to set child, it do not exists");
-            return;
-        }
-
-        // Update the child item within the group item.
-        T groupItem = get(group);
-        groupItem.set(child, item);
-
-        // Trigger the adapter update on the group item.
-        set(group, groupItem);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
     public void clear() {
         getItems().clear();
         notifyDataSetChanged();
+    }
+
+    /**
+     * Get the group item at given index.
+     *
+     * @param group Index for the group.
+     * @return Group item.
+     */
+    public G getGroup(int group) {
+        return get(group).getGroup();
     }
 
     /**
