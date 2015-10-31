@@ -101,25 +101,27 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Check whether a group index exists.
+     * Check whether an index exists.
      *
-     * @param group Group index to check.
-     * @return True if group index exists, otherwise false.
+     * @param index Index to check.
+     * @return True if index exists, otherwise false.
      */
-    public boolean has(int group) {
-        return 0 <= group && getGroupCount() > group;
+    protected boolean has(int index) {
+        // Check if index is within bounds.
+        return 0 <= index && getGroupCount() > index;
     }
 
     /**
-     * Check whether a child index within a group exists.
+     * Check whether a combined index exists.
      *
-     * @param group Index for the group.
+     * @param index Index to check.
      * @param child Child index to check.
-     * @return True if child index exists within the group, otherwise false.
+     * @return True if index exists, otherwise false.
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean has(int group, int child) {
-        return has(group) && 0 <= child && getChildCount(group) > child;
+    protected boolean has(int index, int child) {
+        // Check if index is within bounds.
+        return has(index) && 0 <= child && getChildCount(index) > child;
     }
 
     /**
