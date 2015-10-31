@@ -44,6 +44,11 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     private final Context mContext;
 
     /**
+     * On click listener for views within the SimpleListAdapter.
+     */
+    private final OnClickListener mOnClickListener = new OnClickListener();
+
+    /**
      * Items for the adapter to display.
      */
     private List<T> mItems;
@@ -52,11 +57,6 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * On click listener for list items.
      */
     private OnItemClickListener mOnItemClickListener;
-
-    /**
-     * On click listener for views within the SimpleListAdapter.
-     */
-    private final OnClickListener mOnClickListener = new OnClickListener();
 
     /**
      * Construct the SimpleListAdapter.
@@ -79,6 +79,16 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
+     * Get the number of items within the adapter.
+     *
+     * @return Number of items within the adapter.
+     */
+    @Override
+    public int getItemCount() {
+        return getItems().size();
+    }
+
+    /**
      * @inheritDoc
      */
     @Override
@@ -94,16 +104,6 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     public void setItems(List<T> items) {
         mItems = items;
         notifyDataSetChanged();
-    }
-
-    /**
-     * Get the number of items within the adapter.
-     *
-     * @return Number of items within the adapter.
-     */
-    @Override
-    public int getItemCount() {
-        return getItems().size();
     }
 
     /**
