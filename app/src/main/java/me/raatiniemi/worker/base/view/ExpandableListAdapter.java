@@ -129,10 +129,10 @@ abstract public class ExpandableListAdapter<
      */
     @Override
     public T get(int index) {
-        // Check that the group index exists before
-        // attempting to retrieve it.
         if (!has(index)) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getGroupCount()
+            );
         }
 
         return getItems().get(index);
@@ -146,10 +146,12 @@ abstract public class ExpandableListAdapter<
      * @return Child item.
      */
     public C get(int group, int child) {
-        // Check that the group and child indexes exists
-        // before attempting to use them.
         if (!has(group, child)) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException(
+                    "Invalid index [" + group + "][" + child + "] size is "
+                            + "[" + getGroupCount() + "]"
+                            + "[" + getChildCount(group) + "]"
+            );
         }
 
         return get(group).get(child);
