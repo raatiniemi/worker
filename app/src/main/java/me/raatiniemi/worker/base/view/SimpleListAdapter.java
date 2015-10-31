@@ -101,7 +101,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
-    public void setItems(List<T> items) {
+    public void setItems(@NonNull List<T> items) {
         mItems = items;
         notifyDataSetChanged();
     }
@@ -121,6 +121,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
+    @NonNull
     public T get(int index) {
         if (!has(index)) {
             throw new IndexOutOfBoundsException(
@@ -135,7 +136,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
-    public void set(int index, T item) {
+    public void set(int index, @NonNull T item) {
         if (!has(index)) {
             throw new IndexOutOfBoundsException(
                     "Invalid index " + index + ", size is " + getItemCount()
@@ -151,7 +152,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
-    public int add(T item) {
+    public int add(@NonNull T item) {
         // Retrieve the index for the new item by retrieving the number of
         // items within the adapter before adding the new item.
         int index = getItemCount();
@@ -168,7 +169,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
-    public int add(List<T> items) {
+    public int add(@NonNull List<T> items) {
         // Retrieve the current count to have a reference point
         // at which location the new items will be inserted.
         int index = getItemCount();
@@ -185,6 +186,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
+    @NonNull
     public T remove(int index) {
         if (!has(index)) {
             throw new IndexOutOfBoundsException(

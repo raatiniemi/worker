@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.base.view;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -29,6 +31,7 @@ public interface ListAdapter<T> {
      *
      * @return Available items.
      */
+    @NonNull
     List<T> getItems();
 
     /**
@@ -36,7 +39,7 @@ public interface ListAdapter<T> {
      *
      * @param items Items to set.
      */
-    void setItems(List<T> items);
+    void setItems(@NonNull List<T> items);
 
     /**
      * Get item at index.
@@ -45,6 +48,7 @@ public interface ListAdapter<T> {
      * @return Item at index.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
+    @NonNull
     T get(int index);
 
     /**
@@ -54,7 +58,7 @@ public interface ListAdapter<T> {
      * @param item  Item to update.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
-    void set(int index, T item);
+    void set(int index, @NonNull T item);
 
     /**
      * Add item.
@@ -62,7 +66,7 @@ public interface ListAdapter<T> {
      * @param item Item to add.
      * @return Index of new item.
      */
-    int add(T item);
+    int add(@NonNull T item);
 
     /**
      * Add items.
@@ -70,7 +74,7 @@ public interface ListAdapter<T> {
      * @param items Items to add.
      * @return Index of the first new item.
      */
-    int add(List<T> items);
+    int add(@NonNull List<T> items);
 
     /**
      * Remove item at index.
@@ -79,6 +83,7 @@ public interface ListAdapter<T> {
      * @return Removed item.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
+    @NonNull
     T remove(int index);
 
     /**

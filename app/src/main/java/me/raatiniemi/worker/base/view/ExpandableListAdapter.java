@@ -86,6 +86,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
+    @NonNull
     public List<T> getItems() {
         return mItems;
     }
@@ -94,7 +95,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public void setItems(List<T> items) {
+    public void setItems(@NonNull List<T> items) {
         mItems = items;
         notifyDataSetChanged();
     }
@@ -127,6 +128,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
+    @NonNull
     public T get(int index) {
         if (!has(index)) {
             throw new IndexOutOfBoundsException(
@@ -161,7 +163,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public void set(int index, T item) {
+    public void set(int index, @NonNull T item) {
         if (!has(index)) {
             throw new IndexOutOfBoundsException(
                     "Invalid index " + index + ", size is " + getGroupCount()
@@ -203,7 +205,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public int add(T item) {
+    public int add(@NonNull T item) {
         // Retrieve the index of the new item by retrieving the number of
         // items within the adapter before adding the new item.
         int index = getItems().size();
@@ -220,7 +222,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public int add(List<T> items) {
+    public int add(@NonNull List<T> items) {
         // Retrieve the current count to have a reference point
         // at which location the new items will be inserted.
         int index = getItemCount();
@@ -237,6 +239,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
+    @NonNull
     public T remove(int index) {
         if (!has(index)) {
             throw new IndexOutOfBoundsException(
