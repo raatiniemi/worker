@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.base.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,9 +62,11 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * Construct the SimpleListAdapter.
      *
      * @param context Context used with the adapter.
+     * @param items   Items for the adapter.
      */
-    public SimpleListAdapter(Context context) {
+    public SimpleListAdapter(Context context, @NonNull List<T> items) {
         mContext = context;
+        setItems(items);
     }
 
     /**
@@ -80,10 +82,8 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
+    @NonNull
     public List<T> getItems() {
-        if (null == mItems) {
-            mItems = new ArrayList<>();
-        }
         return mItems;
     }
 

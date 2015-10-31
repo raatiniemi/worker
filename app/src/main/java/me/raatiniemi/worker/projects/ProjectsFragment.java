@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -77,7 +78,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new ProjectsAdapter(getActivity(), this);
+        List<Project> items = new ArrayList<>();
+        mAdapter = new ProjectsAdapter(getActivity(), items, this);
         mAdapter.setHintedImageButtonListener(new HintedImageButtonListener(getActivity()));
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
