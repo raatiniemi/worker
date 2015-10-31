@@ -139,11 +139,12 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Get the child item at given index.
+     * Get item with combined index.
      *
-     * @param group Index for the group.
-     * @param child Index for the child.
-     * @return Child item.
+     * @param group Index of the group.
+     * @param child Index of the child.
+     * @return Item at the combined index.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     public C get(int group, int child) {
         if (!has(group, child)) {
