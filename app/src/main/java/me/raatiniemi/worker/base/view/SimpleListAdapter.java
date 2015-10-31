@@ -17,11 +17,12 @@
 package me.raatiniemi.worker.base.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,27 +45,29 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     private final Context mContext;
 
     /**
-     * Items for the adapter to display.
-     */
-    private List<T> mItems;
-
-    /**
-     * On click listener for list items.
-     */
-    private OnItemClickListener mOnItemClickListener;
-
-    /**
-     * On click listener for views within the SimpleListAdapter.
+     * On click listener for views.
      */
     private final OnClickListener mOnClickListener = new OnClickListener();
 
     /**
-     * Construct the SimpleListAdapter.
+     * Available items.
+     */
+    private List<T> mItems;
+
+    /**
+     * On click listener for items.
+     */
+    private OnItemClickListener mOnItemClickListener;
+
+    /**
+     * Constructor.
      *
      * @param context Context used with the adapter.
+     * @param items   Initial list of items.
      */
-    public SimpleListAdapter(Context context) {
+    public SimpleListAdapter(@NonNull Context context, @NonNull List<T> items) {
         mContext = context;
+        setItems(items);
     }
 
     /**
@@ -72,28 +75,9 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @return Adapter context.
      */
+    @NonNull
     protected Context getContext() {
         return mContext;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<T> getItems() {
-        if (null == mItems) {
-            mItems = new ArrayList<>();
-        }
-        return mItems;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void setItems(List<T> items) {
-        mItems = items;
-        notifyDataSetChanged();
     }
 
     /**
@@ -107,13 +91,46 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     }
 
     /**
-     * Get item from the adapter.
-     *
-     * @param index Index of the item to get.
-     * @return Item at the index.
+     * @inheritDoc
      */
     @Override
+    @NonNull
+    public List<T> getItems() {
+        return mItems;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void setItems(@NonNull List<T> items) {
+        mItems = items;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Check whether an index exists.
+     *
+     * @param index Index to check.
+     * @return True if index exists, otherwise false.
+     */
+    protected boolean has(int index) {
+        // Check if index is out of bounds.
+        return 0 > index || getItemCount() <= index;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    @NonNull
     public T get(int index) {
+        if (!has(index)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getItemCount()
+            );
+        }
+
         return getItems().get(index);
     }
 
@@ -121,10 +138,15 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
-    public void set(int index, T item) {
-        getItems().set(index, item);
+    public void set(int index, @NonNull T item) {
+        if (!has(index)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getItemCount()
+            );
+        }
 
-        // Notify the adapter that data item have changed.
+        // Update the item and notify the adapter.
+        getItems().set(index, item);
         notifyItemChanged(index);
     }
 
@@ -132,7 +154,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
-    public int add(T item) {
+    public int add(@NonNull T item) {
         // Retrieve the index for the new item by retrieving the number of
         // items within the adapter before adding the new item.
         int index = getItemCount();
@@ -149,7 +171,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
-    public int add(List<T> items) {
+    public int add(@NonNull List<T> items) {
         // Retrieve the current count to have a reference point
         // at which location the new items will be inserted.
         int index = getItemCount();
@@ -166,7 +188,14 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
+    @NonNull
     public T remove(int index) {
+        if (!has(index)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getItemCount()
+            );
+        }
+
         // Remove the item from the internal data container.
         T item = getItems().remove(index);
 
@@ -191,6 +220,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @return Click listener for list items, or null if none has been supplied.
      */
+    @Nullable
     public OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
     }
@@ -200,7 +230,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @param onItemClickListener Click listener for list items.
      */
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(@NonNull OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
@@ -209,6 +239,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      *
      * @return Click listener for list item views.
      */
+    @NonNull
     protected OnClickListener getOnClickListener() {
         return mOnClickListener;
     }
@@ -222,7 +253,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
          *
          * @param view View that has been clicked.
          */
-        void onItemClick(View view);
+        void onItemClick(@NonNull View view);
     }
 
     /**
@@ -235,7 +266,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
          * @param view List item that have been clicked.
          */
         @Override
-        public void onClick(View view) {
+        public void onClick(@NonNull View view) {
             // Check that the OnItemClickListener have been supplied.
             if (null == getOnItemClickListener()) {
                 Log.e(TAG, "No OnItemClickListener have been supplied");

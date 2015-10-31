@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -77,7 +79,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new ProjectsAdapter(getActivity(), this);
+        List<Project> items = new ArrayList<>();
+        mAdapter = new ProjectsAdapter(getActivity(), items, this);
         mAdapter.setHintedImageButtonListener(new HintedImageButtonListener(getActivity()));
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -191,7 +194,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void onItemClick(View view) {
+    public void onItemClick(@NonNull View view) {
         // Retrieve the position for the project from the RecyclerView.
         final int position = mRecyclerView.getChildAdapterPosition(view);
         if (RecyclerView.NO_POSITION == position) {

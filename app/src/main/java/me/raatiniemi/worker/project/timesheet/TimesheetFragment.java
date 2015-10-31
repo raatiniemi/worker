@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
@@ -150,7 +151,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
-        mTimesheetAdapter = new TimesheetAdapter(this);
+        List<TimesheetItem> items = new ArrayList<>();
+        mTimesheetAdapter = new TimesheetAdapter(items, this);
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
                 = new RecyclerViewExpandableItemManager(savedInstanceState);
 
@@ -240,7 +242,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     }
 
     public void update(TimeInAdapterResult result) {
-        mTimesheetAdapter.update(result.getGroup(), result.getChild(), result.getTime());
+        mTimesheetAdapter.set(result.getGroup(), result.getChild(), result.getTime());
     }
 
     @Override

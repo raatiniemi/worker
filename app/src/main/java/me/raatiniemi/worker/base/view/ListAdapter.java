@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.base.view;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -25,57 +27,63 @@ import java.util.List;
  */
 public interface ListAdapter<T> {
     /**
-     * Get items from the adapter.
+     * Get items.
      *
-     * @return Items from the adapter.
+     * @return Available items.
      */
+    @NonNull
     List<T> getItems();
 
     /**
-     * Set items for the adapter.
+     * Set items.
      *
-     * @param items Items for the adapter.
+     * @param items Items to set.
      */
-    void setItems(List<T> items);
+    void setItems(@NonNull List<T> items);
 
     /**
-     * Get item from the adapter.
+     * Get item at index.
      *
-     * @param index Index of the item to get.
-     * @return Item at the index.
+     * @param index Index of item.
+     * @return Item at index.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
+    @NonNull
     T get(int index);
 
     /**
-     * Update item within the adapter.
+     * Update item at index.
      *
-     * @param index Index of the item to update.
-     * @param item  Item to update at the index.
+     * @param index Index of item.
+     * @param item  Item to update.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
-    void set(int index, T item);
+    void set(int index, @NonNull T item);
 
     /**
-     * Add item to the adapter.
+     * Add item.
      *
      * @param item Item to add.
-     * @return Index of the new item.
+     * @return Index of new item.
      */
-    int add(T item);
+    int add(@NonNull T item);
 
     /**
-     * Add items to the adapter.
+     * Add items.
      *
      * @param items Items to add.
      * @return Index of the first new item.
      */
-    int add(List<T> items);
+    int add(@NonNull List<T> items);
 
     /**
-     * Remove item at index from the adapter.
+     * Remove item at index.
      *
-     * @param index Index of the item to remove.
-     * @return Item removed from the adapter.
+     * @param index Index of the item.
+     * @return Removed item.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
+    @NonNull
     T remove(int index);
 
     /**

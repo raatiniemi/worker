@@ -18,6 +18,7 @@ package me.raatiniemi.worker.projects;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
@@ -61,10 +63,16 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
      * Construct the ProjectsAdapter.
      *
      * @param context               Context to use.
+     * @param items                 Items for the adapter.
      * @param projectActionListener Listener for project actions.
      */
-    public ProjectsAdapter(Context context, OnProjectActionListener projectActionListener) {
-        super(context);
+    public ProjectsAdapter(
+            Context context,
+            @NonNull List<Project> items,
+            OnProjectActionListener projectActionListener
+    ) {
+        super(context, items);
+
         mOnProjectActionListener = projectActionListener;
     }
 

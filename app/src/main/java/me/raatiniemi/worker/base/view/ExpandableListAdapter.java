@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.base.view;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.util.Log;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 
@@ -48,32 +48,21 @@ abstract public class ExpandableListAdapter<
     private static final String TAG = "ExpandableListAdapter";
 
     /**
-     * Data items for the adapter to display.
+     * Available items.
      */
     private List<T> mItems;
 
     /**
-     * @inheritDoc
+     * Constructor.
+     *
+     * @param items Initial list of items.
      */
-    @Override
-    public List<T> getItems() {
-        if (null == mItems) {
-            mItems = new ArrayList<>();
-        }
-        return mItems;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void setItems(List<T> items) {
+    public ExpandableListAdapter(@NonNull List<T> items) {
         mItems = items;
-        notifyDataSetChanged();
     }
 
     /**
-     * Retrieve the number of group items.
+     * Get number of groups.
      *
      * @return Number of group items.
      */
@@ -83,10 +72,10 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Retrieve the number of child items within a group.
+     * Get number of children within a group.
      *
-     * @param group Index for the group.
-     * @return Number of child items within the group.
+     * @param group Index for group.
+     * @return Number of children within a group.
      */
     @Override
     public int getChildCount(int group) {
@@ -94,67 +83,78 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Check whether a group index exists.
-     *
-     * @param group Group index to check.
-     * @return True if group index exists, otherwise false.
-     */
-    public boolean has(int group) {
-        return 0 <= group && getGroupCount() > group;
-    }
-
-    /**
-     * Check whether a child index within a group exists.
-     *
-     * @param group Index for the group.
-     * @param child Child index to check.
-     * @return True if child index exists within the group, otherwise false.
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean has(int group, int child) {
-        return has(group) && 0 <= child && getChildCount(group) > child;
-    }
-
-    /**
-     * Get item from the adapter.
-     *
-     * @param index Index of the item to get.
-     * @return Item at the index.
-     * @throws IndexOutOfBoundsException if index is not found within items.
+     * @inheritDoc
      */
     @Override
+    @NonNull
+    public List<T> getItems() {
+        return mItems;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void setItems(@NonNull List<T> items) {
+        mItems = items;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Check whether an index exists.
+     *
+     * @param index Group index to check.
+     * @return True if index exists, otherwise false.
+     */
+    protected boolean has(int index) {
+        // Check if index is within bounds.
+        return 0 <= index && getGroupCount() > index;
+    }
+
+    /**
+     * Check whether a combined index exists.
+     *
+     * @param index Group index to check.
+     * @param child Child index to check.
+     * @return True if index exists, otherwise false.
+     */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    protected boolean has(int index, int child) {
+        // Check if index is within bounds.
+        return has(index) && 0 <= child && getChildCount(index) > child;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    @NonNull
     public T get(int index) {
-        // Check that the group index exists before
-        // attempting to retrieve it.
         if (!has(index)) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getGroupCount()
+            );
         }
 
         return getItems().get(index);
     }
 
     /**
-     * Get the group item at given index.
+     * Get item at combined index.
      *
-     * @param group Index for the group.
-     * @return Group item.
+     * @param group Index of the group.
+     * @param child Index of the child.
+     * @return Item at the combined index.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
-    public G getGroup(int group) {
-        return get(group).getGroup();
-    }
-
-    /**
-     * Get the child item at given index.
-     *
-     * @param group Index for the group.
-     * @param child Index for the child.
-     * @return Child item.
-     */
+    @NonNull
     public C get(int group, int child) {
-        // Check that the group and child indexes exists
-        // before attempting to use them.
         if (!has(group, child)) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException(
+                    "Invalid index [" + group + "][" + child + "] size is "
+                            + "[" + getGroupCount() + "]"
+                            + "[" + getChildCount(group) + "]"
+            );
         }
 
         return get(group).get(child);
@@ -164,7 +164,49 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public int add(T item) {
+    public void set(int index, @NonNull T item) {
+        if (!has(index)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getGroupCount()
+            );
+        }
+
+        // Update the item and notify the adapter.
+        getItems().set(index, item);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Update item at combined index.
+     *
+     * @param group Index of the group.
+     * @param child Index of the child.
+     * @param item  Item to update.
+     * @throws IndexOutOfBoundsException if index do not exists.
+     */
+    public void set(int group, int child, @NonNull C item) {
+        // Check that the group/child index exists.
+        if (!has(group, child)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index [" + group + "][" + child + "] size is "
+                            + "[" + getGroupCount() + "]"
+                            + "[" + getChildCount(group) + "]"
+            );
+        }
+
+        // Update the child item within the group item.
+        T groupItem = get(group);
+        groupItem.set(child, item);
+
+        // Trigger the adapter update on the group item.
+        set(group, groupItem);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int add(@NonNull T item) {
         // Retrieve the index of the new item by retrieving the number of
         // items within the adapter before adding the new item.
         int index = getItems().size();
@@ -181,7 +223,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public int add(List<T> items) {
+    public int add(@NonNull List<T> items) {
         // Retrieve the current count to have a reference point
         // at which location the new items will be inserted.
         int index = getItemCount();
@@ -198,11 +240,12 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
+    @NonNull
     public T remove(int index) {
-        // Check that the group index exists.
         if (!has(index)) {
-            Log.w(TAG, "Unable to remove group, it do not exists");
-            return null;
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getGroupCount()
+            );
         }
 
         // Remove the group and notify the change.
@@ -213,16 +256,19 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Remove child item from group in the adapter.
+     * Remove item at combined index.
      *
-     * @param group Index for group containing the child.
-     * @param child Index for child to be removed.
+     * @param group Index of the group.
+     * @param child Index of the child.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     public void remove(int group, int child) {
-        // Check that the child index exists.
         if (!has(group, child)) {
-            Log.w(TAG, "Unable to remove item, it do not exists");
-            return;
+            throw new IndexOutOfBoundsException(
+                    "Invalid index [" + group + "][" + child + "] size is "
+                            + "[" + getGroupCount() + "]"
+                            + "[" + getChildCount(group) + "]"
+            );
         }
 
         // Remove the child item from the group.
@@ -242,47 +288,21 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public void set(int index, T item) {
-        // Check that the group index exists.
-        if (!has(index)) {
-            Log.w(TAG, "Unable to set group, it do not exists");
-            return;
-        }
-
-        // Update the group item and notify the adapter.
-        getItems().set(index, item);
-        notifyDataSetChanged();
-    }
-
-    /**
-     * Update child item in the adapter.
-     *
-     * @param group Index for group containing the child.
-     * @param child Index for child to be updated.
-     * @param item  Item to update the adapter.
-     */
-    public void update(int group, int child, C item) {
-        // Check that the group/child index exists.
-        if (!has(group, child)) {
-            Log.w(TAG, "Unable to update child, it do not exists");
-            return;
-        }
-
-        // Update the child item within the group item.
-        T groupItem = get(group);
-        groupItem.set(child, item);
-
-        // Trigger the adapter update on the group item.
-        set(group, groupItem);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
     public void clear() {
         getItems().clear();
         notifyDataSetChanged();
+    }
+
+    /**
+     * Get the group item at given index.
+     *
+     * @param group Index for the group.
+     * @return Group item.
+     * @throws IndexOutOfBoundsException if index do not exists.
+     */
+    @NonNull
+    public G getGroup(int group) {
+        return get(group).getGroup();
     }
 
     /**
@@ -302,7 +322,7 @@ abstract public class ExpandableListAdapter<
          *
          * @param group Group item.
          */
-        public ExpandableItem(G group) {
+        public ExpandableItem(@NonNull G group) {
             mGroup = group;
         }
 
@@ -311,6 +331,7 @@ abstract public class ExpandableListAdapter<
          *
          * @return Group item.
          */
+        @NonNull
         public G getGroup() {
             return mGroup;
         }
