@@ -242,7 +242,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     }
 
     public void update(TimeInAdapterResult result) {
-        mTimesheetAdapter.update(result.getGroup(), result.getChild(), result.getTime());
+        mTimesheetAdapter.set(result.getGroup(), result.getChild(), result.getTime());
     }
 
     @Override

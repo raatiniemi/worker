@@ -268,10 +268,10 @@ abstract public class ExpandableListAdapter<
      * @param child Index for child to be updated.
      * @param item  Item to update the adapter.
      */
-    public void update(int group, int child, C item) {
+    public void set(int group, int child, C item) {
         // Check that the group/child index exists.
         if (!has(group, child)) {
-            Log.w(TAG, "Unable to update child, it do not exists");
+            Log.w(TAG, "Unable to set child, it do not exists");
             return;
         }
 
