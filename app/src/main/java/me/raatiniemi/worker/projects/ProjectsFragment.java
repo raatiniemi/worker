@@ -123,6 +123,16 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         mAdapter.setItems(data);
     }
 
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public ProjectsAdapter getAdapter() {
+        // TODO: Implement `getAdapter` in the `ProjectsFragment`.
+        return null;
+    }
+
     @Override
     public void addProject(Project project) {
         int position = mAdapter.add(project);

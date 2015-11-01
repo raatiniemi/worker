@@ -19,6 +19,7 @@ package me.raatiniemi.worker.project.timesheet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -218,6 +219,16 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     @Override
     public void setData(List<TimesheetItem> data) {
         mTimesheetAdapter.setItems(data);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public TimesheetAdapter getAdapter() {
+        // TODO: Implement `getAdapter` in the `TimesheetFragment`.
+        return null;
     }
 
     @Override

@@ -19,7 +19,7 @@ package me.raatiniemi.worker.project.timesheet;
 import me.raatiniemi.worker.base.view.ListFragment;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 
-public interface TimesheetView extends ListFragment {
+public interface TimesheetView extends ListFragment<TimesheetAdapter> {
     /**
      * Initiate refresh of the view.
      */

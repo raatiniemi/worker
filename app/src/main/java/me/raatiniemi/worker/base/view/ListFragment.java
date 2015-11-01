@@ -16,8 +16,19 @@
 
 package me.raatiniemi.worker.base.view;
 
+import android.support.annotation.NonNull;
+
 /**
  * Interface for fragments with a {@link ListAdapter}.
+ *
+ * @param <A> Type reference for the {@link ListAdapter}.
  */
-public interface ListFragment {
+public interface ListFragment<A extends ListAdapter> {
+    /**
+     * Get the adapter connected to the fragment.
+     *
+     * @return The adapter.
+     */
+    @NonNull
+    A getAdapter();
 }

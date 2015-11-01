@@ -24,7 +24,7 @@ import me.raatiniemi.worker.model.domain.project.Project;
 /**
  * Methods related to handling of the project view.
  */
-public interface ProjectsView extends ListFragment {
+public interface ProjectsView extends ListFragment<ProjectsAdapter> {
     /**
      * Add project to the list.
      *
