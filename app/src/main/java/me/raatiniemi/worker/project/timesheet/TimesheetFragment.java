@@ -152,15 +152,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
-        List<TimesheetItem> items = new ArrayList<>();
-        mTimesheetAdapter = new TimesheetAdapter(items, this);
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
                 = new RecyclerViewExpandableItemManager(savedInstanceState);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.setHasFixedSize(false);
-        recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
+        recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(getAdapter()));
         recyclerView.addItemDecoration(
                 new SimpleListDividerDecorator(
                         getResources().getDrawable(
@@ -192,7 +190,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
                         // Retrieve the total number of groups within the view, we need to
                         // exclude the children otherwise the offset will be wrong.
-                        int offset = mTimesheetAdapter.getGroupCount();
+                        int offset = getAdapter().getGroupCount();
 
                         // Retrieve additional timesheet items with offset.
                         getPresenter().getTimesheet(getProjectId(), offset);
@@ -213,12 +211,12 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     @Override
     public List<TimesheetItem> getData() {
-        return mTimesheetAdapter.getItems();
+        return getAdapter().getItems();
     }
 
     @Override
     public void setData(List<TimesheetItem> data) {
-        mTimesheetAdapter.setItems(data);
+        getAdapter().setItems(data);
     }
 
     /**
@@ -227,8 +225,12 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     @NonNull
     @Override
     public TimesheetAdapter getAdapter() {
-        // TODO: Implement `getAdapter` in the `TimesheetFragment`.
-        return null;
+        if (null == mTimesheetAdapter) {
+            List<TimesheetItem> items = new ArrayList<>();
+            mTimesheetAdapter = new TimesheetAdapter(items, this);
+        }
+
+        return mTimesheetAdapter;
     }
 
     @Override
@@ -244,16 +246,16 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     @Override
     public void refresh() {
         // Clear the items from the list and start loading from the beginning...
-        mTimesheetAdapter.clear();
+        getAdapter().clear();
         getPresenter().getTimesheet(getProjectId(), 0);
     }
 
     public void remove(TimeInAdapterResult result) {
-        mTimesheetAdapter.remove(result.getGroup(), result.getChild());
+        getAdapter().remove(result.getGroup(), result.getChild());
     }
 
     public void update(TimeInAdapterResult result) {
-        mTimesheetAdapter.set(result.getGroup(), result.getChild(), result.getTime());
+        getAdapter().set(result.getGroup(), result.getChild(), result.getTime());
     }
 
     @Override
