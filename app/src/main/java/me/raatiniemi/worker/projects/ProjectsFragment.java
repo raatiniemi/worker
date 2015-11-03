@@ -78,12 +78,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        List<Project> items = new ArrayList<>();
-        mAdapter = new ProjectsAdapter(getActivity(), items, this);
-        mAdapter.setHintedImageButtonListener(new HintedImageButtonListener(getActivity()));
-        mAdapter.setOnItemClickListener(this);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(getAdapter());
 
         getPresenter().attachView(this);
         getPresenter().getProjects();
@@ -115,12 +110,12 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
     @Override
     public List<Project> getData() {
-        return mAdapter.getItems();
+        return getAdapter().getItems();
     }
 
     @Override
     public void setData(List<Project> data) {
-        mAdapter.setItems(data);
+        getAdapter().setItems(data);
     }
 
     /**
@@ -129,13 +124,21 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     @NonNull
     @Override
     public ProjectsAdapter getAdapter() {
-        // TODO: Implement `getAdapter` in the `ProjectsFragment`.
-        return null;
+        if (null == mAdapter) {
+            List<Project> items = new ArrayList<>();
+            mAdapter = new ProjectsAdapter(getActivity(), items, this);
+            mAdapter.setHintedImageButtonListener(
+                    new HintedImageButtonListener(getActivity())
+            );
+            mAdapter.setOnItemClickListener(this);
+        }
+
+        return mAdapter;
     }
 
     @Override
     public void addProject(Project project) {
-        int position = mAdapter.add(project);
+        int position = getAdapter().add(project);
         mRecyclerView.scrollToPosition(position);
 
         // TODO: Add support for "undo", i.e. remove created project.
@@ -148,24 +151,24 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
     @Override
     public void updateProject(Project project) {
-        int position = mAdapter.findProject(project);
+        int position = getAdapter().findProject(project);
         if (0 > position) {
             Log.e(TAG, "Unable to find position for project in the adapter");
             return;
         }
 
-        mAdapter.set(position, project);
+        getAdapter().set(position, project);
     }
 
     @Override
     public void deleteProject(Project project) {
-        int position = mAdapter.findProject(project);
+        int position = getAdapter().findProject(project);
         if (0 > position) {
             Log.w(TAG, "Unable to find position for project in the adapter");
             return;
         }
 
-        mAdapter.remove(position);
+        getAdapter().remove(position);
 
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
@@ -199,7 +202,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         // Iterate and refresh every position.
         Log.d(TAG, "Refreshing " + positions.size() + " projects");
         for (Integer position : positions) {
-            mAdapter.notifyItemChanged(position);
+            getAdapter().notifyItemChanged(position);
         }
     }
 
@@ -213,7 +216,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         }
 
         // Retrieve the project from the retrieved position.
-        final Project project = mAdapter.get(position);
+        final Project project = getAdapter().get(position);
         if (null == project) {
             Log.w(TAG, "Unable to retrieve project from position " + position);
             return;
