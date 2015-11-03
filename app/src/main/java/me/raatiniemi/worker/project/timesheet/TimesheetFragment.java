@@ -233,9 +233,46 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
         return mTimesheetAdapter;
     }
 
+    /**
+     * @inheritDoc
+     */
+    @NonNull
     @Override
-    public void add(TimesheetItem item) {
-        mTimesheetAdapter.add(item);
+    public TimesheetItem get(int index) {
+        return getAdapter().get(index);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void set(int index, @NonNull TimesheetItem item) {
+        getAdapter().set(index, item);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int add(@NonNull TimesheetItem item) {
+        return getAdapter().add(item);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int add(@NonNull List<TimesheetItem> items) {
+        return getAdapter().add(items);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public TimesheetItem remove(int index) {
+        return getAdapter().remove(index);
     }
 
     @Override

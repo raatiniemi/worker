@@ -136,6 +136,48 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         return mAdapter;
     }
 
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Project get(int index) {
+        return getAdapter().get(index);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void set(int index, @NonNull Project item) {
+        getAdapter().set(index, item);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int add(@NonNull Project item) {
+        return getAdapter().add(item);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int add(@NonNull List<Project> items) {
+        return getAdapter().add(items);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Project remove(int index) {
+        return getAdapter().remove(index);
+    }
+
     @Override
     public void addProject(Project project) {
         int position = getAdapter().add(project);

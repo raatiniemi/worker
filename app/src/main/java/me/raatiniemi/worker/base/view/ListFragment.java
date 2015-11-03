@@ -18,12 +18,15 @@ package me.raatiniemi.worker.base.view;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 /**
  * Interface for fragments with a {@link ListAdapter}.
  *
  * @param <A> Type reference for the {@link ListAdapter}.
+ * @param <T> Type reference for the item within the {@link ListAdapter}.
  */
-public interface ListFragment<A extends ListAdapter> {
+public interface ListFragment<A extends ListAdapter, T> {
     /**
      * Get the adapter connected to the fragment.
      *
@@ -31,4 +34,46 @@ public interface ListFragment<A extends ListAdapter> {
      */
     @NonNull
     A getAdapter();
+
+    /**
+     * Get the item from the {@link ListAdapter}.
+     *
+     * @param index Index of the item.
+     * @return Item at the index.
+     */
+    @NonNull
+    T get(int index);
+
+    /**
+     * Update item in the {@link ListAdapter}.
+     *
+     * @param index Index of the item.
+     * @param item Item to update.
+     */
+    void set(int index, @NonNull T item);
+
+    /**
+     * Add item to the {@link ListAdapter}.
+     *
+     * @param item Item to add.
+     * @return Index of the item.
+     */
+    int add(@NonNull T item);
+
+    /**
+     * Add items to the {@link ListAdapter}.
+     *
+     * @param items Items to add.
+     * @return Index of the first item.
+     */
+    int add(@NonNull List<T> items);
+
+    /**
+     * Remove item from the {@link ListAdapter}.
+     *
+     * @param index Index of the item to remove.
+     * @return Removed item.
+     */
+    @NonNull
+    T remove(int index);
 }

@@ -19,18 +19,11 @@ package me.raatiniemi.worker.project.timesheet;
 import me.raatiniemi.worker.base.view.ListFragment;
 import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
 
-public interface TimesheetView extends ListFragment<TimesheetAdapter> {
+public interface TimesheetView extends ListFragment<TimesheetAdapter, TimesheetItem> {
     /**
      * Initiate refresh of the view.
      */
     void refresh();
-
-    /**
-     * Add single item to the view.
-     *
-     * @param item Item to add to the view.
-     */
-    void add(TimesheetItem item);
 
     /**
      * The view have finished loading data.
