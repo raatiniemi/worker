@@ -18,12 +18,13 @@ package me.raatiniemi.worker.projects;
 
 import java.util.List;
 
+import me.raatiniemi.worker.base.view.ListFragment;
 import me.raatiniemi.worker.model.domain.project.Project;
 
 /**
  * Methods related to handling of the project view.
  */
-public interface ProjectsView {
+public interface ProjectsView extends ListFragment<ProjectsAdapter, Project> {
     /**
      * Add project to the list.
      *

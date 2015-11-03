@@ -19,6 +19,7 @@ package me.raatiniemi.worker.project.timesheet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -151,15 +152,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
-        List<TimesheetItem> items = new ArrayList<>();
-        mTimesheetAdapter = new TimesheetAdapter(items, this);
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
                 = new RecyclerViewExpandableItemManager(savedInstanceState);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.setHasFixedSize(false);
-        recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(mTimesheetAdapter));
+        recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(getAdapter()));
         recyclerView.addItemDecoration(
                 new SimpleListDividerDecorator(
                         getResources().getDrawable(
@@ -191,7 +190,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
                         // Retrieve the total number of groups within the view, we need to
                         // exclude the children otherwise the offset will be wrong.
-                        int offset = mTimesheetAdapter.getGroupCount();
+                        int offset = getAdapter().getGroupCount();
 
                         // Retrieve additional timesheet items with offset.
                         getPresenter().getTimesheet(getProjectId(), offset);
@@ -212,17 +211,68 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     @Override
     public List<TimesheetItem> getData() {
-        return mTimesheetAdapter.getItems();
+        return getAdapter().getItems();
     }
 
     @Override
     public void setData(List<TimesheetItem> data) {
-        mTimesheetAdapter.setItems(data);
+        getAdapter().setItems(data);
     }
 
+    /**
+     * @inheritDoc
+     */
+    @NonNull
     @Override
-    public void add(TimesheetItem item) {
-        mTimesheetAdapter.add(item);
+    public TimesheetAdapter getAdapter() {
+        if (null == mTimesheetAdapter) {
+            List<TimesheetItem> items = new ArrayList<>();
+            mTimesheetAdapter = new TimesheetAdapter(items, this);
+        }
+
+        return mTimesheetAdapter;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public TimesheetItem get(int index) {
+        return getAdapter().get(index);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void set(int index, @NonNull TimesheetItem item) {
+        getAdapter().set(index, item);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int add(@NonNull TimesheetItem item) {
+        return getAdapter().add(item);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public int add(@NonNull List<TimesheetItem> items) {
+        return getAdapter().add(items);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public TimesheetItem remove(int index) {
+        return getAdapter().remove(index);
     }
 
     @Override
@@ -233,16 +283,16 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     @Override
     public void refresh() {
         // Clear the items from the list and start loading from the beginning...
-        mTimesheetAdapter.clear();
+        getAdapter().clear();
         getPresenter().getTimesheet(getProjectId(), 0);
     }
 
     public void remove(TimeInAdapterResult result) {
-        mTimesheetAdapter.remove(result.getGroup(), result.getChild());
+        getAdapter().remove(result.getGroup(), result.getChild());
     }
 
     public void update(TimeInAdapterResult result) {
-        mTimesheetAdapter.set(result.getGroup(), result.getChild(), result.getTime());
+        getAdapter().set(result.getGroup(), result.getChild(), result.getTime());
     }
 
     @Override
