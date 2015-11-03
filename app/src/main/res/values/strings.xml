@@ -66,6 +66,8 @@
     <string name="error.message.project_name_missing">You have to supply a name</string>
     <string name="error.message.project_name_already_exists">Project name already exists</string>
 
+    <string name="error.message.unable_to_find_project">Unable to find project.</string>
+
     <string name="error.message.preference_screen_not_implemented">Preference screen is not implemented.</string>
     <string name="error.message.preference_not_implemented">Preference is not implemented.</string>
 

@@ -257,17 +257,20 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
             return;
         }
 
-        // Retrieve the project from the retrieved position.
-        final Project project = getAdapter().get(position);
-        if (null == project) {
-            Log.w(TAG, "Unable to retrieve project from position " + position);
-            return;
+        try {
+            // Retrieve the project from the retrieved position.
+            final Project project = getAdapter().get(position);
+            Intent intent = new Intent(getActivity(), ProjectActivity.class);
+            intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
+
+            startActivity(intent);
+        } catch (IndexOutOfBoundsException e) {
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    R.string.error_message_unable_to_find_project,
+                    Snackbar.LENGTH_SHORT
+            ).show();
         }
-
-        Intent intent = new Intent(getActivity(), ProjectActivity.class);
-        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
-
-        startActivity(intent);
     }
 
     @Override
