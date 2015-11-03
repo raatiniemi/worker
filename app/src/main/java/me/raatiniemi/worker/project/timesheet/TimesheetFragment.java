@@ -53,7 +53,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     private LinearLayoutManager mLinearLayoutManager;
 
-    private TimesheetAdapter mTimesheetAdapter;
+    private TimesheetAdapter mAdapter;
 
     private TimeInAdapterResult mSelectedItem;
 
@@ -225,12 +225,12 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     @NonNull
     @Override
     public TimesheetAdapter getAdapter() {
-        if (null == mTimesheetAdapter) {
+        if (null == mAdapter) {
             List<TimesheetItem> items = new ArrayList<>();
-            mTimesheetAdapter = new TimesheetAdapter(items, this);
+            mAdapter = new TimesheetAdapter(items, this);
         }
 
-        return mTimesheetAdapter;
+        return mAdapter;
     }
 
     /**
