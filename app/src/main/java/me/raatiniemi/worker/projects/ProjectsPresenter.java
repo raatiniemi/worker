@@ -306,7 +306,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                         }
 
                         // Add the new project to the view.
-                        getView().addProject(project);
+                        getView().addCreatedProject(project);
                     }
                 });
     }

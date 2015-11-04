@@ -178,9 +178,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         return getAdapter().remove(index);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
-    public void addProject(Project project) {
-        int position = getAdapter().add(project);
+    public void addCreatedProject(@NonNull Project project) {
+        // Add the project to the adapter. Since this is a user action we
+        // should always display the result, i.e. scroll down to the project.
+        int position = add(project);
         mRecyclerView.scrollToPosition(position);
 
         // TODO: Add support for "undo", i.e. remove created project.

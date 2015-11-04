@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.projects;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 import me.raatiniemi.worker.base.view.ListFragment;
@@ -26,11 +28,11 @@ import me.raatiniemi.worker.model.domain.project.Project;
  */
 public interface ProjectsView extends ListFragment<ProjectsAdapter, Project> {
     /**
-     * Add project to the list.
+     * Add a created project to the view.
      *
-     * @param project Project to add to the list.
+     * @param project Created project.
      */
-    void addProject(Project project);
+    void addCreatedProject(@NonNull Project project);
 
     /**
      * Update project in the list.
