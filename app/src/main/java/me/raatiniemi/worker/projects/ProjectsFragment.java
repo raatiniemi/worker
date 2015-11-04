@@ -279,7 +279,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void onClockActivityToggle(final Project project) {
+    public void onClockActivityToggle(@NonNull final Project project) {
         // TODO: Add configuration for disabling confirm dialog.
         // When using the toggle clock activity functionality, the user
         // have to confirm the clock out.
@@ -301,7 +301,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void onClockActivityAt(final Project project) {
+    public void onClockActivityAt(@NonNull final Project project) {
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project);
         fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
             @Override
@@ -316,7 +316,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void onDelete(final Project project) {
+    public void onDelete(@NonNull final Project project) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)
