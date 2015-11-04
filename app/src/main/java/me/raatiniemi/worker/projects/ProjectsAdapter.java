@@ -202,27 +202,6 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
     }
 
     /**
-     * Listener for project actions.
-     */
-    public interface OnProjectActionListener {
-        /**
-         * Toggle the clock activity change.
-         *
-         * @param project Project to change the clock activity.
-         */
-        void onClockActivityToggle(Project project);
-
-        /**
-         * Toggle the clock activity change, with date and time.
-         *
-         * @param project Project to change the clock activity.
-         */
-        void onClockActivityAt(Project project);
-
-        void onDelete(Project project);
-    }
-
-    /**
      * View holder for the project item view.
      */
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
