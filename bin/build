@@ -1,7 +1,7 @@
 #!/bin/bash
 # If the first argument to the 'bin/build' is '--no-sign', then we should skip
 # sending the APK to the deployment server for signing.
-[[ '--no-sign' == "$1" ]] && sign=false || sign=true;
+[[ '--no-sign' == "$1" ]] && SIGN=false || SIGN=true;
 
 # Path for build related folders.
 BUILD="./app/build";
@@ -28,7 +28,7 @@ function isCommandAvailable {
 isCommandAvailable java;
 
 # Only if we are signing the APK do we need the zipalign command.
-if [ $sign = true ]; then
+if [ $SIGN = true ]; then
     isCommandAvailable zipalign;
 fi;
 
@@ -44,7 +44,7 @@ if [ $? -eq 1 ]; then
 fi;
 
 # Check if we should send the APK to the deployment server for signing.
-if [ $sign = true ]; then
+if [ $SIGN = true ]; then
     # Before we start deploying the APK for signing we have to do
     # some initial clean up. Removing the unsigned and unaligned
     # files from the deployment host, if they still exists.
