@@ -6,3 +6,6 @@ build:
     stage: build
     script:
         - "./bin/build --no-sign"
+    tags:
+        - android
+        - java
