@@ -1,5 +1,5 @@
 #!/bin/bash
-# If the first argument to the 'build.sh' is '--no-sign', then we should skip
+# If the first argument to the 'bin/build' is '--no-sign', then we should skip
 # sending the APK to the deployment server for signing.
 [[ '--no-sign' == "$1" ]] && sign=false || sign=true;
 
