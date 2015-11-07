@@ -1,0 +1,10 @@
+#!/bin/bash
+# Make sure we're working from the project root directory.
+cd "$(dirname $0)/..";
+
+# Clean and run the unit tests.
+./gradlew clean test;
+if [ $? -ne 0 ]; then
+    exit 1;
+fi;
+exit 0;

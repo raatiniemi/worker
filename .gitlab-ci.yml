@@ -1,3 +1,19 @@
-build:
+stages:
+    - test
+    - build
+
+test:
+    stage: test
     script:
-        - "./build.sh --no-sign"
+        - "./bin/test"
+    tags:
+        - android
+        - java
+
+build:
+    stage: build
+    script:
+        - "./bin/build"
+    tags:
+        - android
+        - java

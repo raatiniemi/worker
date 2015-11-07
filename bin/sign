@@ -1,0 +1,76 @@
+#!/bin/bash
+# Make sure we're working from the project root directory.
+cd "$(dirname $0)/..";
+
+# Directory storing the built APKs.
+OUTPUT="./app/build/outputs/apk";
+
+# The signing process goes through a few different stages and for each stage
+# the name of the APK is different:
+# 1. `UNSIGNED_APK` - built
+# 2. `UNALIGNED_APK` - built and signed
+# 3. `RELEASE_APK` - built, signed, and aligned
+UNSIGNED_APK="app-release-unsigned.apk";
+UNALIGNED_APK="app-release-unaligned.apk";
+RELEASE_APK="app-release.apk";
+
+# The hostname used for signing the APKs, e.g. host via SSH configuration.
+HOST="android-deployment";
+
+# The `zipalign` command is required for signing, make sure that the command
+# actually is available.
+$(which zipalign >/dev/null 2>/dev/null);
+if [ $? -ne 0 ]; then
+    echo "unable to locate zipalign";
+    exit 1;
+fi;
+
+# Clean the build related files, these will be generated
+# again when the release is assembled.
+[ -f $REALEASE_APK ] && rm -f $RELEASE_APK;
+[ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;
+
+# Since we are signing the APK, i.e. we are going to release the application,
+# we should always run the unit tests first.
+./bin/test;
+if [ $? -ne 0 ]; then
+    echo "unit tests failed";
+    exit 1;
+fi;
+
+# Build the application.
+./bin/build;
+if [ $? -ne 0 ]; then
+    echo "build failed";
+    exit 1;
+fi;
+
+# Before we start deploying the APK for signing we have to do
+# some initial clean up. Removing the unsigned and unaligned
+# files from the deployment host, if they still exists.
+$(ssh $HOST rm -f $UNSIGNED_APK &>/dev/null);
+$(ssh $HOST rm -f $UNALIGNED_APK &>/dev/null);
+
+# Send the unsigned release APK to the signing host.
+scp "${OUTPUT}/${UNSIGNED_APK}" "${HOST}:${UNSIGNED_APK}";
+
+# Open a new connection to the signing host, we need to enter
+# the password for the keystore. And, since we don't want the
+# to store the password in plain text anywhere it's better to
+# open a new connection and manually enter the password.
+ssh $HOST;
+
+# Verify that the unaligned apk actually exists on the signing
+# host before we attempt to retrieve it.
+if $(ssh -q $HOST [[ ! -f $UNALIGNED_APK ]]); then
+    echo "Unable to locate ${UNALIGNED_APK} on signing host";
+    exit 1;
+fi;
+
+# Retrieve the unaligned apk from the signing host and
+# initialize the alignment.
+scp "${HOST}:${UNALIGNED_APK}" $UNALIGNED_APK;
+zipalign -v 4 $UNALIGNED_APK $RELEASE_APK;
+
+# Do some clean up and exit.
+[ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;

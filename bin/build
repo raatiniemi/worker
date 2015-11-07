@@ -1,0 +1,10 @@
+#!/bin/bash
+# Make sure we're working from the project root directory.
+cd "$(dirname $0)/..";
+
+# Clean and assemble the APK.
+./gradlew clean assemble;
+if [ $? -eq 1 ]; then
+    exit 1;
+fi;
+exit 0;
