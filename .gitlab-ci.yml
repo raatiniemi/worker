@@ -1,3 +1,7 @@
+stages:
+    - test
+    - build
+
 build:
     script:
         - "./bin/build --no-sign"
