@@ -37,8 +37,8 @@ fi;
 [ -f $REALEASE_APK ] && rm -f $RELEASE_APK;
 [ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;
 
-# Clean, test, and assemble the APK.
-./gradlew clean test assemble;
+# Clean and assemble the APK.
+./gradlew clean assemble;
 if [ $? -eq 1 ]; then
     exit 1;
 fi;
