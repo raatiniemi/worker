@@ -1,6 +1,10 @@
 # Worker
 ![license](https://img.shields.io/badge/license-GPLv2-blue.svg)
 
+Worker is a simple Android application for keeping track of time.
+
+[Introducing Worker](http://raatiniemi.me/thoughts/introducing-worker/)
+
 ## Contributing
 
 The project have defined code and git style guidelines that are expected to be followed.
@@ -10,6 +14,7 @@ The project have defined code and git style guidelines that are expected to be f
 
 ## License
 
+```
 Copyright (C) 2015 Worker Project
 
 This program is free software: you can redistribute it and/or modify
@@ -23,3 +28,4 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+```
