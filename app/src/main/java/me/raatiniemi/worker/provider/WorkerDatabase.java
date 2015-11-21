@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.provider;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -36,6 +37,31 @@ public class WorkerDatabase extends SQLiteOpenHelper {
      */
     public WorkerDatabase(Context context) {
         super(context, Worker.DATABASE_NAME, null, Worker.DATABASE_VERSION);
+    }
+
+    /**
+     * Check if column exists in table.
+     *
+     * @param db     The database.
+     * @param table  Name of the table.
+     * @param column Name of the column.
+     * @return true if column exists, otherwise false.
+     */
+    private boolean columnExists(SQLiteDatabase db, String table, String column) {
+        boolean exists = false;
+
+        // get the table structure and check if the column exists.
+        Cursor cursor = db.rawQuery("pragma table_info(" + table + ")", null);
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            if (name.equalsIgnoreCase(column)) {
+                exists = true;
+                break;
+            }
+        }
+        cursor.close();
+
+        return exists;
     }
 
     /**
@@ -96,10 +122,14 @@ public class WorkerDatabase extends SQLiteOpenHelper {
             );
         }
 
-        // Add the `registered`-column to the `time`-table.
-        db.execSQL("ALTER TABLE " + Tables.TIME +
-                " ADD COLUMN " + TimeColumns.REGISTERED +
-                " INTEGER NOT NULL DEFAULT 0");
+        // since sqlite is unable to remove columns we need to check if the
+        // column already exists before adding it.
+        if (!columnExists(db, Tables.TIME, TimeColumns.REGISTERED)) {
+            // Add the `registered`-column to the `time`-table.
+            db.execSQL("ALTER TABLE " + Tables.TIME +
+                    " ADD COLUMN " + TimeColumns.REGISTERED +
+                    " INTEGER NOT NULL DEFAULT 0");
+        }
     }
 
     /**

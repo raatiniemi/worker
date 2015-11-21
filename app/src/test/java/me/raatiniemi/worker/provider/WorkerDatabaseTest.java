@@ -101,6 +101,18 @@ public class WorkerDatabaseTest {
         helper.onUpgrade(mDatabase, 1, Worker.DATABASE_VERSION);
     }
 
+    @Test
+    public void onUpgrade_upgradeAfterDowngrade() {
+        Context context = mock(Context.class);
+        WorkerBaseDatabase helper = new WorkerBaseDatabase(context);
+        helper.onCreate(mDatabase);
+
+        // If no exceptions have been thrown the test should be considered OK.
+        helper.onUpgrade(mDatabase, 1, Worker.DATABASE_VERSION);
+        helper.onDowngrade(mDatabase, Worker.DATABASE_VERSION, 1);
+        helper.onUpgrade(mDatabase, 1, Worker.DATABASE_VERSION);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void onDowngrade_newVersionIsLessThan1() {
         Context context = mock(Context.class);
