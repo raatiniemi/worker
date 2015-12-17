@@ -41,7 +41,7 @@ public class Settings {
     }
 
     /**
-     * Set the prefererence indicating whether the registered time should be hidden.
+     * Set the preference indicating whether the registered time should be hidden.
      *
      * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
      * @param newValue 'true' if registered should be hidden, otherwise 'false'.
