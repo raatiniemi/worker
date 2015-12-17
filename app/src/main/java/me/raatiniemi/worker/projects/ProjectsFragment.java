@@ -44,6 +44,7 @@ import me.raatiniemi.worker.project.ProjectActivity;
 import me.raatiniemi.worker.ui.NewProjectFragment;
 import me.raatiniemi.worker.util.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
+import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
@@ -280,10 +281,13 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
     @Override
     public void onClockActivityToggle(@NonNull final Project project) {
-        // TODO: Add configuration for disabling confirm dialog.
-        // When using the toggle clock activity functionality, the user
-        // have to confirm the clock out.
         if (project.isActive()) {
+            // Check if clock out require confirmation.
+            if (!Settings.shouldConfirmClockOut(getActivity())) {
+                getPresenter().clockActivityChange(project, new Date());
+                return;
+            }
+
             new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.confirm_clock_out_title))
                     .setMessage(getString(R.string.confirm_clock_out_message))
