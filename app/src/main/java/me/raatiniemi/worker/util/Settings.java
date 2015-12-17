@@ -57,6 +57,17 @@ public class Settings {
     }
 
     /**
+     * Check if clock out require confirmation.
+     *
+     * @param context Context to be used to look up the {@link android.content.SharedPreferences}.
+     * @return 'true' if clock out require confirmation, otherwise 'false'.
+     */
+    public static boolean shouldConfirmClockOut(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_CONFIRM_CLOCK_OUT, true);
+    }
+
+    /**
      * Set the preference for clock out confirmation.
      *
      * @param context Context to be used to edit the {@link android.content.SharedPreferences}.

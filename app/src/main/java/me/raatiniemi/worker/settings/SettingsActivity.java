@@ -304,6 +304,15 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.settings);
+
+            try {
+                // Set the preference value for the clock out confirmation.
+                CheckBoxPreference confirmClockOut =
+                        (CheckBoxPreference) findPreference(SETTINGS_CONFIRM_CLOCK_OUT_KEY);
+                confirmClockOut.setChecked(Settings.shouldConfirmClockOut(getActivity()));
+            } catch (ClassCastException e) {
+                Log.w(TAG, "Unable to get value for 'confirm_clock_out'");
+            }
         }
 
         @Override
