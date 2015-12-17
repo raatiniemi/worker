@@ -30,6 +30,11 @@ public class Settings {
     private static final String PREF_HIDE_REGISTERED_TIME = "pref_hide_registered_time";
 
     /**
+     * Preference key for clock out confirmation.
+     */
+    private static final String PREF_CONFIRM_CLOCK_OUT = "pref_confirm_clock_out";
+
+    /**
      * Check if the registered time should be hidden.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
@@ -49,5 +54,27 @@ public class Settings {
     public static void setHideRegisteredTime(final Context context, boolean newValue) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(PREF_HIDE_REGISTERED_TIME, newValue).apply();
+    }
+
+    /**
+     * Check if clock out require confirmation.
+     *
+     * @param context Context to be used to look up the {@link android.content.SharedPreferences}.
+     * @return 'true' if clock out require confirmation, otherwise 'false'.
+     */
+    public static boolean shouldConfirmClockOut(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_CONFIRM_CLOCK_OUT, true);
+    }
+
+    /**
+     * Set the preference for clock out confirmation.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @param newValue 'true' if clock out requires confirmation, otherwise 'false'.
+     */
+    public static void setConfirmClockOut(final Context context, boolean newValue) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_CONFIRM_CLOCK_OUT, newValue).apply();
     }
 }

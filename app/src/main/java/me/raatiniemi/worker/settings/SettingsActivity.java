@@ -20,6 +20,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -41,6 +42,7 @@ import me.raatiniemi.worker.base.view.MvpActivity;
 import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
 import me.raatiniemi.worker.util.PermissionUtil;
+import me.raatiniemi.worker.util.Settings;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -51,6 +53,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      * Tag for logging.
      */
     private static final String TAG = "SettingsActivity";
+
+    /**
+     * Key for confirm clock out preference.
+     */
+    private static final String SETTINGS_CONFIRM_CLOCK_OUT_KEY = "settings_confirm_clock_out";
 
     /**
      * Key for the data preference.
@@ -297,11 +304,35 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.settings);
+
+            try {
+                // Set the preference value for the clock out confirmation.
+                CheckBoxPreference confirmClockOut =
+                        (CheckBoxPreference) findPreference(SETTINGS_CONFIRM_CLOCK_OUT_KEY);
+                confirmClockOut.setChecked(Settings.shouldConfirmClockOut(getActivity()));
+            } catch (ClassCastException e) {
+                Log.w(TAG, "Unable to get value for 'confirm_clock_out'");
+            }
         }
 
         @Override
         public int getTitle() {
             return R.string.activity_settings_preferences;
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
+            if (SETTINGS_CONFIRM_CLOCK_OUT_KEY.equals(preference.getKey())) {
+                try {
+                    // Set the clock out confirmation preference.
+                    boolean checked = ((CheckBoxPreference) preference).isChecked();
+                    Settings.setConfirmClockOut(getActivity(), checked);
+                    return true;
+                } catch (ClassCastException e) {
+                    Log.w(TAG, "Unable to set value for 'confirm_clock_out'");
+                }
+            }
+            return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
     }
 
