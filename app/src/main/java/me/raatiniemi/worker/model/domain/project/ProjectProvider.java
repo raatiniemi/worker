@@ -458,7 +458,7 @@ public class ProjectProvider {
     }
 
     public Observable<TimesheetItem> getTimesheet(final Long id, final int offset) {
-        // TODO: Simplify the builing of the URI with query parameters.
+        // TODO: Simplify the building of the URI with query parameters.
         Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(id))
                 .buildUpon()
                 .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
