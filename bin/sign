@@ -27,7 +27,7 @@ fi;
 
 # Clean the build related files, these will be generated
 # again when the release is assembled.
-[ -f $REALEASE_APK ] && rm -f $RELEASE_APK;
+[ -f $RELEASE_APK ] && rm -f $RELEASE_APK;
 [ -f $UNALIGNED_APK ] && rm -f $UNALIGNED_APK;
 
 # Since we are signing the APK, i.e. we are going to release the application,
