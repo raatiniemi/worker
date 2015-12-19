@@ -107,7 +107,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     }
 
     public void remove(final TimeInAdapterResult result) {
-        mProvider.remove(result.getTime())
+        mProvider.deleteTime(result.getTime())
                 .compose(this.<Time>applySchedulers())
                 .subscribe(new Subscriber<Time>() {
                     @Override
@@ -153,7 +153,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
         Time time = result.getTime();
         time.setRegistered(true);
 
-        mProvider.update(time)
+        mProvider.updateTime(time)
                 .compose(this.<Time>applySchedulers())
                 .subscribe(new Subscriber<Time>() {
                     @Override
