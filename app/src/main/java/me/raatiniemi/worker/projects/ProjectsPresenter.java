@@ -233,24 +233,10 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
         // Setup the subscription for retrieving projects.
         mSubscription = mProvider.getProjects()
-                .map(new Func1<List<Project>, List<Project>>() {
+                .compose(this.<Project>applySchedulers())
+                .subscribe(new Subscriber<Project>() {
                     @Override
-                    public List<Project> call(List<Project> projects) {
-                        // Populate the projects with the registered time.
-                        for (Project project : projects) {
-                            int index = projects.indexOf(project);
-
-                            project = mProvider.getTime(project);
-                            projects.set(index, project);
-                        }
-
-                        return projects;
-                    }
-                })
-                .compose(this.<List<Project>>applySchedulers())
-                .subscribe(new Subscriber<List<Project>>() {
-                    @Override
-                    public void onNext(List<Project> projects) {
+                    public void onNext(Project project) {
                         Log.d(TAG, "getProjects onNext");
 
                         // Check that we still have the view attached.
@@ -260,7 +246,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                         }
 
                         // Push the data to the view.
-                        getView().setData(projects);
+                        getView().add(project);
                     }
 
                     @Override

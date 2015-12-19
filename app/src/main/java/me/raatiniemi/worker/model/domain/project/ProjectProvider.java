@@ -74,7 +74,7 @@ public class ProjectProvider {
      *
      * @return Observable emitting the projects.
      */
-    public Observable<List<Project>> getProjects() {
+    public Observable<Project> getProjects() {
         return Observable.defer(new Func0<Observable<Cursor>>() {
             @Override
             public Observable<Cursor> call() {
@@ -94,7 +94,12 @@ public class ProjectProvider {
             public Project call(Cursor cursor) {
                 return ProjectMapper.map(cursor);
             }
-        }).toList();
+        }).map(new Func1<Project, Project>() {
+            @Override
+            public Project call(Project project) {
+                return getTime(project);
+            }
+        });
     }
 
     /**
