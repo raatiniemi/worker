@@ -39,8 +39,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
         Time,
         TimesheetAdapter.TimesheetItem,
-        TimesheetAdapter.GroupViewHolder,
-        TimesheetAdapter.ChildViewHolder
+        TimesheetAdapter.ItemViewHolder,
+        TimesheetAdapter.ItemViewHolder
         > {
     private static final String TAG = "TimesheetAdapter";
 
@@ -65,23 +65,33 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public GroupViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
+    public ItemViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
-        return new GroupViewHolder(view);
+        ItemViewHolder viewHolder = new ItemViewHolder(view);
+        viewHolder.mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_group_item);
+        viewHolder.mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
+        viewHolder.mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
+
+        return viewHolder;
     }
 
     @Override
-    public ChildViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
+    public ItemViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
-        return new ChildViewHolder(view);
+        ItemViewHolder viewHolder = new ItemViewHolder(view);
+        viewHolder.mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_child_item);
+        viewHolder.mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
+        viewHolder.mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
+
+        return viewHolder;
     }
 
     @Override
-    public void onBindGroupViewHolder(GroupViewHolder vh, int group, int viewType) {
+    public void onBindGroupViewHolder(ItemViewHolder vh, int group, int viewType) {
         vh.itemView.setClickable(true);
 
         Date date = getGroup(group);
@@ -117,7 +127,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolder vh, final int group, final int child, int viewType) {
+    public void onBindChildViewHolder(ItemViewHolder vh, final int group, final int child, int viewType) {
         final Time time = get(group, child);
 
         // Register the long click listener on the time item.
@@ -175,7 +185,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder vh, int group, int x, int y, boolean expand) {
+    public boolean onCheckCanExpandOrCollapseGroup(ItemViewHolder vh, int group, int x, int y, boolean expand) {
         return true;
     }
 
@@ -189,35 +199,15 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         }
     }
 
-    static class BaseViewHolder extends AbstractExpandableItemViewHolder {
+    static class ItemViewHolder extends AbstractExpandableItemViewHolder {
         public RelativeLayout mContainer;
 
         public TextView mTitle;
 
         public TextView mSummarize;
 
-        public BaseViewHolder(View view) {
+        public ItemViewHolder(View view) {
             super(view);
-        }
-    }
-
-    public static class GroupViewHolder extends BaseViewHolder {
-        public GroupViewHolder(View view) {
-            super(view);
-
-            mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_group_item);
-            mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
-            mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
-        }
-    }
-
-    public static class ChildViewHolder extends BaseViewHolder {
-        public ChildViewHolder(View view) {
-            super(view);
-
-            mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_child_item);
-            mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
-            mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
         }
     }
 
