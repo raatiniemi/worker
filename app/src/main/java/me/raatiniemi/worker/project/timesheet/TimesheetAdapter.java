@@ -189,7 +189,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         }
     }
 
-    public static class BaseViewHolder extends AbstractExpandableItemViewHolder {
+    static class BaseViewHolder extends AbstractExpandableItemViewHolder {
         public RelativeLayout mContainer;
 
         public TextView mTitle;
