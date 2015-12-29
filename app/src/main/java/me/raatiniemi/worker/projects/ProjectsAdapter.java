@@ -252,4 +252,30 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
             mClockedInSince = (TextView) view.findViewById(R.id.fragment_projects_item_clocked_in_since);
         }
     }
+
+    /**
+     * Interface for project actions.
+     */
+    public interface OnProjectActionListener {
+        /**
+         * Toggle the clock activity change.
+         *
+         * @param project Project to change the clock activity.
+         */
+        void onClockActivityToggle(@NonNull Project project);
+
+        /**
+         * Toggle the clock activity change, with date and time.
+         *
+         * @param project Project to change the clock activity.
+         */
+        void onClockActivityAt(@NonNull Project project);
+
+        /**
+         * Handle project delete action from user.
+         *
+         * @param project Project to delete.
+         */
+        void onDelete(@NonNull Project project);
+    }
 }

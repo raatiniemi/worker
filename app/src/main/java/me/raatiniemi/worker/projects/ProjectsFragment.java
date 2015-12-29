@@ -48,7 +48,7 @@ import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
-        implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
+        implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
     public static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
