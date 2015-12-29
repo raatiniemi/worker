@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.model.domain;
+package me.raatiniemi.worker.domain;
 
 /**
  * Base class for the domain objects.
