@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.model.domain.time;
+package me.raatiniemi.worker.domain;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

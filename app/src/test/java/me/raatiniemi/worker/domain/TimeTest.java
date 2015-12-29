@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.model.domain.time;
+package me.raatiniemi.worker.domain;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +24,7 @@ import org.robolectric.annotation.Config;
 import java.util.Date;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
 
 import static junit.framework.Assert.assertEquals;

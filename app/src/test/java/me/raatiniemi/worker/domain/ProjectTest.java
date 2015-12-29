@@ -29,7 +29,7 @@ import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
-import me.raatiniemi.worker.model.domain.time.Time;
+import me.raatiniemi.worker.domain.Time;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;

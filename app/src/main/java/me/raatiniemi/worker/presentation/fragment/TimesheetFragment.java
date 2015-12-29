@@ -40,7 +40,7 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
-import me.raatiniemi.worker.model.domain.time.Time;
+import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter;
 import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimesheetItem;

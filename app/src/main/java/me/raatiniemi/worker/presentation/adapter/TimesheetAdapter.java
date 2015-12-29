@@ -32,7 +32,7 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.ExpandableListAdapter;
-import me.raatiniemi.worker.model.domain.time.Time;
+import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<

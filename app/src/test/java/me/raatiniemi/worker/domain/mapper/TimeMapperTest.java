@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.model.domain.time;
+package me.raatiniemi.worker.domain.mapper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -25,6 +25,8 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
 
