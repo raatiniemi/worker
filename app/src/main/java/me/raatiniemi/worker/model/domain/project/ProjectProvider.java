@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.mapper.ProjectMapper;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.domain.time.Time;

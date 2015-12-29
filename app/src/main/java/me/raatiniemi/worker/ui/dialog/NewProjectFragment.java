@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.model.domain.project.Project;
+import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.util.Keyboard;
 import rx.Observable;
 import rx.Subscriber;

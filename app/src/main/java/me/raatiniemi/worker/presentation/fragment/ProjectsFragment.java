@@ -38,7 +38,7 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.base.view.SimpleListAdapter;
-import me.raatiniemi.worker.model.domain.project.Project;
+import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.presentation.activity.ProjectActivity;
 import me.raatiniemi.worker.presentation.adapter.ProjectsAdapter;

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.model.domain.project;
+package me.raatiniemi.worker.domain;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.domain.ClockActivityException;
 import me.raatiniemi.worker.model.domain.time.Time;

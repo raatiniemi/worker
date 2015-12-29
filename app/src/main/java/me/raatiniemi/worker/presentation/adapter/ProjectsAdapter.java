@@ -35,8 +35,8 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.SimpleListAdapter;
-import me.raatiniemi.worker.model.domain.project.Project;
-import me.raatiniemi.worker.model.domain.project.ProjectComparator;
+import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 

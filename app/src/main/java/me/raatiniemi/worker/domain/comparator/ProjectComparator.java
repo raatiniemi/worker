@@ -14,9 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.model.domain.project;
+package me.raatiniemi.worker.domain.comparator;
 
 import java.util.Comparator;
+
+import me.raatiniemi.worker.domain.Project;
 
 public class ProjectComparator implements Comparator<Project> {
     @Override

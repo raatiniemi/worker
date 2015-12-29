@@ -14,11 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.model.domain.project;
+package me.raatiniemi.worker.domain.mapper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
 
 public class ProjectMapper {
