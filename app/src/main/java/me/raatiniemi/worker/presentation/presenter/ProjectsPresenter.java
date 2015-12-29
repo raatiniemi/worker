@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.projects;
+package me.raatiniemi.worker.presentation.presenter;
 
 import android.content.Context;
 import android.util.Log;
@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
+import me.raatiniemi.worker.presentation.fragment.ProjectsFragment;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;

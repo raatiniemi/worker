@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.projects;
+package me.raatiniemi.worker.presentation.view;
 
 import android.support.annotation.NonNull;
 
@@ -22,6 +22,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.base.view.ListFragment;
 import me.raatiniemi.worker.model.domain.project.Project;
+import me.raatiniemi.worker.presentation.adapter.ProjectsAdapter;
 
 /**
  * Methods related to handling of the project view.

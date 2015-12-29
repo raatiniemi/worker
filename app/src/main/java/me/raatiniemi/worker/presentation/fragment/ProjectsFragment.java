@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.projects;
+package me.raatiniemi.worker.presentation.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -41,6 +41,9 @@ import me.raatiniemi.worker.base.view.SimpleListAdapter;
 import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.presentation.activity.ProjectActivity;
+import me.raatiniemi.worker.presentation.adapter.ProjectsAdapter;
+import me.raatiniemi.worker.presentation.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.view.ProjectsView;
 import me.raatiniemi.worker.ui.dialog.NewProjectFragment;
 import me.raatiniemi.worker.ui.dialog.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.HintedImageButtonListener;

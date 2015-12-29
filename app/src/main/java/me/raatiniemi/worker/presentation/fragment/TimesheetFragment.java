@@ -46,7 +46,6 @@ import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimeInAdapterR
 import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.view.TimesheetView;
-import me.raatiniemi.worker.projects.ProjectsFragment;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
