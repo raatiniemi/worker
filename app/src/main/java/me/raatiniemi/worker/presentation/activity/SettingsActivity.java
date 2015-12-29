@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.settings;
+package me.raatiniemi.worker.presentation.activity;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -41,6 +41,8 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.MvpActivity;
 import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.service.DataIntentService;
+import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
+import me.raatiniemi.worker.presentation.view.SettingsView;
 import me.raatiniemi.worker.util.PermissionUtil;
 import me.raatiniemi.worker.util.Settings;
 

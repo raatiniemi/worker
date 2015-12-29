@@ -30,7 +30,6 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
 import me.raatiniemi.worker.projects.ProjectsFragment;
 import me.raatiniemi.worker.projects.ProjectsView;
-import me.raatiniemi.worker.settings.SettingsActivity;
 import me.raatiniemi.worker.util.Worker;
 
 public class MainActivity extends BaseActivity {

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.settings;
+package me.raatiniemi.worker.presentation.presenter;
 
 import android.content.Context;
 
@@ -27,6 +27,8 @@ import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.model.event.BackupSuccessfulEvent;
+import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
+import me.raatiniemi.worker.presentation.view.SettingsView;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;

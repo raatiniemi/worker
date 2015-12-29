@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.settings;
+package me.raatiniemi.worker.presentation.view;
 
 import android.support.annotation.Nullable;
 

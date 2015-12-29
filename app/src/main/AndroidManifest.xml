@@ -41,7 +41,7 @@
             />
 
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".presentation.activity.SettingsActivity"
             android:parentActivityName=".presentation.activity.MainActivity"
             />
 

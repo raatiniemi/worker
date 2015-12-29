@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.settings;
+package me.raatiniemi.worker.presentation.presenter;
 
 import android.content.Context;
 import android.util.Log;
@@ -25,6 +25,7 @@ import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.backup.Backup;
 import me.raatiniemi.worker.model.event.BackupSuccessfulEvent;
+import me.raatiniemi.worker.presentation.view.SettingsView;
 import me.raatiniemi.worker.util.ExternalStorage;
 import rx.Observable;
 import rx.Subscriber;
