@@ -14,10 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.project.timesheet;
+package me.raatiniemi.worker.presentation.view;
 
 import me.raatiniemi.worker.base.view.ListFragment;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
+import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter;
+import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimesheetItem;
 
 public interface TimesheetView extends ListFragment<TimesheetAdapter, TimesheetItem> {
     /**

@@ -34,7 +34,7 @@ import me.raatiniemi.worker.exception.DomainException;
 import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.model.domain.time.Time;
 import me.raatiniemi.worker.model.domain.time.TimeMapper;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
+import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.provider.WorkerContract;
 import me.raatiniemi.worker.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.provider.WorkerContract.TimeContract;

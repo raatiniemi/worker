@@ -40,7 +40,7 @@ import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.base.view.SimpleListAdapter;
 import me.raatiniemi.worker.model.domain.project.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
-import me.raatiniemi.worker.project.ProjectActivity;
+import me.raatiniemi.worker.presentation.activity.ProjectActivity;
 import me.raatiniemi.worker.ui.dialog.NewProjectFragment;
 import me.raatiniemi.worker.ui.dialog.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.HintedImageButtonListener;

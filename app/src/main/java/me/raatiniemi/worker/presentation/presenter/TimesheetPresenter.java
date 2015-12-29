@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.project.timesheet;
+package me.raatiniemi.worker.presentation.presenter;
 
 import android.content.Context;
 import android.util.Log;
@@ -22,8 +22,9 @@ import android.util.Log;
 import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.model.domain.time.Time;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimeInAdapterResult;
-import me.raatiniemi.worker.project.timesheet.TimesheetAdapter.TimesheetItem;
+import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimeInAdapterResult;
+import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimesheetItem;
+import me.raatiniemi.worker.presentation.fragment.TimesheetFragment;
 import me.raatiniemi.worker.util.Settings;
 import rx.Subscriber;
 

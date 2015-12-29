@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.project.timesheet;
+package me.raatiniemi.worker.presentation.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
