@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 import me.raatiniemi.worker.base.presenter.RxPresenter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
-import me.raatiniemi.worker.presentation.fragment.ProjectsFragment;
+import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;

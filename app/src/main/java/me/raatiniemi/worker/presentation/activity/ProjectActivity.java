@@ -22,7 +22,7 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.BaseActivity;
-import me.raatiniemi.worker.presentation.fragment.TimesheetFragment;
+import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 import me.raatiniemi.worker.util.Settings;
 
 public class ProjectActivity extends BaseActivity {

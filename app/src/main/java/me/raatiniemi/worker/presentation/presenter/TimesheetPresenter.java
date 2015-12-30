@@ -24,7 +24,7 @@ import me.raatiniemi.worker.model.domain.project.ProjectProvider;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimesheetItem;
-import me.raatiniemi.worker.presentation.fragment.TimesheetFragment;
+import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 import me.raatiniemi.worker.util.Settings;
 import rx.Subscriber;
 
