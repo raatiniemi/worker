@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.ui.dialog;
+package me.raatiniemi.worker.presentation.view.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

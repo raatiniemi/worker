@@ -44,8 +44,6 @@ import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
 import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
 import me.raatiniemi.worker.presentation.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
-import me.raatiniemi.worker.ui.dialog.NewProjectFragment;
-import me.raatiniemi.worker.ui.dialog.ClockActivityAtFragment;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.Settings;
 import rx.Observable;

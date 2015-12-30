@@ -14,29 +14,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.ui.dialog;
+package me.raatiniemi.worker.presentation.view.fragment;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.text.format.DateFormat;
 import android.util.Log;
 
 import java.util.Calendar;
 
 import me.raatiniemi.worker.R;
 
-public class TimePickerFragment extends DialogFragment {
-    private static final String TAG = "TimePickerFragment";
+public class DatePickerFragment extends DialogFragment {
+    private static final String TAG = "DatePickerFragment";
 
     /**
-     * The "OnTimeSetListener" for the TimePickerDialog.
+     * Minimum date available for the date picker.
      */
-    private TimePickerDialog.OnTimeSetListener mOnTimeSetListener;
+    private Calendar mMinDate;
+
+    /**
+     * Maximum date available for the date picker.
+     */
+    private Calendar mMaxDate;
+
+    /**
+     * The "OnDateSetListener" for the DatePickerDialog.
+     */
+    private DatePickerDialog.OnDateSetListener mOnDateSetListener;
 
     private DialogInterface.OnCancelListener mOnCancelListener;
 
@@ -47,7 +56,7 @@ public class TimePickerFragment extends DialogFragment {
         super.onAttach(activity);
 
         // Check that we actually have a listener available.
-        if (null == getOnTimeSetListener()) {
+        if (null == getOnDateSetListener()) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -59,7 +68,7 @@ public class TimePickerFragment extends DialogFragment {
                     Snackbar.LENGTH_SHORT
             ).show();
 
-            Log.w(TAG, "No OnTimeSetListener have been supplied");
+            Log.w(TAG, "No OnDateSetListener have been supplied");
             dismiss();
         }
     }
@@ -67,13 +76,27 @@ public class TimePickerFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Calendar calendar = Calendar.getInstance();
-        return new TimePickerDialog(
+        DatePickerDialog dialog = new DatePickerDialog(
                 getActivity(),
-                getOnTimeSetListener(),
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                DateFormat.is24HourFormat(getActivity())
+                getOnDateSetListener(),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
         );
+
+        // If a minimum date is available we have
+        // to set it on the date picker.
+        if (null != getMinDate()) {
+            dialog.getDatePicker().setMinDate(getMinDate().getTimeInMillis());
+        }
+
+        // If a maximum date is available we have
+        // to set it on the date picker.
+        if (null != getMaxDate()) {
+            dialog.getDatePicker().setMaxDate(getMaxDate().getTimeInMillis());
+        }
+
+        return dialog;
     }
 
     @Override
@@ -97,21 +120,57 @@ public class TimePickerFragment extends DialogFragment {
     }
 
     /**
-     * Get the "OnTimeSetListener" for the TimePickerDialog.
+     * Retrieve the minimum date available for the date picker.
      *
-     * @return "OnTimeSetListener" for the TimePickerDialog.
+     * @return Minimum date, or null if none is set.
      */
-    public TimePickerDialog.OnTimeSetListener getOnTimeSetListener() {
-        return mOnTimeSetListener;
+    public Calendar getMinDate() {
+        return mMinDate;
     }
 
     /**
-     * Set the "OnTimeSetListener" for the TimePickerDialog.
+     * Set the minimum date for the date picker.
      *
-     * @param listener "OnTimeSetListener" for the TimePickerDialog.
+     * @param minDate Minimum date.
      */
-    public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener) {
-        mOnTimeSetListener = listener;
+    public void setMinDate(Calendar minDate) {
+        mMinDate = minDate;
+    }
+
+    /**
+     * Retrieve the maximum date available for the date picker.
+     *
+     * @return Maximum date, or null if none is set.
+     */
+    public Calendar getMaxDate() {
+        return mMaxDate;
+    }
+
+    /**
+     * Set the maximum date for the date picker.
+     *
+     * @param maxDate Maximum date.
+     */
+    public void setMaxDate(Calendar maxDate) {
+        mMaxDate = maxDate;
+    }
+
+    /**
+     * Get the "OnDateSetListener" for the DatePickerDialog.
+     *
+     * @return "OnDateSetListener" for the DatePickerDialog.
+     */
+    public DatePickerDialog.OnDateSetListener getOnDateSetListener() {
+        return mOnDateSetListener;
+    }
+
+    /**
+     * Set the "OnDateSetListener" for the DatePickerDialog.
+     *
+     * @param listener "OnDateSetListener" for the DatePickerDialog.
+     */
+    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
+        mOnDateSetListener = listener;
     }
 
     public DialogInterface.OnCancelListener getOnCancelListener() {
