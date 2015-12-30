@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.activity;
+package me.raatiniemi.worker.presentation.view.activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

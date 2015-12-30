@@ -40,7 +40,7 @@ import me.raatiniemi.worker.base.view.MvpFragment;
 import me.raatiniemi.worker.base.view.SimpleListAdapter;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.model.domain.project.ProjectProvider;
-import me.raatiniemi.worker.presentation.activity.ProjectActivity;
+import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
 import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
 import me.raatiniemi.worker.presentation.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.view.ProjectsView;

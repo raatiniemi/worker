@@ -18,7 +18,7 @@
         >
 
         <activity
-            android:name=".presentation.activity.MainActivity"
+            android:name=".presentation.view.activity.MainActivity"
             >
 
             <intent-filter>
@@ -36,13 +36,13 @@
         </activity>
 
         <activity
-            android:name=".presentation.activity.ProjectActivity"
-            android:parentActivityName=".presentation.activity.MainActivity"
+            android:name=".presentation.view.activity.ProjectActivity"
+            android:parentActivityName=".presentation.view.activity.MainActivity"
             />
 
         <activity
-            android:name=".presentation.activity.SettingsActivity"
-            android:parentActivityName=".presentation.activity.MainActivity"
+            android:name=".presentation.view.activity.SettingsActivity"
+            android:parentActivityName=".presentation.view.activity.MainActivity"
             />
 
         <provider
