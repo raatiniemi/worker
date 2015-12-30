@@ -20,6 +20,8 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import me.raatiniemi.worker.base.view.adapter.ListAdapter;
+
 /**
  * Interface for fragments with a {@link ListAdapter}.
  *
