@@ -30,8 +30,8 @@ import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.model.backup.Backup;
-import me.raatiniemi.worker.model.event.BackupSuccessfulEvent;
+import me.raatiniemi.worker.presentation.model.backup.Backup;
+import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 import me.raatiniemi.worker.util.ExternalStorage;
 import me.raatiniemi.worker.util.FileUtils;

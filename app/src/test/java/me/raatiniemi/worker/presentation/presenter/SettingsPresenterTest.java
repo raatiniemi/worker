@@ -25,9 +25,8 @@ import org.robolectric.annotation.Config;
 
 import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.model.backup.Backup;
-import me.raatiniemi.worker.model.event.BackupSuccessfulEvent;
-import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
+import me.raatiniemi.worker.presentation.model.backup.Backup;
+import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.view.SettingsView;
 
 import static org.mockito.Mockito.mock;

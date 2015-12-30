@@ -19,7 +19,7 @@ package me.raatiniemi.worker.presentation.view;
 import android.support.annotation.Nullable;
 
 import me.raatiniemi.worker.base.view.MvpView;
-import me.raatiniemi.worker.model.backup.Backup;
+import me.raatiniemi.worker.presentation.model.backup.Backup;
 
 /**
  * Methods related to handling of the settings view.
