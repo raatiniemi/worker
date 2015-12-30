@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.base.view.adapter.SimpleListAdapter;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
