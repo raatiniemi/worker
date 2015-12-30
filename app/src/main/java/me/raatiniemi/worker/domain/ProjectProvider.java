@@ -31,8 +31,8 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.mapper.ProjectMapper;
-import me.raatiniemi.worker.exception.DomainException;
-import me.raatiniemi.worker.exception.ProjectAlreadyExistsException;
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.data.WorkerContract;

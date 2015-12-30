@@ -14,16 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.exception.domain;
+package me.raatiniemi.worker.domain.exception;
 
-import me.raatiniemi.worker.exception.DomainException;
-
-public class ClockActivityException extends DomainException {
-    public ClockActivityException(String message) {
+/**
+ * Exception for when clock out occur before clock in.
+ */
+public class ClockOutBeforeClockInException extends DomainException {
+    /**
+     * Constructor.
+     *
+     * @param message Message thrown with exception.
+     */
+    public ClockOutBeforeClockInException(String message) {
         super(message);
-    }
-
-    public ClockActivityException() {
-        super();
     }
 }

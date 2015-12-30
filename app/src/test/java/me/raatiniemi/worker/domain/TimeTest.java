@@ -24,8 +24,7 @@ import org.robolectric.annotation.Config;
 import java.util.Date;
 
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.domain.Time;
-import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;

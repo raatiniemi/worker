@@ -20,7 +20,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import me.raatiniemi.worker.domain.Time;
-import me.raatiniemi.worker.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 
 public class TimeMapper {

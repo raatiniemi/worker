@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.exception;
+package me.raatiniemi.worker.domain.exception;
 
 public class ProjectAlreadyExistsException extends Exception {
 }

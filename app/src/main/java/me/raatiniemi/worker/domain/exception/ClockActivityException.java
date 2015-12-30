@@ -14,14 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.exception;
+package me.raatiniemi.worker.domain.exception;
 
-public class DomainException extends Exception {
-    public DomainException(String message) {
+public class ClockActivityException extends DomainException {
+    public ClockActivityException(String message) {
         super(message);
     }
 
-    public DomainException() {
+    public ClockActivityException() {
         super();
     }
 }

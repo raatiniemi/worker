@@ -21,8 +21,7 @@ import android.support.annotation.Nullable;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.DomainObject;
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 
 /**
  * Represent a time interval registered to a project.

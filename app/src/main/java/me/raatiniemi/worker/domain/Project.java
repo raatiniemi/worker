@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.exception.domain.ClockActivityException;
-import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
+import me.raatiniemi.worker.domain.exception.ClockActivityException;
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 
 /**
  * Represent a project.
