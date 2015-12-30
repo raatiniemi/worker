@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.base.view;
+package me.raatiniemi.worker.base.view.activity;
 
 import me.raatiniemi.worker.base.presenter.MvpPresenter;
+import me.raatiniemi.worker.base.view.MvpView;
 
 /**
  * Base for the model-view-presenter activity.

@@ -21,7 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.base.view.BaseActivity;
+import me.raatiniemi.worker.base.view.activity.BaseActivity;
 import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 import me.raatiniemi.worker.util.Settings;
 
