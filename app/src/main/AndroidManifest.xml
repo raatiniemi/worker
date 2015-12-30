@@ -47,7 +47,7 @@
 
         <provider
             android:label="@string/name"
-            android:name=".provider.WorkerProvider"
+            android:name=".data.WorkerProvider"
             android:authorities="me.raatiniemi.worker"
             android:syncable="false"
             android:exported="false"

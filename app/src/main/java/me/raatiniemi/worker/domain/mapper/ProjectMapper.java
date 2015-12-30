@@ -20,7 +20,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import me.raatiniemi.worker.domain.Project;
-import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 
 public class ProjectMapper {
     /**

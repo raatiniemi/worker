@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.provider;
+package me.raatiniemi.worker.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,9 +27,9 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.provider.WorkerContract.Tables;
-import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.WorkerContract.Tables;
+import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.util.Worker;
 
 import static org.mockito.Mockito.mock;

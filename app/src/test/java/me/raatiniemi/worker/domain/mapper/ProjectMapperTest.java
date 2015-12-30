@@ -26,8 +26,7 @@ import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.Project;
-import me.raatiniemi.worker.domain.mapper.ProjectMapper;
-import me.raatiniemi.worker.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;

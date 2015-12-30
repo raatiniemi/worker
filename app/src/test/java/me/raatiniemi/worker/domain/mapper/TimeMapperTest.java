@@ -26,9 +26,8 @@ import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.Time;
-import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.exception.domain.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
