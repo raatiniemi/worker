@@ -22,7 +22,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.base.view.ListFragment;
 import me.raatiniemi.worker.domain.Project;
-import me.raatiniemi.worker.presentation.adapter.ProjectsAdapter;
+import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
 
 /**
  * Methods related to handling of the project view.

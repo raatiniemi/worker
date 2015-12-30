@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.adapter;
+package me.raatiniemi.worker.presentation.view.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;

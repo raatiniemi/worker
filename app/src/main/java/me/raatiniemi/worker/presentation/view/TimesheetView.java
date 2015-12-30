@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.presentation.view;
 
 import me.raatiniemi.worker.base.view.ListFragment;
-import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter;
-import me.raatiniemi.worker.presentation.adapter.TimesheetAdapter.TimesheetItem;
+import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
+import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 
 public interface TimesheetView extends ListFragment<TimesheetAdapter, TimesheetItem> {
     /**
