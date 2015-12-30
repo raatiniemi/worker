@@ -14,15 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.service;
+package me.raatiniemi.worker.service.data;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
 import de.greenrobot.event.EventBus;
-import me.raatiniemi.worker.service.data.BackupStrategy;
-import me.raatiniemi.worker.service.data.RestoreStrategy;
 
 /**
  * Service for running data operations.

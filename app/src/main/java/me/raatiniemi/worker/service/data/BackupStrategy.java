@@ -38,13 +38,13 @@ import me.raatiniemi.worker.util.Worker;
  * <p>
  * Copies the SQLite database to a new backup directory on the external storage.
  */
-public class BackupStrategy extends DataStrategy {
+class BackupStrategy extends DataStrategy {
     private static final String TAG = "BackupStrategy";
 
     /**
      * @inheritDoc
      */
-    public BackupStrategy(Context context, EventBus eventBus) {
+    BackupStrategy(Context context, EventBus eventBus) {
         super(context, eventBus);
     }
 
@@ -52,7 +52,7 @@ public class BackupStrategy extends DataStrategy {
      * @inheritDoc
      */
     @Override
-    public synchronized void execute() {
+    synchronized void execute() {
         NotificationManager manager = null;
         NotificationCompat.Builder notification = null;
 

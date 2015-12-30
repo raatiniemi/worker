@@ -40,13 +40,13 @@ import me.raatiniemi.worker.util.Worker;
  * Copies the latest backup of the SQLite database from the external storage to
  * the application database location.
  */
-public class RestoreStrategy extends DataStrategy {
+class RestoreStrategy extends DataStrategy {
     private static final String TAG = "RestoreStrategy";
 
     /**
      * @inheritDoc
      */
-    public RestoreStrategy(Context context, EventBus eventBus) {
+    RestoreStrategy(Context context, EventBus eventBus) {
         super(context, eventBus);
     }
 
@@ -54,7 +54,7 @@ public class RestoreStrategy extends DataStrategy {
      * @inheritDoc
      */
     @Override
-    public synchronized void execute() {
+    synchronized void execute() {
         NotificationManager manager = null;
         NotificationCompat.Builder notification = null;
 

@@ -32,7 +32,7 @@ import de.greenrobot.event.EventBus;
  * <p>
  * TODO: Inject the external storage handler via constructor.
  */
-abstract public class DataStrategy {
+abstract class DataStrategy {
     /**
      * Context used with the data operation.
      */
@@ -49,7 +49,7 @@ abstract public class DataStrategy {
      * @param context  Context used with the data operation.
      * @param eventBus Event bus used for notification.
      */
-    public DataStrategy(Context context, EventBus eventBus) {
+    DataStrategy(Context context, EventBus eventBus) {
         mContext = context;
         mEventBus = eventBus;
     }
@@ -75,5 +75,5 @@ abstract public class DataStrategy {
     /**
      * Execute data operation.
      */
-    public abstract void execute();
+    abstract void execute();
 }
