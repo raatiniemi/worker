@@ -54,7 +54,7 @@
             />
 
         <service
-            android:name=".service.DataIntentService"
+            android:name=".service.data.DataIntentService"
             android:exported="false"
             />
 
