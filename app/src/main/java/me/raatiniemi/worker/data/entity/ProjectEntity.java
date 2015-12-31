@@ -47,7 +47,7 @@ public class ProjectEntity extends BaseEntity {
      * @param archived    Flag for whether the project have been archived.
      */
     public ProjectEntity(
-            @NonNull Long id,
+            long id,
             @NonNull String name,
             @Nullable String description,
             boolean archived
