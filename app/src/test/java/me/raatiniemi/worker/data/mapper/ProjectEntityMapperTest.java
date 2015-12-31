@@ -18,25 +18,23 @@ package me.raatiniemi.worker.data.mapper;
 
 import android.database.Cursor;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.entity.ProjectEntity;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(DataProviderRunner.class)
 public class ProjectEntityMapperTest {
-    @Test
-    public void transform_validCursor() {
+    private static Cursor createCursor(long id, String name, String description, long archived) {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndexOrThrow(ProjectColumns._ID)).thenReturn(0);
@@ -44,16 +42,31 @@ public class ProjectEntityMapperTest {
         when(cursor.getColumnIndexOrThrow(ProjectColumns.DESCRIPTION)).thenReturn(2);
         when(cursor.getColumnIndexOrThrow(ProjectColumns.ARCHIVED)).thenReturn(3);
 
-        when(cursor.getLong(0)).thenReturn(1L);
-        when(cursor.getString(1)).thenReturn("Name");
-        when(cursor.getString(2)).thenReturn("Description");
-        when(cursor.getLong(3)).thenReturn(1L);
+        when(cursor.getLong(0)).thenReturn(id);
+        when(cursor.getString(1)).thenReturn(name);
+        when(cursor.getString(2)).thenReturn(description);
+        when(cursor.getLong(3)).thenReturn(archived);
 
+        return cursor;
+    }
+
+    @DataProvider
+    public static Object[][] transform_dataProvider() {
+        return new Object[][]{
+                {createCursor(1, "Name", "Description", 0), new ProjectEntity(1, "Name", "Description", false)},
+                {createCursor(1, "Name", "Description", 1), new ProjectEntity(1, "Name", "Description", true)}
+        };
+    }
+
+    @Test
+    @UseDataProvider("transform_dataProvider")
+    public void transform(Cursor cursor, ProjectEntity expected) {
         ProjectEntityMapper entityMapper = new ProjectEntityMapper();
         ProjectEntity entity = entityMapper.transform(cursor);
-        assertEquals(1L, entity.getId());
-        assertEquals("Name", entity.getName());
-        assertEquals("Description", entity.getDescription());
-        assertTrue(entity.isArchived());
+
+        assertEquals(expected.getId(), entity.getId());
+        assertEquals(expected.getName(), entity.getName());
+        assertEquals(expected.getDescription(), entity.getDescription());
+        assertEquals(expected.isArchived(), entity.isArchived());
     }
 }
