@@ -44,7 +44,7 @@ public class DataIntentService extends IntentService {
     /**
      * Type of running data operation.
      */
-    private static RUNNING sRunning = RUNNING.NONE;
+    private static boolean sRunning = false;
 
     private final EventBus mEventBus;
 
@@ -58,12 +58,11 @@ public class DataIntentService extends IntentService {
     }
 
     /**
-     * Get the type of data operation that is running. If the RUNNING.NONE is
-     * returned no data operation is currently running.
+     * Check whether a data operation is running.
      *
-     * @return Type of running data operation.
+     * @return True if data operation is running, otherwise false.
      */
-    public static RUNNING getRunning() {
+    public static boolean isRunning() {
         return sRunning;
     }
 
@@ -72,7 +71,7 @@ public class DataIntentService extends IntentService {
         try {
             // If an operation is already running, we should not allow another to
             // start. We wouldn't want backup and restore running simultaneously.
-            if (RUNNING.NONE != getRunning()) {
+            if (DataIntentService.isRunning()) {
                 throw new IllegalStateException("Data operation is already running");
             }
 
@@ -82,11 +81,9 @@ public class DataIntentService extends IntentService {
             String action = intent.getAction();
             switch (action) {
                 case INTENT_ACTION_BACKUP:
-                    sRunning = RUNNING.BACKUP;
                     strategy = new BackupStrategy(getApplicationContext(), mEventBus);
                     break;
                 case INTENT_ACTION_RESTORE:
-                    sRunning = RUNNING.RESTORE;
                     strategy = new RestoreStrategy(getApplicationContext(), mEventBus);
                     break;
                 default:
@@ -94,21 +91,19 @@ public class DataIntentService extends IntentService {
             }
 
             // Execute the data operation.
+            sRunning = true;
             strategy.execute();
+            sRunning = false;
         } catch (IllegalStateException e) {
             // TODO: Post event `DataOperationFailure`.
             Log.w(TAG, e.getMessage());
-        } finally {
-            sRunning = RUNNING.NONE;
-        }
-    }
+        } catch (Exception e) {
+            // TODO: Post event `DataOperationFailure`.
+            Log.w(TAG, e.getMessage());
 
-    /**
-     * Available types of runnable data operations.
-     */
-    public enum RUNNING {
-        NONE,
-        BACKUP,
-        RESTORE
+            // In case the data operation throw an exception we need to reset
+            // the running flag, otherwise we might prevent actions to run.
+            sRunning = false;
+        }
     }
 }

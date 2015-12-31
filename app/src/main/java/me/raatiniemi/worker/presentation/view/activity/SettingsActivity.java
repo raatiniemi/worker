@@ -382,16 +382,16 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         private boolean checkRunningAction() {
             // Check that no other data operation is already running, we
             // don't want two actions to run simultaneously.
-            boolean isRunning = DataIntentService.RUNNING.NONE != DataIntentService.getRunning();
-            if (isRunning) {
+            if (DataIntentService.isRunning()) {
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
                         R.string.error_message_data_operation_already_running,
                         Snackbar.LENGTH_LONG
                 ).show();
-            }
 
-            return isRunning;
+                return true;
+            }
+            return false;
         }
 
         /**
