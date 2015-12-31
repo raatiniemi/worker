@@ -21,11 +21,11 @@ package me.raatiniemi.worker.data.entity;
  * <p/>
  * Entities are immutable, i.e. when a change is done a new object have to be created.
  * <p/>
- * Since the `BaseEntity` only should be used from within the package, the visibility for the class
- * and constructor have been set to package. However, the `getId` method should be available from
+ * Since the `BaseEntity` only should be used from within the package, the visibility for the
+ * constructor have been set to package. However, the `getId` method should be available from
  * outside the package, via sub-classes.
  */
-class BaseEntity {
+public class BaseEntity {
     /**
      * Id for the entity.
      */

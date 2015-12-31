@@ -25,7 +25,11 @@ import me.raatiniemi.worker.data.entity.ProjectEntity;
 /**
  * Mapper for transforming {@link Cursor} to {@link ProjectEntity}.
  */
-public class ProjectEntityMapper {
+public class ProjectEntityMapper implements EntityMapper<ProjectEntity> {
+    /**
+     * @inheritDoc
+     */
+    @Override
     @NonNull
     public ProjectEntity transform(@NonNull Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(ProjectColumns._ID));
