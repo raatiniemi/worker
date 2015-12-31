@@ -69,30 +69,38 @@ public class DataIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        // If an operation is already running, we should not allow another to
-        // start. We wouldn't want backup and restore running simultaneously.
-        if (RUNNING.NONE != getRunning()) {
-            Log.w(TAG, "Data operation is already running, exiting");
-            return;
-        }
+        try {
+            // If an operation is already running, we should not allow another to
+            // start. We wouldn't want backup and restore running simultaneously.
+            if (RUNNING.NONE != getRunning()) {
+                throw new IllegalStateException("Data operation is already running");
+            }
 
-        String action = intent.getAction();
-        switch (action) {
-            case INTENT_ACTION_BACKUP:
-                sRunning = RUNNING.BACKUP;
-                BackupStrategy backupStrategy = new BackupStrategy(getApplicationContext(), mEventBus);
-                backupStrategy.execute();
-                break;
-            case INTENT_ACTION_RESTORE:
-                sRunning = RUNNING.RESTORE;
-                RestoreStrategy restoreStrategy = new RestoreStrategy(getApplicationContext(), mEventBus);
-                restoreStrategy.execute();
-                break;
-            default:
-                Log.w(TAG, "Received unknown action: " + action);
-                break;
+            DataStrategy strategy;
+
+            // Check which data strategy we should use.
+            String action = intent.getAction();
+            switch (action) {
+                case INTENT_ACTION_BACKUP:
+                    sRunning = RUNNING.BACKUP;
+                    strategy = new BackupStrategy(getApplicationContext(), mEventBus);
+                    break;
+                case INTENT_ACTION_RESTORE:
+                    sRunning = RUNNING.RESTORE;
+                    strategy = new RestoreStrategy(getApplicationContext(), mEventBus);
+                    break;
+                default:
+                    throw new IllegalStateException("Received unknown action: " + action);
+            }
+
+            // Execute the data operation.
+            strategy.execute();
+        } catch (IllegalStateException e) {
+            // TODO: Post event `DataOperationFailure`.
+            Log.w(TAG, e.getMessage());
+        } finally {
+            sRunning = RUNNING.NONE;
         }
-        sRunning = RUNNING.NONE;
     }
 
     /**
