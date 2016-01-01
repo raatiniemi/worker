@@ -18,7 +18,7 @@ package me.raatiniemi.worker.presentation.view;
 
 import android.support.annotation.Nullable;
 
-import me.raatiniemi.worker.base.view.MvpView;
+import me.raatiniemi.worker.presentation.base.view.MvpView;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 
 /**

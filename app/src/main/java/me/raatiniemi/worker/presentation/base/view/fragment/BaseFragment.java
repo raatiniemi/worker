@@ -14,10 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.base.view;
+package me.raatiniemi.worker.presentation.base.view.fragment;
+
+import android.app.Fragment;
 
 /**
- * Marker interface for the model-view-presenter view.
+ * Base for the application fragments.
  */
-public interface MvpView {
+public class BaseFragment extends Fragment {
 }

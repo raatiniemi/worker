@@ -14,68 +14,80 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.base.view.fragment;
+package me.raatiniemi.worker.presentation.base.view.adapter;
 
 import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import me.raatiniemi.worker.base.view.adapter.ListAdapter;
-
 /**
- * Interface for fragments with a {@link ListAdapter}.
+ * Generic interface for working with list adapters.
  *
- * @param <A> Type reference for the {@link ListAdapter}.
- * @param <T> Type reference for the item within the {@link ListAdapter}.
+ * @param <T> Type of item stored within the list adapter.
  */
-public interface ListFragment<A extends ListAdapter, T> {
+public interface ListAdapter<T> {
     /**
-     * Get the adapter connected to the fragment.
+     * Get items.
      *
-     * @return The adapter.
+     * @return Available items.
      */
     @NonNull
-    A getAdapter();
+    List<T> getItems();
 
     /**
-     * Get the item from the {@link ListAdapter}.
+     * Set items.
      *
-     * @param index Index of the item.
-     * @return Item at the index.
+     * @param items Items to set.
+     */
+    void setItems(@NonNull List<T> items);
+
+    /**
+     * Get item at index.
+     *
+     * @param index Index of item.
+     * @return Item at index.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     @NonNull
     T get(int index);
 
     /**
-     * Update item in the {@link ListAdapter}.
+     * Update item at index.
      *
-     * @param index Index of the item.
-     * @param item Item to update.
+     * @param index Index of item.
+     * @param item  Item to update.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     void set(int index, @NonNull T item);
 
     /**
-     * Add item to the {@link ListAdapter}.
+     * Add item.
      *
      * @param item Item to add.
-     * @return Index of the item.
+     * @return Index of new item.
      */
     int add(@NonNull T item);
 
     /**
-     * Add items to the {@link ListAdapter}.
+     * Add items.
      *
      * @param items Items to add.
-     * @return Index of the first item.
+     * @return Index of the first new item.
      */
     int add(@NonNull List<T> items);
 
     /**
-     * Remove item from the {@link ListAdapter}.
+     * Remove item at index.
      *
-     * @param index Index of the item to remove.
+     * @param index Index of the item.
      * @return Removed item.
+     * @throws IndexOutOfBoundsException if index do not exists.
      */
     @NonNull
     T remove(int index);
+
+    /**
+     * Clear items from the adapter.
+     */
+    void clear();
 }

@@ -14,11 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.base.presenter;
+package me.raatiniemi.worker.presentation.base.presenter;
 
 import android.content.Context;
 
-import me.raatiniemi.worker.base.view.MvpView;
+import me.raatiniemi.worker.presentation.base.view.MvpView;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

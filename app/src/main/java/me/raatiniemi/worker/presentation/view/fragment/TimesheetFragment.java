@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.base.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.domain.ProjectProvider;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;

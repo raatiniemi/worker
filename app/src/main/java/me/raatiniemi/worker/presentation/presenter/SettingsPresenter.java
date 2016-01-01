@@ -22,7 +22,7 @@ import android.util.Log;
 import java.io.File;
 
 import de.greenrobot.event.EventBus;
-import me.raatiniemi.worker.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.view.SettingsView;

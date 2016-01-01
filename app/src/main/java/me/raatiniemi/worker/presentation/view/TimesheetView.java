@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.presentation.view;
 
-import me.raatiniemi.worker.base.view.fragment.ListFragment;
+import me.raatiniemi.worker.presentation.base.view.fragment.ListFragment;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 
