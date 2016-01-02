@@ -32,4 +32,13 @@ public interface ProjectStrategy {
      */
     @NonNull
     Observable<Project> get();
+
+    /**
+     * Get project with id.
+     *
+     * @param id Id for the project.
+     * @return Observable emitting project.
+     */
+    @NonNull
+    Observable<Project> get(long id);
 }

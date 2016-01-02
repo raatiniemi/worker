@@ -67,4 +67,35 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectEnti
             }
         });
     }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Observable<Project> get(final long id) {
+        return Observable.just(id)
+                .flatMap(new Func1<Long, Observable<Cursor>>() {
+                    @Override
+                    public Observable<Cursor> call(final Long id) {
+                        Cursor cursor = getContentResolver().query(
+                                ProjectContract.getItemUri(id),
+                                ProjectContract.COLUMNS,
+                                null,
+                                null,
+                                null
+                        );
+
+                        return ContentObservable.fromCursor(cursor);
+                    }
+                })
+                .map(new Func1<Cursor, Project>() {
+                    @Override
+                    public Project call(final Cursor cursor) {
+                        // TODO: Map to ProjectEntity when Project have been refactored.
+                        return ProjectMapper.map(cursor);
+                    }
+                })
+                .first();
+    }
 }

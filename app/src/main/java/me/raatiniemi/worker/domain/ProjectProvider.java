@@ -102,34 +102,13 @@ public class ProjectProvider {
     }
 
     /**
-     * Retrieve project based on the project id.
+     * Get project with id.
      *
      * @param id Id for the project.
-     * @return Observable emitting the project.
+     * @return Observable emitting project.
      */
     public Observable<Project> getProject(final Long id) {
-        return Observable.just(String.valueOf(id))
-                .flatMap(new Func1<String, Observable<Cursor>>() {
-                    @Override
-                    public Observable<Cursor> call(String id) {
-                        Cursor cursor = getContext().getContentResolver().query(
-                                ProjectContract.getItemUri(id),
-                                ProjectContract.COLUMNS,
-                                null,
-                                null,
-                                null
-                        );
-
-                        return ContentObservable.fromCursor(cursor);
-                    }
-                })
-                .map(new Func1<Cursor, Project>() {
-                    @Override
-                    public Project call(Cursor cursor) {
-                        return ProjectMapper.map(cursor);
-                    }
-                })
-                .first();
+        return getProjectRepository().get(id);
     }
 
     /**

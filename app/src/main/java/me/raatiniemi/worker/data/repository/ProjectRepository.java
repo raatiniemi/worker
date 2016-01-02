@@ -59,4 +59,16 @@ public class ProjectRepository {
         // TODO: Map to Project when the strategy is emitting ProjectEntity.
         return getStrategy().get();
     }
+
+    /**
+     * Get project with id.
+     *
+     * @param id Id for the project.
+     * @return Observable emitting project.
+     */
+    @NonNull
+    public Observable<Project> get(final long id) {
+        // TODO: Map to Project when the strategy is emitting ProjectEntity.
+        return getStrategy().get(id);
+    }
 }
