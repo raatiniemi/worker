@@ -30,14 +30,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.mapper.ProjectMapper;
-import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.domain.mapper.TimeMapper;
-import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.repository.ProjectRepository;
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
+import me.raatiniemi.worker.domain.mapper.ProjectMapper;
+import me.raatiniemi.worker.domain.mapper.TimeMapper;
+import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 import rx.android.content.ContentObservable;
@@ -52,12 +53,19 @@ public class ProjectProvider {
     private final Context mContext;
 
     /**
+     * Project repository.
+     */
+    private final ProjectRepository mProjectRepository;
+
+    /**
      * Constructor.
      *
      * @param context Context used with the project provider.
+     * @param projectRepository Project repository.
      */
-    public ProjectProvider(Context context) {
+    public ProjectProvider(Context context, ProjectRepository projectRepository) {
         mContext = context;
+        mProjectRepository = projectRepository;
     }
 
     /**
@@ -67,6 +75,15 @@ public class ProjectProvider {
      */
     protected Context getContext() {
         return mContext;
+    }
+
+    /**
+     * Get the project repository.
+     *
+     * @return Project repository.
+     */
+    protected ProjectRepository getProjectRepository() {
+        return mProjectRepository;
     }
 
     /**

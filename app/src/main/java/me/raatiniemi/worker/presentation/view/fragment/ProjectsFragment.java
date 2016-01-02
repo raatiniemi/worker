@@ -38,6 +38,10 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.base.view.adapter.SimpleListAdapter;
+import me.raatiniemi.worker.data.mapper.ProjectEntityMapper;
+import me.raatiniemi.worker.data.repository.ProjectRepository;
+import me.raatiniemi.worker.data.repository.strategy.ProjectResolverStrategy;
+import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.ProjectProvider;
 import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
@@ -107,7 +111,15 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
     @Override
     protected ProjectsPresenter createPresenter() {
-        return new ProjectsPresenter(getActivity(), new ProjectProvider(getActivity()));
+        // Create the project strategy/repository.
+        // TODO: Use a factory for constructing strategy/repository?
+        ProjectStrategy strategy = new ProjectResolverStrategy(
+                getActivity().getContentResolver(),
+                new ProjectEntityMapper()
+        );
+        ProjectRepository repository = new ProjectRepository(strategy);
+
+        return new ProjectsPresenter(getActivity(), new ProjectProvider(getActivity(), repository));
     }
 
     @Override

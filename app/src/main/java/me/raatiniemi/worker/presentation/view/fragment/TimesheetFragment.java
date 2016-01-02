@@ -39,6 +39,10 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.base.view.fragment.MvpFragment;
+import me.raatiniemi.worker.data.mapper.ProjectEntityMapper;
+import me.raatiniemi.worker.data.repository.ProjectRepository;
+import me.raatiniemi.worker.data.repository.strategy.ProjectResolverStrategy;
+import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
 import me.raatiniemi.worker.domain.ProjectProvider;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
@@ -208,7 +212,15 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     @Override
     protected TimesheetPresenter createPresenter() {
-        return new TimesheetPresenter(getActivity(), new ProjectProvider(getActivity()));
+        // Create the project strategy/repository.
+        // TODO: Use a factory for constructing strategy/repository?
+        ProjectStrategy strategy = new ProjectResolverStrategy(
+                getActivity().getContentResolver(),
+                new ProjectEntityMapper()
+        );
+        ProjectRepository repository = new ProjectRepository(strategy);
+
+        return new TimesheetPresenter(getActivity(), new ProjectProvider(getActivity(), repository));
     }
 
     @Override
