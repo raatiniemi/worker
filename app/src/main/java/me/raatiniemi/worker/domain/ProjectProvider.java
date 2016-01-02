@@ -87,36 +87,18 @@ public class ProjectProvider {
     }
 
     /**
-     * Retrieve the projects.
+     * Get projects.
      *
-     * @return Observable emitting the projects.
+     * @return Observable emitting projects.
      */
     public Observable<Project> getProjects() {
-        return Observable.defer(new Func0<Observable<Cursor>>() {
-            @Override
-            public Observable<Cursor> call() {
-                Cursor cursor = getContext().getContentResolver()
-                        .query(
-                                ProjectContract.getStreamUri(),
-                                ProjectContract.COLUMNS,
-                                null,
-                                null,
-                                null
-                        );
-
-                return ContentObservable.fromCursor(cursor);
-            }
-        }).map(new Func1<Cursor, Project>() {
-            @Override
-            public Project call(Cursor cursor) {
-                return ProjectMapper.map(cursor);
-            }
-        }).map(new Func1<Project, Project>() {
-            @Override
-            public Project call(Project project) {
-                return getTime(project);
-            }
-        });
+        return getProjectRepository().get()
+                .map(new Func1<Project, Project>() {
+                    @Override
+                    public Project call(Project project) {
+                        return getTime(project);
+                    }
+                });
     }
 
     /**

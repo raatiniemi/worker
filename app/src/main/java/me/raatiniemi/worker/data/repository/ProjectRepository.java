@@ -16,7 +16,11 @@
 
 package me.raatiniemi.worker.data.repository;
 
+import android.support.annotation.NonNull;
+
 import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
+import me.raatiniemi.worker.domain.Project;
+import rx.Observable;
 
 /**
  * Represents a unified interface for working with different data sources (strategies).
@@ -43,5 +47,16 @@ public class ProjectRepository {
      */
     protected ProjectStrategy getStrategy() {
         return mStrategy;
+    }
+
+    /**
+     * Get projects.
+     *
+     * @return Observable emitting projects.
+     */
+    @NonNull
+    public Observable<Project> get() {
+        // TODO: Map to Project when the strategy is emitting ProjectEntity.
+        return getStrategy().get();
     }
 }

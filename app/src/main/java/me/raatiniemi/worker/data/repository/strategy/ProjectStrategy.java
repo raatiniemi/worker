@@ -16,8 +16,20 @@
 
 package me.raatiniemi.worker.data.repository.strategy;
 
+import android.support.annotation.NonNull;
+
+import me.raatiniemi.worker.domain.Project;
+import rx.Observable;
+
 /**
  * Define commonalities between different project strategies.
  */
 public interface ProjectStrategy {
+    /**
+     * Get projects.
+     *
+     * @return Observable emitting projects.
+     */
+    @NonNull
+    Observable<Project> get();
 }

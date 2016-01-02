@@ -17,9 +17,17 @@
 package me.raatiniemi.worker.data.repository.strategy;
 
 import android.content.ContentResolver;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
+import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectEntityMapper;
+import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.mapper.ProjectMapper;
+import rx.Observable;
+import rx.android.content.ContentObservable;
+import rx.functions.Func0;
+import rx.functions.Func1;
 
 public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectEntityMapper> implements ProjectStrategy {
     /**
@@ -30,5 +38,33 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectEnti
             @NonNull ProjectEntityMapper entityMapper
     ) {
         super(contentResolver, entityMapper);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Observable<Project> get() {
+        return Observable.defer(new Func0<Observable<Cursor>>() {
+            @Override
+            public Observable<Cursor> call() {
+                Cursor cursor = getContentResolver().query(
+                        ProjectContract.getStreamUri(),
+                        ProjectContract.COLUMNS,
+                        null,
+                        null,
+                        null
+                );
+
+                return ContentObservable.fromCursor(cursor);
+            }
+        }).map(new Func1<Cursor, Project>() {
+            @Override
+            public Project call(Cursor cursor) {
+                // TODO: Map to ProjectEntity when Project have been refactored.
+                return ProjectMapper.map(cursor);
+            }
+        });
     }
 }
