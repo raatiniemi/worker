@@ -41,4 +41,13 @@ public interface ProjectStrategy {
      */
     @NonNull
     Observable<Project> get(long id);
+
+    /**
+     * Add project with name.
+     *
+     * @param name Name of the project.
+     * @return Observable emitting project.
+     */
+    @NonNull
+    Observable<Project> add(String name);
 }

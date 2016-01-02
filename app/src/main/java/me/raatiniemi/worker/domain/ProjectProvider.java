@@ -35,8 +35,6 @@ import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.domain.mapper.ProjectMapper;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.util.Settings;
@@ -118,41 +116,7 @@ public class ProjectProvider {
      * @return Observable emitting the new project.
      */
     public Observable<Project> createProject(final Project project) {
-        return Observable.just(project)
-                .map(new Func1<Project, ContentValues>() {
-                    @Override
-                    public ContentValues call(Project project) {
-                        return ProjectMapper.map(project);
-                    }
-                })
-                .flatMap(new Func1<ContentValues, Observable<String>>() {
-                    @Override
-                    public Observable<String> call(ContentValues values) {
-                        try {
-                            Uri uri = getContext().getContentResolver()
-                                    .insert(
-                                            ProjectContract.getStreamUri(),
-                                            values
-                                    );
-
-                            return Observable.just(ProjectContract.getItemId(uri));
-                        } catch (Throwable e) {
-                            return Observable.error(new ProjectAlreadyExistsException());
-                        }
-                    }
-                })
-                .map(new Func1<String, Long>() {
-                    @Override
-                    public Long call(String id) {
-                        return Long.valueOf(id);
-                    }
-                })
-                .flatMap(new Func1<Long, Observable<Project>>() {
-                    @Override
-                    public Observable<Project> call(Long id) {
-                        return getProject(id);
-                    }
-                });
+        return getProjectRepository().add(project.getName());
     }
 
     /**

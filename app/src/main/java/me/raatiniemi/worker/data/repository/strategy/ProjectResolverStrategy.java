@@ -17,12 +17,16 @@
 package me.raatiniemi.worker.data.repository.strategy;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectEntityMapper;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.mapper.ProjectMapper;
 import rx.Observable;
 import rx.android.content.ContentObservable;
@@ -97,5 +101,38 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectEnti
                     }
                 })
                 .first();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Observable<Project> add(final String name) {
+        final ContentValues values = new ContentValues();
+        values.put(ProjectColumns.NAME, name);
+
+        return Observable.just(values)
+                .flatMap(new Func1<ContentValues, Observable<String>>() {
+                    @Override
+                    public Observable<String> call(final ContentValues values) {
+                        try {
+                            final Uri uri = getContentResolver().insert(
+                                    ProjectContract.getStreamUri(),
+                                    values
+                            );
+
+                            return Observable.just(ProjectContract.getItemId(uri));
+                        } catch (Throwable e) {
+                            return Observable.error(new ProjectAlreadyExistsException());
+                        }
+                    }
+                })
+                .flatMap(new Func1<String, Observable<Project>>() {
+                    @Override
+                    public Observable<Project> call(final String id) {
+                        return get(Long.valueOf(id));
+                    }
+                });
     }
 }
