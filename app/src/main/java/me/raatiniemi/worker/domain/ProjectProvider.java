@@ -16,13 +16,10 @@
 
 package me.raatiniemi.worker.domain;
 
-import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.RemoteException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,7 +55,7 @@ public class ProjectProvider {
     /**
      * Constructor.
      *
-     * @param context Context used with the project provider.
+     * @param context           Context used with the project provider.
      * @param projectRepository Project repository.
      */
     public ProjectProvider(Context context, ProjectRepository projectRepository) {
@@ -126,40 +123,16 @@ public class ProjectProvider {
      * @return Observable emitting the deleted project.
      */
     public Observable<Project> deleteProject(final Project project) {
-        return Observable.just(project)
-                .flatMap(new Func1<Project, Observable<Project>>() {
+        return getProjectRepository().remove(project.getId())
+                // To avoid breaking the API for the ProjectProvider, we should
+                // still return the project.
+                //
+                // However, this should be refactored if the repository returns
+                // something other than the project id.
+                .map(new Func1<Long, Project>() {
                     @Override
-                    public Observable<Project> call(Project project) {
-                        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
-
-                        // Add operation for removing the registered time for the
-                        // project. The operation have to be performed before the
-                        // actual project deletion.
-                        Uri uri = ProjectContract.getItemTimeUri(project.getId());
-                        batch.add(
-                                ContentProviderOperation.newDelete(uri)
-                                        .build()
-                        );
-
-                        // Add operation for removing the project.
-                        uri = ProjectContract.getItemUri(project.getId());
-                        batch.add(
-                                ContentProviderOperation.newDelete(uri)
-                                        .build()
-                        );
-
-                        try {
-                            // Attempt to remove the registered time and project
-                            // within a single transactional operation.
-                            getContext().getContentResolver()
-                                    .applyBatch(WorkerContract.AUTHORITY, batch);
-                        } catch (RemoteException e) {
-                            return Observable.error(e);
-                        } catch (OperationApplicationException e) {
-                            return Observable.error(e);
-                        }
-
-                        return Observable.just(project);
+                    public Project call(final Long id) {
+                        return project;
                     }
                 });
     }

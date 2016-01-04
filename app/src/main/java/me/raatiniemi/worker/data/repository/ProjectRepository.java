@@ -83,4 +83,15 @@ public class ProjectRepository {
         // TODO: Map to Project when the strategy is emitting ProjectEntity.
         return getStrategy().add(name);
     }
+
+    /**
+     * Remove project by id.
+     *
+     * @param id Id of the project to remove.
+     * @return Observable emitting nothing.
+     */
+    @NonNull
+    public Observable<Long> remove(final long id) {
+        return getStrategy().remove(id);
+    }
 }

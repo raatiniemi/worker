@@ -16,12 +16,18 @@
 
 package me.raatiniemi.worker.data.repository.strategy;
 
+import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+
+import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectEntityMapper;
@@ -132,6 +138,40 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectEnti
                     @Override
                     public Observable<Project> call(final String id) {
                         return get(Long.valueOf(id));
+                    }
+                });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Observable<Long> remove(final long id) {
+        return Observable.just(id)
+                .flatMap(new Func1<Long, Observable<Long>>() {
+                    @Override
+                    public Observable<Long> call(final Long id) {
+                        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
+
+                        // Add operation for removing the registered time for the
+                        // project. The operation have to be performed before the
+                        // actual project deletion.
+                        Uri uri = ProjectContract.getItemTimeUri(id);
+                        batch.add(ContentProviderOperation.newDelete(uri).build());
+
+                        // Add operation for removing the project.
+                        uri = ProjectContract.getItemUri(id);
+                        batch.add(ContentProviderOperation.newDelete(uri).build());
+
+                        try {
+                            // Attempt to remove the registered time and project
+                            // within a single transactional operation.
+                            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+                            return Observable.just(id);
+                        } catch (RemoteException | OperationApplicationException e) {
+                            return Observable.error(e);
+                        }
                     }
                 });
     }
