@@ -55,11 +55,10 @@ public interface ProjectStrategy {
      * Remove project by id.
      * <p>
      * The operation also removes the time registered to the project.
-     * <p>
-     * TODO: When removing project, return void or something more meaningful?
      *
      * @param id Id of the project to remove.
-     * @return Observable emitting nothing.
+     * @return Observable emitting project id.
+     * TODO: When removing project, return void or something more meaningful?
      */
     @NonNull
     Observable<Long> remove(long id);

@@ -88,7 +88,7 @@ public class ProjectRepository {
      * Remove project by id.
      *
      * @param id Id of the project to remove.
-     * @return Observable emitting nothing.
+     * @return Observable emitting project id.
      */
     @NonNull
     public Observable<Long> remove(final long id) {
