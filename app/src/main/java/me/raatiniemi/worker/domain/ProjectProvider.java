@@ -31,6 +31,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.repository.ProjectRepository;
+import me.raatiniemi.worker.data.repository.TimeRepository;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
@@ -53,14 +54,21 @@ public class ProjectProvider {
     private final ProjectRepository mProjectRepository;
 
     /**
+     * Time repository.
+     */
+    private final TimeRepository mTimeRepository;
+
+    /**
      * Constructor.
      *
      * @param context           Context used with the project provider.
      * @param projectRepository Project repository.
+     * @param timeRepository    Time repository.
      */
-    public ProjectProvider(Context context, ProjectRepository projectRepository) {
+    public ProjectProvider(Context context, ProjectRepository projectRepository, TimeRepository timeRepository) {
         mContext = context;
         mProjectRepository = projectRepository;
+        mTimeRepository = timeRepository;
     }
 
     /**
@@ -79,6 +87,15 @@ public class ProjectProvider {
      */
     protected ProjectRepository getProjectRepository() {
         return mProjectRepository;
+    }
+
+    /**
+     * Get the time repository.
+     *
+     * @return Time repository.
+     */
+    protected TimeRepository getTimeRepository() {
+        return mTimeRepository;
     }
 
     /**
