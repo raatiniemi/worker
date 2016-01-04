@@ -246,34 +246,13 @@ public class ProjectProvider {
     }
 
     /**
-     * Retrieve time based on the time id.
+     * Get time with id.
      *
      * @param id Id for the time.
-     * @return Observable emitting the time.
+     * @return Observable emitting time.
      */
     public Observable<Time> getTime(final Long id) {
-        return Observable.just(String.valueOf(id))
-                .flatMap(new Func1<String, Observable<Cursor>>() {
-                    @Override
-                    public Observable<Cursor> call(String id) {
-                        Cursor cursor = getContext().getContentResolver()
-                                .query(
-                                        TimeContract.getItemUri(id),
-                                        TimeContract.COLUMNS,
-                                        null,
-                                        null,
-                                        null
-                                );
-
-                        return ContentObservable.fromCursor(cursor);
-                    }
-                })
-                .map(new Func1<Cursor, Time>() {
-                    @Override
-                    public Time call(Cursor cursor) {
-                        return TimeMapper.map(cursor);
-                    }
-                });
+        return getTimeRepository().get(id);
     }
 
     /**

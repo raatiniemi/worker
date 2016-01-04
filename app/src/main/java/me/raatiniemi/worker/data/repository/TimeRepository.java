@@ -16,7 +16,11 @@
 
 package me.raatiniemi.worker.data.repository;
 
+import android.support.annotation.NonNull;
+
 import me.raatiniemi.worker.data.repository.strategy.TimeStrategy;
+import me.raatiniemi.worker.domain.Time;
+import rx.Observable;
 
 /**
  * Represents a unified interface for working with different data sources (strategies).
@@ -43,5 +47,17 @@ public class TimeRepository {
      */
     protected TimeStrategy getStrategy() {
         return mStrategy;
+    }
+
+    /**
+     * Get time with id.
+     *
+     * @param id Id for the time.
+     * @return Observable emitting time.
+     */
+    @NonNull
+    public Observable<Time> get(final long id) {
+        // TODO: Map to Time when the strategy is emitting TimeEntity.
+        return getStrategy().get(id);
     }
 }

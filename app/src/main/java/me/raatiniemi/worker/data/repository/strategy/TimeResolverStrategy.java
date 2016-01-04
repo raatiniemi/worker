@@ -17,9 +17,16 @@
 package me.raatiniemi.worker.data.repository.strategy;
 
 import android.content.ContentResolver;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 
+import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeEntityMapper;
+import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.mapper.TimeMapper;
+import rx.Observable;
+import rx.android.content.ContentObservable;
+import rx.functions.Func1;
 
 public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapper> implements TimeStrategy {
     /**
@@ -30,5 +37,36 @@ public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapp
             @NonNull TimeEntityMapper entityMapper
     ) {
         super(contentResolver, entityMapper);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Observable<Time> get(final long id) {
+        return Observable.just(id)
+                .flatMap(new Func1<Long, Observable<Cursor>>() {
+                    @Override
+                    public Observable<Cursor> call(Long id) {
+                        Cursor cursor = getContentResolver().query(
+                                TimeContract.getItemUri(id),
+                                TimeContract.COLUMNS,
+                                null,
+                                null,
+                                null
+                        );
+
+                        return ContentObservable.fromCursor(cursor);
+                    }
+                })
+                .map(new Func1<Cursor, Time>() {
+                    @Override
+                    public Time call(Cursor cursor) {
+                        // TODO: Map to TimeEntity when Time have been refactored.
+                        return TimeMapper.map(cursor);
+                    }
+                })
+                .first();
     }
 }

@@ -16,8 +16,21 @@
 
 package me.raatiniemi.worker.data.repository.strategy;
 
+import android.support.annotation.NonNull;
+
+import me.raatiniemi.worker.domain.Time;
+import rx.Observable;
+
 /**
  * Define commonalities between different time strategies.
  */
 public interface TimeStrategy {
+    /**
+     * Get time with id.
+     *
+     * @param id Id for the time.
+     * @return Observable emitting time.
+     */
+    @NonNull
+    Observable<Time> get(long id);
 }
