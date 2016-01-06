@@ -46,9 +46,6 @@ public class FileUtils {
     public static long copy(@NonNull File from, @NonNull File to) throws IOException {
         Log.d(TAG, "Copy file from " + from.getPath() + " to " + to.getParent());
 
-        // Number of bytes copied between the locations.
-        long bytes;
-
         try (
                 // Open the read and write file channels for the source and
                 // destination locations.
@@ -57,7 +54,7 @@ public class FileUtils {
         ) {
             // Begin copying the source file to the destination file.
             long size = source.size();
-            bytes = destination.transferFrom(source, 0, size);
+            long bytes = destination.transferFrom(source, 0, size);
 
             // If the number of bytes copied and the size of the source file is
             // different, something is wrong.
@@ -69,8 +66,7 @@ public class FileUtils {
             }
 
             Log.d(TAG, bytes + " have been successfully copied");
+            return bytes;
         }
-
-        return bytes;
     }
 }
