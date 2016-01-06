@@ -23,6 +23,13 @@ import rx.Observable;
 
 /**
  * Define commonalities between different time strategies.
+ * <p>
+ * TODO: Refactor return value for TimeStrategy.
+ * When the domain layer have been migrated to handle TimeEntity, the data layer
+ * should return TimeEntity instead of Time.
+ * <p>
+ * Should the strategy return the TimeEntity or id and the TimeRepository maps
+ * to to the TimeEntity?
  */
 public interface TimeStrategy {
     /**
@@ -33,6 +40,15 @@ public interface TimeStrategy {
      */
     @NonNull
     Observable<Time> get(long id);
+
+    /**
+     * Add time.
+     *
+     * @param time Time to add.
+     * @return Observable emitting added time.
+     */
+    @NonNull
+    Observable<Time> add(Time time);
 
     /**
      * Remove time by id.

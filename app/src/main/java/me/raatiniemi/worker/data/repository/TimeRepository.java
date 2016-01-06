@@ -62,6 +62,17 @@ public class TimeRepository {
     }
 
     /**
+     * Add time.
+     *
+     * @param time Time to add.
+     * @return Observable emitting added time.
+     */
+    @NonNull
+    public Observable<Time> add(final Time time) {
+        return getStrategy().add(time);
+    }
+
+    /**
      * Remove time by id.
      *
      * @param id Id of the time to remove.

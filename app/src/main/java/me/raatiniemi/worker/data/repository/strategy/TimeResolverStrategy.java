@@ -17,7 +17,9 @@
 package me.raatiniemi.worker.data.repository.strategy;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
@@ -68,6 +70,38 @@ public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapp
                     }
                 })
                 .first();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Observable<Time> add(final Time time) {
+        return Observable.just(time)
+                .map(new Func1<Time, ContentValues>() {
+                    @Override
+                    public ContentValues call(final Time time) {
+                        return TimeMapper.map(time);
+                    }
+                })
+                .map(new Func1<ContentValues, String>() {
+                    @Override
+                    public String call(final ContentValues values) {
+                        final Uri uri = getContentResolver().insert(
+                                TimeContract.getStreamUri(),
+                                values
+                        );
+
+                        return TimeContract.getItemId(uri);
+                    }
+                })
+                .flatMap(new Func1<String, Observable<Time>>() {
+                    @Override
+                    public Observable<Time> call(final String id) {
+                        return get(Long.valueOf(id));
+                    }
+                });
     }
 
     /**
