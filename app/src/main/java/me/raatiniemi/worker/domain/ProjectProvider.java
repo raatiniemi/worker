@@ -296,23 +296,15 @@ public class ProjectProvider {
     }
 
     public Observable<Time> deleteTime(final Time time) {
-        return Observable.just(time)
-                .map(new Func1<Time, String>() {
+        return getTimeRepository().remove(time.getId())
+                // To avoid breaking the API for the ProjectProvider, we should
+                // still return the project.
+                //
+                // However, this should be refactored if the repository returns
+                // something other than the project id.
+                .map(new Func1<Long, Time>() {
                     @Override
-                    public String call(Time time) {
-                        return String.valueOf(time.getId());
-                    }
-                })
-                .map(new Func1<String, Time>() {
-                    @Override
-                    public Time call(String id) {
-                        getContext().getContentResolver()
-                                .delete(
-                                        TimeContract.getItemUri(id),
-                                        null,
-                                        null
-                                );
-
+                    public Time call(Long id) {
                         return time;
                     }
                 });

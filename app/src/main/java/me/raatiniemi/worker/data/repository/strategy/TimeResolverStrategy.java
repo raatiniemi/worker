@@ -69,4 +69,25 @@ public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapp
                 })
                 .first();
     }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
+    public Observable<Long> remove(final long id) {
+        return Observable.just(id)
+                .map(new Func1<Long, Long>() {
+                    @Override
+                    public Long call(final Long id) {
+                        getContentResolver().delete(
+                                TimeContract.getItemUri(id),
+                                null,
+                                null
+                        );
+
+                        return id;
+                    }
+                });
+    }
 }

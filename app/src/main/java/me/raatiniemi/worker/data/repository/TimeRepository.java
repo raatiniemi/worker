@@ -60,4 +60,15 @@ public class TimeRepository {
         // TODO: Map to Time when the strategy is emitting TimeEntity.
         return getStrategy().get(id);
     }
+
+    /**
+     * Remove time by id.
+     *
+     * @param id Id of the time to remove.
+     * @return Observable emitting time id.
+     */
+    @NonNull
+    public Observable<Long> remove(final long id) {
+        return getStrategy().remove(id);
+    }
 }

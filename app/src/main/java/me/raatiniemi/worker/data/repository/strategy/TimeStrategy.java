@@ -33,4 +33,14 @@ public interface TimeStrategy {
      */
     @NonNull
     Observable<Time> get(long id);
+
+    /**
+     * Remove time by id.
+     *
+     * @param id Id of the time to remove.
+     * @return Observable emitting time id.
+     * TODO: When removing time, return void or something more meaningful?
+     */
+    @NonNull
+    Observable<Long> remove(long id);
 }
