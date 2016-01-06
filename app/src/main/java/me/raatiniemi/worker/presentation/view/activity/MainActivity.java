@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity {
     /**
      * Tag for the project list fragment.
      */
-    public static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
+    private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
     private static final String TAG = "MainActivity";
 
