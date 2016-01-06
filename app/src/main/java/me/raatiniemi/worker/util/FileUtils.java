@@ -62,14 +62,13 @@ public class FileUtils {
             // If the number of bytes copied and the size of the source file is
             // different, something is wrong.
             if (size != bytes) {
-                Log.w(
-                        TAG,
+                throw new IOException(
                         "Number of bytes copied (" + bytes + ") do not match " +
                                 "the source file (" + size + ")"
                 );
-            } else {
-                Log.d(TAG, bytes + " have been successfully copied");
             }
+
+            Log.d(TAG, bytes + " have been successfully copied");
         }
 
         return bytes;
