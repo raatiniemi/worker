@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -39,7 +38,6 @@ import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Action1;
-import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class ProjectProvider {
@@ -281,26 +279,13 @@ public class ProjectProvider {
     }
 
     /**
-     * Update time item.
+     * Update time.
      *
-     * @param time Time item to update.
-     * @return Observable emitting the updated time item.
+     * @param time Time to update.
+     * @return Observable emitting updated time.
      */
     public Observable<Time> updateTime(final Time time) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                getContext().getContentResolver()
-                        .update(
-                                TimeContract.getItemUri(String.valueOf(time.getId())),
-                                TimeMapper.map(time),
-                                null,
-                                null
-                        );
-
-                return getTime(time.getId());
-            }
-        });
+        return getTimeRepository().update(time);
     }
 
     /**

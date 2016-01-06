@@ -73,6 +73,17 @@ public class TimeRepository {
     }
 
     /**
+     * Update time.
+     *
+     * @param time Time to update.
+     * @return Observable emitting updated time.
+     */
+    @NonNull
+    public Observable<Time> update(final Time time) {
+        return getStrategy().update(time);
+    }
+
+    /**
      * Remove time by id.
      *
      * @param id Id of the time to remove.

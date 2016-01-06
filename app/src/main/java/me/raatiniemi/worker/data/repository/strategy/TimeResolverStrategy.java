@@ -109,6 +109,28 @@ public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapp
      */
     @NonNull
     @Override
+    public Observable<Time> update(final Time time) {
+        return Observable.just(time)
+                .flatMap(new Func1<Time, Observable<Time>>() {
+                    @Override
+                    public Observable<Time> call(final Time time) {
+                        getContentResolver().update(
+                                TimeContract.getItemUri(time.getId()),
+                                TimeMapper.map(time),
+                                null,
+                                null
+                        );
+
+                        return get(time.getId());
+                    }
+                });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @NonNull
+    @Override
     public Observable<Long> remove(final long id) {
         return Observable.just(id)
                 .map(new Func1<Long, Long>() {

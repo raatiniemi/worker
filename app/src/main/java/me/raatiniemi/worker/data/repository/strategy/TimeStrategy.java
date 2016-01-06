@@ -51,6 +51,15 @@ public interface TimeStrategy {
     Observable<Time> add(Time time);
 
     /**
+     * Update time.
+     *
+     * @param time Time to update.
+     * @return Observable emitting updated time.
+     */
+    @NonNull
+    Observable<Time> update(Time time);
+
+    /**
      * Remove time by id.
      *
      * @param id Id of the time to remove.
