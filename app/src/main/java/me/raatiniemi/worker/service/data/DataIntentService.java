@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.service.data;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -46,15 +47,11 @@ public class DataIntentService extends IntentService {
      */
     private static boolean sRunning = false;
 
-    private final EventBus mEventBus;
-
     /**
      * Constructor.
      */
     public DataIntentService() {
         super(TAG);
-
-        mEventBus = EventBus.getDefault();
     }
 
     /**
@@ -75,16 +72,18 @@ public class DataIntentService extends IntentService {
                 throw new IllegalStateException("Data operation is already running");
             }
 
+            Context context = getApplicationContext();
+            EventBus eventBus = EventBus.getDefault();
             DataStrategy strategy;
 
             // Check which data strategy we should use.
             String action = intent.getAction();
             switch (action) {
                 case INTENT_ACTION_BACKUP:
-                    strategy = new BackupStrategy(getApplicationContext(), mEventBus);
+                    strategy = new BackupStrategy(context, eventBus);
                     break;
                 case INTENT_ACTION_RESTORE:
-                    strategy = new RestoreStrategy(getApplicationContext(), mEventBus);
+                    strategy = new RestoreStrategy(context, eventBus);
                     break;
                 default:
                     throw new IllegalStateException("Received unknown action: " + action);
