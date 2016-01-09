@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Worker Project
+ * Copyright (C) 2015-2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
