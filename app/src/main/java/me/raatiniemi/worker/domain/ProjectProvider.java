@@ -16,13 +16,9 @@
 
 package me.raatiniemi.worker.domain;
 
-import android.content.ContentProviderOperation;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.RemoteException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,19 +26,18 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.mapper.ProjectMapper;
-import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.domain.mapper.TimeMapper;
-import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.repository.ProjectRepository;
+import me.raatiniemi.worker.data.repository.TimeRepository;
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.mapper.TimeMapper;
+import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Action1;
-import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class ProjectProvider {
@@ -52,12 +47,26 @@ public class ProjectProvider {
     private final Context mContext;
 
     /**
+     * Project repository.
+     */
+    private final ProjectRepository mProjectRepository;
+
+    /**
+     * Time repository.
+     */
+    private final TimeRepository mTimeRepository;
+
+    /**
      * Constructor.
      *
-     * @param context Context used with the project provider.
+     * @param context           Context used with the project provider.
+     * @param projectRepository Project repository.
+     * @param timeRepository    Time repository.
      */
-    public ProjectProvider(Context context) {
+    public ProjectProvider(Context context, ProjectRepository projectRepository, TimeRepository timeRepository) {
         mContext = context;
+        mProjectRepository = projectRepository;
+        mTimeRepository = timeRepository;
     }
 
     /**
@@ -70,67 +79,46 @@ public class ProjectProvider {
     }
 
     /**
-     * Retrieve the projects.
+     * Get the project repository.
      *
-     * @return Observable emitting the projects.
+     * @return Project repository.
      */
-    public Observable<Project> getProjects() {
-        return Observable.defer(new Func0<Observable<Cursor>>() {
-            @Override
-            public Observable<Cursor> call() {
-                Cursor cursor = getContext().getContentResolver()
-                        .query(
-                                ProjectContract.getStreamUri(),
-                                ProjectContract.COLUMNS,
-                                null,
-                                null,
-                                null
-                        );
-
-                return ContentObservable.fromCursor(cursor);
-            }
-        }).map(new Func1<Cursor, Project>() {
-            @Override
-            public Project call(Cursor cursor) {
-                return ProjectMapper.map(cursor);
-            }
-        }).map(new Func1<Project, Project>() {
-            @Override
-            public Project call(Project project) {
-                return getTime(project);
-            }
-        });
+    protected ProjectRepository getProjectRepository() {
+        return mProjectRepository;
     }
 
     /**
-     * Retrieve project based on the project id.
+     * Get the time repository.
+     *
+     * @return Time repository.
+     */
+    protected TimeRepository getTimeRepository() {
+        return mTimeRepository;
+    }
+
+    /**
+     * Get projects.
+     *
+     * @return Observable emitting projects.
+     */
+    public Observable<Project> getProjects() {
+        return getProjectRepository().get()
+                .map(new Func1<Project, Project>() {
+                    @Override
+                    public Project call(Project project) {
+                        return getTime(project);
+                    }
+                });
+    }
+
+    /**
+     * Get project with id.
      *
      * @param id Id for the project.
-     * @return Observable emitting the project.
+     * @return Observable emitting project.
      */
     public Observable<Project> getProject(final Long id) {
-        return Observable.just(String.valueOf(id))
-                .flatMap(new Func1<String, Observable<Cursor>>() {
-                    @Override
-                    public Observable<Cursor> call(String id) {
-                        Cursor cursor = getContext().getContentResolver().query(
-                                ProjectContract.getItemUri(id),
-                                ProjectContract.COLUMNS,
-                                null,
-                                null,
-                                null
-                        );
-
-                        return ContentObservable.fromCursor(cursor);
-                    }
-                })
-                .map(new Func1<Cursor, Project>() {
-                    @Override
-                    public Project call(Cursor cursor) {
-                        return ProjectMapper.map(cursor);
-                    }
-                })
-                .first();
+        return getProjectRepository().get(id);
     }
 
     /**
@@ -140,41 +128,7 @@ public class ProjectProvider {
      * @return Observable emitting the new project.
      */
     public Observable<Project> createProject(final Project project) {
-        return Observable.just(project)
-                .map(new Func1<Project, ContentValues>() {
-                    @Override
-                    public ContentValues call(Project project) {
-                        return ProjectMapper.map(project);
-                    }
-                })
-                .flatMap(new Func1<ContentValues, Observable<String>>() {
-                    @Override
-                    public Observable<String> call(ContentValues values) {
-                        try {
-                            Uri uri = getContext().getContentResolver()
-                                    .insert(
-                                            ProjectContract.getStreamUri(),
-                                            values
-                                    );
-
-                            return Observable.just(ProjectContract.getItemId(uri));
-                        } catch (Throwable e) {
-                            return Observable.error(new ProjectAlreadyExistsException());
-                        }
-                    }
-                })
-                .map(new Func1<String, Long>() {
-                    @Override
-                    public Long call(String id) {
-                        return Long.valueOf(id);
-                    }
-                })
-                .flatMap(new Func1<Long, Observable<Project>>() {
-                    @Override
-                    public Observable<Project> call(Long id) {
-                        return getProject(id);
-                    }
-                });
+        return getProjectRepository().add(project.getName());
     }
 
     /**
@@ -184,40 +138,16 @@ public class ProjectProvider {
      * @return Observable emitting the deleted project.
      */
     public Observable<Project> deleteProject(final Project project) {
-        return Observable.just(project)
-                .flatMap(new Func1<Project, Observable<Project>>() {
+        return getProjectRepository().remove(project.getId())
+                // To avoid breaking the API for the ProjectProvider, we should
+                // still return the project.
+                //
+                // However, this should be refactored if the repository returns
+                // something other than the project id.
+                .map(new Func1<Long, Project>() {
                     @Override
-                    public Observable<Project> call(Project project) {
-                        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
-
-                        // Add operation for removing the registered time for the
-                        // project. The operation have to be performed before the
-                        // actual project deletion.
-                        Uri uri = ProjectContract.getItemTimeUri(project.getId());
-                        batch.add(
-                                ContentProviderOperation.newDelete(uri)
-                                        .build()
-                        );
-
-                        // Add operation for removing the project.
-                        uri = ProjectContract.getItemUri(project.getId());
-                        batch.add(
-                                ContentProviderOperation.newDelete(uri)
-                                        .build()
-                        );
-
-                        try {
-                            // Attempt to remove the registered time and project
-                            // within a single transactional operation.
-                            getContext().getContentResolver()
-                                    .applyBatch(WorkerContract.AUTHORITY, batch);
-                        } catch (RemoteException e) {
-                            return Observable.error(e);
-                        } catch (OperationApplicationException e) {
-                            return Observable.error(e);
-                        }
-
-                        return Observable.just(project);
+                    public Project call(final Long id) {
+                        return project;
                     }
                 });
     }
@@ -314,120 +244,48 @@ public class ProjectProvider {
     }
 
     /**
-     * Retrieve time based on the time id.
+     * Get time with id.
      *
      * @param id Id for the time.
-     * @return Observable emitting the time.
+     * @return Observable emitting time.
      */
     public Observable<Time> getTime(final Long id) {
-        return Observable.just(String.valueOf(id))
-                .flatMap(new Func1<String, Observable<Cursor>>() {
-                    @Override
-                    public Observable<Cursor> call(String id) {
-                        Cursor cursor = getContext().getContentResolver()
-                                .query(
-                                        TimeContract.getItemUri(id),
-                                        TimeContract.COLUMNS,
-                                        null,
-                                        null,
-                                        null
-                                );
-
-                        return ContentObservable.fromCursor(cursor);
-                    }
-                })
-                .map(new Func1<Cursor, Time>() {
-                    @Override
-                    public Time call(Cursor cursor) {
-                        return TimeMapper.map(cursor);
-                    }
-                });
+        return getTimeRepository().get(id);
     }
 
     /**
-     * Add time item.
+     * Add time.
      *
-     * @param time Time item to add.
-     * @return Observable emitting the created time item.
+     * @param time Time to add.
+     * @return Observable emitting added time.
      */
     public Observable<Time> addTime(final Time time) {
-        return Observable.just(time)
-                .map(new Func1<Time, ContentValues>() {
-                    @Override
-                    public ContentValues call(Time time) {
-                        return TimeMapper.map(time);
-                    }
-                })
-                .map(new Func1<ContentValues, String>() {
-                    @Override
-                    public String call(ContentValues values) {
-                        Uri uri = getContext().getContentResolver()
-                                .insert(
-                                        TimeContract.getStreamUri(),
-                                        values
-                                );
-
-                        return TimeContract.getItemId(uri);
-                    }
-                })
-                .map(new Func1<String, Long>() {
-                    @Override
-                    public Long call(String id) {
-                        return Long.valueOf(id);
-                    }
-                })
-                .flatMap(new Func1<Long, Observable<Time>>() {
-                    @Override
-                    public Observable<Time> call(Long id) {
-                        return getTime(id);
-                    }
-                });
+        return getTimeRepository().add(time);
     }
 
     public Observable<Time> deleteTime(final Time time) {
-        return Observable.just(time)
-                .map(new Func1<Time, String>() {
+        return getTimeRepository().remove(time.getId())
+                // To avoid breaking the API for the ProjectProvider, we should
+                // still return the project.
+                //
+                // However, this should be refactored if the repository returns
+                // something other than the project id.
+                .map(new Func1<Long, Time>() {
                     @Override
-                    public String call(Time time) {
-                        return String.valueOf(time.getId());
-                    }
-                })
-                .map(new Func1<String, Time>() {
-                    @Override
-                    public Time call(String id) {
-                        getContext().getContentResolver()
-                                .delete(
-                                        TimeContract.getItemUri(id),
-                                        null,
-                                        null
-                                );
-
+                    public Time call(Long id) {
                         return time;
                     }
                 });
     }
 
     /**
-     * Update time item.
+     * Update time.
      *
-     * @param time Time item to update.
-     * @return Observable emitting the updated time item.
+     * @param time Time to update.
+     * @return Observable emitting updated time.
      */
     public Observable<Time> updateTime(final Time time) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                getContext().getContentResolver()
-                        .update(
-                                TimeContract.getItemUri(String.valueOf(time.getId())),
-                                TimeMapper.map(time),
-                                null,
-                                null
-                        );
-
-                return getTime(time.getId());
-            }
-        });
+        return getTimeRepository().update(time);
     }
 
     /**
