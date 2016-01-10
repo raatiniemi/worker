@@ -83,7 +83,7 @@ public class DataIntentService extends IntentService {
                     command = new BackupCommand(context, eventBus);
                     break;
                 case INTENT_ACTION_RESTORE:
-                    RestoreStrategy restoreStrategy = new StorageRestoreStrategy();
+                    RestoreStrategy restoreStrategy = new StorageRestoreStrategy(context);
                     command = new RestoreCommand(context, eventBus, restoreStrategy);
                     break;
                 default:

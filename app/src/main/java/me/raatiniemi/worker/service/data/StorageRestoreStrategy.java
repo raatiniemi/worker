@@ -16,10 +16,26 @@
 
 package me.raatiniemi.worker.service.data;
 
+import android.content.Context;
+
 /**
  * Restoration strategy for storage device.
  */
 public class StorageRestoreStrategy implements RestoreStrategy {
+    /**
+     * Application context.
+     */
+    private final Context mContext;
+
+    /**
+     * Constructor.
+     *
+     * @param context Application context.
+     */
+    public StorageRestoreStrategy(Context context) {
+        mContext = context;
+    }
+
     /**
      * @inheritDoc
      */
