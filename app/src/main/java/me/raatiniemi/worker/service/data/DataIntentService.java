@@ -74,16 +74,16 @@ public class DataIntentService extends IntentService {
 
             Context context = getApplicationContext();
             EventBus eventBus = EventBus.getDefault();
-            DataStrategy strategy;
+            DataCommand command;
 
-            // Check which data strategy we should use.
+            // Check which data operation we should execute.
             String action = intent.getAction();
             switch (action) {
                 case INTENT_ACTION_BACKUP:
-                    strategy = new BackupStrategy(context, eventBus);
+                    command = new BackupCommand(context, eventBus);
                     break;
                 case INTENT_ACTION_RESTORE:
-                    strategy = new RestoreStrategy(context, eventBus);
+                    command = new RestoreCommand(context, eventBus);
                     break;
                 default:
                     throw new IllegalStateException("Received unknown action: " + action);
@@ -91,7 +91,7 @@ public class DataIntentService extends IntentService {
 
             // Execute the data operation.
             sRunning = true;
-            strategy.execute();
+            command.execute();
             sRunning = false;
         } catch (IllegalStateException e) {
             // TODO: Post event `DataOperationFailure`.

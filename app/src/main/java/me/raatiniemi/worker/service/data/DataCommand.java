@@ -29,10 +29,8 @@ import de.greenrobot.event.EventBus;
  * <p>
  * The notification manager can be invoked where the event is handled, provided
  * that a single handler receives the event (avoid multiple handlers).
- * <p>
- * TODO: Inject the external storage handler via constructor.
  */
-abstract class DataStrategy {
+abstract class DataCommand {
     /**
      * Context used with the data operation.
      */
@@ -49,7 +47,7 @@ abstract class DataStrategy {
      * @param context  Context used with the data operation.
      * @param eventBus Event bus used for notification.
      */
-    DataStrategy(Context context, EventBus eventBus) {
+    DataCommand(Context context, EventBus eventBus) {
         mContext = context;
         mEventBus = eventBus;
     }
