@@ -23,22 +23,13 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
-import me.raatiniemi.worker.util.ExternalStorage;
-import me.raatiniemi.worker.util.FileUtils;
 import me.raatiniemi.worker.util.Worker;
 
 /**
  * Restore operation.
- * <p>
- * Copies the latest backup of the SQLite database from the external storage to
- * the application database location.
  */
 class RestoreCommand extends DataCommand {
     private static final String TAG = "RestoreCommand";
@@ -77,23 +68,8 @@ class RestoreCommand extends DataCommand {
         try {
             manager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
-            // Check that the external storage is readable.
-            if (!ExternalStorage.isReadable()) {
-                throw new IOException("External storage is not readable");
-            }
-
-            // Check that we have backup to restore from.
-            File directory = ExternalStorage.getLatestBackupDirectory();
-            if (null == directory) {
-                throw new FileNotFoundException("Unable to find backup from which to restore");
-            }
-
-            // Retrieve the source and destination file locations.
-            File from = new File(directory, Worker.DATABASE_NAME);
-            File to = getContext().getDatabasePath(Worker.DATABASE_NAME);
-
-            // Perform the file copy.
-            FileUtils.copy(from, to);
+            // Execute the restoration strategy.
+            getStrategy().execute();
 
             Intent intent = new Intent(getContext(), MainActivity.class);
             intent.setAction(Worker.INTENT_ACTION_RESTART);
@@ -112,7 +88,10 @@ class RestoreCommand extends DataCommand {
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
             // TODO: Post event for `RestoreSuccessful`.
-        } catch (IOException e) {
+        } catch (ClassCastException e) {
+            // TODO: Post event for `RestoreFailure`.
+            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
+        } catch (Exception e) {
             // TODO: Post event for `RestoreFailure`.
             Log.w(TAG, "Unable to restore backup: " + e.getMessage());
 
@@ -122,9 +101,6 @@ class RestoreCommand extends DataCommand {
                     .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
                     .setContentTitle(getContext().getString(R.string.error_notification_restore_title))
                     .setContentText(getContext().getString(R.string.error_notification_restore_message));
-        } catch (ClassCastException e) {
-            // TODO: Post event for `RestoreFailure`.
-            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
         } finally {
             // Both the notification and notification manager must be
             // available, otherwise we can't display the notification.

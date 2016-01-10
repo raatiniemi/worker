@@ -18,6 +18,14 @@ package me.raatiniemi.worker.service.data;
 
 import android.content.Context;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import me.raatiniemi.worker.util.ExternalStorage;
+import me.raatiniemi.worker.util.FileUtils;
+import me.raatiniemi.worker.util.Worker;
+
 /**
  * Restoration strategy for storage device.
  */
@@ -41,5 +49,26 @@ public class StorageRestoreStrategy implements RestoreStrategy {
      */
     @Override
     public void execute() {
+        try {
+            // Check that the external storage is readable.
+            if (!ExternalStorage.isReadable()) {
+                throw new IOException("External storage is not readable");
+            }
+
+            // Check that we have backup to restore from.
+            File directory = ExternalStorage.getLatestBackupDirectory();
+            if (null == directory) {
+                throw new FileNotFoundException("Unable to find backup from which to restore");
+            }
+
+            // Retrieve the source and destination file locations.
+            File from = new File(directory, Worker.DATABASE_NAME);
+            File to = mContext.getDatabasePath(Worker.DATABASE_NAME);
+
+            // Perform the file copy.
+            FileUtils.copy(from, to);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
