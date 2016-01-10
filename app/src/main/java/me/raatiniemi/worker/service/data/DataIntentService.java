@@ -83,7 +83,8 @@ public class DataIntentService extends IntentService {
                     command = new BackupCommand(context, eventBus);
                     break;
                 case INTENT_ACTION_RESTORE:
-                    command = new RestoreCommand(context, eventBus);
+                    RestoreStrategy restoreStrategy = new StorageRestoreStrategy();
+                    command = new RestoreCommand(context, eventBus, restoreStrategy);
                     break;
                 default:
                     throw new IllegalStateException("Received unknown action: " + action);

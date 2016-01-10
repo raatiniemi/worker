@@ -44,10 +44,26 @@ class RestoreCommand extends DataCommand {
     private static final String TAG = "RestoreCommand";
 
     /**
+     * Restoration strategy.
+     */
+    private final RestoreStrategy mStrategy;
+
+    /**
      * @inheritDoc
      */
-    RestoreCommand(Context context, EventBus eventBus) {
+    RestoreCommand(Context context, EventBus eventBus, RestoreStrategy strategy) {
         super(context, eventBus);
+
+        mStrategy = strategy;
+    }
+
+    /**
+     * Get the restoration strategy.
+     *
+     * @return Restoration strategy.
+     */
+    protected RestoreStrategy getStrategy() {
+        return mStrategy;
     }
 
     /**
