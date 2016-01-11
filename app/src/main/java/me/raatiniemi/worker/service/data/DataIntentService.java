@@ -80,7 +80,7 @@ public class DataIntentService extends IntentService {
             String action = intent.getAction();
             switch (action) {
                 case INTENT_ACTION_BACKUP:
-                    BackupStrategy backupStrategy = new StorageBackupStrategy();
+                    BackupStrategy backupStrategy = new StorageBackupStrategy(context, eventBus);
                     command = new BackupCommand(context, eventBus, backupStrategy);
                     break;
                 case INTENT_ACTION_RESTORE:

@@ -16,10 +16,35 @@
 
 package me.raatiniemi.worker.service.data;
 
+import android.content.Context;
+
+import de.greenrobot.event.EventBus;
+
 /**
  * Backup strategy for storage device.
  */
 public class StorageBackupStrategy implements BackupStrategy {
+    /**
+     * Application context.
+     */
+    private final Context mContext;
+
+    /**
+     * Event bus used for notification.
+     */
+    private final EventBus mEventBus;
+
+    /**
+     * Constructor.
+     *
+     * @param context  Application context.
+     * @param eventBus Event bus used for notification.
+     */
+    public StorageBackupStrategy(Context context, EventBus eventBus) {
+        mContext = context;
+        mEventBus = eventBus;
+    }
+
     /**
      * @inheritDoc
      */
