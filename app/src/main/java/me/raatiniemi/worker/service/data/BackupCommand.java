@@ -42,10 +42,26 @@ class BackupCommand extends DataCommand {
     private static final String TAG = "BackupCommand";
 
     /**
+     * Backup strategy.
+     */
+    private BackupStrategy mStrategy;
+
+    /**
      * @inheritDoc
      */
-    BackupCommand(Context context, EventBus eventBus) {
+    BackupCommand(Context context, EventBus eventBus, BackupStrategy strategy) {
         super(context, eventBus);
+
+        mStrategy = strategy;
+    }
+
+    /**
+     * Get the backup strategy.
+     *
+     * @return Backup strategy.
+     */
+    protected BackupStrategy getStrategy() {
+        return mStrategy;
     }
 
     /**
