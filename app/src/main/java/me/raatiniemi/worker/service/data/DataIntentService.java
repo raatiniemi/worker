@@ -74,27 +74,23 @@ public class DataIntentService extends IntentService {
 
             Context context = getApplicationContext();
             EventBus eventBus = EventBus.getDefault();
-            DataCommand command;
 
             // Check which data operation we should execute.
             String action = intent.getAction();
             switch (action) {
                 case INTENT_ACTION_BACKUP:
-                    BackupStrategy backupStrategy = new StorageBackupStrategy(context, eventBus);
-                    command = new BackupCommand(context, eventBus, backupStrategy);
+                    sRunning = true;
+                    runBackup(context, eventBus);
+                    sRunning = false;
                     break;
                 case INTENT_ACTION_RESTORE:
-                    RestoreStrategy restoreStrategy = new StorageRestoreStrategy(context);
-                    command = new RestoreCommand(context, eventBus, restoreStrategy);
+                    sRunning = true;
+                    runRestore(context, eventBus);
+                    sRunning = false;
                     break;
                 default:
                     throw new IllegalStateException("Received unknown action: " + action);
             }
-
-            // Execute the data operation.
-            sRunning = true;
-            command.execute();
-            sRunning = false;
         } catch (IllegalStateException e) {
             // TODO: Post event `DataOperationFailure`.
             Log.w(TAG, e.getMessage());
@@ -106,5 +102,29 @@ public class DataIntentService extends IntentService {
             // the running flag, otherwise we might prevent actions to run.
             sRunning = false;
         }
+    }
+
+    /**
+     * Execute the backup process.
+     *
+     * @param context  Application context.
+     * @param eventBus Event bus used for notification.
+     */
+    private void runBackup(Context context, EventBus eventBus) {
+        BackupStrategy backupStrategy = new StorageBackupStrategy(context, eventBus);
+        BackupCommand command = new BackupCommand(context, eventBus, backupStrategy);
+        command.execute();
+    }
+
+    /**
+     * Execute the restore process.
+     *
+     * @param context  Application context.
+     * @param eventBus Event bus used for notification.
+     */
+    private void runRestore(Context context, EventBus eventBus) {
+        RestoreStrategy restoreStrategy = new StorageRestoreStrategy(context);
+        RestoreCommand command = new RestoreCommand(context, eventBus, restoreStrategy);
+        command.execute();
     }
 }
