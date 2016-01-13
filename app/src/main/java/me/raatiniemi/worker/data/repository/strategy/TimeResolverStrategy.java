@@ -65,8 +65,7 @@ public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapp
                 .map(new Func1<Cursor, Time>() {
                     @Override
                     public Time call(Cursor cursor) {
-                        // TODO: Map to TimeEntity when Time have been refactored.
-                        return TimeMapper.map(cursor);
+                        return getEntityMapper().transform(cursor);
                     }
                 })
                 .first();

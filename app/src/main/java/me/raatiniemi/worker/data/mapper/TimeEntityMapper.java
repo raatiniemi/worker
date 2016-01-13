@@ -20,27 +20,39 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.entity.TimeEntity;
+import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.exception.DomainException;
 
 /**
- * Mapper for transforming {@link Cursor} to {@link TimeEntity}.
+ * Mapper for transforming {@link Cursor} to {@link Time}.
  */
-public class TimeEntityMapper implements EntityMapper<TimeEntity> {
+public class TimeEntityMapper implements EntityMapper<Time> {
     /**
      * @inheritDoc
      */
     @Override
     @NonNull
-    public TimeEntity transform(@NonNull Cursor cursor) {
+    public Time transform(@NonNull Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.PROJECT_ID));
         long start = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.START));
 
         // Handle the nullability of the `stop`-column.
         int stopIndex = cursor.getColumnIndexOrThrow(TimeColumns.STOP);
-        Long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : null;
+        // TODO: Use null instead of zero for null stop value.
+        Long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : 0;
         long registered = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.REGISTERED));
 
-        return new TimeEntity(id, projectId, start, stop, 0 != registered);
+        try {
+            Time time = new Time(id, projectId, start, stop);
+            time.setRegistered(0 != registered);
+
+            return time;
+        } catch (DomainException e) {
+            // TODO: Handle the DomainException from the construction of Time.
+            // Temporarily re-throw the exception as a runtime exception since
+            // the transformation method do not support checked exceptions.
+            throw new RuntimeException(e);
+        }
     }
 }
