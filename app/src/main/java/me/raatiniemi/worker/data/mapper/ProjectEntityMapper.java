@@ -20,23 +20,27 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.data.entity.ProjectEntity;
+import me.raatiniemi.worker.domain.Project;
 
 /**
- * Mapper for transforming {@link Cursor} to {@link ProjectEntity}.
+ * Handle transformation of {@link Project} entities.
  */
-public class ProjectEntityMapper implements EntityMapper<ProjectEntity> {
+public class ProjectEntityMapper implements EntityMapper<Project> {
     /**
      * @inheritDoc
      */
     @Override
     @NonNull
-    public ProjectEntity transform(@NonNull Cursor cursor) {
+    public Project transform(@NonNull Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(ProjectColumns._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProjectColumns.NAME));
         String description = cursor.getString(cursor.getColumnIndexOrThrow(ProjectColumns.DESCRIPTION));
         long archived = cursor.getLong(cursor.getColumnIndexOrThrow(ProjectColumns.ARCHIVED));
 
-        return new ProjectEntity(id, name, description, 0 != archived);
+        Project project = new Project(id, name);
+        project.setDescription(description);
+        project.setArchived(0 != archived);
+
+        return project;
     }
 }

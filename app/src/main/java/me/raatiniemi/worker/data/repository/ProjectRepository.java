@@ -56,7 +56,6 @@ public class ProjectRepository {
      */
     @NonNull
     public Observable<Project> get() {
-        // TODO: Map to Project when the strategy is emitting ProjectEntity.
         return getStrategy().get();
     }
 
@@ -68,7 +67,6 @@ public class ProjectRepository {
      */
     @NonNull
     public Observable<Project> get(final long id) {
-        // TODO: Map to Project when the strategy is emitting ProjectEntity.
         return getStrategy().get(id);
     }
 
@@ -80,7 +78,6 @@ public class ProjectRepository {
      */
     @NonNull
     public Observable<Project> add(final String name) {
-        // TODO: Map to Project when the strategy is emitting ProjectEntity.
         return getStrategy().add(name);
     }
 

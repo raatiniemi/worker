@@ -122,7 +122,7 @@ public class Project extends DomainObject {
      */
     public void setDescription(@Nullable String description) {
         // If the description is empty we should reset it to null.
-        if (TextUtils.isEmpty(description)) {
+        if (null == description || 0 == description.length()) {
             description = null;
         }
 

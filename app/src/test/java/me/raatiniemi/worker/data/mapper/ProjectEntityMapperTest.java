@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.data.entity.ProjectEntity;
+import me.raatiniemi.worker.domain.Project;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -50,19 +50,27 @@ public class ProjectEntityMapperTest {
         return cursor;
     }
 
+    private static Project createProject(long id, String name, String description, boolean archived) {
+        Project project = new Project(id, name);
+        project.setDescription(description);
+        project.setArchived(archived);
+
+        return project;
+    }
+
     @DataProvider
     public static Object[][] transform_dataProvider() {
         return new Object[][]{
-                {createCursor(1, "Name", "Description", 0), new ProjectEntity(1, "Name", "Description", false)},
-                {createCursor(1, "Name", "Description", 1), new ProjectEntity(1, "Name", "Description", true)}
+                {createCursor(1, "Name", "Description", 0), createProject(1, "Name", "Description", false)},
+                {createCursor(1, "Name", "Description", 1), createProject(1, "Name", "Description", true)}
         };
     }
 
     @Test
     @UseDataProvider("transform_dataProvider")
-    public void transform(Cursor cursor, ProjectEntity expected) {
+    public void transform(Cursor cursor, Project expected) {
         ProjectEntityMapper entityMapper = new ProjectEntityMapper();
-        ProjectEntity entity = entityMapper.transform(cursor);
+        Project entity = entityMapper.transform(cursor);
 
         assertEquals(expected.getId(), entity.getId());
         assertEquals(expected.getName(), entity.getName());
