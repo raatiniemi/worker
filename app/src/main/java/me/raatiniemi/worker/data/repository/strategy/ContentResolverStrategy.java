@@ -30,12 +30,12 @@ class ContentResolverStrategy<M extends EntityMapper> {
     /**
      * Content resolver used with the strategy.
      */
-    private ContentResolver mContentResolver;
+    private final ContentResolver mContentResolver;
 
     /**
      * Entity mapper used with the strategy.
      */
-    private M mEntityMapper;
+    private final M mEntityMapper;
 
     /**
      * Constructor.
