@@ -19,14 +19,12 @@ package me.raatiniemi.worker.data.mapper;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.entity.BaseEntity;
-
 /**
- * Generic interface for mapping {@link Cursor} to {@link BaseEntity}.
+ * Handle entity transformation.
  *
  * @param <T> Type reference for the transformable entity.
  */
-public interface EntityMapper<T extends BaseEntity> {
+public interface EntityMapper<T> {
     /**
      * Perform transformation from {@link Cursor} to entity.
      *
