@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain;
 /**
  * Base class for the domain objects.
  */
-abstract public class DomainObject {
+abstract class DomainObject {
     /**
      * Id for the domain object.
      */
@@ -28,7 +28,7 @@ abstract public class DomainObject {
     /**
      * Default constructor.
      */
-    public DomainObject() {
+    DomainObject() {
     }
 
     /**
@@ -36,7 +36,7 @@ abstract public class DomainObject {
      *
      * @param id Id for the domain object.
      */
-    public DomainObject(Long id) {
+    DomainObject(Long id) {
         setId(id);
     }
 
