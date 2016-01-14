@@ -22,11 +22,12 @@ import android.support.annotation.NonNull;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.mapper.EntityMapper;
 
 /**
  * Mapper for transforming {@link Cursor} to {@link Time}.
  */
-public class TimeEntityMapper implements EntityMapper<Time> {
+public class TimeEntityMapper implements EntityMapper<Time, Cursor> {
     /**
      * @inheritDoc
      */

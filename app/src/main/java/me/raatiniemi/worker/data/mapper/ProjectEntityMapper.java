@@ -21,11 +21,12 @@ import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.mapper.EntityMapper;
 
 /**
  * Handle transformation of {@link Project} entities.
  */
-public class ProjectEntityMapper implements EntityMapper<Project> {
+public class ProjectEntityMapper implements EntityMapper<Project, Cursor> {
     /**
      * @inheritDoc
      */

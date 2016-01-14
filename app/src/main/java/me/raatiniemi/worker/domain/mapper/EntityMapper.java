@@ -14,23 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.mapper;
-
-import android.database.Cursor;
-import android.support.annotation.NonNull;
+package me.raatiniemi.worker.domain.mapper;
 
 /**
- * Handle entity transformation.
+ * Interface for handling entity transformation.
+ * <p/>
+ * The transformation interface should support both from and to entities,
+ * hence the double type reference instead of a single.
  *
- * @param <T> Type reference for the transformable entity.
+ * @param <T> Type reference from transformation destination.
+ * @param <F> Type reference from transformation source.
  */
-public interface EntityMapper<T> {
+public interface EntityMapper<T, F> {
     /**
-     * Perform transformation from {@link Cursor} to entity.
+     * Perform the entity transformation.
      *
-     * @param cursor Cursor to transform.
-     * @return Transformed entity.
+     * @param from Data to be transformed to another type.
+     * @return Data transformed to destination type.
      */
-    @NonNull
-    T transform(@NonNull Cursor cursor);
+    T transform(F from);
 }
