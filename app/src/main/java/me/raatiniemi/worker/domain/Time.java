@@ -88,16 +88,6 @@ public class Time extends DomainObject {
     }
 
     /**
-     * Constructor, short hand for clock in activity.
-     *
-     * @param projectId Id for the project connected to the time interval.
-     * @throws ClockOutBeforeClockInException If stop time is before start time.
-     */
-    public Time(@NonNull Long projectId) throws ClockOutBeforeClockInException {
-        this(null, projectId, (new Date()).getTime(), 0L);
-    }
-
-    /**
      * Getter method for the project id.
      *
      * @return Id for the project connected to the time interval.

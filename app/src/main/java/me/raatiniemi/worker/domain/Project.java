@@ -285,10 +285,7 @@ public class Project extends DomainObject {
 
         // Instantiate the Time domain object with the project
         // and clock in with the supplied date.
-        Time time = new Time(this.getId());
-        time.clockInAt(date);
-
-        return time;
+        return new Time(null, getId(), date.getTime(), 0L);
     }
 
     /**

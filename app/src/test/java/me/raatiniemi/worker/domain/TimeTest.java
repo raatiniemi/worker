@@ -69,10 +69,6 @@ public class TimeTest {
         Time time = new Time(1L, 2L, 3L, 4L);
 
         assertEquals(Long.valueOf(2L), time.getProjectId());
-
-        time = new Time(3L);
-
-        assertEquals(Long.valueOf(3L), time.getProjectId());
     }
 
     @Test
