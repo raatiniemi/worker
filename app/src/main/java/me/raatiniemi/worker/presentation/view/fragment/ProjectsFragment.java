@@ -38,7 +38,7 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.data.mapper.ProjectEntityMapper;
+import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.mapper.TimeEntityMapper;
 import me.raatiniemi.worker.data.repository.ProjectRepository;
 import me.raatiniemi.worker.data.repository.TimeRepository;
@@ -120,7 +120,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         // Create the project strategy/repository.
         ProjectStrategy projectStrategy = new ProjectResolverStrategy(
                 getActivity().getContentResolver(),
-                new ProjectEntityMapper()
+                new ProjectCursorMapper()
         );
         ProjectRepository projectRepository = new ProjectRepository(projectStrategy);
 

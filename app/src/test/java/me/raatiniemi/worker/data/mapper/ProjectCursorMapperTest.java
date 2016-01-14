@@ -33,7 +33,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
-public class ProjectEntityMapperTest {
+public class ProjectCursorMapperTest {
     private static Cursor createCursor(long id, String name, String description, long archived) {
         Cursor cursor = mock(Cursor.class);
 
@@ -69,7 +69,7 @@ public class ProjectEntityMapperTest {
     @Test
     @UseDataProvider("transform_dataProvider")
     public void transform(Cursor cursor, Project expected) {
-        ProjectEntityMapper entityMapper = new ProjectEntityMapper();
+        ProjectCursorMapper entityMapper = new ProjectCursorMapper();
         Project entity = entityMapper.transform(cursor);
 
         assertEquals(expected.getId(), entity.getId());
