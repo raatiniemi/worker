@@ -39,7 +39,7 @@ public class TimeTest {
 
         assertNull(time.getId());
         assertNull(time.getProjectId());
-        assertEquals(Long.valueOf(0L), time.getStart());
+        assertEquals(0L, time.getStart());
         assertEquals(Long.valueOf(0L), time.getStop());
         assertFalse(time.isRegistered());
     }
@@ -51,7 +51,7 @@ public class TimeTest {
 
         assertEquals(Long.valueOf(1L), time.getId());
         assertEquals(Long.valueOf(2L), time.getProjectId());
-        assertEquals(Long.valueOf(3L), time.getStart());
+        assertEquals(3L, time.getStart());
         assertEquals(Long.valueOf(4L), time.getStop());
         assertFalse(time.isRegistered());
     }
@@ -95,7 +95,7 @@ public class TimeTest {
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
 
-        assertEquals(Long.valueOf(3L), time.getStart());
+        assertEquals(3L, time.getStart());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class TimeTest {
         Time time = new Time();
         time.setStart(1L);
 
-        assertEquals(Long.valueOf(1L), time.getStart());
+        assertEquals(1L, time.getStart());
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
@@ -176,7 +176,7 @@ public class TimeTest {
         time.setStop(1L);
         time.clockInAt(date);
 
-        assertEquals(Long.valueOf(2L), time.getStart());
+        assertEquals(2L, time.getStart());
     }
 
     @Test
@@ -189,7 +189,7 @@ public class TimeTest {
         time.setStop(2L);
         time.clockInAt(date);
 
-        assertEquals(Long.valueOf(1L), time.getStart());
+        assertEquals(1L, time.getStart());
     }
 
     @Test
@@ -201,7 +201,7 @@ public class TimeTest {
         Time time = new Time();
         time.clockInAt(date);
 
-        assertEquals(Long.valueOf(1L), time.getStart());
+        assertEquals(1L, time.getStart());
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)

@@ -38,7 +38,7 @@ public class Time extends DomainObject {
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked in.
      */
-    private Long mStart;
+    private long mStart;
 
     /**
      * Timestamp for when the time interval ends, or zero if active.
@@ -69,7 +69,7 @@ public class Time extends DomainObject {
      * @param stop      Timestamp for when the interval ends, or zero if active.
      * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
-    public Time(@Nullable Long id, @NonNull Long projectId, @NonNull Long start, @NonNull Long stop) throws ClockOutBeforeClockInException {
+    public Time(@Nullable Long id, @NonNull Long projectId, final long start, @NonNull Long stop) throws ClockOutBeforeClockInException {
         super(id);
 
         setProjectId(projectId);
@@ -116,12 +116,7 @@ public class Time extends DomainObject {
      *
      * @return Timestamp for time interval start, in milliseconds.
      */
-    @NonNull
-    public Long getStart() {
-        if (null == mStart) {
-            mStart = 0L;
-        }
-
+    public long getStart() {
         return mStart;
     }
 
@@ -131,7 +126,7 @@ public class Time extends DomainObject {
      * @param start Timestamp for time interval start, in milliseconds.
      * @throws ClockOutBeforeClockInException If value for start is more than value for stop.
      */
-    public void setStart(@NonNull Long start) throws ClockOutBeforeClockInException {
+    public void setStart(final long start) throws ClockOutBeforeClockInException {
         // Check that the start value is less than the stop value, but only
         // if the stop value is not zero. Should not be able to change clock
         // in to occur after clock out.
