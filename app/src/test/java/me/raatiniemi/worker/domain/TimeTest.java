@@ -18,12 +18,10 @@ package me.raatiniemi.worker.domain;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runners.JUnit4;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 
 import static junit.framework.Assert.assertEquals;
@@ -33,8 +31,7 @@ import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(JUnit4.class)
 public class TimeTest {
     @Test
     public void Time_defaultValueFromDefaultConstructor() {
