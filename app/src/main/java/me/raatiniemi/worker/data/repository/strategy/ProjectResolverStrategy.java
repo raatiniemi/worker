@@ -33,7 +33,6 @@ import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectEntityMapper;
 import me.raatiniemi.worker.domain.Project;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
-import me.raatiniemi.worker.domain.mapper.ProjectMapper;
 import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Func0;
@@ -72,8 +71,7 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectEnti
         }).map(new Func1<Cursor, Project>() {
             @Override
             public Project call(Cursor cursor) {
-                // TODO: Map to ProjectEntity when Project have been refactored.
-                return ProjectMapper.map(cursor);
+                return getEntityMapper().transform(cursor);
             }
         });
     }
@@ -102,8 +100,7 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectEnti
                 .map(new Func1<Cursor, Project>() {
                     @Override
                     public Project call(final Cursor cursor) {
-                        // TODO: Map to ProjectEntity when Project have been refactored.
-                        return ProjectMapper.map(cursor);
+                        return getEntityMapper().transform(cursor);
                     }
                 })
                 .first();

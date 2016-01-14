@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.entity.TimeEntity;
+import me.raatiniemi.worker.domain.Time;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -59,20 +59,27 @@ public class TimeEntityMapperTest {
         return cursor;
     }
 
+    private static Time createTime(long id, long projectId, long start, long stop, boolean registered) throws Exception {
+        Time time = new Time(id, projectId, start, stop);
+        time.setRegistered(registered);
+
+        return time;
+    }
+
     @DataProvider
-    public static Object[][] transform_dataProvider() {
+    public static Object[][] transform_dataProvider() throws Exception {
         return new Object[][]{
-                {createCursor(1, 1, 1, null, 0), new TimeEntity(1, 1, 1, null, false)},
-                {createCursor(1, 1, 1, 2L, 0), new TimeEntity(1, 1, 1, 2L, false)},
-                {createCursor(1, 1, 1, 2L, 1), new TimeEntity(1, 1, 1, 2L, true)}
+                {createCursor(1, 1, 1, null, 0), createTime(1, 1, 1, 0, false)},
+                {createCursor(1, 1, 1, 2L, 0), createTime(1, 1, 1, 2L, false)},
+                {createCursor(1, 1, 1, 2L, 1), createTime(1, 1, 1, 2L, true)}
         };
     }
 
     @Test
     @UseDataProvider("transform_dataProvider")
-    public void transform(Cursor cursor, TimeEntity expected) {
+    public void transform(Cursor cursor, Time expected) {
         TimeEntityMapper entityMapper = new TimeEntityMapper();
-        TimeEntity entity = entityMapper.transform(cursor);
+        Time entity = entityMapper.transform(cursor);
 
         assertEquals(expected.getId(), entity.getId());
         assertEquals(expected.getProjectId(), entity.getProjectId());

@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.repository.strategy;
 import android.content.ContentResolver;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.mapper.EntityMapper;
+import me.raatiniemi.worker.domain.mapper.EntityMapper;
 
 /**
  * Base for strategies using a content resolver as data source.
@@ -30,12 +30,12 @@ class ContentResolverStrategy<M extends EntityMapper> {
     /**
      * Content resolver used with the strategy.
      */
-    private ContentResolver mContentResolver;
+    private final ContentResolver mContentResolver;
 
     /**
      * Entity mapper used with the strategy.
      */
-    private M mEntityMapper;
+    private final M mEntityMapper;
 
     /**
      * Constructor.

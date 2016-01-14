@@ -57,7 +57,6 @@ public class TimeRepository {
      */
     @NonNull
     public Observable<Time> get(final long id) {
-        // TODO: Map to Time when the strategy is emitting TimeEntity.
         return getStrategy().get(id);
     }
 
