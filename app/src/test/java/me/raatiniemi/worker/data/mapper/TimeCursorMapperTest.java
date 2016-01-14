@@ -33,7 +33,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
-public class TimeEntityMapperTest {
+public class TimeCursorMapperTest {
     private static Cursor createCursor(long id, long projectId, long start, Long stop, long registered) {
         Cursor cursor = mock(Cursor.class);
 
@@ -78,7 +78,7 @@ public class TimeEntityMapperTest {
     @Test
     @UseDataProvider("transform_dataProvider")
     public void transform(Cursor cursor, Time expected) {
-        TimeEntityMapper entityMapper = new TimeEntityMapper();
+        TimeCursorMapper entityMapper = new TimeCursorMapper();
         Time entity = entityMapper.transform(cursor);
 
         assertEquals(expected.getId(), entity.getId());

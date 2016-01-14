@@ -24,9 +24,9 @@ import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.domain.exception.DomainException;
 
 /**
- * Mapper for transforming {@link Cursor} to {@link Time}.
+ * Handle transformation from {@link Cursor} to {@link Time}.
  */
-public class TimeEntityMapper implements CursorMapper<Time> {
+public class TimeCursorMapper implements CursorMapper<Time> {
     /**
      * @inheritDoc
      */

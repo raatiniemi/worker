@@ -23,20 +23,20 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
-import me.raatiniemi.worker.data.mapper.TimeEntityMapper;
+import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Func1;
 
-public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapper> implements TimeStrategy {
+public class TimeResolverStrategy extends ContentResolverStrategy<TimeCursorMapper> implements TimeStrategy {
     /**
      * @inheritDoc
      */
     public TimeResolverStrategy(
             @NonNull ContentResolver contentResolver,
-            @NonNull TimeEntityMapper entityMapper
+            @NonNull TimeCursorMapper entityMapper
     ) {
         super(contentResolver, entityMapper);
     }
