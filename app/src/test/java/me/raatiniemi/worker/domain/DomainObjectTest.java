@@ -22,7 +22,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.domain.DomainObject;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
