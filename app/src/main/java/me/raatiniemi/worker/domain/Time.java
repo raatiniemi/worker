@@ -69,7 +69,12 @@ public class Time extends DomainObject {
      * @param stop      Timestamp for when the interval ends, or zero if active.
      * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
-    public Time(@Nullable Long id, @NonNull Long projectId, final long start, @NonNull Long stop) throws ClockOutBeforeClockInException {
+    public Time(
+            @Nullable Long id,
+            @NonNull Long projectId,
+            final long start,
+            @NonNull Long stop
+    ) throws ClockOutBeforeClockInException {
         super(id);
 
         setProjectId(projectId);
