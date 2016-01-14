@@ -36,9 +36,9 @@ public class TimeResolverStrategy extends ContentResolverStrategy<TimeCursorMapp
      */
     public TimeResolverStrategy(
             @NonNull ContentResolver contentResolver,
-            @NonNull TimeCursorMapper entityMapper
+            @NonNull TimeCursorMapper cursorMapper
     ) {
-        super(contentResolver, entityMapper);
+        super(contentResolver, cursorMapper);
     }
 
     /**
@@ -65,7 +65,7 @@ public class TimeResolverStrategy extends ContentResolverStrategy<TimeCursorMapp
                 .map(new Func1<Cursor, Time>() {
                     @Override
                     public Time call(Cursor cursor) {
-                        return getEntityMapper().transform(cursor);
+                        return getCursorMapper().transform(cursor);
                     }
                 })
                 .first();

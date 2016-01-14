@@ -44,9 +44,9 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectCurs
      */
     public ProjectResolverStrategy(
             @NonNull ContentResolver contentResolver,
-            @NonNull ProjectCursorMapper entityMapper
+            @NonNull ProjectCursorMapper cursorMapper
     ) {
-        super(contentResolver, entityMapper);
+        super(contentResolver, cursorMapper);
     }
 
     /**
@@ -71,7 +71,7 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectCurs
         }).map(new Func1<Cursor, Project>() {
             @Override
             public Project call(Cursor cursor) {
-                return getEntityMapper().transform(cursor);
+                return getCursorMapper().transform(cursor);
             }
         });
     }
@@ -100,7 +100,7 @@ public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectCurs
                 .map(new Func1<Cursor, Project>() {
                     @Override
                     public Project call(final Cursor cursor) {
-                        return getEntityMapper().transform(cursor);
+                        return getCursorMapper().transform(cursor);
                     }
                 })
                 .first();
