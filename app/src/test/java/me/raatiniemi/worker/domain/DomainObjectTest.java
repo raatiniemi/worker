@@ -21,18 +21,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
 
 @RunWith(JUnit4.class)
 public class DomainObjectTest {
-    @Test
-    public void getId_defaultValue() {
-        DomainObject object = new DomainObject() {
-        };
-
-        assertNull(object.getId());
-    }
-
     @Test
     public void getId_valueFromConstructor() {
         DomainObject object = new DomainObject(1L) {

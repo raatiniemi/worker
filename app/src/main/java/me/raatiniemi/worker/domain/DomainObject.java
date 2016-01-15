@@ -26,12 +26,6 @@ abstract class DomainObject {
     private Long mId;
 
     /**
-     * Default constructor.
-     */
-    DomainObject() {
-    }
-
-    /**
      * Instantiate the domain object with id.
      *
      * @param id Id for the domain object.
