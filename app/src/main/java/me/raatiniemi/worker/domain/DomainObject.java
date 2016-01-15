@@ -23,14 +23,14 @@ abstract class DomainObject {
     /**
      * Id for the domain object.
      */
-    private Long mId;
+    private final Long mId;
 
     /**
      * Instantiate the domain object with id.
      *
      * @param id Id for the domain object.
      */
-    DomainObject(Long id) {
+    DomainObject(final Long id) {
         mId = id;
     }
 
