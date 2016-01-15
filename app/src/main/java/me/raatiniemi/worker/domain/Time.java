@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.domain;
 
-import android.support.annotation.Nullable;
-
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
@@ -62,7 +60,7 @@ public class Time extends DomainObject {
      * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
     public Time(
-            @Nullable Long id,
+            final Long id,
             final long projectId,
             final long start,
             final long stop
