@@ -26,24 +26,12 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class TimeTest {
-    @Test
-    public void Time_defaultValueFromDefaultConstructor() {
-        Time time = new Time();
-
-        assertNull(time.getId());
-        assertNull(time.getProjectId());
-        assertEquals(0L, time.getStart());
-        assertEquals(Long.valueOf(0L), time.getStop());
-        assertFalse(time.isRegistered());
-    }
-
     @Test
     public void Time_defaultValueFromConstructor()
             throws ClockOutBeforeClockInException {
@@ -57,13 +45,6 @@ public class TimeTest {
     }
 
     @Test
-    public void getProjectId_defaultValue() {
-        Time time = new Time();
-
-        assertNull(time.getProjectId());
-    }
-
-    @Test
     public void getProjectId_valueFromConstructor()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
@@ -72,25 +53,11 @@ public class TimeTest {
     }
 
     @Test
-    public void getStart_defaultValue() {
-        Time time = new Time();
-
-        assertEquals(Long.valueOf(0L), time.getStop());
-    }
-
-    @Test
     public void getStart_valueFromConstructor()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
 
         assertEquals(3L, time.getStart());
-    }
-
-    @Test
-    public void getStop_defaultValue() {
-        Time time = new Time();
-
-        assertEquals(Long.valueOf(0L), time.getStop());
     }
 
     @Test
@@ -104,7 +71,7 @@ public class TimeTest {
     @Test
     public void getStop_valueFromSetter()
             throws ClockOutBeforeClockInException {
-        Time time = new Time();
+        Time time = new Time(1L, 1L, 1L, 0L);
         time.setStop(1L);
 
         assertEquals(Long.valueOf(1L), time.getStop());
@@ -118,15 +85,9 @@ public class TimeTest {
     }
 
     @Test
-    public void isRegistered_defaultValue() {
-        Time time = new Time();
-
-        assertFalse(time.isRegistered());
-    }
-
-    @Test
-    public void isRegistered_valueFromSetter() {
-        Time time = new Time();
+    public void isRegistered_valueFromSetter()
+            throws ClockOutBeforeClockInException {
+        Time time = new Time(1L, 1L, 1L, 1L);
         time.setRegistered(true);
 
         assertTrue(time.isRegistered());

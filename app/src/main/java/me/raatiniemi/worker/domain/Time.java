@@ -30,7 +30,7 @@ public class Time extends DomainObject {
     /**
      * Id for the project connected to the time interval.
      */
-    private Long mProjectId;
+    private final Long mProjectId;
 
     /**
      * Timestamp for when the time interval starts.
@@ -38,7 +38,7 @@ public class Time extends DomainObject {
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked in.
      */
-    private long mStart;
+    private final long mStart;
 
     /**
      * Timestamp for when the time interval ends, or zero if active.
@@ -52,13 +52,6 @@ public class Time extends DomainObject {
      * Flag for registered time.
      */
     private boolean mRegistered;
-
-    /**
-     * Default constructor.
-     */
-    public Time() {
-        super();
-    }
 
     /**
      * Constructor.
