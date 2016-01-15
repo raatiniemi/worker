@@ -97,6 +97,13 @@ public class TimeTest {
         assertFalse(time.isRegistered());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void clockOutAt_withNullDate()
+            throws ClockOutBeforeClockInException {
+        Time time = new Time(1L, 1, 1, 0);
+        time.clockOutAt(null);
+    }
+
     @Test(expected = ClockOutBeforeClockInException.class)
     public void clockOutAt_clockOutBeforeClockIn()
             throws ClockOutBeforeClockInException {

@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.Date;
@@ -147,9 +146,14 @@ public class Time extends DomainObject {
      * Set the clock out timestamp at given date.
      *
      * @param date Date at which to clock out.
+     * @throws NullPointerException           If date argument is null.
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
-    public void clockOutAt(@NonNull Date date) throws ClockOutBeforeClockInException {
+    public void clockOutAt(final Date date) throws ClockOutBeforeClockInException {
+        if (null == date) {
+            throw new NullPointerException("Date is not allowed to be null");
+        }
+
         setStop(date.getTime());
     }
 
