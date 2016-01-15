@@ -77,7 +77,7 @@ public class Time extends DomainObject {
     ) throws ClockOutBeforeClockInException {
         super(id);
 
-        setProjectId(projectId);
+        mProjectId = projectId;
         mStart = start;
 
         // Only set the stop time if the time is not active,
@@ -95,15 +95,6 @@ public class Time extends DomainObject {
     @Nullable
     public Long getProjectId() {
         return mProjectId;
-    }
-
-    /**
-     * Internal setter method for the project id.
-     *
-     * @param projectId Id for the project connected to the time interval.
-     */
-    public void setProjectId(@NonNull Long projectId) {
-        mProjectId = projectId;
     }
 
     /**

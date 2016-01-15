@@ -72,14 +72,6 @@ public class TimeTest {
     }
 
     @Test
-    public void getProjectId_valueFromSetter() {
-        Time time = new Time();
-        time.setProjectId(1L);
-
-        assertEquals(Long.valueOf(1L), time.getProjectId());
-    }
-
-    @Test
     public void getStart_defaultValue() {
         Time time = new Time();
 
