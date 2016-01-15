@@ -361,7 +361,7 @@ public class ProjectTest {
         assertNull(time.getId());
         assertEquals(1L, time.getProjectId());
         assertEquals(100L, time.getStart());
-        assertEquals(Long.valueOf(0L), time.getStop());
+        assertEquals(0L, time.getStop());
         verify(date, times(1)).getTime();
     }
 

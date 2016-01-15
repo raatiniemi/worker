@@ -46,7 +46,7 @@ public class Time extends DomainObject {
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked out.
      */
-    private Long mStop;
+    private long mStop;
 
     /**
      * Flag for registered time.
@@ -66,7 +66,7 @@ public class Time extends DomainObject {
             @Nullable Long id,
             final long projectId,
             final long start,
-            @NonNull Long stop
+            final long stop
     ) throws ClockOutBeforeClockInException {
         super(id);
 
@@ -103,12 +103,7 @@ public class Time extends DomainObject {
      *
      * @return Timestamp for time interval end, in milliseconds, or zero if active.
      */
-    @NonNull
-    public Long getStop() {
-        if (null == mStop) {
-            mStop = 0L;
-        }
-
+    public long getStop() {
         return mStop;
     }
 
@@ -118,7 +113,7 @@ public class Time extends DomainObject {
      * @param stop Timestamp for time interval end, in milliseconds.
      * @throws ClockOutBeforeClockInException If value for stop is less than value for start.
      */
-    public void setStop(@NonNull Long stop) throws ClockOutBeforeClockInException {
+    public void setStop(final long stop) throws ClockOutBeforeClockInException {
         // Check that the stop value is lager than the start value,
         // should not be able to clock out before clocked in.
         if (stop < getStart()) {
@@ -175,9 +170,8 @@ public class Time extends DomainObject {
      *
      * @return Registered time in milliseconds, or zero if interval is active.
      */
-    @NonNull
-    public Long getTime() {
-        Long time = 0L;
+    public long getTime() {
+        long time = 0L;
 
         if (!isActive()) {
             time = getStop() - getStart();
@@ -194,9 +188,8 @@ public class Time extends DomainObject {
      *
      * @return Interval in milliseconds.
      */
-    @NonNull
-    public Long getInterval() {
-        Long stop = getStop();
+    public long getInterval() {
+        long stop = getStop();
 
         if (isActive()) {
             stop = (new Date()).getTime();

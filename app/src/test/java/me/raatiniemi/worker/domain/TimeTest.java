@@ -40,7 +40,7 @@ public class TimeTest {
         assertEquals(Long.valueOf(1L), time.getId());
         assertEquals(2L, time.getProjectId());
         assertEquals(3L, time.getStart());
-        assertEquals(Long.valueOf(4L), time.getStop());
+        assertEquals(4L, time.getStop());
         assertFalse(time.isRegistered());
     }
 
@@ -65,7 +65,7 @@ public class TimeTest {
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
 
-        assertEquals(Long.valueOf(4L), time.getStop());
+        assertEquals(4L, time.getStop());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class TimeTest {
         Time time = new Time(1L, 1L, 1L, 0L);
         time.setStop(1L);
 
-        assertEquals(Long.valueOf(1L), time.getStop());
+        assertEquals(1L, time.getStop());
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
@@ -116,7 +116,7 @@ public class TimeTest {
         Time time = new Time(1L, 1L, 1L, 0L);
         time.clockOutAt(date);
 
-        assertEquals(Long.valueOf(2L), time.getStop());
+        assertEquals(2L, time.getStop());
     }
 
     @Test
@@ -140,7 +140,7 @@ public class TimeTest {
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 1L, 1L, 0L);
 
-        assertEquals(Long.valueOf(0L), time.getTime());
+        assertEquals(0L, time.getTime());
     }
 
     @Test
@@ -148,7 +148,7 @@ public class TimeTest {
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 1L, 1L, 11L);
 
-        assertEquals(Long.valueOf(10L), time.getTime());
+        assertEquals(10L, time.getTime());
     }
 
     @Test
@@ -166,6 +166,6 @@ public class TimeTest {
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 1L, 1L, 11L);
 
-        assertEquals(Long.valueOf(10L), time.getInterval());
+        assertEquals(10L, time.getInterval());
     }
 }
