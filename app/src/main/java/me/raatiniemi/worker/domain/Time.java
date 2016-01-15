@@ -78,7 +78,7 @@ public class Time extends DomainObject {
         super(id);
 
         setProjectId(projectId);
-        setStart(start);
+        mStart = start;
 
         // Only set the stop time if the time is not active,
         // otherwise an exception will be thrown.
@@ -113,25 +113,6 @@ public class Time extends DomainObject {
      */
     public long getStart() {
         return mStart;
-    }
-
-    /**
-     * Setter method for timestamp when the time interval start.
-     *
-     * @param start Timestamp for time interval start, in milliseconds.
-     * @throws ClockOutBeforeClockInException If value for start is more than value for stop.
-     */
-    public void setStart(final long start) throws ClockOutBeforeClockInException {
-        // Check that the start value is less than the stop value, but only
-        // if the stop value is not zero. Should not be able to change clock
-        // in to occur after clock out.
-        if (!isActive() && start > getStop()) {
-            throw new ClockOutBeforeClockInException(
-                    "Clock in occur after clock out"
-            );
-        }
-
-        mStart = start;
     }
 
     /**
