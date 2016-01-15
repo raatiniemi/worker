@@ -38,7 +38,7 @@ public class TimeTest {
         Time time = new Time(1L, 2L, 3L, 4L);
 
         assertEquals(Long.valueOf(1L), time.getId());
-        assertEquals(Long.valueOf(2L), time.getProjectId());
+        assertEquals(2L, time.getProjectId());
         assertEquals(3L, time.getStart());
         assertEquals(Long.valueOf(4L), time.getStop());
         assertFalse(time.isRegistered());
@@ -49,7 +49,7 @@ public class TimeTest {
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 2L, 3L, 4L);
 
-        assertEquals(Long.valueOf(2L), time.getProjectId());
+        assertEquals(2L, time.getProjectId());
     }
 
     @Test

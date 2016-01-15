@@ -30,7 +30,7 @@ public class Time extends DomainObject {
     /**
      * Id for the project connected to the time interval.
      */
-    private final Long mProjectId;
+    private final long mProjectId;
 
     /**
      * Timestamp for when the time interval starts.
@@ -64,7 +64,7 @@ public class Time extends DomainObject {
      */
     public Time(
             @Nullable Long id,
-            @NonNull Long projectId,
+            final long projectId,
             final long start,
             @NonNull Long stop
     ) throws ClockOutBeforeClockInException {
@@ -85,8 +85,7 @@ public class Time extends DomainObject {
      *
      * @return Id for the project connected to the time interval.
      */
-    @Nullable
-    public Long getProjectId() {
+    public long getProjectId() {
         return mProjectId;
     }
 
