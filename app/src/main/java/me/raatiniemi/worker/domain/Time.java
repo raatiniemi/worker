@@ -185,16 +185,6 @@ public class Time extends DomainObject {
     }
 
     /**
-     * Set the clock in timestamp at a given date.
-     *
-     * @param date Date at which to clock in.
-     * @throws ClockOutBeforeClockInException If clock in occur after clock out.
-     */
-    public void clockInAt(@NonNull Date date) throws ClockOutBeforeClockInException {
-        setStart(date.getTime());
-    }
-
-    /**
      * Set the clock out timestamp at given date.
      *
      * @param date Date at which to clock out.

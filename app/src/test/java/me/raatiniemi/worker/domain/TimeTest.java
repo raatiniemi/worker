@@ -163,44 +163,6 @@ public class TimeTest {
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
-    public void clockInAt_clockInAfterClockOut()
-            throws ClockOutBeforeClockInException {
-        Date date = mock(Date.class);
-        when(date.getTime()).thenReturn(2L);
-
-        Time time = new Time();
-        time.setStop(1L);
-        time.clockInAt(date);
-
-        assertEquals(2L, time.getStart());
-    }
-
-    @Test
-    public void clockInAt_clockInBeforeClockOut()
-            throws ClockOutBeforeClockInException {
-        Date date = mock(Date.class);
-        when(date.getTime()).thenReturn(1L);
-
-        Time time = new Time();
-        time.setStop(2L);
-        time.clockInAt(date);
-
-        assertEquals(1L, time.getStart());
-    }
-
-    @Test
-    public void clockInAt_whenInactive()
-            throws ClockOutBeforeClockInException {
-        Date date = mock(Date.class);
-        when(date.getTime()).thenReturn(1L);
-
-        Time time = new Time();
-        time.clockInAt(date);
-
-        assertEquals(1L, time.getStart());
-    }
-
-    @Test(expected = ClockOutBeforeClockInException.class)
     public void clockOutAt_clockOutBeforeClockIn()
             throws ClockOutBeforeClockInException {
         Date date = mock(Date.class);
