@@ -40,13 +40,4 @@ public class DomainObjectTest {
 
         assertEquals(Long.valueOf(1L), object.getId());
     }
-
-    @Test
-    public void getId_valueFromSetter() {
-        DomainObject object = new DomainObject() {
-        };
-        object.setId(1L);
-
-        assertEquals(Long.valueOf(1L), object.getId());
-    }
 }

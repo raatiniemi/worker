@@ -37,7 +37,7 @@ abstract class DomainObject {
      * @param id Id for the domain object.
      */
     DomainObject(Long id) {
-        setId(id);
+        mId = id;
     }
 
     /**
@@ -47,14 +47,5 @@ abstract class DomainObject {
      */
     public Long getId() {
         return mId;
-    }
-
-    /**
-     * Internal setter method for the id.
-     *
-     * @param id Id for the domain object.
-     */
-    public void setId(Long id) {
-        mId = id;
     }
 }

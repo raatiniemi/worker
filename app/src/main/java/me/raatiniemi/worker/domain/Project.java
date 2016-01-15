@@ -51,27 +51,19 @@ public class Project extends DomainObject {
     private List<Time> mTime;
 
     /**
-     * Default constructor.
-     */
-    public Project() {
-        super();
-
-        // Set default value for non-constructor arguments.
-        setTime(new ArrayList<Time>());
-        setArchived(false);
-    }
-
-    /**
      * Constructor.
      *
      * @param id   Id for the project.
      * @param name Name of the project.
      */
-    public Project(@NonNull Long id, @NonNull String name) {
-        this();
+    public Project(@Nullable Long id, @NonNull String name) {
+        super(id);
 
-        setId(id);
         setName(name);
+
+        // Set default value for non-constructor arguments.
+        setTime(new ArrayList<Time>());
+        setArchived(false);
     }
 
     /**
@@ -80,9 +72,7 @@ public class Project extends DomainObject {
      * @param name Name of the project.
      */
     public Project(@NonNull String name) {
-        this();
-
-        setName(name);
+        this(null, name);
     }
 
     /**
