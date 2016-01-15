@@ -62,7 +62,7 @@ public class Project extends DomainObject {
         setName(name);
 
         // Set default value for non-constructor arguments.
-        setTime(new ArrayList<Time>());
+        mTime = new ArrayList<>();
         setArchived(false);
     }
 
@@ -144,15 +144,6 @@ public class Project extends DomainObject {
     @NonNull
     public List<Time> getTime() {
         return mTime;
-    }
-
-    /**
-     * Internal setter method for the project time.
-     *
-     * @param time Project time.
-     */
-    private void setTime(@NonNull List<Time> time) {
-        mTime = time;
     }
 
     /**
