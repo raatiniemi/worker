@@ -14,31 +14,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.service.data;
+package me.raatiniemi.worker.domain.interactor;
 
 /**
- * Restore operation.
+ * Backup operation.
  */
-class RestoreBackup {
+public class CreateBackup {
     /**
-     * Strategy for restoring a backup.
+     * Strategy for creating a backup.
      */
-    private final RestoreStrategy mStrategy;
+    private BackupStrategy mStrategy;
 
     /**
      * Constructor.
      *
-     * @param strategy Strategy for restoring a backup.
+     * @param strategy Strategy for creating a backup.
      */
-    RestoreBackup(RestoreStrategy strategy) {
+    public CreateBackup(BackupStrategy strategy) {
         mStrategy = strategy;
     }
 
     /**
-     * Restore backup via the strategy.
+     * Create backup via the strategy.
      */
-    synchronized void execute() {
-        // Execute the restoration strategy.
+    synchronized public void execute() {
+        // Execute the backup strategy.
         mStrategy.execute();
     }
 }

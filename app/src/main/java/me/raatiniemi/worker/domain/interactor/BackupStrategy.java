@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Worker Project
+ * Copyright (C) 2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,31 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.service.data;
+package me.raatiniemi.worker.domain.interactor;
 
 /**
- * Backup operation.
+ * Interface for different backup strategies.
  */
-class CreateBackup {
+public interface BackupStrategy {
     /**
-     * Strategy for creating a backup.
+     * Run the backup process.
      */
-    private BackupStrategy mStrategy;
-
-    /**
-     * Constructor.
-     *
-     * @param strategy Strategy for creating a backup.
-     */
-    CreateBackup(BackupStrategy strategy) {
-        mStrategy = strategy;
-    }
-
-    /**
-     * Create backup via the strategy.
-     */
-    synchronized void execute() {
-        // Execute the backup strategy.
-        mStrategy.execute();
-    }
+    void execute();
 }

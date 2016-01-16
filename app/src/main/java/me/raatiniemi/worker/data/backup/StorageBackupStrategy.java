@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.service.data;
+package me.raatiniemi.worker.data.backup;
 
 import android.content.Context;
 
@@ -22,26 +22,37 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import de.greenrobot.event.EventBus;
+import me.raatiniemi.worker.domain.interactor.BackupStrategy;
+import me.raatiniemi.worker.presentation.model.backup.Backup;
+import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.util.ExternalStorage;
 import me.raatiniemi.worker.util.FileUtils;
 import me.raatiniemi.worker.util.Worker;
 
 /**
- * Restoration strategy for storage device.
+ * Backup strategy for storage device.
  */
-public class StorageRestoreStrategy implements RestoreStrategy {
+public class StorageBackupStrategy implements BackupStrategy {
     /**
      * Application context.
      */
     private final Context mContext;
 
     /**
+     * Event bus used for notification.
+     */
+    private final EventBus mEventBus;
+
+    /**
      * Constructor.
      *
-     * @param context Application context.
+     * @param context  Application context.
+     * @param eventBus Event bus used for notification.
      */
-    public StorageRestoreStrategy(Context context) {
+    public StorageBackupStrategy(Context context, EventBus eventBus) {
         mContext = context;
+        mEventBus = eventBus;
     }
 
     /**
@@ -50,23 +61,27 @@ public class StorageRestoreStrategy implements RestoreStrategy {
     @Override
     public void execute() {
         try {
-            // Check that the external storage is readable.
-            if (!ExternalStorage.isReadable()) {
-                throw new IOException("External storage is not readable");
+            // Check that the external storage is writable.
+            if (!ExternalStorage.isWritable()) {
+                throw new IOException("External storage is not writable");
             }
 
-            // Check that we have backup to restore from.
-            File directory = ExternalStorage.getLatestBackupDirectory();
+            // Check that the backup directory is available.
+            File directory = ExternalStorage.getBackupDirectory();
             if (null == directory) {
-                throw new FileNotFoundException("Unable to find backup from which to restore");
+                throw new FileNotFoundException("Directory for backup is not available");
             }
 
             // Retrieve the source and destination file locations.
-            File from = new File(directory, Worker.DATABASE_NAME);
-            File to = mContext.getDatabasePath(Worker.DATABASE_NAME);
+            File from = mContext.getDatabasePath(Worker.DATABASE_NAME);
+            File to = new File(directory, Worker.DATABASE_NAME);
 
             // Perform the file copy.
             FileUtils.copy(from, to);
+
+            // Assemble and post the successful backup event.
+            Backup backup = new Backup(directory);
+            mEventBus.post(new BackupSuccessfulEvent(backup));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

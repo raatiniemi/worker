@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Worker Project
+ * Copyright (C) 2015-2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.service.data;
+package me.raatiniemi.worker.domain.interactor;
 
 /**
- * Interface for different backup restoration strategies.
- * <p>
- * TODO: Move RestoreStrategy to the correct package.
+ * Restore operation.
  */
-public interface RestoreStrategy {
+public class RestoreBackup {
     /**
-     * Run the backup restoration process.
+     * Strategy for restoring a backup.
      */
-    void execute();
+    private final RestoreStrategy mStrategy;
+
+    /**
+     * Constructor.
+     *
+     * @param strategy Strategy for restoring a backup.
+     */
+    public RestoreBackup(RestoreStrategy strategy) {
+        mStrategy = strategy;
+    }
+
+    /**
+     * Restore backup via the strategy.
+     */
+    synchronized public void execute() {
+        // Execute the restoration strategy.
+        mStrategy.execute();
+    }
 }

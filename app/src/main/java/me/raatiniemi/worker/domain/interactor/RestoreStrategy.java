@@ -14,16 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.service.data;
+package me.raatiniemi.worker.domain.interactor;
 
 /**
- * Interface for different backup strategies.
- * <p>
- * TODO: Move BackupStrategy to the correct package.
+ * Interface for different backup restoration strategies.
  */
-public interface BackupStrategy {
+public interface RestoreStrategy {
     /**
-     * Run the backup process.
+     * Run the backup restoration process.
      */
     void execute();
 }

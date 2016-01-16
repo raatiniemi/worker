@@ -26,6 +26,12 @@ import android.util.Log;
 
 import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.data.backup.StorageBackupStrategy;
+import me.raatiniemi.worker.data.backup.StorageRestoreStrategy;
+import me.raatiniemi.worker.domain.interactor.BackupStrategy;
+import me.raatiniemi.worker.domain.interactor.CreateBackup;
+import me.raatiniemi.worker.domain.interactor.RestoreBackup;
+import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 import me.raatiniemi.worker.util.Worker;
 
