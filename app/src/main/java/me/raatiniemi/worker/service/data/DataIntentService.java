@@ -125,8 +125,8 @@ public class DataIntentService extends IntentService {
 
             // Create the backup.
             BackupStrategy backupStrategy = new StorageBackupStrategy(context, eventBus);
-            BackupCommand command = new BackupCommand(backupStrategy);
-            command.execute();
+            CreateBackup createBackup = new CreateBackup(backupStrategy);
+            createBackup.execute();
 
             // Send the "Backup complete" notification to the user.
             notification = new NotificationCompat.Builder(context)

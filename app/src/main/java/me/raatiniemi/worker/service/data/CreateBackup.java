@@ -19,7 +19,7 @@ package me.raatiniemi.worker.service.data;
 /**
  * Backup operation.
  */
-class BackupCommand {
+class CreateBackup {
     /**
      * Strategy for creating a backup.
      */
@@ -30,7 +30,7 @@ class BackupCommand {
      *
      * @param strategy Strategy for creating a backup.
      */
-    BackupCommand(BackupStrategy strategy) {
+    CreateBackup(BackupStrategy strategy) {
         mStrategy = strategy;
     }
 
