@@ -36,7 +36,7 @@ import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 import me.raatiniemi.worker.util.Worker;
 
 /**
- * Service for running data operations.
+ * Service coordinating data related operations.
  */
 public class DataIntentService extends IntentService {
     /**
