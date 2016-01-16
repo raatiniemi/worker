@@ -61,6 +61,16 @@ public class ProjectTest {
         assertTrue(project.getTime().isEmpty());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void setName_nullValueFromIdNameConstructor() {
+        new Project(null, null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void setName_nullValueFromNameConstructor() {
+        new Project(null);
+    }
+
     @Test
     public void getName_valueFromConstructor() {
         Project project = new Project("Project name");
@@ -70,6 +80,12 @@ public class ProjectTest {
         project = new Project(1L, "New project name");
 
         assertEquals("New project name", project.getName());
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void setName_nullValueFromSetter() {
+        Project project = new Project(1L, "Project name");
+        project.setName(null);
     }
 
     @Test
@@ -164,6 +180,18 @@ public class ProjectTest {
         assertEquals(2, times.size());
         assertEquals(time1, times.get(0));
         assertEquals(time2, times.get(1));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addTime_withNullValue() {
+        Project project = new Project(1L, "Project name");
+        project.addTime((Time) null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addTime_withNullList() {
+        Project project = new Project(1L, "Project name");
+        project.addTime((List<Time>) null);
     }
 
     @Test
@@ -332,6 +360,13 @@ public class ProjectTest {
         verify(time, times(1)).getStart();
     }
 
+    @Test(expected = NullPointerException.class)
+    public void clockInAt_withNullDate()
+            throws DomainException {
+        Project project = new Project(1L, "Project name");
+        project.clockInAt(null);
+    }
+
     @Test(expected = ClockActivityException.class)
     public void clockInAt_withActiveTime() throws DomainException {
         Project project = new Project("Project name");
@@ -363,6 +398,13 @@ public class ProjectTest {
         assertEquals(100L, time.getStart());
         assertEquals(0L, time.getStop());
         verify(date, times(1)).getTime();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void clockOutAt_withNullDate()
+            throws DomainException {
+        Project project = new Project(1L, "Project name");
+        project.clockOutAt(null);
     }
 
     @Test(expected = ClockActivityException.class)
