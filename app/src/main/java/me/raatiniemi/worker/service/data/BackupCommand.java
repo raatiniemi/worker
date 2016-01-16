@@ -16,23 +16,21 @@
 
 package me.raatiniemi.worker.service.data;
 
-import android.content.Context;
-
 /**
  * Backup operation.
  */
-class BackupCommand extends DataCommand {
+class BackupCommand {
     /**
-     * Backup strategy.
+     * Strategy for creating a backup.
      */
     private BackupStrategy mStrategy;
 
     /**
-     * @inheritDoc
+     * Constructor.
+     *
+     * @param strategy Strategy for creating a backup.
      */
-    BackupCommand(Context context, BackupStrategy strategy) {
-        super(context);
-
+    BackupCommand(BackupStrategy strategy) {
         mStrategy = strategy;
     }
 
@@ -46,9 +44,8 @@ class BackupCommand extends DataCommand {
     }
 
     /**
-     * @inheritDoc
+     * Create backup via the strategy.
      */
-    @Override
     synchronized void execute() {
         // Execute the backup strategy.
         getStrategy().execute();

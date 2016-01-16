@@ -16,23 +16,21 @@
 
 package me.raatiniemi.worker.service.data;
 
-import android.content.Context;
-
 /**
  * Restore operation.
  */
-class RestoreCommand extends DataCommand {
+class RestoreCommand {
     /**
-     * Restoration strategy.
+     * Strategy for restoring a backup.
      */
     private final RestoreStrategy mStrategy;
 
     /**
-     * @inheritDoc
+     * Constructor.
+     *
+     * @param strategy Strategy for restoring a backup.
      */
-    RestoreCommand(Context context, RestoreStrategy strategy) {
-        super(context);
-
+    RestoreCommand(RestoreStrategy strategy) {
         mStrategy = strategy;
     }
 
@@ -46,9 +44,8 @@ class RestoreCommand extends DataCommand {
     }
 
     /**
-     * @inheritDoc
+     * Restore backup via the strategy.
      */
-    @Override
     synchronized void execute() {
         // Execute the restoration strategy.
         getStrategy().execute();

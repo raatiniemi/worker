@@ -125,7 +125,7 @@ public class DataIntentService extends IntentService {
 
             // Create the backup.
             BackupStrategy backupStrategy = new StorageBackupStrategy(context, eventBus);
-            BackupCommand command = new BackupCommand(context, backupStrategy);
+            BackupCommand command = new BackupCommand(backupStrategy);
             command.execute();
 
             // Send the "Backup complete" notification to the user.
@@ -175,7 +175,7 @@ public class DataIntentService extends IntentService {
 
             // Restore the backup.
             RestoreStrategy restoreStrategy = new StorageRestoreStrategy(context);
-            RestoreCommand command = new RestoreCommand(context, restoreStrategy);
+            RestoreCommand command = new RestoreCommand(restoreStrategy);
             command.execute();
 
             Intent intent = new Intent(context, MainActivity.class);
