@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.comparator;
 
 import java.util.Comparator;
 
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.model.Project;
 
 public class ProjectComparator implements Comparator<Project> {
     @Override

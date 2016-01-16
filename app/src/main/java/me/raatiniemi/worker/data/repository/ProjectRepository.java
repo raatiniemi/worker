@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.repository;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.model.Project;
 import rx.Observable;
 
 /**

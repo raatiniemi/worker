@@ -20,7 +20,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.model.Project;
 
 /**
  * Handle transformation from {@link Cursor} to {@link Project}.

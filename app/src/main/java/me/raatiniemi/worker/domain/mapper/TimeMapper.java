@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.mapper;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 

@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;

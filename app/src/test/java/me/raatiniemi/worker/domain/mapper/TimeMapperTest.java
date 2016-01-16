@@ -25,7 +25,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 

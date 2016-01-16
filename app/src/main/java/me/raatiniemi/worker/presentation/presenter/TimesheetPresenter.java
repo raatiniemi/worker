@@ -21,7 +21,7 @@ import android.util.Log;
 
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.domain.ProjectProvider;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;

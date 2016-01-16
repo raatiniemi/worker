@@ -33,6 +33,8 @@ import me.raatiniemi.worker.data.repository.ProjectRepository;
 import me.raatiniemi.worker.data.repository.TimeRepository;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
+import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.util.Settings;
 import rx.Observable;

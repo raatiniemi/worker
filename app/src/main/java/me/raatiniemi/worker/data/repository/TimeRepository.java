@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.repository;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.repository.strategy.TimeStrategy;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.model.Time;
 import rx.Observable;
 
 /**

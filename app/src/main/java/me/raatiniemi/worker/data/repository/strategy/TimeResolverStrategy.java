@@ -24,7 +24,7 @@ import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import rx.Observable;
 import rx.android.content.ContentObservable;

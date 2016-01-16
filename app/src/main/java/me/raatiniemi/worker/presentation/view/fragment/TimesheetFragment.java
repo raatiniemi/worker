@@ -48,7 +48,7 @@ import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
 import me.raatiniemi.worker.data.repository.strategy.TimeResolverStrategy;
 import me.raatiniemi.worker.data.repository.strategy.TimeStrategy;
 import me.raatiniemi.worker.domain.ProjectProvider;
-import me.raatiniemi.worker.domain.Time;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;

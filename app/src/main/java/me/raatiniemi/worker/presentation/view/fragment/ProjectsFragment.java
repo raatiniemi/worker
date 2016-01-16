@@ -46,7 +46,7 @@ import me.raatiniemi.worker.data.repository.strategy.ProjectResolverStrategy;
 import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
 import me.raatiniemi.worker.data.repository.strategy.TimeResolverStrategy;
 import me.raatiniemi.worker.data.repository.strategy.TimeStrategy;
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.ProjectProvider;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;

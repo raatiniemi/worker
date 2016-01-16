@@ -31,7 +31,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.domain.Project;
+import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import rx.Observable;
 import rx.android.content.ContentObservable;
