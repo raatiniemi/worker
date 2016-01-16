@@ -45,7 +45,6 @@ import me.raatiniemi.worker.data.repository.ProjectRepository;
 import me.raatiniemi.worker.data.repository.TimeRepository;
 import me.raatiniemi.worker.data.repository.strategy.ProjectResolverStrategy;
 import me.raatiniemi.worker.data.repository.strategy.TimeResolverStrategy;
-import me.raatiniemi.worker.data.repository.strategy.TimeStrategy;
 import me.raatiniemi.worker.domain.ProjectProvider;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
@@ -221,12 +220,11 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                 new ProjectCursorMapper()
         );
 
-        // Create the time strategy/repository.
-        TimeStrategy timeStrategy = new TimeResolverStrategy(
+        // Create the time repository.
+        TimeRepository timeRepository = new TimeResolverStrategy(
                 getActivity().getContentResolver(),
                 new TimeCursorMapper()
         );
-        TimeRepository timeRepository = new TimeRepository(timeStrategy);
 
         return new TimesheetPresenter(
                 getActivity(),
