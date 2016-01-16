@@ -45,7 +45,7 @@ public class Project extends DomainObject {
     /**
      * Time registered for the project.
      */
-    private List<Time> mTime;
+    private final List<Time> mTime;
 
     /**
      * Constructor.
