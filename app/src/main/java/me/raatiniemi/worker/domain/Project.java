@@ -16,10 +16,6 @@
 
 package me.raatiniemi.worker.domain;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.text.TextUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,18 +45,7 @@ public class Project extends DomainObject {
     /**
      * Time registered for the project.
      */
-    private List<Time> mTime;
-
-    /**
-     * Default constructor.
-     */
-    public Project() {
-        super();
-
-        // Set default value for non-constructor arguments.
-        setTime(new ArrayList<Time>());
-        setArchived(false);
-    }
+    private final List<Time> mTime;
 
     /**
      * Constructor.
@@ -68,11 +53,14 @@ public class Project extends DomainObject {
      * @param id   Id for the project.
      * @param name Name of the project.
      */
-    public Project(@NonNull Long id, @NonNull String name) {
-        this();
+    public Project(final Long id, final String name) {
+        super(id);
 
-        setId(id);
         setName(name);
+
+        // Set default value for non-constructor arguments.
+        mTime = new ArrayList<>();
+        setArchived(false);
     }
 
     /**
@@ -80,10 +68,8 @@ public class Project extends DomainObject {
      *
      * @param name Name of the project.
      */
-    public Project(@NonNull String name) {
-        this();
-
-        setName(name);
+    public Project(final String name) {
+        this(null, name);
     }
 
     /**
@@ -91,7 +77,6 @@ public class Project extends DomainObject {
      *
      * @return Project name.
      */
-    @NonNull
     public String getName() {
         return mName;
     }
@@ -101,7 +86,11 @@ public class Project extends DomainObject {
      *
      * @param name Project name.
      */
-    public void setName(@NonNull String name) {
+    public void setName(final String name) {
+        if (null == name) {
+            throw new NullPointerException("Project name is not allowed to be null");
+        }
+
         mName = name;
     }
 
@@ -110,7 +99,6 @@ public class Project extends DomainObject {
      *
      * @return Project description.
      */
-    @Nullable
     public String getDescription() {
         return mDescription;
     }
@@ -120,7 +108,7 @@ public class Project extends DomainObject {
      *
      * @param description Project description.
      */
-    public void setDescription(@Nullable String description) {
+    public void setDescription(String description) {
         // If the description is empty we should reset it to null.
         if (null == description || 0 == description.length()) {
             description = null;
@@ -143,7 +131,7 @@ public class Project extends DomainObject {
      *
      * @param archived True if project is archived, otherwise false.
      */
-    public void setArchived(boolean archived) {
+    public void setArchived(final boolean archived) {
         mArchived = archived;
     }
 
@@ -152,18 +140,8 @@ public class Project extends DomainObject {
      *
      * @return Project time.
      */
-    @NonNull
     public List<Time> getTime() {
         return mTime;
-    }
-
-    /**
-     * Internal setter method for the project time.
-     *
-     * @param time Project time.
-     */
-    private void setTime(@NonNull List<Time> time) {
-        mTime = time;
     }
 
     /**
@@ -171,7 +149,11 @@ public class Project extends DomainObject {
      *
      * @param time Time to add to the project.
      */
-    public void addTime(@NonNull Time time) {
+    public void addTime(final Time time) {
+        if (null == time) {
+            throw new NullPointerException("Time is not allowed to be null");
+        }
+
         getTime().add(time);
     }
 
@@ -180,7 +162,11 @@ public class Project extends DomainObject {
      *
      * @param time Time to add to the project.
      */
-    public void addTime(@NonNull List<Time> time) {
+    public void addTime(final List<Time> time) {
+        if (null == time) {
+            throw new NullPointerException("Time is not allowed to be null");
+        }
+
         // If the list with items are empty, there's no
         // need to attempt to add them.
         if (time.isEmpty()) {
@@ -233,7 +219,6 @@ public class Project extends DomainObject {
      *
      * @return Active time, or null if project is not active.
      */
-    @Nullable
     private Time getActiveTime() {
         // If no time is registered, the project can't be active.
         List<Time> list = getTime();
@@ -255,7 +240,6 @@ public class Project extends DomainObject {
      *
      * @return Date when project was clocked in, or null if project is not active.
      */
-    @Nullable
     public Date getClockedInSince() {
         // Retrieve the last time, i.e. the active time session.
         Time time = getActiveTime();
@@ -275,9 +259,12 @@ public class Project extends DomainObject {
      * @throws ClockActivityException         If the project is active.
      * @throws ClockOutBeforeClockInException If clock in occur after clock out.
      */
-    @NonNull
-    public Time clockInAt(@NonNull Date date)
+    public Time clockInAt(final Date date)
             throws ClockActivityException, ClockOutBeforeClockInException {
+        if (null == date) {
+            throw new NullPointerException("Time is not allowed to be null");
+        }
+
         // If the project is already active, we can't clock in.
         if (isActive()) {
             throw new ClockActivityException("Unable to clock in, project is already active");
@@ -285,10 +272,7 @@ public class Project extends DomainObject {
 
         // Instantiate the Time domain object with the project
         // and clock in with the supplied date.
-        Time time = new Time(this.getId());
-        time.clockInAt(date);
-
-        return time;
+        return new Time(null, getId(), date.getTime(), 0L);
     }
 
     /**
@@ -299,9 +283,12 @@ public class Project extends DomainObject {
      * @throws ClockActivityException         If the project is not active.
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
-    @NonNull
-    public Time clockOutAt(@NonNull Date date)
+    public Time clockOutAt(final Date date)
             throws ClockActivityException, ClockOutBeforeClockInException {
+        if (null == date) {
+            throw new NullPointerException("Time is not allowed to be null");
+        }
+
         // Retrieve the active Time domain object, and clock
         // out with the supplied date.
         //

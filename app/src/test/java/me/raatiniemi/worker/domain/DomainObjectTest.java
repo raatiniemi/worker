@@ -18,39 +18,16 @@ package me.raatiniemi.worker.domain;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
-
-import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.domain.DomainObject;
+import org.junit.runners.JUnit4;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(JUnit4.class)
 public class DomainObjectTest {
-    @Test
-    public void getId_defaultValue() {
-        DomainObject object = new DomainObject() {
-        };
-
-        assertNull(object.getId());
-    }
-
     @Test
     public void getId_valueFromConstructor() {
         DomainObject object = new DomainObject(1L) {
         };
-
-        assertEquals(Long.valueOf(1L), object.getId());
-    }
-
-    @Test
-    public void getId_valueFromSetter() {
-        DomainObject object = new DomainObject() {
-        };
-        object.setId(1L);
 
         assertEquals(Long.valueOf(1L), object.getId());
     }
