@@ -35,19 +35,10 @@ class RestoreCommand {
     }
 
     /**
-     * Get the restoration strategy.
-     *
-     * @return Restoration strategy.
-     */
-    protected RestoreStrategy getStrategy() {
-        return mStrategy;
-    }
-
-    /**
      * Restore backup via the strategy.
      */
     synchronized void execute() {
         // Execute the restoration strategy.
-        getStrategy().execute();
+        mStrategy.execute();
     }
 }

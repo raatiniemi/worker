@@ -35,19 +35,10 @@ class BackupCommand {
     }
 
     /**
-     * Get the backup strategy.
-     *
-     * @return Backup strategy.
-     */
-    protected BackupStrategy getStrategy() {
-        return mStrategy;
-    }
-
-    /**
      * Create backup via the strategy.
      */
     synchronized void execute() {
         // Execute the backup strategy.
-        getStrategy().execute();
+        mStrategy.execute();
     }
 }
