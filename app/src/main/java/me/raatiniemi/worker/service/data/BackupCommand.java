@@ -21,7 +21,6 @@ import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.util.Worker;
 
@@ -39,8 +38,8 @@ class BackupCommand extends DataCommand {
     /**
      * @inheritDoc
      */
-    BackupCommand(Context context, EventBus eventBus, BackupStrategy strategy) {
-        super(context, eventBus);
+    BackupCommand(Context context, BackupStrategy strategy) {
+        super(context);
 
         mStrategy = strategy;
     }

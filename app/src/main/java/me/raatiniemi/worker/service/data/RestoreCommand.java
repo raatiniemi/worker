@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 import me.raatiniemi.worker.util.Worker;
@@ -42,8 +41,8 @@ class RestoreCommand extends DataCommand {
     /**
      * @inheritDoc
      */
-    RestoreCommand(Context context, EventBus eventBus, RestoreStrategy strategy) {
-        super(context, eventBus);
+    RestoreCommand(Context context, RestoreStrategy strategy) {
+        super(context);
 
         mStrategy = strategy;
     }

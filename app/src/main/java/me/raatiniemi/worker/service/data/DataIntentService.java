@@ -85,7 +85,7 @@ public class DataIntentService extends IntentService {
                     break;
                 case INTENT_ACTION_RESTORE:
                     sRunning = true;
-                    runRestore(context, eventBus);
+                    runRestore(context);
                     sRunning = false;
                     break;
                 default:
@@ -112,19 +112,18 @@ public class DataIntentService extends IntentService {
      */
     private void runBackup(Context context, EventBus eventBus) {
         BackupStrategy backupStrategy = new StorageBackupStrategy(context, eventBus);
-        BackupCommand command = new BackupCommand(context, eventBus, backupStrategy);
+        BackupCommand command = new BackupCommand(context, backupStrategy);
         command.execute();
     }
 
     /**
      * Execute the restore process.
      *
-     * @param context  Application context.
-     * @param eventBus Event bus used for notification.
+     * @param context Application context.
      */
-    private void runRestore(Context context, EventBus eventBus) {
+    private void runRestore(Context context) {
         RestoreStrategy restoreStrategy = new StorageRestoreStrategy(context);
-        RestoreCommand command = new RestoreCommand(context, eventBus, restoreStrategy);
+        RestoreCommand command = new RestoreCommand(context, restoreStrategy);
         command.execute();
     }
 }

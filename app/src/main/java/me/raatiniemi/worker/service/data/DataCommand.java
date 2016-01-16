@@ -18,8 +18,6 @@ package me.raatiniemi.worker.service.data;
 
 import android.content.Context;
 
-import de.greenrobot.event.EventBus;
-
 /**
  * Base for performing data operations.
  * <p>
@@ -37,19 +35,12 @@ abstract class DataCommand {
     private Context mContext;
 
     /**
-     * Event bus used for notification.
-     */
-    private EventBus mEventBus;
-
-    /**
      * Constructor.
      *
-     * @param context  Context used with the data operation.
-     * @param eventBus Event bus used for notification.
+     * @param context Context used with the data operation.
      */
-    DataCommand(Context context, EventBus eventBus) {
+    DataCommand(Context context) {
         mContext = context;
-        mEventBus = eventBus;
     }
 
     /**
@@ -59,15 +50,6 @@ abstract class DataCommand {
      */
     protected Context getContext() {
         return mContext;
-    }
-
-    /**
-     * Get the event bus used for notification.
-     *
-     * @return Event bus used for notification.
-     */
-    protected EventBus getEventBus() {
-        return mEventBus;
     }
 
     /**
