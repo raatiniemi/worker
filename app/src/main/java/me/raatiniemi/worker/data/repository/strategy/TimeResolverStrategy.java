@@ -23,22 +23,22 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
-import me.raatiniemi.worker.data.mapper.TimeEntityMapper;
+import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.Time;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Func1;
 
-public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapper> implements TimeStrategy {
+public class TimeResolverStrategy extends ContentResolverStrategy<TimeCursorMapper> implements TimeStrategy {
     /**
      * @inheritDoc
      */
     public TimeResolverStrategy(
             @NonNull ContentResolver contentResolver,
-            @NonNull TimeEntityMapper entityMapper
+            @NonNull TimeCursorMapper cursorMapper
     ) {
-        super(contentResolver, entityMapper);
+        super(contentResolver, cursorMapper);
     }
 
     /**
@@ -65,7 +65,7 @@ public class TimeResolverStrategy extends ContentResolverStrategy<TimeEntityMapp
                 .map(new Func1<Cursor, Time>() {
                     @Override
                     public Time call(Cursor cursor) {
-                        return getEntityMapper().transform(cursor);
+                        return getCursorMapper().transform(cursor);
                     }
                 })
                 .first();

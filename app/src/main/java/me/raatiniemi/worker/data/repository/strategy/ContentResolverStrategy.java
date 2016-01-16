@@ -19,33 +19,33 @@ package me.raatiniemi.worker.data.repository.strategy;
 import android.content.ContentResolver;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.domain.mapper.EntityMapper;
+import me.raatiniemi.worker.data.mapper.CursorMapper;
 
 /**
  * Base for strategies using a content resolver as data source.
  *
- * @param <M> Type reference for the entity mapper used.
+ * @param <M> Type reference for the cursor mapper used.
  */
-class ContentResolverStrategy<M extends EntityMapper> {
+class ContentResolverStrategy<M extends CursorMapper> {
     /**
      * Content resolver used with the strategy.
      */
     private final ContentResolver mContentResolver;
 
     /**
-     * Entity mapper used with the strategy.
+     * Cursor mapper used with the strategy.
      */
-    private final M mEntityMapper;
+    private final M mCursorMapper;
 
     /**
      * Constructor.
      *
      * @param contentResolver Content resolver used with the strategy.
-     * @param entityMapper Entity mapper used with the strategy.
+     * @param cursorMapper    Cursor mapper used with the strategy.
      */
-    ContentResolverStrategy(@NonNull ContentResolver contentResolver, @NonNull M entityMapper) {
+    ContentResolverStrategy(@NonNull ContentResolver contentResolver, @NonNull M cursorMapper) {
         mContentResolver = contentResolver;
-        mEntityMapper = entityMapper;
+        mCursorMapper = cursorMapper;
     }
 
     /**
@@ -59,12 +59,12 @@ class ContentResolverStrategy<M extends EntityMapper> {
     }
 
     /**
-     * Get the entity mapper.
+     * Get the cursor mapper.
      *
-     * @return Entity mapper.
+     * @return Cursor mapper.
      */
     @NonNull
-    protected M getEntityMapper() {
-        return mEntityMapper;
+    protected M getCursorMapper() {
+        return mCursorMapper;
     }
 }
