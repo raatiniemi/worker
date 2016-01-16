@@ -16,23 +16,12 @@
 
 package me.raatiniemi.worker.service.data;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-
-import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.view.activity.MainActivity;
-import me.raatiniemi.worker.util.Worker;
 
 /**
  * Restore operation.
  */
 class RestoreCommand extends DataCommand {
-    private static final String TAG = "RestoreCommand";
-
     /**
      * Restoration strategy.
      */
@@ -61,57 +50,7 @@ class RestoreCommand extends DataCommand {
      */
     @Override
     synchronized void execute() {
-        NotificationManager manager = null;
-        NotificationCompat.Builder notification = null;
-
-        try {
-            manager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-            // Execute the restoration strategy.
-            getStrategy().execute();
-
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            intent.setAction(Worker.INTENT_ACTION_RESTART);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(
-                    getContext(), 1, intent, PendingIntent.FLAG_UPDATE_CURRENT
-            );
-
-            // Send the "Restore complete" notification to the user.
-            notification = new NotificationCompat.Builder(getContext())
-                    .setSmallIcon(R.drawable.ic_restore_white_24dp)
-                    .setContentTitle(getContext().getString(R.string.notification_restore_title))
-                    .setContentText(getContext().getString(R.string.notification_restore_message))
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true);
-            // TODO: Post event for `RestoreSuccessful`.
-        } catch (ClassCastException e) {
-            // TODO: Post event for `RestoreFailure`.
-            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
-        } catch (Exception e) {
-            // TODO: Post event for `RestoreFailure`.
-            Log.w(TAG, "Unable to restore backup: " + e.getMessage());
-
-            // TODO: Display what was the cause of the restore failure.
-            // Send the "Restore failed" notification to the user.
-            notification = new NotificationCompat.Builder(getContext())
-                    .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                    .setContentTitle(getContext().getString(R.string.error_notification_restore_title))
-                    .setContentText(getContext().getString(R.string.error_notification_restore_message));
-        } finally {
-            // Both the notification and notification manager must be
-            // available, otherwise we can't display the notification.
-            //
-            // The notification manager won't be available if a
-            // ClassCastException have been thrown.
-            if (null != manager && null != notification) {
-                manager.notify(
-                        Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
-                        notification.build()
-                );
-            }
-        }
+        // Execute the restoration strategy.
+        getStrategy().execute();
     }
 }
