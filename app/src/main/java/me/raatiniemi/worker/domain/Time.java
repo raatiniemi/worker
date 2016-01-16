@@ -136,7 +136,7 @@ public class Time extends DomainObject {
      *
      * @param registered True if time is registered, otherwise false.
      */
-    public void setRegistered(boolean registered) {
+    public void setRegistered(final boolean registered) {
         mRegistered = registered;
     }
 
