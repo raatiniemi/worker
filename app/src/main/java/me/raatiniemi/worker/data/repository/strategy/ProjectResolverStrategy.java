@@ -31,6 +31,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.data.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import rx.Observable;
@@ -38,7 +39,7 @@ import rx.android.content.ContentObservable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
-public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectCursorMapper> implements ProjectStrategy {
+public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectCursorMapper> implements ProjectRepository {
     /**
      * @inheritDoc
      */

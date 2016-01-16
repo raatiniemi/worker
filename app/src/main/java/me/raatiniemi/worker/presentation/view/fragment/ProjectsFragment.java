@@ -43,7 +43,6 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.ProjectRepository;
 import me.raatiniemi.worker.data.repository.TimeRepository;
 import me.raatiniemi.worker.data.repository.strategy.ProjectResolverStrategy;
-import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
 import me.raatiniemi.worker.data.repository.strategy.TimeResolverStrategy;
 import me.raatiniemi.worker.data.repository.strategy.TimeStrategy;
 import me.raatiniemi.worker.domain.model.Project;
@@ -116,13 +115,11 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
     @Override
     protected ProjectsPresenter createPresenter() {
-        // TODO: Use a factory for constructing strategy/repository?
-        // Create the project strategy/repository.
-        ProjectStrategy projectStrategy = new ProjectResolverStrategy(
+        // Create the project repository.
+        ProjectRepository projectRepository = new ProjectResolverStrategy(
                 getActivity().getContentResolver(),
                 new ProjectCursorMapper()
         );
-        ProjectRepository projectRepository = new ProjectRepository(projectStrategy);
 
         // Create the time strategy/repository.
         TimeStrategy timeStrategy = new TimeResolverStrategy(

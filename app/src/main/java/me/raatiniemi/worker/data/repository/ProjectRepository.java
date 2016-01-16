@@ -18,46 +18,20 @@ package me.raatiniemi.worker.data.repository;
 
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
 import me.raatiniemi.worker.domain.model.Project;
 import rx.Observable;
 
 /**
- * Represents a unified interface for working with different data sources (strategies).
+ * Represent a unified interface for working with projects using different data sources.
  */
-public class ProjectRepository {
-    /**
-     * Project repository strategy.
-     */
-    private ProjectStrategy mStrategy;
-
-    /**
-     * Constructor.
-     *
-     * @param strategy Project repository strategy.
-     */
-    public ProjectRepository(ProjectStrategy strategy) {
-        mStrategy = strategy;
-    }
-
-    /**
-     * Get the project repository strategy.
-     *
-     * @return Project repository strategy.
-     */
-    protected ProjectStrategy getStrategy() {
-        return mStrategy;
-    }
-
+public interface ProjectRepository {
     /**
      * Get projects.
      *
      * @return Observable emitting projects.
      */
     @NonNull
-    public Observable<Project> get() {
-        return getStrategy().get();
-    }
+    Observable<Project> get();
 
     /**
      * Get project with id.
@@ -66,9 +40,7 @@ public class ProjectRepository {
      * @return Observable emitting project.
      */
     @NonNull
-    public Observable<Project> get(final long id) {
-        return getStrategy().get(id);
-    }
+    Observable<Project> get(long id);
 
     /**
      * Add project with name.
@@ -77,18 +49,17 @@ public class ProjectRepository {
      * @return Observable emitting project.
      */
     @NonNull
-    public Observable<Project> add(final String name) {
-        return getStrategy().add(name);
-    }
+    Observable<Project> add(String name);
 
     /**
      * Remove project by id.
+     * <p>
+     * The operation also removes the time registered to the project.
      *
      * @param id Id of the project to remove.
      * @return Observable emitting project id.
+     * TODO: When removing project, return void or something more meaningful?
      */
     @NonNull
-    public Observable<Long> remove(final long id) {
-        return getStrategy().remove(id);
-    }
+    Observable<Long> remove(long id);
 }
