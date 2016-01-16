@@ -17,11 +17,15 @@
 package me.raatiniemi.worker.service.data;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import de.greenrobot.event.EventBus;
+import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.util.Worker;
 
 /**
  * Service for running data operations.
@@ -111,9 +115,48 @@ public class DataIntentService extends IntentService {
      * @param eventBus Event bus used for notification.
      */
     private void runBackup(Context context, EventBus eventBus) {
-        BackupStrategy backupStrategy = new StorageBackupStrategy(context, eventBus);
-        BackupCommand command = new BackupCommand(context, backupStrategy);
-        command.execute();
+        NotificationManager manager = null;
+        NotificationCompat.Builder notification = null;
+
+        try {
+            manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            // Create the backup.
+            BackupStrategy backupStrategy = new StorageBackupStrategy(context, eventBus);
+            BackupCommand command = new BackupCommand(context, backupStrategy);
+            command.execute();
+
+            // Send the "Backup complete" notification to the user.
+            notification = new NotificationCompat.Builder(context)
+                    .setSmallIcon(R.drawable.ic_archive_white_24dp)
+                    .setContentTitle(context.getString(R.string.notification_backup_title))
+                    .setContentText(context.getString(R.string.notification_backup_message));
+        } catch (ClassCastException e) {
+            // TODO: Post event for `BackupFailure`.
+            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
+        } catch (Exception e) {
+            // TODO: Post event for `BackupFailure`.
+            Log.w(TAG, "Unable to backup: " + e.getMessage());
+
+            // TODO: Display what was the cause of the backup failure.
+            // Send the "Backup failed" notification to the user.
+            notification = new NotificationCompat.Builder(context)
+                    .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
+                    .setContentTitle(context.getString(R.string.error_notification_backup_title))
+                    .setContentText(context.getString(R.string.error_notification_backup_message));
+        } finally {
+            // Both the notification and notification manager must be
+            // available, otherwise we can't display the notification.
+            //
+            // The notification manager won't be available if a
+            // ClassCastException have been thrown.
+            if (null != manager && null != notification) {
+                manager.notify(
+                        Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
+                        notification.build()
+                );
+            }
+        }
     }
 
     /**

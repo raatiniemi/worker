@@ -16,20 +16,12 @@
 
 package me.raatiniemi.worker.service.data;
 
-import android.app.NotificationManager;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-
-import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.util.Worker;
 
 /**
  * Backup operation.
  */
 class BackupCommand extends DataCommand {
-    private static final String TAG = "BackupCommand";
-
     /**
      * Backup strategy.
      */
@@ -58,45 +50,7 @@ class BackupCommand extends DataCommand {
      */
     @Override
     synchronized void execute() {
-        NotificationManager manager = null;
-        NotificationCompat.Builder notification = null;
-
-        try {
-            manager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-            // Execute the backup strategy.
-            getStrategy().execute();
-
-            // Send the "Backup complete" notification to the user.
-            notification = new NotificationCompat.Builder(getContext())
-                    .setSmallIcon(R.drawable.ic_archive_white_24dp)
-                    .setContentTitle(getContext().getString(R.string.notification_backup_title))
-                    .setContentText(getContext().getString(R.string.notification_backup_message));
-        } catch (ClassCastException e) {
-            // TODO: Post event for `BackupFailure`.
-            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
-        } catch (Exception e) {
-            // TODO: Post event for `BackupFailure`.
-            Log.w(TAG, "Unable to backup: " + e.getMessage());
-
-            // TODO: Display what was the cause of the backup failure.
-            // Send the "Backup failed" notification to the user.
-            notification = new NotificationCompat.Builder(getContext())
-                    .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                    .setContentTitle(getContext().getString(R.string.error_notification_backup_title))
-                    .setContentText(getContext().getString(R.string.error_notification_backup_message));
-        } finally {
-            // Both the notification and notification manager must be
-            // available, otherwise we can't display the notification.
-            //
-            // The notification manager won't be available if a
-            // ClassCastException have been thrown.
-            if (null != manager && null != notification) {
-                manager.notify(
-                        Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
-                        notification.build()
-                );
-            }
-        }
+        // Execute the backup strategy.
+        getStrategy().execute();
     }
 }
