@@ -53,7 +53,7 @@ public class Project extends DomainObject {
      * @param id   Id for the project.
      * @param name Name of the project.
      */
-    public Project(Long id, String name) {
+    public Project(final Long id, final String name) {
         super(id);
 
         setName(name);
@@ -68,7 +68,7 @@ public class Project extends DomainObject {
      *
      * @param name Name of the project.
      */
-    public Project(String name) {
+    public Project(final String name) {
         this(null, name);
     }
 
@@ -86,7 +86,7 @@ public class Project extends DomainObject {
      *
      * @param name Project name.
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         if (null == name) {
             throw new NullPointerException("Project name is not allowed to be null");
         }
@@ -131,7 +131,7 @@ public class Project extends DomainObject {
      *
      * @param archived True if project is archived, otherwise false.
      */
-    public void setArchived(boolean archived) {
+    public void setArchived(final boolean archived) {
         mArchived = archived;
     }
 
@@ -149,7 +149,7 @@ public class Project extends DomainObject {
      *
      * @param time Time to add to the project.
      */
-    public void addTime(Time time) {
+    public void addTime(final Time time) {
         if (null == time) {
             throw new NullPointerException("Time is not allowed to be null");
         }
@@ -162,7 +162,7 @@ public class Project extends DomainObject {
      *
      * @param time Time to add to the project.
      */
-    public void addTime(List<Time> time) {
+    public void addTime(final List<Time> time) {
         if (null == time) {
             throw new NullPointerException("Time is not allowed to be null");
         }
@@ -259,7 +259,7 @@ public class Project extends DomainObject {
      * @throws ClockActivityException         If the project is active.
      * @throws ClockOutBeforeClockInException If clock in occur after clock out.
      */
-    public Time clockInAt(Date date)
+    public Time clockInAt(final Date date)
             throws ClockActivityException, ClockOutBeforeClockInException {
         if (null == date) {
             throw new NullPointerException("Time is not allowed to be null");
@@ -283,7 +283,7 @@ public class Project extends DomainObject {
      * @throws ClockActivityException         If the project is not active.
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
-    public Time clockOutAt(Date date)
+    public Time clockOutAt(final Date date)
             throws ClockActivityException, ClockOutBeforeClockInException {
         if (null == date) {
             throw new NullPointerException("Time is not allowed to be null");
