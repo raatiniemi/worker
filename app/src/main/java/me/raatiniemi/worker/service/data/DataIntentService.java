@@ -175,8 +175,8 @@ public class DataIntentService extends IntentService {
 
             // Restore the backup.
             RestoreStrategy restoreStrategy = new StorageRestoreStrategy(context);
-            RestoreCommand command = new RestoreCommand(restoreStrategy);
-            command.execute();
+            RestoreBackup restoreBackup = new RestoreBackup(restoreStrategy);
+            restoreBackup.execute();
 
             Intent intent = new Intent(context, MainActivity.class);
             intent.setAction(Worker.INTENT_ACTION_RESTART);

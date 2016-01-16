@@ -19,7 +19,7 @@ package me.raatiniemi.worker.service.data;
 /**
  * Restore operation.
  */
-class RestoreCommand {
+class RestoreBackup {
     /**
      * Strategy for restoring a backup.
      */
@@ -30,7 +30,7 @@ class RestoreCommand {
      *
      * @param strategy Strategy for restoring a backup.
      */
-    RestoreCommand(RestoreStrategy strategy) {
+    RestoreBackup(RestoreStrategy strategy) {
         mStrategy = strategy;
     }
 
