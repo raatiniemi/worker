@@ -39,8 +39,7 @@ public class TimeCursorMapper implements CursorMapper<Time> {
 
         // Handle the nullability of the `stop`-column.
         int stopIndex = cursor.getColumnIndexOrThrow(TimeColumns.STOP);
-        // TODO: Use null instead of zero for null stop value.
-        Long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : 0;
+        long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : 0;
         long registered = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.REGISTERED));
 
         try {
