@@ -20,8 +20,8 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
-import me.raatiniemi.worker.presentation.base.view.fragment.ListFragment;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.base.view.fragment.ListFragment;
 import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
 
 /**

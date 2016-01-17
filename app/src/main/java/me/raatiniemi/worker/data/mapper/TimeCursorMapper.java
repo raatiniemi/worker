@@ -20,8 +20,8 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.model.Time;
 
 /**
  * Handle transformation from {@link Cursor} to {@link Time}.

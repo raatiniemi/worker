@@ -18,8 +18,6 @@ package me.raatiniemi.worker.presentation.model.backup;
 
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.presentation.model.backup.Backup;
-
 public class BackupSuccessfulEvent {
     private final Backup mBackup;
 

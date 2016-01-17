@@ -24,9 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
-import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 import rx.Observable;
 import rx.Subscriber;

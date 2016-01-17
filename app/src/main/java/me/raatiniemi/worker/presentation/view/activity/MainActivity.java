@@ -28,8 +28,8 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.base.view.activity.BaseActivity;
-import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
+import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 import me.raatiniemi.worker.util.Worker;
 
 public class MainActivity extends BaseActivity {

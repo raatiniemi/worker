@@ -38,20 +38,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.ProjectProvider;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
+import me.raatiniemi.worker.presentation.view.TimesheetView;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
-import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
-import me.raatiniemi.worker.presentation.view.TimesheetView;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 

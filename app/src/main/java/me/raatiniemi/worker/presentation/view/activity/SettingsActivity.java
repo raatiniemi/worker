@@ -40,9 +40,9 @@ import de.greenrobot.event.EventBus;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.base.view.activity.MvpActivity;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
-import me.raatiniemi.worker.service.DataIntentService;
 import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.view.SettingsView;
+import me.raatiniemi.worker.service.DataIntentService;
 import me.raatiniemi.worker.util.PermissionUtil;
 import me.raatiniemi.worker.util.Settings;
 
