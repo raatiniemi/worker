@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.domain.model.Time;
@@ -31,15 +32,18 @@ import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Func1;
 
-public class TimeResolverRepository extends ContentResolverRepository<TimeCursorMapper> implements TimeRepository {
+public class TimeResolverRepository
+        extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
+        implements TimeRepository {
     /**
      * @inheritDoc
      */
     public TimeResolverRepository(
             @NonNull ContentResolver contentResolver,
-            @NonNull TimeCursorMapper cursorMapper
+            @NonNull TimeCursorMapper cursorMapper,
+            @NonNull final TimeContentValuesMapper contentValuesMapper
     ) {
-        super(contentResolver, cursorMapper);
+        super(contentResolver, cursorMapper, contentValuesMapper);
     }
 
     /**

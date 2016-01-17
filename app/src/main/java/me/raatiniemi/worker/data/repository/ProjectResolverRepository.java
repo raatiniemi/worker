@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
@@ -39,15 +40,18 @@ import rx.android.content.ContentObservable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
-public class ProjectResolverRepository extends ContentResolverRepository<ProjectCursorMapper> implements ProjectRepository {
+public class ProjectResolverRepository
+        extends ContentResolverRepository<ProjectCursorMapper, ProjectContentValuesMapper>
+        implements ProjectRepository {
     /**
      * @inheritDoc
      */
     public ProjectResolverRepository(
             @NonNull ContentResolver contentResolver,
-            @NonNull ProjectCursorMapper cursorMapper
+            @NonNull ProjectCursorMapper cursorMapper,
+            @NonNull final ProjectContentValuesMapper contentValuesMapper
     ) {
-        super(contentResolver, cursorMapper);
+        super(contentResolver, cursorMapper, contentValuesMapper);
     }
 
     /**
