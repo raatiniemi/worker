@@ -14,51 +14,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.repository;
+package me.raatiniemi.worker.domain.repository;
 
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Time;
 import rx.Observable;
 
 /**
- * Represent a unified interface for working with projects using different data sources.
+ * Represent a unified interface for working with time intervals using different data sources.
  */
-public interface ProjectRepository {
+public interface TimeRepository {
     /**
-     * Get projects.
+     * Get time with id.
      *
-     * @return Observable emitting projects.
+     * @param id Id for the time.
+     * @return Observable emitting time.
      */
     @NonNull
-    Observable<Project> get();
+    Observable<Time> get(long id);
 
     /**
-     * Get project with id.
+     * Add time.
      *
-     * @param id Id for the project.
-     * @return Observable emitting project.
+     * @param time Time to add.
+     * @return Observable emitting added time.
      */
     @NonNull
-    Observable<Project> get(long id);
+    Observable<Time> add(Time time);
 
     /**
-     * Add project with name.
+     * Update time.
      *
-     * @param name Name of the project.
-     * @return Observable emitting project.
+     * @param time Time to update.
+     * @return Observable emitting updated time.
      */
     @NonNull
-    Observable<Project> add(String name);
+    Observable<Time> update(Time time);
 
     /**
-     * Remove project by id.
-     * <p>
-     * The operation also removes the time registered to the project.
+     * Remove time by id.
      *
-     * @param id Id of the project to remove.
-     * @return Observable emitting project id.
-     * TODO: When removing project, return void or something more meaningful?
+     * @param id Id of the time to remove.
+     * @return Observable emitting time id.
+     * TODO: When removing time, return void or something more meaningful?
      */
     @NonNull
     Observable<Long> remove(long id);
