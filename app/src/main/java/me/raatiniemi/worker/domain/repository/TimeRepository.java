@@ -16,49 +16,40 @@
 
 package me.raatiniemi.worker.domain.repository;
 
-import android.support.annotation.NonNull;
-
 import me.raatiniemi.worker.domain.model.Time;
-import rx.Observable;
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
  */
 public interface TimeRepository {
     /**
-     * Get time with id.
+     * Get time by id.
      *
      * @param id Id for the time.
-     * @return Observable emitting time.
+     * @return Time, or null if none was found.
      */
-    @NonNull
-    Observable<Time> get(long id);
+    Time get(long id);
 
     /**
      * Add time.
      *
      * @param time Time to add.
-     * @return Observable emitting added time.
+     * @return Added time.
      */
-    @NonNull
-    Observable<Time> add(Time time);
+    Time add(Time time);
 
     /**
      * Update time.
      *
      * @param time Time to update.
-     * @return Observable emitting updated time.
+     * @return Updated time.
      */
-    @NonNull
-    Observable<Time> update(Time time);
+    Time update(Time time);
 
     /**
      * Remove time by id.
      *
      * @param id Id of the time to remove.
-     * @return Observable emitting time id.
-     * TODO: When removing time, return void or something more meaningful?
      */
-    @NonNull
-    Observable<Long> remove(long id);
+    void remove(long id);
 }

@@ -27,9 +27,6 @@ import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import rx.Observable;
-import rx.android.content.ContentObservable;
-import rx.functions.Func1;
 
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
@@ -48,105 +45,66 @@ public class TimeResolverRepository
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Observable<Time> get(final long id) {
-        return Observable.just(id)
-                .flatMap(new Func1<Long, Observable<Cursor>>() {
-                    @Override
-                    public Observable<Cursor> call(Long id) {
-                        Cursor cursor = getContentResolver().query(
-                                TimeContract.getItemUri(id),
-                                TimeContract.COLUMNS,
-                                null,
-                                null,
-                                null
-                        );
+    public Time get(final long id) {
+        final Cursor cursor = getContentResolver().query(
+                TimeContract.getItemUri(id),
+                TimeContract.COLUMNS,
+                null,
+                null,
+                null
+        );
+        if (null == cursor) {
+            return null;
+        }
 
-                        return ContentObservable.fromCursor(cursor);
-                    }
-                })
-                .map(new Func1<Cursor, Time>() {
-                    @Override
-                    public Time call(Cursor cursor) {
-                        return getCursorMapper().transform(cursor);
-                    }
-                })
-                .first();
+        Time time = null;
+        if (cursor.moveToFirst()) {
+            time = getCursorMapper().transform(cursor);
+        }
+        cursor.close();
+
+        return time;
     }
 
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Observable<Time> add(final Time time) {
-        return Observable.just(time)
-                .map(new Func1<Time, ContentValues>() {
-                    @Override
-                    public ContentValues call(final Time time) {
-                        return getContentValuesMapper().transform(time);
-                    }
-                })
-                .map(new Func1<ContentValues, String>() {
-                    @Override
-                    public String call(final ContentValues values) {
-                        final Uri uri = getContentResolver().insert(
-                                TimeContract.getStreamUri(),
-                                values
-                        );
+    public Time add(final Time time) {
+        final ContentValues values = getContentValuesMapper().transform(time);
 
-                        return TimeContract.getItemId(uri);
-                    }
-                })
-                .flatMap(new Func1<String, Observable<Time>>() {
-                    @Override
-                    public Observable<Time> call(final String id) {
-                        return get(Long.valueOf(id));
-                    }
-                });
+        final Uri uri = getContentResolver().insert(
+                TimeContract.getStreamUri(),
+                values
+        );
+        return get(Long.valueOf(TimeContract.getItemId(uri)));
     }
 
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Observable<Time> update(final Time time) {
-        return Observable.just(time)
-                .flatMap(new Func1<Time, Observable<Time>>() {
-                    @Override
-                    public Observable<Time> call(final Time time) {
-                        getContentResolver().update(
-                                TimeContract.getItemUri(time.getId()),
-                                getContentValuesMapper().transform(time),
-                                null,
-                                null
-                        );
+    public Time update(final Time time) {
+        getContentResolver().update(
+                TimeContract.getItemUri(time.getId()),
+                getContentValuesMapper().transform(time),
+                null,
+                null
+        );
 
-                        return get(time.getId());
-                    }
-                });
+        return get(time.getId());
     }
 
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Observable<Long> remove(final long id) {
-        return Observable.just(id)
-                .map(new Func1<Long, Long>() {
-                    @Override
-                    public Long call(final Long id) {
-                        getContentResolver().delete(
-                                TimeContract.getItemUri(id),
-                                null,
-                                null
-                        );
-
-                        return id;
-                    }
-                });
+    public void remove(final long id) {
+        getContentResolver().delete(
+                TimeContract.getItemUri(id),
+                null,
+                null
+        );
     }
 }

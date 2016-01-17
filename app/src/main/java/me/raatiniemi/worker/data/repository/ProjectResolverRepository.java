@@ -26,19 +26,15 @@ import android.os.RemoteException;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import rx.Observable;
-import rx.android.content.ContentObservable;
-import rx.functions.Func0;
-import rx.functions.Func1;
 
 public class ProjectResolverRepository
         extends ContentResolverRepository<ProjectCursorMapper, ProjectContentValuesMapper>
@@ -57,124 +53,95 @@ public class ProjectResolverRepository
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Observable<Project> get() {
-        return Observable.defer(new Func0<Observable<Cursor>>() {
-            @Override
-            public Observable<Cursor> call() {
-                Cursor cursor = getContentResolver().query(
-                        ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
-                        null,
-                        null,
-                        null
-                );
+    public List<Project> get() {
+        final List<Project> projects = new ArrayList<>();
 
-                return ContentObservable.fromCursor(cursor);
-            }
-        }).map(new Func1<Cursor, Project>() {
-            @Override
-            public Project call(Cursor cursor) {
-                return getCursorMapper().transform(cursor);
-            }
-        });
+        final Cursor cursor = getContentResolver().query(
+                ProjectContract.getStreamUri(),
+                ProjectContract.COLUMNS,
+                null,
+                null,
+                null
+        );
+        if (null == cursor) {
+            return projects;
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                projects.add(getCursorMapper().transform(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return projects;
     }
 
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Observable<Project> get(final long id) {
-        return Observable.just(id)
-                .flatMap(new Func1<Long, Observable<Cursor>>() {
-                    @Override
-                    public Observable<Cursor> call(final Long id) {
-                        Cursor cursor = getContentResolver().query(
-                                ProjectContract.getItemUri(id),
-                                ProjectContract.COLUMNS,
-                                null,
-                                null,
-                                null
-                        );
+    public Project get(final long id) {
+        final Cursor cursor = getContentResolver().query(
+                ProjectContract.getItemUri(id),
+                ProjectContract.COLUMNS,
+                null,
+                null,
+                null
+        );
+        if (null == cursor) {
+            return null;
+        }
 
-                        return ContentObservable.fromCursor(cursor);
-                    }
-                })
-                .map(new Func1<Cursor, Project>() {
-                    @Override
-                    public Project call(final Cursor cursor) {
-                        return getCursorMapper().transform(cursor);
-                    }
-                })
-                .first();
+        Project project = null;
+        if (cursor.moveToFirst()) {
+            project = getCursorMapper().transform(cursor);
+        }
+        cursor.close();
+
+        return project;
     }
 
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Observable<Project> add(final String name) {
+    public Project add(final String name) {
         final ContentValues values = new ContentValues();
         values.put(ProjectColumns.NAME, name);
 
-        return Observable.just(values)
-                .flatMap(new Func1<ContentValues, Observable<String>>() {
-                    @Override
-                    public Observable<String> call(final ContentValues values) {
-                        try {
-                            final Uri uri = getContentResolver().insert(
-                                    ProjectContract.getStreamUri(),
-                                    values
-                            );
-
-                            return Observable.just(ProjectContract.getItemId(uri));
-                        } catch (Throwable e) {
-                            return Observable.error(new ProjectAlreadyExistsException());
-                        }
-                    }
-                })
-                .flatMap(new Func1<String, Observable<Project>>() {
-                    @Override
-                    public Observable<Project> call(final String id) {
-                        return get(Long.valueOf(id));
-                    }
-                });
+        final Uri uri = getContentResolver().insert(
+                ProjectContract.getStreamUri(),
+                values
+        );
+        return get(Long.valueOf(ProjectContract.getItemId(uri)));
     }
 
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Observable<Long> remove(final long id) {
-        return Observable.just(id)
-                .flatMap(new Func1<Long, Observable<Long>>() {
-                    @Override
-                    public Observable<Long> call(final Long id) {
-                        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
+    public void remove(final long id) {
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
-                        // Add operation for removing the registered time for the
-                        // project. The operation have to be performed before the
-                        // actual project deletion.
-                        Uri uri = ProjectContract.getItemTimeUri(id);
-                        batch.add(ContentProviderOperation.newDelete(uri).build());
+        // Add operation for removing the registered time for the
+        // project. The operation have to be performed before the
+        // actual project deletion.
+        Uri uri = ProjectContract.getItemTimeUri(id);
+        batch.add(ContentProviderOperation.newDelete(uri).build());
 
-                        // Add operation for removing the project.
-                        uri = ProjectContract.getItemUri(id);
-                        batch.add(ContentProviderOperation.newDelete(uri).build());
+        // Add operation for removing the project.
+        uri = ProjectContract.getItemUri(id);
+        batch.add(ContentProviderOperation.newDelete(uri).build());
 
-                        try {
-                            // Attempt to remove the registered time and project
-                            // within a single transactional operation.
-                            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
-                            return Observable.just(id);
-                        } catch (RemoteException | OperationApplicationException e) {
-                            return Observable.error(e);
-                        }
-                    }
-                });
+        try {
+            // Attempt to remove the registered time and project
+            // within a single transactional operation.
+            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+        } catch (RemoteException | OperationApplicationException e) {
+            // TODO: Refactor to allow for `remove` to throw DomainException.
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -16,10 +16,9 @@
 
 package me.raatiniemi.worker.domain.repository;
 
-import android.support.annotation.NonNull;
+import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
-import rx.Observable;
 
 /**
  * Represent a unified interface for working with projects using different data sources.
@@ -28,38 +27,32 @@ public interface ProjectRepository {
     /**
      * Get projects.
      *
-     * @return Observable emitting projects.
+     * @return Projects.
      */
-    @NonNull
-    Observable<Project> get();
+    List<Project> get();
 
     /**
-     * Get project with id.
+     * Get project by id.
      *
      * @param id Id for the project.
-     * @return Observable emitting project.
+     * @return Project, or null if none was found.
      */
-    @NonNull
-    Observable<Project> get(long id);
+    Project get(long id);
 
     /**
-     * Add project with name.
+     * Add a new project.
      *
-     * @param name Name of the project.
-     * @return Observable emitting project.
+     * @param name Name of the project to add.
+     * @return Added project.
      */
-    @NonNull
-    Observable<Project> add(String name);
+    Project add(String name);
 
     /**
      * Remove project by id.
      * <p/>
-     * The operation also removes the time registered to the project.
+     * The operation also removes time registered to the project.
      *
      * @param id Id of the project to remove.
-     * @return Observable emitting project id.
-     * TODO: When removing project, return void or something more meaningful?
      */
-    @NonNull
-    Observable<Long> remove(long id);
+    void remove(long id);
 }

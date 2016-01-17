@@ -30,6 +30,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
@@ -40,6 +41,7 @@ import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 
 public class ProjectProvider {
@@ -104,13 +106,17 @@ public class ProjectProvider {
      * @return Observable emitting projects.
      */
     public Observable<Project> getProjects() {
-        return getProjectRepository().get()
-                .map(new Func1<Project, Project>() {
-                    @Override
-                    public Project call(Project project) {
-                        return getTime(project);
-                    }
-                });
+        return Observable.defer(new Func0<Observable<Project>>() {
+            @Override
+            public Observable<Project> call() {
+                return Observable.from(getProjectRepository().get());
+            }
+        }).map(new Func1<Project, Project>() {
+            @Override
+            public Project call(Project project) {
+                return getTime(project);
+            }
+        });
     }
 
     /**
@@ -120,7 +126,12 @@ public class ProjectProvider {
      * @return Observable emitting project.
      */
     public Observable<Project> getProject(final Long id) {
-        return getProjectRepository().get(id);
+        return Observable.defer(new Func0<Observable<Project>>() {
+            @Override
+            public Observable<Project> call() {
+                return Observable.just(getProjectRepository().get(id));
+            }
+        });
     }
 
     /**
@@ -130,7 +141,18 @@ public class ProjectProvider {
      * @return Observable emitting the new project.
      */
     public Observable<Project> createProject(final Project project) {
-        return getProjectRepository().add(project.getName());
+        return Observable.defer(new Func0<Observable<Project>>() {
+            @Override
+            public Observable<Project> call() {
+                try {
+                    return Observable.just(getProjectRepository().add(project.getName()));
+                } catch (Throwable t) {
+                    // TODO: Refactor to allow for `add` to throw DomainException.
+                    // The ProjectAlreadyExistsException should be a RuntimeException.
+                    return Observable.error(new ProjectAlreadyExistsException());
+                }
+            }
+        });
     }
 
     /**
@@ -140,18 +162,19 @@ public class ProjectProvider {
      * @return Observable emitting the deleted project.
      */
     public Observable<Project> deleteProject(final Project project) {
-        return getProjectRepository().remove(project.getId())
+        return Observable.defer(new Func0<Observable<Project>>() {
+            @Override
+            public Observable<Project> call() {
+                getProjectRepository().remove(project.getId());
+
                 // To avoid breaking the API for the ProjectProvider, we should
                 // still return the project.
                 //
                 // However, this should be refactored if the repository returns
                 // something other than the project id.
-                .map(new Func1<Long, Project>() {
-                    @Override
-                    public Project call(final Long id) {
-                        return project;
-                    }
-                });
+                return Observable.just(project);
+            }
+        });
     }
 
     /**
@@ -252,7 +275,12 @@ public class ProjectProvider {
      * @return Observable emitting time.
      */
     public Observable<Time> getTime(final Long id) {
-        return getTimeRepository().get(id);
+        return Observable.defer(new Func0<Observable<Time>>() {
+            @Override
+            public Observable<Time> call() {
+                return Observable.just(getTimeRepository().get(id));
+            }
+        });
     }
 
     /**
@@ -262,22 +290,28 @@ public class ProjectProvider {
      * @return Observable emitting added time.
      */
     public Observable<Time> addTime(final Time time) {
-        return getTimeRepository().add(time);
+        return Observable.defer(new Func0<Observable<Time>>() {
+            @Override
+            public Observable<Time> call() {
+                return Observable.just(getTimeRepository().add(time));
+            }
+        });
     }
 
     public Observable<Time> deleteTime(final Time time) {
-        return getTimeRepository().remove(time.getId())
+        return Observable.defer(new Func0<Observable<Time>>() {
+            @Override
+            public Observable<Time> call() {
+                getTimeRepository().remove(time.getId());
+
                 // To avoid breaking the API for the ProjectProvider, we should
                 // still return the project.
                 //
                 // However, this should be refactored if the repository returns
                 // something other than the project id.
-                .map(new Func1<Long, Time>() {
-                    @Override
-                    public Time call(Long id) {
-                        return time;
-                    }
-                });
+                return Observable.just(time);
+            }
+        });
     }
 
     /**
@@ -287,7 +321,12 @@ public class ProjectProvider {
      * @return Observable emitting updated time.
      */
     public Observable<Time> updateTime(final Time time) {
-        return getTimeRepository().update(time);
+        return Observable.defer(new Func0<Observable<Time>>() {
+            @Override
+            public Observable<Time> call() {
+                return Observable.just(getTimeRepository().update(time));
+            }
+        });
     }
 
     /**
