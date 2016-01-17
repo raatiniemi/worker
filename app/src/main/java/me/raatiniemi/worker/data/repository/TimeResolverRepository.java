@@ -23,23 +23,26 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Func1;
 
-public class TimeResolverRepository extends ContentResolverRepository<TimeCursorMapper> implements TimeRepository {
+public class TimeResolverRepository
+        extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
+        implements TimeRepository {
     /**
      * @inheritDoc
      */
     public TimeResolverRepository(
             @NonNull ContentResolver contentResolver,
-            @NonNull TimeCursorMapper cursorMapper
+            @NonNull TimeCursorMapper cursorMapper,
+            @NonNull final TimeContentValuesMapper contentValuesMapper
     ) {
-        super(contentResolver, cursorMapper);
+        super(contentResolver, cursorMapper, contentValuesMapper);
     }
 
     /**
@@ -82,7 +85,7 @@ public class TimeResolverRepository extends ContentResolverRepository<TimeCursor
                 .map(new Func1<Time, ContentValues>() {
                     @Override
                     public ContentValues call(final Time time) {
-                        return TimeMapper.map(time);
+                        return getContentValuesMapper().transform(time);
                     }
                 })
                 .map(new Func1<ContentValues, String>() {
@@ -116,7 +119,7 @@ public class TimeResolverRepository extends ContentResolverRepository<TimeCursor
                     public Observable<Time> call(final Time time) {
                         getContentResolver().update(
                                 TimeContract.getItemUri(time.getId()),
-                                TimeMapper.map(time),
+                                getContentValuesMapper().transform(time),
                                 null,
                                 null
                         );

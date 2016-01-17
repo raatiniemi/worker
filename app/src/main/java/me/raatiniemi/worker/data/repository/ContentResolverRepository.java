@@ -19,14 +19,16 @@ package me.raatiniemi.worker.data.repository;
 import android.content.ContentResolver;
 import android.support.annotation.NonNull;
 
+import me.raatiniemi.worker.data.mapper.ContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.CursorMapper;
 
 /**
  * Base for repositories using a content a content resolver as data source.
  *
  * @param <M> Type reference for the cursor mapper used.
+ * @param <V> Type reference for the ContentValues mapper used.
  */
-class ContentResolverRepository<M extends CursorMapper> {
+class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesMapper> {
     /**
      * Content resolver used with the repository.
      */
@@ -38,14 +40,25 @@ class ContentResolverRepository<M extends CursorMapper> {
     private final M mCursorMapper;
 
     /**
+     * ContentValues mapper used with the repository.
+     */
+    private final V mContentValuesMapper;
+
+    /**
      * Constructor.
      *
-     * @param contentResolver Content resolver used with the repository.
-     * @param cursorMapper    Cursor mapper used with the repository.
+     * @param contentResolver     Content resolver used with the repository.
+     * @param cursorMapper        Cursor mapper used with the repository.
+     * @param contentValuesMapper ContentValues mapper used with the repository.
      */
-    ContentResolverRepository(@NonNull ContentResolver contentResolver, @NonNull M cursorMapper) {
+    ContentResolverRepository(
+            @NonNull ContentResolver contentResolver,
+            @NonNull M cursorMapper,
+            @NonNull V contentValuesMapper
+    ) {
         mContentResolver = contentResolver;
         mCursorMapper = cursorMapper;
+        mContentValuesMapper = contentValuesMapper;
     }
 
     /**
@@ -66,5 +79,14 @@ class ContentResolverRepository<M extends CursorMapper> {
     @NonNull
     protected M getCursorMapper() {
         return mCursorMapper;
+    }
+
+    /**
+     * Get the ContentValues mapper.
+     *
+     * @return ContentValues mapper.
+     */
+    public V getContentValuesMapper() {
+        return mContentValuesMapper;
     }
 }
