@@ -28,7 +28,7 @@ public class PermissionUtil {
     /**
      * Check if permission have been granted.
      *
-     * @param context Context used.
+     * @param context    Context used.
      * @param permission The name of the permission being checked.
      * @return true if permission have been granted, otherwise false.
      */

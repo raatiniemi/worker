@@ -31,7 +31,7 @@ public class Time extends DomainObject {
 
     /**
      * Timestamp for when the time interval starts.
-     * <p>
+     * <p/>
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked in.
      */
@@ -39,7 +39,7 @@ public class Time extends DomainObject {
 
     /**
      * Timestamp for when the time interval ends, or zero if active.
-     * <p>
+     * <p/>
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked out.
      */
@@ -166,7 +166,7 @@ public class Time extends DomainObject {
 
     /**
      * Get the registered time.
-     * <p>
+     * <p/>
      * The time is only considered registered if the interval is not active,
      * i.e. both the start and stop values must be valid (not zero).
      *
@@ -184,7 +184,7 @@ public class Time extends DomainObject {
 
     /**
      * Get the time interval.
-     * <p>
+     * <p/>
      * If the interval is active, the current time will be used to calculate
      * the time between start and now.
      *

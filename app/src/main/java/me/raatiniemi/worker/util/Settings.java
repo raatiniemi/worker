@@ -48,7 +48,7 @@ public class Settings {
     /**
      * Set the preference indicating whether the registered time should be hidden.
      *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
      * @param newValue 'true' if registered should be hidden, otherwise 'false'.
      */
     public static void setHideRegisteredTime(final Context context, boolean newValue) {
@@ -70,7 +70,7 @@ public class Settings {
     /**
      * Set the preference for clock out confirmation.
      *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
      * @param newValue 'true' if clock out requires confirmation, otherwise 'false'.
      */
     public static void setConfirmClockOut(final Context context, boolean newValue) {

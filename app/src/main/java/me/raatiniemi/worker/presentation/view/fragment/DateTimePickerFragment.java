@@ -71,7 +71,7 @@ public class DateTimePickerFragment extends BaseFragment
 
     /**
      * Dismiss the DateTimePickerFragment.
-     * <p>
+     * <p/>
      * Triggers the onDetach-method for additional clean up.
      */
     private void dismiss() {

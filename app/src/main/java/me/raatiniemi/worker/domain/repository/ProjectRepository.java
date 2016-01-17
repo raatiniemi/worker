@@ -53,7 +53,7 @@ public interface ProjectRepository {
 
     /**
      * Remove project by id.
-     * <p>
+     * <p/>
      * The operation also removes the time registered to the project.
      *
      * @param id Id of the project to remove.

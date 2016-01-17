@@ -50,7 +50,7 @@ public interface ListFragment<A extends ListAdapter, T> {
      * Update item in the {@link ListAdapter}.
      *
      * @param index Index of the item.
-     * @param item Item to update.
+     * @param item  Item to update.
      */
     void set(int index, @NonNull T item);
 
