@@ -23,7 +23,7 @@ public class CreateBackup {
     /**
      * Strategy for creating a backup.
      */
-    private BackupStrategy mStrategy;
+    private final BackupStrategy mStrategy;
 
     /**
      * Constructor.
