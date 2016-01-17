@@ -40,12 +40,10 @@ import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.repository.ProjectRepository;
-import me.raatiniemi.worker.data.repository.TimeRepository;
-import me.raatiniemi.worker.data.repository.strategy.ProjectResolverStrategy;
-import me.raatiniemi.worker.data.repository.strategy.ProjectStrategy;
-import me.raatiniemi.worker.data.repository.strategy.TimeResolverStrategy;
-import me.raatiniemi.worker.data.repository.strategy.TimeStrategy;
+import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
+import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.ProjectProvider;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
@@ -116,20 +114,17 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
     @Override
     protected ProjectsPresenter createPresenter() {
-        // TODO: Use a factory for constructing strategy/repository?
-        // Create the project strategy/repository.
-        ProjectStrategy projectStrategy = new ProjectResolverStrategy(
+        // Create the project repository.
+        ProjectRepository projectRepository = new ProjectResolverRepository(
                 getActivity().getContentResolver(),
                 new ProjectCursorMapper()
         );
-        ProjectRepository projectRepository = new ProjectRepository(projectStrategy);
 
-        // Create the time strategy/repository.
-        TimeStrategy timeStrategy = new TimeResolverStrategy(
+        // Create the time repository.
+        TimeRepository timeRepository = new TimeResolverRepository(
                 getActivity().getContentResolver(),
                 new TimeCursorMapper()
         );
-        TimeRepository timeRepository = new TimeRepository(timeStrategy);
 
         return new ProjectsPresenter(
                 getActivity(),

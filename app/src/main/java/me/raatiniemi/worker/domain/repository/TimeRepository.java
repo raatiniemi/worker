@@ -14,41 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.repository;
+package me.raatiniemi.worker.domain.repository;
 
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.repository.strategy.TimeStrategy;
 import me.raatiniemi.worker.domain.model.Time;
 import rx.Observable;
 
 /**
- * Represents a unified interface for working with different data sources (strategies).
+ * Represent a unified interface for working with time intervals using different data sources.
  */
-public class TimeRepository {
-    /**
-     * Time repository strategy.
-     */
-    private TimeStrategy mStrategy;
-
-    /**
-     * Constructor.
-     *
-     * @param strategy Time repository strategy.
-     */
-    public TimeRepository(TimeStrategy strategy) {
-        mStrategy = strategy;
-    }
-
-    /**
-     * Get the time repository strategy.
-     *
-     * @return Time repository strategy.
-     */
-    protected TimeStrategy getStrategy() {
-        return mStrategy;
-    }
-
+public interface TimeRepository {
     /**
      * Get time with id.
      *
@@ -56,9 +32,7 @@ public class TimeRepository {
      * @return Observable emitting time.
      */
     @NonNull
-    public Observable<Time> get(final long id) {
-        return getStrategy().get(id);
-    }
+    Observable<Time> get(long id);
 
     /**
      * Add time.
@@ -67,9 +41,7 @@ public class TimeRepository {
      * @return Observable emitting added time.
      */
     @NonNull
-    public Observable<Time> add(final Time time) {
-        return getStrategy().add(time);
-    }
+    Observable<Time> add(Time time);
 
     /**
      * Update time.
@@ -78,18 +50,15 @@ public class TimeRepository {
      * @return Observable emitting updated time.
      */
     @NonNull
-    public Observable<Time> update(final Time time) {
-        return getStrategy().update(time);
-    }
+    Observable<Time> update(Time time);
 
     /**
      * Remove time by id.
      *
      * @param id Id of the time to remove.
      * @return Observable emitting time id.
+     * TODO: When removing time, return void or something more meaningful?
      */
     @NonNull
-    public Observable<Long> remove(final long id) {
-        return getStrategy().remove(id);
-    }
+    Observable<Long> remove(long id);
 }

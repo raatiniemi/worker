@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.repository.strategy;
+package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -31,6 +31,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import rx.Observable;
@@ -38,11 +39,11 @@ import rx.android.content.ContentObservable;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
-public class ProjectResolverStrategy extends ContentResolverStrategy<ProjectCursorMapper> implements ProjectStrategy {
+public class ProjectResolverRepository extends ContentResolverRepository<ProjectCursorMapper> implements ProjectRepository {
     /**
      * @inheritDoc
      */
-    public ProjectResolverStrategy(
+    public ProjectResolverRepository(
             @NonNull ContentResolver contentResolver,
             @NonNull ProjectCursorMapper cursorMapper
     ) {

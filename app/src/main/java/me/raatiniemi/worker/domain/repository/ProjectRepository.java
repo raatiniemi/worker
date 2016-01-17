@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.repository.strategy;
+package me.raatiniemi.worker.domain.repository;
 
 import android.support.annotation.NonNull;
 
@@ -22,9 +22,9 @@ import me.raatiniemi.worker.domain.model.Project;
 import rx.Observable;
 
 /**
- * Define commonalities between different project strategies.
+ * Represent a unified interface for working with projects using different data sources.
  */
-public interface ProjectStrategy {
+public interface ProjectRepository {
     /**
      * Get projects.
      *
