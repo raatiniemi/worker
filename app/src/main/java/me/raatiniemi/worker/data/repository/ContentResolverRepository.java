@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.repository.strategy;
+package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentResolver;
 import android.support.annotation.NonNull;
@@ -22,28 +22,28 @@ import android.support.annotation.NonNull;
 import me.raatiniemi.worker.data.mapper.CursorMapper;
 
 /**
- * Base for strategies using a content resolver as data source.
+ * Base for repositories using a content a content resolver as data source.
  *
  * @param <M> Type reference for the cursor mapper used.
  */
-class ContentResolverStrategy<M extends CursorMapper> {
+class ContentResolverRepository<M extends CursorMapper> {
     /**
-     * Content resolver used with the strategy.
+     * Content resolver used with the repository.
      */
     private final ContentResolver mContentResolver;
 
     /**
-     * Cursor mapper used with the strategy.
+     * Cursor mapper used with the repository.
      */
     private final M mCursorMapper;
 
     /**
      * Constructor.
      *
-     * @param contentResolver Content resolver used with the strategy.
-     * @param cursorMapper    Cursor mapper used with the strategy.
+     * @param contentResolver Content resolver used with the repository.
+     * @param cursorMapper    Cursor mapper used with the repository.
      */
-    ContentResolverStrategy(@NonNull ContentResolver contentResolver, @NonNull M cursorMapper) {
+    ContentResolverRepository(@NonNull ContentResolver contentResolver, @NonNull M cursorMapper) {
         mContentResolver = contentResolver;
         mCursorMapper = cursorMapper;
     }

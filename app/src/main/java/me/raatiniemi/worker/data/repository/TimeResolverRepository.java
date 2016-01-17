@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.repository.strategy;
+package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -31,11 +31,11 @@ import rx.Observable;
 import rx.android.content.ContentObservable;
 import rx.functions.Func1;
 
-public class TimeResolverStrategy extends ContentResolverStrategy<TimeCursorMapper> implements TimeRepository {
+public class TimeResolverRepository extends ContentResolverRepository<TimeCursorMapper> implements TimeRepository {
     /**
      * @inheritDoc
      */
-    public TimeResolverStrategy(
+    public TimeResolverRepository(
             @NonNull ContentResolver contentResolver,
             @NonNull TimeCursorMapper cursorMapper
     ) {
