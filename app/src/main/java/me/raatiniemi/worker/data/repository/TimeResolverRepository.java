@@ -25,7 +25,6 @@ import android.support.annotation.NonNull;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import rx.Observable;
@@ -86,7 +85,7 @@ public class TimeResolverRepository
                 .map(new Func1<Time, ContentValues>() {
                     @Override
                     public ContentValues call(final Time time) {
-                        return TimeMapper.map(time);
+                        return getContentValuesMapper().transform(time);
                     }
                 })
                 .map(new Func1<ContentValues, String>() {
@@ -120,7 +119,7 @@ public class TimeResolverRepository
                     public Observable<Time> call(final Time time) {
                         getContentResolver().update(
                                 TimeContract.getItemUri(time.getId()),
-                                TimeMapper.map(time),
+                                getContentValuesMapper().transform(time),
                                 null,
                                 null
                         );

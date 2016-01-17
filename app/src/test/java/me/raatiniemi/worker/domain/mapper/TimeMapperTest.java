@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.mapper;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 
 import org.junit.Test;
@@ -25,13 +24,11 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -66,19 +63,5 @@ public class TimeMapperTest {
         assertEquals(3L, time.getStart());
         assertEquals(4L, time.getStop());
         assertTrue(time.isRegistered());
-    }
-
-    @Test
-    public void map_timeToContentValues() throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L);
-        time.setRegistered(true);
-
-        ContentValues contentValues = TimeMapper.map(time);
-
-        assertNull(contentValues.get(TimeColumns._ID));
-        assertEquals(Long.valueOf(2L), contentValues.getAsLong(TimeColumns.PROJECT_ID));
-        assertEquals(Long.valueOf(3L), contentValues.getAsLong(TimeColumns.START));
-        assertEquals(Long.valueOf(4L), contentValues.getAsLong(TimeColumns.STOP));
-        assertEquals(Long.valueOf(1L), contentValues.getAsLong(TimeColumns.REGISTERED));
     }
 }

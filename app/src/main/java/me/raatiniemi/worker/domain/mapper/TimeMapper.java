@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.mapper;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
@@ -52,21 +51,5 @@ public class TimeMapper {
             // TODO: Handle DomainException properly.
             return null;
         }
-    }
-
-    /**
-     * Map Time to ContentValues.
-     *
-     * @param time Time to map to ContentValues.
-     * @return Mapped ContentValues.
-     */
-    public static ContentValues map(Time time) {
-        ContentValues values = new ContentValues();
-        values.put(TimeColumns.START, time.getStart());
-        values.put(TimeColumns.STOP, time.getStop());
-        values.put(TimeColumns.PROJECT_ID, time.getProjectId());
-        values.put(TimeColumns.REGISTERED, time.isRegistered() ? 1L : 0L);
-
-        return values;
     }
 }
