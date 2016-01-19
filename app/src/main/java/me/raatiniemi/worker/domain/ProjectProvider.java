@@ -145,7 +145,7 @@ public class ProjectProvider {
             @Override
             public Observable<Project> call() {
                 try {
-                    return Observable.just(getProjectRepository().add(project.getName()));
+                    return Observable.just(getProjectRepository().add(project));
                 } catch (Throwable t) {
                     // TODO: Refactor to allow for `add` to throw DomainException.
                     // The ProjectAlreadyExistsException should be a RuntimeException.

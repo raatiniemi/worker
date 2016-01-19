@@ -18,7 +18,6 @@ package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.data.WorkerContract;
-import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
@@ -107,13 +105,10 @@ public class ProjectResolverRepository
      * @inheritDoc
      */
     @Override
-    public Project add(final String name) {
-        final ContentValues values = new ContentValues();
-        values.put(ProjectColumns.NAME, name);
-
+    public Project add(final Project project) {
         final Uri uri = getContentResolver().insert(
                 ProjectContract.getStreamUri(),
-                values
+                getContentValuesMapper().transform(project)
         );
         return get(Long.valueOf(ProjectContract.getItemId(uri)));
     }

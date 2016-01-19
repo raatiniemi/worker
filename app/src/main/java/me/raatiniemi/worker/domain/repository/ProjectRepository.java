@@ -42,10 +42,10 @@ public interface ProjectRepository {
     /**
      * Add a new project.
      *
-     * @param name Name of the project to add.
+     * @param project Project to add.
      * @return Added project.
      */
-    Project add(String name);
+    Project add(Project project);
 
     /**
      * Remove project by id.
