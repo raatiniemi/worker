@@ -127,7 +127,7 @@ public class WorkerContract {
          * @param id Id for the project.
          * @return URI for working with specific project.
          */
-        public static Uri getItemUri(Long id) {
+        public static Uri getItemUri(final long id) {
             return Uri.withAppendedPath(getStreamUri(), String.valueOf(id));
         }
 
@@ -137,7 +137,7 @@ public class WorkerContract {
          * @param id Id for the project.
          * @return Project time stream URI.
          */
-        public static Uri getItemTimeUri(Long id) {
+        public static Uri getItemTimeUri(final long id) {
             return Uri.withAppendedPath(getItemUri(id), PATH_TIME);
         }
 
@@ -147,7 +147,7 @@ public class WorkerContract {
          * @param id Id for the project.
          * @return Project timesheet stream URI.
          */
-        public static Uri getItemTimesheetUri(Long id) {
+        public static Uri getItemTimesheetUri(final long id) {
             return Uri.withAppendedPath(getItemUri(id), PATH_TIMESHEET);
         }
 
@@ -194,7 +194,7 @@ public class WorkerContract {
          * @param id Id for the time row.
          * @return URI for working with specific time item.
          */
-        public static Uri getItemUri(Long id) {
+        public static Uri getItemUri(final long id) {
             return Uri.withAppendedPath(getStreamUri(), String.valueOf(id));
         }
 
