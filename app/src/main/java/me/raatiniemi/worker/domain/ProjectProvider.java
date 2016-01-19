@@ -237,7 +237,7 @@ public class ProjectProvider {
 
         Cursor cursor = getContext().getContentResolver()
                 .query(
-                        ProjectContract.getItemTimeUri(String.valueOf(project.getId())),
+                        ProjectContract.getItemTimeUri(project.getId()),
                         TimeContract.COLUMNS,
                         TimeContract.START + ">=? OR " + TimeContract.STOP + " = 0",
                         new String[]{String.valueOf(calendar.getTimeInMillis())},
@@ -363,7 +363,7 @@ public class ProjectProvider {
 
     public Observable<TimesheetItem> getTimesheet(final Long id, final int offset) {
         // TODO: Simplify the building of the URI with query parameters.
-        Uri uri = ProjectContract.getItemTimesheetUri(String.valueOf(id))
+        Uri uri = ProjectContract.getItemTimesheetUri(id)
                 .buildUpon()
                 .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
                 .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")

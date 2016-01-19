@@ -127,28 +127,8 @@ public class WorkerContract {
          * @param id Id for the project.
          * @return URI for working with specific project.
          */
-        public static Uri getItemUri(String id) {
-            return Uri.withAppendedPath(getStreamUri(), id);
-        }
-
-        /**
-         * Build the URI for working with a specific project.
-         *
-         * @param id Id for the project.
-         * @return URI for working with specific project.
-         */
         public static Uri getItemUri(Long id) {
-            return getItemUri(String.valueOf(id));
-        }
-
-        /**
-         * Build the project time stream URI.
-         *
-         * @param id Id for the project.
-         * @return Project time stream URI.
-         */
-        public static Uri getItemTimeUri(String id) {
-            return Uri.withAppendedPath(getItemUri(id), PATH_TIME);
+            return Uri.withAppendedPath(getStreamUri(), String.valueOf(id));
         }
 
         /**
@@ -158,17 +138,7 @@ public class WorkerContract {
          * @return Project time stream URI.
          */
         public static Uri getItemTimeUri(Long id) {
-            return getItemTimeUri(String.valueOf(id));
-        }
-
-        /**
-         * Build the project timesheet stream URI.
-         *
-         * @param id Id for the project.
-         * @return Project timesheet stream URI.
-         */
-        public static Uri getItemTimesheetUri(String id) {
-            return Uri.withAppendedPath(getItemUri(id), PATH_TIMESHEET);
+            return Uri.withAppendedPath(getItemUri(id), PATH_TIME);
         }
 
         /**
@@ -178,7 +148,7 @@ public class WorkerContract {
          * @return Project timesheet stream URI.
          */
         public static Uri getItemTimesheetUri(Long id) {
-            return getItemTimesheetUri(String.valueOf(id));
+            return Uri.withAppendedPath(getItemUri(id), PATH_TIMESHEET);
         }
 
         /**
@@ -224,18 +194,8 @@ public class WorkerContract {
          * @param id Id for the time row.
          * @return URI for working with specific time item.
          */
-        public static Uri getItemUri(String id) {
-            return Uri.withAppendedPath(getStreamUri(), id);
-        }
-
-        /**
-         * Build the URI for working with a specific time item.
-         *
-         * @param id Id for the time row.
-         * @return URI for working with specific time item.
-         */
         public static Uri getItemUri(Long id) {
-            return getItemUri(String.valueOf(id));
+            return Uri.withAppendedPath(getStreamUri(), String.valueOf(id));
         }
 
         /**
