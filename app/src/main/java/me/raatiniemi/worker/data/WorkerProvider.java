@@ -118,11 +118,11 @@ public class WorkerProvider extends ContentProvider {
         switch (match) {
             case PROJECTS:
                 id = db.insertOrThrow(Tables.PROJECT, null, values);
-                uri = ProjectContract.getItemUri(String.valueOf(id));
+                uri = ProjectContract.getItemUri(id);
                 break;
             case TIME:
                 id = db.insertOrThrow(Tables.TIME, null, values);
-                uri = TimeContract.getItemUri(String.valueOf(id));
+                uri = TimeContract.getItemUri(id);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
