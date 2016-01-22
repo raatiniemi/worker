@@ -29,7 +29,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
     /**
      * Context to use.
      */
-    protected final Context mContext;
+    private final Context mContext;
 
     /**
      * Constructor.
