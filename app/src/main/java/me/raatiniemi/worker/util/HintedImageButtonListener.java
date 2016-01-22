@@ -23,13 +23,16 @@ import android.view.View;
 import android.widget.Toast;
 
 /**
- * Display hint for the image via long click.
+ * Enable display of hint for images via long click.
  */
 public class HintedImageButtonListener implements View.OnLongClickListener {
+    /**
+     * Context to use.
+     */
     protected final Context mContext;
 
     /**
-     * Construct the hinted image button listener.
+     * Constructor.
      *
      * @param context Context to use.
      */
