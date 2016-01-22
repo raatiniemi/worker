@@ -196,6 +196,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
      * @inheritDoc
      */
     @Override
+    public void add(final int index, final @NonNull Project item) {
+        getAdapter().add(index, item);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public int add(@NonNull List<Project> items) {
         return getAdapter().add(items);
     }

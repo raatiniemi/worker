@@ -293,6 +293,15 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
      * @inheritDoc
      */
     @Override
+    public void add(final int index, final @NonNull TimesheetItem item) {
+        // TODO: Implement adding at specific index for TimesheetFragment.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public int add(@NonNull List<TimesheetItem> items) {
         return getAdapter().add(items);
     }

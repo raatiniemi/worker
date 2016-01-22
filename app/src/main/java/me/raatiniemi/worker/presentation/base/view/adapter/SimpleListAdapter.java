@@ -171,6 +171,29 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
+    public void add(final int index, final @NonNull T item) {
+        if (getItemCount() == index) {
+            add(item);
+            return;
+        }
+
+        if (!has(index)) {
+            throw new IndexOutOfBoundsException(
+                    "Invalid index " + index + ", size is " + getItemCount()
+            );
+        }
+
+        // Add the item at the specified index.
+        getItems().add(index, item);
+
+        // Notify the adapter a new item have been added.
+        notifyItemInserted(index);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public int add(@NonNull List<T> items) {
         // Retrieve the current count to have a reference point
         // at which location the new items will be inserted.
