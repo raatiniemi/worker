@@ -45,21 +45,24 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
      */
     @Override
     public boolean onLongClick(View view) {
-        if (null != view) {
-            // Check that the view actually have content description to display.
-            CharSequence description = view.getContentDescription();
-            if (!TextUtils.isEmpty(description)) {
-                // Retrieve the position of the view.
-                int[] position = new int[2];
-                view.getLocationInWindow(position);
-
-                Toast toast = Toast.makeText(mContext, description, Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP | Gravity.START, position[0], position[1]);
-                toast.show();
-
-                return true;
-            }
+        if (null == view) {
+            return false;
         }
-        return false;
+
+        // Check that the view actually have content description to display.
+        CharSequence description = view.getContentDescription();
+        if (TextUtils.isEmpty(description)) {
+            return false;
+        }
+
+        // Retrieve the position of the view.
+        int[] position = new int[2];
+        view.getLocationInWindow(position);
+
+        Toast toast = Toast.makeText(mContext, description, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP | Gravity.START, position[0], position[1]);
+        toast.show();
+
+        return true;
     }
 }
