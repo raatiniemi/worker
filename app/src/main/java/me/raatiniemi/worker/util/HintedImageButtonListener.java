@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.util;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -36,7 +38,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
      *
      * @param context Context to use.
      */
-    public HintedImageButtonListener(final Context context) {
+    public HintedImageButtonListener(@NonNull final Context context) {
         mContext = context;
     }
 
@@ -47,7 +49,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
      * @return True if the long click was consumed, otherwise false.
      */
     @Override
-    public boolean onLongClick(final View view) {
+    public boolean onLongClick(@Nullable final View view) {
         if (null == view) {
             return false;
         }
