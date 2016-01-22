@@ -135,7 +135,7 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
                 mOnProjectActionListener.onDelete(project);
             }
         });
-        vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
+        vh.mDelete.setOnLongClickListener(getHintedImageButtonListener());
 
         // Retrieve the resource instance.
         Resources resources = getContext().getResources();
