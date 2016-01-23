@@ -43,6 +43,7 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
@@ -135,7 +136,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
                         getActivity(),
                         projectRepository,
                         timeRepository
-                )
+                ),
+                new RemoveProject(projectRepository)
         );
     }
 

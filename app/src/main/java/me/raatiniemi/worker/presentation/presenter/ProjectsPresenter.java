@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
@@ -52,6 +53,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     private final ProjectProvider mProvider;
 
     /**
+     * Use case for removing projects.
+     */
+    private final RemoveProject mRemoveProject;
+
+    /**
      * Interval iterator for refreshing active projects.
      */
     private Subscription mRefreshProjects;
@@ -59,13 +65,15 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     /**
      * Constructor.
      *
-     * @param context  Context used with the presenter.
-     * @param provider Provider for working with projects.
+     * @param context       Context used with the presenter.
+     * @param provider      Provider for working with projects.
+     * @param removeProject Use case for removing projects.
      */
-    public ProjectsPresenter(Context context, ProjectProvider provider) {
+    public ProjectsPresenter(Context context, ProjectProvider provider, RemoveProject removeProject) {
         super(context);
 
         mProvider = provider;
+        mRemoveProject = removeProject;
     }
 
     /**
@@ -301,12 +309,20 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     }
 
     /**
-     * Delete project with registered time.
+     * Delete project.
      *
      * @param project Project to be deleted.
      */
-    public void deleteProject(Project project) {
-        mProvider.deleteProject(project)
+    public void deleteProject(final Project project) {
+        Observable.just(project)
+                .map(new Func1<Project, Project>() {
+                    @Override
+                    public Project call(Project project) {
+                        mRemoveProject.execute(project);
+
+                        return project;
+                    }
+                })
                 .compose(this.<Project>applySchedulers())
                 .subscribe(new Subscriber<Project>() {
                     @Override
