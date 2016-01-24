@@ -249,15 +249,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void deleteProject(Project project) {
-        int position = getAdapter().findProject(project);
-        if (0 > position) {
-            Log.w(TAG, "Unable to find position for project in the adapter");
-            return;
-        }
-
-        getAdapter().remove(position);
-
+    public void deleteProjectSuccessful() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.message_project_deleted,

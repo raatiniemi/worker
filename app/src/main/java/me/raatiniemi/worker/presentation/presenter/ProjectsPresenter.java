@@ -323,7 +323,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         //
         // If the deletion fails the project will be added back to the
         // view again, at the previous location.
-        getView().deleteProject(project);
+        getView().remove(index);
 
         Observable.just(project)
                 .flatMap(new Func1<Project, Observable<Object>>() {
@@ -369,6 +369,15 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "deleteProject onCompleted");
+
+                        // Check that we still have the view attached.
+                        if (!isViewAttached()) {
+                            Log.d(TAG, "View is not attached, skip pushing successful deletion");
+                            return;
+                        }
+
+                        // The project have successfully been deleted.
+                        getView().deleteProjectSuccessful();
                     }
                 });
     }
