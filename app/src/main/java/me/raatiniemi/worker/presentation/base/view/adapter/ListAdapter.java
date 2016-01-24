@@ -69,6 +69,14 @@ public interface ListAdapter<T> {
     int add(@NonNull T item);
 
     /**
+     * Add item at index.
+     *
+     * @param index Index at which to insert the item.
+     * @param item  Item to add.
+     */
+    void add(int index, @NonNull T item);
+
+    /**
      * Add items.
      *
      * @param items Items to add.

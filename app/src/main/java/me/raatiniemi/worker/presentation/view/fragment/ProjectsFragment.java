@@ -43,6 +43,7 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
@@ -135,7 +136,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
                         getActivity(),
                         projectRepository,
                         timeRepository
-                )
+                ),
+                new RemoveProject(projectRepository)
         );
     }
 
@@ -196,6 +198,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
      * @inheritDoc
      */
     @Override
+    public void add(final int index, final @NonNull Project item) {
+        getAdapter().add(index, item);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public int add(@NonNull List<Project> items) {
         return getAdapter().add(items);
     }
@@ -239,20 +249,27 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void deleteProject(Project project) {
-        int position = getAdapter().findProject(project);
-        if (0 > position) {
-            Log.w(TAG, "Unable to find position for project in the adapter");
-            return;
-        }
-
-        getAdapter().remove(position);
-
+    public void deleteProjectSuccessful() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void deleteProjectFailed(final int index) {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_project_deleted,
+                Snackbar.LENGTH_SHORT
+        ).show();
+
+        // Scroll to the position of the project.
+        mRecyclerView.scrollToPosition(index);
     }
 
     @Override

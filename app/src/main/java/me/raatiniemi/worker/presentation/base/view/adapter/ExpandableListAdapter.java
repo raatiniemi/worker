@@ -223,6 +223,15 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
+    public void add(final int index, final @NonNull T item) {
+        // TODO: Implement adding at specific index for ExpandableListAdapter.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public int add(@NonNull List<T> items) {
         // Retrieve the current count to have a reference point
         // at which location the new items will be inserted.

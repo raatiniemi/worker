@@ -38,6 +38,7 @@
 
     <string name="message.project_created">New project have been created</string>
     <string name="message.project_deleted">Project have been deleted</string>
+    <string name="error.message.project_deleted">Failed to delete project.</string>
 
     <string name="message.permission.write_backup">Need permission to backup.</string>
     <string name="message.permission.read_backup">Need permission to read backup.</string>

@@ -156,28 +156,6 @@ public class ProjectProvider {
     }
 
     /**
-     * Delete project with registered time.
-     *
-     * @param project Project to be deleted.
-     * @return Observable emitting the deleted project.
-     */
-    public Observable<Project> deleteProject(final Project project) {
-        return Observable.defer(new Func0<Observable<Project>>() {
-            @Override
-            public Observable<Project> call() {
-                getProjectRepository().remove(project.getId());
-
-                // To avoid breaking the API for the ProjectProvider, we should
-                // still return the project.
-                //
-                // However, this should be refactored if the repository returns
-                // something other than the project id.
-                return Observable.just(project);
-            }
-        });
-    }
-
-    /**
      * Clock in or clock out the project at given date.
      *
      * @param project Project to clock in/out.
