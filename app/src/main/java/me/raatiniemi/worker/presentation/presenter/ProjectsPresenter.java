@@ -359,7 +359,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
                         // We failed to delete the project, we have to add it to
                         // its previous location in the list view.
-                        // TODO: Scroll to position when deleting the first item.
                         getView().add(index, project);
 
                         // Display the error message for failed deletion.

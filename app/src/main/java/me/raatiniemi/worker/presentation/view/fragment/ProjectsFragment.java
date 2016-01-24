@@ -267,6 +267,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
                 R.string.error_message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show();
+
+        // Scroll to the position of the project.
+        mRecyclerView.scrollToPosition(index);
     }
 
     @Override
