@@ -314,36 +314,41 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
      * @param project Project to be deleted.
      */
     public void deleteProject(final Project project) {
+        // Before removing the project we need its current index, it's
+        // needed to handle the restoration if deletion fails.
+        final int index = getView().getData().indexOf(project);
+
+        // Remove project from the view before executing the use case,
+        // i.e. optimistic propagation, to simulate better latency.
+        //
+        // If the deletion fails the project will be added back to the
+        // view again, at the previous location.
+        getView().deleteProject(project);
+
         Observable.just(project)
-                .map(new Func1<Project, Project>() {
+                .flatMap(new Func1<Project, Observable<Object>>() {
                     @Override
-                    public Project call(Project project) {
+                    public Observable<Object> call(Project project) {
+                        // Attempt to delete project.
                         mRemoveProject.execute(project);
 
-                        return project;
+                        return Observable.empty();
                     }
                 })
-                .compose(this.<Project>applySchedulers())
-                .subscribe(new Subscriber<Project>() {
+                .compose(applySchedulers())
+                .subscribe(new Subscriber<Object>() {
                     @Override
-                    public void onNext(Project project) {
+                    public void onNext(Object o) {
+                        // Nothing to do, everything have been done...
                         Log.d(TAG, "deleteProject onNext");
-
-                        // Check that we still have the view attached.
-                        if (!isViewAttached()) {
-                            Log.d(TAG, "View is not attached, skip pushing project deletion");
-                            return;
-                        }
-
-                        // Attempt to delete the project from the view.
-                        getView().deleteProject(project);
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(final Throwable e) {
                         Log.d(TAG, "deleteProject onError");
 
-                        // Log the error even if the view have been detached.
+                        // Even if the view have been detached we'd want the
+                        // error messaged logged.
                         Log.w(TAG, "Failed to delete project: " + e.getMessage());
 
                         // Check that we still have the view attached.
@@ -352,7 +357,12 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                             return;
                         }
 
-                        // Push the error to the view.
+                        // We failed to delete the project, we have to add it to
+                        // its previous location in the list view.
+                        // TODO: Scroll to position when deleting the first item.
+                        getView().add(index, project);
+
+                        // Display the error message for failed deletion.
                         getView().showError(e);
                     }
 
