@@ -363,7 +363,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                         getView().add(index, project);
 
                         // Display the error message for failed deletion.
-                        getView().showError(e);
+                        getView().deleteProjectFailed(index);
                     }
 
                     @Override

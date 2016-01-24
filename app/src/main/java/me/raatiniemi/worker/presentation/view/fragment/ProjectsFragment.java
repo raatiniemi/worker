@@ -257,6 +257,18 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         ).show();
     }
 
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void deleteProjectFailed(final int index) {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_project_deleted,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
     @Override
     public void createNewProject() {
         NewProjectFragment newProject = new NewProjectFragment();

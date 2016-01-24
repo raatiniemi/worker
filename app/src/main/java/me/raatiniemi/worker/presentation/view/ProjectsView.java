@@ -48,6 +48,13 @@ public interface ProjectsView extends ListFragment<ProjectsAdapter, Project> {
     void deleteProjectSuccessful();
 
     /**
+     * Display message for failed project deletion.
+     *
+     * @param index Index of project.
+     */
+    void deleteProjectFailed(int index);
+
+    /**
      * Open the dialog for creating a new project.
      */
     void createNewProject();
