@@ -30,7 +30,6 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
@@ -130,27 +129,6 @@ public class ProjectProvider {
             @Override
             public Observable<Project> call() {
                 return Observable.just(getProjectRepository().get(id));
-            }
-        });
-    }
-
-    /**
-     * Create new project.
-     *
-     * @param project New project to create.
-     * @return Observable emitting the new project.
-     */
-    public Observable<Project> createProject(final Project project) {
-        return Observable.defer(new Func0<Observable<Project>>() {
-            @Override
-            public Observable<Project> call() {
-                try {
-                    return Observable.just(getProjectRepository().add(project));
-                } catch (Throwable t) {
-                    // TODO: Refactor to allow for `add` to throw DomainException.
-                    // The ProjectAlreadyExistsException should be a RuntimeException.
-                    return Observable.error(new ProjectAlreadyExistsException());
-                }
             }
         });
     }

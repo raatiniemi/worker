@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
+import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
@@ -53,6 +55,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     private final ProjectProvider mProvider;
 
     /**
+     * Use case for creating projects.
+     */
+    private final CreateProject mCreateProject;
+
+    /**
      * Use case for removing projects.
      */
     private final RemoveProject mRemoveProject;
@@ -67,12 +74,19 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
      *
      * @param context       Context used with the presenter.
      * @param provider      Provider for working with projects.
+     * @param createProject Use case for creating projects.
      * @param removeProject Use case for removing projects.
      */
-    public ProjectsPresenter(Context context, ProjectProvider provider, RemoveProject removeProject) {
+    public ProjectsPresenter(
+            Context context,
+            ProjectProvider provider,
+            CreateProject createProject,
+            RemoveProject removeProject
+    ) {
         super(context);
 
         mProvider = provider;
+        mCreateProject = createProject;
         mRemoveProject = removeProject;
     }
 
@@ -283,13 +297,24 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     }
 
     /**
-     * Create a new project and update the view.
+     * Create a new project.
      *
      * @param project Project to create.
      * @return Observable emitting the created project.
      */
-    public Observable<Project> createNewProject(Project project) {
-        return mProvider.createProject(project)
+    public Observable<Project> createNewProject(final Project project) {
+        return Observable.just(project)
+                .flatMap(new Func1<Project, Observable<Project>>() {
+                    @Override
+                    public Observable<Project> call(final Project project) {
+                        try {
+                            // TODO: Refactor execute to throw DomainException.
+                            return Observable.just(mCreateProject.execute(project));
+                        } catch (Throwable t) {
+                            return Observable.error(new ProjectAlreadyExistsException());
+                        }
+                    }
+                })
                 .compose(this.<Project>applySchedulers())
                 .doOnNext(new Action1<Project>() {
                     @Override
