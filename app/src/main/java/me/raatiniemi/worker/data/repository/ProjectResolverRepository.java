@@ -33,6 +33,7 @@ import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.domain.repository.query.Criteria;
 
 public class ProjectResolverRepository
         extends ContentResolverRepository<ProjectCursorMapper, ProjectContentValuesMapper>
@@ -46,6 +47,34 @@ public class ProjectResolverRepository
             @NonNull final ProjectContentValuesMapper contentValuesMapper
     ) {
         super(contentResolver, cursorMapper, contentValuesMapper);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public List<Project> matching(final Criteria criteria) {
+        final List<Project> projects = new ArrayList<>();
+
+        final Cursor cursor = getContentResolver().query(
+                ProjectContract.getStreamUri(),
+                ProjectContract.COLUMNS,
+                criteria.getField() + criteria.getOperator() + "?",
+                new String[]{criteria.getValue()},
+                null
+        );
+        if (null == cursor) {
+            return projects;
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                projects.add(getCursorMapper().transform(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return projects;
     }
 
     /**

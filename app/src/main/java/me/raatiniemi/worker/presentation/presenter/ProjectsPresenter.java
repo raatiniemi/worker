@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.domain.ProjectProvider;
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -308,10 +307,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                     @Override
                     public Observable<Project> call(final Project project) {
                         try {
-                            // TODO: Refactor execute to throw DomainException.
                             return Observable.just(mCreateProject.execute(project));
                         } catch (Throwable t) {
-                            return Observable.error(new ProjectAlreadyExistsException());
+                            return Observable.error(t);
                         }
                     }
                 })

@@ -16,8 +16,13 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
+import java.util.List;
+
+import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.domain.repository.query.Criteria;
 
 /**
  * Use case for creating a project.
@@ -43,9 +48,17 @@ public class CreateProject {
      * @param project Project to create.
      * @return Created project.
      */
-    public Project execute(final Project project) {
+    public Project execute(final Project project) throws ProjectAlreadyExistsException {
         // TODO: Check that the project have a name.
-        // TODO: Check if project name already exists.
+
+        // TODO: Refactor to remove dependency on the data-package for column name.
+        Criteria criteria = Criteria.equalTo(ProjectColumns.NAME, project.getName());
+        List<Project> projects = mRepository.matching(criteria);
+        if (!projects.isEmpty()) {
+            // TODO: Add message to `ProjectAlreadyExistsException`.
+            throw new ProjectAlreadyExistsException();
+        }
+
         return mRepository.add(project);
     }
 }

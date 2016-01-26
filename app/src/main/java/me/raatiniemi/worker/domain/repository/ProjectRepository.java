@@ -19,11 +19,20 @@ package me.raatiniemi.worker.domain.repository;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.repository.query.Criteria;
 
 /**
  * Represent a unified interface for working with projects using different data sources.
  */
 public interface ProjectRepository {
+    /**
+     * Find projects matching a criteria.
+     *
+     * @param criteria Criteria for matching projects
+     * @return Projects matching the criteria.
+     */
+    List<Project> matching(Criteria criteria);
+
     /**
      * Get projects.
      *
