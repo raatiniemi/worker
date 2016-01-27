@@ -55,8 +55,9 @@ public class CreateProject {
         Criteria criteria = Criteria.equalTo(ProjectColumns.NAME, project.getName());
         List<Project> projects = mRepository.matching(criteria);
         if (!projects.isEmpty()) {
-            // TODO: Add message to `ProjectAlreadyExistsException`.
-            throw new ProjectAlreadyExistsException();
+            throw new ProjectAlreadyExistsException(
+                    "Project '" + project.getName() + "' already exists"
+            );
         }
 
         return mRepository.add(project);

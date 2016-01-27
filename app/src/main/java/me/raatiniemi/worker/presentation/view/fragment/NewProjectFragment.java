@@ -149,7 +149,7 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
                         Log.d(TAG, "createNewProject onError");
 
                         if (e instanceof ProjectAlreadyExistsException) {
-                            Log.d(TAG, "Unable to create project, duplicate name");
+                            Log.d(TAG, "Unable to create project: " + e.getMessage());
                             view.setError(getString(R.string.error_message_project_name_already_exists));
                             return;
                         }

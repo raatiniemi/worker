@@ -17,4 +17,12 @@
 package me.raatiniemi.worker.domain.exception;
 
 public class ProjectAlreadyExistsException extends Exception {
+    /**
+     * Constructor.
+     *
+     * @param message Message thrown with the exception.
+     */
+    public ProjectAlreadyExistsException(String message) {
+        super(message);
+    }
 }
