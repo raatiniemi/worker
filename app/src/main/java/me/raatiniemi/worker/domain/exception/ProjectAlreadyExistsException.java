@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.exception;
 
-public class ProjectAlreadyExistsException extends Exception {
+public class ProjectAlreadyExistsException extends DomainException {
     /**
      * Constructor.
      *
