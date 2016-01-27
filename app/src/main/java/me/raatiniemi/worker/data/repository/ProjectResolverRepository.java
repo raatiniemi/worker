@@ -59,7 +59,7 @@ public class ProjectResolverRepository
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getStreamUri(),
                 ProjectContract.COLUMNS,
-                criteria.getField() + criteria.getOperator() + "?",
+                criteria.getField() + criteria.getOperator() + "? COLLATE NOCASE",
                 new String[]{criteria.getValue()},
                 null
         );
