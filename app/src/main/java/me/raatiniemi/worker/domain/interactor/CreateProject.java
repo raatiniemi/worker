@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.List;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
@@ -48,7 +49,7 @@ public class CreateProject {
      * @param project Project to create.
      * @return Created project.
      */
-    public Project execute(final Project project) throws ProjectAlreadyExistsException {
+    public Project execute(final Project project) throws DomainException {
         // TODO: Check that the project have a name.
 
         // TODO: Refactor to remove dependency on the data-package for column name.

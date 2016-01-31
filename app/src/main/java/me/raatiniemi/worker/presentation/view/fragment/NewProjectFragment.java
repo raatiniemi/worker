@@ -22,7 +22,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +30,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.util.Keyboard;
@@ -124,48 +124,41 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
      * @param view Project name text field.
      */
     private void createNewProject(final EditText view) {
-        // Retrieve the project name from the text field.
-        String name = view.getText().toString();
-        if (TextUtils.isEmpty(name)) {
-            view.setError(getString(R.string.error_message_project_name_missing));
-
-            Log.i(TAG, "No project name have been supplied");
-            return;
-        }
-
-        Log.d(TAG, "Attempt to create new project with name: " + name);
-
-        // Create the project, and insert it to the database.
-        Project project = new Project(name);
-        getOnCreateProjectListener().onCreateProject(project)
-                .subscribe(new Subscriber<Project>() {
-                    @Override
-                    public void onNext(Project project) {
-                        Log.d(TAG, "createNewProject onNext");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "createNewProject onError");
-
-                        if (e instanceof ProjectAlreadyExistsException) {
-                            Log.d(TAG, "Unable to create project: " + e.getMessage());
-                            view.setError(getString(R.string.error_message_project_name_already_exists));
-                            return;
+        try {
+            Project project = new Project(view.getText().toString());
+            getOnCreateProjectListener().onCreateProject(project)
+                    .subscribe(new Subscriber<Project>() {
+                        @Override
+                        public void onNext(Project project) {
+                            Log.d(TAG, "createNewProject onNext");
                         }
 
-                        Log.w(TAG, "Unable to create project: " + e.getMessage());
-                        view.setError(getString(R.string.error_message_unknown));
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(TAG, "createNewProject onError");
 
-                    @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "createNewProject onCompleted");
+                            if (e instanceof ProjectAlreadyExistsException) {
+                                Log.d(TAG, "Unable to create project: " + e.getMessage());
+                                view.setError(getString(R.string.error_message_project_name_already_exists));
+                                return;
+                            }
 
-                        // The project have been created, we can dismiss the fragment.
-                        dismiss();
-                    }
-                });
+                            Log.w(TAG, "Unable to create project: " + e.getMessage());
+                            view.setError(getString(R.string.error_message_unknown));
+                        }
+
+                        @Override
+                        public void onCompleted() {
+                            Log.d(TAG, "createNewProject onCompleted");
+
+                            // The project have been created, we can dismiss the fragment.
+                            dismiss();
+                        }
+                    });
+        } catch (InvalidProjectNameException e) {
+            Log.i(TAG, "No project name have been supplied");
+            view.setError(getString(R.string.error_message_project_name_missing));
+        }
     }
 
     public OnCreateProjectListener getOnCreateProjectListener() {

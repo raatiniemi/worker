@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
@@ -59,7 +60,7 @@ public class TimeCursorMapperTest {
         return cursor;
     }
 
-    private static Time createTime(long id, long projectId, long start, long stop, boolean registered) throws Exception {
+    private static Time createTime(long id, long projectId, long start, long stop, boolean registered) throws ClockOutBeforeClockInException {
         Time time = new Time(id, projectId, start, stop);
         time.setRegistered(registered);
 
@@ -67,7 +68,7 @@ public class TimeCursorMapperTest {
     }
 
     @DataProvider
-    public static Object[][] transform_dataProvider() throws Exception {
+    public static Object[][] transform_dataProvider() throws ClockOutBeforeClockInException {
         return new Object[][]{
                 {createCursor(1, 1, 1, null, 0), createTime(1, 1, 1, 0, false)},
                 {createCursor(1, 1, 1, 2L, 0), createTime(1, 1, 1, 2L, false)},
@@ -77,7 +78,7 @@ public class TimeCursorMapperTest {
 
     @Test
     @UseDataProvider("transform_dataProvider")
-    public void transform(Cursor cursor, Time expected) {
+    public void transform(Cursor cursor, Time expected) throws ClockOutBeforeClockInException {
         TimeCursorMapper entityMapper = new TimeCursorMapper();
         Time entity = entityMapper.transform(cursor);
 

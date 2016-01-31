@@ -31,6 +31,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
@@ -53,7 +54,7 @@ public class ProjectResolverRepository
      * @inheritDoc
      */
     @Override
-    public List<Project> matching(final Criteria criteria) {
+    public List<Project> matching(final Criteria criteria) throws InvalidProjectNameException {
         final List<Project> projects = new ArrayList<>();
 
         final Cursor cursor = getContentResolver().query(
@@ -81,7 +82,7 @@ public class ProjectResolverRepository
      * @inheritDoc
      */
     @Override
-    public List<Project> get() {
+    public List<Project> get() throws InvalidProjectNameException {
         final List<Project> projects = new ArrayList<>();
 
         final Cursor cursor = getContentResolver().query(
@@ -109,7 +110,7 @@ public class ProjectResolverRepository
      * @inheritDoc
      */
     @Override
-    public Project get(final long id) {
+    public Project get(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemUri(id),
                 ProjectContract.COLUMNS,
@@ -134,7 +135,7 @@ public class ProjectResolverRepository
      * @inheritDoc
      */
     @Override
-    public Project add(final Project project) {
+    public Project add(final Project project) throws InvalidProjectNameException {
         final Uri uri = getContentResolver().insert(
                 ProjectContract.getStreamUri(),
                 getContentValuesMapper().transform(project)

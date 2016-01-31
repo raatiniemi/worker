@@ -22,6 +22,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
 /**
  * Represent a project.
@@ -52,8 +53,9 @@ public class Project extends DomainObject {
      *
      * @param id   Id for the project.
      * @param name Name of the project.
+     * @throws InvalidProjectNameException If project name is null.
      */
-    public Project(final Long id, final String name) {
+    public Project(final Long id, final String name) throws InvalidProjectNameException {
         super(id);
 
         setName(name);
@@ -67,8 +69,9 @@ public class Project extends DomainObject {
      * Constructor, used for creating new projects.
      *
      * @param name Name of the project.
+     * @throws InvalidProjectNameException If project name is null.
      */
-    public Project(final String name) {
+    public Project(final String name) throws InvalidProjectNameException {
         this(null, name);
     }
 
@@ -85,10 +88,11 @@ public class Project extends DomainObject {
      * Setter method for the project name.
      *
      * @param name Project name.
+     * @throws InvalidProjectNameException If project name is null.
      */
-    public void setName(final String name) {
+    public void setName(final String name) throws InvalidProjectNameException {
         if (null == name) {
-            throw new NullPointerException("Project name is not allowed to be null");
+            throw new InvalidProjectNameException("Project name is null");
         }
 
         mName = name;

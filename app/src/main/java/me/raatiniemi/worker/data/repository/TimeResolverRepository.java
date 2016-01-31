@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
@@ -46,7 +47,7 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time get(final long id) {
+    public Time get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 TimeContract.getItemUri(id),
                 TimeContract.COLUMNS,
@@ -71,7 +72,7 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time add(final Time time) {
+    public Time add(final Time time) throws ClockOutBeforeClockInException {
         final ContentValues values = getContentValuesMapper().transform(time);
 
         final Uri uri = getContentResolver().insert(
@@ -85,7 +86,7 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time update(final Time time) {
+    public Time update(final Time time) throws ClockOutBeforeClockInException {
         getContentResolver().update(
                 TimeContract.getItemUri(time.getId()),
                 getContentValuesMapper().transform(time),

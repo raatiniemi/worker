@@ -108,7 +108,11 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Project>>() {
             @Override
             public Observable<Project> call() {
-                return Observable.from(getProjectRepository().get());
+                try {
+                    return Observable.from(getProjectRepository().get());
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
             }
         }).map(new Func1<Project, Project>() {
             @Override
@@ -128,7 +132,11 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Project>>() {
             @Override
             public Observable<Project> call() {
-                return Observable.just(getProjectRepository().get(id));
+                try {
+                    return Observable.just(getProjectRepository().get(id));
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
             }
         });
     }
@@ -234,7 +242,11 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Time>>() {
             @Override
             public Observable<Time> call() {
-                return Observable.just(getTimeRepository().get(id));
+                try {
+                    return Observable.just(getTimeRepository().get(id));
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
             }
         });
     }
@@ -249,7 +261,11 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Time>>() {
             @Override
             public Observable<Time> call() {
-                return Observable.just(getTimeRepository().add(time));
+                try {
+                    return Observable.just(getTimeRepository().add(time));
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
             }
         });
     }
@@ -280,7 +296,11 @@ public class ProjectProvider {
         return Observable.defer(new Func0<Observable<Time>>() {
             @Override
             public Observable<Time> call() {
-                return Observable.just(getTimeRepository().update(time));
+                try {
+                    return Observable.just(getTimeRepository().update(time));
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
             }
         });
     }

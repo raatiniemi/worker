@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository;
 
+import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 
 /**
@@ -27,24 +28,27 @@ public interface TimeRepository {
      *
      * @param id Id for the time.
      * @return Time, or null if none was found.
+     * @throws DomainException If domain rules are violated.
      */
-    Time get(long id);
+    Time get(long id) throws DomainException;
 
     /**
      * Add time.
      *
      * @param time Time to add.
      * @return Added time.
+     * @throws DomainException If domain rules are violated.
      */
-    Time add(Time time);
+    Time add(Time time) throws DomainException;
 
     /**
      * Update time.
      *
      * @param time Time to update.
      * @return Updated time.
+     * @throws DomainException If domain rules are violated.
      */
-    Time update(Time time);
+    Time update(Time time) throws DomainException;
 
     /**
      * Remove time by id.
