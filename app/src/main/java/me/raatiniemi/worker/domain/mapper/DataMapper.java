@@ -14,26 +14,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.mapper;
-
-import android.content.ContentValues;
-import android.support.annotation.NonNull;
-
-import me.raatiniemi.worker.domain.mapper.DataMapper;
+package me.raatiniemi.worker.domain.mapper;
 
 /**
- * Interface for transforming domain entity to {@link ContentValues}.
+ * Interface for transforming from domain entity to another data source.
+ * <p/>
+ * The interface should only be used for transforming from domain entity to
+ * another data source.
+ * <p/>
+ * For transforming to domain entity the {@link EntityMapper} should be used.
  *
- * @param <T> Type reference for domain entity to transform.
+ * @param <T> Type reference for the transformation destination.
+ * @param <F> Type reference for the domain entity.
  */
-public interface ContentValuesMapper<T> extends DataMapper<ContentValues, T> {
+public interface DataMapper<T, F> {
     /**
      * Perform the transformation.
      *
      * @param entity Domain entity to be transformed.
      * @return Transformed domain entity.
      */
-    @Override
-    @NonNull
-    ContentValues transform(@NonNull T entity);
+    T transform(F entity);
 }

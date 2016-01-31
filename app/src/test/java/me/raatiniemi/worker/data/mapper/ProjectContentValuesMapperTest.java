@@ -25,6 +25,7 @@ import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertEquals;
@@ -50,7 +51,7 @@ public class ProjectContentValuesMapperTest {
             final String name,
             final String description,
             final boolean archived
-    ) {
+    ) throws InvalidProjectNameException {
         Project project = new Project(null, name);
         project.setDescription(description);
         project.setArchived(archived);
@@ -59,7 +60,7 @@ public class ProjectContentValuesMapperTest {
     }
 
     @Test
-    public void transform() {
+    public void transform() throws InvalidProjectNameException {
         ProjectContentValuesMapper entityMapper = new ProjectContentValuesMapper();
 
         ContentValues expected = createContentValues("Name", "Description", 0L);

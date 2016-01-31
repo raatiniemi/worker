@@ -26,6 +26,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -40,7 +41,7 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class ProjectTest {
     @Test
-    public void Project_defaultValueFromIdNameConstructor() {
+    public void Project_defaultValueFromIdNameConstructor() throws InvalidProjectNameException {
         Project project = new Project(2L, "Project name");
 
         assertEquals(Long.valueOf(2L), project.getId());
@@ -51,7 +52,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void Project_defaultValueFromNameConstructor() {
+    public void Project_defaultValueFromNameConstructor() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         assertNull(project.getId());
@@ -61,18 +62,18 @@ public class ProjectTest {
         assertTrue(project.getTime().isEmpty());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void setName_nullValueFromIdNameConstructor() {
+    @Test(expected = InvalidProjectNameException.class)
+    public void setName_nullValueFromIdNameConstructor() throws InvalidProjectNameException {
         new Project(null, null);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void setName_nullValueFromNameConstructor() {
+    @Test(expected = InvalidProjectNameException.class)
+    public void setName_nullValueFromNameConstructor() throws InvalidProjectNameException {
         new Project(null);
     }
 
     @Test
-    public void getName_valueFromConstructor() {
+    public void getName_valueFromConstructor() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         assertEquals("Project name", project.getName());
@@ -82,14 +83,14 @@ public class ProjectTest {
         assertEquals("New project name", project.getName());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void setName_nullValueFromSetter() {
+    @Test(expected = InvalidProjectNameException.class)
+    public void setName_nullValueFromSetter() throws InvalidProjectNameException {
         Project project = new Project(1L, "Project name");
         project.setName(null);
     }
 
     @Test
-    public void getName_valueFromSetter() {
+    public void getName_valueFromSetter() throws InvalidProjectNameException {
         Project project = new Project("Project name");
         project.setName("New project name");
 
@@ -97,7 +98,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getDescription_valueFromSetter() {
+    public void getDescription_valueFromSetter() throws InvalidProjectNameException {
         Project project = new Project("Project name");
         project.setDescription("Project description");
 
@@ -105,7 +106,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void setDescription_withEmptyString() {
+    public void setDescription_withEmptyString() throws InvalidProjectNameException {
         Project project = new Project("Project name");
         project.setDescription("");
 
@@ -113,7 +114,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void setDescription_withNull() {
+    public void setDescription_withNull() throws InvalidProjectNameException {
         Project project = new Project("Project name");
         project.setDescription(null);
 
@@ -121,14 +122,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void isArchived_defaultValue() {
+    public void isArchived_defaultValue() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         assertFalse(project.isArchived());
     }
 
     @Test
-    public void isArchived_valueFromSetter() {
+    public void isArchived_valueFromSetter() throws InvalidProjectNameException {
         Project project = new Project("Project name");
         project.setArchived(true);
 
@@ -140,7 +141,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getTime_withoutTime() {
+    public void getTime_withoutTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         assertNotNull(project.getTime());
@@ -148,7 +149,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getTime_valueFromAddTimeList() {
+    public void getTime_valueFromAddTimeList() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         List<Time> times = project.getTime();
@@ -163,7 +164,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getTime_valuesFromAddTimeList() {
+    public void getTime_valuesFromAddTimeList() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         List<Time> times = new ArrayList<>();
@@ -183,19 +184,19 @@ public class ProjectTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void addTime_withNullValue() {
+    public void addTime_withNullValue() throws InvalidProjectNameException {
         Project project = new Project(1L, "Project name");
         project.addTime((Time) null);
     }
 
     @Test(expected = NullPointerException.class)
-    public void addTime_withNullList() {
+    public void addTime_withNullList() throws InvalidProjectNameException {
         Project project = new Project(1L, "Project name");
         project.addTime((List<Time>) null);
     }
 
     @Test
-    public void addTime_withEmptyTimeList() {
+    public void addTime_withEmptyTimeList() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         List<Time> times = new ArrayList<>();
@@ -205,14 +206,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_withoutTime() {
+    public void summarizeTime_withoutTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         assertEquals(Long.valueOf(0L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
-    public void summarizeTime_withActiveTime() {
+    public void summarizeTime_withActiveTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time1 = mock(Time.class);
@@ -228,7 +229,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_withSingleItem() {
+    public void summarizeTime_withSingleItem() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time = mock(Time.class);
@@ -240,7 +241,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_withValueRoundUp() {
+    public void summarizeTime_withValueRoundUp() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time1 = mock(Time.class);
@@ -256,7 +257,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_withValueRoundDown() {
+    public void summarizeTime_withValueRoundDown() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time1 = mock(Time.class);
@@ -272,7 +273,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_multipleItems() {
+    public void summarizeTime_multipleItems() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time1 = mock(Time.class);
@@ -288,14 +289,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void getElapsed_withoutTime() {
+    public void getElapsed_withoutTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         assertEquals(Long.valueOf(0L), Long.valueOf(project.getElapsed()));
     }
 
     @Test
-    public void getElapsed_withoutActiveTime() {
+    public void getElapsed_withoutActiveTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time = mock(Time.class);
@@ -308,7 +309,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getElapsed_withActiveTime() {
+    public void getElapsed_withActiveTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time = mock(Time.class);
@@ -323,14 +324,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void getClockedInSince_withoutTime() {
+    public void getClockedInSince_withoutTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         assertNull(project.getClockedInSince());
     }
 
     @Test
-    public void getClockedInSince_withoutActiveTime() {
+    public void getClockedInSince_withoutActiveTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time = mock(Time.class);
@@ -343,7 +344,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void getClockedInSince_withActiveTime() {
+    public void getClockedInSince_withActiveTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         Time time = mock(Time.class);
@@ -446,14 +447,14 @@ public class ProjectTest {
     }
 
     @Test
-    public void isActive_withoutTime() {
+    public void isActive_withoutTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         assertFalse(project.isActive());
     }
 
     @Test
-    public void isActive_withoutActiveTime() {
+    public void isActive_withoutActiveTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         // Setup the time object to return false for the `isActive`-call.
@@ -467,7 +468,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void isActive_withActiveTime() {
+    public void isActive_withActiveTime() throws InvalidProjectNameException {
         Project project = new Project("Project name");
 
         // Setup the time object to return true for the `isActive`-call.

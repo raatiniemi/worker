@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.repository;
 
 import java.util.List;
 
+import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
@@ -30,31 +31,35 @@ public interface ProjectRepository {
      *
      * @param criteria Criteria for matching projects
      * @return Projects matching the criteria.
+     * @throws DomainException If domain rules are violated.
      */
-    List<Project> matching(Criteria criteria);
+    List<Project> matching(Criteria criteria) throws DomainException;
 
     /**
      * Get projects.
      *
      * @return Projects.
+     * @throws DomainException If domain rules are violated.
      */
-    List<Project> get();
+    List<Project> get() throws DomainException;
 
     /**
      * Get project by id.
      *
      * @param id Id for the project.
      * @return Project, or null if none was found.
+     * @throws DomainException If domain rules are violated.
      */
-    Project get(long id);
+    Project get(long id) throws DomainException;
 
     /**
      * Add a new project.
      *
      * @param project Project to add.
      * @return Added project.
+     * @throws DomainException If domain rules are violated.
      */
-    Project add(Project project);
+    Project add(Project project) throws DomainException;
 
     /**
      * Remove project by id.

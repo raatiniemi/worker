@@ -16,21 +16,26 @@
 
 package me.raatiniemi.worker.domain.mapper;
 
+import me.raatiniemi.worker.domain.exception.DomainException;
+
 /**
- * Interface for handling entity transformation.
+ * Interface for transforming to domain entity from another data source.
  * <p/>
- * The transformation interface should support both from and to entities,
- * hence the double type reference instead of a single.
+ * The interface should only be used for transforming from another data source
+ * to domain entity.
+ * <p/>
+ * For transforming from domain entity the {@link DataMapper} should be used.
  *
- * @param <T> Type reference from transformation destination.
- * @param <F> Type reference from transformation source.
+ * @param <T> Type reference for the domain entity.
+ * @param <F> Type reference for the transformation source.
  */
 public interface EntityMapper<T, F> {
     /**
-     * Perform the entity transformation.
+     * Perform the transformation.
      *
-     * @param from Data to be transformed to another type.
-     * @return Data transformed to destination type.
+     * @param from Data to be transformed.
+     * @return Transformed data.
+     * @throws DomainException If data violate domain rules.
      */
-    T transform(F from);
+    T transform(F from) throws DomainException;
 }

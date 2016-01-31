@@ -19,21 +19,19 @@ package me.raatiniemi.worker.data.mapper;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
+import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.mapper.EntityMapper;
 
 /**
- * Interface for {@link Cursor} to entity transformation.
+ * Interface for transforming {@link Cursor} to domain entity.
  *
- * @param <T> Type reference from transformation destination.
+ * @param <T> Type reference from the domain entity.
  */
 public interface CursorMapper<T> extends EntityMapper<T, Cursor> {
     /**
-     * Perform transformation from {@link Cursor} to entity.
-     *
-     * @param cursor Cursor to be transformed to entity.
-     * @return Transformed entity.
+     * @inheritDoc
      */
     @Override
     @NonNull
-    T transform(@NonNull Cursor cursor);
+    T transform(@NonNull Cursor cursor) throws DomainException;
 }

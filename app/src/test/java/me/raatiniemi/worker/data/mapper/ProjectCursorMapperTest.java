@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertEquals;
@@ -50,7 +51,7 @@ public class ProjectCursorMapperTest {
         return cursor;
     }
 
-    private static Project createProject(long id, String name, String description, boolean archived) {
+    private static Project createProject(long id, String name, String description, boolean archived) throws InvalidProjectNameException {
         Project project = new Project(id, name);
         project.setDescription(description);
         project.setArchived(archived);
@@ -59,7 +60,7 @@ public class ProjectCursorMapperTest {
     }
 
     @DataProvider
-    public static Object[][] transform_dataProvider() {
+    public static Object[][] transform_dataProvider() throws InvalidProjectNameException {
         return new Object[][]{
                 {createCursor(1, "Name", "Description", 0), createProject(1, "Name", "Description", false)},
                 {createCursor(1, "Name", "Description", 1), createProject(1, "Name", "Description", true)}
@@ -68,7 +69,7 @@ public class ProjectCursorMapperTest {
 
     @Test
     @UseDataProvider("transform_dataProvider")
-    public void transform(Cursor cursor, Project expected) {
+    public void transform(Cursor cursor, Project expected) throws InvalidProjectNameException {
         ProjectCursorMapper entityMapper = new ProjectCursorMapper();
         Project entity = entityMapper.transform(cursor);
 

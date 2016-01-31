@@ -14,26 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.mapper;
+package me.raatiniemi.worker.domain.exception;
 
-import android.content.ContentValues;
-import android.support.annotation.NonNull;
-
-import me.raatiniemi.worker.domain.mapper.DataMapper;
-
-/**
- * Interface for transforming domain entity to {@link ContentValues}.
- *
- * @param <T> Type reference for domain entity to transform.
- */
-public interface ContentValuesMapper<T> extends DataMapper<ContentValues, T> {
-    /**
-     * Perform the transformation.
-     *
-     * @param entity Domain entity to be transformed.
-     * @return Transformed domain entity.
-     */
-    @Override
-    @NonNull
-    ContentValues transform(@NonNull T entity);
+public class InvalidProjectNameException extends DomainException {
+    public InvalidProjectNameException(String message) {
+        super(message);
+    }
 }

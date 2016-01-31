@@ -20,7 +20,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
 /**
@@ -32,7 +32,7 @@ public class TimeCursorMapper implements CursorMapper<Time> {
      */
     @Override
     @NonNull
-    public Time transform(@NonNull Cursor cursor) {
+    public Time transform(@NonNull Cursor cursor) throws ClockOutBeforeClockInException {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.PROJECT_ID));
         long start = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.START));
@@ -42,16 +42,9 @@ public class TimeCursorMapper implements CursorMapper<Time> {
         long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : 0;
         long registered = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.REGISTERED));
 
-        try {
-            Time time = new Time(id, projectId, start, stop);
-            time.setRegistered(0 != registered);
+        Time time = new Time(id, projectId, start, stop);
+        time.setRegistered(0 != registered);
 
-            return time;
-        } catch (DomainException e) {
-            // TODO: Handle the DomainException from the construction of Time.
-            // Temporarily re-throw the exception as a runtime exception since
-            // the transformation method do not support checked exceptions.
-            throw new RuntimeException(e);
-        }
+        return time;
     }
 }
