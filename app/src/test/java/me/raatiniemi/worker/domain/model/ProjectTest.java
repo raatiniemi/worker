@@ -68,8 +68,18 @@ public class ProjectTest {
     }
 
     @Test(expected = InvalidProjectNameException.class)
+    public void setName_emptyValueFromIdNameConstructor() throws InvalidProjectNameException {
+        new Project(null, "");
+    }
+
+    @Test(expected = InvalidProjectNameException.class)
     public void setName_nullValueFromNameConstructor() throws InvalidProjectNameException {
         new Project(null);
+    }
+
+    @Test(expected = InvalidProjectNameException.class)
+    public void setName_emptyValueFromNameConstructor() throws InvalidProjectNameException {
+        new Project("");
     }
 
     @Test
@@ -87,6 +97,12 @@ public class ProjectTest {
     public void setName_nullValueFromSetter() throws InvalidProjectNameException {
         Project project = new Project(1L, "Project name");
         project.setName(null);
+    }
+
+    @Test(expected = InvalidProjectNameException.class)
+    public void setName_emptyValueFromSetter() throws InvalidProjectNameException {
+        Project project = new Project(1L, "Project name");
+        project.setName("");
     }
 
     @Test

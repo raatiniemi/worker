@@ -53,7 +53,7 @@ public class Project extends DomainObject {
      *
      * @param id   Id for the project.
      * @param name Name of the project.
-     * @throws InvalidProjectNameException If project name is null.
+     * @throws InvalidProjectNameException If project name is null or empty.
      */
     public Project(final Long id, final String name) throws InvalidProjectNameException {
         super(id);
@@ -69,7 +69,7 @@ public class Project extends DomainObject {
      * Constructor, used for creating new projects.
      *
      * @param name Name of the project.
-     * @throws InvalidProjectNameException If project name is null.
+     * @throws InvalidProjectNameException If project name is null or empty.
      */
     public Project(final String name) throws InvalidProjectNameException {
         this(null, name);
@@ -88,11 +88,11 @@ public class Project extends DomainObject {
      * Setter method for the project name.
      *
      * @param name Project name.
-     * @throws InvalidProjectNameException If project name is null.
+     * @throws InvalidProjectNameException If project name is null or empty.
      */
     public void setName(final String name) throws InvalidProjectNameException {
-        if (null == name) {
-            throw new InvalidProjectNameException("Project name is null");
+        if (null == name || 0 == name.length()) {
+            throw new InvalidProjectNameException("Project name is null or empty");
         }
 
         mName = name;

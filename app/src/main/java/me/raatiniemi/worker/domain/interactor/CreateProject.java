@@ -50,8 +50,6 @@ public class CreateProject {
      * @return Created project.
      */
     public Project execute(final Project project) throws DomainException {
-        // TODO: Check that the project have a name.
-
         // TODO: Refactor to remove dependency on the data-package for column name.
         Criteria criteria = Criteria.equalTo(ProjectColumns.NAME, project.getName());
         List<Project> projects = mRepository.matching(criteria);
