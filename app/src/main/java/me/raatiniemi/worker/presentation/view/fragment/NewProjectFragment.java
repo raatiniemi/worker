@@ -51,7 +51,7 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
 
         // Check that we actually have a listener available, otherwise we
         // should not attempt to create new projects.
-        if (null == getOnCreateProjectListener()) {
+        if (null == mOnCreateProjectListener) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -126,7 +126,7 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
     private void createNewProject(final EditText view) {
         try {
             Project project = new Project(view.getText().toString());
-            getOnCreateProjectListener().onCreateProject(project)
+            mOnCreateProjectListener.onCreateProject(project)
                     .subscribe(new Subscriber<Project>() {
                         @Override
                         public void onNext(Project project) {
@@ -159,10 +159,6 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
             Log.i(TAG, "No project name have been supplied");
             view.setError(getString(R.string.error_message_project_name_missing));
         }
-    }
-
-    public OnCreateProjectListener getOnCreateProjectListener() {
-        return mOnCreateProjectListener;
     }
 
     public void setOnCreateProjectListener(OnCreateProjectListener onCreateProjectListener) {
