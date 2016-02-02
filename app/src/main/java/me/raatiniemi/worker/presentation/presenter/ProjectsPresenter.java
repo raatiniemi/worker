@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.domain.ProjectProvider;
-import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
@@ -34,7 +33,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -54,11 +52,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     private final ProjectProvider mProvider;
 
     /**
-     * Use case for creating projects.
-     */
-    private final CreateProject mCreateProject;
-
-    /**
      * Use case for removing projects.
      */
     private final RemoveProject mRemoveProject;
@@ -73,19 +66,16 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
      *
      * @param context       Context used with the presenter.
      * @param provider      Provider for working with projects.
-     * @param createProject Use case for creating projects.
      * @param removeProject Use case for removing projects.
      */
     public ProjectsPresenter(
             Context context,
             ProjectProvider provider,
-            CreateProject createProject,
             RemoveProject removeProject
     ) {
         super(context);
 
         mProvider = provider;
-        mCreateProject = createProject;
         mRemoveProject = removeProject;
     }
 
@@ -291,42 +281,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "getProjects onCompleted");
-                    }
-                });
-    }
-
-    /**
-     * Create a new project.
-     *
-     * @param project Project to create.
-     * @return Observable emitting the created project.
-     */
-    public Observable<Project> createNewProject(final Project project) {
-        return Observable.just(project)
-                .flatMap(new Func1<Project, Observable<Project>>() {
-                    @Override
-                    public Observable<Project> call(final Project project) {
-                        try {
-                            return Observable.just(mCreateProject.execute(project));
-                        } catch (Throwable t) {
-                            return Observable.error(t);
-                        }
-                    }
-                })
-                .compose(this.<Project>applySchedulers())
-                .doOnNext(new Action1<Project>() {
-                    @Override
-                    public void call(Project project) {
-                        Log.d(TAG, "createNewProject onNext");
-
-                        // Check that we still have the view attached.
-                        if (!isViewAttached()) {
-                            Log.d(TAG, "View is not attached, skip pushing new project");
-                            return;
-                        }
-
-                        // Add the new project to the view.
-                        getView().addCreatedProject(project);
                     }
                 });
     }

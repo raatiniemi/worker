@@ -16,12 +16,20 @@
 
 package me.raatiniemi.worker.presentation.view;
 
+import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.view.MvpView;
 
 /**
  * View-interface for creating new projects.
  */
 public interface NewProjectView extends MvpView {
+    /**
+     * Handle successful project creation.
+     *
+     * @param project Created project.
+     */
+    void createProjectSuccessful(Project project);
+
     /**
      * Show error message for invalid project name.
      */

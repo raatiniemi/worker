@@ -30,14 +30,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
+import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
+import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
+import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.presentation.presenter.NewProjectPresenter;
 import me.raatiniemi.worker.presentation.view.NewProjectView;
 import me.raatiniemi.worker.util.Keyboard;
-import rx.Observable;
-import rx.Subscriber;
 
 public class NewProjectFragment extends DialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";
@@ -64,7 +65,16 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      */
     private NewProjectPresenter getPresenter() {
         if (null == mPresenter) {
-            mPresenter = new NewProjectPresenter(getActivity());
+            ProjectRepository projectRepository = new ProjectResolverRepository(
+                    getActivity().getContentResolver(),
+                    new ProjectCursorMapper(),
+                    new ProjectContentValuesMapper()
+            );
+
+            mPresenter = new NewProjectPresenter(
+                    getActivity(),
+                    new CreateProject(projectRepository)
+            );
         }
         return mPresenter;
     }
@@ -123,8 +133,8 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Send the text field to create the new project.
-                createNewProject();
+                String projectName = mProjectName.getText().toString();
+                getPresenter().createNewProject(projectName);
             }
         });
 
@@ -154,41 +164,13 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     }
 
     /**
-     * Create a new project.
+     * @inheritDoc
      */
-    private void createNewProject() {
-        try {
-            Project project = new Project(mProjectName.getText().toString());
-            mOnCreateProjectListener.onCreateProject(project)
-                    .subscribe(new Subscriber<Project>() {
-                        @Override
-                        public void onNext(Project project) {
-                            Log.d(TAG, "createNewProject onNext");
-                        }
+    @Override
+    public void createProjectSuccessful(final Project project) {
+        mOnCreateProjectListener.onCreateProject(project);
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d(TAG, "createNewProject onError");
-
-                            if (e instanceof ProjectAlreadyExistsException) {
-                                showDuplicateNameError();
-                                return;
-                            }
-
-                            showUnknownError();
-                        }
-
-                        @Override
-                        public void onCompleted() {
-                            Log.d(TAG, "createNewProject onCompleted");
-
-                            // The project have been created, we can dismiss the fragment.
-                            dismiss();
-                        }
-                    });
-        } catch (InvalidProjectNameException e) {
-            showInvalidNameError();
-        }
+        dismiss();
     }
 
     /**
@@ -227,8 +209,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
          * When a new project have been created the project is sent to this method.
          *
          * @param project The newly created project.
-         * @return Observable emitting the created project.
          */
-        Observable<Project> onCreateProject(Project project);
+        void onCreateProject(Project project);
     }
 }
