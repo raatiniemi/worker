@@ -33,17 +33,36 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.presenter.NewProjectPresenter;
+import me.raatiniemi.worker.presentation.view.NewProjectView;
 import me.raatiniemi.worker.util.Keyboard;
 import rx.Observable;
 import rx.Subscriber;
 
-public class NewProjectFragment extends DialogFragment implements DialogInterface.OnShowListener {
+public class NewProjectFragment extends DialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";
+
+    /**
+     * Presenter for creating new projects.
+     */
+    private NewProjectPresenter mPresenter;
 
     /**
      * Callback handler for the "OnCreateProjectListener".
      */
     private OnCreateProjectListener mOnCreateProjectListener;
+
+    /**
+     * Retrieve the presenter instance, create if none is available.
+     *
+     * @return Presenter instance.
+     */
+    private NewProjectPresenter getPresenter() {
+        if (null == mPresenter) {
+            mPresenter = new NewProjectPresenter(getActivity());
+        }
+        return mPresenter;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -65,7 +84,18 @@ public class NewProjectFragment extends DialogFragment implements DialogInterfac
 
             Log.w(TAG, "No OnCreateProjectListener have been supplied");
             dismiss();
+
+            return;
         }
+
+        getPresenter().attachView(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        getPresenter().detachView();
     }
 
     @Override
