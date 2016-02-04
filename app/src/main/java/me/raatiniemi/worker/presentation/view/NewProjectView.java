@@ -22,4 +22,18 @@ import me.raatiniemi.worker.presentation.base.view.MvpView;
  * View-interface for creating new projects.
  */
 public interface NewProjectView extends MvpView {
+    /**
+     * Show error message for invalid project name.
+     */
+    void showInvalidNameError();
+
+    /**
+     * Show error message for duplicate project name.
+     */
+    void showDuplicateNameError();
+
+    /**
+     * Show message for unknown error.
+     */
+    void showUnknownError();
 }

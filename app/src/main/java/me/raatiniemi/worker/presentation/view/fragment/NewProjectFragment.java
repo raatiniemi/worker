@@ -48,6 +48,11 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     private NewProjectPresenter mPresenter;
 
     /**
+     * Text field for the project name.
+     */
+    private EditText mProjectName;
+
+    /**
      * Callback handler for the "OnCreateProjectListener".
      */
     private OnCreateProjectListener mOnCreateProjectListener;
@@ -111,7 +116,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         getDialog().setTitle(getString(R.string.fragment_new_project_title));
 
         // Retrieve the text field for project name.
-        final EditText projectName = (EditText) view.findViewById(R.id.fragment_new_project_name);
+        mProjectName = (EditText) view.findViewById(R.id.fragment_new_project_name);
 
         // Add the click listener for the create button.
         TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
@@ -119,7 +124,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
             @Override
             public void onClick(View v) {
                 // Send the text field to create the new project.
-                createNewProject(projectName);
+                createNewProject();
             }
         });
 
@@ -150,12 +155,10 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
 
     /**
      * Create a new project.
-     *
-     * @param view Project name text field.
      */
-    private void createNewProject(final EditText view) {
+    private void createNewProject() {
         try {
-            Project project = new Project(view.getText().toString());
+            Project project = new Project(mProjectName.getText().toString());
             mOnCreateProjectListener.onCreateProject(project)
                     .subscribe(new Subscriber<Project>() {
                         @Override
@@ -168,13 +171,11 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
                             Log.d(TAG, "createNewProject onError");
 
                             if (e instanceof ProjectAlreadyExistsException) {
-                                Log.d(TAG, "Unable to create project: " + e.getMessage());
-                                view.setError(getString(R.string.error_message_project_name_already_exists));
+                                showDuplicateNameError();
                                 return;
                             }
 
-                            Log.w(TAG, "Unable to create project: " + e.getMessage());
-                            view.setError(getString(R.string.error_message_unknown));
+                            showUnknownError();
                         }
 
                         @Override
@@ -186,9 +187,32 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
                         }
                     });
         } catch (InvalidProjectNameException e) {
-            Log.i(TAG, "No project name have been supplied");
-            view.setError(getString(R.string.error_message_project_name_missing));
+            showInvalidNameError();
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showInvalidNameError() {
+        mProjectName.setError(getString(R.string.error_message_project_name_missing));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showDuplicateNameError() {
+        mProjectName.setError(getString(R.string.error_message_project_name_already_exists));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showUnknownError() {
+        mProjectName.setError(getString(R.string.error_message_unknown));
     }
 
     public void setOnCreateProjectListener(OnCreateProjectListener onCreateProjectListener) {
