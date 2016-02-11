@@ -204,43 +204,43 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
     /**
      * View holder for the project item view.
      */
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder {
         /**
          * Field for the project name.
          */
-        public final TextView mName;
+        private final TextView mName;
 
         /**
          * Field for the registered project time.
          */
-        public final TextView mTime;
+        private final TextView mTime;
 
         /**
          * Field for the project description.
          */
-        public final TextView mDescription;
+        private final TextView mDescription;
 
         /**
          * Icon for toggling the project activity.
          */
-        public final ImageButton mClockActivityToggle;
+        private final ImageButton mClockActivityToggle;
 
         /**
          * Icon for toggling the project activity, with date and time.
          */
-        public final ImageButton mClockActivityAt;
+        private final ImageButton mClockActivityAt;
 
         /**
          * Icon for deleting project.
          */
-        public final ImageButton mDelete;
+        private final ImageButton mDelete;
 
         /**
          * Field for the time when the project was clocked in.
          */
-        public final TextView mClockedInSince;
+        private final TextView mClockedInSince;
 
-        public ItemViewHolder(View view) {
+        private ItemViewHolder(View view) {
             super(view);
 
             mName = (TextView) view.findViewById(R.id.fragment_projects_item_name);

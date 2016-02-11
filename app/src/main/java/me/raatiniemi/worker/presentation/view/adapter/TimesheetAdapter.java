@@ -199,14 +199,14 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         }
     }
 
-    static class ItemViewHolder extends AbstractExpandableItemViewHolder {
-        public RelativeLayout mContainer;
+    class ItemViewHolder extends AbstractExpandableItemViewHolder {
+        private RelativeLayout mContainer;
 
-        public TextView mTitle;
+        private TextView mTitle;
 
-        public TextView mSummarize;
+        private TextView mSummarize;
 
-        public ItemViewHolder(View view) {
+        private ItemViewHolder(View view) {
             super(view);
         }
     }
