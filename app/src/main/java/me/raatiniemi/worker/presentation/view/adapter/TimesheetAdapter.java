@@ -20,7 +20,6 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
@@ -70,7 +69,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         View view = inflater.inflate(viewType, viewGroup, false);
 
         ItemViewHolder viewHolder = new ItemViewHolder(view);
-        viewHolder.mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_group_item);
         viewHolder.mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
         viewHolder.mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
 
@@ -83,7 +81,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         View view = inflater.inflate(viewType, viewGroup, false);
 
         ItemViewHolder viewHolder = new ItemViewHolder(view);
-        viewHolder.mContainer = (RelativeLayout) view.findViewById(R.id.fragment_timesheet_child_item);
         viewHolder.mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
         viewHolder.mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
 
@@ -200,8 +197,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {
-        private RelativeLayout mContainer;
-
         private TextView mTitle;
 
         private TextView mSummarize;
