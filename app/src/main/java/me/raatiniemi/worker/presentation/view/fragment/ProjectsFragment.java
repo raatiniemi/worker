@@ -43,7 +43,6 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.ProjectProvider;
-import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
@@ -56,7 +55,6 @@ import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
 import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.Settings;
-import rx.Observable;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
         implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
@@ -138,7 +136,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
                         projectRepository,
                         timeRepository
                 ),
-                new CreateProject(projectRepository),
                 new RemoveProject(projectRepository)
         );
     }
@@ -279,8 +276,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         NewProjectFragment newProject = new NewProjectFragment();
         newProject.setOnCreateProjectListener(new NewProjectFragment.OnCreateProjectListener() {
             @Override
-            public Observable<Project> onCreateProject(Project project) {
-                return getPresenter().createNewProject(project);
+            public void onCreateProject(Project project) {
+                addCreatedProject(project);
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
