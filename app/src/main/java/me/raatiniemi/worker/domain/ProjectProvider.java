@@ -124,25 +124,6 @@ public class ProjectProvider {
     }
 
     /**
-     * Get project with id.
-     *
-     * @param id Id for the project.
-     * @return Observable emitting project.
-     */
-    public Observable<Project> getProject(final Long id) {
-        return Observable.defer(new Func0<Observable<Project>>() {
-            @Override
-            public Observable<Project> call() {
-                try {
-                    return Observable.just(getProjectRepository().get(id));
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        });
-    }
-
-    /**
      * Clock in or clock out the project at given date.
      *
      * @param project Project to clock in/out.
@@ -153,18 +134,42 @@ public class ProjectProvider {
         try {
             // Depending on whether the project is active we have
             // to clock in or clock out at the given date.
-            Observable<Long> observable;
+            Observable<Time> observable;
             if (!project.isActive()) {
-                observable = clockIn(project.clockInAt(date));
+                observable = Observable.just(project.clockInAt(date))
+                        .flatMap(new Func1<Time, Observable<Time>>() {
+                            @Override
+                            public Observable<Time> call(final Time time) {
+                                try {
+                                    return Observable.just(getTimeRepository().add(time));
+                                } catch (DomainException e) {
+                                    return Observable.error(e);
+                                }
+                            }
+                        });
             } else {
-                observable = clockOut(project.clockOutAt(date));
+                observable = Observable.just(project.clockOutAt(date))
+                        .flatMap(new Func1<Time, Observable<Time>>() {
+                            @Override
+                            public Observable<Time> call(final Time time) {
+                                try {
+                                    return Observable.just(getTimeRepository().update(time));
+                                } catch (DomainException e) {
+                                    return Observable.error(e);
+                                }
+                            }
+                        });
             }
 
             // With the emitted project id, retrieve the project with time.
-            return observable.flatMap(new Func1<Long, Observable<Project>>() {
+            return observable.flatMap(new Func1<Time, Observable<Project>>() {
                 @Override
-                public Observable<Project> call(Long projectId) {
-                    return getProject(projectId);
+                public Observable<Project> call(final Time time) {
+                    try {
+                        return Observable.just(getProjectRepository().get(time.getProjectId()));
+                    } catch (DomainException e) {
+                        return Observable.error(e);
+                    }
                 }
             }).map(new Func1<Project, Project>() {
                 @Override
@@ -253,25 +258,6 @@ public class ProjectProvider {
     }
 
     /**
-     * Add time.
-     *
-     * @param time Time to add.
-     * @return Observable emitting added time.
-     */
-    public Observable<Time> addTime(final Time time) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                try {
-                    return Observable.just(getTimeRepository().add(time));
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        });
-    }
-
-    /**
      * Update time.
      *
      * @param time Time to update.
@@ -288,38 +274,6 @@ public class ProjectProvider {
                 }
             }
         });
-    }
-
-    /**
-     * Clock in the project.
-     *
-     * @param time Clock in time for project.
-     * @return Observable emitting the id for the project.
-     */
-    private Observable<Long> clockIn(final Time time) {
-        return addTime(time)
-                .map(new Func1<Time, Long>() {
-                    @Override
-                    public Long call(Time time) {
-                        return time.getProjectId();
-                    }
-                });
-    }
-
-    /**
-     * Clock out the project.
-     *
-     * @param time Clock out time for project.
-     * @return Observable emitting the id for the project.
-     */
-    private Observable<Long> clockOut(final Time time) {
-        return updateTime(time)
-                .map(new Func1<Time, Long>() {
-                    @Override
-                    public Long call(Time time) {
-                        return time.getProjectId();
-                    }
-                });
     }
 
     public Observable<TimesheetItem> getTimesheet(final Long id, final int offset) {
