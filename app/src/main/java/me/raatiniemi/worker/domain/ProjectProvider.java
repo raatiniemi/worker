@@ -271,22 +271,6 @@ public class ProjectProvider {
         });
     }
 
-    public Observable<Time> deleteTime(final Time time) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                getTimeRepository().remove(time.getId());
-
-                // To avoid breaking the API for the ProjectProvider, we should
-                // still return the project.
-                //
-                // However, this should be refactored if the repository returns
-                // something other than the project id.
-                return Observable.just(time);
-            }
-        });
-    }
-
     /**
      * Update time.
      *

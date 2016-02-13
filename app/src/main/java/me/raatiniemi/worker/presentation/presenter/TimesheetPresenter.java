@@ -20,13 +20,16 @@ import android.content.Context;
 import android.util.Log;
 
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 import me.raatiniemi.worker.util.Settings;
+import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func1;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     /**
@@ -40,15 +43,22 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     private final ProjectProvider mProvider;
 
     /**
+     * Use case for removing time.
+     */
+    private final RemoveTime mRemoveTime;
+
+    /**
      * Constructor.
      *
-     * @param context  Context used with the presenter.
-     * @param provider Provider for working with projects.
+     * @param context    Context used with the presenter.
+     * @param provider   Provider for working with projects.
+     * @param removeTime Use case for removing time.
      */
-    public TimesheetPresenter(Context context, ProjectProvider provider) {
+    public TimesheetPresenter(Context context, ProjectProvider provider, RemoveTime removeTime) {
         super(context);
 
         mProvider = provider;
+        mRemoveTime = removeTime;
     }
 
     public void getTimesheet(final Long id, final int offset) {
@@ -108,7 +118,20 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     }
 
     public void remove(final TimeInAdapterResult result) {
-        mProvider.deleteTime(result.getTime())
+        Observable.just(result.getTime())
+                .map(new Func1<Time, Time>() {
+                    @Override
+                    public Time call(final Time time) {
+                        mRemoveTime.execute(time);
+
+                        // To avoid breaking the API from the ProjectProvider,
+                        // we should still return the time.
+                        //
+                        // However, this should be refactored to use optimistic
+                        // propagation, i.e. like removing projects.
+                        return time;
+                    }
+                })
                 .compose(this.<Time>applySchedulers())
                 .subscribe(new Subscriber<Time>() {
                     @Override
