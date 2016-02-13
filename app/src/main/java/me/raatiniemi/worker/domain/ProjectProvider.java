@@ -43,6 +43,7 @@ import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
+@Deprecated
 public class ProjectProvider {
     /**
      * Context used with the project provider.
