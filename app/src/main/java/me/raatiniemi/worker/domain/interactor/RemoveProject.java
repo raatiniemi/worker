@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 
 /**
- * Use case for removing a project from the repository.
+ * Use case for removing a project.
  */
 public class RemoveProject {
     /**
@@ -38,7 +38,7 @@ public class RemoveProject {
     }
 
     /**
-     * Remove the project from the repository.
+     * Remove the project.
      *
      * @param project Project to remove.
      */
