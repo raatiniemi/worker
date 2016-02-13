@@ -239,25 +239,6 @@ public class ProjectProvider {
     }
 
     /**
-     * Get time with id.
-     *
-     * @param id Id for the time.
-     * @return Observable emitting time.
-     */
-    public Observable<Time> getTime(final Long id) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                try {
-                    return Observable.just(getTimeRepository().get(id));
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        });
-    }
-
-    /**
      * Update time.
      *
      * @param time Time to update.
@@ -321,19 +302,11 @@ public class ProjectProvider {
                         String[] rows = grouped.split(",");
                         if (0 < rows.length) {
                             for (String id : rows) {
-                                getTime(Long.valueOf(id))
-                                        .filter(new Func1<Time, Boolean>() {
-                                            @Override
-                                            public Boolean call(Time time) {
-                                                return time != null;
-                                            }
-                                        })
-                                        .subscribe(new Action1<Time>() {
-                                            @Override
-                                            public void call(Time time) {
-                                                item.add(time);
-                                            }
-                                        });
+                                try {
+                                    item.add(getTimeRepository().get(Long.valueOf(id)));
+                                } catch (DomainException e) {
+                                    // TODO: Handle exception properly.
+                                }
                             }
 
                             // Reverse the order of the children to put the latest
