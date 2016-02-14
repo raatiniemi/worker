@@ -20,17 +20,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.mapper.TimeMapper;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
@@ -39,7 +35,6 @@ import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.Timesheet
 import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 import rx.android.content.ContentObservable;
-import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
@@ -115,10 +110,18 @@ public class ProjectProvider {
                     return Observable.error(e);
                 }
             }
-        }).map(new Func1<Project, Project>() {
+        }).flatMap(new Func1<Project, Observable<Project>>() {
             @Override
-            public Project call(Project project) {
-                return getTime(project);
+            public Observable<Project> call(Project project) {
+                try {
+                    project.addTime(
+                            getTimeRepository()
+                                    .getProjectTimeSinceBeginningOfMonth(project.getId())
+                    );
+                    return Observable.just(project);
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
             }
         });
     }
@@ -171,71 +174,23 @@ public class ProjectProvider {
                         return Observable.error(e);
                     }
                 }
-            }).map(new Func1<Project, Project>() {
+            }).flatMap(new Func1<Project, Observable<Project>>() {
                 @Override
-                public Project call(Project project) {
-                    return getTime(project);
+                public Observable<Project> call(Project project) {
+                    try {
+                        project.addTime(
+                                getTimeRepository()
+                                        .getProjectTimeSinceBeginningOfMonth(project.getId())
+                        );
+                        return Observable.just(project);
+                    } catch (DomainException e) {
+                        return Observable.error(e);
+                    }
                 }
             });
         } catch (DomainException e) {
             return Observable.error(e);
         }
-    }
-
-    /**
-     * Populate project with registered time.
-     *
-     * @param project Project to populate with registered time.
-     * @return Project populated with registered time.
-     */
-    public Project getTime(final Project project) {
-        // If the project id is null then it's a new project,
-        // i.e. it will not have any registered time.
-        if (null == project.getId()) {
-            return project;
-        }
-
-        final List<Time> result = new ArrayList<>();
-
-        // Reset the calendar to retrieve timestamp
-        // of the beginning of the month.
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
-        Cursor cursor = getContext().getContentResolver()
-                .query(
-                        ProjectContract.getItemTimeUri(project.getId()),
-                        TimeContract.COLUMNS,
-                        TimeContract.START + ">=? OR " + TimeContract.STOP + " = 0",
-                        new String[]{String.valueOf(calendar.getTimeInMillis())},
-                        ProjectContract.ORDER_BY_TIME
-                );
-
-        ContentObservable.fromCursor(cursor)
-                .map(new Func1<Cursor, Time>() {
-                    @Override
-                    public Time call(Cursor cursor) {
-                        return TimeMapper.map(cursor);
-                    }
-                })
-                .filter(new Func1<Time, Boolean>() {
-                    @Override
-                    public Boolean call(Time time) {
-                        return null != time;
-                    }
-                })
-                .subscribe(new Action1<Time>() {
-                    @Override
-                    public void call(Time time) {
-                        result.add(time);
-                    }
-                });
-
-        project.addTime(result);
-        return project;
     }
 
     /**

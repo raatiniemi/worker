@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.repository;
 
+import java.util.List;
+
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 
@@ -56,4 +58,14 @@ public interface TimeRepository {
      * @param id Id of the time to remove.
      */
     void remove(long id);
+
+    /**
+     * Get the time registered for a project since the beginning of the current month.
+     *
+     * @param projectId Id for the project.
+     * @return Registered time for project.
+     * @throws DomainException If domain rules are violated.
+     * TODO: Replace with query/criteria method.
+     */
+    List<Time> getProjectTimeSinceBeginningOfMonth(long projectId) throws DomainException;
 }

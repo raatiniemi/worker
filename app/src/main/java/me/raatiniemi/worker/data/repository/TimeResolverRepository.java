@@ -22,6 +22,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
@@ -107,5 +112,42 @@ public class TimeResolverRepository
                 null,
                 null
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public List<Time> getProjectTimeSinceBeginningOfMonth(long projectId)
+            throws ClockOutBeforeClockInException {
+        final List<Time> result = new ArrayList<>();
+
+        // Reset the calendar to retrieve timestamp
+        // of the beginning of the month.
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        final Cursor cursor = getContentResolver().query(
+                ProjectContract.getItemTimeUri(projectId),
+                TimeContract.COLUMNS,
+                TimeContract.START + ">=? OR " + TimeContract.STOP + " = 0",
+                new String[]{String.valueOf(calendar.getTimeInMillis())},
+                ProjectContract.ORDER_BY_TIME
+        );
+        if (null == cursor) {
+            return result;
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                result.add(getCursorMapper().transform(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return result;
     }
 }
