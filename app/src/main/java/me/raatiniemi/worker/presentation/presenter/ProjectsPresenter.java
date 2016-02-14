@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
@@ -52,6 +54,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     private final ProjectProvider mProvider;
 
     /**
+     * Use case for getting projects.
+     */
+    private final GetProjects mGetProjects;
+
+    /**
      * Use case for removing projects.
      */
     private final RemoveProject mRemoveProject;
@@ -66,16 +73,19 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
      *
      * @param context       Context used with the presenter.
      * @param provider      Provider for working with projects.
+     * @param getProjects   Use case for getting projects.
      * @param removeProject Use case for removing projects.
      */
     public ProjectsPresenter(
             Context context,
             ProjectProvider provider,
+            GetProjects getProjects,
             RemoveProject removeProject
     ) {
         super(context);
 
         mProvider = provider;
+        mGetProjects = getProjects;
         mRemoveProject = removeProject;
     }
 
@@ -244,7 +254,22 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         unsubscribe();
 
         // Setup the subscription for retrieving projects.
-        mSubscription = mProvider.getProjects()
+        Observable.defer(new Func0<Observable<List<Project>>>() {
+            @Override
+            public Observable<List<Project>> call() {
+                try {
+                    return Observable.just(mGetProjects.execute());
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
+            }
+        })
+                .flatMapIterable(new Func1<List<Project>, Iterable<Project>>() {
+                    @Override
+                    public Iterable<Project> call(List<Project> projects) {
+                        return projects;
+                    }
+                })
                 .compose(this.<Project>applySchedulers())
                 .subscribe(new Subscriber<Project>() {
                     @Override

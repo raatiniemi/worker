@@ -96,37 +96,6 @@ public class ProjectProvider {
     }
 
     /**
-     * Get projects.
-     *
-     * @return Observable emitting projects.
-     */
-    public Observable<Project> getProjects() {
-        return Observable.defer(new Func0<Observable<Project>>() {
-            @Override
-            public Observable<Project> call() {
-                try {
-                    return Observable.from(getProjectRepository().get());
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        }).flatMap(new Func1<Project, Observable<Project>>() {
-            @Override
-            public Observable<Project> call(Project project) {
-                try {
-                    project.addTime(
-                            getTimeRepository()
-                                    .getProjectTimeSinceBeginningOfMonth(project.getId())
-                    );
-                    return Observable.just(project);
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        });
-    }
-
-    /**
      * Clock in or clock out the project at given date.
      *
      * @param project Project to clock in/out.
