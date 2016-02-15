@@ -38,16 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.ProjectProvider;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
@@ -217,13 +213,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
 
     @Override
     protected TimesheetPresenter createPresenter() {
-        // Create the project repository.
-        ProjectRepository projectRepository = new ProjectResolverRepository(
-                getActivity().getContentResolver(),
-                new ProjectCursorMapper(),
-                new ProjectContentValuesMapper()
-        );
-
         // Create the time repository.
         TimeRepository timeRepository = new TimeResolverRepository(
                 getActivity().getContentResolver(),
@@ -235,7 +224,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                 getActivity(),
                 new ProjectProvider(
                         getActivity(),
-                        projectRepository,
                         timeRepository
                 ),
                 new RemoveTime(timeRepository)
