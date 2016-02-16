@@ -27,13 +27,11 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.util.Settings;
 import rx.Observable;
 import rx.android.content.ContentObservable;
-import rx.functions.Func0;
 import rx.functions.Func1;
 
 @Deprecated
@@ -75,25 +73,6 @@ public class ProjectProvider {
      */
     protected TimeRepository getTimeRepository() {
         return mTimeRepository;
-    }
-
-    /**
-     * Update time.
-     *
-     * @param time Time to update.
-     * @return Observable emitting updated time.
-     */
-    public Observable<Time> updateTime(final Time time) {
-        return Observable.defer(new Func0<Observable<Time>>() {
-            @Override
-            public Observable<Time> call() {
-                try {
-                    return Observable.just(getTimeRepository().update(time));
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        });
     }
 
     public Observable<TimesheetItem> getTimesheet(final Long id, final int offset) {

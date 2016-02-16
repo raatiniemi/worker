@@ -42,6 +42,7 @@ import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
@@ -226,6 +227,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                         getActivity(),
                         timeRepository
                 ),
+                new MarkRegisteredTime(timeRepository),
                 new RemoveTime(timeRepository)
         );
     }

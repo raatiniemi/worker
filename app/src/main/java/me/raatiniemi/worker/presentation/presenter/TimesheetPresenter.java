@@ -20,6 +20,8 @@ import android.content.Context;
 import android.util.Log;
 
 import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
@@ -43,6 +45,11 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     private final ProjectProvider mProvider;
 
     /**
+     * Use case for marking time as registered.
+     */
+    private final MarkRegisteredTime mMarkRegisteredTime;
+
+    /**
      * Use case for removing time.
      */
     private final RemoveTime mRemoveTime;
@@ -50,14 +57,21 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     /**
      * Constructor.
      *
-     * @param context    Context used with the presenter.
-     * @param provider   Provider for working with projects.
-     * @param removeTime Use case for removing time.
+     * @param context            Context used with the presenter.
+     * @param provider           Provider for working with projects.
+     * @param markRegisteredTime Use case for marking time as registered.
+     * @param removeTime         Use case for removing time.
      */
-    public TimesheetPresenter(Context context, ProjectProvider provider, RemoveTime removeTime) {
+    public TimesheetPresenter(
+            Context context,
+            ProjectProvider provider,
+            MarkRegisteredTime markRegisteredTime,
+            RemoveTime removeTime
+    ) {
         super(context);
 
         mProvider = provider;
+        mMarkRegisteredTime = markRegisteredTime;
         mRemoveTime = removeTime;
     }
 
@@ -173,11 +187,20 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     }
 
     public void register(final TimeInAdapterResult result) {
-        // Set the registered flag on the time object.
-        Time time = result.getTime();
-        time.setRegistered(true);
-
-        mProvider.updateTime(time)
+        // TODO: Refactor to use optimistic propagation.
+        Observable.just(result.getTime())
+                .flatMap(new Func1<Time, Observable<Time>>() {
+                    @Override
+                    public Observable<Time> call(final Time time) {
+                        try {
+                            return Observable.just(
+                                    mMarkRegisteredTime.execute(time)
+                            );
+                        } catch (DomainException e) {
+                            return Observable.error(e);
+                        }
+                    }
+                })
                 .compose(this.<Time>applySchedulers())
                 .subscribe(new Subscriber<Time>() {
                     @Override
