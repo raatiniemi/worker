@@ -20,6 +20,8 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
@@ -68,4 +70,21 @@ public interface TimeRepository {
      * TODO: Replace with query/criteria method.
      */
     List<Time> getProjectTimeSinceBeginningOfMonth(long projectId) throws DomainException;
+
+    /**
+     * Get timesheet segment for a project.
+     * <p>
+     * TODO: Move to separate repository?
+     * TODO: Migrate type to domain model.
+     *
+     * @param projectId Id for the project.
+     * @param offset    Offset for segment.
+     * @param criteria  Criteria for matching timesheet items.
+     * @return Project timesheet segment.
+     */
+    List<TimesheetAdapter.TimesheetItem> getTimesheet(
+            final long projectId,
+            final int offset,
+            final Criteria criteria
+    );
 }
