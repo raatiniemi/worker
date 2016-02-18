@@ -42,7 +42,8 @@ import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
-import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
+import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
@@ -131,11 +132,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
 
         return new ProjectsPresenter(
                 getActivity(),
-                new ProjectProvider(
-                        getActivity(),
-                        projectRepository,
-                        timeRepository
-                ),
+                new GetProjects(projectRepository, timeRepository),
+                new ClockActivityChange(projectRepository, timeRepository),
                 new RemoveProject(projectRepository)
         );
     }

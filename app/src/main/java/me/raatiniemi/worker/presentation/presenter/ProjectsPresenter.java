@@ -24,7 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import me.raatiniemi.worker.domain.ProjectProvider;
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
+import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
@@ -47,9 +49,14 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     private static final String TAG = "ProjectsPresenter";
 
     /**
-     * Provider for working with projects.
+     * Use case for getting projects.
      */
-    private final ProjectProvider mProvider;
+    private final GetProjects mGetProjects;
+
+    /**
+     * Use case for project clock in/out.
+     */
+    private final ClockActivityChange mClockActivityChange;
 
     /**
      * Use case for removing projects.
@@ -64,18 +71,21 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     /**
      * Constructor.
      *
-     * @param context       Context used with the presenter.
-     * @param provider      Provider for working with projects.
-     * @param removeProject Use case for removing projects.
+     * @param context             Context used with the presenter.
+     * @param getProjects         Use case for getting projects.
+     * @param clockActivityChange Use case for project clock in/out.
+     * @param removeProject       Use case for removing projects.
      */
     public ProjectsPresenter(
             Context context,
-            ProjectProvider provider,
+            GetProjects getProjects,
+            ClockActivityChange clockActivityChange,
             RemoveProject removeProject
     ) {
         super(context);
 
-        mProvider = provider;
+        mGetProjects = getProjects;
+        mClockActivityChange = clockActivityChange;
         mRemoveProject = removeProject;
     }
 
@@ -244,7 +254,22 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         unsubscribe();
 
         // Setup the subscription for retrieving projects.
-        mSubscription = mProvider.getProjects()
+        Observable.defer(new Func0<Observable<List<Project>>>() {
+            @Override
+            public Observable<List<Project>> call() {
+                try {
+                    return Observable.just(mGetProjects.execute());
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
+            }
+        })
+                .flatMapIterable(new Func1<List<Project>, Iterable<Project>>() {
+                    @Override
+                    public Iterable<Project> call(List<Project> projects) {
+                        return projects;
+                    }
+                })
                 .compose(this.<Project>applySchedulers())
                 .subscribe(new Subscriber<Project>() {
                     @Override
@@ -364,9 +389,19 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
      * @param project Project to change clock activity status.
      * @param date    Date and time to use for the clock activity change.
      */
-    public void clockActivityChange(Project project, Date date) {
-        mProvider.clockActivityChange(project, date)
-                .compose(this.<Project>applySchedulers())
+    public void clockActivityChange(final Project project, final Date date) {
+        Observable.defer(new Func0<Observable<Project>>() {
+            @Override
+            public Observable<Project> call() {
+                try {
+                    return Observable.just(
+                            mClockActivityChange.execute(project, date)
+                    );
+                } catch (DomainException e) {
+                    return Observable.error(e);
+                }
+            }
+        }).compose(this.<Project>applySchedulers())
                 .subscribe(new Subscriber<Project>() {
                     @Override
                     public void onNext(Project project) {

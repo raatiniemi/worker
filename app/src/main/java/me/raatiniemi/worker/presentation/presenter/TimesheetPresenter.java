@@ -19,14 +19,22 @@ package me.raatiniemi.worker.presentation.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import me.raatiniemi.worker.domain.ProjectProvider;
+import java.util.List;
+
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.interactor.GetTimesheet;
+import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
+import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimesheetItem;
 import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 import me.raatiniemi.worker.util.Settings;
+import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Func0;
+import rx.functions.Func1;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     /**
@@ -35,20 +43,39 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     private static final String TAG = "TimesheetPresenter";
 
     /**
-     * Provider for working with projects.
+     * Use case for getting project timesheet.
      */
-    private final ProjectProvider mProvider;
+    private final GetTimesheet mGetTimesheet;
+
+    /**
+     * Use case for marking time as registered.
+     */
+    private final MarkRegisteredTime mMarkRegisteredTime;
+
+    /**
+     * Use case for removing time.
+     */
+    private final RemoveTime mRemoveTime;
 
     /**
      * Constructor.
      *
-     * @param context  Context used with the presenter.
-     * @param provider Provider for working with projects.
+     * @param context            Context used with the presenter.
+     * @param getTimesheet       Use case for getting project timesheet.
+     * @param markRegisteredTime Use case for marking time as registered.
+     * @param removeTime         Use case for removing time.
      */
-    public TimesheetPresenter(Context context, ProjectProvider provider) {
+    public TimesheetPresenter(
+            Context context,
+            GetTimesheet getTimesheet,
+            MarkRegisteredTime markRegisteredTime,
+            RemoveTime removeTime
+    ) {
         super(context);
 
-        mProvider = provider;
+        mGetTimesheet = getTimesheet;
+        mMarkRegisteredTime = markRegisteredTime;
+        mRemoveTime = removeTime;
     }
 
     public void getTimesheet(final Long id, final int offset) {
@@ -57,7 +84,21 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
         unsubscribe();
 
         // Setup the subscription for retrieving timesheet.
-        mSubscription = mProvider.getTimesheet(id, offset)
+        mSubscription = Observable.defer(new Func0<Observable<List<TimesheetItem>>>() {
+            @Override
+            public Observable<List<TimesheetItem>> call() {
+                boolean hideRegisteredTime = Settings.shouldHideRegisteredTime(getContext());
+                return Observable.just(
+                        mGetTimesheet.execute(id, offset, hideRegisteredTime)
+                );
+            }
+        })
+                .flatMapIterable(new Func1<List<TimesheetItem>, Iterable<TimesheetItem>>() {
+                    @Override
+                    public Iterable<TimesheetItem> call(List<TimesheetItem> items) {
+                        return items;
+                    }
+                })
                 .compose(this.<TimesheetItem>applySchedulers())
                 .subscribe(new Subscriber<TimesheetItem>() {
                     @Override
@@ -108,7 +149,20 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     }
 
     public void remove(final TimeInAdapterResult result) {
-        mProvider.deleteTime(result.getTime())
+        Observable.just(result.getTime())
+                .map(new Func1<Time, Time>() {
+                    @Override
+                    public Time call(final Time time) {
+                        mRemoveTime.execute(time);
+
+                        // To avoid breaking the API from the ProjectProvider,
+                        // we should still return the time.
+                        //
+                        // However, this should be refactored to use optimistic
+                        // propagation, i.e. like removing projects.
+                        return time;
+                    }
+                })
                 .compose(this.<Time>applySchedulers())
                 .subscribe(new Subscriber<Time>() {
                     @Override
@@ -150,11 +204,20 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     }
 
     public void register(final TimeInAdapterResult result) {
-        // Set the registered flag on the time object.
-        Time time = result.getTime();
-        time.setRegistered(true);
-
-        mProvider.updateTime(time)
+        // TODO: Refactor to use optimistic propagation.
+        Observable.just(result.getTime())
+                .flatMap(new Func1<Time, Observable<Time>>() {
+                    @Override
+                    public Observable<Time> call(final Time time) {
+                        try {
+                            return Observable.just(
+                                    mMarkRegisteredTime.execute(time)
+                            );
+                        } catch (DomainException e) {
+                            return Observable.error(e);
+                        }
+                    }
+                })
                 .compose(this.<Time>applySchedulers())
                 .subscribe(new Subscriber<Time>() {
                     @Override
