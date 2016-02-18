@@ -35,6 +35,7 @@ import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
+import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
@@ -182,19 +183,12 @@ public class TimeResolverRepository
                 .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
                 .build();
 
-        String selection = null;
-        String[] selectionArgs = null;
-
-        if (null != criteria) {
-            selection = TimeContract.REGISTERED + "=?";
-            selectionArgs = new String[]{criteria.getValue()};
-        }
-
+        ContentResolverQuery query = ContentResolverQuery.from(criteria);
         final Cursor cursor = getContentResolver().query(
                 uri,
                 ProjectContract.COLUMNS_TIMESHEET,
-                selection,
-                selectionArgs,
+                query.getSelection(),
+                query.getSelectionArgs(),
                 ProjectContract.ORDER_BY_TIMESHEET
         );
         if (null == cursor) {

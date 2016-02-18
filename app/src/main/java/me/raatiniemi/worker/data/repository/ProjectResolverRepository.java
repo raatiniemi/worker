@@ -31,6 +31,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
@@ -57,11 +58,12 @@ public class ProjectResolverRepository
     public List<Project> matching(final Criteria criteria) throws InvalidProjectNameException {
         final List<Project> projects = new ArrayList<>();
 
+        ContentResolverQuery query = ContentResolverQuery.from(criteria);
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getStreamUri(),
                 ProjectContract.COLUMNS,
-                criteria.getField() + criteria.getOperator() + "? COLLATE NOCASE",
-                new String[]{criteria.getValue()},
+                query.getSelection(),
+                query.getSelectionArgs(),
                 null
         );
         if (null == cursor) {
