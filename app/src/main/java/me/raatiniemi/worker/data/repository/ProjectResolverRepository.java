@@ -68,12 +68,15 @@ public class ProjectResolverRepository
             return projects;
         }
 
-        if (cursor.moveToFirst()) {
-            do {
-                projects.add(getCursorMapper().transform(cursor));
-            } while (cursor.moveToNext());
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    projects.add(getCursorMapper().transform(cursor));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
 
         return projects;
     }
@@ -96,12 +99,15 @@ public class ProjectResolverRepository
             return projects;
         }
 
-        if (cursor.moveToFirst()) {
-            do {
-                projects.add(getCursorMapper().transform(cursor));
-            } while (cursor.moveToNext());
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    projects.add(getCursorMapper().transform(cursor));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
 
         return projects;
     }
@@ -123,10 +129,13 @@ public class ProjectResolverRepository
         }
 
         Project project = null;
-        if (cursor.moveToFirst()) {
-            project = getCursorMapper().transform(cursor);
+        try {
+            if (cursor.moveToFirst()) {
+                project = getCursorMapper().transform(cursor);
+            }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
 
         return project;
     }

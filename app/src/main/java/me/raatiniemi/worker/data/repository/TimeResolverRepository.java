@@ -71,10 +71,13 @@ public class TimeResolverRepository
         }
 
         Time time = null;
-        if (cursor.moveToFirst()) {
-            time = getCursorMapper().transform(cursor);
+        try {
+            if (cursor.moveToFirst()) {
+                time = getCursorMapper().transform(cursor);
+            }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
 
         return time;
     }
@@ -147,12 +150,15 @@ public class TimeResolverRepository
             return result;
         }
 
-        if (cursor.moveToFirst()) {
-            do {
-                result.add(getCursorMapper().transform(cursor));
-            } while (cursor.moveToNext());
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    result.add(getCursorMapper().transform(cursor));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
 
         return result;
     }
