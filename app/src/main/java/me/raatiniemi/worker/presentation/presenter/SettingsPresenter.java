@@ -21,7 +21,10 @@ import android.util.Log;
 
 import java.io.File;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
@@ -116,6 +119,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
     }
 
     @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(BackupSuccessfulEvent event) {
         // Check that we still have the view attached.
         if (!isViewAttached()) {

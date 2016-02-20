@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.base.view.activity.MvpActivity;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
