@@ -121,21 +121,21 @@ public class ProjectTest {
     }
 
     @Test(expected = InvalidProjectNameException.class)
-    public void setName_nullValueFromSetter() throws InvalidProjectNameException {
+    public void rename_withNullValue() throws InvalidProjectNameException {
         Project project = new Project(1L, "Project name");
-        project.setName(null);
+        project.rename(null);
     }
 
     @Test(expected = InvalidProjectNameException.class)
-    public void setName_emptyValueFromSetter() throws InvalidProjectNameException {
+    public void rename_withEmptyValue() throws InvalidProjectNameException {
         Project project = new Project(1L, "Project name");
-        project.setName("");
+        project.rename("");
     }
 
     @Test
-    public void getName_valueFromSetter() throws InvalidProjectNameException {
+    public void rename() throws InvalidProjectNameException {
         Project project = new Project(null, "Project name");
-        project.setName("New project name");
+        project.rename("New project name");
 
         assertEquals("New project name", project.getName());
     }

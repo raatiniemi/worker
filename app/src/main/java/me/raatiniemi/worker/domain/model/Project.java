@@ -80,12 +80,16 @@ public class Project extends DomainObject {
      * @param name Project name.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
-    public void setName(final String name) throws InvalidProjectNameException {
+    private void setName(final String name) throws InvalidProjectNameException {
         if (null == name || 0 == name.length()) {
             throw new InvalidProjectNameException("Project name is null or empty");
         }
 
         mName = name;
+    }
+
+    public void rename(final String name) throws InvalidProjectNameException {
+        setName(name);
     }
 
     /**
