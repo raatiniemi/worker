@@ -41,7 +41,7 @@ public class Project extends DomainObject {
     /**
      * Flag for archived project.
      */
-    private boolean mArchived;
+    private boolean mArchived = false;
 
     /**
      * Time registered for the project.
@@ -62,7 +62,6 @@ public class Project extends DomainObject {
 
         // Set default value for non-constructor arguments.
         mTime = new ArrayList<>();
-        setArchived(false);
     }
 
     /**
@@ -124,13 +123,12 @@ public class Project extends DomainObject {
         return mArchived;
     }
 
-    /**
-     * Setter method for archived project flag.
-     *
-     * @param archived True if project is archived, otherwise false.
-     */
-    public void setArchived(final boolean archived) {
-        mArchived = archived;
+    public void archive() {
+        mArchived = true;
+    }
+
+    public void unarchive() {
+        mArchived = false;
     }
 
     /**
@@ -342,7 +340,9 @@ public class Project extends DomainObject {
         public Project build() throws InvalidProjectNameException {
             Project project = new Project(mId, mProjectName);
             project.setDescription(mDescription);
-            project.setArchived(mArchived);
+            if (mArchived) {
+                project.archive();
+            }
 
             return project;
         }

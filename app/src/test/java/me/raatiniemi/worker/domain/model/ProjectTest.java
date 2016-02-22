@@ -174,12 +174,19 @@ public class ProjectTest {
     @Test
     public void isArchived_valueFromSetter() throws InvalidProjectNameException {
         Project project = new Project(null, "Project name");
-        project.setArchived(true);
 
+        project.archive();
+        assertTrue(project.isArchived());
+    }
+
+    @Test
+    public void unarchive() throws InvalidProjectNameException {
+        Project project = new Project(null, "Project name");
+
+        project.archive();
         assertTrue(project.isArchived());
 
-        project.setArchived(false);
-
+        project.unarchive();
         assertFalse(project.isArchived());
     }
 

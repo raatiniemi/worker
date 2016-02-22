@@ -40,7 +40,9 @@ public class ProjectCursorMapper implements CursorMapper<Project> {
 
         Project project = new Project(id, name);
         project.setDescription(description);
-        project.setArchived(0 != archived);
+        if (0 != archived) {
+            project.archive();
+        }
 
         return project;
     }
