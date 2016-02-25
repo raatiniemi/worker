@@ -24,31 +24,21 @@ public class CalculateTime {
     private static final int SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
 
     public static CalculatedTime calculateTime(long milliseconds) {
-        // Convert milliseconds to seconds.
         long seconds = milliseconds / 1000;
 
-        // Calculate the number of hours and minutes based
-        // on the total number of seconds.
         long hours = seconds / SECONDS_IN_HOUR % HOURS_IN_DAY;
         long minutes = seconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR;
 
-        // Check if the interval has passed 24 hours.
         long days = seconds / SECONDS_IN_DAY;
         if (days > 0) {
             hours += days * HOURS_IN_DAY;
         }
 
-        // If the number of seconds is at >= 30 we should add an extra minute
-        // to the minutes, i.e. round up the minutes if they have passed 50%.
-        //
-        // Otherwise, total time of 49 seconds will still display 0m and not 1m.
         long secondsRemaining = seconds % SECONDS_IN_MINUTE;
         if (secondsRemaining >= 30) {
             minutes++;
         }
 
-        // If the minutes reaches 60, we have to reset
-        // the minutes and increment the hours.
         if (MINUTES_IN_HOUR == minutes) {
             minutes = 0;
             hours++;
