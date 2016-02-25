@@ -24,20 +24,9 @@ public class CalculateTime {
     private static final int SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
 
     public static CalculatedTime calculateTime(long milliseconds) {
-        long seconds = milliseconds / 1000;
-
-        long hours = seconds / SECONDS_IN_HOUR % HOURS_IN_DAY;
-        long minutes = seconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR;
-
-        long days = seconds / SECONDS_IN_DAY;
-        if (days > 0) {
-            hours += days * HOURS_IN_DAY;
-        }
-
-        long secondsRemaining = seconds % SECONDS_IN_MINUTE;
-        if (secondsRemaining >= 30) {
-            minutes++;
-        }
+        long seconds = calculateSeconds(milliseconds);
+        long minutes = calculateMinutes(seconds);
+        long hours = calculateHours(seconds);
 
         if (MINUTES_IN_HOUR == minutes) {
             minutes = 0;
@@ -45,6 +34,32 @@ public class CalculateTime {
         }
 
         return new CalculatedTime(hours, minutes);
+    }
+
+    private static long calculateSeconds(long milliseconds) {
+        return milliseconds / 1000;
+    }
+
+    private static long calculateMinutes(long seconds) {
+        long minutes = seconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR;
+
+        long secondsRemaining = seconds % SECONDS_IN_MINUTE;
+        if (secondsRemaining >= 30) {
+            minutes++;
+        }
+
+        return minutes;
+    }
+
+    private static long calculateHours(long seconds) {
+        long hours = seconds / SECONDS_IN_HOUR % HOURS_IN_DAY;
+
+        long days = seconds / SECONDS_IN_DAY;
+        if (days > 0) {
+            hours += days * HOURS_IN_DAY;
+        }
+
+        return hours;
     }
 
     public static class CalculatedTime {
