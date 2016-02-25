@@ -25,15 +25,15 @@ public class CalculateTime {
 
     public static CalculatedTime calculateTime(long milliseconds) {
         // Convert milliseconds to seconds.
-        milliseconds = milliseconds / 1000;
+        long seconds = milliseconds / 1000;
 
         // Calculate the number of hours and minutes based
         // on the total number of seconds.
-        long hours = milliseconds / SECONDS_IN_HOUR % HOURS_IN_DAY;
-        long minutes = milliseconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR;
+        long hours = seconds / SECONDS_IN_HOUR % HOURS_IN_DAY;
+        long minutes = seconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR;
 
         // Check if the interval has passed 24 hours.
-        long days = milliseconds / SECONDS_IN_DAY;
+        long days = seconds / SECONDS_IN_DAY;
         if (days > 0) {
             hours += days * HOURS_IN_DAY;
         }
@@ -42,8 +42,8 @@ public class CalculateTime {
         // to the minutes, i.e. round up the minutes if they have passed 50%.
         //
         // Otherwise, total time of 49 seconds will still display 0m and not 1m.
-        long seconds = milliseconds % SECONDS_IN_MINUTE;
-        if (seconds >= 30) {
+        long secondsRemaining = seconds % SECONDS_IN_MINUTE;
+        if (secondsRemaining >= 30) {
             minutes++;
         }
 
