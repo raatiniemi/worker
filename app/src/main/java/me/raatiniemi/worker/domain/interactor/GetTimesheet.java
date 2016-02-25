@@ -19,9 +19,9 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.List;
 
 import me.raatiniemi.worker.data.WorkerContract;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
-import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 
 /**
  * Use case for getting segment from project timesheet.
@@ -49,7 +49,7 @@ public class GetTimesheet {
      * @param hideRegisteredTime Should registered time be hidden.
      * @return Segment of project timesheet.
      */
-    public List<TimesheetAdapter.TimesheetItem> execute(
+    public List<TimesheetItem> execute(
             final Long projectId,
             final int offset,
             boolean hideRegisteredTime

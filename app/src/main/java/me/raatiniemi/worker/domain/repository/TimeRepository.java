@@ -20,8 +20,8 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
-import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
@@ -82,7 +82,7 @@ public interface TimeRepository {
      * @param criteria  Criteria for matching timesheet items.
      * @return Project timesheet segment.
      */
-    List<TimesheetAdapter.TimesheetItem> getTimesheet(
+    List<TimesheetItem> getTimesheet(
             final long projectId,
             final int offset,
             final Criteria criteria

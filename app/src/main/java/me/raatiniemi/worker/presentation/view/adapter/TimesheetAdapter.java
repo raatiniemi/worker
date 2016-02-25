@@ -31,13 +31,14 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
         Time,
-        TimesheetAdapter.TimesheetItem,
+        TimesheetItem,
         TimesheetAdapter.ItemViewHolder,
         TimesheetAdapter.ItemViewHolder
         > {
@@ -188,12 +189,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     public interface OnTimesheetListener {
         boolean onTimeLongClick(View view, TimeInAdapterResult result);
-    }
-
-    public static class TimesheetItem extends ExpandableListAdapter.ExpandableItem<Date, Time> {
-        public TimesheetItem(Date group) {
-            super(group);
-        }
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {
