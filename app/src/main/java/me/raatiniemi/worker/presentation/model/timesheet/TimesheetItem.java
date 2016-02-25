@@ -9,4 +9,19 @@ public class TimesheetItem extends ExpandableListAdapter.ExpandableItem<Date, Ti
     public TimesheetItem(Date group) {
         super(group);
     }
+
+    public boolean isRegistered() {
+        boolean registered = true;
+
+        for (Time time : this) {
+            if (time.isRegistered()) {
+                continue;
+            }
+
+            registered = false;
+            break;
+        }
+
+        return registered;
+    }
 }
