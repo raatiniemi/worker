@@ -12,6 +12,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.domain.model.Time;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -47,9 +48,40 @@ public class TimesheetItemTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] getTimeSummaryWithDifference_dataProvider() {
+        return new Object[][]{
+                {
+                        "1.00 (-7.00)",
+                        new Time[]{
+                                createTimeForGetTimeSummaryWithDifferenceTest(3600000)
+                        }
+                },
+                {
+                        "8.00",
+                        new Time[]{
+                                createTimeForGetTimeSummaryWithDifferenceTest(28800000)
+                        }
+                },
+                {
+                        "9.00 (+1.00)",
+                        new Time[]{
+                                createTimeForGetTimeSummaryWithDifferenceTest(32400000)
+                        }
+                }
+        };
+    }
+
     private static Time createTimeForIsRegisteredTest(boolean registered) {
         Time time = mock(Time.class);
         when(time.isRegistered()).thenReturn(registered);
+
+        return time;
+    }
+
+    private static Time createTimeForGetTimeSummaryWithDifferenceTest(long interval) {
+        Time time = mock(Time.class);
+        when(time.getInterval()).thenReturn(interval);
 
         return time;
     }
@@ -65,5 +97,14 @@ public class TimesheetItemTest {
             return;
         }
         assertFalse(timesheet.isRegistered());
+    }
+
+    @Test
+    @UseDataProvider("getTimeSummaryWithDifference_dataProvider")
+    public void getTimeSummaryWithDifference(String expected, Time[] times) {
+        TimesheetItem timesheet = new TimesheetItem(new Date());
+        timesheet.addAll(Arrays.asList(times));
+
+        assertEquals(expected, timesheet.getTimeSummaryWithDifference());
     }
 }

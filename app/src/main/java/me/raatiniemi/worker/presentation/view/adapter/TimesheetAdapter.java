@@ -95,27 +95,9 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         Date date = getGroup(group);
         vh.mTitle.setText(mDateFormat.format(date));
 
-        long interval = 0;
-
         TimesheetItem item = get(group);
-        for (Time time : item) {
-            interval += time.getInterval();
-        }
-
         vh.itemView.setActivated(item.isRegistered());
-
-        String summarize = DateIntervalFormat.format(
-                interval,
-                DateIntervalFormat.Type.FRACTION_HOURS
-        );
-
-        Float difference = Float.valueOf(summarize) - 8;
-        if (difference != 0) {
-            String format = difference > 0 ? " (+%.2f)" : " (%.2f)";
-            summarize += String.format(format, difference);
-        }
-
-        vh.mSummarize.setText(summarize);
+        vh.mSummarize.setText(item.getTimeSummaryWithDifference());
     }
 
     @Override
