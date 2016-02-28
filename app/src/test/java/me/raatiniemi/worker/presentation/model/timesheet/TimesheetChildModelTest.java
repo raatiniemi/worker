@@ -26,10 +26,26 @@ import org.junit.runner.RunWith;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
 public class TimesheetChildModelTest {
+    @DataProvider
+    public static Object[][] getTimeSummary_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "1.00",
+                        createTimeForGetTimeSummaryTest(3600000)
+                },
+                {
+                        "9.00",
+                        createTimeForGetTimeSummaryTest(32400000)
+                }
+        };
+    }
+
     @DataProvider
     public static Object[][] isRegistered_dataProvider()
             throws ClockOutBeforeClockInException {
@@ -45,6 +61,13 @@ public class TimesheetChildModelTest {
                         createTimeForIsRegisteredTest(false)
                 }
         };
+    }
+
+    private static Time createTimeForGetTimeSummaryTest(long interval)
+            throws ClockOutBeforeClockInException {
+        return new Time.Builder(1L)
+                .stopInMilliseconds(interval)
+                .build();
     }
 
     private static Time createTimeForIsRegisteredTest(boolean registered)
@@ -64,6 +87,14 @@ public class TimesheetChildModelTest {
         TimesheetChildModel model = new TimesheetChildModel(time);
 
         assertTrue(time == model.asTime());
+    }
+
+    @Test
+    @UseDataProvider("getTimeSummary_dataProvider")
+    public void getTimeSummary(String expected, Time time) {
+        TimesheetChildModel item = new TimesheetChildModel(time);
+
+        assertEquals(expected, item.getTimeSummary());
     }
 
     @Test

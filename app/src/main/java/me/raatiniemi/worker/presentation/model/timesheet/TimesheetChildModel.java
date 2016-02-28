@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.model.timesheet;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetChildModel {
     private final Time mTime;
@@ -27,6 +28,13 @@ public class TimesheetChildModel {
 
     public Time asTime() {
         return mTime;
+    }
+
+    public String getTimeSummary() {
+        return DateIntervalFormat.format(
+                mTime.getInterval(),
+                DateIntervalFormat.Type.FRACTION_HOURS
+        );
     }
 
     public boolean isRegistered() {

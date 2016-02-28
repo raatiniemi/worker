@@ -34,7 +34,6 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
-import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
@@ -125,13 +124,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         }
         vh.mTitle.setText(title);
 
-        vh.mSummarize.setText(
-                DateIntervalFormat.format(
-                        time.getInterval(),
-                        DateIntervalFormat.Type.FRACTION_HOURS
-                )
-        );
-
+        vh.mSummarize.setText(item.getTimeSummary());
     }
 
     @Override
