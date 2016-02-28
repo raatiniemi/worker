@@ -90,14 +90,13 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindGroupViewHolder(ItemViewHolder vh, int group, int viewType) {
-        vh.itemView.setClickable(true);
-
-        Date date = getGroup(group);
-        vh.mTitle.setText(mDateFormat.format(date));
-
         TimesheetItem item = get(group);
-        vh.itemView.setActivated(item.isRegistered());
+
+        vh.mTitle.setText(mDateFormat.format(item.getGroup()));
         vh.mSummarize.setText(item.getTimeSummaryWithDifference());
+
+        vh.itemView.setActivated(item.isRegistered());
+        vh.itemView.setClickable(true);
     }
 
     @Override
