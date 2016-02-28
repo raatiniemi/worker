@@ -41,13 +41,25 @@ public class TimesheetChildModel {
     }
 
     public String getTitle() {
-        String title = sTimeFormat.format(new Date(mTime.getStartInMilliseconds()));
+        String title = sTimeFormat.format(buildDateFromStartTime());
 
         if (!mTime.isActive()) {
-            title += " - " + sTimeFormat.format(new Date(mTime.getStopInMilliseconds()));
+            title += " - " + sTimeFormat.format(buildDateFromStopTime());
         }
 
         return title;
+    }
+
+    private Date buildDateFromStartTime() {
+        return buildDateFromMilliseconds(mTime.getStartInMilliseconds());
+    }
+
+    private Date buildDateFromStopTime() {
+        return buildDateFromMilliseconds(mTime.getStopInMilliseconds());
+    }
+
+    private Date buildDateFromMilliseconds(long milliseconds) {
+        return new Date(milliseconds);
     }
 
     public String getTimeSummary() {
