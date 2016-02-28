@@ -34,8 +34,7 @@ public class TimesheetGroupModel
         boolean registered = true;
 
         for (TimesheetChildModel child : this) {
-            Time time = child.asTime();
-            if (time.isRegistered()) {
+            if (child.isRegistered()) {
                 continue;
             }
 

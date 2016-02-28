@@ -116,7 +116,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         // it. The selected background color should take precedence.
         vh.itemView.setActivated(false);
         if (!vh.itemView.isSelected()) {
-            vh.itemView.setActivated(time.isRegistered());
+            vh.itemView.setActivated(item.isRegistered());
         }
 
         String title = mTimeFormat.format(new Date(time.getStartInMilliseconds()));

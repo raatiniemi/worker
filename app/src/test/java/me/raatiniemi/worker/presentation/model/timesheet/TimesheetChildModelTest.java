@@ -16,7 +16,9 @@
 
 package me.raatiniemi.worker.presentation.model.timesheet;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,11 +30,47 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
 public class TimesheetChildModelTest {
+    @DataProvider
+    public static Object[][] isRegistered_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "is registered",
+                        Boolean.TRUE,
+                        createTimeForIsRegisteredTest(true)
+                },
+                {
+                        "is not registered",
+                        Boolean.FALSE,
+                        createTimeForIsRegisteredTest(false)
+                }
+        };
+    }
+
+    private static Time createTimeForIsRegisteredTest(boolean registered)
+            throws ClockOutBeforeClockInException {
+        Time.Builder builder = new Time.Builder(1L);
+
+        if (registered) {
+            builder.register();
+        }
+
+        return builder.build();
+    }
+
     @Test
     public void asTime() throws ClockOutBeforeClockInException {
         Time time = new Time.Builder(1L).build();
         TimesheetChildModel model = new TimesheetChildModel(time);
 
         assertTrue(time == model.asTime());
+    }
+
+    @Test
+    @UseDataProvider("isRegistered_dataProvider")
+    public void isRegistered(String message, Boolean expected, Time time) {
+        TimesheetChildModel actual = new TimesheetChildModel(time);
+
+        assertTrue(message, expected == actual.isRegistered());
     }
 }

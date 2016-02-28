@@ -28,4 +28,8 @@ public class TimesheetChildModel {
     public Time asTime() {
         return mTime;
     }
+
+    public boolean isRegistered() {
+        return mTime.isRegistered();
+    }
 }
