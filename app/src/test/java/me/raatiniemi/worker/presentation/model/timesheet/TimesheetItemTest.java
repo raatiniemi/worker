@@ -8,7 +8,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import me.raatiniemi.worker.domain.model.Time;
 
@@ -20,6 +22,16 @@ import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class TimesheetItemTest {
+    @DataProvider
+    public static Object[][] getTitle_dataProvider() {
+        return new Object[][]{
+                {
+                        "Sunday (February 28)",
+                        new GregorianCalendar(2016, 1, 28)
+                }
+        };
+    }
+
     @DataProvider
     public static Object[][] isRegistered_dataProvider() {
         return new Object[][]{
@@ -84,6 +96,14 @@ public class TimesheetItemTest {
         when(time.getInterval()).thenReturn(interval);
 
         return time;
+    }
+
+    @Test
+    @UseDataProvider("getTitle_dataProvider")
+    public void getTitle(String expected, Calendar calendar) {
+        TimesheetItem timesheetItem = new TimesheetItem(calendar.getTime());
+
+        assertEquals(expected, timesheetItem.getTitle());
     }
 
     @Test

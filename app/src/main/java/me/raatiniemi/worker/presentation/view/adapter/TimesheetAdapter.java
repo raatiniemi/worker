@@ -44,8 +44,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         > {
     private static final String TAG = "TimesheetAdapter";
 
-    private final SimpleDateFormat mDateFormat;
-
     private final SimpleDateFormat mTimeFormat;
 
     private final OnTimesheetListener mOnTimesheetListener;
@@ -58,7 +56,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         mOnTimesheetListener = listener;
 
-        mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
         mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         setHasStableIds(true);
@@ -92,7 +89,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     public void onBindGroupViewHolder(ItemViewHolder vh, int group, int viewType) {
         TimesheetItem item = get(group);
 
-        vh.mTitle.setText(mDateFormat.format(item.getGroup()));
+        vh.mTitle.setText(item.getTitle());
         vh.mSummarize.setText(item.getTimeSummaryWithDifference());
 
         vh.itemView.setActivated(item.isRegistered());
