@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.model.timesheet;
 
+import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -41,17 +42,27 @@ public class TimesheetChildModel {
     }
 
     public String getTitle() {
-        String title = sTimeFormat.format(buildDateFromStartTime());
+        StringBuffer title = buildTitleFromStartTime();
 
         if (!mTime.isActive()) {
-            title += " - " + sTimeFormat.format(buildDateFromStopTime());
+            appendStopTimeWithSeparator(title);
         }
 
-        return title;
+        return title.toString();
+    }
+
+    private StringBuffer buildTitleFromStartTime() {
+        return sTimeFormat.format(buildDateFromStartTime(), new StringBuffer(), new FieldPosition(0));
     }
 
     private Date buildDateFromStartTime() {
         return buildDateFromMilliseconds(mTime.getStartInMilliseconds());
+    }
+
+    private void appendStopTimeWithSeparator(StringBuffer title) {
+        title.append(" - ");
+
+        sTimeFormat.format(buildDateFromStopTime(), title, new FieldPosition(0));
     }
 
     private Date buildDateFromStopTime() {
