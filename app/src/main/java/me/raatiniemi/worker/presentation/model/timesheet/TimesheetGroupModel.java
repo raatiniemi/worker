@@ -10,7 +10,8 @@ import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
-public class TimesheetGroupModel extends ExpandableListAdapter.ExpandableItem<Date, Time> {
+public class TimesheetGroupModel
+        extends ExpandableListAdapter.ExpandableItem<Date, TimesheetChildModel> {
     private static final SimpleDateFormat sDateFormat;
 
     static {
@@ -32,7 +33,8 @@ public class TimesheetGroupModel extends ExpandableListAdapter.ExpandableItem<Da
     public boolean isRegistered() {
         boolean registered = true;
 
-        for (Time time : this) {
+        for (TimesheetChildModel child : this) {
+            Time time = child.asTime();
             if (time.isRegistered()) {
                 continue;
             }
@@ -61,7 +63,13 @@ public class TimesheetGroupModel extends ExpandableListAdapter.ExpandableItem<Da
     private long calculateTimeIntervalSummary() {
         long interval = 0;
 
-        for (Time time : this) {
+        for (TimesheetChildModel child : this) {
+            // TODO: Add delegate method to model for interval?
+            // Also, perhaps the calculation should be moved to the child and
+            // only summarized here. This would remove the need for a delegate
+            // method, however, a calculateInterval method is still needed.
+            Time time = child.asTime();
+
             CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
             interval += calculatedTime.asMilliseconds();
         }

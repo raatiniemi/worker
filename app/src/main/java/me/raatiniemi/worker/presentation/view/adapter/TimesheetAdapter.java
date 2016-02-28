@@ -32,12 +32,13 @@ import java.util.Locale;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
-        Time,
+        TimesheetChildModel,
         TimesheetGroupModel,
         TimesheetAdapter.ItemViewHolder,
         TimesheetAdapter.ItemViewHolder
@@ -98,7 +99,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindChildViewHolder(ItemViewHolder vh, final int group, final int child, int viewType) {
-        final Time time = get(group, child);
+        final TimesheetChildModel item = get(group, child);
+        final Time time = item.asTime();
 
         // Register the long click listener on the time item.
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -150,7 +152,10 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getChildId(int group, int child) {
-        Time time = get(group, child);
+        // TODO: Add delegate method to model for id?
+        TimesheetChildModel item = get(group, child);
+        Time time = item.asTime();
+
         return time.getId();
     }
 

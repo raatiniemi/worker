@@ -30,6 +30,7 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
@@ -103,7 +104,9 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         List<TimesheetGroupModel> items = new ArrayList<>();
                         for (Date date : result.keySet()) {
                             TimesheetGroupModel item = new TimesheetGroupModel(date);
-                            item.addAll(result.get(date));
+                            for (Time time : result.get(date)) {
+                                item.add(new TimesheetChildModel(time));
+                            }
 
                             items.add(item);
                         }
