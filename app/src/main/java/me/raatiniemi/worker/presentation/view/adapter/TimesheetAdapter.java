@@ -31,19 +31,18 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
         Time,
-        TimesheetAdapter.TimesheetItem,
+        TimesheetItem,
         TimesheetAdapter.ItemViewHolder,
         TimesheetAdapter.ItemViewHolder
         > {
     private static final String TAG = "TimesheetAdapter";
-
-    private final SimpleDateFormat mDateFormat;
 
     private final SimpleDateFormat mTimeFormat;
 
@@ -57,7 +56,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         mOnTimesheetListener = listener;
 
-        mDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
         mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         setHasStableIds(true);
@@ -89,38 +87,13 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindGroupViewHolder(ItemViewHolder vh, int group, int viewType) {
+        TimesheetItem item = get(group);
+
+        vh.mTitle.setText(item.getTitle());
+        vh.mSummarize.setText(item.getTimeSummaryWithDifference());
+
+        vh.itemView.setActivated(item.isRegistered());
         vh.itemView.setClickable(true);
-
-        Date date = getGroup(group);
-        vh.mTitle.setText(mDateFormat.format(date));
-
-        long interval = 0;
-        boolean registered = true;
-
-        for (Time time : get(group)) {
-            // If a single child is not registered, the group should not be
-            // considered registered.
-            if (!time.isRegistered()) {
-                registered = false;
-            }
-
-            interval += time.getInterval();
-        }
-
-        vh.itemView.setActivated(registered);
-
-        String summarize = DateIntervalFormat.format(
-                interval,
-                DateIntervalFormat.Type.FRACTION_HOURS
-        );
-
-        Float difference = Float.valueOf(summarize) - 8;
-        if (difference != 0) {
-            String format = difference > 0 ? " (+%.2f)" : " (%.2f)";
-            summarize += String.format(format, difference);
-        }
-
-        vh.mSummarize.setText(summarize);
     }
 
     @Override
@@ -188,12 +161,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     public interface OnTimesheetListener {
         boolean onTimeLongClick(View view, TimeInAdapterResult result);
-    }
-
-    public static class TimesheetItem extends ExpandableListAdapter.ExpandableItem<Date, Time> {
-        public TimesheetItem(Date group) {
-            super(group);
-        }
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {

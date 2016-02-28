@@ -36,9 +36,9 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
-import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
@@ -167,12 +167,12 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public List<TimesheetAdapter.TimesheetItem> getTimesheet(
+    public List<TimesheetItem> getTimesheet(
             final long projectId,
             final int offset,
             final Criteria criteria
     ) {
-        List<TimesheetAdapter.TimesheetItem> result = new ArrayList<>();
+        List<TimesheetItem> result = new ArrayList<>();
 
         // TODO: Simplify the building of the URI with query parameters.
         Uri uri = ProjectContract.getItemTimesheetUri(projectId)
@@ -210,7 +210,7 @@ public class TimeResolverRepository
 
                 // We're getting the id for the time objects as a comma-separated string column.
                 // We have to split the value before attempting to retrieve each individual row.
-                TimesheetAdapter.TimesheetItem item = new TimesheetAdapter.TimesheetItem(
+                TimesheetItem item = new TimesheetItem(
                         new Date(cursor.getLong(0))
                 );
 
