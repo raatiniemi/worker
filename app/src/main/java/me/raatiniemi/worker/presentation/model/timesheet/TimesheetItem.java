@@ -27,23 +27,49 @@ public class TimesheetItem extends ExpandableListAdapter.ExpandableItem<Date, Ti
     }
 
     public String getTimeSummaryWithDifference() {
+        String timeSummary = getTimeSummary();
+
+        float difference = calculateTimeDifference(timeSummary);
+        return timeSummary + getFormattedTimeDifference(difference);
+    }
+
+    private String getTimeSummary() {
+        return DateIntervalFormat.format(
+                calculateTimeIntervalSummary(),
+                DateIntervalFormat.Type.FRACTION_HOURS
+        );
+    }
+
+    private long calculateTimeIntervalSummary() {
         long interval = 0;
 
         for (Time time : this) {
             interval += time.getInterval();
         }
 
-        String summarize = DateIntervalFormat.format(
-                interval,
-                DateIntervalFormat.Type.FRACTION_HOURS
-        );
+        return interval;
+    }
 
-        Float difference = Float.valueOf(summarize) - 8;
-        if (difference != 0) {
-            String format = difference > 0 ? " (+%.2f)" : " (%.2f)";
-            summarize += String.format(format, difference);
+    private float calculateTimeDifference(String timeSummary) {
+        return Float.valueOf(timeSummary) - 8;
+    }
+
+    private String getFormattedTimeDifference(float difference) {
+        return String.format(
+                getTimeDifferenceFormat(difference),
+                difference
+        );
+    }
+
+    private String getTimeDifferenceFormat(float difference) {
+        if (0 == difference) {
+            return "";
         }
 
-        return summarize;
+        if (0 < difference) {
+            return " (+%.2f)";
+        }
+
+        return " (%.2f)";
     }
 }
