@@ -25,6 +25,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetChildModel {
+    private static final String sTimeSeparator = " - ";
     private static final SimpleDateFormat sTimeFormat;
 
     static {
@@ -60,7 +61,7 @@ public class TimesheetChildModel {
     }
 
     private void appendStopTimeWithSeparator(StringBuffer title) {
-        title.append(" - ");
+        title.append(sTimeSeparator);
 
         sTimeFormat.format(buildDateFromStopTime(), title, new FieldPosition(0));
     }
