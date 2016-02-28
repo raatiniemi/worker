@@ -16,10 +16,20 @@
 
 package me.raatiniemi.worker.presentation.model.timesheet;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetChildModel {
+    private static final SimpleDateFormat sTimeFormat;
+
+    static {
+        sTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    }
+
     private final Time mTime;
 
     public TimesheetChildModel(Time time) {
@@ -28,6 +38,16 @@ public class TimesheetChildModel {
 
     public Time asTime() {
         return mTime;
+    }
+
+    public String getTitle() {
+        String title = sTimeFormat.format(new Date(mTime.getStartInMilliseconds()));
+
+        if (!mTime.isActive()) {
+            title += " - " + sTimeFormat.format(new Date(mTime.getStopInMilliseconds()));
+        }
+
+        return title;
     }
 
     public String getTimeSummary() {

@@ -24,10 +24,8 @@ import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
@@ -44,8 +42,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         > {
     private static final String TAG = "TimesheetAdapter";
 
-    private final SimpleDateFormat mTimeFormat;
-
     private final OnTimesheetListener mOnTimesheetListener;
 
     public TimesheetAdapter(
@@ -55,8 +51,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         super(items);
 
         mOnTimesheetListener = listener;
-
-        mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         setHasStableIds(true);
     }
@@ -118,12 +112,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
             vh.itemView.setActivated(item.isRegistered());
         }
 
-        String title = mTimeFormat.format(new Date(time.getStartInMilliseconds()));
-        if (!time.isActive()) {
-            title += " - " + mTimeFormat.format(new Date(time.getStopInMilliseconds()));
-        }
-        vh.mTitle.setText(title);
-
+        vh.mTitle.setText(item.getTitle());
         vh.mSummarize.setText(item.getTimeSummary());
     }
 

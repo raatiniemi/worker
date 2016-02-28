@@ -23,6 +23,9 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
@@ -31,6 +34,29 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
 public class TimesheetChildModelTest {
+    @DataProvider
+    public static Object[][] getTitle_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "active time",
+                        "08:00",
+                        createTimeForGetTitleTest(
+                                new GregorianCalendar(2016, 1, 28, 8, 0),
+                                null
+                        )
+                },
+                {
+                        "inactive time",
+                        "08:00 - 11:30",
+                        createTimeForGetTitleTest(
+                                new GregorianCalendar(2016, 1, 28, 8, 0),
+                                new GregorianCalendar(2016, 1, 28, 11, 30)
+                        )
+                }
+        };
+    }
+
     @DataProvider
     public static Object[][] getTimeSummary_dataProvider()
             throws ClockOutBeforeClockInException {
@@ -63,6 +89,18 @@ public class TimesheetChildModelTest {
         };
     }
 
+    private static Time createTimeForGetTitleTest(Calendar start, Calendar stop)
+            throws ClockOutBeforeClockInException {
+        Time.Builder builder = new Time.Builder(1L)
+                .startInMilliseconds(start.getTimeInMillis());
+
+        if (null != stop) {
+            builder.stopInMilliseconds(stop.getTimeInMillis());
+        }
+
+        return builder.build();
+    }
+
     private static Time createTimeForGetTimeSummaryTest(long interval)
             throws ClockOutBeforeClockInException {
         return new Time.Builder(1L)
@@ -87,6 +125,14 @@ public class TimesheetChildModelTest {
         TimesheetChildModel model = new TimesheetChildModel(time);
 
         assertTrue(time == model.asTime());
+    }
+
+    @Test
+    @UseDataProvider("getTitle_dataProvider")
+    public void getTitle(String message, String expected, Time time) {
+        TimesheetChildModel item = new TimesheetChildModel(time);
+
+        assertEquals(message, expected, item.getTitle());
     }
 
     @Test
