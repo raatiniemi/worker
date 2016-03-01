@@ -19,7 +19,10 @@ package me.raatiniemi.worker.presentation.presenter;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetTimesheet;
@@ -84,25 +87,33 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
         unsubscribe();
 
         // Setup the subscription for retrieving timesheet.
-        mSubscription = Observable.defer(new Func0<Observable<List<TimesheetItem>>>() {
-            @Override
-            public Observable<List<TimesheetItem>> call() {
-                boolean hideRegisteredTime = Settings.shouldHideRegisteredTime(getContext());
-                return Observable.just(
-                        mGetTimesheet.execute(id, offset, hideRegisteredTime)
-                );
-            }
-        })
-                .flatMapIterable(new Func1<List<TimesheetItem>, Iterable<TimesheetItem>>() {
+        mSubscription = Observable
+                .defer(new Func0<Observable<Map<Date, List<Time>>>>() {
                     @Override
-                    public Iterable<TimesheetItem> call(List<TimesheetItem> items) {
+                    public Observable<Map<Date, List<Time>>> call() {
+                        boolean hideRegisteredTime = Settings.shouldHideRegisteredTime(getContext());
+                        return Observable.just(
+                                mGetTimesheet.execute(id, offset, hideRegisteredTime)
+                        );
+                    }
+                })
+                .map(new Func1<Map<Date, List<Time>>, List<TimesheetItem>>() {
+                    @Override
+                    public List<TimesheetItem> call(Map<Date, List<Time>> result) {
+                        List<TimesheetItem> items = new ArrayList<>();
+                        for (Date date : result.keySet()) {
+                            TimesheetItem item = new TimesheetItem(date);
+                            item.addAll(result.get(date));
+
+                            items.add(item);
+                        }
                         return items;
                     }
                 })
-                .compose(this.<TimesheetItem>applySchedulers())
-                .subscribe(new Subscriber<TimesheetItem>() {
+                .compose(this.<List<TimesheetItem>>applySchedulers())
+                .subscribe(new Subscriber<List<TimesheetItem>>() {
                     @Override
-                    public void onNext(TimesheetItem item) {
+                    public void onNext(List<TimesheetItem> items) {
                         Log.d(TAG, "getTimesheet onNext");
 
                         // Check that we still have the view attached.
@@ -112,7 +123,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         }
 
                         // Push the data to the view.
-                        getView().add(item);
+                        getView().add(items);
                     }
 
                     @Override

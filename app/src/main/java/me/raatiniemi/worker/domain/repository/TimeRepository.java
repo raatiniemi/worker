@@ -16,12 +16,13 @@
 
 package me.raatiniemi.worker.domain.repository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
@@ -75,14 +76,13 @@ public interface TimeRepository {
      * Get timesheet segment for a project.
      * <p>
      * TODO: Move to separate repository?
-     * TODO: Migrate type to domain model.
      *
      * @param projectId Id for the project.
      * @param offset    Offset for segment.
      * @param criteria  Criteria for matching timesheet items.
      * @return Project timesheet segment.
      */
-    List<TimesheetItem> getTimesheet(
+    Map<Date, List<Time>> getTimesheet(
             final long projectId,
             final int offset,
             final Criteria criteria
