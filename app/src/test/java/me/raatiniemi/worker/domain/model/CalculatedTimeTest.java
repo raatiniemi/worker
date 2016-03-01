@@ -27,6 +27,8 @@ import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.util.CalculateTime;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
 public class CalculatedTimeTest {
@@ -45,6 +47,31 @@ public class CalculatedTimeTest {
                 {203100000L, createCalculatedTime(56, 25)}
         };
     }
+    @DataProvider
+    public static Object[][] equals_dataProvider() {
+        return new Object[][]{
+                {
+                        Boolean.TRUE,
+                        createCalculatedTime(3, 15),
+                        createCalculatedTime(3, 15)
+                },
+                {
+                        Boolean.TRUE,
+                        createCalculatedTime(3, 15),
+                        createCalculatedTime(3, 15)
+                },
+                {
+                        Boolean.FALSE,
+                        createCalculatedTime(3, 15),
+                        createCalculatedTime(5, 15)
+                },
+                {
+                        Boolean.FALSE,
+                        createCalculatedTime(3, 14),
+                        createCalculatedTime(3, 15)
+                }
+        };
+    }
 
     private static CalculatedTime createCalculatedTime(int hours, int minutes) {
         return new CalculatedTime(hours, minutes);
@@ -54,5 +81,41 @@ public class CalculatedTimeTest {
     @UseDataProvider("asMilliseconds_dataProvider")
     public void asMilliseconds(long expected, CalculatedTime actual) {
         assertEquals(expected, actual.asMilliseconds());
+    }
+
+    @Test
+    public void equals_withSameInstance() {
+        CalculatedTime calculatedTime = new CalculatedTime(1, 0);
+        //noinspection EqualsWithItself
+        assertTrue(calculatedTime.equals(calculatedTime));
+    }
+
+    @Test
+    public void equals_withNull() {
+        CalculatedTime calculatedTime = new CalculatedTime(1, 0);
+        //noinspection ObjectEqualsNull
+        assertFalse(calculatedTime.equals(null));
+    }
+
+    @Test
+    @UseDataProvider("equals_dataProvider")
+    public void equals(Boolean expected, CalculatedTime lh, CalculatedTime rh) {
+        if (expected) {
+            assertTrue(lh.equals(rh));
+            assertTrue(rh.equals(lh));
+            return;
+        }
+        assertFalse(lh.equals(rh));
+        assertFalse(rh.equals(lh));
+    }
+
+    @Test
+    @UseDataProvider("equals_dataProvider")
+    public void hashCode(Boolean expected, CalculatedTime lh, CalculatedTime rh) {
+        if (expected) {
+            assertTrue(lh.hashCode() == rh.hashCode());
+            return;
+        }
+        assertFalse(lh.hashCode() == rh.hashCode());
     }
 }

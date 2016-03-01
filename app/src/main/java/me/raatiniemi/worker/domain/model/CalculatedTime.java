@@ -41,4 +41,27 @@ public class CalculatedTime {
 
         return hoursInMinutes + this.minutes;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof CalculatedTime)) {
+            return false;
+        }
+
+        CalculatedTime calculatedTime = (CalculatedTime) o;
+        return calculatedTime.hours == hours
+                && calculatedTime.minutes == minutes;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + (int) (hours ^ (hours >>> 32));
+        result = 31 * result + (int) (minutes ^ (minutes >>> 32));
+        return result;
+    }
 }

@@ -55,8 +55,7 @@ public class CalculateTimeTest {
     public void calculateTime(Long milliseconds, CalculatedTime expected) {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
-        assertEquals(expected.hours, calculatedTime.hours);
-        assertEquals(expected.minutes, calculatedTime.minutes);
+        assertEquals(expected, calculatedTime);
     }
 }
 
