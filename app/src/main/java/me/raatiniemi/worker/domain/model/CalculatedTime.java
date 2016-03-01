@@ -17,11 +17,28 @@
 package me.raatiniemi.worker.domain.model;
 
 public class CalculatedTime {
+    private static final int sMinutesInHour = 60;
+    private static final int sSecondsInMinute = 60;
+    private static final int sMillisecondsInSecond = 1000;
     public final long hours;
     public final long minutes;
 
     public CalculatedTime(long hours, long minutes) {
         this.hours = hours;
         this.minutes = minutes;
+    }
+
+    public long asMilliseconds() {
+        return calculateSeconds() * sMillisecondsInSecond;
+    }
+
+    private long calculateSeconds() {
+        return calculateMinutes() * sSecondsInMinute;
+    }
+
+    private long calculateMinutes() {
+        final long hoursInMinutes = this.hours * sMinutesInHour;
+
+        return hoursInMinutes + this.minutes;
     }
 }
