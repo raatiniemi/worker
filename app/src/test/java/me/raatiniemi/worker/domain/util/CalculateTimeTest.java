@@ -23,6 +23,8 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import me.raatiniemi.worker.domain.model.CalculatedTime;
+
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(DataProviderRunner.class)
@@ -44,17 +46,16 @@ public class CalculateTimeTest {
         };
     }
 
-    private static CalculateTime.CalculatedTime createCalculatedTime(int hours, int minutes) {
-        return new CalculateTime.CalculatedTime(hours, minutes);
+    private static CalculatedTime createCalculatedTime(int hours, int minutes) {
+        return new CalculatedTime(hours, minutes);
     }
 
     @Test
     @UseDataProvider("calculateTime_dataProvider")
-    public void calculateTime(Long milliseconds, CalculateTime.CalculatedTime expected) {
-        CalculateTime.CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
+    public void calculateTime(Long milliseconds, CalculatedTime expected) {
+        CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
-        assertEquals(expected.hours, calculatedTime.hours);
-        assertEquals(expected.minutes, calculatedTime.minutes);
+        assertEquals(expected, calculatedTime);
     }
 }
 

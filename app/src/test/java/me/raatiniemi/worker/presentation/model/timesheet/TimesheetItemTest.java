@@ -80,6 +80,13 @@ public class TimesheetItemTest {
                         new Time[]{
                                 createTimeForGetTimeSummaryWithDifferenceTest(32400000)
                         }
+                },
+                {
+                        "9.12 (+1.12)",
+                        new Time[]{
+                                createTimeForGetTimeSummaryWithDifferenceTest(14380327),
+                                createTimeForGetTimeSummaryWithDifferenceTest(18407820)
+                        }
                 }
         };
     }

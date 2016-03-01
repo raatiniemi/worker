@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
@@ -56,7 +58,8 @@ public class TimesheetItem extends ExpandableListAdapter.ExpandableItem<Date, Ti
         long interval = 0;
 
         for (Time time : this) {
-            interval += time.getInterval();
+            CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
+            interval += calculatedTime.asMilliseconds();
         }
 
         return interval;

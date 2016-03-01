@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.util;
 
+import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.util.CalculateTime;
 
 /**
@@ -69,7 +70,7 @@ public class DateIntervalFormat {
      * @return Interval formatted with given type.
      */
     public static String format(long interval, Type type) {
-        CalculateTime.CalculatedTime calculatedTime = CalculateTime.calculateTime(interval);
+        CalculatedTime calculatedTime = CalculateTime.calculateTime(interval);
 
         // Determined what kind of format type to use.
         switch (type) {
