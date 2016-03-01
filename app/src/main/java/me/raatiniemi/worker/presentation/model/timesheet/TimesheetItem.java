@@ -10,6 +10,7 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetItem extends ExpandableListAdapter.ExpandableItem<Date, Time> {
     private static final SimpleDateFormat sDateFormat;
+
     static {
         sDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
     }
