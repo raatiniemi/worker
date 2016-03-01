@@ -19,11 +19,11 @@ package me.raatiniemi.worker.presentation.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.File;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
 
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.backup.Backup;

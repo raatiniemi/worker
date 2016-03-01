@@ -19,9 +19,9 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.List;
 
 import me.raatiniemi.worker.data.WorkerContract;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 
 /**
  * Use case for getting segment from project timesheet.

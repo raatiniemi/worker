@@ -17,18 +17,18 @@
 package me.raatiniemi.worker.domain.util;
 
 public class CalculateTime {
-    private static final int HOURS_IN_DAY = 24;
-    private static final int MINUTES_IN_HOUR = 60;
-    private static final int SECONDS_IN_MINUTE = 60;
-    private static final int SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR;
-    private static final int SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
+    private static final int sHoursInDay = 24;
+    private static final int sMinutesInHour = 60;
+    private static final int sSecondsInMinute = 60;
+    private static final int sSecondsInHour = sSecondsInMinute * sMinutesInHour;
+    private static final int sSecondsInDay = sSecondsInHour * sHoursInDay;
 
     public static CalculatedTime calculateTime(long milliseconds) {
         long seconds = calculateSeconds(milliseconds);
         long minutes = calculateMinutes(seconds);
         long hours = calculateHours(seconds);
 
-        if (MINUTES_IN_HOUR == minutes) {
+        if (sMinutesInHour == minutes) {
             minutes = 0;
             hours++;
         }
@@ -41,9 +41,9 @@ public class CalculateTime {
     }
 
     private static long calculateMinutes(long seconds) {
-        long minutes = seconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR;
+        long minutes = seconds / sSecondsInMinute % sMinutesInHour;
 
-        long secondsRemaining = seconds % SECONDS_IN_MINUTE;
+        long secondsRemaining = seconds % sSecondsInMinute;
         if (secondsRemaining >= 30) {
             minutes++;
         }
@@ -52,11 +52,11 @@ public class CalculateTime {
     }
 
     private static long calculateHours(long seconds) {
-        long hours = seconds / SECONDS_IN_HOUR % HOURS_IN_DAY;
+        long hours = seconds / sSecondsInHour % sHoursInDay;
 
-        long days = seconds / SECONDS_IN_DAY;
+        long days = seconds / sSecondsInDay;
         if (days > 0) {
-            hours += days * HOURS_IN_DAY;
+            hours += days * sHoursInDay;
         }
 
         return hours;
