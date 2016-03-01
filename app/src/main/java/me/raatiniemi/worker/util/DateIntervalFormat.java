@@ -47,15 +47,8 @@ public class DateIntervalFormat {
         return String.format(format, calculatedTime.hours, calculatedTime.minutes);
     }
 
-    /**
-     * Format the interval with given format type.
-     *
-     * @param interval Interval in milliseconds to format.
-     * @param type     Type of format to use.
-     * @return Interval formatted with given type.
-     */
-    public static String format(long interval, Type type) {
-        CalculatedTime calculatedTime = CalculateTime.calculateTime(interval);
+    public static String format(long milliseconds, Type type) {
+        CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
         // Determined what kind of format type to use.
         switch (type) {
@@ -67,14 +60,8 @@ public class DateIntervalFormat {
         }
     }
 
-    /**
-     * Format the interval with the default format type.
-     *
-     * @param interval Interval in milliseconds to format.
-     * @return Interval formatted with the default format type.
-     */
-    public static String format(long interval) {
-        return format(interval, Type.HOURS_MINUTES);
+    public static String format(long milliseconds) {
+        return format(milliseconds, Type.HOURS_MINUTES);
     }
 
     /**
