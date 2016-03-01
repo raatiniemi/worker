@@ -25,6 +25,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
+
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.backup.StorageBackupStrategy;
 import me.raatiniemi.worker.data.backup.StorageRestoreStrategy;

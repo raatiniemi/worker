@@ -18,11 +18,12 @@ package me.raatiniemi.worker.data.backup;
 
 import android.content.Context;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.greenrobot.eventbus.EventBus;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;

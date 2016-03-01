@@ -36,9 +36,9 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
