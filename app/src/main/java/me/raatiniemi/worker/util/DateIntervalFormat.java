@@ -29,37 +29,22 @@ public class DateIntervalFormat {
     private DateIntervalFormat() {
     }
 
-    /**
-     * Format the interval with fractal hours, e.g. "8.25" for 8 hours and 15 minutes.
-     *
-     * @param hours   Hours to apply to the format.
-     * @param minutes Minutes to apply to the format.
-     * @return Interval formatted with fractal hours.
-     */
-    private static String fractionHours(long hours, long minutes) {
-        // Calculate the fractal value from the minutes.
-        float fractal = (float) minutes / (float) 60.0;
+    private static String fractionHours(CalculatedTime calculatedTime) {
+        float fractal = (float) calculatedTime.minutes / (float) 60.0;
 
-        double interval = hours + fractal;
+        double interval = calculatedTime.hours + fractal;
         return String.format("%.2f", interval);
     }
 
-    /**
-     * Format interval with hours and minutes.
-     *
-     * @param hours   Hours to apply to the format.
-     * @param minutes Minutes to apply to the format.
-     * @return Interval formatted with hours and minutes.
-     */
-    private static String hoursMinutes(long hours, long minutes) {
+    private static String hoursMinutes(CalculatedTime calculatedTime) {
         String format = "%1$dh %2$dm";
 
         // If no hours is available, remove it from the format.
-        if (0 == hours) {
+        if (0 == calculatedTime.hours) {
             format = "%2$dm";
         }
 
-        return String.format(format, hours, minutes);
+        return String.format(format, calculatedTime.hours, calculatedTime.minutes);
     }
 
     /**
@@ -75,16 +60,10 @@ public class DateIntervalFormat {
         // Determined what kind of format type to use.
         switch (type) {
             case FRACTION_HOURS:
-                return fractionHours(
-                        calculatedTime.hours,
-                        calculatedTime.minutes
-                );
+                return fractionHours(calculatedTime);
             case HOURS_MINUTES:
             default:
-                return hoursMinutes(
-                        calculatedTime.hours,
-                        calculatedTime.minutes
-                );
+                return hoursMinutes(calculatedTime);
         }
     }
 
