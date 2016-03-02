@@ -32,7 +32,7 @@ public class DateIntervalFormat {
     private static String fractionHours(CalculatedTime calculatedTime) {
         float fractal = (float) calculatedTime.getMinutes() / (float) 60.0;
 
-        double interval = calculatedTime.hours + fractal;
+        double interval = calculatedTime.getHours() + fractal;
         return String.format("%.2f", interval);
     }
 
@@ -40,11 +40,11 @@ public class DateIntervalFormat {
         String format = "%1$dh %2$dm";
 
         // If no hours is available, remove it from the format.
-        if (0 == calculatedTime.hours) {
+        if (0 == calculatedTime.getHours()) {
             format = "%2$dm";
         }
 
-        return String.format(format, calculatedTime.hours, calculatedTime.getMinutes());
+        return String.format(format, calculatedTime.getHours(), calculatedTime.getMinutes());
     }
 
     public static String format(long milliseconds, Type type) {
