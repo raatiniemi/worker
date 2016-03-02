@@ -23,9 +23,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import me.raatiniemi.worker.domain.model.CalculatedTime;
-import me.raatiniemi.worker.domain.util.CalculateTime;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
