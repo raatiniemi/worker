@@ -55,10 +55,7 @@ public class TimeContentValuesMapperTest {
             final long stop,
             final boolean registered
     ) throws ClockOutBeforeClockInException {
-        Time time = new Time(null, projectId, start, stop);
-        time.setRegistered(registered);
-
-        return time;
+        return new Time(null, projectId, start, stop, registered);
     }
 
     @Test

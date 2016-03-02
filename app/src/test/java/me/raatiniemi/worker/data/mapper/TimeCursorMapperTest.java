@@ -61,10 +61,7 @@ public class TimeCursorMapperTest {
     }
 
     private static Time createTime(long id, long projectId, long start, long stop, boolean registered) throws ClockOutBeforeClockInException {
-        Time time = new Time(id, projectId, start, stop);
-        time.setRegistered(registered);
-
-        return time;
+        return new Time(id, projectId, start, stop, registered);
     }
 
     @DataProvider

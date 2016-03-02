@@ -53,17 +53,19 @@ public class Time extends DomainObject {
     /**
      * Constructor.
      *
-     * @param id        Id for the time interval.
-     * @param projectId Id for the project connected to the time interval.
-     * @param start     Timestamp for when the interval starts.
-     * @param stop      Timestamp for when the interval ends, or zero if active.
+     * @param id         Id for the time interval.
+     * @param projectId  Id for the project connected to the time interval.
+     * @param start      Timestamp for when the interval starts.
+     * @param stop       Timestamp for when the interval ends, or zero if active.
+     * @param registered Flag for registered time.
      * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
      */
     public Time(
             final Long id,
             final long projectId,
             final long start,
-            final long stop
+            final long stop,
+            boolean registered
     ) throws ClockOutBeforeClockInException {
         super(id);
 
@@ -75,6 +77,8 @@ public class Time extends DomainObject {
         if (stop > 0) {
             setStop(stop);
         }
+
+        mRegistered = registered;
     }
 
     /**

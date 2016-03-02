@@ -35,7 +35,7 @@ public class TimeTest {
     @Test
     public void Time_defaultValueFromConstructor()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L);
+        Time time = new Time(1L, 2L, 3L, 4L, false);
 
         assertEquals(Long.valueOf(1L), time.getId());
         assertEquals(2L, time.getProjectId());
@@ -47,7 +47,7 @@ public class TimeTest {
     @Test
     public void getProjectId_valueFromConstructor()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L);
+        Time time = new Time(1L, 2L, 3L, 4L, false);
 
         assertEquals(2L, time.getProjectId());
     }
@@ -55,7 +55,7 @@ public class TimeTest {
     @Test
     public void getStart_valueFromConstructor()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L);
+        Time time = new Time(1L, 2L, 3L, 4L, false);
 
         assertEquals(3L, time.getStart());
     }
@@ -63,7 +63,7 @@ public class TimeTest {
     @Test
     public void getStop_valueFromConstructor()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L);
+        Time time = new Time(1L, 2L, 3L, 4L, false);
 
         assertEquals(4L, time.getStop());
     }
@@ -71,7 +71,7 @@ public class TimeTest {
     @Test
     public void getStop_valueFromSetter()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 0L);
+        Time time = new Time(1L, 1L, 1L, 0L, false);
         time.setStop(1L);
 
         assertEquals(1L, time.getStop());
@@ -80,27 +80,24 @@ public class TimeTest {
     @Test(expected = ClockOutBeforeClockInException.class)
     public void setStop_stopLessThanStart()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 10L, 0L);
+        Time time = new Time(1L, 1L, 10L, 0L, false);
         time.setStop(1L);
     }
 
     @Test
     public void isRegistered_valueFromSetter()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 1L);
-        time.setRegistered(true);
-
+        Time time = new Time(1L, 1L, 1L, 1L, true);
         assertTrue(time.isRegistered());
 
         time.setRegistered(false);
-
         assertFalse(time.isRegistered());
     }
 
     @Test(expected = NullPointerException.class)
     public void clockOutAt_withNullDate()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1, 1, 0);
+        Time time = new Time(1L, 1, 1, 0, false);
         time.clockOutAt(null);
     }
 
@@ -110,7 +107,7 @@ public class TimeTest {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(1L);
 
-        Time time = new Time(1L, 1L, 2L, 0L);
+        Time time = new Time(1L, 1L, 2L, 0L, false);
         time.clockOutAt(date);
     }
 
@@ -120,7 +117,7 @@ public class TimeTest {
         Date date = mock(Date.class);
         when(date.getTime()).thenReturn(2L);
 
-        Time time = new Time(1L, 1L, 1L, 0L);
+        Time time = new Time(1L, 1L, 1L, 0L, false);
         time.clockOutAt(date);
 
         assertEquals(2L, time.getStop());
@@ -129,7 +126,7 @@ public class TimeTest {
     @Test
     public void isActive_whenActive()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 0L);
+        Time time = new Time(1L, 1L, 1L, 0L, false);
 
         assertTrue(time.isActive());
     }
@@ -137,7 +134,7 @@ public class TimeTest {
     @Test
     public void isActive_whenInactive()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 11L);
+        Time time = new Time(1L, 1L, 1L, 11L, false);
 
         assertFalse(time.isActive());
     }
@@ -145,7 +142,7 @@ public class TimeTest {
     @Test
     public void getTime_whenActive()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 0L);
+        Time time = new Time(1L, 1L, 1L, 0L, false);
 
         assertEquals(0L, time.getTime());
     }
@@ -153,7 +150,7 @@ public class TimeTest {
     @Test
     public void getTime_whenInactive()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 11L);
+        Time time = new Time(1L, 1L, 1L, 11L, false);
 
         assertEquals(10L, time.getTime());
     }
@@ -161,7 +158,7 @@ public class TimeTest {
     @Test
     public void getInterval_whenActive()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 0L);
+        Time time = new Time(1L, 1L, 1L, 0L, false);
 
         // TODO: Fix better interval measurement when active.
         // Currently unable because of the instantiation within getInterval.
@@ -171,7 +168,7 @@ public class TimeTest {
     @Test
     public void getInterval_whenInactive()
             throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 11L);
+        Time time = new Time(1L, 1L, 1L, 11L, false);
 
         assertEquals(10L, time.getInterval());
     }
