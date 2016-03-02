@@ -54,11 +54,6 @@ public class CalculatedTimeTest {
                         createCalculatedTime(3, 15)
                 },
                 {
-                        Boolean.TRUE,
-                        createCalculatedTime(3, 15),
-                        createCalculatedTime(3, 15)
-                },
-                {
                         Boolean.FALSE,
                         createCalculatedTime(3, 15),
                         createCalculatedTime(5, 15)
