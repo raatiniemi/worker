@@ -69,22 +69,6 @@ public class TimeTest {
     }
 
     @Test
-    public void getStop_valueFromSetter()
-            throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 1L, 0L, false);
-        time.setStop(1L);
-
-        assertEquals(1L, time.getStop());
-    }
-
-    @Test(expected = ClockOutBeforeClockInException.class)
-    public void setStop_stopLessThanStart()
-            throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 1L, 10L, 0L, false);
-        time.setStop(1L);
-    }
-
-    @Test
     public void markAsRegistered()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 1L, 1L, 1L, false);

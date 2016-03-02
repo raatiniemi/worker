@@ -43,7 +43,7 @@ public class Time extends DomainObject {
      * UNIX timestamp, in milliseconds, representing the date and time at
      * which the interval was considered clocked out.
      */
-    private long mStop;
+    private final long mStop;
 
     /**
      * Flag for registered time.
@@ -75,8 +75,13 @@ public class Time extends DomainObject {
         // Only set the stop time if the time is not active,
         // otherwise an exception will be thrown.
         if (stop > 0) {
-            setStop(stop);
+            if (stop < start) {
+                throw new ClockOutBeforeClockInException(
+                        "Clock out occur before clock in"
+                );
+            }
         }
+        mStop = stop;
 
         mRegistered = registered;
     }
@@ -106,24 +111,6 @@ public class Time extends DomainObject {
      */
     public long getStop() {
         return mStop;
-    }
-
-    /**
-     * Setter method for timestamp when the time interval ends.
-     *
-     * @param stop Timestamp for time interval end, in milliseconds.
-     * @throws ClockOutBeforeClockInException If value for stop is less than value for start.
-     */
-    public void setStop(final long stop) throws ClockOutBeforeClockInException {
-        // Check that the stop value is lager than the start value,
-        // should not be able to clock out before clocked in.
-        if (stop < getStart()) {
-            throw new ClockOutBeforeClockInException(
-                    "Clock out occur before clock in"
-            );
-        }
-
-        mStop = stop;
     }
 
     /**
