@@ -21,11 +21,15 @@ public class CalculatedTime {
     private static final int sSecondsInMinute = 60;
     private static final int sMillisecondsInSecond = 1000;
     public final long hours;
-    public final long minutes;
+    private final long mMinutes;
 
     public CalculatedTime(long hours, long minutes) {
         this.hours = hours;
-        this.minutes = minutes;
+        mMinutes = minutes;
+    }
+
+    public long getMinutes() {
+        return mMinutes;
     }
 
     public long asMilliseconds() {
@@ -39,7 +43,7 @@ public class CalculatedTime {
     private long calculateMinutes() {
         final long hoursInMinutes = this.hours * sMinutesInHour;
 
-        return hoursInMinutes + this.minutes;
+        return hoursInMinutes + getMinutes();
     }
 
     @Override
@@ -54,14 +58,14 @@ public class CalculatedTime {
 
         CalculatedTime calculatedTime = (CalculatedTime) o;
         return calculatedTime.hours == hours
-                && calculatedTime.minutes == minutes;
+                && calculatedTime.getMinutes() == getMinutes();
     }
 
     @Override
     public int hashCode() {
         int result = 17;
         result = 31 * result + (int) (hours ^ (hours >>> 32));
-        result = 31 * result + (int) (minutes ^ (minutes >>> 32));
+        result = 31 * result + (int) (getMinutes() ^ (getMinutes() >>> 32));
         return result;
     }
 }
