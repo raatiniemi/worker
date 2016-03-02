@@ -48,7 +48,7 @@ public class Time extends DomainObject {
     /**
      * Flag for registered time.
      */
-    private boolean mRegistered;
+    private final boolean mRegistered;
 
     /**
      * Constructor.
@@ -135,13 +135,20 @@ public class Time extends DomainObject {
         return mRegistered;
     }
 
-    /**
-     * Setter method for registered time flag.
-     *
-     * @param registered True if time is registered, otherwise false.
-     */
-    public void setRegistered(final boolean registered) {
-        mRegistered = registered;
+    public Time markAsRegistered() throws ClockOutBeforeClockInException {
+        if (isRegistered()) {
+            return this;
+        }
+
+        return new Time(getId(), getProjectId(), getStart(), getStop(), true);
+    }
+
+    public Time unmarkRegistered() throws ClockOutBeforeClockInException {
+        if (!isRegistered()) {
+            return this;
+        }
+
+        return new Time(getId(), getProjectId(), getStart(), getStop(), false);
     }
 
     /**

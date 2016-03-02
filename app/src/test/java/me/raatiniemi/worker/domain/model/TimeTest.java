@@ -85,12 +85,42 @@ public class TimeTest {
     }
 
     @Test
-    public void isRegistered_valueFromSetter()
+    public void markAsRegistered()
+            throws ClockOutBeforeClockInException {
+        Time time = new Time(1L, 1L, 1L, 1L, false);
+
+        assertFalse(time.isRegistered());
+        time = time.markAsRegistered();
+        assertTrue(time.isRegistered());
+    }
+
+    @Test
+    public void markAsRegistered_alreadyRegistered()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 1L, 1L, 1L, true);
-        assertTrue(time.isRegistered());
 
-        time.setRegistered(false);
+        assertTrue(time.isRegistered());
+        time = time.markAsRegistered();
+        assertTrue(time.isRegistered());
+    }
+
+    @Test
+    public void unmarkRegistered()
+            throws ClockOutBeforeClockInException {
+        Time time = new Time(1L, 1L, 1L, 1L, true);
+
+        assertTrue(time.isRegistered());
+        time = time.unmarkRegistered();
+        assertFalse(time.isRegistered());
+    }
+
+    @Test
+    public void unmarkRegistered_notRegistered()
+            throws ClockOutBeforeClockInException {
+        Time time = new Time(1L, 1L, 1L, 1L, false);
+
+        assertFalse(time.isRegistered());
+        time = time.unmarkRegistered();
         assertFalse(time.isRegistered());
     }
 
