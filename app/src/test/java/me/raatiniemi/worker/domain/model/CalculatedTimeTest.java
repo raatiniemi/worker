@@ -44,6 +44,7 @@ public class CalculatedTimeTest {
                 {203100000L, createCalculatedTime(56, 25)}
         };
     }
+
     @DataProvider
     public static Object[][] equals_dataProvider() {
         return new Object[][]{
