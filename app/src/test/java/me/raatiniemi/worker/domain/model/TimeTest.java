@@ -148,7 +148,7 @@ public class TimeTest {
         when(date.getTime()).thenReturn(2L);
 
         Time time = new Time(1L, 1L, 1L, 0L, false);
-        time.clockOutAt(date);
+        time = time.clockOutAt(date);
 
         assertEquals(2L, time.getStop());
     }

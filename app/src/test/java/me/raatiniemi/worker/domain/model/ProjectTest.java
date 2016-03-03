@@ -452,14 +452,15 @@ public class ProjectTest {
     public void clockOutAt_withActiveTime() throws DomainException {
         Project project = new Project("Project name");
 
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(true);
-
+        Time time = new Time(1L, 1L, 1L, 0L, false);
         project.addTime(time);
 
         Date date = mock(Date.class);
-        assertEquals(time, project.clockOutAt(date));
-        verify(time, times(1)).clockOutAt(date);
+        when(date.getTime()).thenReturn(2L);
+
+        time = project.clockOutAt(date);
+        assertEquals(2L, time.getStop());
+        assertFalse(project.isActive());
     }
 
     @Test

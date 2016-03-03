@@ -158,12 +158,12 @@ public class Time extends DomainObject {
      * @throws NullPointerException           If date argument is null.
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
-    public void clockOutAt(final Date date) throws ClockOutBeforeClockInException {
+    public Time clockOutAt(final Date date) throws ClockOutBeforeClockInException {
         if (null == date) {
             throw new NullPointerException("Date is not allowed to be null");
         }
 
-        setStop(date.getTime());
+        return new Time(getId(), getProjectId(), getStart(), date.getTime(), isRegistered());
     }
 
     /**

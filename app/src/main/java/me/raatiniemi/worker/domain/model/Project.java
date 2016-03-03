@@ -303,7 +303,9 @@ public class Project extends DomainObject {
             throw new ClockActivityException("Unable to clock out, project is not active");
         }
 
-        time.clockOutAt(date);
+        time = time.clockOutAt(date);
+        mTime.set(0, time);
+
         return time;
     }
 
