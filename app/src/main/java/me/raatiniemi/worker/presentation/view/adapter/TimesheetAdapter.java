@@ -32,13 +32,13 @@ import java.util.Locale;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
         Time,
-        TimesheetItem,
+        TimesheetGroupModel,
         TimesheetAdapter.ItemViewHolder,
         TimesheetAdapter.ItemViewHolder
         > {
@@ -49,7 +49,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     private final OnTimesheetListener mOnTimesheetListener;
 
     public TimesheetAdapter(
-            @NonNull List<TimesheetItem> items,
+            @NonNull List<TimesheetGroupModel> items,
             OnTimesheetListener listener
     ) {
         super(items);
@@ -87,7 +87,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindGroupViewHolder(ItemViewHolder vh, int group, int viewType) {
-        TimesheetItem item = get(group);
+        TimesheetGroupModel item = get(group);
 
         vh.mTitle.setText(item.getTitle());
         vh.mSummarize.setText(item.getTimeSummaryWithDifference());

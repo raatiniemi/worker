@@ -30,7 +30,7 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 import me.raatiniemi.worker.util.Settings;
@@ -97,12 +97,12 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         );
                     }
                 })
-                .map(new Func1<Map<Date, List<Time>>, List<TimesheetItem>>() {
+                .map(new Func1<Map<Date, List<Time>>, List<TimesheetGroupModel>>() {
                     @Override
-                    public List<TimesheetItem> call(Map<Date, List<Time>> result) {
-                        List<TimesheetItem> items = new ArrayList<>();
+                    public List<TimesheetGroupModel> call(Map<Date, List<Time>> result) {
+                        List<TimesheetGroupModel> items = new ArrayList<>();
                         for (Date date : result.keySet()) {
-                            TimesheetItem item = new TimesheetItem(date);
+                            TimesheetGroupModel item = new TimesheetGroupModel(date);
                             item.addAll(result.get(date));
 
                             items.add(item);
@@ -110,10 +110,10 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         return items;
                     }
                 })
-                .compose(this.<List<TimesheetItem>>applySchedulers())
-                .subscribe(new Subscriber<List<TimesheetItem>>() {
+                .compose(this.<List<TimesheetGroupModel>>applySchedulers())
+                .subscribe(new Subscriber<List<TimesheetGroupModel>>() {
                     @Override
-                    public void onNext(List<TimesheetItem> items) {
+                    public void onNext(List<TimesheetGroupModel> items) {
                         Log.d(TAG, "getTimesheet onNext");
 
                         // Check that we still have the view attached.
