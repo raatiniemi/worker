@@ -134,11 +134,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getChildId(int group, int child) {
-        // TODO: Add delegate method to model for id?
         TimesheetChildModel item = get(group, child);
-        Time time = item.asTime();
-
-        return time.getId();
+        return item.getId();
     }
 
     @Override

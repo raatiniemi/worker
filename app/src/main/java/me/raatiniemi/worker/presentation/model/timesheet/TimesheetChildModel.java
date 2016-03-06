@@ -44,6 +44,10 @@ public class TimesheetChildModel {
         return mTime;
     }
 
+    public long getId() {
+        return mTime.getId();
+    }
+
     public String getTitle() {
         StringBuffer title = buildTitleFromStartTime();
 

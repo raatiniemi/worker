@@ -128,6 +128,16 @@ public class TimesheetChildModelTest {
     }
 
     @Test
+    public void getId() throws ClockOutBeforeClockInException {
+        Time time = new Time.Builder(1L)
+                .id(2L)
+                .build();
+        TimesheetChildModel model = new TimesheetChildModel(time);
+
+        assertTrue(time.getId() == model.getId());
+    }
+
+    @Test
     @UseDataProvider("getTitle_dataProvider")
     public void getTitle(String message, String expected, Time time) {
         TimesheetChildModel item = new TimesheetChildModel(time);
