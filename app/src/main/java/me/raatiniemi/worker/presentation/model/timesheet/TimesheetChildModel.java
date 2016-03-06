@@ -21,7 +21,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetChildModel {
@@ -83,5 +85,10 @@ public class TimesheetChildModel {
 
     public boolean isRegistered() {
         return mTime.isRegistered();
+    }
+
+    long calculateIntervalInMilliseconds() {
+        CalculatedTime calculatedTime = CalculateTime.calculateTime(mTime.getInterval());
+        return calculatedTime.asMilliseconds();
     }
 }
