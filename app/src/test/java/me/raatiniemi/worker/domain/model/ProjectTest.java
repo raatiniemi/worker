@@ -452,7 +452,8 @@ public class ProjectTest {
     public void clockOutAt_withActiveTime() throws DomainException {
         Project project = new Project("Project name");
 
-        Time time = new Time(1L, 1L, 1L, 0L, false);
+        Time time = new Time.Builder(1L)
+                .build();
         project.addTime(time);
 
         Date date = mock(Date.class);

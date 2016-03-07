@@ -276,7 +276,9 @@ public class Project extends DomainObject {
 
         // Instantiate the Time domain object with the project
         // and clock in with the supplied date.
-        return new Time(null, getId(), date.getTime(), 0L, false);
+        return new Time.Builder(getId())
+                .startInMilliseconds(date.getTime())
+                .build();
     }
 
     /**

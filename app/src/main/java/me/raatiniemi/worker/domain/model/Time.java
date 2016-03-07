@@ -50,40 +50,23 @@ public class Time extends DomainObject {
      */
     private final boolean mRegistered;
 
-    /**
-     * Constructor.
-     *
-     * @param id         Id for the time interval.
-     * @param projectId  Id for the project connected to the time interval.
-     * @param start      Timestamp for when the interval starts.
-     * @param stop       Timestamp for when the interval ends, or zero if active.
-     * @param registered Flag for registered time.
-     * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
-     */
-    public Time(
-            final Long id,
-            final long projectId,
-            final long start,
-            final long stop,
-            boolean registered
-    ) throws ClockOutBeforeClockInException {
-        super(id);
+    private Time(Builder builder)
+            throws ClockOutBeforeClockInException {
+        super(builder.mId);
 
-        mProjectId = projectId;
-        mStart = start;
+        mProjectId = builder.mProjectId;
+        mStart = builder.mStartInMilliseconds;
 
-        // Only set the stop time if the time is not active,
-        // otherwise an exception will be thrown.
-        if (stop > 0) {
-            if (stop < start) {
+        if (builder.mStopInMilliseconds > 0) {
+            if (builder.mStopInMilliseconds < builder.mStartInMilliseconds) {
                 throw new ClockOutBeforeClockInException(
                         "Clock out occur before clock in"
                 );
             }
         }
-        mStop = stop;
+        mStop = builder.mStopInMilliseconds;
 
-        mRegistered = registered;
+        mRegistered = builder.mRegistered;
     }
 
     /**
@@ -127,7 +110,12 @@ public class Time extends DomainObject {
             return this;
         }
 
-        return new Time(getId(), getProjectId(), getStart(), getStop(), true);
+        return new Builder(getProjectId())
+                .id(getId())
+                .startInMilliseconds(getStart())
+                .stopInMilliseconds(getStop())
+                .register()
+                .build();
     }
 
     public Time unmarkRegistered() throws ClockOutBeforeClockInException {
@@ -135,7 +123,11 @@ public class Time extends DomainObject {
             return this;
         }
 
-        return new Time(getId(), getProjectId(), getStart(), getStop(), false);
+        return new Builder(getProjectId())
+                .id(getId())
+                .startInMilliseconds(getStart())
+                .stopInMilliseconds(getStop())
+                .build();
     }
 
     /**
@@ -150,7 +142,16 @@ public class Time extends DomainObject {
             throw new NullPointerException("Date is not allowed to be null");
         }
 
-        return new Time(getId(), getProjectId(), getStart(), date.getTime(), isRegistered());
+        Builder builder = new Builder(getProjectId())
+                .id(getId())
+                .startInMilliseconds(getStart())
+                .stopInMilliseconds(date.getTime());
+
+        if (isRegistered()) {
+            builder.register();
+        }
+
+        return builder.build();
     }
 
     /**
@@ -196,5 +197,41 @@ public class Time extends DomainObject {
         }
 
         return stop - getStart();
+    }
+
+    public static class Builder {
+        private final long mProjectId;
+        private Long mId = null;
+        private long mStartInMilliseconds = 0L;
+        private long mStopInMilliseconds = 0L;
+        private boolean mRegistered = false;
+
+        public Builder(long projectId) {
+            mProjectId = projectId;
+        }
+
+        public Builder id(Long id) {
+            mId = id;
+            return this;
+        }
+
+        public Builder startInMilliseconds(long startInMilliseconds) {
+            mStartInMilliseconds = startInMilliseconds;
+            return this;
+        }
+
+        public Builder stopInMilliseconds(long stopInMilliseconds) {
+            mStopInMilliseconds = stopInMilliseconds;
+            return this;
+        }
+
+        public Builder register() {
+            mRegistered = true;
+            return this;
+        }
+
+        public Time build() throws ClockOutBeforeClockInException {
+            return new Time(this);
+        }
     }
 }
