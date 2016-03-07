@@ -31,13 +31,7 @@ public class Time extends DomainObject {
 
     private final long mStartInMilliseconds;
 
-    /**
-     * Timestamp for when the time interval ends, or zero if active.
-     * <p/>
-     * UNIX timestamp, in milliseconds, representing the date and time at
-     * which the interval was considered clocked out.
-     */
-    private final long mStop;
+    private final long mStopInMilliseconds;
 
     /**
      * Flag for registered time.
@@ -58,7 +52,7 @@ public class Time extends DomainObject {
                 );
             }
         }
-        mStop = builder.mStopInMilliseconds;
+        mStopInMilliseconds = builder.mStopInMilliseconds;
 
         mRegistered = builder.mRegistered;
     }
@@ -76,13 +70,8 @@ public class Time extends DomainObject {
         return mStartInMilliseconds;
     }
 
-    /**
-     * Getter method for timestamp when the time interval ends.
-     *
-     * @return Timestamp for time interval end, in milliseconds, or zero if active.
-     */
-    public long getStop() {
-        return mStop;
+    public long getStopInMilliseconds() {
+        return mStopInMilliseconds;
     }
 
     /**
@@ -102,7 +91,7 @@ public class Time extends DomainObject {
         return new Builder(getProjectId())
                 .id(getId())
                 .startInMilliseconds(getStartInMilliseconds())
-                .stopInMilliseconds(getStop())
+                .stopInMilliseconds(getStopInMilliseconds())
                 .register()
                 .build();
     }
@@ -115,7 +104,7 @@ public class Time extends DomainObject {
         return new Builder(getProjectId())
                 .id(getId())
                 .startInMilliseconds(getStartInMilliseconds())
-                .stopInMilliseconds(getStop())
+                .stopInMilliseconds(getStopInMilliseconds())
                 .build();
     }
 
@@ -149,7 +138,7 @@ public class Time extends DomainObject {
      * @return True if time interval is active, otherwise false.
      */
     public boolean isActive() {
-        return 0 == getStop();
+        return 0 == getStopInMilliseconds();
     }
 
     /**
@@ -164,7 +153,7 @@ public class Time extends DomainObject {
         long time = 0L;
 
         if (!isActive()) {
-            time = getStop() - getStartInMilliseconds();
+            time = getStopInMilliseconds() - getStartInMilliseconds();
         }
 
         return time;
@@ -179,7 +168,7 @@ public class Time extends DomainObject {
      * @return Interval in milliseconds.
      */
     public long getInterval() {
-        long stop = getStop();
+        long stop = getStopInMilliseconds();
 
         if (isActive()) {
             stop = (new Date()).getTime();

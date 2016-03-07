@@ -413,7 +413,7 @@ public class ProjectTest {
         assertNull(time.getId());
         assertEquals(1L, time.getProjectId());
         assertEquals(100L, time.getStartInMilliseconds());
-        assertEquals(0L, time.getStop());
+        assertEquals(0L, time.getStopInMilliseconds());
         verify(date, times(1)).getTime();
     }
 
@@ -460,7 +460,7 @@ public class ProjectTest {
         when(date.getTime()).thenReturn(2L);
 
         time = project.clockOutAt(date);
-        assertEquals(2L, time.getStop());
+        assertEquals(2L, time.getStopInMilliseconds());
         assertFalse(project.isActive());
     }
 

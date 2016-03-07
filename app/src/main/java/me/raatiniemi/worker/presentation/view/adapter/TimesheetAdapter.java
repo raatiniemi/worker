@@ -119,7 +119,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         String title = mTimeFormat.format(new Date(time.getStartInMilliseconds()));
         if (!time.isActive()) {
-            title += " - " + mTimeFormat.format(new Date(time.getStop()));
+            title += " - " + mTimeFormat.format(new Date(time.getStopInMilliseconds()));
         }
         vh.mTitle.setText(title);
 
