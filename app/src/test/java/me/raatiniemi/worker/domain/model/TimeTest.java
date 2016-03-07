@@ -45,30 +45,6 @@ public class TimeTest {
     }
 
     @Test
-    public void getProjectId_valueFromConstructor()
-            throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L, false);
-
-        assertEquals(2L, time.getProjectId());
-    }
-
-    @Test
-    public void getStart_valueFromConstructor()
-            throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L, false);
-
-        assertEquals(3L, time.getStart());
-    }
-
-    @Test
-    public void getStop_valueFromConstructor()
-            throws ClockOutBeforeClockInException {
-        Time time = new Time(1L, 2L, 3L, 4L, false);
-
-        assertEquals(4L, time.getStop());
-    }
-
-    @Test
     public void markAsRegistered()
             throws ClockOutBeforeClockInException {
         Time time = new Time(1L, 1L, 1L, 1L, false);
