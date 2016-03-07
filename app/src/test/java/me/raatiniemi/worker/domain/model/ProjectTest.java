@@ -365,7 +365,7 @@ public class ProjectTest {
 
         Time time = mock(Time.class);
         when(time.isActive()).thenReturn(true);
-        when(time.getStart()).thenReturn(500000L);
+        when(time.getStartInMilliseconds()).thenReturn(500000L);
 
         project.addTime(time);
 
@@ -374,7 +374,7 @@ public class ProjectTest {
         assertNotNull(date);
         assertEquals(Long.valueOf(500000L), Long.valueOf(date.getTime()));
         verify(time, times(1)).isActive();
-        verify(time, times(1)).getStart();
+        verify(time, times(1)).getStartInMilliseconds();
     }
 
     @Test(expected = NullPointerException.class)
@@ -412,7 +412,7 @@ public class ProjectTest {
         assertNotNull(time);
         assertNull(time.getId());
         assertEquals(1L, time.getProjectId());
-        assertEquals(100L, time.getStart());
+        assertEquals(100L, time.getStartInMilliseconds());
         assertEquals(0L, time.getStop());
         verify(date, times(1)).getTime();
     }

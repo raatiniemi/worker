@@ -90,7 +90,7 @@ public class TimeCursorMapperTest {
 
         assertEquals(expected.getId(), entity.getId());
         assertEquals(expected.getProjectId(), entity.getProjectId());
-        assertEquals(expected.getStart(), entity.getStart());
+        assertEquals(expected.getStartInMilliseconds(), entity.getStartInMilliseconds());
         assertEquals(expected.getStop(), entity.getStop());
         assertEquals(expected.isRegistered(), entity.isRegistered());
     }

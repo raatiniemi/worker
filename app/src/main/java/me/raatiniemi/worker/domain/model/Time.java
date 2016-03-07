@@ -29,13 +29,7 @@ public class Time extends DomainObject {
      */
     private final long mProjectId;
 
-    /**
-     * Timestamp for when the time interval starts.
-     * <p/>
-     * UNIX timestamp, in milliseconds, representing the date and time at
-     * which the interval was considered clocked in.
-     */
-    private final long mStart;
+    private final long mStartInMilliseconds;
 
     /**
      * Timestamp for when the time interval ends, or zero if active.
@@ -55,7 +49,7 @@ public class Time extends DomainObject {
         super(builder.mId);
 
         mProjectId = builder.mProjectId;
-        mStart = builder.mStartInMilliseconds;
+        mStartInMilliseconds = builder.mStartInMilliseconds;
 
         if (builder.mStopInMilliseconds > 0) {
             if (builder.mStopInMilliseconds < builder.mStartInMilliseconds) {
@@ -78,13 +72,8 @@ public class Time extends DomainObject {
         return mProjectId;
     }
 
-    /**
-     * Getter method for timestamp when the time interval start.
-     *
-     * @return Timestamp for time interval start, in milliseconds.
-     */
-    public long getStart() {
-        return mStart;
+    public long getStartInMilliseconds() {
+        return mStartInMilliseconds;
     }
 
     /**
@@ -112,7 +101,7 @@ public class Time extends DomainObject {
 
         return new Builder(getProjectId())
                 .id(getId())
-                .startInMilliseconds(getStart())
+                .startInMilliseconds(getStartInMilliseconds())
                 .stopInMilliseconds(getStop())
                 .register()
                 .build();
@@ -125,7 +114,7 @@ public class Time extends DomainObject {
 
         return new Builder(getProjectId())
                 .id(getId())
-                .startInMilliseconds(getStart())
+                .startInMilliseconds(getStartInMilliseconds())
                 .stopInMilliseconds(getStop())
                 .build();
     }
@@ -144,7 +133,7 @@ public class Time extends DomainObject {
 
         Builder builder = new Builder(getProjectId())
                 .id(getId())
-                .startInMilliseconds(getStart())
+                .startInMilliseconds(getStartInMilliseconds())
                 .stopInMilliseconds(date.getTime());
 
         if (isRegistered()) {
@@ -175,7 +164,7 @@ public class Time extends DomainObject {
         long time = 0L;
 
         if (!isActive()) {
-            time = getStop() - getStart();
+            time = getStop() - getStartInMilliseconds();
         }
 
         return time;
@@ -196,7 +185,7 @@ public class Time extends DomainObject {
             stop = (new Date()).getTime();
         }
 
-        return stop - getStart();
+        return stop - getStartInMilliseconds();
     }
 
     public static class Builder {

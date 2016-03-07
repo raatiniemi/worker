@@ -43,7 +43,7 @@ public class TimeTest {
 
         assertNull(time.getId());
         assertEquals(1L, time.getProjectId());
-        assertEquals(0L, time.getStart());
+        assertEquals(0L, time.getStartInMilliseconds());
         assertEquals(0L, time.getStop());
         assertFalse(time.isRegistered());
     }
@@ -60,7 +60,7 @@ public class TimeTest {
 
         assertEquals(Long.valueOf(2L), time.getId());
         assertEquals(1L, time.getProjectId());
-        assertEquals(3L, time.getStart());
+        assertEquals(3L, time.getStartInMilliseconds());
         assertEquals(4L, time.getStop());
         assertTrue(time.isRegistered());
     }

@@ -252,7 +252,7 @@ public class Project extends DomainObject {
         }
 
         // TODO: Do not instantiate inside method, return value from get start?
-        return new Date(time.getStart());
+        return new Date(time.getStartInMilliseconds());
     }
 
     /**
