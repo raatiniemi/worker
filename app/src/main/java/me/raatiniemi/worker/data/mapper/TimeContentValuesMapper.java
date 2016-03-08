@@ -34,8 +34,8 @@ public class TimeContentValuesMapper implements ContentValuesMapper<Time> {
     public ContentValues transform(@NonNull Time entity) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(TimeColumns.PROJECT_ID, entity.getProjectId());
-        contentValues.put(TimeColumns.START, entity.getStart());
-        contentValues.put(TimeColumns.STOP, entity.getStop());
+        contentValues.put(TimeColumns.START, entity.getStartInMilliseconds());
+        contentValues.put(TimeColumns.STOP, entity.getStopInMilliseconds());
         contentValues.put(TimeColumns.REGISTERED, entity.isRegistered() ? 1L : 0L);
 
         return contentValues;

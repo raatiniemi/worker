@@ -61,10 +61,16 @@ public class TimeCursorMapperTest {
     }
 
     private static Time createTime(long id, long projectId, long start, long stop, boolean registered) throws ClockOutBeforeClockInException {
-        Time time = new Time(id, projectId, start, stop);
-        time.setRegistered(registered);
+        Time.Builder builder = new Time.Builder(projectId)
+                .id(id)
+                .startInMilliseconds(start)
+                .stopInMilliseconds(stop);
 
-        return time;
+        if (registered) {
+            builder.register();
+        }
+
+        return builder.build();
     }
 
     @DataProvider
@@ -84,8 +90,8 @@ public class TimeCursorMapperTest {
 
         assertEquals(expected.getId(), entity.getId());
         assertEquals(expected.getProjectId(), entity.getProjectId());
-        assertEquals(expected.getStart(), entity.getStart());
-        assertEquals(expected.getStop(), entity.getStop());
+        assertEquals(expected.getStartInMilliseconds(), entity.getStartInMilliseconds());
+        assertEquals(expected.getStopInMilliseconds(), entity.getStopInMilliseconds());
         assertEquals(expected.isRegistered(), entity.isRegistered());
     }
 }

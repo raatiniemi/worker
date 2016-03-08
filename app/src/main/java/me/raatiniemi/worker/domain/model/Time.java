@@ -29,52 +29,32 @@ public class Time extends DomainObject {
      */
     private final long mProjectId;
 
-    /**
-     * Timestamp for when the time interval starts.
-     * <p/>
-     * UNIX timestamp, in milliseconds, representing the date and time at
-     * which the interval was considered clocked in.
-     */
-    private final long mStart;
+    private final long mStartInMilliseconds;
 
-    /**
-     * Timestamp for when the time interval ends, or zero if active.
-     * <p/>
-     * UNIX timestamp, in milliseconds, representing the date and time at
-     * which the interval was considered clocked out.
-     */
-    private long mStop;
+    private final long mStopInMilliseconds;
 
     /**
      * Flag for registered time.
      */
-    private boolean mRegistered;
+    private final boolean mRegistered;
 
-    /**
-     * Constructor.
-     *
-     * @param id        Id for the time interval.
-     * @param projectId Id for the project connected to the time interval.
-     * @param start     Timestamp for when the interval starts.
-     * @param stop      Timestamp for when the interval ends, or zero if active.
-     * @throws ClockOutBeforeClockInException If stop time is before start time, and stop is not zero.
-     */
-    public Time(
-            final Long id,
-            final long projectId,
-            final long start,
-            final long stop
-    ) throws ClockOutBeforeClockInException {
-        super(id);
+    private Time(Builder builder)
+            throws ClockOutBeforeClockInException {
+        super(builder.mId);
 
-        mProjectId = projectId;
-        mStart = start;
+        mProjectId = builder.mProjectId;
+        mStartInMilliseconds = builder.mStartInMilliseconds;
 
-        // Only set the stop time if the time is not active,
-        // otherwise an exception will be thrown.
-        if (stop > 0) {
-            setStop(stop);
+        if (builder.mStopInMilliseconds > 0) {
+            if (builder.mStopInMilliseconds < builder.mStartInMilliseconds) {
+                throw new ClockOutBeforeClockInException(
+                        "Clock out occur before clock in"
+                );
+            }
         }
+        mStopInMilliseconds = builder.mStopInMilliseconds;
+
+        mRegistered = builder.mRegistered;
     }
 
     /**
@@ -86,40 +66,12 @@ public class Time extends DomainObject {
         return mProjectId;
     }
 
-    /**
-     * Getter method for timestamp when the time interval start.
-     *
-     * @return Timestamp for time interval start, in milliseconds.
-     */
-    public long getStart() {
-        return mStart;
+    public long getStartInMilliseconds() {
+        return mStartInMilliseconds;
     }
 
-    /**
-     * Getter method for timestamp when the time interval ends.
-     *
-     * @return Timestamp for time interval end, in milliseconds, or zero if active.
-     */
-    public long getStop() {
-        return mStop;
-    }
-
-    /**
-     * Setter method for timestamp when the time interval ends.
-     *
-     * @param stop Timestamp for time interval end, in milliseconds.
-     * @throws ClockOutBeforeClockInException If value for stop is less than value for start.
-     */
-    public void setStop(final long stop) throws ClockOutBeforeClockInException {
-        // Check that the stop value is lager than the start value,
-        // should not be able to clock out before clocked in.
-        if (stop < getStart()) {
-            throw new ClockOutBeforeClockInException(
-                    "Clock out occur before clock in"
-            );
-        }
-
-        mStop = stop;
+    public long getStopInMilliseconds() {
+        return mStopInMilliseconds;
     }
 
     /**
@@ -131,13 +83,29 @@ public class Time extends DomainObject {
         return mRegistered;
     }
 
-    /**
-     * Setter method for registered time flag.
-     *
-     * @param registered True if time is registered, otherwise false.
-     */
-    public void setRegistered(final boolean registered) {
-        mRegistered = registered;
+    public Time markAsRegistered() throws ClockOutBeforeClockInException {
+        if (isRegistered()) {
+            return this;
+        }
+
+        return new Builder(getProjectId())
+                .id(getId())
+                .startInMilliseconds(getStartInMilliseconds())
+                .stopInMilliseconds(getStopInMilliseconds())
+                .register()
+                .build();
+    }
+
+    public Time unmarkRegistered() throws ClockOutBeforeClockInException {
+        if (!isRegistered()) {
+            return this;
+        }
+
+        return new Builder(getProjectId())
+                .id(getId())
+                .startInMilliseconds(getStartInMilliseconds())
+                .stopInMilliseconds(getStopInMilliseconds())
+                .build();
     }
 
     /**
@@ -147,12 +115,21 @@ public class Time extends DomainObject {
      * @throws NullPointerException           If date argument is null.
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
-    public void clockOutAt(final Date date) throws ClockOutBeforeClockInException {
+    public Time clockOutAt(final Date date) throws ClockOutBeforeClockInException {
         if (null == date) {
             throw new NullPointerException("Date is not allowed to be null");
         }
 
-        setStop(date.getTime());
+        Builder builder = new Builder(getProjectId())
+                .id(getId())
+                .startInMilliseconds(getStartInMilliseconds())
+                .stopInMilliseconds(date.getTime());
+
+        if (isRegistered()) {
+            builder.register();
+        }
+
+        return builder.build();
     }
 
     /**
@@ -161,7 +138,7 @@ public class Time extends DomainObject {
      * @return True if time interval is active, otherwise false.
      */
     public boolean isActive() {
-        return 0 == getStop();
+        return 0 == getStopInMilliseconds();
     }
 
     /**
@@ -176,7 +153,7 @@ public class Time extends DomainObject {
         long time = 0L;
 
         if (!isActive()) {
-            time = getStop() - getStart();
+            time = getStopInMilliseconds() - getStartInMilliseconds();
         }
 
         return time;
@@ -191,12 +168,48 @@ public class Time extends DomainObject {
      * @return Interval in milliseconds.
      */
     public long getInterval() {
-        long stop = getStop();
+        long stop = getStopInMilliseconds();
 
         if (isActive()) {
             stop = (new Date()).getTime();
         }
 
-        return stop - getStart();
+        return stop - getStartInMilliseconds();
+    }
+
+    public static class Builder {
+        private final long mProjectId;
+        private Long mId = null;
+        private long mStartInMilliseconds = 0L;
+        private long mStopInMilliseconds = 0L;
+        private boolean mRegistered = false;
+
+        public Builder(long projectId) {
+            mProjectId = projectId;
+        }
+
+        public Builder id(Long id) {
+            mId = id;
+            return this;
+        }
+
+        public Builder startInMilliseconds(long startInMilliseconds) {
+            mStartInMilliseconds = startInMilliseconds;
+            return this;
+        }
+
+        public Builder stopInMilliseconds(long stopInMilliseconds) {
+            mStopInMilliseconds = stopInMilliseconds;
+            return this;
+        }
+
+        public Builder register() {
+            mRegistered = true;
+            return this;
+        }
+
+        public Time build() throws ClockOutBeforeClockInException {
+            return new Time(this);
+        }
     }
 }

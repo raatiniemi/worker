@@ -42,9 +42,15 @@ public class TimeCursorMapper implements CursorMapper<Time> {
         long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : 0;
         long registered = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.REGISTERED));
 
-        Time time = new Time(id, projectId, start, stop);
-        time.setRegistered(0 != registered);
+        Time.Builder builder = new Time.Builder(projectId)
+                .id(id)
+                .startInMilliseconds(start)
+                .stopInMilliseconds(stop);
 
-        return time;
+        if (0 != registered) {
+            builder.register();
+        }
+
+        return builder.build();
     }
 }

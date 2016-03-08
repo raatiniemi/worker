@@ -49,8 +49,10 @@ public class MarkRegisteredTime {
      * @throws DomainException If domain rules are violated.
      */
     public Time execute(final Time time) throws DomainException {
-        time.setRegistered(!time.isRegistered());
+        if (time.isRegistered()) {
+            return mTimeRepository.update(time.unmarkRegistered());
+        }
 
-        return mTimeRepository.update(time);
+        return mTimeRepository.update(time.markAsRegistered());
     }
 }

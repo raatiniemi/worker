@@ -252,7 +252,7 @@ public class Project extends DomainObject {
         }
 
         // TODO: Do not instantiate inside method, return value from get start?
-        return new Date(time.getStart());
+        return new Date(time.getStartInMilliseconds());
     }
 
     /**
@@ -276,7 +276,9 @@ public class Project extends DomainObject {
 
         // Instantiate the Time domain object with the project
         // and clock in with the supplied date.
-        return new Time(null, getId(), date.getTime(), 0L);
+        return new Time.Builder(getId())
+                .startInMilliseconds(date.getTime())
+                .build();
     }
 
     /**
@@ -303,7 +305,9 @@ public class Project extends DomainObject {
             throw new ClockActivityException("Unable to clock out, project is not active");
         }
 
-        time.clockOutAt(date);
+        time = time.clockOutAt(date);
+        mTime.set(0, time);
+
         return time;
     }
 
