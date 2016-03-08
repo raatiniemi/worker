@@ -144,8 +144,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getGroupId(int group) {
-        Date date = getGroup(group);
-        return date.getTime();
+        TimesheetGroupModel groupModel = get(group);
+        return groupModel.getId();
     }
 
     @Override

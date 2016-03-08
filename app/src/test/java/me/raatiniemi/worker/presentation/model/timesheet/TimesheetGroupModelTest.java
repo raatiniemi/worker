@@ -106,6 +106,14 @@ public class TimesheetGroupModelTest {
     }
 
     @Test
+    public void getId() {
+        Date date = new Date();
+        TimesheetGroupModel groupModel = new TimesheetGroupModel(date);
+
+        assertEquals(date.getTime(), groupModel.getId());
+    }
+
+    @Test
     @UseDataProvider("getTitle_dataProvider")
     public void getTitle(String expected, Calendar calendar) {
         TimesheetGroupModel timesheet = new TimesheetGroupModel(calendar.getTime());

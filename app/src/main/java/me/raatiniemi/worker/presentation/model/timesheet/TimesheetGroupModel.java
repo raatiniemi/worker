@@ -21,6 +21,10 @@ public class TimesheetGroupModel extends ExpandableListAdapter.ExpandableItem<Da
         super(group);
     }
 
+    public long getId() {
+        return getGroup().getTime();
+    }
+
     public String getTitle() {
         return sDateFormat.format(getGroup());
     }
