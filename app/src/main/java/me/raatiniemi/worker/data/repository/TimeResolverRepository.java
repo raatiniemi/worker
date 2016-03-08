@@ -26,7 +26,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
@@ -38,7 +40,6 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
 
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
@@ -167,12 +168,12 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public List<TimesheetItem> getTimesheet(
+    public Map<Date, List<Time>> getTimesheet(
             final long projectId,
             final int offset,
             final Criteria criteria
     ) {
-        List<TimesheetItem> result = new ArrayList<>();
+        Map<Date, List<Time>> result = new LinkedHashMap<>();
 
         // TODO: Simplify the building of the URI with query parameters.
         Uri uri = ProjectContract.getItemTimesheetUri(projectId)
@@ -208,15 +209,10 @@ public class TimeResolverRepository
                     continue;
                 }
 
-                // We're getting the id for the time objects as a comma-separated string column.
-                // We have to split the value before attempting to retrieve each individual row.
-                TimesheetItem item = new TimesheetItem(
-                        new Date(cursor.getLong(0))
-                );
-
+                List<Time> items = new ArrayList<>();
                 for (String id : rows) {
                     try {
-                        item.add(get(Long.valueOf(id)));
+                        items.add(get(Long.valueOf(id)));
                     } catch (DomainException e) {
                         // TODO: Handle exception properly.
                     }
@@ -224,9 +220,10 @@ public class TimeResolverRepository
 
                 // Reverse the order of the children to put the latest
                 // item at the top of the list.
-                Collections.reverse(item);
+                Collections.reverse(items);
 
-                result.add(item);
+                Date date = new Date(cursor.getLong(0));
+                result.put(date, items);
             } while (cursor.moveToNext());
         }
         cursor.close();

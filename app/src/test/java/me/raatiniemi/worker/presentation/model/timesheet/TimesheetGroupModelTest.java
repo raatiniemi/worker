@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
-public class TimesheetItemTest {
+public class TimesheetGroupModelTest {
     @DataProvider
     public static Object[][] getTitle_dataProvider() {
         return new Object[][]{
@@ -106,17 +106,25 @@ public class TimesheetItemTest {
     }
 
     @Test
+    public void getId() {
+        Date date = new Date();
+        TimesheetGroupModel groupModel = new TimesheetGroupModel(date);
+
+        assertEquals(date.getTime(), groupModel.getId());
+    }
+
+    @Test
     @UseDataProvider("getTitle_dataProvider")
     public void getTitle(String expected, Calendar calendar) {
-        TimesheetItem timesheetItem = new TimesheetItem(calendar.getTime());
+        TimesheetGroupModel timesheet = new TimesheetGroupModel(calendar.getTime());
 
-        assertEquals(expected, timesheetItem.getTitle());
+        assertEquals(expected, timesheet.getTitle());
     }
 
     @Test
     @UseDataProvider("isRegistered_dataProvider")
     public void isRegistered(Boolean expected, Time[] times) {
-        TimesheetItem timesheet = new TimesheetItem(new Date());
+        TimesheetGroupModel timesheet = new TimesheetGroupModel(new Date());
         timesheet.addAll(Arrays.asList(times));
 
         if (expected) {
@@ -129,7 +137,7 @@ public class TimesheetItemTest {
     @Test
     @UseDataProvider("getTimeSummaryWithDifference_dataProvider")
     public void getTimeSummaryWithDifference(String expected, Time[] times) {
-        TimesheetItem timesheet = new TimesheetItem(new Date());
+        TimesheetGroupModel timesheet = new TimesheetGroupModel(new Date());
         timesheet.addAll(Arrays.asList(times));
 
         assertEquals(expected, timesheet.getTimeSummaryWithDifference());

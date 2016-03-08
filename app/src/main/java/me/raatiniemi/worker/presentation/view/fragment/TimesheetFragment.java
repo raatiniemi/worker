@@ -47,7 +47,7 @@ import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetItem;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.view.TimesheetView;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
@@ -55,7 +55,7 @@ import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAda
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
-public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetItem>>
+public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetGroupModel>>
         implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
@@ -230,12 +230,12 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     }
 
     @Override
-    public List<TimesheetItem> getData() {
+    public List<TimesheetGroupModel> getData() {
         return getAdapter().getItems();
     }
 
     @Override
-    public void setData(List<TimesheetItem> data) {
+    public void setData(List<TimesheetGroupModel> data) {
         getAdapter().setItems(data);
     }
 
@@ -246,7 +246,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     @Override
     public TimesheetAdapter getAdapter() {
         if (null == mAdapter) {
-            List<TimesheetItem> items = new ArrayList<>();
+            List<TimesheetGroupModel> items = new ArrayList<>();
             mAdapter = new TimesheetAdapter(items, this);
         }
 
@@ -258,7 +258,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
      */
     @NonNull
     @Override
-    public TimesheetItem get(int index) {
+    public TimesheetGroupModel get(int index) {
         return getAdapter().get(index);
     }
 
@@ -266,7 +266,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
      * @inheritDoc
      */
     @Override
-    public void set(int index, @NonNull TimesheetItem item) {
+    public void set(int index, @NonNull TimesheetGroupModel item) {
         getAdapter().set(index, item);
     }
 
@@ -274,7 +274,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
      * @inheritDoc
      */
     @Override
-    public int add(@NonNull TimesheetItem item) {
+    public int add(@NonNull TimesheetGroupModel item) {
         return getAdapter().add(item);
     }
 
@@ -282,7 +282,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
      * @inheritDoc
      */
     @Override
-    public void add(final int index, final @NonNull TimesheetItem item) {
+    public void add(final int index, final @NonNull TimesheetGroupModel item) {
         // TODO: Implement adding at specific index for TimesheetFragment.
         throw new UnsupportedOperationException("Not yet implemented");
     }
@@ -291,7 +291,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
      * @inheritDoc
      */
     @Override
-    public int add(@NonNull List<TimesheetItem> items) {
+    public int add(@NonNull List<TimesheetGroupModel> items) {
         return getAdapter().add(items);
     }
 
@@ -300,7 +300,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
      */
     @NonNull
     @Override
-    public TimesheetItem remove(int index) {
+    public TimesheetGroupModel remove(int index) {
         return getAdapter().remove(index);
     }
 

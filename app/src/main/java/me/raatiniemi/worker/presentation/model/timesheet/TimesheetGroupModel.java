@@ -10,15 +10,19 @@ import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
-public class TimesheetItem extends ExpandableListAdapter.ExpandableItem<Date, Time> {
+public class TimesheetGroupModel extends ExpandableListAdapter.ExpandableItem<Date, Time> {
     private static final SimpleDateFormat sDateFormat;
 
     static {
         sDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
     }
 
-    public TimesheetItem(Date group) {
+    public TimesheetGroupModel(Date group) {
         super(group);
+    }
+
+    public long getId() {
+        return getGroup().getTime();
     }
 
     public String getTitle() {
