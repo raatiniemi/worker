@@ -47,6 +47,7 @@ import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.view.TimesheetView;
@@ -321,7 +322,11 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
     }
 
     public void update(TimeInAdapterResult result) {
-        getAdapter().set(result.getGroup(), result.getChild(), result.getTime());
+        getAdapter().set(
+                result.getGroup(),
+                result.getChild(),
+                new TimesheetChildModel(result.getTime())
+        );
     }
 
     @Override

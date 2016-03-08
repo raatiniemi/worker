@@ -24,27 +24,23 @@ import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
+import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
-import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
-        Time,
+        TimesheetChildModel,
         TimesheetGroupModel,
         TimesheetAdapter.ItemViewHolder,
         TimesheetAdapter.ItemViewHolder
         > {
     private static final String TAG = "TimesheetAdapter";
-
-    private final SimpleDateFormat mTimeFormat;
 
     private final OnTimesheetListener mOnTimesheetListener;
 
@@ -55,8 +51,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         super(items);
 
         mOnTimesheetListener = listener;
-
-        mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         setHasStableIds(true);
     }
@@ -98,7 +92,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindChildViewHolder(ItemViewHolder vh, final int group, final int child, int viewType) {
-        final Time time = get(group, child);
+        final TimesheetChildModel item = get(group, child);
+        final Time time = item.asTime();
 
         // Register the long click listener on the time item.
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -114,22 +109,11 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         // it. The selected background color should take precedence.
         vh.itemView.setActivated(false);
         if (!vh.itemView.isSelected()) {
-            vh.itemView.setActivated(time.isRegistered());
+            vh.itemView.setActivated(item.isRegistered());
         }
 
-        String title = mTimeFormat.format(new Date(time.getStartInMilliseconds()));
-        if (!time.isActive()) {
-            title += " - " + mTimeFormat.format(new Date(time.getStopInMilliseconds()));
-        }
-        vh.mTitle.setText(title);
-
-        vh.mSummarize.setText(
-                DateIntervalFormat.format(
-                        time.getInterval(),
-                        DateIntervalFormat.Type.FRACTION_HOURS
-                )
-        );
-
+        vh.mTitle.setText(item.getTitle());
+        vh.mSummarize.setText(item.getTimeSummary());
     }
 
     @Override
@@ -150,8 +134,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getChildId(int group, int child) {
-        Time time = get(group, child);
-        return time.getId();
+        TimesheetChildModel item = get(group, child);
+        return item.getId();
     }
 
     @Override

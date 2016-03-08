@@ -37,24 +37,28 @@ public class TimesheetGroupModelTest {
         return new Object[][]{
                 {
                         Boolean.TRUE,
-                        new Time[]{createTimeForIsRegisteredTest(true)}
+                        new TimesheetChildModel[]{
+                                createChildForIsRegisteredTest(true)
+                        }
                 },
                 {
                         Boolean.FALSE,
-                        new Time[]{createTimeForIsRegisteredTest(false)}
+                        new TimesheetChildModel[]{
+                                createChildForIsRegisteredTest(false)
+                        }
                 },
                 {
                         Boolean.FALSE,
-                        new Time[]{
-                                createTimeForIsRegisteredTest(false),
-                                createTimeForIsRegisteredTest(true)
+                        new TimesheetChildModel[]{
+                                createChildForIsRegisteredTest(false),
+                                createChildForIsRegisteredTest(true)
                         }
                 },
                 {
                         Boolean.TRUE,
-                        new Time[]{
-                                createTimeForIsRegisteredTest(true),
-                                createTimeForIsRegisteredTest(true)
+                        new TimesheetChildModel[]{
+                                createChildForIsRegisteredTest(true),
+                                createChildForIsRegisteredTest(true)
                         }
                 }
         };
@@ -65,44 +69,44 @@ public class TimesheetGroupModelTest {
         return new Object[][]{
                 {
                         "1.00 (-7.00)",
-                        new Time[]{
-                                createTimeForGetTimeSummaryWithDifferenceTest(3600000)
+                        new TimesheetChildModel[]{
+                                createChildForGetTimeSummaryWithDifferenceTest(3600000)
                         }
                 },
                 {
                         "8.00",
-                        new Time[]{
-                                createTimeForGetTimeSummaryWithDifferenceTest(28800000)
+                        new TimesheetChildModel[]{
+                                createChildForGetTimeSummaryWithDifferenceTest(28800000)
                         }
                 },
                 {
                         "9.00 (+1.00)",
-                        new Time[]{
-                                createTimeForGetTimeSummaryWithDifferenceTest(32400000)
+                        new TimesheetChildModel[]{
+                                createChildForGetTimeSummaryWithDifferenceTest(32400000)
                         }
                 },
                 {
                         "9.12 (+1.12)",
-                        new Time[]{
-                                createTimeForGetTimeSummaryWithDifferenceTest(14380327),
-                                createTimeForGetTimeSummaryWithDifferenceTest(18407820)
+                        new TimesheetChildModel[]{
+                                createChildForGetTimeSummaryWithDifferenceTest(14380327),
+                                createChildForGetTimeSummaryWithDifferenceTest(18407820)
                         }
                 }
         };
     }
 
-    private static Time createTimeForIsRegisteredTest(boolean registered) {
+    private static TimesheetChildModel createChildForIsRegisteredTest(boolean registered) {
         Time time = mock(Time.class);
         when(time.isRegistered()).thenReturn(registered);
 
-        return time;
+        return new TimesheetChildModel(time);
     }
 
-    private static Time createTimeForGetTimeSummaryWithDifferenceTest(long interval) {
+    private static TimesheetChildModel createChildForGetTimeSummaryWithDifferenceTest(long interval) {
         Time time = mock(Time.class);
         when(time.getInterval()).thenReturn(interval);
 
-        return time;
+        return new TimesheetChildModel(time);
     }
 
     @Test
@@ -123,7 +127,7 @@ public class TimesheetGroupModelTest {
 
     @Test
     @UseDataProvider("isRegistered_dataProvider")
-    public void isRegistered(Boolean expected, Time[] times) {
+    public void isRegistered(Boolean expected, TimesheetChildModel[] times) {
         TimesheetGroupModel timesheet = new TimesheetGroupModel(new Date());
         timesheet.addAll(Arrays.asList(times));
 
@@ -136,7 +140,7 @@ public class TimesheetGroupModelTest {
 
     @Test
     @UseDataProvider("getTimeSummaryWithDifference_dataProvider")
-    public void getTimeSummaryWithDifference(String expected, Time[] times) {
+    public void getTimeSummaryWithDifference(String expected, TimesheetChildModel[] times) {
         TimesheetGroupModel timesheet = new TimesheetGroupModel(new Date());
         timesheet.addAll(Arrays.asList(times));
 

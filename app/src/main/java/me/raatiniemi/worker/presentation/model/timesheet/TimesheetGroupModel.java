@@ -4,13 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import me.raatiniemi.worker.domain.model.CalculatedTime;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
-public class TimesheetGroupModel extends ExpandableListAdapter.ExpandableItem<Date, Time> {
+public class TimesheetGroupModel
+        extends ExpandableListAdapter.ExpandableItem<Date, TimesheetChildModel> {
     private static final SimpleDateFormat sDateFormat;
 
     static {
@@ -32,8 +30,8 @@ public class TimesheetGroupModel extends ExpandableListAdapter.ExpandableItem<Da
     public boolean isRegistered() {
         boolean registered = true;
 
-        for (Time time : this) {
-            if (time.isRegistered()) {
+        for (TimesheetChildModel child : this) {
+            if (child.isRegistered()) {
                 continue;
             }
 
@@ -61,9 +59,8 @@ public class TimesheetGroupModel extends ExpandableListAdapter.ExpandableItem<Da
     private long calculateTimeIntervalSummary() {
         long interval = 0;
 
-        for (Time time : this) {
-            CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
-            interval += calculatedTime.asMilliseconds();
+        for (TimesheetChildModel child : this) {
+            interval += child.calculateIntervalInMilliseconds();
         }
 
         return interval;
