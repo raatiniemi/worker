@@ -133,7 +133,7 @@ public class TimeTest {
     }
 
     @Test
-    public void clockOutAt_clockOutAfterClockIn()
+    public void clockOutAt()
             throws ClockOutBeforeClockInException {
         Date date = new Date();
 
@@ -142,6 +142,21 @@ public class TimeTest {
 
         time = time.clockOutAt(date);
         assertEquals(date.getTime(), time.getStopInMilliseconds());
+        assertFalse(time.isRegistered());
+    }
+
+    @Test
+    public void clockOutAt_withRegistered()
+            throws ClockOutBeforeClockInException {
+        Date date = new Date();
+
+        Time time = createTimeBuilder()
+                .register()
+                .build();
+
+        time = time.clockOutAt(date);
+        assertEquals(date.getTime(), time.getStopInMilliseconds());
+        assertTrue(time.isRegistered());
     }
 
     @Test
