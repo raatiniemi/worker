@@ -70,7 +70,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
                         public Observable<Project> call(final Project project) {
                             try {
                                 return Observable.just(mCreateProject.execute(project));
-                            } catch (Throwable e) {
+                            } catch (Exception e) {
                                 return Observable.error(e);
                             }
                         }
