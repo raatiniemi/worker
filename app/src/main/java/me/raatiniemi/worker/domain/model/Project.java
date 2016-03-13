@@ -100,13 +100,7 @@ public class Project extends DomainObject {
         return mDescription;
     }
 
-    /**
-     * Setter method for the project description.
-     *
-     * @param description Project description.
-     */
-    public void setDescription(String description) {
-        // If the description is empty we should reset it to null.
+    public void describe(String description) {
         if (null == description || 0 == description.length()) {
             description = null;
         }
@@ -339,7 +333,7 @@ public class Project extends DomainObject {
 
         public Project build() throws InvalidProjectNameException {
             Project project = new Project(mId, mProjectName);
-            project.setDescription(mDescription);
+            project.describe(mDescription);
             if (mArchived) {
                 project.archive();
             }

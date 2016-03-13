@@ -39,7 +39,7 @@ public class ProjectCursorMapper implements CursorMapper<Project> {
         long archived = cursor.getLong(cursor.getColumnIndexOrThrow(ProjectColumns.ARCHIVED));
 
         Project project = new Project(id, name);
-        project.setDescription(description);
+        project.describe(description);
         if (0 != archived) {
             project.archive();
         }

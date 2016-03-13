@@ -141,25 +141,25 @@ public class ProjectTest {
     }
 
     @Test
-    public void getDescription_valueFromSetter() throws InvalidProjectNameException {
+    public void describe() throws InvalidProjectNameException {
         Project project = new Project(null, "Project name");
-        project.setDescription("Project description");
+        project.describe("Project description");
 
         assertEquals("Project description", project.getDescription());
     }
 
     @Test
-    public void setDescription_withEmptyString() throws InvalidProjectNameException {
+    public void describe_withEmptyString() throws InvalidProjectNameException {
         Project project = new Project(null, "Project name");
-        project.setDescription("");
+        project.describe("");
 
         assertNull(project.getDescription());
     }
 
     @Test
-    public void setDescription_withNull() throws InvalidProjectNameException {
+    public void describe_withNull() throws InvalidProjectNameException {
         Project project = new Project(null, "Project name");
-        project.setDescription(null);
+        project.describe(null);
 
         assertNull(project.getDescription());
     }

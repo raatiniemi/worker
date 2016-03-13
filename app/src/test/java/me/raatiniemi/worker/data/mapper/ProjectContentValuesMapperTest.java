@@ -53,7 +53,7 @@ public class ProjectContentValuesMapperTest {
             final boolean archived
     ) throws InvalidProjectNameException {
         Project project = new Project(null, name);
-        project.setDescription(description);
+        project.describe(description);
         if (archived) {
             project.archive();
         }

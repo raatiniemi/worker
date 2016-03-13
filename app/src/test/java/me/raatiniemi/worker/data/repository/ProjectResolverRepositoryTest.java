@@ -389,7 +389,7 @@ public class ProjectResolverRepositoryTest {
         cursor.addRow(createCursorRow(1L, "Name", "Description", 0L));
 
         Project project = new Project(null, "Name");
-        project.setDescription("Description");
+        project.describe("Description");
 
         ContentResolver resolver = mock(ContentResolver.class);
 
