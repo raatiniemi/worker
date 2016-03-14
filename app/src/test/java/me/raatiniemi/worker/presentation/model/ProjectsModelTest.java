@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(DataProviderRunner.class)
@@ -41,5 +42,15 @@ public class ProjectsModelTest {
         ProjectsModel model = new ProjectsModel(project);
 
         assertTrue(project == model.asProject());
+    }
+
+    @Test
+    public void getTitle() throws InvalidProjectNameException {
+        Project project = createProjectBuilder("Project name")
+                .build();
+
+        ProjectsModel model = new ProjectsModel(project);
+
+        assertEquals("Project name", model.getTitle());
     }
 }

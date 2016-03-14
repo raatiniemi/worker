@@ -99,7 +99,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
 
         String summarize = DateIntervalFormat.format(project.summarizeTime());
 
-        vh.mName.setText(project.getName());
+        vh.mName.setText(item.getTitle());
         vh.mTime.setText(summarize);
         vh.mDescription.setText(project.getDescription());
 

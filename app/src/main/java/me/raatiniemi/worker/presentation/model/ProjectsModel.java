@@ -28,4 +28,8 @@ public class ProjectsModel {
     public Project asProject() {
         return mProject;
     }
+
+    public String getTitle() {
+        return mProject.getName();
+    }
 }
