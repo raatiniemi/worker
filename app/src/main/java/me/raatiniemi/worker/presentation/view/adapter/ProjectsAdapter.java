@@ -97,11 +97,9 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         // Will open the single project activity.
         vh.itemView.setOnClickListener(getOnClickListener());
 
-        String summarize = DateIntervalFormat.format(project.summarizeTime());
-
         vh.mName.setText(item.getTitle());
         vh.mDescription.setText(item.getDescription());
-        vh.mTime.setText(summarize);
+        vh.mTime.setText(item.getTimeSummary());
 
         // If the project description is empty the view should be hidden.
         int visibility = View.VISIBLE;

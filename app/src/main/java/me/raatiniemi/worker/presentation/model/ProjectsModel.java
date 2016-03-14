@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.model;
 
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class ProjectsModel {
     private final Project mProject;
@@ -35,5 +36,11 @@ public class ProjectsModel {
 
     public String getDescription() {
         return mProject.getDescription();
+    }
+
+    public String getTimeSummary() {
+        return DateIntervalFormat.format(
+                mProject.summarizeTime()
+        );
     }
 }
