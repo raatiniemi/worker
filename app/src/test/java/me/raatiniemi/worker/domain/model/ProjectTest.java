@@ -41,6 +41,33 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class ProjectTest {
     @Test
+    public void Builder_withDefaultValues()
+            throws InvalidProjectNameException {
+        Project project = new Project.Builder("Project name")
+                .build();
+
+        assertNull(project.getId());
+        assertEquals("Project name", project.getName());
+        assertNull(project.getDescription());
+        assertFalse(project.isArchived());
+    }
+
+    @Test
+    public void Builder_withValues()
+            throws InvalidProjectNameException {
+        Project project = new Project.Builder("Project name")
+                .id(2L)
+                .describe("Project description")
+                .archive()
+                .build();
+
+        assertEquals("Project name", project.getName());
+        assertEquals(Long.valueOf(2L), project.getId());
+        assertEquals("Project description", project.getDescription());
+        assertTrue(project.isArchived());
+    }
+
+    @Test
     public void Project_defaultValueFromIdNameConstructor() throws InvalidProjectNameException {
         Project project = new Project(2L, "Project name");
 

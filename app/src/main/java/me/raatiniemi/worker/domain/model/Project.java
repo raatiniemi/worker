@@ -319,4 +319,38 @@ public class Project extends DomainObject {
     public boolean isActive() {
         return null != getActiveTime();
     }
+
+    public static class Builder {
+        private final String mProjectName;
+        private Long mId;
+        private String mDescription;
+        private boolean mArchived;
+
+        public Builder(String projectName) {
+            mProjectName = projectName;
+        }
+
+        public Builder id(Long id) {
+            mId = id;
+            return this;
+        }
+
+        public Builder describe(String description) {
+            mDescription = description;
+            return this;
+        }
+
+        public Builder archive() {
+            mArchived = true;
+            return this;
+        }
+
+        public Project build() throws InvalidProjectNameException {
+            Project project = new Project(mId, mProjectName);
+            project.setDescription(mDescription);
+            project.setArchived(mArchived);
+
+            return project;
+        }
+    }
 }
