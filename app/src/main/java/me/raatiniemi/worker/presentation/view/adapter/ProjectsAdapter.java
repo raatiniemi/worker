@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -36,13 +37,14 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
+import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 
 /**
  * Adapter for listing available projects.
  */
-public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.ItemViewHolder> {
+public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.ItemViewHolder> {
     /**
      * Tag for logging within the ProjectsAdapter.
      */
@@ -88,7 +90,8 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
 
     @Override
     public void onBindViewHolder(final ItemViewHolder vh, int index) {
-        final Project project = get(index);
+        final ProjectsModel item = get(index);
+        final Project project = item.asProject();
 
         // Add the on click listener for the card view.
         // Will open the single project activity.
@@ -176,8 +179,20 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
         vh.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 
-    public int findProject(Project project) {
-        return Collections.binarySearch(getItems(), project, new ProjectComparator());
+    public int findProject(final Project project) {
+        // TODO: Clean up the comparator.
+        final ProjectComparator comparator = new ProjectComparator();
+
+        ProjectsModel item = new ProjectsModel(project);
+        return Collections.binarySearch(getItems(), item, new Comparator<ProjectsModel>() {
+            @Override
+            public int compare(ProjectsModel lhs, ProjectsModel rhs) {
+                return comparator.compare(
+                        lhs.asProject(),
+                        rhs.asProject()
+                );
+            }
+        });
     }
 
     /**

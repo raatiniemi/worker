@@ -30,6 +30,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
 import rx.Observable;
 import rx.Subscriber;
@@ -247,10 +248,22 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         }
                     }
                 })
-                .compose(this.<List<Project>>applySchedulers())
-                .subscribe(new Subscriber<List<Project>>() {
+                .map(new Func1<List<Project>, List<ProjectsModel>>() {
                     @Override
-                    public void onNext(List<Project> projects) {
+                    public List<ProjectsModel> call(List<Project> projects) {
+                        List<ProjectsModel> items = new ArrayList<>();
+
+                        for (Project project : projects) {
+                            items.add(new ProjectsModel(project));
+                        }
+
+                        return items;
+                    }
+                })
+                .compose(this.<List<ProjectsModel>>applySchedulers())
+                .subscribe(new Subscriber<List<ProjectsModel>>() {
+                    @Override
+                    public void onNext(List<ProjectsModel> items) {
                         Log.d(TAG, "getProjects onNext");
 
                         // Check that we still have the view attached.
@@ -259,7 +272,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                             return;
                         }
 
-                        getView().addProjects(projects);
+                        getView().addProjects(items);
                     }
 
                     @Override

@@ -22,6 +22,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.view.MvpView;
+import me.raatiniemi.worker.presentation.model.ProjectsModel;
 
 /**
  * Methods related to handling of the project view.
@@ -39,7 +40,7 @@ public interface ProjectsView extends MvpView {
      *
      * @param projects List of projects to add.
      */
-    void addProjects(List<Project> projects);
+    void addProjects(List<ProjectsModel> projects);
 
     /**
      * Show message for failed project retrieval.

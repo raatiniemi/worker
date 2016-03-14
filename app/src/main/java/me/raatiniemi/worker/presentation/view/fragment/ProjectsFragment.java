@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +50,7 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
 import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
@@ -155,14 +157,20 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      */
     @Override
     public List<Project> getProjects() {
-        return getAdapter().getItems();
+        List<Project> projects = new ArrayList<>();
+
+        for (ProjectsModel item : getAdapter().getItems()) {
+            projects.add(item.asProject());
+        }
+
+        return projects;
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public void addProjects(List<Project> projects) {
+    public void addProjects(List<ProjectsModel> projects) {
         getAdapter().add(projects);
     }
 
@@ -183,7 +191,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      */
     @Override
     public void addCreatedProject(@NonNull Project project) {
-        int position = getAdapter().add(project);
+        ProjectsModel item = new ProjectsModel(project);
+        int position = getAdapter().add(item);
 
         mRecyclerView.scrollToPosition(position);
     }
@@ -208,7 +217,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
             return;
         }
 
-        getAdapter().set(position, project);
+        ProjectsModel item = new ProjectsModel(project);
+        getAdapter().set(position, item);
     }
 
     /**
@@ -227,7 +237,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
             int previousPosition,
             Project project
     ) {
-        getAdapter().add(previousPosition, project);
+        ProjectsModel item = new ProjectsModel(project);
+        getAdapter().add(previousPosition, item);
 
         mRecyclerView.scrollToPosition(previousPosition);
     }
@@ -319,7 +330,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
         try {
             // Retrieve the project from the retrieved position.
-            final Project project = getAdapter().get(position);
+            final ProjectsModel item = getAdapter().get(position);
+            final Project project = item.asProject();
+
             Intent intent = new Intent(getActivity(), ProjectActivity.class);
             intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
 
