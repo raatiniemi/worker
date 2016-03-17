@@ -66,16 +66,6 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Constructor, used for creating new projects.
-     *
-     * @param name Name of the project.
-     * @throws InvalidProjectNameException If project name is null or empty.
-     */
-    public Project(final String name) throws InvalidProjectNameException {
-        this(null, name);
-    }
-
-    /**
      * Getter method for the project name.
      *
      * @return Project name.

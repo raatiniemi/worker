@@ -80,7 +80,7 @@ public class ProjectTest {
 
     @Test
     public void Project_defaultValueFromNameConstructor() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         assertNull(project.getId());
         assertEquals("Project name", project.getName());
@@ -101,17 +101,17 @@ public class ProjectTest {
 
     @Test(expected = InvalidProjectNameException.class)
     public void setName_nullValueFromNameConstructor() throws InvalidProjectNameException {
-        new Project(null);
+        new Project(null, null);
     }
 
     @Test(expected = InvalidProjectNameException.class)
     public void setName_emptyValueFromNameConstructor() throws InvalidProjectNameException {
-        new Project("");
+        new Project(null, "");
     }
 
     @Test
     public void getName_valueFromConstructor() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         assertEquals("Project name", project.getName());
 
@@ -134,7 +134,7 @@ public class ProjectTest {
 
     @Test
     public void getName_valueFromSetter() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
         project.setName("New project name");
 
         assertEquals("New project name", project.getName());
@@ -142,7 +142,7 @@ public class ProjectTest {
 
     @Test
     public void getDescription_valueFromSetter() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
         project.setDescription("Project description");
 
         assertEquals("Project description", project.getDescription());
@@ -150,7 +150,7 @@ public class ProjectTest {
 
     @Test
     public void setDescription_withEmptyString() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
         project.setDescription("");
 
         assertNull(project.getDescription());
@@ -158,7 +158,7 @@ public class ProjectTest {
 
     @Test
     public void setDescription_withNull() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
         project.setDescription(null);
 
         assertNull(project.getDescription());
@@ -166,14 +166,14 @@ public class ProjectTest {
 
     @Test
     public void isArchived_defaultValue() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         assertFalse(project.isArchived());
     }
 
     @Test
     public void isArchived_valueFromSetter() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
         project.setArchived(true);
 
         assertTrue(project.isArchived());
@@ -185,7 +185,7 @@ public class ProjectTest {
 
     @Test
     public void getTime_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         assertNotNull(project.getTime());
         assertEquals(0, project.getTime().size());
@@ -193,7 +193,7 @@ public class ProjectTest {
 
     @Test
     public void getTime_valueFromAddTimeList() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         List<Time> times = project.getTime();
         assertEquals(0, times.size());
@@ -208,7 +208,7 @@ public class ProjectTest {
 
     @Test
     public void getTime_valuesFromAddTimeList() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         List<Time> times = new ArrayList<>();
         Time time1 = mock(Time.class);
@@ -240,7 +240,7 @@ public class ProjectTest {
 
     @Test
     public void addTime_withEmptyTimeList() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         List<Time> times = new ArrayList<>();
         project.addTime(times);
@@ -250,14 +250,14 @@ public class ProjectTest {
 
     @Test
     public void summarizeTime_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         assertEquals(Long.valueOf(0L), Long.valueOf(project.summarizeTime()));
     }
 
     @Test
     public void summarizeTime_withActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time1 = mock(Time.class);
         when(time1.getTime()).thenReturn(60000L);
@@ -273,7 +273,7 @@ public class ProjectTest {
 
     @Test
     public void summarizeTime_withSingleItem() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time = mock(Time.class);
         when(time.getTime()).thenReturn(60000L);
@@ -285,7 +285,7 @@ public class ProjectTest {
 
     @Test
     public void summarizeTime_withValueRoundUp() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time1 = mock(Time.class);
         when(time1.getTime()).thenReturn(60000L);
@@ -301,7 +301,7 @@ public class ProjectTest {
 
     @Test
     public void summarizeTime_withValueRoundDown() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time1 = mock(Time.class);
         when(time1.getTime()).thenReturn(60000L);
@@ -317,7 +317,7 @@ public class ProjectTest {
 
     @Test
     public void summarizeTime_multipleItems() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time1 = mock(Time.class);
         when(time1.getTime()).thenReturn(3600000L);
@@ -333,14 +333,14 @@ public class ProjectTest {
 
     @Test
     public void getElapsed_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         assertEquals(Long.valueOf(0L), Long.valueOf(project.getElapsed()));
     }
 
     @Test
     public void getElapsed_withoutActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time = mock(Time.class);
         when(time.isActive()).thenReturn(false);
@@ -353,7 +353,7 @@ public class ProjectTest {
 
     @Test
     public void getElapsed_withActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time = mock(Time.class);
         when(time.isActive()).thenReturn(true);
@@ -368,14 +368,14 @@ public class ProjectTest {
 
     @Test
     public void getClockedInSince_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         assertNull(project.getClockedInSince());
     }
 
     @Test
     public void getClockedInSince_withoutActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time = mock(Time.class);
         when(time.isActive()).thenReturn(false);
@@ -388,7 +388,7 @@ public class ProjectTest {
 
     @Test
     public void getClockedInSince_withActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time = mock(Time.class);
         when(time.isActive()).thenReturn(true);
@@ -413,7 +413,7 @@ public class ProjectTest {
 
     @Test(expected = ClockActivityException.class)
     public void clockInAt_withActiveTime() throws DomainException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         // Setup the time object to return true for the `isActive`-call.
         Time time = mock(Time.class);
@@ -453,7 +453,7 @@ public class ProjectTest {
 
     @Test(expected = ClockActivityException.class)
     public void clockOutAt_withoutTime() throws DomainException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Date date = mock(Date.class);
         project.clockOutAt(date);
@@ -461,7 +461,7 @@ public class ProjectTest {
 
     @Test(expected = ClockActivityException.class)
     public void clockOutAt_withoutActiveTime() throws DomainException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         // Setup the time object to return true for the `isActive`-call.
         Time time = mock(Time.class);
@@ -477,7 +477,7 @@ public class ProjectTest {
 
     @Test
     public void clockOutAt_withActiveTime() throws DomainException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         Time time = new Time.Builder(1L)
                 .build();
@@ -493,14 +493,14 @@ public class ProjectTest {
 
     @Test
     public void isActive_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         assertFalse(project.isActive());
     }
 
     @Test
     public void isActive_withoutActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         // Setup the time object to return false for the `isActive`-call.
         Time time = mock(Time.class);
@@ -514,7 +514,7 @@ public class ProjectTest {
 
     @Test
     public void isActive_withActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+        Project project = new Project(null, "Project name");
 
         // Setup the time object to return true for the `isActive`-call.
         Time time = mock(Time.class);
