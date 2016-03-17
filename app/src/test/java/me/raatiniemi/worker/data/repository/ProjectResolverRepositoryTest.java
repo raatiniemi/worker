@@ -388,8 +388,7 @@ public class ProjectResolverRepositoryTest {
         MatrixCursor cursor = createCursor();
         cursor.addRow(createCursorRow(1L, "Name", "Description", 0L));
 
-        Project project = new Project(null, "Name");
-        project.describe("Description");
+        Project project = new Project(null, "Name", "Description");
 
         ContentResolver resolver = mock(ContentResolver.class);
 

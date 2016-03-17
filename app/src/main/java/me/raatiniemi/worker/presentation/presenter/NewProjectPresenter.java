@@ -63,7 +63,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
      */
     public void createNewProject(final String name) {
         try {
-            final Project project = new Project(null, name);
+            final Project project = new Project(null, name, null);
             Observable.just(project)
                     .flatMap(new Func1<Project, Observable<Project>>() {
                         @Override

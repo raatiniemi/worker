@@ -51,14 +51,20 @@ public class Project extends DomainObject {
     /**
      * Constructor.
      *
-     * @param id   Id for the project.
-     * @param name Name of the project.
+     * @param id          Id for the project.
+     * @param name        Name of the project.
+     * @param description Project description.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
-    public Project(final Long id, final String name) throws InvalidProjectNameException {
+    public Project(
+            final Long id,
+            final String name,
+            String description
+    ) throws InvalidProjectNameException {
         super(id);
 
         setName(name);
+        describe(description);
 
         // Set default value for non-constructor arguments.
         mTime = new ArrayList<>();
@@ -332,8 +338,7 @@ public class Project extends DomainObject {
         }
 
         public Project build() throws InvalidProjectNameException {
-            Project project = new Project(mId, mProjectName);
-            project.describe(mDescription);
+            Project project = new Project(mId, mProjectName, mDescription);
             if (mArchived) {
                 project.archive();
             }
