@@ -54,17 +54,20 @@ public class Project extends DomainObject {
      * @param id          Id for the project.
      * @param name        Name of the project.
      * @param description Project description.
+     * @param archived    True if project is archived, otherwise false.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
     public Project(
             final Long id,
             final String name,
-            String description
+            String description,
+            boolean archived
     ) throws InvalidProjectNameException {
         super(id);
 
         setName(name);
         describe(description);
+        mArchived = archived;
 
         // Set default value for non-constructor arguments.
         mTime = new ArrayList<>();
@@ -338,12 +341,7 @@ public class Project extends DomainObject {
         }
 
         public Project build() throws InvalidProjectNameException {
-            Project project = new Project(mId, mProjectName, mDescription);
-            if (mArchived) {
-                project.archive();
-            }
-
-            return project;
+            return new Project(mId, mProjectName, mDescription, mArchived);
         }
     }
 }

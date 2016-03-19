@@ -52,12 +52,7 @@ public class ProjectCursorMapperTest {
     }
 
     private static Project createProject(long id, String name, String description, boolean archived) throws InvalidProjectNameException {
-        Project project = new Project(id, name, description);
-        if (archived) {
-            project.archive();
-        }
-
-        return project;
+        return new Project(id, name, description, archived);
     }
 
     @DataProvider

@@ -31,24 +31,24 @@ public class ProjectComparatorTest {
 
     @Test
     public void compare_equal() throws InvalidProjectNameException {
-        Project lhs = new Project(1L, "Name", null);
-        Project rhs = new Project(1L, "Name", null);
+        Project lhs = new Project(1L, "Name", null, false);
+        Project rhs = new Project(1L, "Name", null, false);
 
         assertTrue(0 == mComparator.compare(lhs, rhs));
     }
 
     @Test
     public void compare_lessThan() throws InvalidProjectNameException {
-        Project lhs = new Project(1L, "Name", null);
-        Project rhs = new Project(2L, "Name", null);
+        Project lhs = new Project(1L, "Name", null, false);
+        Project rhs = new Project(2L, "Name", null, false);
 
         assertTrue(0 > mComparator.compare(lhs, rhs));
     }
 
     @Test
     public void compare_greaterThan() throws InvalidProjectNameException {
-        Project lhs = new Project(2L, "Name", null);
-        Project rhs = new Project(1L, "Name", null);
+        Project lhs = new Project(2L, "Name", null, false);
+        Project rhs = new Project(1L, "Name", null, false);
 
         assertTrue(0 < mComparator.compare(lhs, rhs));
     }
