@@ -41,6 +41,11 @@ public interface ProjectsView {
     void addCreatedProject(@NonNull Project project);
 
     /**
+     * Show message for successful project creation.
+     */
+    void showCreateProjectSuccessMessage();
+
+    /**
      * Update project in the list.
      *
      * @param project Project to update in the list.

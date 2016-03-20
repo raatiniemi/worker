@@ -176,9 +176,15 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     @Override
     public void addCreatedProject(@NonNull Project project) {
         int position = getAdapter().add(project);
-        mRecyclerView.scrollToPosition(position);
 
-        // TODO: Add support for "undo", i.e. remove created project.
+        mRecyclerView.scrollToPosition(position);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showCreateProjectSuccessMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.message_project_created,
@@ -246,6 +252,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
             @Override
             public void onCreateProject(Project project) {
                 addCreatedProject(project);
+
+                showCreateProjectSuccessMessage();
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
