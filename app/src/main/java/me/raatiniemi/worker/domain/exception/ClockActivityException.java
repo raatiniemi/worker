@@ -20,8 +20,4 @@ public class ClockActivityException extends DomainException {
     public ClockActivityException(String message) {
         super(message);
     }
-
-    public ClockActivityException() {
-        super();
-    }
 }
