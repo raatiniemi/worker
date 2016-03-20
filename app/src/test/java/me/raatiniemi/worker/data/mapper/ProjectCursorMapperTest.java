@@ -51,8 +51,21 @@ public class ProjectCursorMapperTest {
         return cursor;
     }
 
-    private static Project createProject(long id, String name, String description, boolean archived) throws InvalidProjectNameException {
-        return new Project(id, name, description, archived);
+    private static Project createProject(
+            long id,
+            String name,
+            String description,
+            boolean archived
+    ) throws InvalidProjectNameException {
+        Project.Builder builder = new Project.Builder(name)
+                .id(id)
+                .describe(description);
+
+        if (archived) {
+            builder.archive();
+        }
+
+        return builder.build();
     }
 
     @DataProvider

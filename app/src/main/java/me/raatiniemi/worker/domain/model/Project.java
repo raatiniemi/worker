@@ -57,7 +57,7 @@ public class Project extends DomainObject {
      * @param archived    True if project is archived, otherwise false.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
-    public Project(
+    private Project(
             final Long id,
             final String name,
             String description,

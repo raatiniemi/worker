@@ -52,7 +52,14 @@ public class ProjectContentValuesMapperTest {
             final String description,
             final boolean archived
     ) throws InvalidProjectNameException {
-        return new Project(null, name, description, archived);
+        Project.Builder builder = new Project.Builder(name)
+                .describe(description);
+
+        if (archived) {
+            builder.archive();
+        }
+
+        return builder.build();
     }
 
     @Test
