@@ -303,18 +303,6 @@ abstract public class ExpandableListAdapter<
     }
 
     /**
-     * Get the group item at given index.
-     *
-     * @param group Index for the group.
-     * @return Group item.
-     * @throws IndexOutOfBoundsException if index do not exists.
-     */
-    @NonNull
-    public G getGroup(int group) {
-        return get(group).getGroup();
-    }
-
-    /**
      * Base type for the combined group and child item.
      *
      * @param <G> Reference type for the group item.
