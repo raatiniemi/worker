@@ -16,15 +16,20 @@
 
 package me.raatiniemi.worker.domain.model;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
@@ -34,186 +39,327 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(JUnit4.class)
+@RunWith(DataProviderRunner.class)
 public class ProjectTest {
-    @Test
-    public void Project_defaultValueFromIdNameConstructor() throws InvalidProjectNameException {
-        Project project = new Project(2L, "Project name");
+    private static Project.Builder createProjectBuilder() {
+        return new Project.Builder("Project name");
+    }
 
-        assertEquals(Long.valueOf(2L), project.getId());
-        assertEquals("Project name", project.getName());
+    private static Time createTimeWithIntervalInMilliseconds(
+            long intervalInMilliseconds
+    ) throws ClockOutBeforeClockInException {
+        return new Time.Builder(1L)
+                .stopInMilliseconds(intervalInMilliseconds)
+                .build();
+    }
 
-        assertFalse(project.isArchived());
-        assertTrue(project.getTime().isEmpty());
+    private static Time createActiveTimeWithElapsedTimeInMilliseconds(
+            long elapsedTimeInMilliseconds
+    ) {
+        Time time = mock(Time.class);
+        when(time.isActive()).thenReturn(true);
+        when(time.getInterval()).thenReturn(elapsedTimeInMilliseconds);
+
+        return time;
+    }
+
+    private static Time createActiveTimeWithStartInMilliseconds(
+            long clockedInSinceInMilliseconds
+    ) throws ClockOutBeforeClockInException {
+        return new Time.Builder(1L)
+                .startInMilliseconds(clockedInSinceInMilliseconds)
+                .build();
+    }
+
+    @DataProvider
+    public static Object[][] summarizeTime_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "without items",
+                        0L,
+                        new Time[]{}
+                },
+                {
+                        "with single item",
+                        60000L,
+                        new Time[]{
+                                createTimeWithIntervalInMilliseconds(60000L)
+                        }
+                },
+                {
+                        "with multiple items",
+                        90000L,
+                        new Time[]{
+                                createTimeWithIntervalInMilliseconds(60000L),
+                                createTimeWithIntervalInMilliseconds(30000L)
+                        }
+                },
+                {
+                        "with active time",
+                        60000L,
+                        new Time[]{
+                                createTimeWithIntervalInMilliseconds(60000L),
+                                createTimeWithIntervalInMilliseconds(0L)
+                        }
+                }
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getElapsed_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "without items",
+                        0L,
+                        new Time[]{}
+                },
+                {
+                        "without active item",
+                        0L,
+                        new Time[]{
+                                createTimeWithIntervalInMilliseconds(1L)
+                        }
+                },
+                {
+                        // Due to the implementation of the elapsed calculation
+                        // (i.e. it creates a new Date instance as reference),
+                        // a mock is needed required to test the behaviour.
+                        "with active item",
+                        50000L,
+                        new Time[]{
+                                createActiveTimeWithElapsedTimeInMilliseconds(50000L)
+                        }
+                }
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getClockedInSince_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "without items",
+                        null,
+                        new Time[]{}
+                },
+                {
+                        "without active item",
+                        null,
+                        new Time[]{
+                                createTimeWithIntervalInMilliseconds(1L)
+                        }
+                },
+                {
+                        "with active item",
+                        new Date(50000L),
+                        new Time[]{
+                                createActiveTimeWithStartInMilliseconds(50000L)
+                        }
+                }
+        };
+    }
+
+    @DataProvider
+    public static Object[][] isActive_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "without items",
+                        false,
+                        new Time[]{}
+                },
+                {
+                        "without active item",
+                        false,
+                        new Time[]{
+                                createTimeWithIntervalInMilliseconds(1L)
+                        }
+                },
+                {
+                        "with active item",
+                        true,
+                        new Time[]{
+                                createActiveTimeWithStartInMilliseconds(50000L)
+                        }
+                }
+        };
     }
 
     @Test
-    public void Project_defaultValueFromNameConstructor() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    public void Builder_withDefaultValues()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
         assertNull(project.getId());
         assertEquals("Project name", project.getName());
-
+        assertNull(project.getDescription());
         assertFalse(project.isArchived());
-        assertTrue(project.getTime().isEmpty());
-    }
-
-    @Test(expected = InvalidProjectNameException.class)
-    public void setName_nullValueFromIdNameConstructor() throws InvalidProjectNameException {
-        new Project(null, null);
-    }
-
-    @Test(expected = InvalidProjectNameException.class)
-    public void setName_emptyValueFromIdNameConstructor() throws InvalidProjectNameException {
-        new Project(null, "");
-    }
-
-    @Test(expected = InvalidProjectNameException.class)
-    public void setName_nullValueFromNameConstructor() throws InvalidProjectNameException {
-        new Project(null);
-    }
-
-    @Test(expected = InvalidProjectNameException.class)
-    public void setName_emptyValueFromNameConstructor() throws InvalidProjectNameException {
-        new Project("");
     }
 
     @Test
-    public void getName_valueFromConstructor() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    public void Builder_withValues()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .id(2L)
+                .describe("Project description")
+                .archive()
+                .build();
 
         assertEquals("Project name", project.getName());
+        assertEquals(Long.valueOf(2L), project.getId());
+        assertEquals("Project description", project.getDescription());
+        assertTrue(project.isArchived());
+    }
 
-        project = new Project(1L, "New project name");
+    @Test(expected = InvalidProjectNameException.class)
+    public void Project_withNullName()
+            throws InvalidProjectNameException {
+        new Project.Builder(null)
+                .build();
+    }
+
+    @Test(expected = InvalidProjectNameException.class)
+    public void Project_withEmptyName()
+            throws InvalidProjectNameException {
+        new Project.Builder("")
+                .build();
+    }
+
+    @Test
+    public void getName()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
+
+        assertEquals("Project name", project.getName());
+    }
+
+    @Test(expected = InvalidProjectNameException.class)
+    public void rename_withNullName()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
+
+        project.rename(null);
+    }
+
+    @Test(expected = InvalidProjectNameException.class)
+    public void rename_withEmptyName()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
+
+        project.rename("");
+    }
+
+    @Test
+    public void rename()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
+
+        project.rename("New project name");
 
         assertEquals("New project name", project.getName());
     }
 
-    @Test(expected = InvalidProjectNameException.class)
-    public void setName_nullValueFromSetter() throws InvalidProjectNameException {
-        Project project = new Project(1L, "Project name");
-        project.setName(null);
-    }
-
-    @Test(expected = InvalidProjectNameException.class)
-    public void setName_emptyValueFromSetter() throws InvalidProjectNameException {
-        Project project = new Project(1L, "Project name");
-        project.setName("");
-    }
-
     @Test
-    public void getName_valueFromSetter() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-        project.setName("New project name");
+    public void describe()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
-        assertEquals("New project name", project.getName());
-    }
-
-    @Test
-    public void getDescription_valueFromSetter() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-        project.setDescription("Project description");
+        project.describe("Project description");
 
         assertEquals("Project description", project.getDescription());
     }
 
     @Test
-    public void setDescription_withEmptyString() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-        project.setDescription("");
+    public void describe_withNullDescription()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
+
+        project.describe(null);
 
         assertNull(project.getDescription());
     }
 
     @Test
-    public void setDescription_withNull() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-        project.setDescription(null);
+    public void describe_withEmptyDescription()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
+
+        project.describe("");
 
         assertNull(project.getDescription());
     }
 
     @Test
-    public void isArchived_defaultValue() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    public void archive()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
         assertFalse(project.isArchived());
+        project.archive();
+        assertTrue(project.isArchived());
     }
 
     @Test
-    public void isArchived_valueFromSetter() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-        project.setArchived(true);
+    public void unarchive()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .archive()
+                .build();
 
         assertTrue(project.isArchived());
-
-        project.setArchived(false);
-
+        project.unarchive();
         assertFalse(project.isArchived());
     }
 
     @Test
-    public void getTime_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        assertNotNull(project.getTime());
-        assertEquals(0, project.getTime().size());
-    }
-
-    @Test
-    public void getTime_valueFromAddTimeList() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        List<Time> times = project.getTime();
-        assertEquals(0, times.size());
-
-        Time time = mock(Time.class);
-        project.addTime(time);
-
-        times = project.getTime();
-        assertEquals(1, times.size());
-        assertEquals(time, times.get(0));
-    }
-
-    @Test
-    public void getTime_valuesFromAddTimeList() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    public void addTime_withList()
+            throws InvalidProjectNameException, ClockOutBeforeClockInException {
+        Project project = createProjectBuilder()
+                .id(1L)
+                .build();
 
         List<Time> times = new ArrayList<>();
-        Time time1 = mock(Time.class);
-        times.add(time1);
-        project.addTime(times);
-
-        times = new ArrayList<>();
-        Time time2 = mock(Time.class);
-        times.add(time2);
+        times.add(
+                new Time.Builder(project.getId())
+                        .build()
+        );
+        times.add(
+                new Time.Builder(project.getId())
+                        .build()
+        );
         project.addTime(times);
 
         times = project.getTime();
         assertEquals(2, times.size());
-        assertEquals(time1, times.get(0));
-        assertEquals(time2, times.get(1));
     }
 
     @Test(expected = NullPointerException.class)
-    public void addTime_withNullValue() throws InvalidProjectNameException {
-        Project project = new Project(1L, "Project name");
-        project.addTime((Time) null);
-    }
+    public void addTime_withNullList()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
-    @Test(expected = NullPointerException.class)
-    public void addTime_withNullList() throws InvalidProjectNameException {
-        Project project = new Project(1L, "Project name");
-        project.addTime((List<Time>) null);
+        project.addTime(null);
     }
 
     @Test
-    public void addTime_withEmptyTimeList() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    public void addTime_withEmptyTimeList()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
         List<Time> times = new ArrayList<>();
         project.addTime(times);
@@ -222,280 +368,163 @@ public class ProjectTest {
     }
 
     @Test
-    public void summarizeTime_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    @UseDataProvider("summarizeTime_dataProvider")
+    public void summarizeTime(
+            String message,
+            long expected,
+            Time[] times
+    ) throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
-        assertEquals(Long.valueOf(0L), Long.valueOf(project.summarizeTime()));
+        project.addTime(Arrays.asList(times));
+
+        assertEquals(message, expected, project.summarizeTime());
     }
 
     @Test
-    public void summarizeTime_withActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    @UseDataProvider("getElapsed_dataProvider")
+    public void getElapsed(
+            String message,
+            long expected,
+            Time[] times
+    ) throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
-        Time time1 = mock(Time.class);
-        when(time1.getTime()).thenReturn(60000L);
+        project.addTime(Arrays.asList(times));
 
-        Time time2 = mock(Time.class);
-        when(time2.getTime()).thenReturn(0L);
-
-        project.addTime(time1);
-        project.addTime(time2);
-
-        assertEquals(Long.valueOf(60000L), Long.valueOf(project.summarizeTime()));
+        assertEquals(message, expected, project.getElapsed());
     }
 
     @Test
-    public void summarizeTime_withSingleItem() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    @UseDataProvider("getClockedInSince_dataProvider")
+    public void getClockedInSince(
+            String message,
+            Date expected,
+            Time[] times
+    ) throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
-        Time time = mock(Time.class);
-        when(time.getTime()).thenReturn(60000L);
+        project.addTime(Arrays.asList(times));
 
-        project.addTime(time);
+        if (null == expected) {
+            assertNull(message, project.getClockedInSince());
+            return;
+        }
 
-        assertEquals(Long.valueOf(60000L), Long.valueOf(project.summarizeTime()));
-    }
-
-    @Test
-    public void summarizeTime_withValueRoundUp() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        Time time1 = mock(Time.class);
-        when(time1.getTime()).thenReturn(60000L);
-
-        Time time2 = mock(Time.class);
-        when(time2.getTime()).thenReturn(30000L);
-
-        project.addTime(time1);
-        project.addTime(time2);
-
-        assertEquals(Long.valueOf(90000L), Long.valueOf(project.summarizeTime()));
-    }
-
-    @Test
-    public void summarizeTime_withValueRoundDown() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        Time time1 = mock(Time.class);
-        when(time1.getTime()).thenReturn(60000L);
-
-        Time time2 = mock(Time.class);
-        when(time2.getTime()).thenReturn(29000L);
-
-        project.addTime(time1);
-        project.addTime(time2);
-
-        assertEquals(Long.valueOf(89000L), Long.valueOf(project.summarizeTime()));
-    }
-
-    @Test
-    public void summarizeTime_multipleItems() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        Time time1 = mock(Time.class);
-        when(time1.getTime()).thenReturn(3600000L);
-
-        Time time2 = mock(Time.class);
-        when(time2.getTime()).thenReturn(1800000L);
-
-        project.addTime(time1);
-        project.addTime(time2);
-
-        assertEquals(Long.valueOf(5400000L), Long.valueOf(project.summarizeTime()));
-    }
-
-    @Test
-    public void getElapsed_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        assertEquals(Long.valueOf(0L), Long.valueOf(project.getElapsed()));
-    }
-
-    @Test
-    public void getElapsed_withoutActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(false);
-
-        project.addTime(time);
-
-        assertEquals(Long.valueOf(0L), Long.valueOf(project.getElapsed()));
-        verify(time, times(1)).isActive();
-    }
-
-    @Test
-    public void getElapsed_withActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(true);
-        when(time.getInterval()).thenReturn(50000L);
-
-        project.addTime(time);
-
-        assertEquals(Long.valueOf(50000L), Long.valueOf(project.getElapsed()));
-        verify(time, times(1)).isActive();
-        verify(time, times(1)).getInterval();
-    }
-
-    @Test
-    public void getClockedInSince_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        assertNull(project.getClockedInSince());
-    }
-
-    @Test
-    public void getClockedInSince_withoutActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(false);
-
-        project.addTime(time);
-
-        assertNull(project.getClockedInSince());
-        verify(time, times(1)).isActive();
-    }
-
-    @Test
-    public void getClockedInSince_withActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(true);
-        when(time.getStartInMilliseconds()).thenReturn(500000L);
-
-        project.addTime(time);
-
-        Date date = project.getClockedInSince();
-
-        assertNotNull(date);
-        assertEquals(Long.valueOf(500000L), Long.valueOf(date.getTime()));
-        verify(time, times(1)).isActive();
-        verify(time, times(1)).getStartInMilliseconds();
+        Date actual = project.getClockedInSince();
+        assertEquals(message, expected.getTime(), actual.getTime());
     }
 
     @Test(expected = NullPointerException.class)
     public void clockInAt_withNullDate()
             throws DomainException {
-        Project project = new Project(1L, "Project name");
+        Project project = createProjectBuilder()
+                .build();
+
         project.clockInAt(null);
     }
 
     @Test(expected = ClockActivityException.class)
-    public void clockInAt_withActiveTime() throws DomainException {
-        Project project = new Project("Project name");
+    public void clockInAt_withActiveTime()
+            throws DomainException {
+        Project project = createProjectBuilder()
+                .build();
 
-        // Setup the time object to return true for the `isActive`-call.
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(true);
+        List<Time> times = new ArrayList<>();
+        times.add(
+                createActiveTimeWithStartInMilliseconds(0L)
+        );
+        project.addTime(times);
 
-        project.addTime(time);
-
-        Date date = mock(Date.class);
+        Date date = new Date();
         project.clockInAt(date);
-
-        verify(time, times(1)).isActive();
     }
 
     @Test
-    public void clockInAt_withoutActiveTime() throws DomainException {
-        Project project = new Project(1L, "Project name");
+    public void clockInAt_withoutActiveTime()
+            throws DomainException {
+        Project project = createProjectBuilder()
+                .id(1L)
+                .build();
 
-        Date date = mock(Date.class);
-        when(date.getTime()).thenReturn(100L);
+        Date date = new Date(100L);
 
         Time time = project.clockInAt(date);
-
         assertNotNull(time);
         assertNull(time.getId());
         assertEquals(1L, time.getProjectId());
         assertEquals(100L, time.getStartInMilliseconds());
         assertEquals(0L, time.getStopInMilliseconds());
-        verify(date, times(1)).getTime();
     }
 
     @Test(expected = NullPointerException.class)
     public void clockOutAt_withNullDate()
             throws DomainException {
-        Project project = new Project(1L, "Project name");
+        Project project = createProjectBuilder()
+                .build();
+
         project.clockOutAt(null);
     }
 
     @Test(expected = ClockActivityException.class)
-    public void clockOutAt_withoutTime() throws DomainException {
-        Project project = new Project("Project name");
+    public void clockOutAt_withoutTime()
+            throws DomainException {
+        Project project = createProjectBuilder()
+                .build();
 
-        Date date = mock(Date.class);
+        Date date = new Date();
         project.clockOutAt(date);
     }
 
     @Test(expected = ClockActivityException.class)
-    public void clockOutAt_withoutActiveTime() throws DomainException {
-        Project project = new Project("Project name");
-
-        // Setup the time object to return true for the `isActive`-call.
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(false);
-
-        project.addTime(time);
-
-        Date date = mock(Date.class);
-        project.clockOutAt(date);
-
-        verify(time, times(1)).isActive();
-    }
-
-    @Test
-    public void clockOutAt_withActiveTime() throws DomainException {
-        Project project = new Project("Project name");
-
-        Time time = new Time.Builder(1L)
+    public void clockOutAt_withoutActiveTime()
+            throws DomainException {
+        Project project = createProjectBuilder()
                 .build();
-        project.addTime(time);
 
-        Date date = mock(Date.class);
-        when(date.getTime()).thenReturn(2L);
+        List<Time> times = new ArrayList<>();
+        times.add(createTimeWithIntervalInMilliseconds(500L));
+        project.addTime(times);
 
-        time = project.clockOutAt(date);
-        assertEquals(2L, time.getStopInMilliseconds());
+        Date date = new Date();
+        project.clockOutAt(date);
+    }
+
+    @Test
+    public void clockOutAt_withActiveTime()
+            throws DomainException {
+        Project project = createProjectBuilder()
+                .build();
+
+        List<Time> times = new ArrayList<>();
+        times.add(createActiveTimeWithStartInMilliseconds(100L));
+        project.addTime(times);
+
+        Date date = new Date(200L);
+        Time time = project.clockOutAt(date);
+        assertEquals(100L, time.getStartInMilliseconds());
+        assertEquals(200L, time.getStopInMilliseconds());
+
+        // The `clockOutAt` modifies the active time, i.e. the project should
+        // be inactive after clocking out.
         assertFalse(project.isActive());
     }
 
     @Test
-    public void isActive_withoutTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
+    @UseDataProvider("isActive_dataProvider")
+    public void isActive(
+            String message,
+            boolean expected,
+            Time[] times
+    ) throws InvalidProjectNameException {
+        Project project = createProjectBuilder()
+                .build();
 
-        assertFalse(project.isActive());
-    }
+        project.addTime(Arrays.asList(times));
 
-    @Test
-    public void isActive_withoutActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        // Setup the time object to return false for the `isActive`-call.
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(false);
-
-        project.addTime(time);
-
-        assertFalse(project.isActive());
-        verify(time, times(1)).isActive();
-    }
-
-    @Test
-    public void isActive_withActiveTime() throws InvalidProjectNameException {
-        Project project = new Project("Project name");
-
-        // Setup the time object to return true for the `isActive`-call.
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(true);
-
-        project.addTime(time);
-
-        assertTrue(project.isActive());
-        verify(time, times(1)).isActive();
+        assertTrue(message, expected == project.isActive());
     }
 }

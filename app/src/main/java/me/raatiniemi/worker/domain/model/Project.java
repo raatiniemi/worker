@@ -41,7 +41,7 @@ public class Project extends DomainObject {
     /**
      * Flag for archived project.
      */
-    private boolean mArchived;
+    private boolean mArchived = false;
 
     /**
      * Time registered for the project.
@@ -51,28 +51,26 @@ public class Project extends DomainObject {
     /**
      * Constructor.
      *
-     * @param id   Id for the project.
-     * @param name Name of the project.
+     * @param id          Id for the project.
+     * @param name        Name of the project.
+     * @param description Project description.
+     * @param archived    True if project is archived, otherwise false.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
-    public Project(final Long id, final String name) throws InvalidProjectNameException {
+    private Project(
+            final Long id,
+            final String name,
+            String description,
+            boolean archived
+    ) throws InvalidProjectNameException {
         super(id);
 
         setName(name);
+        describe(description);
+        mArchived = archived;
 
         // Set default value for non-constructor arguments.
         mTime = new ArrayList<>();
-        setArchived(false);
-    }
-
-    /**
-     * Constructor, used for creating new projects.
-     *
-     * @param name Name of the project.
-     * @throws InvalidProjectNameException If project name is null or empty.
-     */
-    public Project(final String name) throws InvalidProjectNameException {
-        this(null, name);
     }
 
     /**
@@ -90,12 +88,16 @@ public class Project extends DomainObject {
      * @param name Project name.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
-    public void setName(final String name) throws InvalidProjectNameException {
+    private void setName(final String name) throws InvalidProjectNameException {
         if (null == name || 0 == name.length()) {
             throw new InvalidProjectNameException("Project name is null or empty");
         }
 
         mName = name;
+    }
+
+    public void rename(final String name) throws InvalidProjectNameException {
+        setName(name);
     }
 
     /**
@@ -107,13 +109,7 @@ public class Project extends DomainObject {
         return mDescription;
     }
 
-    /**
-     * Setter method for the project description.
-     *
-     * @param description Project description.
-     */
-    public void setDescription(String description) {
-        // If the description is empty we should reset it to null.
+    public void describe(String description) {
         if (null == description || 0 == description.length()) {
             description = null;
         }
@@ -130,13 +126,12 @@ public class Project extends DomainObject {
         return mArchived;
     }
 
-    /**
-     * Setter method for archived project flag.
-     *
-     * @param archived True if project is archived, otherwise false.
-     */
-    public void setArchived(final boolean archived) {
-        mArchived = archived;
+    public void archive() {
+        mArchived = true;
+    }
+
+    public void unarchive() {
+        mArchived = false;
     }
 
     /**
@@ -146,19 +141,6 @@ public class Project extends DomainObject {
      */
     public List<Time> getTime() {
         return mTime;
-    }
-
-    /**
-     * Add time for the project.
-     *
-     * @param time Time to add to the project.
-     */
-    public void addTime(final Time time) {
-        if (null == time) {
-            throw new NullPointerException("Time is not allowed to be null");
-        }
-
-        getTime().add(time);
     }
 
     /**
@@ -318,5 +300,35 @@ public class Project extends DomainObject {
      */
     public boolean isActive() {
         return null != getActiveTime();
+    }
+
+    public static class Builder {
+        private final String mProjectName;
+        private Long mId;
+        private String mDescription;
+        private boolean mArchived;
+
+        public Builder(String projectName) {
+            mProjectName = projectName;
+        }
+
+        public Builder id(Long id) {
+            mId = id;
+            return this;
+        }
+
+        public Builder describe(String description) {
+            mDescription = description;
+            return this;
+        }
+
+        public Builder archive() {
+            mArchived = true;
+            return this;
+        }
+
+        public Project build() throws InvalidProjectNameException {
+            return new Project(mId, mProjectName, mDescription, mArchived);
+        }
     }
 }

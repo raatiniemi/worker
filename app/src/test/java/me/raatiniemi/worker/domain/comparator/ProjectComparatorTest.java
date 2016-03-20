@@ -29,26 +29,36 @@ import static junit.framework.Assert.assertTrue;
 public class ProjectComparatorTest {
     private final ProjectComparator mComparator = new ProjectComparator();
 
+    private Project createProject(long id)
+            throws InvalidProjectNameException {
+        return new Project.Builder("Project name")
+                .id(id)
+                .build();
+    }
+
     @Test
-    public void compare_equal() throws InvalidProjectNameException {
-        Project lhs = new Project(1L, "Name");
-        Project rhs = new Project(1L, "Name");
+    public void compare_equal()
+            throws InvalidProjectNameException {
+        Project lhs = createProject(1L);
+        Project rhs = createProject(1L);
 
         assertTrue(0 == mComparator.compare(lhs, rhs));
     }
 
     @Test
-    public void compare_lessThan() throws InvalidProjectNameException {
-        Project lhs = new Project(1L, "Name");
-        Project rhs = new Project(2L, "Name");
+    public void compare_lessThan()
+            throws InvalidProjectNameException {
+        Project lhs = createProject(1L);
+        Project rhs = createProject(2L);
 
         assertTrue(0 > mComparator.compare(lhs, rhs));
     }
 
     @Test
-    public void compare_greaterThan() throws InvalidProjectNameException {
-        Project lhs = new Project(2L, "Name");
-        Project rhs = new Project(1L, "Name");
+    public void compare_greaterThan()
+            throws InvalidProjectNameException {
+        Project lhs = createProject(2L);
+        Project rhs = createProject(1L);
 
         assertTrue(0 < mComparator.compare(lhs, rhs));
     }

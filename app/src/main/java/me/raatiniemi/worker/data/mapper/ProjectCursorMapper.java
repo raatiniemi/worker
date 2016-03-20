@@ -38,10 +38,14 @@ public class ProjectCursorMapper implements CursorMapper<Project> {
         String description = cursor.getString(cursor.getColumnIndexOrThrow(ProjectColumns.DESCRIPTION));
         long archived = cursor.getLong(cursor.getColumnIndexOrThrow(ProjectColumns.ARCHIVED));
 
-        Project project = new Project(id, name);
-        project.setDescription(description);
-        project.setArchived(0 != archived);
+        Project.Builder builder = new Project.Builder(name)
+                .id(id)
+                .describe(description);
 
-        return project;
+        if (0 != archived) {
+            builder.archive();
+        }
+
+        return builder.build();
     }
 }
