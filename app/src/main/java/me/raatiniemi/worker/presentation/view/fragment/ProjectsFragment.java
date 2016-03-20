@@ -214,6 +214,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
             Project project
     ) {
         getAdapter().add(previousPosition, project);
+
+        mRecyclerView.scrollToPosition(previousPosition);
     }
 
     @Override
@@ -229,15 +231,12 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
      * @inheritDoc
      */
     @Override
-    public void deleteProjectFailed(final int index) {
+    public void deleteProjectFailed() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show();
-
-        // Scroll to the position of the project.
-        mRecyclerView.scrollToPosition(index);
     }
 
     @Override

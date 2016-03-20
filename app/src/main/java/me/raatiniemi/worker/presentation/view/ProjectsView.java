@@ -72,10 +72,8 @@ public interface ProjectsView {
 
     /**
      * Display message for failed project deletion.
-     *
-     * @param index Index of project.
      */
-    void deleteProjectFailed(int index);
+    void deleteProjectFailed();
 
     /**
      * Open the dialog for creating a new project.
