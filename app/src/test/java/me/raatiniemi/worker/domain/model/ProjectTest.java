@@ -325,22 +325,6 @@ public class ProjectTest {
     }
 
     @Test
-    public void addTime_withItem()
-            throws InvalidProjectNameException, ClockOutBeforeClockInException {
-        Project project = createProjectBuilder()
-                .id(1L)
-                .build();
-
-        project.addTime(
-                new Time.Builder(project.getId())
-                        .build()
-        );
-
-        List<Time> times = project.getTime();
-        assertEquals(1, times.size());
-    }
-
-    @Test
     public void addTime_withList()
             throws InvalidProjectNameException, ClockOutBeforeClockInException {
         Project project = createProjectBuilder()
@@ -363,21 +347,12 @@ public class ProjectTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void addTime_withNullValue()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime((Time) null);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void addTime_withNullList()
             throws InvalidProjectNameException {
         Project project = createProjectBuilder()
                 .build();
 
-        project.addTime((List<Time>) null);
+        project.addTime(null);
     }
 
     @Test

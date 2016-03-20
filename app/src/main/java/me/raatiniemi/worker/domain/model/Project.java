@@ -144,19 +144,6 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Add time for the project.
-     *
-     * @param time Time to add to the project.
-     */
-    public void addTime(final Time time) {
-        if (null == time) {
-            throw new NullPointerException("Time is not allowed to be null");
-        }
-
-        getTime().add(time);
-    }
-
-    /**
      * Add time for the project from a list.
      *
      * @param time Time to add to the project.
