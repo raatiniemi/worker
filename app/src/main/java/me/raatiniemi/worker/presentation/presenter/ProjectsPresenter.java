@@ -354,7 +354,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                         }
 
                         getView().restoreProjectAtPreviousPosition(index, project);
-                        getView().deleteProjectFailed();
+                        getView().showDeleteProjectErrorMessage();
                     }
 
                     @Override
@@ -367,8 +367,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                             return;
                         }
 
-                        // The project have successfully been deleted.
-                        getView().deleteProjectSuccessful();
+                        getView().showDeleteProjectSuccessMessage();
                     }
                 });
     }

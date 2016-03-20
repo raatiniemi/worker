@@ -219,7 +219,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     }
 
     @Override
-    public void deleteProjectSuccessful() {
+    public void showDeleteProjectSuccessMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.message_project_deleted,
@@ -231,7 +231,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
      * @inheritDoc
      */
     @Override
-    public void deleteProjectFailed() {
+    public void showDeleteProjectErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_project_deleted,

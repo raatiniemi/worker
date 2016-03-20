@@ -66,14 +66,14 @@ public interface ProjectsView {
     );
 
     /**
-     * Display message for successful project deletion.
+     * Show message for successful project deletion.
      */
-    void deleteProjectSuccessful();
+    void showDeleteProjectSuccessMessage();
 
     /**
-     * Display message for failed project deletion.
+     * Show message for failed project deletion.
      */
-    void deleteProjectFailed();
+    void showDeleteProjectErrorMessage();
 
     /**
      * Open the dialog for creating a new project.
