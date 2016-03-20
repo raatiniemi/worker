@@ -21,13 +21,18 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.base.view.fragment.ListFragment;
-import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
 
 /**
  * Methods related to handling of the project view.
  */
-public interface ProjectsView extends ListFragment<ProjectsAdapter, Project> {
+public interface ProjectsView {
+    /**
+     * Add a list of projects to the view.
+     *
+     * @param projects List of projects to add.
+     */
+    void addProjects(List<Project> projects);
+
     /**
      * Add a created project to the view.
      *
@@ -41,6 +46,24 @@ public interface ProjectsView extends ListFragment<ProjectsAdapter, Project> {
      * @param project Project to update in the list.
      */
     void updateProject(Project project);
+
+    /**
+     * Delete a project from the view at the given position.
+     *
+     * @param position Position of the project to delete.
+     */
+    void deleteProjectAtPosition(int position);
+
+    /**
+     * Restore a project at its previous position.
+     *
+     * @param previousPosition Previous position of the project.
+     * @param project          Project to restore.
+     */
+    void restoreProjectAtPreviousPosition(
+            int previousPosition,
+            Project project
+    );
 
     /**
      * Display message for successful project deletion.

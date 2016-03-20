@@ -254,26 +254,21 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         unsubscribe();
 
         // Setup the subscription for retrieving projects.
-        Observable.defer(new Func0<Observable<List<Project>>>() {
-            @Override
-            public Observable<List<Project>> call() {
-                try {
-                    return Observable.just(mGetProjects.execute());
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        })
-                .flatMapIterable(new Func1<List<Project>, Iterable<Project>>() {
+        Observable
+                .defer(new Func0<Observable<List<Project>>>() {
                     @Override
-                    public Iterable<Project> call(List<Project> projects) {
-                        return projects;
+                    public Observable<List<Project>> call() {
+                        try {
+                            return Observable.just(mGetProjects.execute());
+                        } catch (DomainException e) {
+                            return Observable.error(e);
+                        }
                     }
                 })
-                .compose(this.<Project>applySchedulers())
-                .subscribe(new Subscriber<Project>() {
+                .compose(this.<List<Project>>applySchedulers())
+                .subscribe(new Subscriber<List<Project>>() {
                     @Override
-                    public void onNext(Project project) {
+                    public void onNext(List<Project> projects) {
                         Log.d(TAG, "getProjects onNext");
 
                         // Check that we still have the view attached.
@@ -282,8 +277,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                             return;
                         }
 
-                        // Push the data to the view.
-                        getView().add(project);
+                        getView().addProjects(projects);
                     }
 
                     @Override
@@ -325,7 +319,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         //
         // If the deletion fails the project will be added back to the
         // view again, at the previous location.
-        getView().remove(index);
+        getView().deleteProjectAtPosition(index);
 
         Observable.just(project)
                 .flatMap(new Func1<Project, Observable<Object>>() {
@@ -359,9 +353,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                             return;
                         }
 
-                        // We failed to delete the project, we have to add it to
-                        // its previous location in the list view.
-                        getView().add(index, project);
+                        getView().restoreProjectAtPreviousPosition(index, project);
 
                         // Display the error message for failed deletion.
                         getView().deleteProjectFailed(index);
