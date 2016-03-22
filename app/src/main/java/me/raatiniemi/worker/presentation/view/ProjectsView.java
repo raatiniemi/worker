@@ -21,17 +21,30 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.base.view.MvpView;
 
 /**
  * Methods related to handling of the project view.
  */
-public interface ProjectsView {
+public interface ProjectsView extends MvpView {
+    /**
+     * Get the projects from the view.
+     *
+     * @return Projects from the view.
+     */
+    List<Project> getProjects();
+
     /**
      * Add a list of projects to the view.
      *
      * @param projects List of projects to add.
      */
     void addProjects(List<Project> projects);
+
+    /**
+     * Show message for failed project retrieval.
+     */
+    void showGetProjectsErrorMessage();
 
     /**
      * Add a created project to the view.
@@ -79,6 +92,16 @@ public interface ProjectsView {
      * Show message for failed project deletion.
      */
     void showDeleteProjectErrorMessage();
+
+    /**
+     * Show message for failed clock in action.
+     */
+    void showClockInErrorMessage();
+
+    /**
+     * Show message for failed clock out action.
+     */
+    void showClockOutErrorMessage();
 
     /**
      * Open the dialog for creating a new project.

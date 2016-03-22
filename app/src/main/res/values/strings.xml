@@ -36,9 +36,14 @@
     <string name="confirm.delete_time.title">Delete time</string>
     <string name="confirm.delete_time.message">Are you sure you want to delete the registered time?</string>
 
+    <string name="error.message.get_projects">Failed to retrieve projects.</string>
+
     <string name="message.project_created">New project have been created</string>
     <string name="message.project_deleted">Project have been deleted</string>
     <string name="error.message.project_deleted">Failed to delete project.</string>
+
+    <string name="error.message.clock_in">Failed to clock in project.</string>
+    <string name="error.message.clock_out">Failed to clock out project.</string>
 
     <string name="message.permission.write_backup">Need permission to backup.</string>
     <string name="message.permission.read_backup">Need permission to read backup.</string>

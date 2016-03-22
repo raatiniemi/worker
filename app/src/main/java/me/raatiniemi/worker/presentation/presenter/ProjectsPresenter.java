@@ -30,7 +30,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
-import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
+import me.raatiniemi.worker.presentation.view.ProjectsView;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -42,7 +42,7 @@ import rx.schedulers.Schedulers;
 /**
  * Presenter for the projects module, handles loading of projects.
  */
-public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
+public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     /**
      * Tag used when logging.
      */
@@ -104,7 +104,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
         }
 
         // Iterate the projects and collect the index of active projects.
-        List<Project> data = getView().getData();
+        List<Project> data = getView().getProjects();
         for (Project project : data) {
             if (!project.isActive()) {
                 continue;
@@ -172,15 +172,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
                         // Log the error even if the view have been detached.
                         Log.w(TAG, "Failed to get positions: " + e.getMessage());
-
-                        // Check that we still have the view attached.
-                        if (!isViewAttached()) {
-                            Log.d(TAG, "View is not attached, skip pushing error");
-                            return;
-                        }
-
-                        // Push the error to the view.
-                        getView().showError(e);
                     }
 
                     @Override
@@ -227,15 +218,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
 
                         // Log the error even if the view have been detached.
                         Log.w(TAG, "Failed to get positions: " + e.getMessage());
-
-                        // Check that we still have the view attached.
-                        if (!isViewAttached()) {
-                            Log.d(TAG, "View is not attached, skip pushing error");
-                            return;
-                        }
-
-                        // Push the error to the view.
-                        getView().showError(e);
                     }
 
                     @Override
@@ -293,8 +275,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                             return;
                         }
 
-                        // Push the error to the view.
-                        getView().showError(e);
+                        getView().showGetProjectsErrorMessage();
                     }
 
                     @Override
@@ -312,7 +293,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
     public void deleteProject(final Project project) {
         // Before removing the project we need its current index, it's
         // needed to handle the restoration if deletion fails.
-        final int index = getView().getData().indexOf(project);
+        final int index = getView().getProjects().indexOf(project);
 
         // Remove project from the view before executing the use case,
         // i.e. optimistic propagation, to simulate better latency.
@@ -419,8 +400,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsFragment> {
                             return;
                         }
 
-                        // Push the error to the view.
-                        getView().showError(e);
+                        if (project.isActive()) {
+                            getView().showClockOutErrorMessage();
+                            return;
+                        }
+                        getView().showClockInErrorMessage();
                     }
 
                     @Override
