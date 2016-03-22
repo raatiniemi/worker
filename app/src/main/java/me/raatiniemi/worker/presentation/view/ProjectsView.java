@@ -21,19 +21,42 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.base.view.fragment.ListFragment;
-import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
+import me.raatiniemi.worker.presentation.base.view.MvpView;
 
 /**
  * Methods related to handling of the project view.
  */
-public interface ProjectsView extends ListFragment<ProjectsAdapter, Project> {
+public interface ProjectsView extends MvpView {
+    /**
+     * Get the projects from the view.
+     *
+     * @return Projects from the view.
+     */
+    List<Project> getProjects();
+
+    /**
+     * Add a list of projects to the view.
+     *
+     * @param projects List of projects to add.
+     */
+    void addProjects(List<Project> projects);
+
+    /**
+     * Show message for failed project retrieval.
+     */
+    void showGetProjectsErrorMessage();
+
     /**
      * Add a created project to the view.
      *
      * @param project Created project.
      */
     void addCreatedProject(@NonNull Project project);
+
+    /**
+     * Show message for successful project creation.
+     */
+    void showCreateProjectSuccessMessage();
 
     /**
      * Update project in the list.
@@ -43,16 +66,42 @@ public interface ProjectsView extends ListFragment<ProjectsAdapter, Project> {
     void updateProject(Project project);
 
     /**
-     * Display message for successful project deletion.
+     * Delete a project from the view at the given position.
+     *
+     * @param position Position of the project to delete.
      */
-    void deleteProjectSuccessful();
+    void deleteProjectAtPosition(int position);
 
     /**
-     * Display message for failed project deletion.
+     * Restore a project at its previous position.
      *
-     * @param index Index of project.
+     * @param previousPosition Previous position of the project.
+     * @param project          Project to restore.
      */
-    void deleteProjectFailed(int index);
+    void restoreProjectAtPreviousPosition(
+            int previousPosition,
+            Project project
+    );
+
+    /**
+     * Show message for successful project deletion.
+     */
+    void showDeleteProjectSuccessMessage();
+
+    /**
+     * Show message for failed project deletion.
+     */
+    void showDeleteProjectErrorMessage();
+
+    /**
+     * Show message for failed clock in action.
+     */
+    void showClockInErrorMessage();
+
+    /**
+     * Show message for failed clock out action.
+     */
+    void showClockOutErrorMessage();
 
     /**
      * Open the dialog for creating a new project.

@@ -148,12 +148,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         getAdapter().setItems(data);
     }
 
-    /**
-     * @inheritDoc
-     */
     @NonNull
-    @Override
-    public ProjectsAdapter getAdapter() {
+    private ProjectsAdapter getAdapter() {
         if (null == mAdapter) {
             List<Project> items = new ArrayList<>();
             mAdapter = new ProjectsAdapter(getActivity(), items, this);
@@ -169,51 +165,29 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
     /**
      * @inheritDoc
      */
-    @NonNull
     @Override
-    public Project get(int index) {
-        return getAdapter().get(index);
+    public List<Project> getProjects() {
+        return getAdapter().getItems();
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public void set(int index, @NonNull Project item) {
-        getAdapter().set(index, item);
+    public void addProjects(List<Project> projects) {
+        getAdapter().add(projects);
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public int add(@NonNull Project item) {
-        return getAdapter().add(item);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void add(final int index, final @NonNull Project item) {
-        getAdapter().add(index, item);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public int add(@NonNull List<Project> items) {
-        return getAdapter().add(items);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @NonNull
-    @Override
-    public Project remove(int index) {
-        return getAdapter().remove(index);
+    public void showGetProjectsErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_get_projects,
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     /**
@@ -221,12 +195,16 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
      */
     @Override
     public void addCreatedProject(@NonNull Project project) {
-        // Add the project to the adapter. Since this is a user action we
-        // should always display the result, i.e. scroll down to the project.
-        int position = add(project);
-        mRecyclerView.scrollToPosition(position);
+        int position = getAdapter().add(project);
 
-        // TODO: Add support for "undo", i.e. remove created project.
+        mRecyclerView.scrollToPosition(position);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showCreateProjectSuccessMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.message_project_created,
@@ -245,8 +223,29 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
         getAdapter().set(position, project);
     }
 
+    /**
+     * @inheritDoc
+     */
     @Override
-    public void deleteProjectSuccessful() {
+    public void deleteProjectAtPosition(int position) {
+        getAdapter().remove(position);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void restoreProjectAtPreviousPosition(
+            int previousPosition,
+            Project project
+    ) {
+        getAdapter().add(previousPosition, project);
+
+        mRecyclerView.scrollToPosition(previousPosition);
+    }
+
+    @Override
+    public void showDeleteProjectSuccessMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.message_project_deleted,
@@ -258,15 +257,36 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
      * @inheritDoc
      */
     @Override
-    public void deleteProjectFailed(final int index) {
+    public void showDeleteProjectErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show();
+    }
 
-        // Scroll to the position of the project.
-        mRecyclerView.scrollToPosition(index);
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showClockInErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_clock_in,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showClockOutErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_clock_out,
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     @Override
@@ -276,6 +296,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
             @Override
             public void onCreateProject(Project project) {
                 addCreatedProject(project);
+
+                showCreateProjectSuccessMessage();
             }
         });
         newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);

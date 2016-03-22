@@ -28,6 +28,7 @@ import me.raatiniemi.worker.presentation.base.view.adapter.ListAdapter;
  * @param <A> Type reference for the {@link ListAdapter}.
  * @param <T> Type reference for the item within the {@link ListAdapter}.
  */
+@Deprecated
 public interface ListFragment<A extends ListAdapter, T> {
     /**
      * Get the adapter connected to the fragment.
