@@ -91,6 +91,20 @@ public class TimesheetGroupModelTest {
                                 createChildForGetTimeSummaryWithDifferenceTest(14380327),
                                 createChildForGetTimeSummaryWithDifferenceTest(18407820)
                         }
+                },
+                {
+                        "8.76 (+0.76)",
+                        new TimesheetChildModel[]{
+                                createChildForGetTimeSummaryWithDifferenceTest(13956031),
+                                createChildForGetTimeSummaryWithDifferenceTest(17594386)
+                        }
+                },
+                {
+                        "7.86 (-0.14)",
+                        new TimesheetChildModel[]{
+                                createChildForGetTimeSummaryWithDifferenceTest(11661632),
+                                createChildForGetTimeSummaryWithDifferenceTest(16707601)
+                        }
                 }
         };
     }

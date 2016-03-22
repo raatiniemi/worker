@@ -50,20 +50,28 @@ public class TimesheetGroupModel
     }
 
     private String getTimeSummary() {
-        return DateIntervalFormat.format(
-                calculateTimeIntervalSummary(),
-                DateIntervalFormat.Type.FRACTION_HOURS
-        );
+        return String.format("%.2f", calculateTimeIntervalSummary());
     }
 
-    private long calculateTimeIntervalSummary() {
-        long interval = 0;
+    private float calculateTimeIntervalSummary() {
+        float interval = 0;
 
         for (TimesheetChildModel child : this) {
-            interval += child.calculateIntervalInMilliseconds();
+            interval += calculateFractionFromMilliseconds(
+                    child.calculateIntervalInMilliseconds()
+            );
         }
 
         return interval;
+    }
+
+    private float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
+        String fraction = DateIntervalFormat.format(
+                intervalInMilliseconds,
+                DateIntervalFormat.Type.FRACTION_HOURS
+        );
+
+        return Float.valueOf(fraction);
     }
 
     private float calculateTimeDifference(String timeSummary) {
