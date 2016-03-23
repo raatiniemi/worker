@@ -50,16 +50,7 @@ abstract public class ExpandableListAdapter<
     /**
      * Available items.
      */
-    private List<T> mItems;
-
-    /**
-     * Constructor.
-     *
-     * @param items Initial list of items.
-     */
-    public ExpandableListAdapter(@NonNull List<T> items) {
-        mItems = items;
-    }
+    private final List<T> mItems = new ArrayList<>();
 
     /**
      * Get number of groups.
@@ -68,7 +59,7 @@ abstract public class ExpandableListAdapter<
      */
     @Override
     public int getGroupCount() {
-        return getItems().size();
+        return mItems.size();
     }
 
     /**
@@ -89,15 +80,6 @@ abstract public class ExpandableListAdapter<
     @NonNull
     public List<T> getItems() {
         return mItems;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void setItems(@NonNull List<T> items) {
-        mItems = items;
-        notifyDataSetChanged();
     }
 
     /**
@@ -136,7 +118,7 @@ abstract public class ExpandableListAdapter<
             );
         }
 
-        return getItems().get(index);
+        return mItems.get(index);
     }
 
     /**
@@ -172,7 +154,7 @@ abstract public class ExpandableListAdapter<
         }
 
         // Update the item and notify the adapter.
-        getItems().set(index, item);
+        mItems.set(index, item);
         notifyDataSetChanged();
     }
 
@@ -209,8 +191,8 @@ abstract public class ExpandableListAdapter<
     public int add(@NonNull T item) {
         // Retrieve the index of the new item by retrieving the number of
         // items within the adapter before adding the new item.
-        int index = getItems().size();
-        getItems().add(item);
+        int index = mItems.size();
+        mItems.add(item);
 
         // Notify the adapter, a new item have been added.
         notifyItemInserted(index);
@@ -236,7 +218,7 @@ abstract public class ExpandableListAdapter<
         // Retrieve the current count to have a reference point
         // at which location the new items will be inserted.
         int index = getItemCount();
-        getItems().addAll(items);
+        mItems.addAll(items);
 
         // Notify the adapter of the new items.
         notifyDataSetChanged();
@@ -258,7 +240,7 @@ abstract public class ExpandableListAdapter<
         }
 
         // Remove the group and notify the change.
-        T item = getItems().remove(index);
+        T item = mItems.remove(index);
         notifyDataSetChanged();
 
         return item;
@@ -298,7 +280,7 @@ abstract public class ExpandableListAdapter<
      */
     @Override
     public void clear() {
-        getItems().clear();
+        mItems.clear();
         notifyDataSetChanged();
     }
 

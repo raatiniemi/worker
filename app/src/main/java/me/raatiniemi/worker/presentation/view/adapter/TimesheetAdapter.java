@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.view.adapter;
 
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.util.Date;
-import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
@@ -44,12 +42,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     private final OnTimesheetListener mOnTimesheetListener;
 
-    public TimesheetAdapter(
-            @NonNull List<TimesheetGroupModel> items,
-            OnTimesheetListener listener
-    ) {
-        super(items);
-
+    public TimesheetAdapter(OnTimesheetListener listener) {
         mOnTimesheetListener = listener;
 
         setHasStableIds(true);

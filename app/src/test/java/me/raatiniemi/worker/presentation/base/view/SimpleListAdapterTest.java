@@ -43,59 +43,55 @@ public class SimpleListAdapterTest {
     @Test
     public void getItemCount_withoutItems() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
         assertEquals(0, adapter.getItemCount());
     }
 
     @Test
     public void getItemCount_withItems() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
-        items.add("Item");
-        items.add("Item");
-        items.add("Item");
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
+        adapter.add("Item");
+        adapter.add("Item");
+        adapter.add("Item");
+
         assertEquals(3, adapter.getItemCount());
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void get_withoutItems() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
         adapter.get(1);
     }
 
     @Test
     public void get_withItem() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
-        items.add("Item");
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
+        adapter.add("Item");
+
         assertEquals("Item", adapter.get(0));
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void set_withoutItems() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
         adapter.set(1, "Item");
     }
 
     @Test
     public void set_withItem() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
-        items.add("Item");
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
+        adapter.add("Item");
 
         assertEquals("Item", adapter.get(0));
         adapter.set(0, "Item 1");
@@ -105,51 +101,51 @@ public class SimpleListAdapterTest {
     @Test
     public void add_item() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
-        items.add("Item");
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
-        assertEquals(1, adapter.add("Item"));
+        adapter.add("Item");
+
+        assertEquals(1, adapter.getItemCount());
     }
 
     @Test
     public void add_items() {
         Context context = mock(Context.class);
+        Adapter<String> adapter = new Adapter<>(context);
+
         List<String> items = new ArrayList<>();
         items.add("Item");
         items.add("Item");
+        adapter.add(items);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
-        assertEquals(2, adapter.add(items));
+        assertEquals(2, adapter.getItemCount());
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void remove_withoutItems() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
         adapter.remove(1);
     }
 
     @Test
     public void remove_withItem() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
-        items.add("Item");
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
+        adapter.add("Item");
+
         assertEquals("Item", adapter.remove(0));
     }
 
     @Test
     public void clear() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
-        items.add("Item");
-        items.add("Item");
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
+        adapter.add("Item");
+        adapter.add("Item");
 
         assertEquals(2, adapter.getItemCount());
         adapter.clear();
@@ -159,36 +155,29 @@ public class SimpleListAdapterTest {
     @Test
     public void getOnItemClickListener_withoutListener() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
-        items.add("Item");
-        items.add("Item");
+        Adapter<String> adapter = new Adapter<>(context);
 
-        Adapter<String> adapter = new Adapter<>(context, items);
         assertNull(adapter.getOnItemClickListener());
     }
 
     @Test
     public void getOnItemClickListener_withListener() {
         Context context = mock(Context.class);
-        List<String> items = new ArrayList<>();
-        items.add("Item");
-        items.add("Item");
+        Adapter<String> adapter = new Adapter<>(context);
 
         SimpleListAdapter.OnItemClickListener listener = new SimpleListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull View view) {
             }
         };
-
-        Adapter<String> adapter = new Adapter<>(context, items);
         adapter.setOnItemClickListener(listener);
 
         assertEquals(listener, adapter.getOnItemClickListener());
     }
 
     private class Adapter<T> extends SimpleListAdapter<T, ViewHolder> {
-        public Adapter(@NonNull Context context, @NonNull List<T> items) {
-            super(context, items);
+        public Adapter(@NonNull Context context) {
+            super(context);
         }
 
         @Override
