@@ -27,9 +27,8 @@ import me.raatiniemi.worker.presentation.base.view.MvpView;
  * Base for the model-view-presenter fragment.
  *
  * @param <P> Presenter to use with the fragment.
- * @param <T> Type of data to use with the fragment.
  */
-abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragment implements MvpView {
+abstract public class MvpFragment<P extends MvpPresenter> extends BaseFragment implements MvpView {
     /**
      * Instance for the presenter.
      */
@@ -53,20 +52,6 @@ abstract public class MvpFragment<P extends MvpPresenter, T> extends BaseFragmen
         }
         return mPresenter;
     }
-
-    /**
-     * Get the data for the fragment.
-     *
-     * @return Data for the fragment.
-     */
-    abstract public T getData();
-
-    /**
-     * Set the data for the fragment.
-     *
-     * @param data Data for the fragment.
-     */
-    abstract public void setData(T data);
 
     /**
      * Display an error message to the user.

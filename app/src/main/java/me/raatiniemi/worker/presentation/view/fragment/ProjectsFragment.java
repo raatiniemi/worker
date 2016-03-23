@@ -57,7 +57,7 @@ import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 import me.raatiniemi.worker.util.Settings;
 
-public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Project>>
+public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
 
@@ -136,16 +136,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter, List<Projec
                 new ClockActivityChange(projectRepository, timeRepository),
                 new RemoveProject(projectRepository)
         );
-    }
-
-    @Override
-    public List<Project> getData() {
-        return getAdapter().getItems();
-    }
-
-    @Override
-    public void setData(List<Project> data) {
-        getAdapter().setItems(data);
     }
 
     @NonNull

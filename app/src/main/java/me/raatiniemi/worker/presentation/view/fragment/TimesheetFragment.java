@@ -56,7 +56,7 @@ import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAda
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
-public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<TimesheetGroupModel>>
+public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
@@ -228,16 +228,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter, List<Time
                 new MarkRegisteredTime(timeRepository),
                 new RemoveTime(timeRepository)
         );
-    }
-
-    @Override
-    public List<TimesheetGroupModel> getData() {
-        return getAdapter().getItems();
-    }
-
-    @Override
-    public void setData(List<TimesheetGroupModel> data) {
-        getAdapter().setItems(data);
     }
 
     /**
