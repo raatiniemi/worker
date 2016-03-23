@@ -86,7 +86,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      */
     @Override
     public int getItemCount() {
-        return getItems().size();
+        return mItems.size();
     }
 
     /**
@@ -121,7 +121,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
             );
         }
 
-        return getItems().get(index);
+        return mItems.get(index);
     }
 
     /**
@@ -136,7 +136,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         }
 
         // Update the item and notify the adapter.
-        getItems().set(index, item);
+        mItems.set(index, item);
         notifyItemChanged(index);
     }
 
@@ -148,7 +148,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         // Retrieve the index for the new item by retrieving the number of
         // items within the adapter before adding the new item.
         int index = getItemCount();
-        getItems().add(item);
+        mItems.add(item);
 
         // Notify the adapter a new item have been added.
         notifyItemInserted(index);
@@ -174,7 +174,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         }
 
         // Add the item at the specified index.
-        getItems().add(index, item);
+        mItems.add(index, item);
 
         // Notify the adapter a new item have been added.
         notifyItemInserted(index);
@@ -188,7 +188,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         // Retrieve the current count to have a reference point
         // at which location the new items will be inserted.
         int index = getItemCount();
-        getItems().addAll(items);
+        mItems.addAll(items);
 
         // Notify and refresh the new items.
         notifyItemRangeInserted(index, items.size());
@@ -210,7 +210,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         }
 
         // Remove the item from the internal data container.
-        T item = getItems().remove(index);
+        T item = mItems.remove(index);
 
         // Notify the adapter of the deletion.
         notifyItemRemoved(index);
@@ -224,7 +224,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      */
     @Override
     public void clear() {
-        getItems().clear();
+        mItems.clear();
         notifyDataSetChanged();
     }
 
