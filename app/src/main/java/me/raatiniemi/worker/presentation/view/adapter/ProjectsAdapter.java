@@ -100,8 +100,8 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         String summarize = DateIntervalFormat.format(project.summarizeTime());
 
         vh.mName.setText(item.getTitle());
+        vh.mDescription.setText(item.getDescription());
         vh.mTime.setText(summarize);
-        vh.mDescription.setText(project.getDescription());
 
         // If the project description is empty the view should be hidden.
         int visibility = View.VISIBLE;

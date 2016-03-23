@@ -32,4 +32,8 @@ public class ProjectsModel {
     public String getTitle() {
         return mProject.getName();
     }
+
+    public String getDescription() {
+        return mProject.getDescription();
+    }
 }

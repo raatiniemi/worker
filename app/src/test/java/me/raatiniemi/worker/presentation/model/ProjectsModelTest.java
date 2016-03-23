@@ -53,4 +53,16 @@ public class ProjectsModelTest {
 
         assertEquals("Project name", model.getTitle());
     }
+
+    @Test
+    public void getDescription()
+            throws InvalidProjectNameException {
+        Project project = createProjectBuilder("Project name")
+                .describe("Project description")
+                .build();
+
+        ProjectsModel model = new ProjectsModel(project);
+
+        assertEquals("Project description", model.getDescription());
+    }
 }
