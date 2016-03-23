@@ -30,7 +30,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -141,8 +140,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @NonNull
     private ProjectsAdapter getAdapter() {
         if (null == mAdapter) {
-            List<Project> items = new ArrayList<>();
-            mAdapter = new ProjectsAdapter(getActivity(), items, this);
+            mAdapter = new ProjectsAdapter(getActivity(), this);
             mAdapter.setHintedImageButtonListener(
                     new HintedImageButtonListener(getActivity())
             );

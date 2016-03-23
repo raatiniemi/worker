@@ -34,7 +34,6 @@ import android.view.ViewGroup;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
@@ -237,8 +236,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     @Override
     public TimesheetAdapter getAdapter() {
         if (null == mAdapter) {
-            List<TimesheetGroupModel> items = new ArrayList<>();
-            mAdapter = new TimesheetAdapter(items, this);
+            mAdapter = new TimesheetAdapter(this);
         }
 
         return mAdapter;

@@ -50,16 +50,7 @@ abstract public class ExpandableListAdapter<
     /**
      * Available items.
      */
-    private final List<T> mItems;
-
-    /**
-     * Constructor.
-     *
-     * @param items Initial list of items.
-     */
-    public ExpandableListAdapter(@NonNull List<T> items) {
-        mItems = items;
-    }
+    private final List<T> mItems = new ArrayList<>();
 
     /**
      * Get number of groups.

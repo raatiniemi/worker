@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * Available items.
      */
-    private final List<T> mItems;
+    private final List<T> mItems = new ArrayList<>();
 
     /**
      * On click listener for items.
@@ -63,11 +64,9 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * Constructor.
      *
      * @param context Context used with the adapter.
-     * @param items   Initial list of items.
      */
-    public SimpleListAdapter(@NonNull Context context, @NonNull List<T> items) {
+    public SimpleListAdapter(@NonNull Context context) {
         mContext = context;
-        mItems = items;
     }
 
     /**
