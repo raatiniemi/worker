@@ -35,13 +35,6 @@ public interface ListAdapter<T> {
     List<T> getItems();
 
     /**
-     * Set items.
-     *
-     * @param items Items to set.
-     */
-    void setItems(@NonNull List<T> items);
-
-    /**
      * Get item at index.
      *
      * @param index Index of item.

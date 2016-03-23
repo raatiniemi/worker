@@ -52,7 +52,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * Available items.
      */
-    private List<T> mItems;
+    private final List<T> mItems;
 
     /**
      * On click listener for items.
@@ -67,7 +67,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      */
     public SimpleListAdapter(@NonNull Context context, @NonNull List<T> items) {
         mContext = context;
-        setItems(items);
+        mItems = items;
     }
 
     /**
@@ -97,15 +97,6 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     @NonNull
     public List<T> getItems() {
         return mItems;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void setItems(@NonNull List<T> items) {
-        mItems = items;
-        notifyDataSetChanged();
     }
 
     /**

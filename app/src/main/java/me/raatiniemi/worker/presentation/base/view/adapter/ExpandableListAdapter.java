@@ -50,7 +50,7 @@ abstract public class ExpandableListAdapter<
     /**
      * Available items.
      */
-    private List<T> mItems;
+    private final List<T> mItems;
 
     /**
      * Constructor.
@@ -89,15 +89,6 @@ abstract public class ExpandableListAdapter<
     @NonNull
     public List<T> getItems() {
         return mItems;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void setItems(@NonNull List<T> items) {
-        mItems = items;
-        notifyDataSetChanged();
     }
 
     /**
