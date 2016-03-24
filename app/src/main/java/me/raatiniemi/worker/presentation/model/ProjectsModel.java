@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.presentation.model;
 
 import android.content.res.Resources;
+import android.view.View;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,6 +45,15 @@ public class ProjectsModel {
 
     public String getDescription() {
         return mProject.getDescription();
+    }
+
+    public void setVisibilityForDescriptionView(TextView descriptionView) {
+        if (null == getDescription() || 0 == getDescription().length()) {
+            descriptionView.setVisibility(View.GONE);
+            return;
+        }
+
+        descriptionView.setVisibility(View.VISIBLE);
     }
 
     public String getTimeSummary() {

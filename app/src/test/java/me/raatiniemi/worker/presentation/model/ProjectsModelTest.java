@@ -19,6 +19,8 @@ package me.raatiniemi.worker.presentation.model;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.test.mock.MockResources;
+import android.view.View;
+import android.widget.TextView;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -39,6 +41,8 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
@@ -54,6 +58,25 @@ public class ProjectsModelTest {
             return super.getString(id);
         }
     };
+
+    @DataProvider
+    public static Object[][] setVisibilityForDescriptionView_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        null,
+                        View.GONE
+                },
+                {
+                        "",
+                        View.GONE
+                },
+                {
+                        "Project description",
+                        View.VISIBLE
+                }
+        };
+    }
 
     @DataProvider
     public static Object[][] getTimeSummary_dataProvider()
@@ -148,6 +171,24 @@ public class ProjectsModelTest {
 
         assertEquals("Project description", model.getDescription());
     }
+
+    @Test
+    @UseDataProvider("setVisibilityForDescriptionView_dataProvider")
+    public void setVisibilityForDescriptionView(
+            String description,
+            int expectedViewVisibility
+    ) throws InvalidProjectNameException {
+        Project project = createProjectBuilder("Project name")
+                .describe(description)
+                .build();
+        TextView descriptionView = mock(TextView.class);
+
+        ProjectsModel model = new ProjectsModel(project);
+        model.setVisibilityForDescriptionView(descriptionView);
+
+        verify(descriptionView, times(1)).setVisibility(expectedViewVisibility);
+    }
+
 
     @Test
     @UseDataProvider("getTimeSummary_dataProvider")

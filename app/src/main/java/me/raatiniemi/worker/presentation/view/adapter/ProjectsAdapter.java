@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,15 +93,10 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.itemView.setOnClickListener(getOnClickListener());
 
         vh.mName.setText(item.getTitle());
-        vh.mDescription.setText(item.getDescription());
         vh.mTime.setText(item.getTimeSummary());
 
-        // If the project description is empty the view should be hidden.
-        int visibility = View.VISIBLE;
-        if (TextUtils.isEmpty(project.getDescription())) {
-            visibility = View.GONE;
-        }
-        vh.mDescription.setVisibility(visibility);
+        vh.mDescription.setText(item.getDescription());
+        item.setVisibilityForDescriptionView(vh.mDescription);
 
         vh.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
