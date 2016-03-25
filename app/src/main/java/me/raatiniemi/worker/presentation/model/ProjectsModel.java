@@ -62,6 +62,22 @@ public class ProjectsModel {
         );
     }
 
+    public String getHelpTextForClockActivityToggle(Resources resources) {
+        if (mProject.isActive()) {
+            return resources.getString(R.string.fragment_projects_item_clock_out);
+        }
+
+        return resources.getString(R.string.fragment_projects_item_clock_in);
+    }
+
+    public String getHelpTextForClockActivityAt(Resources resources) {
+        if (mProject.isActive()) {
+            return resources.getString(R.string.fragment_projects_item_clock_out_at);
+        }
+
+        return resources.getString(R.string.fragment_projects_item_clock_in_at);
+    }
+
     public String getClockedInSince(Resources resources) {
         // Retrieve the time that the active session was clocked in.
         // TODO: Handle if the time session overlap days.

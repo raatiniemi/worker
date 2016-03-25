@@ -51,8 +51,17 @@ public class ProjectsModelTest {
         @NonNull
         @Override
         public String getString(int id) throws NotFoundException {
-            if (R.string.fragment_projects_item_clocked_in_since == id) {
-                return "Since %s (%s)";
+            switch (id) {
+                case R.string.fragment_projects_item_clocked_in_since:
+                    return "Since %s (%s)";
+                case R.string.fragment_projects_item_clock_in:
+                    return "Clock in now";
+                case R.string.fragment_projects_item_clock_out:
+                    return "Clock out now";
+                case R.string.fragment_projects_item_clock_in_at:
+                    return "Clock in at given date and time";
+                case R.string.fragment_projects_item_clock_out_at:
+                    return "Clock out at given date and time";
             }
 
             return super.getString(id);
@@ -89,6 +98,36 @@ public class ProjectsModelTest {
                 {
                         "2h 30m",
                         createTimeForGetTimeSummaryTest(9000)
+                }
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getHelpTextForClockActivityToggle_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "Clock in now",
+                        mockProjectWithActiveIndicator(Boolean.FALSE)
+                },
+                {
+                        "Clock out now",
+                        mockProjectWithActiveIndicator(Boolean.TRUE)
+                }
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getHelpTextForClockActivityAt_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        "Clock in at given date and time",
+                        mockProjectWithActiveIndicator(Boolean.FALSE)
+                },
+                {
+                        "Clock out at given date and time",
+                        mockProjectWithActiveIndicator(Boolean.TRUE)
                 }
         };
     }
@@ -225,6 +264,22 @@ public class ProjectsModelTest {
         ProjectsModel model = new ProjectsModel(project);
 
         assertEquals(expected, model.getTimeSummary());
+    }
+
+    @Test
+    @UseDataProvider("getHelpTextForClockActivityToggle_dataProvider")
+    public void getHelpTextForClockActivityToggle(String expectedHelpText, Project project) {
+        ProjectsModel model = new ProjectsModel(project);
+
+        assertEquals(expectedHelpText, model.getHelpTextForClockActivityToggle(sResources));
+    }
+
+    @Test
+    @UseDataProvider("getHelpTextForClockActivityAt_dataProvider")
+    public void getHelpTextForClockActivityAt(String expectedHelpText, Project project) {
+        ProjectsModel model = new ProjectsModel(project);
+
+        assertEquals(expectedHelpText, model.getHelpTextForClockActivityAt(sResources));
     }
 
     @Test
