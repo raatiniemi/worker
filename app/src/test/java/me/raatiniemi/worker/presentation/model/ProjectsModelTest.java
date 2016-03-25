@@ -114,6 +114,21 @@ public class ProjectsModelTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] setVisibilityForClockedInSinceView_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        mockProjectWithActiveIndicator(Boolean.FALSE),
+                        View.GONE
+                },
+                {
+                        mockProjectWithActiveIndicator(Boolean.TRUE),
+                        View.VISIBLE
+                }
+        };
+    }
+
     private static Time createTimeForGetTimeSummaryTest(long intervalInSeconds)
             throws ClockOutBeforeClockInException {
         return new Time.Builder(1L)
@@ -133,6 +148,13 @@ public class ProjectsModelTest {
         when(time.getStartInMilliseconds()).thenReturn(clockedInTime);
 
         return time;
+    }
+
+    private static Project mockProjectWithActiveIndicator(boolean isProjectActive) {
+        Project project = mock(Project.class);
+        when(project.isActive()).thenReturn(isProjectActive);
+
+        return project;
     }
 
     private Project.Builder createProjectBuilder(String projectName) {
@@ -218,5 +240,19 @@ public class ProjectsModelTest {
         ProjectsModel model = new ProjectsModel(project);
 
         assertEquals(expected, model.getClockedInSince(sResources));
+    }
+
+    @Test
+    @UseDataProvider("setVisibilityForClockedInSinceView_dataProvider")
+    public void setVisibilityForClockedInSinceView(
+            Project project,
+            int expectedViewVisibility
+    ) throws InvalidProjectNameException, ClockOutBeforeClockInException {
+        ProjectsModel model = new ProjectsModel(project);
+        TextView descriptionView = mock(TextView.class);
+
+        model.setVisibilityForClockedInSinceView(descriptionView);
+
+        verify(descriptionView, times(1)).setVisibility(expectedViewVisibility);
     }
 }

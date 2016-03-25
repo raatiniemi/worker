@@ -131,13 +131,11 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         // Depending on whether the project is active the text
         // for the clock activity view should be altered, and
         // visibility for the clocked activity view.
-        int clockedInSinceVisibility = View.GONE;
         int clockActivityToggleId = R.string.fragment_projects_item_clock_in;
         int clockActivityAtId = R.string.fragment_projects_item_clock_in_at;
         if (project.isActive()) {
             clockActivityToggleId = R.string.fragment_projects_item_clock_out;
             clockActivityAtId = R.string.fragment_projects_item_clock_out_at;
-            clockedInSinceVisibility = View.VISIBLE;
         }
 
         String clockActivityToggle = resources.getString(clockActivityToggleId);
@@ -147,7 +145,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.mClockActivityAt.setContentDescription(clockActivityAt);
 
         vh.mClockedInSince.setText(item.getClockedInSince(resources));
-        vh.mClockedInSince.setVisibility(clockedInSinceVisibility);
+        item.setVisibilityForClockedInSinceView(vh.mClockedInSince);
     }
 
     public int findProject(final Project project) {

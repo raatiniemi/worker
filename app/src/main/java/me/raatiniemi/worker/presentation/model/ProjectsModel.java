@@ -82,4 +82,13 @@ public class ProjectsModel {
         }
         return clockedInSinceText;
     }
+
+    public void setVisibilityForClockedInSinceView(TextView clockedInSinceView) {
+        if (mProject.isActive()) {
+            clockedInSinceView.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        clockedInSinceView.setVisibility(View.GONE);
+    }
 }
