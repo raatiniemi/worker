@@ -27,18 +27,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
-import me.raatiniemi.worker.util.DateIntervalFormat;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 
 /**
@@ -156,24 +152,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         String clockActivityAt = resources.getString(clockActivityAtId);
         vh.mClockActivityAt.setContentDescription(clockActivityAt);
 
-        // Retrieve the time that the active session was clocked in.
-        // TODO: Handle if the time session overlap days.
-        // The timestamp should include the date it was
-        // checked in, e.g. 21 May 1:06PM.
-        Date clockedInSince = project.getClockedInSince();
-        String clockedInSinceText = null;
-        if (null != clockedInSince) {
-            clockedInSinceText = resources.getString(R.string.fragment_projects_item_clocked_in_since);
-            clockedInSinceText = String.format(
-                    clockedInSinceText,
-                    (new SimpleDateFormat("HH:mm", Locale.getDefault())).format(clockedInSince),
-                    DateIntervalFormat.format(
-                            project.getElapsed(),
-                            DateIntervalFormat.Type.HOURS_MINUTES
-                    )
-            );
-        }
-        vh.mClockedInSince.setText(clockedInSinceText);
+        vh.mClockedInSince.setText(item.getClockedInSince(resources));
         vh.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 

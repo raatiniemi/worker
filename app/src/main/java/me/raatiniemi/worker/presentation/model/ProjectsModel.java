@@ -16,6 +16,13 @@
 
 package me.raatiniemi.worker.presentation.model;
 
+import android.content.res.Resources;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
@@ -42,5 +49,26 @@ public class ProjectsModel {
         return DateIntervalFormat.format(
                 mProject.summarizeTime()
         );
+    }
+
+    public String getClockedInSince(Resources resources) {
+        // Retrieve the time that the active session was clocked in.
+        // TODO: Handle if the time session overlap days.
+        // The timestamp should include the date it was
+        // checked in, e.g. 21 May 1:06PM.
+        Date clockedInSince = mProject.getClockedInSince();
+        String clockedInSinceText = null;
+        if (null != clockedInSince) {
+            clockedInSinceText = resources.getString(R.string.fragment_projects_item_clocked_in_since);
+            clockedInSinceText = String.format(
+                    clockedInSinceText,
+                    (new SimpleDateFormat("HH:mm", Locale.getDefault())).format(clockedInSince),
+                    DateIntervalFormat.format(
+                            mProject.getElapsed(),
+                            DateIntervalFormat.Type.HOURS_MINUTES
+                    )
+            );
+        }
+        return clockedInSinceText;
     }
 }
