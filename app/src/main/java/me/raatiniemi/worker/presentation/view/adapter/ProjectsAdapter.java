@@ -49,6 +49,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
      * Listener for project actions.
      */
     private final OnProjectActionListener mOnProjectActionListener;
+    private final Resources mResources;
 
     /**
      * Listener for hinting images.
@@ -68,6 +69,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         super(context);
 
         mOnProjectActionListener = projectActionListener;
+        mResources = getContext().getResources();
     }
 
     @Override
@@ -88,16 +90,20 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         final ProjectsModel item = get(index);
         final Project project = item.asProject();
 
-        // Add the on click listener for the card view.
-        // Will open the single project activity.
-        vh.itemView.setOnClickListener(getOnClickListener());
-
         vh.mName.setText(item.getTitle());
         vh.mTime.setText(item.getTimeSummary());
 
         vh.mDescription.setText(item.getDescription());
         item.setVisibilityForDescriptionView(vh.mDescription);
 
+        vh.mClockedInSince.setText(item.getClockedInSince(mResources));
+        item.setVisibilityForClockedInSinceView(vh.mClockedInSince);
+
+        vh.itemView.setOnClickListener(getOnClickListener());
+
+        vh.mClockActivityToggle.setContentDescription(
+                item.getHelpTextForClockActivityToggle(mResources)
+        );
         vh.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +113,9 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
         vh.mClockActivityToggle.setActivated(project.isActive());
 
-        // Add the onClickListener to the "Clock [in|out] at..." item.
+        vh.mClockActivityAt.setContentDescription(
+                item.getHelpTextForClockActivityAt(mResources)
+        );
         vh.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +124,6 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         });
         vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
 
-        // Add the onClickListener to the "Delete project" item.
         vh.mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,20 +131,6 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
             }
         });
         vh.mDelete.setOnLongClickListener(getHintedImageButtonListener());
-
-        // Retrieve the resource instance.
-        Resources resources = getContext().getResources();
-
-        vh.mClockActivityToggle.setContentDescription(
-                item.getHelpTextForClockActivityToggle(resources)
-        );
-
-        vh.mClockActivityAt.setContentDescription(
-                item.getHelpTextForClockActivityAt(resources)
-        );
-
-        vh.mClockedInSince.setText(item.getClockedInSince(resources));
-        item.setVisibilityForClockedInSinceView(vh.mClockedInSince);
     }
 
     public int findProject(final Project project) {
