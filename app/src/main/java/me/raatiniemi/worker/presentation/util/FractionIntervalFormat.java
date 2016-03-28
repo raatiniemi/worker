@@ -23,6 +23,9 @@ import me.raatiniemi.worker.domain.util.CalculateTime;
  * Format a time interval into hours with fraction, i.e. 1.5 for one hour and 30 minutes.
  */
 public class FractionIntervalFormat implements DateIntervalFormat {
+    private static final String sFractionFormat = "%.2f";
+    private static final float sMinutesInHour = 60;
+
     /**
      * @inheritDoc
      */
@@ -30,9 +33,17 @@ public class FractionIntervalFormat implements DateIntervalFormat {
     public String format(long milliseconds) {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
-        float fraction = (float) calculatedTime.getMinutes() / (float) 60.0;
+        return String.format(
+                sFractionFormat,
+                calculateHoursWithFraction(calculatedTime)
+        );
+    }
 
-        double interval = calculatedTime.getHours() + fraction;
-        return String.format("%.2f", interval);
+    private float calculateHoursWithFraction(CalculatedTime calculatedTime) {
+        return calculatedTime.getHours() + calculateFraction(calculatedTime.getMinutes());
+    }
+
+    private float calculateFraction(long minutes) {
+        return (float) minutes / sMinutesInHour;
     }
 }
