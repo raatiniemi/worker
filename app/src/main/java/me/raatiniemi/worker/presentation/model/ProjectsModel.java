@@ -25,13 +25,16 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.util.DateIntervalFormat;
+import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
+import me.raatiniemi.worker.presentation.util.HoursMinutesIntervalFormat;
 
 public class ProjectsModel {
     private static final SimpleDateFormat sTimeFormat;
+    private static final DateIntervalFormat sIntervalFormat;
 
     static {
         sTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        sIntervalFormat = new HoursMinutesIntervalFormat();
     }
 
     private final Project mProject;
@@ -74,9 +77,7 @@ public class ProjectsModel {
     }
 
     public String getTimeSummary() {
-        return DateIntervalFormat.format(
-                mProject.summarizeTime()
-        );
+        return sIntervalFormat.format(mProject.summarizeTime());
     }
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
@@ -123,10 +124,7 @@ public class ProjectsModel {
     }
 
     private String getFormattedElapsedTime() {
-        return DateIntervalFormat.format(
-                mProject.getElapsed(),
-                DateIntervalFormat.Type.HOURS_MINUTES
-        );
+        return sIntervalFormat.format(mProject.getElapsed());
     }
 
     public void setVisibilityForClockedInSinceView(TextView clockedInSinceView) {

@@ -5,14 +5,17 @@ import java.util.Date;
 import java.util.Locale;
 
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
-import me.raatiniemi.worker.util.DateIntervalFormat;
+import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
+import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetGroupModel
         extends ExpandableListAdapter.ExpandableItem<Date, TimesheetChildModel> {
     private static final SimpleDateFormat sDateFormat;
+    private static final DateIntervalFormat sIntervalFormat;
 
     static {
         sDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
+        sIntervalFormat = new FractionIntervalFormat();
     }
 
     public TimesheetGroupModel(Date group) {
@@ -66,10 +69,7 @@ public class TimesheetGroupModel
     }
 
     private float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
-        String fraction = DateIntervalFormat.format(
-                intervalInMilliseconds,
-                DateIntervalFormat.Type.FRACTION_HOURS
-        );
+        String fraction = sIntervalFormat.format(intervalInMilliseconds);
 
         return Float.valueOf(fraction);
     }

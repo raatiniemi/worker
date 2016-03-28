@@ -23,14 +23,17 @@ import java.util.Locale;
 import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.util.CalculateTime;
-import me.raatiniemi.worker.util.DateIntervalFormat;
+import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
+import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetChildModel {
     private static final String sTimeSeparator = " - ";
     private static final SimpleDateFormat sTimeFormat;
+    private static final DateIntervalFormat sIntervalFormat;
 
     static {
         sTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        sIntervalFormat = new FractionIntervalFormat();
     }
 
     private final Time mTime;
@@ -82,10 +85,7 @@ public class TimesheetChildModel {
     }
 
     public String getTimeSummary() {
-        return DateIntervalFormat.format(
-                mTime.getInterval(),
-                DateIntervalFormat.Type.FRACTION_HOURS
-        );
+        return sIntervalFormat.format(mTime.getInterval());
     }
 
     public boolean isRegistered() {
