@@ -10,9 +10,11 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 public class TimesheetGroupModel
         extends ExpandableListAdapter.ExpandableItem<Date, TimesheetChildModel> {
     private static final SimpleDateFormat sDateFormat;
+    private static final DateIntervalFormat sDateIntervalFormat;
 
     static {
         sDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
+        sDateIntervalFormat = new DateIntervalFormat();
     }
 
     public TimesheetGroupModel(Date group) {
@@ -66,7 +68,7 @@ public class TimesheetGroupModel
     }
 
     private float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
-        String fraction = DateIntervalFormat.format(
+        String fraction = sDateIntervalFormat.format(
                 intervalInMilliseconds,
                 DateIntervalFormat.Type.FRACTION_HOURS
         );

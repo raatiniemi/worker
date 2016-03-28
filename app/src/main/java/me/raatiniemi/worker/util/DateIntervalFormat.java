@@ -19,16 +19,7 @@ package me.raatiniemi.worker.util;
 import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.util.CalculateTime;
 
-/**
- * Format time interval.
- */
 public class DateIntervalFormat {
-    /**
-     * Private constructor, preventing instance creation.
-     */
-    private DateIntervalFormat() {
-    }
-
     private static String fractionHours(CalculatedTime calculatedTime) {
         float fractal = (float) calculatedTime.getMinutes() / (float) 60.0;
 
@@ -47,7 +38,7 @@ public class DateIntervalFormat {
         return String.format(format, calculatedTime.getHours(), calculatedTime.getMinutes());
     }
 
-    public static String format(long milliseconds, Type type) {
+    public String format(long milliseconds, Type type) {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
         // Determined what kind of format type to use.
@@ -60,7 +51,7 @@ public class DateIntervalFormat {
         }
     }
 
-    public static String format(long milliseconds) {
+    public String format(long milliseconds) {
         return format(milliseconds, Type.HOURS_MINUTES);
     }
 

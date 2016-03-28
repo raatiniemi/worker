@@ -29,9 +29,11 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class ProjectsModel {
     private static final SimpleDateFormat sTimeFormat;
+    private static final DateIntervalFormat sDateIntervalFormat;
 
     static {
         sTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        sDateIntervalFormat = new DateIntervalFormat();
     }
 
     private final Project mProject;
@@ -74,7 +76,7 @@ public class ProjectsModel {
     }
 
     public String getTimeSummary() {
-        return DateIntervalFormat.format(
+        return sDateIntervalFormat.format(
                 mProject.summarizeTime()
         );
     }
@@ -123,9 +125,8 @@ public class ProjectsModel {
     }
 
     private String getFormattedElapsedTime() {
-        return DateIntervalFormat.format(
-                mProject.getElapsed(),
-                DateIntervalFormat.Type.HOURS_MINUTES
+        return sDateIntervalFormat.format(
+                mProject.getElapsed()
         );
     }
 

@@ -56,15 +56,16 @@ public class DateIntervalFormatTest {
     @Test
     @UseDataProvider("format_hourMinutesDataProvider")
     public void format_hourMinutes(Long interval, String expected) {
-        String value = DateIntervalFormat.format(interval);
+        DateIntervalFormat dateIntervalFormat = new DateIntervalFormat();
 
-        assertEquals(expected, value);
+        assertEquals(expected, dateIntervalFormat.format(interval));
     }
 
     @Test
     @UseDataProvider("format_fractionHoursDataProvider")
     public void format_fractionHours(Long interval, String expected) {
-        String value = DateIntervalFormat.format(
+        DateIntervalFormat dateIntervalFormat = new DateIntervalFormat();
+        String value = dateIntervalFormat.format(
                 interval,
                 DateIntervalFormat.Type.FRACTION_HOURS
         );

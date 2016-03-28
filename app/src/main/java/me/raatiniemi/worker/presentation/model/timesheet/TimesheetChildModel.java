@@ -28,9 +28,11 @@ import me.raatiniemi.worker.util.DateIntervalFormat;
 public class TimesheetChildModel {
     private static final String sTimeSeparator = " - ";
     private static final SimpleDateFormat sTimeFormat;
+    private static final DateIntervalFormat sDateIntervalFormat;
 
     static {
         sTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        sDateIntervalFormat = new DateIntervalFormat();
     }
 
     private final Time mTime;
@@ -82,7 +84,7 @@ public class TimesheetChildModel {
     }
 
     public String getTimeSummary() {
-        return DateIntervalFormat.format(
+        return sDateIntervalFormat.format(
                 mTime.getInterval(),
                 DateIntervalFormat.Type.FRACTION_HOURS
         );
