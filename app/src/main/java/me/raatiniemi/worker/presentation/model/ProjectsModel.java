@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
@@ -29,6 +28,12 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.util.DateIntervalFormat;
 
 public class ProjectsModel {
+    private static final SimpleDateFormat sTimeFormat;
+
+    static {
+        sTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    }
+
     private final Project mProject;
 
     public ProjectsModel(Project project) {
@@ -75,7 +80,7 @@ public class ProjectsModel {
     }
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
-        if (mProject.isActive()) {
+        if (isActive()) {
             return resources.getString(R.string.fragment_projects_item_clock_out);
         }
 
@@ -83,7 +88,7 @@ public class ProjectsModel {
     }
 
     public String getHelpTextForClockActivityAt(Resources resources) {
-        if (mProject.isActive()) {
+        if (isActive()) {
             return resources.getString(R.string.fragment_projects_item_clock_out_at);
         }
 
@@ -91,28 +96,41 @@ public class ProjectsModel {
     }
 
     public String getClockedInSince(Resources resources) {
-        // Retrieve the time that the active session was clocked in.
+        if (!isActive()) {
+            return null;
+        }
+
+        return String.format(
+                getClockedInSinceFormatTemplate(resources),
+                getFormattedClockedInSince(),
+                getFormattedElapsedTime()
+        );
+    }
+
+    private boolean isActive() {
+        return mProject.isActive();
+    }
+
+    private String getClockedInSinceFormatTemplate(Resources resources) {
+        return resources.getString(R.string.fragment_projects_item_clocked_in_since);
+    }
+
+    private String getFormattedClockedInSince() {
         // TODO: Handle if the time session overlap days.
         // The timestamp should include the date it was
         // checked in, e.g. 21 May 1:06PM.
-        Date clockedInSince = mProject.getClockedInSince();
-        String clockedInSinceText = null;
-        if (null != clockedInSince) {
-            clockedInSinceText = resources.getString(R.string.fragment_projects_item_clocked_in_since);
-            clockedInSinceText = String.format(
-                    clockedInSinceText,
-                    (new SimpleDateFormat("HH:mm", Locale.getDefault())).format(clockedInSince),
-                    DateIntervalFormat.format(
-                            mProject.getElapsed(),
-                            DateIntervalFormat.Type.HOURS_MINUTES
-                    )
-            );
-        }
-        return clockedInSinceText;
+        return sTimeFormat.format(mProject.getClockedInSince());
+    }
+
+    private String getFormattedElapsedTime() {
+        return DateIntervalFormat.format(
+                mProject.getElapsed(),
+                DateIntervalFormat.Type.HOURS_MINUTES
+        );
     }
 
     public void setVisibilityForClockedInSinceView(TextView clockedInSinceView) {
-        if (mProject.isActive()) {
+        if (isActive()) {
             showTextView(clockedInSinceView);
             return;
         }

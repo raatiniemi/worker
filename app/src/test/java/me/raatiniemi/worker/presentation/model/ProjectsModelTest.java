@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
@@ -39,6 +40,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -137,18 +139,38 @@ public class ProjectsModelTest {
             throws ClockOutBeforeClockInException {
         return new Object[][]{
                 {
-                        "Since 15:14 (1h 0m)",
-                        createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
-                                3600L,
-                                1458742440000L
-                        )
+                        "Without registered time",
+                        null,
+                        null
                 },
                 {
+                        "Without active time",
+                        null,
+                        new Time[]{
+                                new Time.Builder(1L)
+                                        .stopInMilliseconds(1L)
+                                        .build()
+                        }
+                },
+                {
+                        "With an hour elapsed",
+                        "Since 15:14 (1h 0m)",
+                        new Time[]{
+                                createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
+                                        3600L,
+                                        1458742440000L
+                                )
+                        }
+                },
+                {
+                        "With half an hour elapsed",
                         "Since 20:25 (30m)",
-                        createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
-                                1800L,
-                                1456773910000L
-                        )
+                        new Time[]{
+                                createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
+                                        1800L,
+                                        1456773910000L
+                                )
+                        }
                 }
         };
     }
@@ -284,17 +306,19 @@ public class ProjectsModelTest {
 
     @Test
     @UseDataProvider("getClockedInSince_dataProvider")
-    public void getClockedInSince(String expected, Time time)
+    public void getClockedInSince(String message, String expected, Time[] times)
             throws InvalidProjectNameException {
         Project project = createProjectBuilder("Project name")
                 .build();
 
-        List<Time> times = new ArrayList<>();
-        times.add(time);
-        project.addTime(times);
         ProjectsModel model = new ProjectsModel(project);
+        if (null == times) {
+            assertNull(message, model.getClockedInSince(sResources));
+            return;
+        }
+        project.addTime(Arrays.asList(times));
 
-        assertEquals(expected, model.getClockedInSince(sResources));
+        assertEquals(message, expected, model.getClockedInSince(sResources));
     }
 
     @Test
