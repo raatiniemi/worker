@@ -23,6 +23,9 @@ import me.raatiniemi.worker.domain.util.CalculateTime;
  * Format a time interval into hours and minutes, i.e. 1h 30m.
  */
 public class HoursMinutesIntervalFormat implements DateIntervalFormat {
+    private static final String sHoursMinutesFormat = "%1$dh %2$dm";
+    private static final String sMinutesFormat = "%2$dm";
+
     /**
      * @inheritDoc
      */
@@ -30,17 +33,18 @@ public class HoursMinutesIntervalFormat implements DateIntervalFormat {
     public String format(long milliseconds) {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
-        String format = "%1$dh %2$dm";
-
-        // If no hours is available, remove it from the format.
-        if (0 == calculatedTime.getHours()) {
-            format = "%2$dm";
-        }
-
         return String.format(
-                format,
+                getFormatTemplate(calculatedTime),
                 calculatedTime.getHours(),
                 calculatedTime.getMinutes()
         );
+    }
+
+    private String getFormatTemplate(CalculatedTime calculatedTime) {
+        if (0 == calculatedTime.getHours()) {
+            return sMinutesFormat;
+        }
+
+        return sHoursMinutesFormat;
     }
 }
