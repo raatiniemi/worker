@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Worker Project
+ * Copyright (C) 2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util;
+package me.raatiniemi.worker.presentation.util;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -26,9 +26,9 @@ import org.junit.runner.RunWith;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(DataProviderRunner.class)
-public class DateIntervalFormatTest {
+public class HoursMinutesIntervalFormatTest {
     @DataProvider
-    public static Object[][] format_hourMinutesDataProvider() {
+    public static Object[][] format_dataProvider() {
         return new Object[][]{
                 {60000L, "1m"},
                 {600000L, "10m"},
@@ -41,35 +41,11 @@ public class DateIntervalFormatTest {
         };
     }
 
-    @DataProvider
-    public static Object[][] format_fractionHoursDataProvider() {
-        return new Object[][]{
-                {900000L, "0.25"},
-                {3600000L, "1.00"},
-                {4500000L, "1.25"},
-                {7175000L, "2.00"},
-                {108000000L, "30.00"},
-                {203100000L, "56.42"}
-        };
-    }
-
     @Test
-    @UseDataProvider("format_hourMinutesDataProvider")
-    public void format_hourMinutes(Long interval, String expected) {
-        DateIntervalFormat dateIntervalFormat = new DateIntervalFormat();
+    @UseDataProvider("format_dataProvider")
+    public void format(Long intervalInMilliseconds, String expected) {
+        DateIntervalFormat intervalFormat = new HoursMinutesIntervalFormat();
 
-        assertEquals(expected, dateIntervalFormat.format(interval));
-    }
-
-    @Test
-    @UseDataProvider("format_fractionHoursDataProvider")
-    public void format_fractionHours(Long interval, String expected) {
-        DateIntervalFormat dateIntervalFormat = new DateIntervalFormat();
-        String value = dateIntervalFormat.format(
-                interval,
-                DateIntervalFormat.Type.FRACTION_HOURS
-        );
-
-        assertEquals(expected, value);
+        assertEquals(expected, intervalFormat.format(intervalInMilliseconds));
     }
 }
