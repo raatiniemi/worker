@@ -48,12 +48,24 @@ public class ProjectsModel {
     }
 
     public void setVisibilityForDescriptionView(TextView descriptionView) {
-        if (null == getDescription() || 0 == getDescription().length()) {
-            descriptionView.setVisibility(View.GONE);
+        if (isDescriptionMissing()) {
+            hideTextView(descriptionView);
             return;
         }
 
+        showTextView(descriptionView);
+    }
+
+    private boolean isDescriptionMissing() {
+        return null == getDescription() || 0 == getDescription().length();
+    }
+
+    private void showTextView(TextView descriptionView) {
         descriptionView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideTextView(TextView descriptionView) {
+        descriptionView.setVisibility(View.GONE);
     }
 
     public String getTimeSummary() {
@@ -101,10 +113,10 @@ public class ProjectsModel {
 
     public void setVisibilityForClockedInSinceView(TextView clockedInSinceView) {
         if (mProject.isActive()) {
-            clockedInSinceView.setVisibility(View.VISIBLE);
+            showTextView(clockedInSinceView);
             return;
         }
 
-        clockedInSinceView.setVisibility(View.GONE);
+        hideTextView(clockedInSinceView);
     }
 }
