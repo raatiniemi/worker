@@ -20,29 +20,26 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Comparator;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.util.DateIntervalFormat;
+import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.util.HintedImageButtonListener;
 
 /**
  * Adapter for listing available projects.
  */
-public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.ItemViewHolder> {
+public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.ItemViewHolder> {
     /**
      * Tag for logging within the ProjectsAdapter.
      */
@@ -52,6 +49,7 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
      * Listener for project actions.
      */
     private final OnProjectActionListener mOnProjectActionListener;
+    private final Resources mResources;
 
     /**
      * Listener for hinting images.
@@ -71,6 +69,7 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
         super(context);
 
         mOnProjectActionListener = projectActionListener;
+        mResources = getContext().getResources();
     }
 
     @Override
@@ -88,25 +87,23 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
 
     @Override
     public void onBindViewHolder(final ItemViewHolder vh, int index) {
-        final Project project = get(index);
+        final ProjectsModel item = get(index);
+        final Project project = item.asProject();
 
-        // Add the on click listener for the card view.
-        // Will open the single project activity.
+        vh.mName.setText(item.getTitle());
+        vh.mTime.setText(item.getTimeSummary());
+
+        vh.mDescription.setText(item.getDescription());
+        item.setVisibilityForDescriptionView(vh.mDescription);
+
+        vh.mClockedInSince.setText(item.getClockedInSince(mResources));
+        item.setVisibilityForClockedInSinceView(vh.mClockedInSince);
+
         vh.itemView.setOnClickListener(getOnClickListener());
 
-        String summarize = DateIntervalFormat.format(project.summarizeTime());
-
-        vh.mName.setText(project.getName());
-        vh.mTime.setText(summarize);
-        vh.mDescription.setText(project.getDescription());
-
-        // If the project description is empty the view should be hidden.
-        int visibility = View.VISIBLE;
-        if (TextUtils.isEmpty(project.getDescription())) {
-            visibility = View.GONE;
-        }
-        vh.mDescription.setVisibility(visibility);
-
+        vh.mClockActivityToggle.setContentDescription(
+                item.getHelpTextForClockActivityToggle(mResources)
+        );
         vh.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +113,9 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
         vh.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
         vh.mClockActivityToggle.setActivated(project.isActive());
 
-        // Add the onClickListener to the "Clock [in|out] at..." item.
+        vh.mClockActivityAt.setContentDescription(
+                item.getHelpTextForClockActivityAt(mResources)
+        );
         vh.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +124,6 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
         });
         vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
 
-        // Add the onClickListener to the "Delete project" item.
         vh.mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,51 +131,22 @@ public class ProjectsAdapter extends SimpleListAdapter<Project, ProjectsAdapter.
             }
         });
         vh.mDelete.setOnLongClickListener(getHintedImageButtonListener());
-
-        // Retrieve the resource instance.
-        Resources resources = getContext().getResources();
-
-        // Depending on whether the project is active the text
-        // for the clock activity view should be altered, and
-        // visibility for the clocked activity view.
-        int clockedInSinceVisibility = View.GONE;
-        int clockActivityToggleId = R.string.fragment_projects_item_clock_in;
-        int clockActivityAtId = R.string.fragment_projects_item_clock_in_at;
-        if (project.isActive()) {
-            clockActivityToggleId = R.string.fragment_projects_item_clock_out;
-            clockActivityAtId = R.string.fragment_projects_item_clock_out_at;
-            clockedInSinceVisibility = View.VISIBLE;
-        }
-
-        String clockActivityToggle = resources.getString(clockActivityToggleId);
-        vh.mClockActivityToggle.setContentDescription(clockActivityToggle);
-
-        String clockActivityAt = resources.getString(clockActivityAtId);
-        vh.mClockActivityAt.setContentDescription(clockActivityAt);
-
-        // Retrieve the time that the active session was clocked in.
-        // TODO: Handle if the time session overlap days.
-        // The timestamp should include the date it was
-        // checked in, e.g. 21 May 1:06PM.
-        Date clockedInSince = project.getClockedInSince();
-        String clockedInSinceText = null;
-        if (null != clockedInSince) {
-            clockedInSinceText = resources.getString(R.string.fragment_projects_item_clocked_in_since);
-            clockedInSinceText = String.format(
-                    clockedInSinceText,
-                    (new SimpleDateFormat("HH:mm", Locale.getDefault())).format(clockedInSince),
-                    DateIntervalFormat.format(
-                            project.getElapsed(),
-                            DateIntervalFormat.Type.HOURS_MINUTES
-                    )
-            );
-        }
-        vh.mClockedInSince.setText(clockedInSinceText);
-        vh.mClockedInSince.setVisibility(clockedInSinceVisibility);
     }
 
-    public int findProject(Project project) {
-        return Collections.binarySearch(getItems(), project, new ProjectComparator());
+    public int findProject(final Project project) {
+        // TODO: Clean up the comparator.
+        final ProjectComparator comparator = new ProjectComparator();
+
+        ProjectsModel item = new ProjectsModel(project);
+        return Collections.binarySearch(getItems(), item, new Comparator<ProjectsModel>() {
+            @Override
+            public int compare(ProjectsModel lhs, ProjectsModel rhs) {
+                return comparator.compare(
+                        lhs.asProject(),
+                        rhs.asProject()
+                );
+            }
+        });
     }
 
     /**
