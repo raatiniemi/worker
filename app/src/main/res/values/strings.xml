@@ -69,6 +69,9 @@
     <string name="notification.restore.title">Restore complete</string>
     <string name="notification.restore.message">Press notification to restart application.</string>
 
+    <string name="notification.pause.action.pause">Pause</string>
+    <string name="notification.pause.action.clock_out">Clock out</string>
+
     <string name="error.message.unknown">An unknown error has occurred</string>
     <string name="error.message.project_name_missing">You have to supply a name</string>
     <string name="error.message.project_name_already_exists">Project name already exists</string>
