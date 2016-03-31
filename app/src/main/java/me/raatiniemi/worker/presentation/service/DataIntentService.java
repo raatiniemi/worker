@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.service;
+package me.raatiniemi.worker.presentation.service;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
