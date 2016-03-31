@@ -44,7 +44,7 @@ import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.view.SettingsView;
 import me.raatiniemi.worker.service.DataIntentService;
-import me.raatiniemi.worker.util.PermissionUtil;
+import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import me.raatiniemi.worker.util.Settings;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;

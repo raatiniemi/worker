@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util;
+package me.raatiniemi.worker.presentation.util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
