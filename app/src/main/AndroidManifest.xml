@@ -58,6 +58,11 @@
             android:exported="false"
             />
 
+        <service
+            android:name=".presentation.service.ClockOutService"
+            android:exported="false"
+            />
+
     </application>
 
 </manifest>

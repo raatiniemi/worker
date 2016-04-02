@@ -26,6 +26,7 @@ import android.support.v4.app.NotificationCompat;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.service.ClockOutService;
 import me.raatiniemi.worker.presentation.service.PauseService;
 
 /**
@@ -43,7 +44,7 @@ public class PauseNotification {
                 .setContentTitle(project.getName())
                 .setSmallIcon(sSmallIcon)
                 .addAction(buildPauseAction(context, project))
-                .addAction(buildClockOutAction(context))
+                .addAction(buildClockOutAction(context, project))
                 .build();
     }
 
@@ -61,6 +62,20 @@ public class PauseNotification {
         );
     }
 
+    private static NotificationCompat.Action buildClockOutAction(
+            Context context,
+            Project project
+    ) {
+        Intent intent = new Intent(context, ClockOutService.class);
+        intent.setData(getDataUri(project));
+
+        return new NotificationCompat.Action(
+                sClockOutIcon,
+                context.getString(R.string.notification_pause_action_clock_out),
+                buildPendingIntentWithService(context, intent)
+        );
+    }
+
     private static Uri getDataUri(Project project) {
         return WorkerContract.ProjectContract.getItemUri(project.getId());
     }
@@ -74,14 +89,6 @@ public class PauseNotification {
                 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
-        );
-    }
-
-    private static NotificationCompat.Action buildClockOutAction(Context context) {
-        return new NotificationCompat.Action(
-                sClockOutIcon,
-                context.getString(R.string.notification_pause_action_clock_out),
-                null
         );
     }
 }
