@@ -71,6 +71,7 @@
 
     <string name="notification.pause.action.pause">Pause</string>
     <string name="notification.pause.action.clock_out">Clock out</string>
+    <string name="notification.pause.action.resume">Resume</string>
 
     <string name="error.message.unknown">An unknown error has occurred</string>
     <string name="error.message.project_name_missing">You have to supply a name</string>
