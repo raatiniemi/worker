@@ -21,6 +21,7 @@ import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.domain.model.Project;
 
 /**
  * Notification for resuming an inactive project.
@@ -30,9 +31,9 @@ public class ResumeNotification {
 
     private static final int sResumeIcon = 0;
 
-    public static Notification build(Context context) {
+    public static Notification build(Context context, Project project) {
         return new NotificationCompat.Builder(context)
-                .setContentTitle("Project name")
+                .setContentTitle(project.getName())
                 .setSmallIcon(sSmallIcon)
                 .addAction(buildResumeAction(context))
                 .build();
