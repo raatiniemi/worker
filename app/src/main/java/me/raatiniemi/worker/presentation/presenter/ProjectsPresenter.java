@@ -392,10 +392,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                 .doOnNext(new Action1<Project>() {
                     @Override
                     public void call(Project project) {
-                        if (project.isActive()) {
-                            NotificationManager manager = (NotificationManager) getContext()
-                                    .getSystemService(Context.NOTIFICATION_SERVICE);
+                        NotificationManager manager = (NotificationManager) getContext()
+                                .getSystemService(Context.NOTIFICATION_SERVICE);
 
+                        manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
+                        if (project.isActive()) {
                             manager.notify(
                                     Worker.NOTIFICATION_ON_GOING_ID,
                                     PauseNotification.build(getContext(), project)
