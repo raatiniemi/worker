@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.presenter;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
 
@@ -31,11 +32,14 @@ import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.notification.PauseNotification;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
+import me.raatiniemi.worker.util.Worker;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -385,6 +389,20 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                 }
             }
         }).compose(this.<Project>applySchedulers())
+                .doOnNext(new Action1<Project>() {
+                    @Override
+                    public void call(Project project) {
+                        if (project.isActive()) {
+                            NotificationManager manager = (NotificationManager) getContext()
+                                    .getSystemService(Context.NOTIFICATION_SERVICE);
+
+                            manager.notify(
+                                    Worker.NOTIFICATION_ON_GOING_ID,
+                                    PauseNotification.build(getContext(), project)
+                            );
+                        }
+                    }
+                })
                 .subscribe(new Subscriber<Project>() {
                     @Override
                     public void onNext(Project project) {

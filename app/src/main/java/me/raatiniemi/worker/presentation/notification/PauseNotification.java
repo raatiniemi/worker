@@ -21,6 +21,7 @@ import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.domain.model.Project;
 
 /**
  * Notification for pausing or clocking out an active project.
@@ -32,9 +33,9 @@ public class PauseNotification {
 
     private static final int sClockOutIcon = 0;
 
-    public static Notification build(Context context) {
+    public static Notification build(Context context, Project project) {
         return new NotificationCompat.Builder(context)
-                .setContentTitle("Project name")
+                .setContentTitle(project.getName())
                 .setSmallIcon(sSmallIcon)
                 .addAction(buildPauseAction(context))
                 .addAction(buildClockOutAction(context))
