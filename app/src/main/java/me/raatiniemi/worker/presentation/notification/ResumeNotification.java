@@ -17,11 +17,16 @@
 package me.raatiniemi.worker.presentation.notification;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.service.ResumeService;
 
 /**
  * Notification for resuming an inactive project.
@@ -35,15 +40,37 @@ public class ResumeNotification {
         return new NotificationCompat.Builder(context)
                 .setContentTitle(project.getName())
                 .setSmallIcon(sSmallIcon)
-                .addAction(buildResumeAction(context))
+                .addAction(buildResumeAction(context, project))
                 .build();
     }
 
-    private static NotificationCompat.Action buildResumeAction(Context context) {
+    private static NotificationCompat.Action buildResumeAction(
+            Context context,
+            Project project
+    ) {
+        Intent intent = new Intent(context, ResumeService.class);
+        intent.setData(getDataUri(project));
+
         return new NotificationCompat.Action(
                 sResumeIcon,
                 context.getString(R.string.notification_pause_action_resume),
-                null
+                buildPendingIntentWithService(context, intent)
+        );
+    }
+
+    private static Uri getDataUri(Project project) {
+        return WorkerContract.ProjectContract.getItemUri(project.getId());
+    }
+
+    private static PendingIntent buildPendingIntentWithService(
+            Context context,
+            Intent intent
+    ) {
+        return PendingIntent.getService(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
         );
     }
 }
