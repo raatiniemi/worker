@@ -95,4 +95,7 @@
     <string name="error.notification.pause.title">Failed to pause project</string>
     <string name="error.notification.pause.message">An internal error has occurred.</string>
 
+    <string name="error.notification.resume.title">Failed to resume project</string>
+    <string name="error.notification.resume.message">An internal error has occurred.</string>
+
 </resources>
