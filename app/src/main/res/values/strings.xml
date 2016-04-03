@@ -98,4 +98,7 @@
     <string name="error.notification.resume.title">Failed to resume project</string>
     <string name="error.notification.resume.message">An internal error has occurred.</string>
 
+    <string name="error.notification.clock_out.title">Failed to clock out project</string>
+    <string name="error.notification.clock_out.message">An internal error has occurred.</string>
+
 </resources>
