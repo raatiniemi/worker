@@ -40,6 +40,7 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.notification.ResumeNotification;
+import me.raatiniemi.worker.util.Settings;
 import me.raatiniemi.worker.util.Worker;
 
 public class PauseService extends IntentService {
@@ -60,8 +61,14 @@ public class PauseService extends IntentService {
             GetProject getProject = new GetProject(getProjectRepository());
             Project project = getProject.execute(projectId);
 
-            sendResumeNotification(project);
             updateUserInterface(projectId);
+
+            if (Settings.isOngoingNotificationEnabled(this)) {
+                sendResumeNotification(project);
+                return;
+            }
+
+            dismissPauseNotification();
         } catch (Exception e) {
             Log.w(TAG, "Unable to pause project: " + e.getMessage());
         }
@@ -91,6 +98,11 @@ public class PauseService extends IntentService {
                 new ProjectCursorMapper(),
                 new ProjectContentValuesMapper()
         );
+    }
+
+    private void dismissPauseNotification() {
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
     }
 
     private void sendResumeNotification(Project project) {

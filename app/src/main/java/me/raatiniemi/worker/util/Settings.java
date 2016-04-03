@@ -35,6 +35,11 @@ public class Settings {
     private static final String PREF_CONFIRM_CLOCK_OUT = "pref_confirm_clock_out";
 
     /**
+     * Preference key to check if ongoing notification is enabled.
+     */
+    private static final String PREF_ONGOING_NOTIFICATION_ENABLED = "pref_ongoing_notification_enabled";
+
+    /**
      * Check if the registered time should be hidden.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
@@ -76,5 +81,36 @@ public class Settings {
     public static void setConfirmClockOut(final Context context, boolean newValue) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(PREF_CONFIRM_CLOCK_OUT, newValue).apply();
+    }
+
+    /**
+     * Check if ongoing notification is enabled.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @return 'true' if ongoing notification is enabled, otherwise 'false'.
+     */
+    public static boolean isOngoingNotificationEnabled(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true);
+    }
+
+    /**
+     * Enable ongoing notification.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     */
+    public static void enableOngoingNotification(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true).apply();
+    }
+
+    /**
+     * Disable ongoing notification.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     */
+    public static void disableOngoingNotification(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, false).apply();
     }
 }

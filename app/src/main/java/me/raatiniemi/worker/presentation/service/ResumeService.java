@@ -40,6 +40,7 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
+import me.raatiniemi.worker.util.Settings;
 import me.raatiniemi.worker.util.Worker;
 
 public class ResumeService extends IntentService {
@@ -60,8 +61,14 @@ public class ResumeService extends IntentService {
             GetProject getProject = new GetProject(getProjectRepository());
             Project project = getProject.execute(projectId);
 
-            sendPauseNotification(project);
             updateUserInterface(projectId);
+
+            if (Settings.isOngoingNotificationEnabled(this)) {
+                sendPauseNotification(project);
+                return;
+            }
+
+            dismissResumeNotification();
         } catch (Exception e) {
             Log.w(TAG, "Unable to resume project: " + e.getMessage());
         }
@@ -91,6 +98,11 @@ public class ResumeService extends IntentService {
                 new ProjectCursorMapper(),
                 new ProjectContentValuesMapper()
         );
+    }
+
+    private void dismissResumeNotification() {
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
     }
 
     private void sendPauseNotification(Project project) {

@@ -58,6 +58,16 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     private static final String TAG = "SettingsActivity";
 
     /**
+     * Key for the project preference.
+     */
+    private static final String SETTINGS_PROJECT_KEY = "settings_project";
+
+    /**
+     * Key for ongoing notification preference.
+     */
+    private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY = "settings_project_ongoing_notification";
+
+    /**
      * Key for confirm clock out preference.
      */
     private static final String SETTINGS_CONFIRM_CLOCK_OUT_KEY = "settings_confirm_clock_out";
@@ -172,6 +182,9 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         switch (key) {
             case SETTINGS_DATA_KEY:
                 fragment = new DataFragment();
+                break;
+            case SETTINGS_PROJECT_KEY:
+                fragment = new ProjectFragment();
                 break;
         }
 
@@ -336,6 +349,48 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 }
             }
             return super.onPreferenceTreeClick(preferenceScreen, preference);
+        }
+    }
+
+    public static class ProjectFragment extends BasePreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            addPreferencesFromResource(R.xml.settings_project);
+
+            try {
+                CheckBoxPreference ongoingNotification =
+                        (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY);
+                ongoingNotification.setChecked(Settings.isOngoingNotificationEnabled(getActivity()));
+            } catch (ClassCastException e) {
+                Log.w(TAG, "Unable to get value for 'ongoing_notification'");
+            }
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
+            if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY.equals(preference.getKey())) {
+                try {
+                    // Set the clock out confirmation preference.
+                    boolean checked = ((CheckBoxPreference) preference).isChecked();
+                    if (checked) {
+                        Settings.enableOngoingNotification(getActivity());
+                        return true;
+                    }
+
+                    Settings.disableOngoingNotification(getActivity());
+                    return true;
+                } catch (ClassCastException e) {
+                    Log.w(TAG, "Unable to set value for 'ongoing_notification'");
+                }
+            }
+            return super.onPreferenceTreeClick(preferenceScreen, preference);
+        }
+
+        @Override
+        public int getTitle() {
+            return R.string.activity_settings_project;
         }
     }
 

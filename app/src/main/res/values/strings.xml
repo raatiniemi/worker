@@ -62,6 +62,8 @@
     <string name="activity.settings.restore.unable_to_find">Unable to restore, failed to locate backups.</string>
     <string name="activity.settings.restore.none_available">Nothing to restore, no backup is available.</string>
     <string name="activity.settings.restore.from" formatted="false">Restore backup from %s.\nAfter restore you have to restart the application.</string>
+    <string name="activity.settings.project">Project</string>
+    <string name="activity.settings.project.ongoing_notification">Ongoing notification</string>
 
     <string name="notification.backup.title">Backup complete</string>
     <string name="notification.backup.message">Backup to external storage was successful.</string>

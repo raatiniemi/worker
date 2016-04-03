@@ -39,6 +39,7 @@ import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
+import me.raatiniemi.worker.util.Settings;
 import me.raatiniemi.worker.util.Worker;
 import rx.Observable;
 import rx.Subscriber;
@@ -426,6 +427,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
                         manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
+
+                        if (!Settings.isOngoingNotificationEnabled(getContext())) {
+                            return;
+                        }
+
                         if (project.isActive()) {
                             manager.notify(
                                     Worker.NOTIFICATION_ON_GOING_ID,
