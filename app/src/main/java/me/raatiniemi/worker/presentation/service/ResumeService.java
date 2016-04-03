@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Date;
 
 import me.raatiniemi.worker.data.WorkerContract;
@@ -36,6 +38,7 @@ import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
 import me.raatiniemi.worker.util.Worker;
 
@@ -58,6 +61,7 @@ public class ResumeService extends IntentService {
             Project project = getProject.execute(projectId);
 
             sendPauseNotification(project);
+            updateUserInterface();
         } catch (Exception e) {
             Log.w(TAG, "Unable to resume project: " + e.getMessage());
         }
@@ -95,5 +99,10 @@ public class ResumeService extends IntentService {
                 Worker.NOTIFICATION_ON_GOING_ID,
                 PauseNotification.build(this, project)
         );
+    }
+
+    private void updateUserInterface() {
+        EventBus eventBus = EventBus.getDefault();
+        eventBus.post(new OnGoingNotificationActionEvent());
     }
 }
