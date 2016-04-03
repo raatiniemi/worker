@@ -16,8 +16,13 @@
 
 package me.raatiniemi.worker.presentation.presenter;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,12 +35,17 @@ import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.notification.PauseNotification;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
+import me.raatiniemi.worker.util.Settings;
+import me.raatiniemi.worker.util.Worker;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -48,6 +58,8 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * Tag used when logging.
      */
     private static final String TAG = "ProjectsPresenter";
+
+    private final EventBus mEventBus;
 
     /**
      * Use case for getting projects.
@@ -73,21 +85,44 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * Constructor.
      *
      * @param context             Context used with the presenter.
+     * @param eventBus            Event bus.
      * @param getProjects         Use case for getting projects.
      * @param clockActivityChange Use case for project clock in/out.
      * @param removeProject       Use case for removing projects.
      */
     public ProjectsPresenter(
             Context context,
+            EventBus eventBus,
             GetProjects getProjects,
             ClockActivityChange clockActivityChange,
             RemoveProject removeProject
     ) {
         super(context);
 
+        mEventBus = eventBus;
         mGetProjects = getProjects;
         mClockActivityChange = clockActivityChange;
         mRemoveProject = removeProject;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void attachView(ProjectsView view) {
+        super.attachView(view);
+
+        mEventBus.register(this);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void detachView() {
+        super.detachView();
+
+        mEventBus.unregister(this);
     }
 
     /**
@@ -385,6 +420,30 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                 }
             }
         }).compose(this.<Project>applySchedulers())
+                .doOnNext(new Action1<Project>() {
+                    @Override
+                    public void call(Project project) {
+                        NotificationManager manager = (NotificationManager) getContext()
+                                .getSystemService(Context.NOTIFICATION_SERVICE);
+
+                        manager.cancel(
+                                String.valueOf(project.getId()),
+                                Worker.NOTIFICATION_ON_GOING_ID
+                        );
+
+                        if (!Settings.isOngoingNotificationEnabled(getContext())) {
+                            return;
+                        }
+
+                        if (project.isActive()) {
+                            manager.notify(
+                                    String.valueOf(project.getId()),
+                                    Worker.NOTIFICATION_ON_GOING_ID,
+                                    PauseNotification.build(getContext(), project)
+                            );
+                        }
+                    }
+                })
                 .subscribe(new Subscriber<Project>() {
                     @Override
                     public void onNext(Project project) {
@@ -425,5 +484,15 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "clockActivityChange onCompleted");
                     }
                 });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(OnGoingNotificationActionEvent event) {
+        if (!isViewAttached()) {
+            Log.d(TAG, "View is not attached, skip reloading projects");
+            return;
+        }
+
+        getView().reloadProjects();
     }
 }

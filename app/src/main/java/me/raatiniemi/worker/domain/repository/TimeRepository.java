@@ -87,4 +87,14 @@ public interface TimeRepository {
             final int offset,
             final Criteria criteria
     );
+
+    /**
+     * Get active time for project.
+     *
+     * @param projectId Id for project.
+     * @return Active time for project, or null if project is inactive.
+     * @throws DomainException If domain rules are violated.
+     * TODO: Replace with query/criteria method.
+     */
+    Time getActiveTimeForProject(long projectId) throws DomainException;
 }

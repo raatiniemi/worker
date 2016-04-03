@@ -54,7 +54,17 @@
             />
 
         <service
-            android:name=".presentation.service.DataIntentService"
+            android:name=".presentation.service.PauseService"
+            android:exported="false"
+            />
+
+        <service
+            android:name=".presentation.service.ClockOutService"
+            android:exported="false"
+            />
+
+        <service
+            android:name=".presentation.service.ResumeService"
             android:exported="false"
             />
 

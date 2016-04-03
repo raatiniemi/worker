@@ -224,4 +224,33 @@ public class TimeResolverRepository
 
         return result;
     }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public Time getActiveTimeForProject(long projectId)
+            throws ClockOutBeforeClockInException {
+        final Cursor cursor = getContentResolver().query(
+                ProjectContract.getItemTimeUri(projectId),
+                TimeContract.COLUMNS,
+                TimeContract.STOP + " = 0",
+                null,
+                null
+        );
+        if (null == cursor) {
+            return null;
+        }
+
+        Time time = null;
+        try {
+            if (cursor.moveToFirst()) {
+                time = getCursorMapper().transform(cursor);
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return time;
+    }
 }

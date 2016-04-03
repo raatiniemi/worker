@@ -19,6 +19,10 @@ package me.raatiniemi.worker.presentation.presenter;
 import android.content.Context;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,8 +34,10 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.view.ProjectsView;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 import me.raatiniemi.worker.util.Settings;
@@ -45,6 +51,10 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
      * Tag used when logging.
      */
     private static final String TAG = "TimesheetPresenter";
+
+    private final EventBus mEventBus;
+
+    private final long mProjectId;
 
     /**
      * Use case for getting project timesheet.
@@ -65,21 +75,47 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
      * Constructor.
      *
      * @param context            Context used with the presenter.
+     * @param eventBus           Event bus.
+     * @param projectId          Id for the project.
      * @param getTimesheet       Use case for getting project timesheet.
      * @param markRegisteredTime Use case for marking time as registered.
      * @param removeTime         Use case for removing time.
      */
     public TimesheetPresenter(
             Context context,
+            EventBus eventBus,
+            long projectId,
             GetTimesheet getTimesheet,
             MarkRegisteredTime markRegisteredTime,
             RemoveTime removeTime
     ) {
         super(context);
 
+        mEventBus = eventBus;
+        mProjectId = projectId;
         mGetTimesheet = getTimesheet;
         mMarkRegisteredTime = markRegisteredTime;
         mRemoveTime = removeTime;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void attachView(TimesheetFragment view) {
+        super.attachView(view);
+
+        mEventBus.register(this);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void detachView() {
+        super.detachView();
+
+        mEventBus.unregister(this);
     }
 
     public void getTimesheet(final Long id, final int offset) {
@@ -279,5 +315,20 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.d(TAG, "register onCompleted");
                     }
                 });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(OnGoingNotificationActionEvent event) {
+        if (!isViewAttached()) {
+            Log.d(TAG, "View is not attached, skip reloading timesheet");
+            return;
+        }
+
+        if (event.getProjectId() != mProjectId) {
+            Log.d(TAG, "No need to refresh, event is related to another project");
+            return;
+        }
+
+        getView().refresh();
     }
 }

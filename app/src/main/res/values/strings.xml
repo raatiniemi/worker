@@ -62,12 +62,18 @@
     <string name="activity.settings.restore.unable_to_find">Unable to restore, failed to locate backups.</string>
     <string name="activity.settings.restore.none_available">Nothing to restore, no backup is available.</string>
     <string name="activity.settings.restore.from" formatted="false">Restore backup from %s.\nAfter restore you have to restart the application.</string>
+    <string name="activity.settings.project">Project</string>
+    <string name="activity.settings.project.ongoing_notification">Ongoing notification</string>
 
     <string name="notification.backup.title">Backup complete</string>
     <string name="notification.backup.message">Backup to external storage was successful.</string>
 
     <string name="notification.restore.title">Restore complete</string>
     <string name="notification.restore.message">Press notification to restart application.</string>
+
+    <string name="notification.pause.action.pause">Pause</string>
+    <string name="notification.pause.action.clock_out">Clock out</string>
+    <string name="notification.pause.action.resume">Resume</string>
 
     <string name="error.message.unknown">An unknown error has occurred</string>
     <string name="error.message.project_name_missing">You have to supply a name</string>
@@ -85,5 +91,14 @@
 
     <string name="error.notification.restore.title">Restore failed</string>
     <string name="error.notification.restore.message">Data restore from backup failed.</string>
+
+    <string name="error.notification.pause.title">Failed to pause project</string>
+    <string name="error.notification.pause.message">An internal error has occurred.</string>
+
+    <string name="error.notification.resume.title">Failed to resume project</string>
+    <string name="error.notification.resume.message">An internal error has occurred.</string>
+
+    <string name="error.notification.clock_out.title">Failed to clock out project</string>
+    <string name="error.notification.clock_out.message">An internal error has occurred.</string>
 
 </resources>

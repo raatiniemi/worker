@@ -34,6 +34,8 @@ import android.view.ViewGroup;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import me.raatiniemi.worker.R;
@@ -223,6 +225,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
         return new TimesheetPresenter(
                 getActivity(),
+                EventBus.getDefault(),
+                getProjectId(),
                 new GetTimesheet(timeRepository),
                 new MarkRegisteredTime(timeRepository),
                 new RemoveTime(timeRepository)

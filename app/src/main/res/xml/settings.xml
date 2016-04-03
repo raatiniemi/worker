@@ -7,6 +7,11 @@
         android:title="@string/activity.settings.preferences"
         >
 
+        <PreferenceScreen
+            android:key="settings_project"
+            android:title="@string/activity.settings.project"
+            />
+
         <CheckBoxPreference
             android:key="settings_confirm_clock_out"
             android:title="@string/activity.settings.confirm_clock_out"

@@ -41,6 +41,11 @@ public final class Worker {
     public static final int NOTIFICATION_DATA_INTENT_SERVICE_ID = 1;
 
     /**
+     * Id for on-going notification.
+     */
+    public static final int NOTIFICATION_ON_GOING_ID = 2;
+
+    /**
      * Prefix for backup directories.
      */
     public static final String STORAGE_BACKUP_DIRECTORY_PREFIX = "backup-";

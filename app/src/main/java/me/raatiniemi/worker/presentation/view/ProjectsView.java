@@ -115,4 +115,9 @@ public interface ProjectsView extends MvpView {
      * @param positions Positions for the project to refresh.
      */
     void refreshPositions(List<Integer> positions);
+
+    /**
+     * Reload projects.
+     */
+    void reloadProjects();
 }
