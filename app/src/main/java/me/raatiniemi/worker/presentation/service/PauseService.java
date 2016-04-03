@@ -68,7 +68,7 @@ public class PauseService extends IntentService {
                 return;
             }
 
-            dismissPauseNotification();
+            dismissPauseNotification(project);
         } catch (Exception e) {
             Log.w(TAG, "Unable to pause project: " + e.getMessage());
         }
@@ -100,14 +100,18 @@ public class PauseService extends IntentService {
         );
     }
 
-    private void dismissPauseNotification() {
+    private void dismissPauseNotification(Project project) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
+        manager.cancel(
+                String.valueOf(project.getId()),
+                Worker.NOTIFICATION_ON_GOING_ID
+        );
     }
 
     private void sendResumeNotification(Project project) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(
+                String.valueOf(project.getId()),
                 Worker.NOTIFICATION_ON_GOING_ID,
                 ResumeNotification.build(this, project)
         );

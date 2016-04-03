@@ -68,7 +68,7 @@ public class ResumeService extends IntentService {
                 return;
             }
 
-            dismissResumeNotification();
+            dismissResumeNotification(project);
         } catch (Exception e) {
             Log.w(TAG, "Unable to resume project: " + e.getMessage());
         }
@@ -100,14 +100,18 @@ public class ResumeService extends IntentService {
         );
     }
 
-    private void dismissResumeNotification() {
+    private void dismissResumeNotification(Project project) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
+        manager.cancel(
+                String.valueOf(project.getId()),
+                Worker.NOTIFICATION_ON_GOING_ID
+        );
     }
 
     private void sendPauseNotification(Project project) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(
+                String.valueOf(project.getId()),
                 Worker.NOTIFICATION_ON_GOING_ID,
                 PauseNotification.build(this, project)
         );

@@ -426,7 +426,10 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         NotificationManager manager = (NotificationManager) getContext()
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
-                        manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
+                        manager.cancel(
+                                String.valueOf(project.getId()),
+                                Worker.NOTIFICATION_ON_GOING_ID
+                        );
 
                         if (!Settings.isOngoingNotificationEnabled(getContext())) {
                             return;
@@ -434,6 +437,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
                         if (project.isActive()) {
                             manager.notify(
+                                    String.valueOf(project.getId()),
                                     Worker.NOTIFICATION_ON_GOING_ID,
                                     PauseNotification.build(getContext(), project)
                             );

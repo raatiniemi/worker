@@ -27,10 +27,16 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Date;
 
 import me.raatiniemi.worker.data.WorkerContract;
+import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
+import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
+import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
+import me.raatiniemi.worker.domain.interactor.GetProject;
+import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.util.Worker;
@@ -50,7 +56,10 @@ public class ClockOutService extends IntentService {
             ClockOut clockOut = new ClockOut(getTimeRepository());
             clockOut.execute(projectId, new Date());
 
-            dismissPauseNotification();
+            GetProject getProject = new GetProject(getProjectRepository());
+            Project project = getProject.execute(projectId);
+
+            dismissPauseNotification(project);
             updateUserInterface(projectId);
         } catch (Exception e) {
             Log.w(TAG, "Unable to clock out project: " + e.getMessage());
@@ -65,6 +74,14 @@ public class ClockOutService extends IntentService {
         );
     }
 
+    private ProjectRepository getProjectRepository() {
+        return new ProjectResolverRepository(
+                getContentResolver(),
+                new ProjectCursorMapper(),
+                new ProjectContentValuesMapper()
+        );
+    }
+
     private long getProjectId(Intent intent) {
         String itemId = WorkerContract.ProjectContract.getItemId(intent.getData());
         long projectId = Long.valueOf(itemId);
@@ -75,9 +92,12 @@ public class ClockOutService extends IntentService {
         return projectId;
     }
 
-    private void dismissPauseNotification() {
+    private void dismissPauseNotification(Project project) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
+        manager.cancel(
+                String.valueOf(project.getId()),
+                Worker.NOTIFICATION_ON_GOING_ID
+        );
     }
 
     private void updateUserInterface(long projectId) {
