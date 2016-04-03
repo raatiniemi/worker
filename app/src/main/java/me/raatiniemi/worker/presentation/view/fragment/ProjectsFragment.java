@@ -30,6 +30,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -133,6 +135,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
         return new ProjectsPresenter(
                 getActivity(),
+                EventBus.getDefault(),
                 new GetProjects(projectRepository, timeRepository),
                 new ClockActivityChange(projectRepository, timeRepository),
                 new RemoveProject(projectRepository)
@@ -317,6 +320,15 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         for (Integer position : positions) {
             getAdapter().notifyItemChanged(position);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void reloadProjects() {
+        getAdapter().clear();
+        getPresenter().getProjects();
     }
 
     @Override
