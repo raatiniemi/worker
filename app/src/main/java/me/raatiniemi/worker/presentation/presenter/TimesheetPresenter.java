@@ -54,6 +54,8 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
 
     private final EventBus mEventBus;
 
+    private final long mProjectId;
+
     /**
      * Use case for getting project timesheet.
      */
@@ -74,6 +76,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
      *
      * @param context            Context used with the presenter.
      * @param eventBus           Event bus.
+     * @param projectId          Id for the project.
      * @param getTimesheet       Use case for getting project timesheet.
      * @param markRegisteredTime Use case for marking time as registered.
      * @param removeTime         Use case for removing time.
@@ -81,6 +84,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     public TimesheetPresenter(
             Context context,
             EventBus eventBus,
+            long projectId,
             GetTimesheet getTimesheet,
             MarkRegisteredTime markRegisteredTime,
             RemoveTime removeTime
@@ -88,6 +92,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
         super(context);
 
         mEventBus = eventBus;
+        mProjectId = projectId;
         mGetTimesheet = getTimesheet;
         mMarkRegisteredTime = markRegisteredTime;
         mRemoveTime = removeTime;
@@ -316,6 +321,11 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     public void onEventMainThread(OnGoingNotificationActionEvent event) {
         if (!isViewAttached()) {
             Log.d(TAG, "View is not attached, skip reloading timesheet");
+            return;
+        }
+
+        if (event.getProjectId() != mProjectId) {
+            Log.d(TAG, "No need to refresh, event is related to another project");
             return;
         }
 

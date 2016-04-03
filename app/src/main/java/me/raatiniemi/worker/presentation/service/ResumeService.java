@@ -61,7 +61,7 @@ public class ResumeService extends IntentService {
             Project project = getProject.execute(projectId);
 
             sendPauseNotification(project);
-            updateUserInterface();
+            updateUserInterface(projectId);
         } catch (Exception e) {
             Log.w(TAG, "Unable to resume project: " + e.getMessage());
         }
@@ -101,8 +101,8 @@ public class ResumeService extends IntentService {
         );
     }
 
-    private void updateUserInterface() {
+    private void updateUserInterface(long projectId) {
         EventBus eventBus = EventBus.getDefault();
-        eventBus.post(new OnGoingNotificationActionEvent());
+        eventBus.post(new OnGoingNotificationActionEvent(projectId));
     }
 }

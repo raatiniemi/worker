@@ -45,11 +45,13 @@ public class ClockOutService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
+            long projectId = getProjectId(intent);
+
             ClockOut clockOut = new ClockOut(getTimeRepository());
-            clockOut.execute(getProjectId(intent), new Date());
+            clockOut.execute(projectId, new Date());
 
             dismissPauseNotification();
-            updateUserInterface();
+            updateUserInterface(projectId);
         } catch (Exception e) {
             Log.w(TAG, "Unable to clock out project: " + e.getMessage());
         }
@@ -78,8 +80,8 @@ public class ClockOutService extends IntentService {
         manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
     }
 
-    private void updateUserInterface() {
+    private void updateUserInterface(long projectId) {
         EventBus eventBus = EventBus.getDefault();
-        eventBus.post(new OnGoingNotificationActionEvent());
+        eventBus.post(new OnGoingNotificationActionEvent(projectId));
     }
 }

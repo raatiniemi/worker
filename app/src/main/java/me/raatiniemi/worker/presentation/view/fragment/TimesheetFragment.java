@@ -226,6 +226,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         return new TimesheetPresenter(
                 getActivity(),
                 EventBus.getDefault(),
+                getProjectId(),
                 new GetTimesheet(timeRepository),
                 new MarkRegisteredTime(timeRepository),
                 new RemoveTime(timeRepository)
