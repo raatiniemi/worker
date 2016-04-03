@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Date;
 
 import me.raatiniemi.worker.data.WorkerContract;
@@ -30,6 +32,7 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.util.Worker;
 
 public class ClockOutService extends IntentService {
@@ -46,6 +49,7 @@ public class ClockOutService extends IntentService {
             clockOut.execute(getProjectId(intent), new Date());
 
             dismissPauseNotification();
+            updateUserInterface();
         } catch (Exception e) {
             Log.w(TAG, "Unable to clock out project: " + e.getMessage());
         }
@@ -72,5 +76,10 @@ public class ClockOutService extends IntentService {
     private void dismissPauseNotification() {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(Worker.NOTIFICATION_ON_GOING_ID);
+    }
+
+    private void updateUserInterface() {
+        EventBus eventBus = EventBus.getDefault();
+        eventBus.post(new OnGoingNotificationActionEvent());
     }
 }
