@@ -92,4 +92,7 @@
     <string name="error.notification.restore.title">Restore failed</string>
     <string name="error.notification.restore.message">Data restore from backup failed.</string>
 
+    <string name="error.notification.pause.title">Failed to pause project</string>
+    <string name="error.notification.pause.message">An internal error has occurred.</string>
+
 </resources>
