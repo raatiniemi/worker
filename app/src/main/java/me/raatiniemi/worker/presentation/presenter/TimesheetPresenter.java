@@ -34,7 +34,7 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
-import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
@@ -318,7 +318,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(OnGoingNotificationActionEvent event) {
+    public void onEventMainThread(OngoingNotificationActionEvent event) {
         if (!isViewAttached()) {
             Log.d(TAG, "View is not attached, skip reloading timesheet");
             return;

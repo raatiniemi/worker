@@ -39,7 +39,7 @@ import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.util.Worker;
 
@@ -106,7 +106,7 @@ public class ClockOutService extends IntentService {
 
     private void updateUserInterface(long projectId) {
         EventBus eventBus = EventBus.getDefault();
-        eventBus.post(new OnGoingNotificationActionEvent(projectId));
+        eventBus.post(new OngoingNotificationActionEvent(projectId));
     }
 
     private void sendErrorNotification(long projectId) {
