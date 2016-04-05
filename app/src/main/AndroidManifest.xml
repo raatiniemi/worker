@@ -54,6 +54,11 @@
             />
 
         <service
+            android:name=".presentation.service.DataIntentService"
+            android:exported="false"
+            />
+
+        <service
             android:name=".presentation.service.PauseService"
             android:exported="false"
             />
