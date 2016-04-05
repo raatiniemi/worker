@@ -16,34 +16,21 @@
 
 package me.raatiniemi.worker.presentation.service;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.WorkerContract;
-import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
-import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.util.Worker;
 
-public class ClockOutService extends IntentService {
+public class ClockOutService extends OngoingService {
     private static final String TAG = "ClockOutService";
 
     public ClockOutService() {
@@ -70,43 +57,12 @@ public class ClockOutService extends IntentService {
         }
     }
 
-    private TimeRepository getTimeRepository() {
-        return new TimeResolverRepository(
-                getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
-    }
-
-    private ProjectRepository getProjectRepository() {
-        return new ProjectResolverRepository(
-                getContentResolver(),
-                new ProjectCursorMapper(),
-                new ProjectContentValuesMapper()
-        );
-    }
-
-    private long getProjectId(Intent intent) {
-        String itemId = WorkerContract.ProjectContract.getItemId(intent.getData());
-        long projectId = Long.valueOf(itemId);
-        if (0 == projectId) {
-            throw new IllegalArgumentException("Unable to extract project id from URI");
-        }
-
-        return projectId;
-    }
-
     private void dismissPauseNotification(Project project) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(
                 String.valueOf(project.getId()),
                 Worker.NOTIFICATION_ON_GOING_ID
         );
-    }
-
-    private void updateUserInterface(long projectId) {
-        EventBus eventBus = EventBus.getDefault();
-        eventBus.post(new OngoingNotificationActionEvent(projectId));
     }
 
     private void sendErrorNotification(long projectId) {
