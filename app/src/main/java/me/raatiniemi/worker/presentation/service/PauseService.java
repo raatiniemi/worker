@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.service;
 
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.util.Log;
 
@@ -29,7 +28,6 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.notification.ResumeNotification;
 import me.raatiniemi.worker.util.Settings;
-import me.raatiniemi.worker.util.Worker;
 
 public class PauseService extends OngoingService {
     private static final String TAG = "PauseService";
@@ -69,19 +67,15 @@ public class PauseService extends OngoingService {
     }
 
     private void sendResumeNotification(Project project) {
-        NotificationManager manager = getNotificationManager();
-        manager.notify(
-                buildNotificationTag(project.getId()),
-                Worker.NOTIFICATION_ON_GOING_ID,
+        sendNotification(
+                project.getId(),
                 ResumeNotification.build(this, project)
         );
     }
 
     private void sendErrorNotification(long projectId) {
-        NotificationManager manager = getNotificationManager();
-        manager.notify(
-                buildNotificationTag(projectId),
-                Worker.NOTIFICATION_ON_GOING_ID,
+        sendNotification(
+                projectId,
                 ErrorNotification.build(
                         this,
                         getString(R.string.error_notification_pause_title),

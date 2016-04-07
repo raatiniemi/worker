@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.service;
 
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.util.Log;
 
@@ -25,7 +24,6 @@ import java.util.Date;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
-import me.raatiniemi.worker.util.Worker;
 
 public class ClockOutService extends OngoingService {
     private static final String TAG = "ClockOutService";
@@ -56,10 +54,8 @@ public class ClockOutService extends OngoingService {
     }
 
     private void sendErrorNotification(long projectId) {
-        NotificationManager manager = getNotificationManager();
-        manager.notify(
-                buildNotificationTag(projectId),
-                Worker.NOTIFICATION_ON_GOING_ID,
+        sendNotification(
+                projectId,
                 ErrorNotification.build(
                         this,
                         getString(R.string.error_notification_clock_out_title),

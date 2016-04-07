@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.service;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -63,6 +64,15 @@ abstract class OngoingService extends IntentService {
                 getContentResolver(),
                 new ProjectCursorMapper(),
                 new ProjectContentValuesMapper()
+        );
+    }
+
+    protected void sendNotification(long projectId, Notification notification) {
+        NotificationManager manager = getNotificationManager();
+        manager.notify(
+                buildNotificationTag(projectId),
+                Worker.NOTIFICATION_ON_GOING_ID,
+                notification
         );
     }
 
