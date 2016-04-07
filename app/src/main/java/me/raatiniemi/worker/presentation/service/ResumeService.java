@@ -65,11 +65,7 @@ public class ResumeService extends OngoingService {
     }
 
     private void dismissResumeNotification(long projectId) {
-        NotificationManager manager = getNotificationManager();
-        manager.cancel(
-                buildNotificationTag(projectId),
-                Worker.NOTIFICATION_ON_GOING_ID
-        );
+        dismissNotification(projectId);
     }
 
     private void sendPauseNotification(Project project) {

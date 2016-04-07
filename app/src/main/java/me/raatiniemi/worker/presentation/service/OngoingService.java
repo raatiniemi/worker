@@ -33,6 +33,7 @@ import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.util.Worker;
 
 abstract class OngoingService extends IntentService {
     OngoingService(String name) {
@@ -62,6 +63,14 @@ abstract class OngoingService extends IntentService {
                 getContentResolver(),
                 new ProjectCursorMapper(),
                 new ProjectContentValuesMapper()
+        );
+    }
+
+    protected void dismissNotification(long projectId) {
+        NotificationManager manager = getNotificationManager();
+        manager.cancel(
+                buildNotificationTag(projectId),
+                Worker.NOTIFICATION_ON_GOING_ID
         );
     }
 

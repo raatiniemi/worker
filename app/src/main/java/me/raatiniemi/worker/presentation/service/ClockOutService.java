@@ -52,11 +52,7 @@ public class ClockOutService extends OngoingService {
     }
 
     private void dismissPauseNotification(long projectId) {
-        NotificationManager manager = getNotificationManager();
-        manager.cancel(
-                buildNotificationTag(projectId),
-                Worker.NOTIFICATION_ON_GOING_ID
-        );
+        dismissNotification(projectId);
     }
 
     private void sendErrorNotification(long projectId) {
