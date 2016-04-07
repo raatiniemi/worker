@@ -40,10 +40,10 @@ public class PauseService extends OngoingService {
         long projectId = getProjectId(intent);
 
         try {
-            ClockOut clockOut = new ClockOut(getTimeRepository());
+            ClockOut clockOut = buildClockOutUseCase();
             clockOut.execute(projectId, new Date());
 
-            GetProject getProject = new GetProject(getProjectRepository());
+            GetProject getProject = buildGetProjectUseCase();
             Project project = getProject.execute(projectId);
 
             updateUserInterface(projectId);
@@ -59,6 +59,14 @@ public class PauseService extends OngoingService {
 
             sendErrorNotification(projectId);
         }
+    }
+
+    protected ClockOut buildClockOutUseCase() {
+        return new ClockOut(getTimeRepository());
+    }
+
+    protected GetProject buildGetProjectUseCase() {
+        return new GetProject(getProjectRepository());
     }
 
     private void sendResumeNotification(Project project) {
