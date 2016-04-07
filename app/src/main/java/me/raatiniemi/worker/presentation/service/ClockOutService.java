@@ -25,8 +25,6 @@ import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
-import me.raatiniemi.worker.domain.interactor.GetProject;
-import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.util.Worker;
 
@@ -45,10 +43,7 @@ public class ClockOutService extends OngoingService {
             ClockOut clockOut = new ClockOut(getTimeRepository());
             clockOut.execute(projectId, new Date());
 
-            GetProject getProject = new GetProject(getProjectRepository());
-            Project project = getProject.execute(projectId);
-
-            dismissPauseNotification(project);
+            dismissPauseNotification(projectId);
             updateUserInterface(projectId);
         } catch (Exception e) {
             Log.w(TAG, "Unable to clock out project: " + e.getMessage());
@@ -57,10 +52,10 @@ public class ClockOutService extends OngoingService {
         }
     }
 
-    private void dismissPauseNotification(Project project) {
+    private void dismissPauseNotification(long projectId) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(
-                String.valueOf(project.getId()),
+                String.valueOf(projectId),
                 Worker.NOTIFICATION_ON_GOING_ID
         );
     }
