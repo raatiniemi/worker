@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.presentation.service;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -61,6 +63,10 @@ abstract class OngoingService extends IntentService {
                 new ProjectCursorMapper(),
                 new ProjectContentValuesMapper()
         );
+    }
+
+    protected NotificationManager getNotificationManager() {
+        return (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     protected String buildNotificationTag(long projectId) {
