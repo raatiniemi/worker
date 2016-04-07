@@ -40,10 +40,10 @@ public class ResumeService extends OngoingService {
         long projectId = getProjectId(intent);
 
         try {
-            ClockIn clockIn = new ClockIn(getTimeRepository());
+            ClockIn clockIn = buildClockInUseCase();
             clockIn.execute(projectId, new Date());
 
-            GetProject getProject = new GetProject(getProjectRepository());
+            GetProject getProject = buildGetProjectUseCase();
             Project project = getProject.execute(projectId);
 
             updateUserInterface(projectId);
@@ -59,6 +59,14 @@ public class ResumeService extends OngoingService {
 
             sendErrorNotification(projectId);
         }
+    }
+
+    protected ClockIn buildClockInUseCase() {
+        return new ClockIn(getTimeRepository());
+    }
+
+    protected GetProject buildGetProjectUseCase() {
+        return new GetProject(getProjectRepository());
     }
 
     private void sendPauseNotification(Project project) {
