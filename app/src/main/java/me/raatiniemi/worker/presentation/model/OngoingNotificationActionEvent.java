@@ -16,10 +16,10 @@
 
 package me.raatiniemi.worker.presentation.model;
 
-public class OnGoingNotificationActionEvent {
+public class OngoingNotificationActionEvent {
     private final long mProjectId;
 
-    public OnGoingNotificationActionEvent(long projectId) {
+    public OngoingNotificationActionEvent(long projectId) {
         mProjectId = projectId;
     }
 

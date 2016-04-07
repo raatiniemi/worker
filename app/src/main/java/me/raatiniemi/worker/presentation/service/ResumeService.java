@@ -16,36 +16,19 @@
 
 package me.raatiniemi.worker.presentation.service;
 
-import android.app.IntentService;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.WorkerContract;
-import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
-import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.ClockIn;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
-import me.raatiniemi.worker.util.Settings;
-import me.raatiniemi.worker.util.Worker;
 
-public class ResumeService extends IntentService {
+public class ResumeService extends OngoingService {
     private static final String TAG = "ResumeService";
 
     public ResumeService() {
@@ -57,20 +40,20 @@ public class ResumeService extends IntentService {
         long projectId = getProjectId(intent);
 
         try {
-            ClockIn clockIn = new ClockIn(getTimeRepository());
+            ClockIn clockIn = buildClockInUseCase();
             clockIn.execute(projectId, new Date());
-
-            GetProject getProject = new GetProject(getProjectRepository());
-            Project project = getProject.execute(projectId);
 
             updateUserInterface(projectId);
 
-            if (Settings.isOngoingNotificationEnabled(this)) {
+            if (isOngoingNotificationEnabled()) {
+                GetProject getProject = buildGetProjectUseCase();
+                Project project = getProject.execute(projectId);
+
                 sendPauseNotification(project);
                 return;
             }
 
-            dismissResumeNotification(project);
+            dismissResumeNotification(projectId);
         } catch (Exception e) {
             Log.w(TAG, "Unable to resume project: " + e.getMessage());
 
@@ -78,59 +61,28 @@ public class ResumeService extends IntentService {
         }
     }
 
-    private long getProjectId(Intent intent) {
-        String itemId = WorkerContract.ProjectContract.getItemId(intent.getData());
-        long projectId = Long.valueOf(itemId);
-        if (0 == projectId) {
-            throw new IllegalArgumentException("Unable to extract project id from URI");
-        }
-
-        return projectId;
+    protected ClockIn buildClockInUseCase() {
+        return new ClockIn(getTimeRepository());
     }
 
-    private TimeRepository getTimeRepository() {
-        return new TimeResolverRepository(
-                getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
-    }
-
-    private ProjectRepository getProjectRepository() {
-        return new ProjectResolverRepository(
-                getContentResolver(),
-                new ProjectCursorMapper(),
-                new ProjectContentValuesMapper()
-        );
-    }
-
-    private void dismissResumeNotification(Project project) {
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.cancel(
-                String.valueOf(project.getId()),
-                Worker.NOTIFICATION_ON_GOING_ID
-        );
+    protected GetProject buildGetProjectUseCase() {
+        return new GetProject(getProjectRepository());
     }
 
     private void sendPauseNotification(Project project) {
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(
-                String.valueOf(project.getId()),
-                Worker.NOTIFICATION_ON_GOING_ID,
+        sendNotification(
+                project.getId(),
                 PauseNotification.build(this, project)
         );
     }
 
-    private void updateUserInterface(long projectId) {
-        EventBus eventBus = EventBus.getDefault();
-        eventBus.post(new OnGoingNotificationActionEvent(projectId));
+    private void dismissResumeNotification(long projectId) {
+        dismissNotification(projectId);
     }
 
     private void sendErrorNotification(long projectId) {
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(
-                String.valueOf(projectId),
-                Worker.NOTIFICATION_ON_GOING_ID,
+        sendNotification(
+                projectId,
                 ErrorNotification.build(
                         this,
                         getString(R.string.error_notification_resume_title),

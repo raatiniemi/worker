@@ -35,7 +35,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
-import me.raatiniemi.worker.presentation.model.OnGoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
@@ -487,7 +487,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(OnGoingNotificationActionEvent event) {
+    public void onEventMainThread(OngoingNotificationActionEvent event) {
         if (!isViewAttached()) {
             Log.d(TAG, "View is not attached, skip reloading projects");
             return;
