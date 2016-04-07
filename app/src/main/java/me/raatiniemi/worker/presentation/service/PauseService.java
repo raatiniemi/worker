@@ -43,12 +43,12 @@ public class PauseService extends OngoingService {
             ClockOut clockOut = buildClockOutUseCase();
             clockOut.execute(projectId, new Date());
 
-            GetProject getProject = buildGetProjectUseCase();
-            Project project = getProject.execute(projectId);
-
             updateUserInterface(projectId);
 
             if (isOngoingNotificationEnabled()) {
+                GetProject getProject = buildGetProjectUseCase();
+                Project project = getProject.execute(projectId);
+
                 sendResumeNotification(project);
                 return;
             }
