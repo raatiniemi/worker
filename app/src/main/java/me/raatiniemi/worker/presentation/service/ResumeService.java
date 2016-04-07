@@ -57,7 +57,7 @@ public class ResumeService extends OngoingService {
                 return;
             }
 
-            dismissResumeNotification(project);
+            dismissResumeNotification(projectId);
         } catch (Exception e) {
             Log.w(TAG, "Unable to resume project: " + e.getMessage());
 
@@ -65,10 +65,10 @@ public class ResumeService extends OngoingService {
         }
     }
 
-    private void dismissResumeNotification(Project project) {
+    private void dismissResumeNotification(long projectId) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(
-                String.valueOf(project.getId()),
+                String.valueOf(projectId),
                 Worker.NOTIFICATION_ON_GOING_ID
         );
     }

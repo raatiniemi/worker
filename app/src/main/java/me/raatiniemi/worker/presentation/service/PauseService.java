@@ -57,7 +57,7 @@ public class PauseService extends OngoingService {
                 return;
             }
 
-            dismissPauseNotification(project);
+            dismissPauseNotification(projectId);
         } catch (Exception e) {
             Log.w(TAG, "Unable to pause project: " + e.getMessage());
 
@@ -65,10 +65,10 @@ public class PauseService extends OngoingService {
         }
     }
 
-    private void dismissPauseNotification(Project project) {
+    private void dismissPauseNotification(long projectId) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(
-                String.valueOf(project.getId()),
+                String.valueOf(projectId),
                 Worker.NOTIFICATION_ON_GOING_ID
         );
     }
