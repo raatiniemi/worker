@@ -63,6 +63,10 @@ abstract class OngoingService extends IntentService {
         );
     }
 
+    protected String buildNotificationTag(long projectId) {
+        return String.valueOf(projectId);
+    }
+
     protected void updateUserInterface(long projectId) {
         EventBus eventBus = EventBus.getDefault();
         eventBus.post(new OngoingNotificationActionEvent(projectId));

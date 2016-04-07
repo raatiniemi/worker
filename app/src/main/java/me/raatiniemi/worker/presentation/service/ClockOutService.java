@@ -55,7 +55,7 @@ public class ClockOutService extends OngoingService {
     private void dismissPauseNotification(long projectId) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(
-                String.valueOf(projectId),
+                buildNotificationTag(projectId),
                 Worker.NOTIFICATION_ON_GOING_ID
         );
     }
@@ -63,7 +63,7 @@ public class ClockOutService extends OngoingService {
     private void sendErrorNotification(long projectId) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(
-                String.valueOf(projectId),
+                buildNotificationTag(projectId),
                 Worker.NOTIFICATION_ON_GOING_ID,
                 ErrorNotification.build(
                         this,

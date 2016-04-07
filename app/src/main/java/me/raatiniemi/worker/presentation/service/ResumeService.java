@@ -68,7 +68,7 @@ public class ResumeService extends OngoingService {
     private void dismissResumeNotification(long projectId) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(
-                String.valueOf(projectId),
+                buildNotificationTag(projectId),
                 Worker.NOTIFICATION_ON_GOING_ID
         );
     }
@@ -76,7 +76,7 @@ public class ResumeService extends OngoingService {
     private void sendPauseNotification(Project project) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(
-                String.valueOf(project.getId()),
+                buildNotificationTag(project.getId()),
                 Worker.NOTIFICATION_ON_GOING_ID,
                 PauseNotification.build(this, project)
         );
@@ -85,7 +85,7 @@ public class ResumeService extends OngoingService {
     private void sendErrorNotification(long projectId) {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(
-                String.valueOf(projectId),
+                buildNotificationTag(projectId),
                 Worker.NOTIFICATION_ON_GOING_ID,
                 ErrorNotification.build(
                         this,
