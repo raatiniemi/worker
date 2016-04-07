@@ -43,12 +43,12 @@ public class ResumeService extends OngoingService {
             ClockIn clockIn = buildClockInUseCase();
             clockIn.execute(projectId, new Date());
 
-            GetProject getProject = buildGetProjectUseCase();
-            Project project = getProject.execute(projectId);
-
             updateUserInterface(projectId);
 
             if (isOngoingNotificationEnabled()) {
+                GetProject getProject = buildGetProjectUseCase();
+                Project project = getProject.execute(projectId);
+
                 sendPauseNotification(project);
                 return;
             }
