@@ -61,15 +61,15 @@ public class ResumeService extends OngoingService {
         }
     }
 
-    private void dismissResumeNotification(long projectId) {
-        dismissNotification(projectId);
-    }
-
     private void sendPauseNotification(Project project) {
         sendNotification(
                 project.getId(),
                 PauseNotification.build(this, project)
         );
+    }
+
+    private void dismissResumeNotification(long projectId) {
+        dismissNotification(projectId);
     }
 
     private void sendErrorNotification(long projectId) {
