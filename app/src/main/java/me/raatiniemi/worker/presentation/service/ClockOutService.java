@@ -37,7 +37,7 @@ public class ClockOutService extends OngoingService {
         long projectId = getProjectId(intent);
 
         try {
-            ClockOut clockOut = new ClockOut(getTimeRepository());
+            ClockOut clockOut = buildClockOutUseCase();
             clockOut.execute(projectId, new Date());
 
             dismissPauseNotification(projectId);
@@ -47,6 +47,10 @@ public class ClockOutService extends OngoingService {
 
             sendErrorNotification(projectId);
         }
+    }
+
+    protected ClockOut buildClockOutUseCase() {
+        return new ClockOut(getTimeRepository());
     }
 
     private void dismissPauseNotification(long projectId) {
