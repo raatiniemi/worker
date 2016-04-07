@@ -27,7 +27,6 @@ import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.notification.ResumeNotification;
-import me.raatiniemi.worker.util.Settings;
 
 public class PauseService extends OngoingService {
     private static final String TAG = "PauseService";
@@ -49,7 +48,7 @@ public class PauseService extends OngoingService {
 
             updateUserInterface(projectId);
 
-            if (Settings.isOngoingNotificationEnabled(this)) {
+            if (isOngoingNotificationEnabled()) {
                 sendResumeNotification(project);
                 return;
             }

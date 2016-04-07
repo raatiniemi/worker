@@ -34,6 +34,7 @@ import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.util.Settings;
 import me.raatiniemi.worker.util.Worker;
 
 abstract class OngoingService extends IntentService {
@@ -90,6 +91,10 @@ abstract class OngoingService extends IntentService {
 
     protected String buildNotificationTag(long projectId) {
         return String.valueOf(projectId);
+    }
+
+    protected boolean isOngoingNotificationEnabled() {
+        return Settings.isOngoingNotificationEnabled(this);
     }
 
     protected void updateUserInterface(long projectId) {
