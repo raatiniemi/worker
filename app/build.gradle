@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'sonar-runner'
 
 android {
     compileSdkVersion 23
@@ -26,6 +27,20 @@ android {
     // This causes issues since robolectric is running against an earlier
     // version of the SDK, and expects the class to be present.
     useLibrary 'org.apache.http.legacy'
+}
+
+sonarRunner {
+    sonarProperties {
+        property 'sonar.projectKey', 'worker:android'
+        property 'sonar.projectName', 'worker'
+        property 'sonar.projectVersion', android.defaultConfig.versionName
+
+        property 'sonar.language', 'java'
+        property 'sonar.java.source', android.compileOptions.sourceCompatibility
+
+        property 'sonar.sources', 'src/main'
+        property 'sonar.test', 'src/test'
+    }
 }
 
 dependencies {
