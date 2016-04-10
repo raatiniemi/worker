@@ -127,7 +127,7 @@ public class DataIntentService extends IntentService {
      */
     private void runBackup(Context context, EventBus eventBus) {
         NotificationManager manager = null;
-        NotificationCompat.Builder notification = null;
+        Notification notification = null;
 
         try {
             manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -141,7 +141,8 @@ public class DataIntentService extends IntentService {
             notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_archive_white_24dp)
                     .setContentTitle(context.getString(R.string.notification_backup_title))
-                    .setContentText(context.getString(R.string.notification_backup_message));
+                    .setContentText(context.getString(R.string.notification_backup_message))
+                    .build();
         } catch (ClassCastException e) {
             // TODO: Post event for `BackupFailure`.
             Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
@@ -150,11 +151,11 @@ public class DataIntentService extends IntentService {
             Log.w(TAG, "Unable to backup: " + e.getMessage());
 
             // TODO: Display what was the cause of the backup failure.
-            // Send the "Backup failed" notification to the user.
-            notification = new NotificationCompat.Builder(context)
-                    .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                    .setContentTitle(context.getString(R.string.error_notification_backup_title))
-                    .setContentText(context.getString(R.string.error_notification_backup_message));
+            notification = ErrorNotification.build(
+                    context,
+                    getString(R.string.error_notification_backup_title),
+                    getString(R.string.error_notification_backup_message)
+            );
         } finally {
             // Both the notification and notification manager must be
             // available, otherwise we can't display the notification.
@@ -164,7 +165,7 @@ public class DataIntentService extends IntentService {
             if (null != manager && null != notification) {
                 manager.notify(
                         Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
-                        notification.build()
+                        notification
                 );
             }
         }
