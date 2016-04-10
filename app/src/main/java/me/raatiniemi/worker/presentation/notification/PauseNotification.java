@@ -28,6 +28,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.service.ClockOutService;
 import me.raatiniemi.worker.presentation.service.PauseService;
+import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 
 /**
  * Notification for pausing or clocking out an active project.
@@ -45,6 +46,7 @@ public class PauseNotification {
                 .setSmallIcon(sSmallIcon)
                 .addAction(buildPauseAction(context, project))
                 .addAction(buildClockOutAction(context, project))
+                .setContentIntent(buildContentAction(context))
                 .build();
     }
 
@@ -85,6 +87,25 @@ public class PauseNotification {
             Intent intent
     ) {
         return PendingIntent.getService(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+    }
+
+    private static PendingIntent buildContentAction(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        return buildPendingIntentWithActivity(context, intent);
+    }
+
+    private static PendingIntent buildPendingIntentWithActivity(
+            Context context,
+            Intent intent
+    ) {
+        return PendingIntent.getActivity(
                 context,
                 0,
                 intent,
