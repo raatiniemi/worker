@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.service;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -33,6 +34,7 @@ import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.domain.interactor.CreateBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
+import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 import me.raatiniemi.worker.util.Worker;
 
@@ -175,7 +177,7 @@ public class DataIntentService extends IntentService {
      */
     private void runRestore(Context context) {
         NotificationManager manager = null;
-        NotificationCompat.Builder notification = null;
+        Notification notification = null;
 
         try {
             manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -200,7 +202,8 @@ public class DataIntentService extends IntentService {
                     .setContentTitle(context.getString(R.string.notification_restore_title))
                     .setContentText(context.getString(R.string.notification_restore_message))
                     .setContentIntent(pendingIntent)
-                    .setAutoCancel(true);
+                    .setAutoCancel(true)
+                    .build();
             // TODO: Post event for `RestoreSuccessful`.
         } catch (ClassCastException e) {
             // TODO: Post event for `RestoreFailure`.
@@ -210,11 +213,11 @@ public class DataIntentService extends IntentService {
             Log.w(TAG, "Unable to restore backup: " + e.getMessage());
 
             // TODO: Display what was the cause of the restore failure.
-            // Send the "Restore failed" notification to the user.
-            notification = new NotificationCompat.Builder(context)
-                    .setSmallIcon(R.drawable.ic_error_outline_white_24dp)
-                    .setContentTitle(context.getString(R.string.error_notification_restore_title))
-                    .setContentText(context.getString(R.string.error_notification_restore_message));
+            notification = ErrorNotification.build(
+                    context,
+                    getString(R.string.error_notification_restore_title),
+                    getString(R.string.error_notification_restore_message)
+            );
         } finally {
             // Both the notification and notification manager must be
             // available, otherwise we can't display the notification.
@@ -224,7 +227,7 @@ public class DataIntentService extends IntentService {
             if (null != manager && null != notification) {
                 manager.notify(
                         Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
-                        notification.build()
+                        notification
                 );
             }
         }
