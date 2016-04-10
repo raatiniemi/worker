@@ -34,6 +34,7 @@ import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.domain.interactor.CreateBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
+import me.raatiniemi.worker.presentation.notification.BackupNotification;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 import me.raatiniemi.worker.util.Worker;
@@ -137,12 +138,7 @@ public class DataIntentService extends IntentService {
             CreateBackup createBackup = new CreateBackup(backupStrategy);
             createBackup.execute();
 
-            // Send the "Backup complete" notification to the user.
-            notification = new NotificationCompat.Builder(context)
-                    .setSmallIcon(R.drawable.ic_archive_white_24dp)
-                    .setContentTitle(context.getString(R.string.notification_backup_title))
-                    .setContentText(context.getString(R.string.notification_backup_message))
-                    .build();
+            notification = BackupNotification.build(context);
         } catch (ClassCastException e) {
             // TODO: Post event for `BackupFailure`.
             Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
