@@ -27,6 +27,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.service.ResumeService;
+import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 
 /**
  * Notification for resuming an inactive project.
@@ -41,6 +42,7 @@ public class ResumeNotification {
                 .setContentTitle(project.getName())
                 .setSmallIcon(sSmallIcon)
                 .addAction(buildResumeAction(context, project))
+                .setContentIntent(buildContentAction(context))
                 .build();
     }
 
@@ -67,6 +69,25 @@ public class ResumeNotification {
             Intent intent
     ) {
         return PendingIntent.getService(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+    }
+
+    private static PendingIntent buildContentAction(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        return buildPendingIntentWithActivity(context, intent);
+    }
+
+    private static PendingIntent buildPendingIntentWithActivity(
+            Context context,
+            Intent intent
+    ) {
+        return PendingIntent.getActivity(
                 context,
                 0,
                 intent,
