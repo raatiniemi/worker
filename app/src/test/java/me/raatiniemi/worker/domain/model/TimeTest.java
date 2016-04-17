@@ -19,7 +19,11 @@ package me.raatiniemi.worker.domain.model;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
@@ -219,5 +223,147 @@ public class TimeTest {
                 .build();
 
         assertEquals(10L, time.getInterval());
+    }
+
+    @RunWith(Parameterized.class)
+    public static class TimeTest_equals {
+        private String mMessage;
+        private Boolean mExpected;
+        private Time mTime;
+        private Object mCompareTo;
+
+        public TimeTest_equals(
+                String message,
+                Boolean expected,
+                Time time,
+                Object compareTo
+        ) {
+            mMessage = message;
+            mExpected = expected;
+            mTime = time;
+            mCompareTo = compareTo;
+        }
+
+        @Parameters
+        public static Collection<Object[]> parameters()
+                throws ClockOutBeforeClockInException {
+            Time time = new Time.Builder(1L)
+                    .id(2L)
+                    .startInMilliseconds(3L)
+                    .stopInMilliseconds(4L)
+                    .build();
+
+            return Arrays.asList(
+                    new Object[][]{
+                            {
+                                    "With same instance",
+                                    Boolean.TRUE,
+                                    time,
+                                    time
+                            },
+                            {
+                                    "With null",
+                                    Boolean.FALSE,
+                                    time,
+                                    null
+                            },
+                            {
+                                    "With incompatible object",
+                                    Boolean.FALSE,
+                                    time,
+                                    ""
+                            },
+                            {
+                                    "With different project id",
+                                    Boolean.FALSE,
+                                    time,
+                                    new Time.Builder(2L)
+                                            .id(2L)
+                                            .startInMilliseconds(3L)
+                                            .stopInMilliseconds(4L)
+                                            .build()
+                            },
+                            {
+                                    "With different id",
+                                    Boolean.FALSE,
+                                    time,
+                                    new Time.Builder(1L)
+                                            .id(1L)
+                                            .startInMilliseconds(3L)
+                                            .stopInMilliseconds(4L)
+                                            .build()
+                            },
+                            {
+                                    "With different start in milliseconds",
+                                    Boolean.FALSE,
+                                    time,
+                                    new Time.Builder(1L)
+                                            .id(2L)
+                                            .startInMilliseconds(2L)
+                                            .stopInMilliseconds(4L)
+                                            .build()
+                            },
+                            {
+                                    "With different stop in milliseconds",
+                                    Boolean.FALSE,
+                                    time,
+                                    new Time.Builder(1L)
+                                            .id(2L)
+                                            .startInMilliseconds(3L)
+                                            .stopInMilliseconds(3L)
+                                            .build()
+                            },
+                            {
+                                    "With different register status",
+                                    Boolean.FALSE,
+                                    time,
+                                    new Time.Builder(1L)
+                                            .id(2L)
+                                            .startInMilliseconds(3L)
+                                            .stopInMilliseconds(4L)
+                                            .register()
+                                            .build()
+                            }
+                    }
+            );
+        }
+
+        @Test
+        public void equals() {
+            if (shouldBeEqual()) {
+                assertEqual();
+                return;
+            }
+
+            assertNotEqual();
+        }
+
+        private Boolean shouldBeEqual() {
+            return mExpected;
+        }
+
+        private void assertEqual() {
+            assertTrue(mMessage, mTime.equals(mCompareTo));
+
+            validateHashCodeWhenEqual();
+        }
+
+        private void validateHashCodeWhenEqual() {
+            assertTrue(mMessage, mTime.hashCode() == mCompareTo.hashCode());
+        }
+
+        private void assertNotEqual() {
+            assertFalse(mMessage, mTime.equals(mCompareTo));
+
+            validateHashCodeWhenNotEqual();
+        }
+
+        private void validateHashCodeWhenNotEqual() {
+            if (null == mCompareTo) {
+                return;
+            }
+
+            assertFalse(mMessage, mTime.hashCode() == mCompareTo.hashCode());
+        }
     }
 }
