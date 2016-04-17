@@ -22,9 +22,12 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -526,5 +529,157 @@ public class ProjectTest {
         project.addTime(Arrays.asList(times));
 
         assertTrue(message, expected == project.isActive());
+    }
+
+    @RunWith(Parameterized.class)
+    public static class ProjectTest_equals {
+        private String mMessage;
+        private Boolean mExpected;
+        private Project mProject;
+        private Object mCompareTo;
+
+        public ProjectTest_equals(
+                String message,
+                Boolean expected,
+                Project project,
+                Object compareTo
+        ) {
+            mMessage = message;
+            mExpected = expected;
+            mProject = project;
+            mCompareTo = compareTo;
+        }
+
+        @Parameters
+        public static Collection<Object[]> parameters()
+                throws DomainException {
+            Project project = new Project.Builder("Project name")
+                    .id(1L)
+                    .describe("Project description")
+                    .build();
+
+            return Arrays.asList(
+                    new Object[][]{
+                            {
+                                    "With same instance",
+                                    Boolean.TRUE,
+                                    project,
+                                    project
+                            },
+                            {
+                                    "With null",
+                                    Boolean.FALSE,
+                                    project,
+                                    null
+                            },
+                            {
+                                    "With incompatible object",
+                                    Boolean.FALSE,
+                                    project,
+                                    ""
+                            },
+                            {
+                                    "With different project name",
+                                    Boolean.FALSE,
+                                    project,
+                                    new Project.Builder("Name")
+                                            .id(1L)
+                                            .describe("Project description")
+                                            .build()
+                            },
+                            {
+                                    "With different id",
+                                    Boolean.FALSE,
+                                    project,
+                                    new Project.Builder("Project name")
+                                            .id(2L)
+                                            .describe("Project description")
+                                            .build()
+                            },
+                            {
+                                    "With different description",
+                                    Boolean.FALSE,
+                                    project,
+                                    new Project.Builder("Project name")
+                                            .id(1L)
+                                            .describe("Description")
+                                            .build()
+                            },
+                            {
+                                    "With different archive status",
+                                    Boolean.FALSE,
+                                    project,
+                                    new Project.Builder("Project name")
+                                            .id(1L)
+                                            .describe("Project description")
+                                            .archive()
+                                            .build()
+                            },
+                            {
+                                    "With different registered time",
+                                    Boolean.FALSE,
+                                    project,
+                                    buildProjectWithRegisteredTime()
+                            }
+                    }
+            );
+        }
+
+        private static Project buildProjectWithRegisteredTime()
+                throws DomainException {
+            Project project = new Project.Builder("Project name")
+                    .id(1L)
+                    .describe("Project description")
+                    .build();
+
+            Time time = new Time.Builder(1L)
+                    .startInMilliseconds(1L)
+                    .stopInMilliseconds(2L)
+                    .build();
+
+            List<Time> registeredTime = new ArrayList<>();
+            registeredTime.add(time);
+
+            project.addTime(registeredTime);
+            return project;
+        }
+
+        @Test
+        public void equals() {
+            if (shouldBeEqual()) {
+                assertEqual();
+                return;
+            }
+
+            assertNotEqual();
+        }
+
+        private Boolean shouldBeEqual() {
+            return mExpected;
+        }
+
+        private void assertEqual() {
+            assertTrue(mMessage, mProject.equals(mCompareTo));
+
+            validateHashCodeWhenEqual();
+        }
+
+        private void validateHashCodeWhenEqual() {
+            assertTrue(mMessage, mProject.hashCode() == mCompareTo.hashCode());
+        }
+
+        private void assertNotEqual() {
+            assertFalse(mMessage, mProject.equals(mCompareTo));
+
+            validateHashCodeWhenNotEqual();
+        }
+
+        private void validateHashCodeWhenNotEqual() {
+            if (null == mCompareTo) {
+                return;
+            }
+
+            assertFalse(mMessage, mProject.hashCode() == mCompareTo.hashCode());
+        }
     }
 }
