@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 
@@ -175,6 +176,35 @@ public class Time extends DomainObject {
         }
 
         return stop - getStartInMilliseconds();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Time)) {
+            return false;
+        }
+
+        Time time = (Time) o;
+        return Objects.equals(getId(), time.getId())
+                && getProjectId() == time.getProjectId()
+                && getStartInMilliseconds() == time.getStartInMilliseconds()
+                && getStopInMilliseconds() == time.getStopInMilliseconds()
+                && isRegistered() == time.isRegistered();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Objects.hashCode(getId());
+        result = 31 * result + (int) (getProjectId() ^ (getProjectId() >>> 32));
+        result = 31 * result + (int) (getStartInMilliseconds() ^ (getStartInMilliseconds() >>> 32));
+        result = 31 * result + (int) (getStopInMilliseconds() ^ (getStopInMilliseconds() >>> 32));
+        result = 31 * result + (isRegistered() ? 1 : 0);
+        return result;
     }
 
     public static class Builder {

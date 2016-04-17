@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
@@ -300,6 +301,35 @@ public class Project extends DomainObject {
      */
     public boolean isActive() {
         return null != getActiveTime();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Project)) {
+            return false;
+        }
+
+        Project project = (Project) o;
+        return Objects.equals(getId(), project.getId())
+                && getName().equals(project.getName())
+                && Objects.equals(getDescription(), project.getDescription())
+                && isArchived() == project.isArchived()
+                && getTime().equals(project.getTime());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Objects.hashCode(getId());
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + Objects.hashCode(getDescription());
+        result = 31 * result + (isArchived() ? 1 : 0);
+        result = 31 * result + getTime().hashCode();
+        return result;
     }
 
     public static class Builder {
