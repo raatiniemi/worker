@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'sonar-runner'
+apply plugin: 'org.sonarqube'
 
 android {
     compileSdkVersion 23
@@ -29,17 +29,51 @@ android {
     useLibrary 'org.apache.http.legacy'
 }
 
-sonarRunner {
-    sonarProperties {
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.0.1'
+    }
+}
+
+tasks.sonarqube.dependsOn 'testReleaseUnitTest'
+
+sonarqube {
+    // noinspection GroovyAssignabilityCheck
+    properties {
+        def binaries = "${buildDir}/intermediates/classes/release"
+        def androidPath = android.sdkDirectory.getPath()
+
+        // noinspection GroovyAssignabilityCheck
+        def libraries = "${buildDir}/intermediates/exploded-aar/**/classes.jar," +
+                "${androidPath}/platforms/${android.compileSdkVersion}/android.jar," +
+                "${androidPath}/extras/**/*.jar"
+
         property 'sonar.projectKey', 'worker:android'
         property 'sonar.projectName', 'worker'
         property 'sonar.projectVersion', android.defaultConfig.versionName
 
-        property 'sonar.language', 'java'
-        property 'sonar.java.source', android.compileOptions.sourceCompatibility
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main/java,src/main/res"
+        property "sonar.binaries", binaries
+        property "sonar.libraries", libraries
+        property "sonar.java.binaries", binaries
+        property "sonar.java.libraries", libraries
 
-        property 'sonar.sources', 'src/main'
-        property 'sonar.test', 'src/test'
+        property "sonar.tests", "src/test/java"
+        property "sonar.java.test.binaries", binaries
+        property "sonar.java.test.libraries", libraries
+
+        property 'sonar.java.source', android.compileOptions.sourceCompatibility
+        property 'sonar.java.target', android.compileOptions.targetCompatibility
+
+        property "sonar.scm.provider", "git"
+
+        property "sonar.junit.reportsPath", "${buildDir}/test-results/release"
     }
 }
 
