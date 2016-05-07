@@ -1,6 +1,0 @@
-dependencies {
-    testCompile 'junit:junit:4.12'
-    testCompile 'com.tngtech.java:junit-dataprovider:1.10.3'
-    testCompile 'org.robolectric:robolectric:3.0'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-}
