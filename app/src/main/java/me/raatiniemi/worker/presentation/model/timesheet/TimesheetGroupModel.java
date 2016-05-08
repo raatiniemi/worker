@@ -86,7 +86,7 @@ public class TimesheetGroupModel
     }
 
     private String getTimeDifferenceFormat(float difference) {
-        if (0 == difference) {
+        if (0 == Float.compare(0, difference)) {
             return "";
         }
 
