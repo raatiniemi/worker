@@ -37,7 +37,7 @@ public class CreateBackup {
     /**
      * Create backup via the strategy.
      */
-    synchronized public void execute() {
+    public void execute() {
         // Execute the backup strategy.
         mStrategy.execute();
     }

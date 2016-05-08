@@ -37,7 +37,7 @@ public class RestoreBackup {
     /**
      * Restore backup via the strategy.
      */
-    synchronized public void execute() {
+    public void execute() {
         // Execute the restoration strategy.
         mStrategy.execute();
     }
