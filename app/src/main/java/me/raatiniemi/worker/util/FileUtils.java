@@ -47,11 +47,14 @@ public class FileUtils {
         Log.d(TAG, "Copy file from " + from.getPath() + " to " + to.getParent());
 
         try (
-                // Open the read and write file channels for the source and
-                // destination locations.
-                FileChannel source = new FileInputStream(from).getChannel();
-                FileChannel destination = new FileOutputStream(to).getChannel()
+                FileInputStream sourceStream = new FileInputStream(from);
+                FileOutputStream destinationStream = new FileOutputStream(to)
         ) {
+            // Open the read and write file channels for the source and
+            // destination locations.
+            FileChannel source = sourceStream.getChannel();
+            FileChannel destination = destinationStream.getChannel();
+
             // Begin copying the source file to the destination file.
             long size = source.size();
             long bytes = destination.transferFrom(source, 0, size);
