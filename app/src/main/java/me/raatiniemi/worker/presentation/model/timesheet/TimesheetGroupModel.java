@@ -10,13 +10,13 @@ import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetGroupModel
         extends ExpandableListAdapter.ExpandableItem<Date, TimesheetChildModel> {
-    private static final SimpleDateFormat sDateFormat;
     private static final DateIntervalFormat sIntervalFormat;
 
     static {
-        sDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
         sIntervalFormat = new FractionIntervalFormat();
     }
+
+    private final SimpleDateFormat sDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
 
     public TimesheetGroupModel(Date group) {
         super(group);

@@ -42,9 +42,9 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.base.view.activity.MvpActivity;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
-import me.raatiniemi.worker.presentation.view.SettingsView;
 import me.raatiniemi.worker.presentation.service.DataIntentService;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
+import me.raatiniemi.worker.presentation.view.SettingsView;
 import me.raatiniemi.worker.util.Settings;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -395,7 +395,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     }
 
     public static class DataFragment extends BasePreferenceFragment {
-        private static final SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        private final SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
         @Override
         public void onCreate(Bundle savedInstanceState) {

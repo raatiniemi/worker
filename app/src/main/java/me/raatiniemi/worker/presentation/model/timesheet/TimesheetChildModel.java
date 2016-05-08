@@ -28,14 +28,13 @@ import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetChildModel {
     private static final String sTimeSeparator = " - ";
-    private static final SimpleDateFormat sTimeFormat;
     private static final DateIntervalFormat sIntervalFormat;
 
     static {
-        sTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         sIntervalFormat = new FractionIntervalFormat();
     }
 
+    private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private final Time mTime;
 
     public TimesheetChildModel(Time time) {
@@ -62,7 +61,7 @@ public class TimesheetChildModel {
 
     private StringBuilder buildTitleFromStartTime() {
         StringBuilder builder = new StringBuilder();
-        builder.append(sTimeFormat.format(buildDateFromStartTime()));
+        builder.append(mTimeFormat.format(buildDateFromStartTime()));
 
         return builder;
     }
@@ -73,7 +72,7 @@ public class TimesheetChildModel {
 
     private void appendStopTimeWithSeparator(StringBuilder title) {
         title.append(sTimeSeparator);
-        title.append(sTimeFormat.format(buildDateFromStopTime()));
+        title.append(mTimeFormat.format(buildDateFromStopTime()));
     }
 
     private Date buildDateFromStopTime() {

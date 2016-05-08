@@ -29,14 +29,13 @@ import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.HoursMinutesIntervalFormat;
 
 public class ProjectsModel {
-    private static final SimpleDateFormat sTimeFormat;
     private static final DateIntervalFormat sIntervalFormat;
 
     static {
-        sTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         sIntervalFormat = new HoursMinutesIntervalFormat();
     }
 
+    private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private final Project mProject;
 
     public ProjectsModel(Project project) {
@@ -120,7 +119,7 @@ public class ProjectsModel {
         // TODO: Handle if the time session overlap days.
         // The timestamp should include the date it was
         // checked in, e.g. 21 May 1:06PM.
-        return sTimeFormat.format(mProject.getClockedInSince());
+        return mTimeFormat.format(mProject.getClockedInSince());
     }
 
     private String getFormattedElapsedTime() {
