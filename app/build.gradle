@@ -9,7 +9,7 @@ def eventbusVersion = "3.0.0"
 def advancedrecyclerviewVersion = "0.9.1"
 
 def junitVersion = "4.12"
-def junitDataProviderVersion = "1.10.3"
+def junitDataProviderVersion = "1.11.0"
 def robolectricVersion = "3.0"
 def mockitoVersion = "1.10.19"
 
