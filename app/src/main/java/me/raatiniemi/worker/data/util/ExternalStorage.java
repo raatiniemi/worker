@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.util.Worker;
+import me.raatiniemi.worker.Worker;
 
 /**
  * Methods for working with the device external storage.

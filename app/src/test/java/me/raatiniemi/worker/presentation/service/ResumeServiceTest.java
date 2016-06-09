@@ -47,7 +47,7 @@ import me.raatiniemi.worker.domain.interactor.ClockIn;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.util.Worker;
+import me.raatiniemi.worker.Worker;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;

@@ -24,7 +24,7 @@ import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
-import me.raatiniemi.worker.util.Worker;
+import me.raatiniemi.worker.Worker;
 
 public class RestoreNotification {
     private static final int sTitle = R.string.notification_restore_title;

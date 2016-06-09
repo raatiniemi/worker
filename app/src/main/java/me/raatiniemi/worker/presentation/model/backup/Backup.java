@@ -21,7 +21,7 @@ import android.support.annotation.Nullable;
 import java.io.File;
 import java.util.Date;
 
-import me.raatiniemi.worker.util.Worker;
+import me.raatiniemi.worker.Worker;
 
 public class Backup {
     /**

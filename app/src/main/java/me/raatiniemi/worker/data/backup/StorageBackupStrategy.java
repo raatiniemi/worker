@@ -29,7 +29,7 @@ import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.data.util.FileUtils;
-import me.raatiniemi.worker.util.Worker;
+import me.raatiniemi.worker.Worker;
 
 /**
  * Backup strategy for storage device.
