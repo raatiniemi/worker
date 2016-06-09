@@ -39,7 +39,7 @@ import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
-import me.raatiniemi.worker.util.Settings;
+import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.util.Worker;
 import rx.Observable;
 import rx.Subscriber;

@@ -34,7 +34,7 @@ import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.util.Settings;
+import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.util.Worker;
 
 abstract class OngoingService extends IntentService {

@@ -34,7 +34,7 @@ import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
-import me.raatiniemi.worker.util.HintedImageButtonListener;
+import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 
 /**
  * Adapter for listing available projects.
