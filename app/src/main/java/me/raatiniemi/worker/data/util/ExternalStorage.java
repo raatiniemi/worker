@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util;
+package me.raatiniemi.worker.data.util;
 
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import me.raatiniemi.worker.util.Worker;
 
 /**
  * Methods for working with the device external storage.

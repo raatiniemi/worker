@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.Tables;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
-import me.raatiniemi.worker.util.SelectionBuilder;
+import me.raatiniemi.worker.data.util.SelectionBuilder;
 
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
