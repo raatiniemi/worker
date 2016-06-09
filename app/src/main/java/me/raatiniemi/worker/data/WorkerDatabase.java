@@ -24,7 +24,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.Tables;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.util.Worker;
+import me.raatiniemi.worker.Worker;
 
 /**
  * A helper class to manage database creation and version management.

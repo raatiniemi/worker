@@ -23,9 +23,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
-import me.raatiniemi.worker.util.ExternalStorage;
-import me.raatiniemi.worker.util.FileUtils;
-import me.raatiniemi.worker.util.Worker;
+import me.raatiniemi.worker.data.util.ExternalStorage;
+import me.raatiniemi.worker.data.util.FileUtils;
+import me.raatiniemi.worker.Worker;
 
 /**
  * Restoration strategy for storage device.

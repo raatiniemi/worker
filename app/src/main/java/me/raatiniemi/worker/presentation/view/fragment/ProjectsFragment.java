@@ -57,8 +57,8 @@ import me.raatiniemi.worker.presentation.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
 import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
 import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
-import me.raatiniemi.worker.util.HintedImageButtonListener;
-import me.raatiniemi.worker.util.Settings;
+import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
+import me.raatiniemi.worker.presentation.util.Settings;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
