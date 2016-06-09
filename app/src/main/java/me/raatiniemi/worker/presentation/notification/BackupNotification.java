@@ -37,6 +37,7 @@ public class BackupNotification {
                 .setContentText(context.getString(sText))
                 .setSmallIcon(sSmallIcon)
                 .setContentIntent(buildContentAction(context))
+                .setAutoCancel(true)
                 .build();
     }
 
