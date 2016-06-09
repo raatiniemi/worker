@@ -6,7 +6,7 @@ def androidSupportVersion = '23.3.0'
 
 def rxandroidVersion = '1.2.0'
 def eventbusVersion = "3.0.0"
-def advancedrecyclerviewVersion = "0.8.6"
+def advancedrecyclerviewVersion = "0.9.1"
 
 def junitVersion = "4.12"
 def junitDataProviderVersion = "1.10.3"
