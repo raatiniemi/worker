@@ -25,10 +25,20 @@ public class CalculateTime {
     private static final int sSecondsInHour = sSecondsInMinute * sMinutesInHour;
     private static final int sSecondsInDay = sSecondsInHour * sHoursInDay;
 
+    private long mMilliseconds;
+
+    private CalculateTime(long milliseconds) {
+        mMilliseconds = milliseconds;
+    }
+
     public static CalculatedTime calculateTime(long milliseconds) {
-        long seconds = calculateSeconds(milliseconds);
-        long minutes = calculateMinutes(seconds);
-        long hours = calculateHours(seconds);
+        CalculateTime calculateTime = new CalculateTime(milliseconds);
+        return calculateTime.calculateTime();
+    }
+
+    private CalculatedTime calculateTime() {
+        long minutes = calculateMinutes();
+        long hours = calculateHours();
 
         if (sMinutesInHour == minutes) {
             minutes = 0;
@@ -38,11 +48,12 @@ public class CalculateTime {
         return new CalculatedTime(hours, minutes);
     }
 
-    private static long calculateSeconds(long milliseconds) {
-        return milliseconds / 1000;
+    private long calculateSeconds() {
+        return mMilliseconds / 1000;
     }
 
-    private static long calculateMinutes(long seconds) {
+    private long calculateMinutes() {
+        long seconds = calculateSeconds();
         long minutes = seconds / sSecondsInMinute % sMinutesInHour;
 
         long secondsRemaining = seconds % sSecondsInMinute;
@@ -53,7 +64,8 @@ public class CalculateTime {
         return minutes;
     }
 
-    private static long calculateHours(long seconds) {
+    private long calculateHours() {
+        long seconds = calculateSeconds();
         long hours = seconds / sSecondsInHour % sHoursInDay;
 
         long days = seconds / sSecondsInDay;
