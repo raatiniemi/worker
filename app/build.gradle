@@ -4,7 +4,7 @@ apply plugin: 'org.sonarqube'
 
 def androidSupportVersion = '23.3.0'
 
-def rxandroidVersion = '1.1.0'
+def rxandroidVersion = '1.2.0'
 def eventbusVersion = "3.0.0"
 def advancedrecyclerviewVersion = "0.8.6"
 
