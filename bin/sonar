@@ -1,0 +1,20 @@
+#!/bin/bash
+# Make sure we're working from the project root directory.
+cd "$(dirname $0)/..";
+
+if [ -z $SONAR_HOST_URL ]; then
+    echo "\$SONAR_HOST_URL have not been defined";
+    exit 1;
+fi;
+
+GRADLE="gradle";
+TASKS="clean sonarqube -Dsonar.host.url=${SONAR_HOST_URL}";
+
+# If gradle is not available, use the gradle wrapper.
+$(which gradle &>/dev/null);
+if [ $? -ne 0 ]; then
+    GRADLE="./gradlew";
+fi;
+
+echo "$GRADLE $TASKS";
+exit $?;

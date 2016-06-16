@@ -11,6 +11,15 @@ test:
   tags:
     - docker
 
+sonar:
+  stage: test
+  script:
+    - ./bin/sonar
+  only:
+    - tags
+  tags:
+    - docker
+
 build:
   stage: build
   script:
