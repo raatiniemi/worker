@@ -31,6 +31,8 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
@@ -158,7 +160,7 @@ public class ProjectsModelTest {
                         new Time[]{
                                 createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
                                         3600L,
-                                        1458742440000L
+                                        new GregorianCalendar(2016, 1, 28, 15, 14)
                                 )
                         }
                 },
@@ -168,7 +170,7 @@ public class ProjectsModelTest {
                         new Time[]{
                                 createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
                                         1800L,
-                                        1456773910000L
+                                        new GregorianCalendar(2016, 1, 28, 20, 25)
                                 )
                         }
                 }
@@ -199,14 +201,14 @@ public class ProjectsModelTest {
 
     private static Time createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
             long intervalInSeconds,
-            long clockedInTime
+            Calendar clockedInTime
     ) {
         Time time = mock(Time.class);
 
         when(time.isActive()).thenReturn(true);
         when(time.getInterval()).thenReturn(intervalInSeconds * 1000);
 
-        when(time.getStartInMilliseconds()).thenReturn(clockedInTime);
+        when(time.getStartInMilliseconds()).thenReturn(clockedInTime.getTimeInMillis());
 
         return time;
     }
