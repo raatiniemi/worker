@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
@@ -42,6 +44,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     private static final String TAG = "TimesheetAdapter";
 
     private final OnTimesheetListener mOnTimesheetListener;
+    private Set<Time> mSelectedItems = new HashSet<>();
 
     public TimesheetAdapter(OnTimesheetListener listener) {
         mOnTimesheetListener = listener;
@@ -93,11 +96,18 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                mSelectedItems.clear();
+                mSelectedItems.add(time);
+
+                notifyDataSetChanged();
+
                 TimeInAdapterResult result = new TimeInAdapterResult(group, child, time);
-                mOnTimesheetListener.onTimeLongClick(v, result);
+                mOnTimesheetListener.onTimeLongClick(result);
                 return true;
             }
         });
+
+        vh.itemView.setSelected(mSelectedItems.contains(time));
 
         // In case the item have been selected, we should not activate
         // it. The selected background color should take precedence.
@@ -137,8 +147,13 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         return true;
     }
 
+    public void deselectItems() {
+        mSelectedItems.clear();
+        notifyDataSetChanged();
+    }
+
     public interface OnTimesheetListener {
-        boolean onTimeLongClick(View view, TimeInAdapterResult result);
+        boolean onTimeLongClick(TimeInAdapterResult result);
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {

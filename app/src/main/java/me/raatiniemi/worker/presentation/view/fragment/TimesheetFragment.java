@@ -45,7 +45,6 @@ import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.GetTimesheet;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
@@ -66,8 +65,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     private TimesheetAdapter mAdapter;
 
     private TimeInAdapterResult mSelectedItem;
-
-    private View mSelectedView;
 
     private ActionMode mActionMode;
 
@@ -128,17 +125,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            // If there's a selected row, we have
-            // to clear the selection-state.
-            if (null != mSelectedView) {
-                // If the selected time is registered we have to restore the
-                // activated state in case the user dismissed the action mode.
-                Time time = mSelectedItem.getTime();
-                mSelectedView.setActivated(time.isRegistered());
-
-                mSelectedView.setSelected(false);
-                mSelectedView = null;
-            }
+            getAdapter().deselectItems();
 
             mSelectedItem = null;
             mActionMode = null;
@@ -322,35 +309,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     }
 
     @Override
-    public boolean onTimeLongClick(View view, TimeInAdapterResult result) {
-        boolean registered = false;
-
-        // If we already have a selected item, we need to check the registered
-        // status of the item. If it is registered we have to restore the
-        // activated state for the view.
-        if (null != mSelectedItem) {
-            Time time = mSelectedItem.getTime();
-            registered = time.isRegistered();
-        }
-
+    public boolean onTimeLongClick(TimeInAdapterResult result) {
         mSelectedItem = result;
-
-        // If there's already a selected row, we have
-        // to clear the selection-state.
-        if (null != mSelectedView) {
-            mSelectedView.setActivated(registered);
-            mSelectedView.setSelected(false);
-        }
-
-        // Save the view for reference and put
-        // the view in the selection-state.
-        mSelectedView = view;
-        mSelectedView.setSelected(true);
-
-        // Regardless of whether the time for the view have been registered the
-        // view should be deactivated. The selected background color should
-        // take precedence of the activated.
-        mSelectedView.setActivated(false);
 
         // Only start the ActionMode if none has already started.
         if (null == mActionMode) {
