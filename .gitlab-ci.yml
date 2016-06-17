@@ -1,19 +1,28 @@
+image: raatiniemi/android-environment:latest
+
 stages:
-    - test
-    - build
+  - test
+  - build
 
 test:
-    stage: test
-    script:
-        - "./bin/test"
-    tags:
-        - android
-        - java
+  stage: test
+  script:
+    - ./bin/test
+  tags:
+    - docker
+
+sonar:
+  stage: test
+  script:
+    - ./bin/sonar
+  only:
+    - tags
+  tags:
+    - docker
 
 build:
-    stage: build
-    script:
-        - "./bin/build"
-    tags:
-        - android
-        - java
+  stage: build
+  script:
+    - ./bin/build
+  tags:
+    - docker
