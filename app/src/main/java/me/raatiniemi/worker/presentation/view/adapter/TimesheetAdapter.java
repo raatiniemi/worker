@@ -28,6 +28,7 @@ import java.util.Date;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
+import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 
@@ -147,32 +148,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         private ItemViewHolder(View view) {
             super(view);
-        }
-    }
-
-    public final static class TimeInAdapterResult {
-        private final int mGroup;
-
-        private final int mChild;
-
-        private final Time mTime;
-
-        public TimeInAdapterResult(int group, int child, Time time) {
-            mGroup = group;
-            mChild = child;
-            mTime = time;
-        }
-
-        public int getGroup() {
-            return mGroup;
-        }
-
-        public int getChild() {
-            return mChild;
-        }
-
-        public Time getTime() {
-            return mTime;
         }
     }
 }
