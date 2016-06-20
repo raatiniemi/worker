@@ -57,7 +57,7 @@ import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
-        implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
+        implements TimesheetAdapter.TimesheetSelectionListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
     private LinearLayoutManager mLinearLayoutManager;
@@ -312,11 +312,9 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     }
 
     @Override
-    public boolean onTimeLongClick() {
-        // Only start the ActionMode if none has already started.
+    public void onSelect() {
         if (null == mActionMode) {
             mActionMode = getActivity().startActionMode(mActionModeCallback);
         }
-        return true;
     }
 }

@@ -45,11 +45,11 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         > {
     private static final String TAG = "TimesheetAdapter";
 
-    private final OnTimesheetListener mOnTimesheetListener;
+    private final TimesheetSelectionListener mSelectionListener;
     private Set<TimeInAdapterResult> mSelectedItems = new HashSet<>();
 
-    public TimesheetAdapter(OnTimesheetListener listener) {
-        mOnTimesheetListener = listener;
+    public TimesheetAdapter(TimesheetSelectionListener selectionListener) {
+        mSelectionListener = selectionListener;
 
         setHasStableIds(true);
     }
@@ -105,7 +105,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
                 notifyDataSetChanged();
 
-                mOnTimesheetListener.onTimeLongClick();
+                mSelectionListener.onSelect();
                 return true;
             }
         });
@@ -159,8 +159,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         notifyDataSetChanged();
     }
 
-    public interface OnTimesheetListener {
-        boolean onTimeLongClick();
+    public interface TimesheetSelectionListener {
+        void onSelect();
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {
