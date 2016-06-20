@@ -23,8 +23,10 @@ import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import me.raatiniemi.worker.R;
@@ -44,7 +46,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     private static final String TAG = "TimesheetAdapter";
 
     private final OnTimesheetListener mOnTimesheetListener;
-    private Set<Time> mSelectedItems = new HashSet<>();
+    private Set<TimeInAdapterResult> mSelectedItems = new HashSet<>();
 
     public TimesheetAdapter(OnTimesheetListener listener) {
         mOnTimesheetListener = listener;
@@ -92,22 +94,23 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         final TimesheetChildModel item = get(group, child);
         final Time time = item.asTime();
 
+        final TimeInAdapterResult result = new TimeInAdapterResult(group, child, time);
+
         // Register the long click listener on the time item.
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 mSelectedItems.clear();
-                mSelectedItems.add(time);
+                mSelectedItems.add(result);
 
                 notifyDataSetChanged();
 
-                TimeInAdapterResult result = new TimeInAdapterResult(group, child, time);
-                mOnTimesheetListener.onTimeLongClick(result);
+                mOnTimesheetListener.onTimeLongClick();
                 return true;
             }
         });
 
-        vh.itemView.setSelected(mSelectedItems.contains(time));
+        vh.itemView.setSelected(mSelectedItems.contains(result));
 
         // In case the item have been selected, we should not activate
         // it. The selected background color should take precedence.
@@ -147,13 +150,17 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         return true;
     }
 
+    public List<TimeInAdapterResult> getSelectedItems() {
+        return new ArrayList<>(mSelectedItems);
+    }
+
     public void deselectItems() {
         mSelectedItems.clear();
         notifyDataSetChanged();
     }
 
     public interface OnTimesheetListener {
-        boolean onTimeLongClick(TimeInAdapterResult result);
+        boolean onTimeLongClick();
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {

@@ -64,8 +64,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     private TimesheetAdapter mAdapter;
 
-    private TimeInAdapterResult mSelectedItem;
-
     private ActionMode mActionMode;
 
     private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
@@ -95,7 +93,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    getPresenter().remove(mSelectedItem);
+                                    List<TimeInAdapterResult> items = getAdapter().getSelectedItems();
+                                    if (!items.isEmpty()) {
+                                        getPresenter().remove(items.get(0));
+                                    }
 
                                     // Since the item have been removed, we can finish the action.
                                     actionMode.finish();
@@ -109,7 +110,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                     finish = false;
                     break;
                 case R.id.actions_project_timesheet_register:
-                    getPresenter().register(mSelectedItem);
+                    List<TimeInAdapterResult> items = getAdapter().getSelectedItems();
+                    if (!items.isEmpty()) {
+                        getPresenter().register(items.get(0));
+                    }
                     finish = true;
                     break;
                 default:
@@ -127,7 +131,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         public void onDestroyActionMode(ActionMode actionMode) {
             getAdapter().deselectItems();
 
-            mSelectedItem = null;
             mActionMode = null;
         }
     };
@@ -309,9 +312,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     }
 
     @Override
-    public boolean onTimeLongClick(TimeInAdapterResult result) {
-        mSelectedItem = result;
-
+    public boolean onTimeLongClick() {
         // Only start the ActionMode if none has already started.
         if (null == mActionMode) {
             mActionMode = getActivity().startActionMode(mActionModeCallback);
