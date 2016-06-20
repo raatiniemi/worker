@@ -288,8 +288,13 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
 
                         // Update the time item within the adapter result and send
                         // it to the view for update.
-                        result.setTime(time);
-                        getView().update(result);
+                        getView().update(
+                                new TimeInAdapterResult(
+                                        result.getGroup(),
+                                        result.getChild(),
+                                        time
+                                )
+                        );
                     }
 
                     @Override

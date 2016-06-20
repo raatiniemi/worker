@@ -155,7 +155,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         private final int mChild;
 
-        private Time mTime;
+        private final Time mTime;
 
         public TimeInAdapterResult(int group, int child, Time time) {
             mGroup = group;
@@ -173,10 +173,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         public Time getTime() {
             return mTime;
-        }
-
-        public void setTime(Time time) {
-            mTime = time;
         }
     }
 }
