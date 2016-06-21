@@ -100,17 +100,16 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                mSelectedItems.clear();
-                mSelectedItems.add(result);
+                if (isSelected(result)) {
+                    return false;
+                }
 
-                notifyDataSetChanged();
-
-                mSelectionListener.onSelect();
+                selectItem(result);
                 return true;
             }
         });
 
-        vh.itemView.setSelected(mSelectedItems.contains(result));
+        vh.itemView.setSelected(isSelected(result));
 
         // In case the item have been selected, we should not activate
         // it. The selected background color should take precedence.
@@ -121,6 +120,19 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         vh.mTitle.setText(item.getTitle());
         vh.mSummarize.setText(item.getTimeSummary());
+    }
+
+    private boolean isSelected(TimeInAdapterResult result) {
+        return mSelectedItems.contains(result);
+    }
+
+    private void selectItem(TimeInAdapterResult result) {
+        mSelectedItems.clear();
+        mSelectedItems.add(result);
+
+        notifyDataSetChanged();
+
+        mSelectionListener.onSelect();
     }
 
     @Override
