@@ -150,7 +150,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     private void selectItem(TimeInAdapterResult result) {
-        mSelectedItems.clear();
         mSelectedItems.add(result);
 
         notifyDataSetChanged();
@@ -191,6 +190,10 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(ItemViewHolder vh, int group, int x, int y, boolean expand) {
         return true;
+    }
+
+    public boolean haveSelectedItems() {
+        return isSelectionActivated();
     }
 
     public List<TimeInAdapterResult> getSelectedItems() {

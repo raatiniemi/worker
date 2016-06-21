@@ -94,8 +94,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     List<TimeInAdapterResult> items = getAdapter().getSelectedItems();
-                                    if (!items.isEmpty()) {
-                                        getPresenter().remove(items.get(0));
+                                    for (TimeInAdapterResult result : items) {
+                                        getPresenter().remove(result);
                                     }
 
                                     // Since the item have been removed, we can finish the action.
@@ -111,8 +111,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                     break;
                 case R.id.actions_project_timesheet_register:
                     List<TimeInAdapterResult> items = getAdapter().getSelectedItems();
-                    if (!items.isEmpty()) {
-                        getPresenter().register(items.get(0));
+                    for (TimeInAdapterResult result : items) {
+                        getPresenter().register(result);
                     }
                     finish = true;
                     break;
@@ -321,6 +321,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     @Override
     public void onDeselect() {
         if (null == mActionMode) {
+            return;
+        }
+
+        if (getAdapter().haveSelectedItems()) {
             return;
         }
 
