@@ -108,6 +108,21 @@ public class TimesheetAdapter extends ExpandableListAdapter<
                 return true;
             }
         });
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isSelectionActivated()) {
+                    return;
+                }
+
+                if (isSelected(result)) {
+                    deselectItem(result);
+                    return;
+                }
+
+                selectItem(result);
+            }
+        });
 
         vh.itemView.setSelected(isSelected(result));
 
@@ -122,6 +137,10 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.mSummarize.setText(item.getTimeSummary());
     }
 
+    private boolean isSelectionActivated() {
+        return !mSelectedItems.isEmpty();
+    }
+
     private boolean isSelected(TimeInAdapterResult result) {
         return mSelectedItems.contains(result);
     }
@@ -133,6 +152,14 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         notifyDataSetChanged();
 
         mSelectionListener.onSelect();
+    }
+
+    private void deselectItem(TimeInAdapterResult result) {
+        mSelectedItems.remove(result);
+
+        notifyDataSetChanged();
+
+        mSelectionListener.onDeselect();
     }
 
     @Override
@@ -173,6 +200,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     public interface TimesheetSelectionListener {
         void onSelect();
+        void onDeselect();
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {

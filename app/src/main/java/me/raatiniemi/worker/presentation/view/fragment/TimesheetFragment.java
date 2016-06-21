@@ -317,4 +317,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
             mActionMode = getActivity().startActionMode(mActionModeCallback);
         }
     }
+
+    @Override
+    public void onDeselect() {
+        if (null == mActionMode) {
+            return;
+        }
+
+        mActionMode.finish();
+    }
 }
