@@ -100,6 +100,10 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                if (isSelectionActivated()) {
+                    return false;
+                }
+
                 if (isSelected(result)) {
                     return false;
                 }
