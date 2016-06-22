@@ -16,11 +16,14 @@
 
 package me.raatiniemi.worker.presentation.model.timesheet;
 
+import android.support.annotation.NonNull;
+
+import java.util.Collections;
 import java.util.Objects;
 
 import me.raatiniemi.worker.domain.model.Time;
 
-public final class TimeInAdapterResult {
+public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult> {
     private final int mGroup;
 
     private final int mChild;
@@ -77,5 +80,26 @@ public final class TimeInAdapterResult {
         result = 31 * result + Objects.hashCode(mTime);
 
         return result;
+    }
+
+    @Override
+    public int compareTo(@NonNull TimeInAdapterResult rhs) {
+        if (getGroup() == rhs.getGroup()) {
+            if (getChild() == rhs.getChild()) {
+                return 0;
+            }
+
+            if (getChild() > rhs.getChild()) {
+                return 1;
+            }
+
+            return -1;
+        }
+
+        if (getGroup() > rhs.getGroup()) {
+            return 1;
+        }
+
+        return -1;
     }
 }

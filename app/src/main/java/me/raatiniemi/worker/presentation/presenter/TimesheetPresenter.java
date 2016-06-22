@@ -44,6 +44,7 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func0;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     /**
@@ -197,25 +198,26 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                 });
     }
 
-    public void remove(final TimeInAdapterResult result) {
-        Observable.just(result.getTime())
-                .map(new Func1<Time, Time>() {
+    public void remove(List<TimeInAdapterResult> results) {
+        Observable.just(results)
+                .flatMapIterable(new Func1<List<TimeInAdapterResult>, Iterable<TimeInAdapterResult>>() {
                     @Override
-                    public Time call(final Time time) {
-                        mRemoveTime.execute(time);
-
-                        // To avoid breaking the API from the ProjectProvider,
-                        // we should still return the time.
-                        //
-                        // However, this should be refactored to use optimistic
-                        // propagation, i.e. like removing projects.
-                        return time;
+                    public Iterable<TimeInAdapterResult> call(List<TimeInAdapterResult> results) {
+                        return results;
                     }
                 })
-                .compose(this.<Time>applySchedulers())
-                .subscribe(new Subscriber<Time>() {
+                .map(new Func1<TimeInAdapterResult, TimeInAdapterResult>() {
                     @Override
-                    public void onNext(Time time) {
+                    public TimeInAdapterResult call(TimeInAdapterResult result) {
+                        mRemoveTime.execute(result.getTime());
+                        return result;
+                    }
+                })
+                .toList()
+                .compose(this.<List<TimeInAdapterResult>>applySchedulers())
+                .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
+                    @Override
+                    public void onNext(List<TimeInAdapterResult> results) {
                         Log.d(TAG, "remove onNext");
 
                         // Check that we still have the view attached.
@@ -225,7 +227,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         }
 
                         // Attempt to remove the result from view.
-                        getView().remove(result);
+                        getView().remove(results);
                     }
 
                     @Override

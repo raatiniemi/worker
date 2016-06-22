@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -190,6 +191,15 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(ItemViewHolder vh, int group, int x, int y, boolean expand) {
         return true;
+    }
+
+    public void remove(List<TimeInAdapterResult> results) {
+        Collections.sort(results);
+        Collections.reverse(results);
+
+        for (TimeInAdapterResult result : results) {
+            remove(result.getGroup(), result.getChild());
+        }
     }
 
     public boolean haveSelectedItems() {

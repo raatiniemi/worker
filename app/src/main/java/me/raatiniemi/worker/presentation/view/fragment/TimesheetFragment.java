@@ -93,10 +93,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    List<TimeInAdapterResult> items = getAdapter().getSelectedItems();
-                                    for (TimeInAdapterResult result : items) {
-                                        getPresenter().remove(result);
-                                    }
+                                    getPresenter().remove(getAdapter().getSelectedItems());
 
                                     // Since the item have been removed, we can finish the action.
                                     actionMode.finish();
@@ -301,6 +298,10 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     public void remove(TimeInAdapterResult result) {
         getAdapter().remove(result.getGroup(), result.getChild());
+    }
+
+    public void remove(List<TimeInAdapterResult> results) {
+        getAdapter().remove(results);
     }
 
     public void update(TimeInAdapterResult result) {
