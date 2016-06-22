@@ -27,7 +27,15 @@ public final class TimeInAdapterResult {
 
     private final Time mTime;
 
-    public TimeInAdapterResult(int group, int child, Time time) {
+    public static TimeInAdapterResult build(int group, int child, Time time) {
+        return new TimeInAdapterResult(group, child, time);
+    }
+
+    public static TimeInAdapterResult build(TimeInAdapterResult result, Time time) {
+        return build(result.getGroup(), result.getChild(), time);
+    }
+
+    private TimeInAdapterResult(int group, int child, Time time) {
         mGroup = group;
         mChild = child;
         mTime = time;

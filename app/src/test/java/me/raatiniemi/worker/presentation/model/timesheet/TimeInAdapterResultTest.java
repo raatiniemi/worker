@@ -55,7 +55,7 @@ public class TimeInAdapterResultTest {
         Time time = new Time.Builder(0)
                 .build();
 
-        TimeInAdapterResult timeInAdapterResult = new TimeInAdapterResult(0, 0, time);
+        TimeInAdapterResult timeInAdapterResult = TimeInAdapterResult.build(0, 0, time);
 
         return Arrays.asList(
                 new Object[][]{
@@ -81,19 +81,19 @@ public class TimeInAdapterResultTest {
                                 "With different group position",
                                 Boolean.FALSE,
                                 timeInAdapterResult,
-                                new TimeInAdapterResult(1, 0, time)
+                                TimeInAdapterResult.build(1, 0, time)
                         },
                         {
                                 "With different child position",
                                 Boolean.FALSE,
                                 timeInAdapterResult,
-                                new TimeInAdapterResult(0, 1, time)
+                                TimeInAdapterResult.build(0, 1, time)
                         },
                         {
                                 "With different time object",
                                 Boolean.TRUE,
                                 timeInAdapterResult,
-                                new TimeInAdapterResult(
+                                TimeInAdapterResult.build(
                                         0,
                                         0,
                                         new Time.Builder(0)
