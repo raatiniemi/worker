@@ -107,10 +107,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                     finish = false;
                     break;
                 case R.id.actions_project_timesheet_register:
-                    List<TimeInAdapterResult> items = getAdapter().getSelectedItems();
-                    for (TimeInAdapterResult result : items) {
-                        getPresenter().register(result);
-                    }
+                    getPresenter().register(getAdapter().getSelectedItems());
                     finish = true;
                     break;
                 default:
@@ -296,20 +293,12 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         getPresenter().getTimesheet(getProjectId(), 0);
     }
 
-    public void remove(TimeInAdapterResult result) {
-        getAdapter().remove(result.getGroup(), result.getChild());
-    }
-
     public void remove(List<TimeInAdapterResult> results) {
         getAdapter().remove(results);
     }
 
-    public void update(TimeInAdapterResult result) {
-        getAdapter().set(
-                result.getGroup(),
-                result.getChild(),
-                new TimesheetChildModel(result.getTime())
-        );
+    public void update(List<TimeInAdapterResult> results) {
+        getAdapter().set(results);
     }
 
     @Override

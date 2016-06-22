@@ -202,6 +202,18 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         }
     }
 
+    public void set(List<TimeInAdapterResult> results) {
+        Collections.sort(results);
+
+        for (TimeInAdapterResult result: results) {
+            set(
+                    result.getGroup(),
+                    result.getChild(),
+                    new TimesheetChildModel(result.getTime())
+            );
+        }
+    }
+
     public boolean haveSelectedItems() {
         return isSelectionActivated();
     }

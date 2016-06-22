@@ -254,25 +254,37 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                 });
     }
 
-    public void register(final TimeInAdapterResult result) {
+    public void register(List<TimeInAdapterResult> results) {
         // TODO: Refactor to use optimistic propagation.
-        Observable.just(result.getTime())
-                .flatMap(new Func1<Time, Observable<Time>>() {
+        Observable.just(results)
+                .flatMapIterable(new Func1<List<TimeInAdapterResult>, Iterable<TimeInAdapterResult>>() {
                     @Override
-                    public Observable<Time> call(final Time time) {
+                    public Iterable<TimeInAdapterResult> call(List<TimeInAdapterResult> results) {
+                        return results;
+                    }
+                })
+                .flatMap(new Func1<TimeInAdapterResult, Observable<TimeInAdapterResult>>() {
+                    @Override
+                    public Observable<TimeInAdapterResult> call(TimeInAdapterResult result) {
                         try {
                             return Observable.just(
-                                    mMarkRegisteredTime.execute(time)
+                                    TimeInAdapterResult.build(
+                                            result,
+                                            mMarkRegisteredTime.execute(
+                                                    result.getTime()
+                                            )
+                                    )
                             );
                         } catch (DomainException e) {
                             return Observable.error(e);
                         }
                     }
                 })
-                .compose(this.<Time>applySchedulers())
-                .subscribe(new Subscriber<Time>() {
+                .toList()
+                .compose(this.<List<TimeInAdapterResult>>applySchedulers())
+                .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
-                    public void onNext(Time time) {
+                    public void onNext(List<TimeInAdapterResult> results) {
                         Log.d(TAG, "register onNext");
 
                         // Check that we still have the view attached.
@@ -284,15 +296,13 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         // If we should hide registered time, we should remove
                         // the item rather than updating it.
                         if (Settings.shouldHideRegisteredTime(getContext())) {
-                            getView().remove(result);
+                            getView().remove(results);
                             return;
                         }
 
                         // Update the time item within the adapter result and send
                         // it to the view for update.
-                        getView().update(
-                                TimeInAdapterResult.build(result, time)
-                        );
+                        getView().update(results);
                     }
 
                     @Override
