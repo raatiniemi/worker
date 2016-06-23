@@ -39,6 +39,9 @@ public class Settings {
      */
     private static final String PREF_ONGOING_NOTIFICATION_ENABLED = "pref_ongoing_notification_enabled";
 
+    private Settings() {
+    }
+
     /**
      * Check if the registered time should be hidden.
      *

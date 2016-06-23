@@ -34,6 +34,9 @@ public class FileUtils {
      */
     private static final String TAG = "FileUtils";
 
+    private FileUtils() {
+    }
+
     /**
      * Copy one file from one location to another. If the destination
      * file do not exists, it will be created.

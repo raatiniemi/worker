@@ -178,7 +178,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      * @param key Key for the new preference screen.
      */
     void switchPreferenceScreen(String key) {
-        Fragment fragment = null;
+        Fragment fragment;
         switch (key) {
             case SETTINGS_DATA_KEY:
                 fragment = new DataFragment();
@@ -186,17 +186,14 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             case SETTINGS_PROJECT_KEY:
                 fragment = new ProjectFragment();
                 break;
-        }
-
-        if (null == fragment) {
-            Log.w(TAG, "Switch to preference screen '" + key + "' is not implemented");
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    R.string.error_message_preference_screen_not_implemented,
-                    Snackbar.LENGTH_SHORT
-            ).show();
-
-            return;
+            default:
+                Log.w(TAG, "Switch to preference screen '" + key + "' is not implemented");
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        R.string.error_message_preference_screen_not_implemented,
+                        Snackbar.LENGTH_SHORT
+                ).show();
+                return;
         }
 
         getFragmentManager().beginTransaction()
@@ -311,7 +308,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
          *
          * @return Resource id for the preference fragment title.
          */
-        abstract public int getTitle();
+        public abstract int getTitle();
     }
 
     public static class SettingsFragment extends BasePreferenceFragment {

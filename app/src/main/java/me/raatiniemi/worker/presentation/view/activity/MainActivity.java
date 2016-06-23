@@ -71,14 +71,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.actions_main_create_new_project:
-                openCreateNewProject();
-                return true;
-            case R.id.actions_main_settings:
-                openSettings();
-                return true;
+        if (R.id.actions_main_create_new_project == menuItem.getItemId()) {
+            openCreateNewProject();
+            return true;
         }
+
+        if (R.id.actions_main_settings == menuItem.getItemId()) {
+            openSettings();
+            return true;
+        }
+
         return super.onOptionsItemSelected(menuItem);
     }
 

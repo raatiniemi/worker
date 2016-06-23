@@ -34,12 +34,10 @@ public class TimesheetGroupModel
         boolean registered = true;
 
         for (TimesheetChildModel child : this) {
-            if (child.isRegistered()) {
-                continue;
+            if (!child.isRegistered()) {
+                registered = false;
+                break;
             }
-
-            registered = false;
-            break;
         }
 
         return registered;

@@ -33,6 +33,9 @@ public class Keyboard {
      */
     private static InputMethodManager mInputMethodManager;
 
+    private Keyboard() {
+    }
+
     /**
      * Retrieve the InputMethodManager.
      *

@@ -41,6 +41,9 @@ public class PauseNotification {
 
     private static final int sClockOutIcon = 0;
 
+    private PauseNotification() {
+    }
+
     public static Notification build(Context context, Project project) {
         return new NotificationCompat.Builder(context)
                 .setContentTitle(project.getName())

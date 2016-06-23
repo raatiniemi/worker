@@ -33,7 +33,7 @@ import java.util.List;
  * @param <GVH> Reference type for the group item view holder.
  * @param <CVH> Reference type for the child item view holder.
  */
-abstract public class ExpandableListAdapter<
+public abstract class ExpandableListAdapter<
         G,
         C,
         T extends ExpandableListAdapter.ExpandableItem<G, C>,
@@ -205,7 +205,7 @@ abstract public class ExpandableListAdapter<
      * @inheritDoc
      */
     @Override
-    public void add(final int index, final @NonNull T item) {
+    public void add(final int index, @NonNull final T item) {
         // TODO: Implement adding at specific index for ExpandableListAdapter.
         throw new UnsupportedOperationException("Not yet implemented");
     }

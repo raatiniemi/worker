@@ -60,4 +60,7 @@ public final class Worker {
      * Intent action for restarting the application.
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
+
+    private Worker() {
+    }
 }

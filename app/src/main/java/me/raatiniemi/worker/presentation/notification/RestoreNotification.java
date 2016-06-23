@@ -32,6 +32,9 @@ public class RestoreNotification {
 
     private static final int sSmallIcon = R.drawable.ic_restore_white_24dp;
 
+    private RestoreNotification() {
+    }
+
     public static Notification build(Context context) {
         return new NotificationCompat.Builder(context)
                 .setContentTitle(context.getString(sTitle))

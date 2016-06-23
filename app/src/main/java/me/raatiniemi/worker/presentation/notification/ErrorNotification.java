@@ -25,6 +25,9 @@ import me.raatiniemi.worker.R;
 public class ErrorNotification {
     private static final int sSmallIcon = R.drawable.ic_error_outline_white_24dp;
 
+    private ErrorNotification() {
+    }
+
     public static Notification build(
             Context context,
             String title,

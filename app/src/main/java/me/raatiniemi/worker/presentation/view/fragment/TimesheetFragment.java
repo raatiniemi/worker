@@ -275,7 +275,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
      * @inheritDoc
      */
     @Override
-    public void add(final int index, final @NonNull TimesheetGroupModel item) {
+    public void add(final int index, @NonNull final TimesheetGroupModel item) {
         // TODO: Implement adding at specific index for TimesheetFragment.
         throw new UnsupportedOperationException("Not yet implemented");
     }

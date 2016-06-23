@@ -27,7 +27,7 @@ import me.raatiniemi.worker.presentation.base.view.MvpView;
  *
  * @param <V> Reference type for the view attached to the presenter.
  */
-abstract public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
+public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     /**
      * Context used with the presenter.
      */
