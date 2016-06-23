@@ -43,19 +43,25 @@ public class Time extends DomainObject {
             throws ClockOutBeforeClockInException {
         super(builder.mId);
 
+        validateTimeInterval(builder);
+
         mProjectId = builder.mProjectId;
         mStartInMilliseconds = builder.mStartInMilliseconds;
-
-        if (builder.mStopInMilliseconds > 0) {
-            if (builder.mStopInMilliseconds < builder.mStartInMilliseconds) {
-                throw new ClockOutBeforeClockInException(
-                        "Clock out occur before clock in"
-                );
-            }
-        }
         mStopInMilliseconds = builder.mStopInMilliseconds;
-
         mRegistered = builder.mRegistered;
+    }
+
+    private void validateTimeInterval(Builder builder)
+            throws ClockOutBeforeClockInException {
+        if (builder.mStopInMilliseconds == 0) {
+            return;
+        }
+
+        if (builder.mStopInMilliseconds < builder.mStartInMilliseconds) {
+            throw new ClockOutBeforeClockInException(
+                    "Clock out occur before clock in"
+            );
+        }
     }
 
     /**
