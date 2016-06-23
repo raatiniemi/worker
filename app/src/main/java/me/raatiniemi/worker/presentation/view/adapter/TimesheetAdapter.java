@@ -23,11 +23,17 @@ import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
+import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 
@@ -40,10 +46,11 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         > {
     private static final String TAG = "TimesheetAdapter";
 
-    private final OnTimesheetListener mOnTimesheetListener;
+    private final TimesheetSelectionListener mSelectionListener;
+    private Set<TimeInAdapterResult> mSelectedItems = new HashSet<>();
 
-    public TimesheetAdapter(OnTimesheetListener listener) {
-        mOnTimesheetListener = listener;
+    public TimesheetAdapter(TimesheetSelectionListener selectionListener) {
+        mSelectionListener = selectionListener;
 
         setHasStableIds(true);
     }
@@ -88,15 +95,41 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         final TimesheetChildModel item = get(group, child);
         final Time time = item.asTime();
 
+        final TimeInAdapterResult result = TimeInAdapterResult.build(group, child, time);
+
         // Register the long click listener on the time item.
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                TimeInAdapterResult result = new TimeInAdapterResult(group, child, time);
-                mOnTimesheetListener.onTimeLongClick(v, result);
+                if (isSelectionActivated()) {
+                    return false;
+                }
+
+                if (isSelected(result)) {
+                    return false;
+                }
+
+                selectItem(result);
                 return true;
             }
         });
+        vh.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isSelectionActivated()) {
+                    return;
+                }
+
+                if (isSelected(result)) {
+                    deselectItem(result);
+                    return;
+                }
+
+                selectItem(result);
+            }
+        });
+
+        vh.itemView.setSelected(isSelected(result));
 
         // In case the item have been selected, we should not activate
         // it. The selected background color should take precedence.
@@ -107,6 +140,30 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         vh.mTitle.setText(item.getTitle());
         vh.mSummarize.setText(item.getTimeSummary());
+    }
+
+    private boolean isSelectionActivated() {
+        return !mSelectedItems.isEmpty();
+    }
+
+    private boolean isSelected(TimeInAdapterResult result) {
+        return mSelectedItems.contains(result);
+    }
+
+    private void selectItem(TimeInAdapterResult result) {
+        mSelectedItems.add(result);
+
+        notifyDataSetChanged();
+
+        mSelectionListener.onSelect();
+    }
+
+    private void deselectItem(TimeInAdapterResult result) {
+        mSelectedItems.remove(result);
+
+        notifyDataSetChanged();
+
+        mSelectionListener.onDeselect();
     }
 
     @Override
@@ -136,8 +193,43 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         return true;
     }
 
-    public interface OnTimesheetListener {
-        boolean onTimeLongClick(View view, TimeInAdapterResult result);
+    public void remove(List<TimeInAdapterResult> results) {
+        Collections.sort(results);
+        Collections.reverse(results);
+
+        for (TimeInAdapterResult result : results) {
+            remove(result.getGroup(), result.getChild());
+        }
+    }
+
+    public void set(List<TimeInAdapterResult> results) {
+        Collections.sort(results);
+
+        for (TimeInAdapterResult result: results) {
+            set(
+                    result.getGroup(),
+                    result.getChild(),
+                    new TimesheetChildModel(result.getTime())
+            );
+        }
+    }
+
+    public boolean haveSelectedItems() {
+        return isSelectionActivated();
+    }
+
+    public List<TimeInAdapterResult> getSelectedItems() {
+        return new ArrayList<>(mSelectedItems);
+    }
+
+    public void deselectItems() {
+        mSelectedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public interface TimesheetSelectionListener {
+        void onSelect();
+        void onDeselect();
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {
@@ -147,36 +239,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         private ItemViewHolder(View view) {
             super(view);
-        }
-    }
-
-    public final static class TimeInAdapterResult {
-        private final int mGroup;
-
-        private final int mChild;
-
-        private Time mTime;
-
-        public TimeInAdapterResult(int group, int child, Time time) {
-            mGroup = group;
-            mChild = child;
-            mTime = time;
-        }
-
-        public int getGroup() {
-            return mGroup;
-        }
-
-        public int getChild() {
-            return mChild;
-        }
-
-        public Time getTime() {
-            return mTime;
-        }
-
-        public void setTime(Time time) {
-            mTime = time;
         }
     }
 }

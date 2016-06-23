@@ -45,29 +45,24 @@ import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.GetTimesheet;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.view.TimesheetView;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
-import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter.TimeInAdapterResult;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
-        implements TimesheetAdapter.OnTimesheetListener, TimesheetView {
+        implements TimesheetAdapter.TimesheetSelectionListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
     private LinearLayoutManager mLinearLayoutManager;
 
     private TimesheetAdapter mAdapter;
-
-    private TimeInAdapterResult mSelectedItem;
-
-    private View mSelectedView;
 
     private ActionMode mActionMode;
 
@@ -98,7 +93,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    getPresenter().remove(mSelectedItem);
+                                    getPresenter().remove(getAdapter().getSelectedItems());
 
                                     // Since the item have been removed, we can finish the action.
                                     actionMode.finish();
@@ -112,7 +107,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                     finish = false;
                     break;
                 case R.id.actions_project_timesheet_register:
-                    getPresenter().register(mSelectedItem);
+                    getPresenter().register(getAdapter().getSelectedItems());
                     finish = true;
                     break;
                 default:
@@ -128,19 +123,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            // If there's a selected row, we have
-            // to clear the selection-state.
-            if (null != mSelectedView) {
-                // If the selected time is registered we have to restore the
-                // activated state in case the user dismissed the action mode.
-                Time time = mSelectedItem.getTime();
-                mSelectedView.setActivated(time.isRegistered());
+            getAdapter().deselectItems();
 
-                mSelectedView.setSelected(false);
-                mSelectedView = null;
-            }
-
-            mSelectedItem = null;
             mActionMode = null;
         }
     };
@@ -309,53 +293,31 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         getPresenter().getTimesheet(getProjectId(), 0);
     }
 
-    public void remove(TimeInAdapterResult result) {
-        getAdapter().remove(result.getGroup(), result.getChild());
+    public void remove(List<TimeInAdapterResult> results) {
+        getAdapter().remove(results);
     }
 
-    public void update(TimeInAdapterResult result) {
-        getAdapter().set(
-                result.getGroup(),
-                result.getChild(),
-                new TimesheetChildModel(result.getTime())
-        );
+    public void update(List<TimeInAdapterResult> results) {
+        getAdapter().set(results);
     }
 
     @Override
-    public boolean onTimeLongClick(View view, TimeInAdapterResult result) {
-        boolean registered = false;
-
-        // If we already have a selected item, we need to check the registered
-        // status of the item. If it is registered we have to restore the
-        // activated state for the view.
-        if (null != mSelectedItem) {
-            Time time = mSelectedItem.getTime();
-            registered = time.isRegistered();
-        }
-
-        mSelectedItem = result;
-
-        // If there's already a selected row, we have
-        // to clear the selection-state.
-        if (null != mSelectedView) {
-            mSelectedView.setActivated(registered);
-            mSelectedView.setSelected(false);
-        }
-
-        // Save the view for reference and put
-        // the view in the selection-state.
-        mSelectedView = view;
-        mSelectedView.setSelected(true);
-
-        // Regardless of whether the time for the view have been registered the
-        // view should be deactivated. The selected background color should
-        // take precedence of the activated.
-        mSelectedView.setActivated(false);
-
-        // Only start the ActionMode if none has already started.
+    public void onSelect() {
         if (null == mActionMode) {
             mActionMode = getActivity().startActionMode(mActionModeCallback);
         }
-        return true;
+    }
+
+    @Override
+    public void onDeselect() {
+        if (null == mActionMode) {
+            return;
+        }
+
+        if (getAdapter().haveSelectedItems()) {
+            return;
+        }
+
+        mActionMode.finish();
     }
 }
