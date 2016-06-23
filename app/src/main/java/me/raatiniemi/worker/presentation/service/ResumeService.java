@@ -61,11 +61,11 @@ public class ResumeService extends OngoingService {
         }
     }
 
-    protected ClockIn buildClockInUseCase() {
+    ClockIn buildClockInUseCase() {
         return new ClockIn(getTimeRepository());
     }
 
-    protected GetProject buildGetProjectUseCase() {
+    GetProject buildGetProjectUseCase() {
         return new GetProject(getProjectRepository());
     }
 

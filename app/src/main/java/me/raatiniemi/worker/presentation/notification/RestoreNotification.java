@@ -54,7 +54,7 @@ public class RestoreNotification {
         return buildPendingIntentWithActivity(context, intent);
     }
 
-    public static PendingIntent buildPendingIntentWithActivity(
+    private static PendingIntent buildPendingIntentWithActivity(
             Context context,
             Intent intent
     ) {

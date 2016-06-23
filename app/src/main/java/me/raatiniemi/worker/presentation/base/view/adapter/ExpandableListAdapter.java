@@ -88,7 +88,7 @@ public abstract class ExpandableListAdapter<
      * @param index Group index to check.
      * @return True if index exists, otherwise false.
      */
-    protected boolean has(int index) {
+    private boolean has(int index) {
         // Check if index is within bounds.
         return 0 <= index && getGroupCount() > index;
     }
@@ -101,7 +101,7 @@ public abstract class ExpandableListAdapter<
      * @return True if index exists, otherwise false.
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    protected boolean has(int index, int child) {
+    private boolean has(int index, int child) {
         // Check if index is within bounds.
         return has(index) && 0 <= child && getChildCount(index) > child;
     }
@@ -130,7 +130,7 @@ public abstract class ExpandableListAdapter<
      * @throws IndexOutOfBoundsException if index do not exists.
      */
     @NonNull
-    public C get(int group, int child) {
+    protected C get(int group, int child) {
         if (!has(group, child)) {
             throw new IndexOutOfBoundsException(
                     "Invalid index [" + group + "][" + child + "] size is "
@@ -166,7 +166,7 @@ public abstract class ExpandableListAdapter<
      * @param item  Item to update.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
-    public void set(int group, int child, @NonNull C item) {
+    protected void set(int group, int child, @NonNull C item) {
         // Check that the group/child index exists.
         if (!has(group, child)) {
             throw new IndexOutOfBoundsException(
@@ -253,7 +253,7 @@ public abstract class ExpandableListAdapter<
      * @param child Index of the child.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
-    public void remove(int group, int child) {
+    protected void remove(int group, int child) {
         if (!has(group, child)) {
             throw new IndexOutOfBoundsException(
                     "Invalid index [" + group + "][" + child + "] size is "
@@ -301,7 +301,7 @@ public abstract class ExpandableListAdapter<
          *
          * @param group Group item.
          */
-        public ExpandableItem(@NonNull G group) {
+        protected ExpandableItem(@NonNull G group) {
             mGroup = group;
         }
 
@@ -311,7 +311,7 @@ public abstract class ExpandableListAdapter<
          * @return Group item.
          */
         @NonNull
-        public G getGroup() {
+        protected G getGroup() {
             return mGroup;
         }
     }

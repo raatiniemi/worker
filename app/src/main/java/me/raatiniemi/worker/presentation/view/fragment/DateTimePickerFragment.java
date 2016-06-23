@@ -85,7 +85,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param minDate Minimum date.
      */
-    public void setMinDate(Calendar minDate) {
+    void setMinDate(Calendar minDate) {
         mMinDate = minDate;
     }
 
@@ -94,7 +94,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param maxDate Maximum date.
      */
-    public void setMaxDate(Calendar maxDate) {
+    void setMaxDate(Calendar maxDate) {
         mMaxDate = maxDate;
     }
 
@@ -217,7 +217,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param onDateTimeSetListener Listener for "OnDateTimeSetListener".
      */
-    public void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
+    void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
         mOnDateTimeSetListener = onDateTimeSetListener;
     }
 

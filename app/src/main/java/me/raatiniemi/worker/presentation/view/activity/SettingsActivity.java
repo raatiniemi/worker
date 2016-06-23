@@ -107,7 +107,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      *
      * @return Instance for the SettingsActivity.
      */
-    static SettingsActivity getInstance() {
+    private static SettingsActivity getInstance() {
         return sInstance;
     }
 
@@ -177,7 +177,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      *
      * @param key Key for the new preference screen.
      */
-    void switchPreferenceScreen(String key) {
+    private void switchPreferenceScreen(String key) {
         Fragment fragment;
         switch (key) {
             case SETTINGS_DATA_KEY:

@@ -70,7 +70,7 @@ public class ExternalStorage {
      * @return Application directory, or null if it can't be created.
      */
     @Nullable
-    public static File getDirectory() {
+    private static File getDirectory() {
         File directory = new File(Environment.getExternalStorageDirectory(), Worker.PACKAGE);
         if (!directory.exists() && !directory.mkdir()) {
             // TODO: Throw exception, avoiding checks for null everywhere.
@@ -88,7 +88,7 @@ public class ExternalStorage {
      * @return Directory within the application directory, or null if it can't be created.
      */
     @Nullable
-    public static File getDirectory(@NonNull String name) {
+    private static File getDirectory(@NonNull String name) {
         File directory = getDirectory();
         if (null == directory) {
             // TODO: Throw exception, avoiding checks for null everywhere.
@@ -149,7 +149,7 @@ public class ExternalStorage {
      * @return List of backup directories within the application directory.
      */
     @NonNull
-    public static List<File> getBackupDirectories() {
+    private static List<File> getBackupDirectories() {
         File[] directories = {};
 
         File directory = getDirectory();

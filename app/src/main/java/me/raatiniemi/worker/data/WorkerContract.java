@@ -32,7 +32,7 @@ public class WorkerContract {
 
     public static final String AUTHORITY = "me.raatiniemi.worker";
 
-    public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
+    private static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
 
     private static final String PATH_PROJECTS = "projects";
 

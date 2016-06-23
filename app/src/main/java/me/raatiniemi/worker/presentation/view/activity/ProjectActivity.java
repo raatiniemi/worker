@@ -29,7 +29,7 @@ public class ProjectActivity extends BaseActivity {
     /**
      * Tag for the timesheet fragment.
      */
-    public static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
+    private static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
 
     /**
      * Reference to the timesheet fragment.

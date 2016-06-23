@@ -29,7 +29,7 @@ import me.raatiniemi.worker.Worker;
 /**
  * A helper class to manage database creation and version management.
  */
-public class WorkerDatabase extends SQLiteOpenHelper {
+class WorkerDatabase extends SQLiteOpenHelper {
     /**
      * Constructor.
      *

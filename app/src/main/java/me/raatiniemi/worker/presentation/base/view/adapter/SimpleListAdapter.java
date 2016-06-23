@@ -104,7 +104,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @param index Index to check.
      * @return True if index exists, otherwise false.
      */
-    protected boolean has(int index) {
+    private boolean has(int index) {
         // Check if index is within bounds.
         return 0 <= index && getItemCount() > index;
     }
