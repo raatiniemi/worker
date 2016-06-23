@@ -25,6 +25,9 @@ import android.support.v4.app.ActivityCompat;
  * Utility for common permission related operations.
  */
 public class PermissionUtil {
+    private PermissionUtil() {
+    }
+
     /**
      * Check if permission have been granted.
      *

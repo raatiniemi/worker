@@ -31,6 +31,9 @@ public class BackupNotification {
 
     private static final int sSmallIcon = R.drawable.ic_archive_white_24dp;
 
+    private BackupNotification() {
+    }
+
     public static Notification build(Context context) {
         return new NotificationCompat.Builder(context)
                 .setContentTitle(context.getString(sTitle))

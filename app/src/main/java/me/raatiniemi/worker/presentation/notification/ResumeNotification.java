@@ -38,6 +38,9 @@ public class ResumeNotification {
 
     private static final int sResumeIcon = 0;
 
+    private ResumeNotification() {
+    }
+
     public static Notification build(Context context, Project project) {
         return new NotificationCompat.Builder(context)
                 .setContentTitle(project.getName())

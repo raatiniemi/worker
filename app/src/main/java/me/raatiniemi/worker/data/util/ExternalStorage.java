@@ -40,6 +40,9 @@ public class ExternalStorage {
      */
     private static final String TAG = "ExternalStorage";
 
+    private ExternalStorage() {
+    }
+
     /**
      * Checks if the external storage is writable.
      *

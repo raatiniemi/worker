@@ -112,6 +112,9 @@ public class WorkerContract {
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
+        private ProjectContract() {
+        }
+
         /**
          * Get the project stream URI.
          *
@@ -178,6 +181,9 @@ public class WorkerContract {
                 "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
+
+        private TimeContract() {
+        }
 
         /**
          * Get the time stream URI.
