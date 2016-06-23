@@ -93,9 +93,6 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.mName.setText(item.getTitle());
         vh.mTime.setText(item.getTimeSummary());
 
-        vh.mDescription.setText(item.getDescription());
-        item.setVisibilityForDescriptionView(vh.mDescription);
-
         vh.mClockedInSince.setText(item.getClockedInSince(mResources));
         item.setVisibilityForClockedInSinceView(vh.mClockedInSince);
 
@@ -182,11 +179,6 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         private final TextView mTime;
 
         /**
-         * Field for the project description.
-         */
-        private final TextView mDescription;
-
-        /**
          * Icon for toggling the project activity.
          */
         private final ImageButton mClockActivityToggle;
@@ -211,7 +203,6 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
 
             mName = (TextView) view.findViewById(R.id.fragment_projects_item_name);
             mTime = (TextView) view.findViewById(R.id.fragment_projects_item_time);
-            mDescription = (TextView) view.findViewById(R.id.fragment_projects_item_description);
             mClockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_toggle);
             mClockActivityAt = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_at);
             mDelete = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_delete);

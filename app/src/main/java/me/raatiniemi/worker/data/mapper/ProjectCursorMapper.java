@@ -35,12 +35,10 @@ public class ProjectCursorMapper implements CursorMapper<Project> {
     public Project transform(@NonNull Cursor cursor) throws InvalidProjectNameException {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(ProjectColumns._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProjectColumns.NAME));
-        String description = cursor.getString(cursor.getColumnIndexOrThrow(ProjectColumns.DESCRIPTION));
         long archived = cursor.getLong(cursor.getColumnIndexOrThrow(ProjectColumns.ARCHIVED));
 
         Project.Builder builder = new Project.Builder(name)
-                .id(id)
-                .describe(description);
+                .id(id);
 
         if (0 != archived) {
             builder.archive();

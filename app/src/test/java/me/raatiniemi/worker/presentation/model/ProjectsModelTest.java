@@ -73,25 +73,6 @@ public class ProjectsModelTest {
     };
 
     @DataProvider
-    public static Object[][] setVisibilityForDescriptionView_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        null,
-                        View.GONE
-                },
-                {
-                        "",
-                        View.GONE
-                },
-                {
-                        "Project description",
-                        View.VISIBLE
-                }
-        };
-    }
-
-    @DataProvider
     public static Object[][] getTimeSummary_dataProvider()
             throws ClockOutBeforeClockInException {
         return new Object[][]{
@@ -244,36 +225,6 @@ public class ProjectsModelTest {
 
         assertEquals("Project name", model.getTitle());
     }
-
-    @Test
-    public void getDescription()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder("Project name")
-                .describe("Project description")
-                .build();
-
-        ProjectsModel model = new ProjectsModel(project);
-
-        assertEquals("Project description", model.getDescription());
-    }
-
-    @Test
-    @UseDataProvider("setVisibilityForDescriptionView_dataProvider")
-    public void setVisibilityForDescriptionView(
-            String description,
-            int expectedViewVisibility
-    ) throws InvalidProjectNameException {
-        Project project = createProjectBuilder("Project name")
-                .describe(description)
-                .build();
-        TextView descriptionView = mock(TextView.class);
-
-        ProjectsModel model = new ProjectsModel(project);
-        model.setVisibilityForDescriptionView(descriptionView);
-
-        verify(descriptionView, times(1)).setVisibility(expectedViewVisibility);
-    }
-
 
     @Test
     @UseDataProvider("getTimeSummary_dataProvider")

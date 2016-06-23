@@ -51,20 +51,6 @@
                 tools:text="24h 25m"
                 />
 
-            <TextView
-                android:id="@+id/fragment_projects_item_description"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_projects_item_name"
-                android:layout_marginTop="@dimen/projects_item_description_margin_top"
-                android:layout_alignLeft="@+id/fragment_projects_item_name"
-                android:layout_alignStart="@+id/fragment_projects_item_name"
-                android:layout_alignRight="@+id/fragment_projects_item_time"
-                android:layout_alignEnd="@+id/fragment_projects_item_time"
-                android:textColor="@color/textSecondary"
-                tools:text="Project description"
-                />
-
         </RelativeLayout>
 
         <RelativeLayout

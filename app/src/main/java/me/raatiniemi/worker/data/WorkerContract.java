@@ -77,7 +77,6 @@ public class WorkerContract {
         public static final String[] COLUMNS = {
                 ProjectColumns._ID,
                 ProjectColumns.NAME,
-                ProjectColumns.DESCRIPTION,
                 ProjectColumns.ARCHIVED
         };
 

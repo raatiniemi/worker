@@ -50,23 +50,6 @@ public class ProjectsModel {
         return mProject.getName();
     }
 
-    public String getDescription() {
-        return mProject.getDescription();
-    }
-
-    public void setVisibilityForDescriptionView(TextView descriptionView) {
-        if (isDescriptionMissing()) {
-            hideTextView(descriptionView);
-            return;
-        }
-
-        showTextView(descriptionView);
-    }
-
-    private boolean isDescriptionMissing() {
-        return null == getDescription() || 0 == getDescription().length();
-    }
-
     private void showTextView(TextView descriptionView) {
         descriptionView.setVisibility(View.VISIBLE);
     }

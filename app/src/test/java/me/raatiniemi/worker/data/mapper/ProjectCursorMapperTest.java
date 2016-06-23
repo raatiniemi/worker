@@ -35,18 +35,16 @@ import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class ProjectCursorMapperTest {
-    private static Cursor createCursor(long id, String name, String description, long archived) {
+    private static Cursor createCursor(long id, String name, long archived) {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndexOrThrow(ProjectColumns._ID)).thenReturn(0);
         when(cursor.getColumnIndexOrThrow(ProjectColumns.NAME)).thenReturn(1);
-        when(cursor.getColumnIndexOrThrow(ProjectColumns.DESCRIPTION)).thenReturn(2);
-        when(cursor.getColumnIndexOrThrow(ProjectColumns.ARCHIVED)).thenReturn(3);
+        when(cursor.getColumnIndexOrThrow(ProjectColumns.ARCHIVED)).thenReturn(2);
 
         when(cursor.getLong(0)).thenReturn(id);
         when(cursor.getString(1)).thenReturn(name);
-        when(cursor.getString(2)).thenReturn(description);
-        when(cursor.getLong(3)).thenReturn(archived);
+        when(cursor.getLong(2)).thenReturn(archived);
 
         return cursor;
     }
@@ -54,12 +52,10 @@ public class ProjectCursorMapperTest {
     private static Project createProject(
             long id,
             String name,
-            String description,
             boolean archived
     ) throws InvalidProjectNameException {
         Project.Builder builder = new Project.Builder(name)
-                .id(id)
-                .describe(description);
+                .id(id);
 
         if (archived) {
             builder.archive();
@@ -71,8 +67,8 @@ public class ProjectCursorMapperTest {
     @DataProvider
     public static Object[][] transform_dataProvider() throws InvalidProjectNameException {
         return new Object[][]{
-                {createCursor(1, "Name", "Description", 0), createProject(1, "Name", "Description", false)},
-                {createCursor(1, "Name", "Description", 1), createProject(1, "Name", "Description", true)}
+                {createCursor(1, "Name", 0), createProject(1, "Name", false)},
+                {createCursor(1, "Name", 1), createProject(1, "Name", true)}
         };
     }
 
@@ -84,7 +80,6 @@ public class ProjectCursorMapperTest {
 
         assertEquals(expected.getId(), entity.getId());
         assertEquals(expected.getName(), entity.getName());
-        assertEquals(expected.getDescription(), entity.getDescription());
         assertEquals(expected.isArchived(), entity.isArchived());
     }
 }

@@ -36,12 +36,10 @@ import static junit.framework.Assert.assertNull;
 public class ProjectContentValuesMapperTest {
     private static ContentValues createContentValues(
             final String name,
-            final String description,
             final long archived
     ) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ProjectColumns.NAME, name);
-        contentValues.put(ProjectColumns.DESCRIPTION, description);
         contentValues.put(ProjectColumns.ARCHIVED, archived);
 
         return contentValues;
@@ -49,11 +47,9 @@ public class ProjectContentValuesMapperTest {
 
     private static Project createProject(
             final String name,
-            final String description,
             final boolean archived
     ) throws InvalidProjectNameException {
-        Project.Builder builder = new Project.Builder(name)
-                .describe(description);
+        Project.Builder builder = new Project.Builder(name);
 
         if (archived) {
             builder.archive();
@@ -66,26 +62,24 @@ public class ProjectContentValuesMapperTest {
     public void transform() throws InvalidProjectNameException {
         ProjectContentValuesMapper entityMapper = new ProjectContentValuesMapper();
 
-        ContentValues expected = createContentValues("Name", "Description", 0L);
-        Project project = createProject("Name", "Description", false);
+        ContentValues expected = createContentValues("Name", 0L);
+        Project project = createProject("Name", false);
         ContentValues contentValues = entityMapper.transform(project);
 
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
         assertNull(contentValues.get(ProjectColumns._ID));
         assertEquals(expected.get(ProjectColumns.NAME), contentValues.get(ProjectColumns.NAME));
-        assertEquals(expected.get(ProjectColumns.DESCRIPTION), contentValues.get(ProjectColumns.DESCRIPTION));
         assertEquals(expected.get(ProjectColumns.ARCHIVED), contentValues.get(ProjectColumns.ARCHIVED));
 
-        expected = createContentValues("Name", "Description", 1L);
-        project = createProject("Name", "Description", true);
+        expected = createContentValues("Name", 1L);
+        project = createProject("Name", true);
         contentValues = entityMapper.transform(project);
 
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
         assertNull(contentValues.get(ProjectColumns._ID));
         assertEquals(expected.get(ProjectColumns.NAME), contentValues.get(ProjectColumns.NAME));
-        assertEquals(expected.get(ProjectColumns.DESCRIPTION), contentValues.get(ProjectColumns.DESCRIPTION));
         assertEquals(expected.get(ProjectColumns.ARCHIVED), contentValues.get(ProjectColumns.ARCHIVED));
     }
 }
