@@ -39,12 +39,6 @@ public class Backup {
     }
 
     /**
-     * Constructor, without arguments.
-     */
-    public Backup() {
-    }
-
-    /**
      * Get the backup directory.
      *
      * @return Backup directory, or null if none have been supplied.
