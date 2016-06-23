@@ -107,7 +107,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
                 mOnProjectActionListener.onClockActivityToggle(project);
             }
         });
-        vh.mClockActivityToggle.setOnLongClickListener(getHintedImageButtonListener());
+        vh.mClockActivityToggle.setOnLongClickListener(mHintedImageButtonListener);
         vh.mClockActivityToggle.setActivated(project.isActive());
 
         vh.mClockActivityAt.setContentDescription(
@@ -119,7 +119,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
                 mOnProjectActionListener.onClockActivityAt(project);
             }
         });
-        vh.mClockActivityAt.setOnLongClickListener(getHintedImageButtonListener());
+        vh.mClockActivityAt.setOnLongClickListener(mHintedImageButtonListener);
 
         vh.mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +127,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
                 mOnProjectActionListener.onDelete(project);
             }
         });
-        vh.mDelete.setOnLongClickListener(getHintedImageButtonListener());
+        vh.mDelete.setOnLongClickListener(mHintedImageButtonListener);
     }
 
     public int findProject(final Project project) {
@@ -144,15 +144,6 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
                 );
             }
         });
-    }
-
-    /**
-     * Retrieve the listener for hinting images.
-     *
-     * @return Listener for hinting images, or null if none have been supplied.
-     */
-    public HintedImageButtonListener getHintedImageButtonListener() {
-        return mHintedImageButtonListener;
     }
 
     /**
