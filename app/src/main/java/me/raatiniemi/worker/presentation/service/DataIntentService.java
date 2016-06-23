@@ -78,7 +78,7 @@ public class DataIntentService extends IntentService {
     }
 
     @Override
-    synchronized protected void onHandleIntent(Intent intent) {
+    protected synchronized void onHandleIntent(Intent intent) {
         try {
             // If an operation is already running, we should not allow another to
             // start. We wouldn't want backup and restore running simultaneously.

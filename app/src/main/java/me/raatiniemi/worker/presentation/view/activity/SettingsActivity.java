@@ -311,7 +311,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
          *
          * @return Resource id for the preference fragment title.
          */
-        abstract public int getTitle();
+        public abstract int getTitle();
     }
 
     public static class SettingsFragment extends BasePreferenceFragment {

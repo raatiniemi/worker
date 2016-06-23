@@ -32,7 +32,7 @@ import java.util.List;
  * @param <T> Reference type for a single item within the list collection.
  * @param <V> Reference type for the view holder.
  */
-abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
+public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<V>
         implements ListAdapter<T> {
     /**
@@ -161,7 +161,7 @@ abstract public class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @inheritDoc
      */
     @Override
-    public void add(final int index, final @NonNull T item) {
+    public void add(final int index, @NonNull final T item) {
         if (getItemCount() == index) {
             add(item);
             return;

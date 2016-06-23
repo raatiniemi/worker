@@ -29,7 +29,7 @@ import rx.schedulers.Schedulers;
  *
  * @param <V> Reference type for the view attached to the presenter.
  */
-abstract public class RxPresenter<V extends MvpView> extends BasePresenter<V> {
+public abstract class RxPresenter<V extends MvpView> extends BasePresenter<V> {
     /**
      * Subscription for retrieving data for the presenter/view.
      */
