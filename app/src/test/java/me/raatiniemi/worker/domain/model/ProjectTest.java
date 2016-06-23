@@ -242,35 +242,6 @@ public class ProjectTest {
         assertEquals("Project name", project.getName());
     }
 
-    @Test(expected = InvalidProjectNameException.class)
-    public void rename_withNullName()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.rename(null);
-    }
-
-    @Test(expected = InvalidProjectNameException.class)
-    public void rename_withEmptyName()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.rename("");
-    }
-
-    @Test
-    public void rename()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.rename("New project name");
-
-        assertEquals("New project name", project.getName());
-    }
-
     @Test
     public void describe()
             throws InvalidProjectNameException {

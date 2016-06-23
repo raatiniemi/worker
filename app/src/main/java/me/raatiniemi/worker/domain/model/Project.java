@@ -97,10 +97,6 @@ public class Project extends DomainObject {
         mName = name;
     }
 
-    public void rename(final String name) throws InvalidProjectNameException {
-        setName(name);
-    }
-
     /**
      * Getter method for the project description.
      *
