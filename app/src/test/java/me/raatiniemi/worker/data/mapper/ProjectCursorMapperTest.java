@@ -35,40 +35,30 @@ import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class ProjectCursorMapperTest {
-    private static Cursor createCursor(long id, String name, long archived) {
+    private static Cursor createCursor(long id, String name) {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndexOrThrow(ProjectColumns._ID)).thenReturn(0);
         when(cursor.getColumnIndexOrThrow(ProjectColumns.NAME)).thenReturn(1);
-        when(cursor.getColumnIndexOrThrow(ProjectColumns.ARCHIVED)).thenReturn(2);
 
         when(cursor.getLong(0)).thenReturn(id);
         when(cursor.getString(1)).thenReturn(name);
-        when(cursor.getLong(2)).thenReturn(archived);
 
         return cursor;
     }
 
-    private static Project createProject(
-            long id,
-            String name,
-            boolean archived
-    ) throws InvalidProjectNameException {
-        Project.Builder builder = new Project.Builder(name)
-                .id(id);
-
-        if (archived) {
-            builder.archive();
-        }
-
-        return builder.build();
+    private static Project createProject(long id, String name)
+            throws InvalidProjectNameException {
+        return new Project.Builder(name)
+                .id(id)
+                .build();
     }
 
     @DataProvider
     public static Object[][] transform_dataProvider() throws InvalidProjectNameException {
         return new Object[][]{
-                {createCursor(1, "Name", 0), createProject(1, "Name", false)},
-                {createCursor(1, "Name", 1), createProject(1, "Name", true)}
+                {createCursor(1, "Name"), createProject(1, "Name")},
+                {createCursor(1, "Name"), createProject(1, "Name")}
         };
     }
 
@@ -80,6 +70,5 @@ public class ProjectCursorMapperTest {
 
         assertEquals(expected.getId(), entity.getId());
         assertEquals(expected.getName(), entity.getName());
-        assertEquals(expected.isArchived(), entity.isArchived());
     }
 }

@@ -200,7 +200,6 @@ public class ProjectTest {
 
         assertNull(project.getId());
         assertEquals("Project name", project.getName());
-        assertFalse(project.isArchived());
     }
 
     @Test
@@ -208,12 +207,10 @@ public class ProjectTest {
             throws InvalidProjectNameException {
         Project project = createProjectBuilder()
                 .id(2L)
-                .archive()
                 .build();
 
         assertEquals("Project name", project.getName());
         assertEquals(Long.valueOf(2L), project.getId());
-        assertTrue(project.isArchived());
     }
 
     @Test(expected = InvalidProjectNameException.class)
@@ -237,29 +234,6 @@ public class ProjectTest {
                 .build();
 
         assertEquals("Project name", project.getName());
-    }
-
-    @Test
-    public void archive()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        assertFalse(project.isArchived());
-        project.archive();
-        assertTrue(project.isArchived());
-    }
-
-    @Test
-    public void unarchive()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .archive()
-                .build();
-
-        assertTrue(project.isArchived());
-        project.unarchive();
-        assertFalse(project.isArchived());
     }
 
     @Test
@@ -526,15 +500,6 @@ public class ProjectTest {
                                     project,
                                     new Project.Builder("Project name")
                                             .id(2L)
-                                            .build()
-                            },
-                            {
-                                    "With different archive status",
-                                    Boolean.FALSE,
-                                    project,
-                                    new Project.Builder("Project name")
-                                            .id(1L)
-                                            .archive()
                                             .build()
                             },
                             {

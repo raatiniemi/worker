@@ -71,20 +71,14 @@ public class ProjectResolverRepositoryTest {
      * <p/>
      * Used for building test data.
      *
-     * @param id       Id for the project.
-     * @param name     Name of the project.
-     * @param archived Archive flag for the project.
+     * @param id   Id for the project.
+     * @param name Name of the project.
      * @return Cursor with sample data.
      */
-    private List<Object> createCursorRow(
-            Long id,
-            String name,
-            Long archived
-    ) {
+    private List<Object> createCursorRow(Long id, String name) {
         List<Object> columns = new ArrayList<>();
         columns.add(id);
         columns.add(name);
-        columns.add(archived);
 
         return columns;
     }
@@ -143,7 +137,7 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void matching_withRow() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
@@ -171,11 +165,11 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void matching_withRows() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", 0L));
-        cursor.addRow(createCursorRow(2L, "Name", 0L));
-        cursor.addRow(createCursorRow(3L, "Name", 0L));
-        cursor.addRow(createCursorRow(4L, "Name", 0L));
-        cursor.addRow(createCursorRow(5L, "Name", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
+        cursor.addRow(createCursorRow(2L, "Name"));
+        cursor.addRow(createCursorRow(3L, "Name"));
+        cursor.addRow(createCursorRow(4L, "Name"));
+        cursor.addRow(createCursorRow(5L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
@@ -252,7 +246,7 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void get_projectsWithRow() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
@@ -279,11 +273,11 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void get_projectsWithRows() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", 0L));
-        cursor.addRow(createCursorRow(2L, "Name", 0L));
-        cursor.addRow(createCursorRow(3L, "Name", 0L));
-        cursor.addRow(createCursorRow(4L, "Name", 0L));
-        cursor.addRow(createCursorRow(5L, "Name", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
+        cursor.addRow(createCursorRow(2L, "Name"));
+        cursor.addRow(createCursorRow(3L, "Name"));
+        cursor.addRow(createCursorRow(4L, "Name"));
+        cursor.addRow(createCursorRow(5L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
@@ -357,7 +351,7 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void get_projectWithRow() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
@@ -383,7 +377,7 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void add() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
 
         Project project = new Project.Builder("Name")
                 .build();

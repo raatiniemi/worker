@@ -76,8 +76,7 @@ public class WorkerContract {
     public static class ProjectContract implements ProjectColumns {
         public static final String[] COLUMNS = {
                 ProjectColumns._ID,
-                ProjectColumns.NAME,
-                ProjectColumns.ARCHIVED
+                ProjectColumns.NAME
         };
 
         public static final String[] COLUMNS_TIMESHEET = {

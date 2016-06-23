@@ -35,11 +35,6 @@ public class Project extends DomainObject {
     private String mName;
 
     /**
-     * Flag for archived project.
-     */
-    private boolean mArchived = false;
-
-    /**
      * Time registered for the project.
      */
     private final List<Time> mTime;
@@ -47,20 +42,15 @@ public class Project extends DomainObject {
     /**
      * Constructor.
      *
-     * @param id       Id for the project.
-     * @param name     Name of the project.
-     * @param archived True if project is archived, otherwise false.
+     * @param id   Id for the project.
+     * @param name Name of the project.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
-    private Project(
-            final Long id,
-            final String name,
-            boolean archived
-    ) throws InvalidProjectNameException {
+    private Project(final Long id, final String name)
+            throws InvalidProjectNameException {
         super(id);
 
         setName(name);
-        mArchived = archived;
 
         // Set default value for non-constructor arguments.
         mTime = new ArrayList<>();
@@ -87,23 +77,6 @@ public class Project extends DomainObject {
         }
 
         mName = name;
-    }
-
-    /**
-     * Getter method for archived project flag.
-     *
-     * @return True if project is archived, otherwise false.
-     */
-    public boolean isArchived() {
-        return mArchived;
-    }
-
-    public void archive() {
-        mArchived = true;
-    }
-
-    public void unarchive() {
-        mArchived = false;
     }
 
     /**
@@ -287,7 +260,6 @@ public class Project extends DomainObject {
         Project project = (Project) o;
         return Objects.equals(getId(), project.getId())
                 && getName().equals(project.getName())
-                && isArchived() == project.isArchived()
                 && getTime().equals(project.getTime());
     }
 
@@ -296,7 +268,6 @@ public class Project extends DomainObject {
         int result = 17;
         result = 31 * result + Objects.hashCode(getId());
         result = 31 * result + getName().hashCode();
-        result = 31 * result + (isArchived() ? 1 : 0);
         result = 31 * result + getTime().hashCode();
         return result;
     }
@@ -304,7 +275,6 @@ public class Project extends DomainObject {
     public static class Builder {
         private final String mProjectName;
         private Long mId;
-        private boolean mArchived;
 
         public Builder(String projectName) {
             mProjectName = projectName;
@@ -315,13 +285,8 @@ public class Project extends DomainObject {
             return this;
         }
 
-        public Builder archive() {
-            mArchived = true;
-            return this;
-        }
-
         public Project build() throws InvalidProjectNameException {
-            return new Project(mId, mProjectName, mArchived);
+            return new Project(mId, mProjectName);
         }
     }
 }

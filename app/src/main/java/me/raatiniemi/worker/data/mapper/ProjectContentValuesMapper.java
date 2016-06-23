@@ -34,7 +34,6 @@ public class ProjectContentValuesMapper implements ContentValuesMapper<Project> 
     public ContentValues transform(@NonNull Project entity) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ProjectColumns.NAME, entity.getName());
-        contentValues.put(ProjectColumns.ARCHIVED, entity.isArchived() ? 1L : 0L);
 
         return contentValues;
     }
