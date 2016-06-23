@@ -18,7 +18,6 @@ package me.raatiniemi.worker.presentation.model.timesheet;
 
 import android.support.annotation.NonNull;
 
-import java.util.Collections;
 import java.util.Objects;
 
 import me.raatiniemi.worker.domain.model.Time;

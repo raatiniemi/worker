@@ -44,7 +44,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func0;
 import rx.functions.Func1;
-import rx.functions.Func2;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     /**
