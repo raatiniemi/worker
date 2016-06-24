@@ -22,6 +22,35 @@ public class TimesheetGroupModel
         super(group);
     }
 
+    private static float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
+        String fraction = sIntervalFormat.format(intervalInMilliseconds);
+
+        return Float.valueOf(fraction);
+    }
+
+    private static float calculateTimeDifference(String timeSummary) {
+        return Float.valueOf(timeSummary) - 8;
+    }
+
+    private static String getFormattedTimeDifference(float difference) {
+        return String.format(
+                getTimeDifferenceFormat(difference),
+                difference
+        );
+    }
+
+    private static String getTimeDifferenceFormat(float difference) {
+        if (0 == Float.compare(0, difference)) {
+            return "";
+        }
+
+        if (0 < difference) {
+            return " (+%.2f)";
+        }
+
+        return " (%.2f)";
+    }
+
     public long getId() {
         return getGroup().getTime();
     }
@@ -68,34 +97,5 @@ public class TimesheetGroupModel
         }
 
         return interval;
-    }
-
-    private float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
-        String fraction = sIntervalFormat.format(intervalInMilliseconds);
-
-        return Float.valueOf(fraction);
-    }
-
-    private float calculateTimeDifference(String timeSummary) {
-        return Float.valueOf(timeSummary) - 8;
-    }
-
-    private String getFormattedTimeDifference(float difference) {
-        return String.format(
-                getTimeDifferenceFormat(difference),
-                difference
-        );
-    }
-
-    private String getTimeDifferenceFormat(float difference) {
-        if (0 == Float.compare(0, difference)) {
-            return "";
-        }
-
-        if (0 < difference) {
-            return " (+%.2f)";
-        }
-
-        return " (%.2f)";
     }
 }
