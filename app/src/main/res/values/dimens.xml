@@ -4,14 +4,7 @@
     <dimen name="projects_item_card_view_margin_horizontal">10dp</dimen>
     <dimen name="projects_item_card_view_margin_vertical">5dp</dimen>
 
-    <dimen name="projects_item_padding_horizontal">25dp</dimen>
-    <dimen name="projects_item_padding_vertical">20dp</dimen>
-
     <dimen name="projects_item_time_margin_start">20dp</dimen>
-
-    <dimen name="projects_item_clock_activity_toggle_margin_top">15dp</dimen>
-
-    <dimen name="projects_item_clocked_activity_margin_start">15dp</dimen>
 
     <dimen name="fragment_new_project_padding_start">25dp</dimen>
     <dimen name="fragment_new_project_padding_end">25dp</dimen>
