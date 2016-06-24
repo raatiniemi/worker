@@ -50,11 +50,11 @@ public class ProjectsModel {
         return mProject.getName();
     }
 
-    private void showTextView(TextView descriptionView) {
+    private static void showTextView(TextView descriptionView) {
         descriptionView.setVisibility(View.VISIBLE);
     }
 
-    private void hideTextView(TextView descriptionView) {
+    private static void hideTextView(TextView descriptionView) {
         descriptionView.setVisibility(View.GONE);
     }
 
@@ -94,7 +94,7 @@ public class ProjectsModel {
         return mProject.isActive();
     }
 
-    private String getClockedInSinceFormatTemplate(Resources resources) {
+    private static String getClockedInSinceFormatTemplate(Resources resources) {
         return resources.getString(R.string.fragment_projects_item_clocked_in_since);
     }
 
