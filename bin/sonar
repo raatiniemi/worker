@@ -16,5 +16,5 @@ if [ $? -ne 0 ]; then
     GRADLE="./gradlew";
 fi;
 
-echo "$GRADLE $TASKS";
+$GRADLE $TASKS;
 exit $?;
