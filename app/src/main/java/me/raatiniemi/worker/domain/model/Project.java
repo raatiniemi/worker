@@ -73,7 +73,7 @@ public class Project extends DomainObject {
      */
     private void setName(final String name) throws InvalidProjectNameException {
         if (null == name || 0 == name.length()) {
-            throw new InvalidProjectNameException("Project name is null or empty");
+            throw new InvalidProjectNameException();
         }
 
         mName = name;

@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.exception;
 
 public class InvalidProjectNameException extends DomainException {
-    public InvalidProjectNameException(String message) {
-        super(message);
+    public InvalidProjectNameException() {
+        super("Project name is null or empty");
     }
 }
