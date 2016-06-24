@@ -51,7 +51,11 @@ public class TimesheetGroupModel
     }
 
     private String getTimeSummary() {
-        return String.format("%.2f", calculateTimeIntervalSummary());
+        return String.format(
+                Locale.getDefault(),
+                "%.2f",
+                calculateTimeIntervalSummary()
+        );
     }
 
     private float calculateTimeIntervalSummary() {
