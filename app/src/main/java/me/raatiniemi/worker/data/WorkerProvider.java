@@ -111,24 +111,35 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        Uri createdResourceUri;
 
-        final long id;
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                id = db.insertOrThrow(Tables.PROJECT, null, values);
-                uri = ProjectContract.getItemUri(id);
+                createdResourceUri = insertProject(values);
                 break;
             case TIME:
-                id = db.insertOrThrow(Tables.TIME, null, values);
-                uri = TimeContract.getItemUri(id);
+                createdResourceUri = insertTime(values);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
         }
 
-        return uri;
+        return createdResourceUri;
+    }
+
+    private Uri insertProject(ContentValues values) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        long id = db.insertOrThrow(Tables.PROJECT, null, values);
+        return ProjectContract.getItemUri(id);
+    }
+
+    private Uri insertTime(ContentValues values) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        long id = db.insertOrThrow(Tables.TIME, null, values);
+        return TimeContract.getItemUri(id);
     }
 
     @Override
