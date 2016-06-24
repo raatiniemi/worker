@@ -83,15 +83,17 @@ public class ProjectActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (R.id.actions_project_hide_registered == item.getItemId()) {
-            item.setChecked(!item.isChecked());
-
-            // Save the hide preference to the SharedPreferences.
-            Settings.setHideRegisteredTime(this, item.isChecked());
-            getTimesheetFragment().refresh();
-
+            handleHideRegisteredTimeChange(item);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void handleHideRegisteredTimeChange(MenuItem item) {
+        item.setChecked(!item.isChecked());
+
+        Settings.setHideRegisteredTime(this, item.isChecked());
+        getTimesheetFragment().refresh();
     }
 }
