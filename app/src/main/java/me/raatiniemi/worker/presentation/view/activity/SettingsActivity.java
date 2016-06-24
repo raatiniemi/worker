@@ -111,14 +111,15 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         return sInstance;
     }
 
+    private static synchronized void setInstance(SettingsActivity instance) {
+        sInstance = instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-        // Store the instance in a static variable,
-        // so it's accessible from the SettingsFragment.
-        sInstance = this;
+        setInstance(this);
 
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
