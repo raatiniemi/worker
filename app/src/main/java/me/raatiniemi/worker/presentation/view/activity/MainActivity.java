@@ -45,12 +45,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Check if we have received the restart intent.
-        Intent intent = getIntent();
-        if (null != intent && null != intent.getAction()) {
-            if (Worker.INTENT_ACTION_RESTART.equals(intent.getAction())) {
-                restart();
-            }
+        if (shouldRestartApplication()) {
+            restart();
         }
 
         if (null == savedInstanceState) {
@@ -60,6 +56,13 @@ public class MainActivity extends BaseActivity {
                     .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
                     .commit();
         }
+    }
+
+    private boolean shouldRestartApplication() {
+        Intent intent = getIntent();
+
+        return !(null == intent || null == intent.getAction())
+                && Worker.INTENT_ACTION_RESTART.equals(intent.getAction());
     }
 
     @Override
