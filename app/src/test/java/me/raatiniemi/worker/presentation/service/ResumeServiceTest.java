@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.service;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -204,6 +205,7 @@ public class ResumeServiceTest {
         );
     }
 
+    @SuppressLint("Registered")
     public static class TestService extends ResumeService {
         private ClockIn mClockIn;
         private GetProject mGetProject;
