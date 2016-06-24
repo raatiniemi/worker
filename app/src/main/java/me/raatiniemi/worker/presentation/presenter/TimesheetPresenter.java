@@ -137,9 +137,9 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                     @Override
                     public List<TimesheetGroupModel> call(Map<Date, List<Time>> result) {
                         List<TimesheetGroupModel> items = new ArrayList<>();
-                        for (Date date : result.keySet()) {
-                            TimesheetGroupModel item = new TimesheetGroupModel(date);
-                            for (Time time : result.get(date)) {
+                        for (Map.Entry<Date, List<Time>> date : result.entrySet()) {
+                            TimesheetGroupModel item = new TimesheetGroupModel(date.getKey());
+                            for (Time time : date.getValue()) {
                                 item.add(new TimesheetChildModel(time));
                             }
 

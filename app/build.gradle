@@ -65,29 +65,29 @@ sonarqube {
                 "${androidPath}/platforms/${android.compileSdkVersion}/android.jar," +
                 "${androidPath}/extras/**/*.jar"
 
-        property 'sonar.projectKey', 'worker:android'
-        property 'sonar.projectName', 'worker'
-        property 'sonar.projectVersion', android.defaultConfig.versionName
+        properties["sonar.projectKey"] = "worker:android"
+        properties["sonar.projectName"] = "worker"
+        properties["sonar.projectVersion"] = "${android.defaultConfig.versionName}"
 
-        property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.sources", "src/main/java,src/main/res"
-        property "sonar.binaries", binaries
-        property "sonar.libraries", libraries
-        property "sonar.java.binaries", binaries
-        property "sonar.java.libraries", libraries
+        properties["sonar.sourceEncoding"] = "UTF-8"
+        properties["sonar.sources"] = "src/main/java,src/main/res"
+        properties["sonar.binaries"] = binaries
+        properties["sonar.libraries"] = libraries
+        properties["sonar.java.binaries"] = binaries
+        properties["sonar.java.libraries"] = libraries
 
-        property "sonar.tests", "src/test/java"
-        property "sonar.java.test.binaries", binaries
-        property "sonar.java.test.libraries", libraries
+        properties["sonar.tests"] = "src/test/java"
+        properties["sonar.java.test.binaries"] = binaries
+        properties["sonar.java.test.libraries"] = libraries
 
-        property 'sonar.java.source', android.compileOptions.sourceCompatibility
-        property 'sonar.java.target', android.compileOptions.targetCompatibility
+        properties['sonar.java.source'] = "${android.compileOptions.sourceCompatibility}"
+        properties['sonar.java.target'] = "${android.compileOptions.targetCompatibility}"
 
-        property "sonar.scm.provider", "git"
+        properties["sonar.scm.provider"] = "git"
 
-        property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.jacoco.reportPath", "${buildDir}/jacoco/testReleaseUnitTest.exec"
-        property "sonar.junit.reportsPath", "${buildDir}/test-results/release"
+        properties["sonar.java.coveragePlugin"] = "jacoco"
+        properties["sonar.jacoco.reportPath"] = "${buildDir}/jacoco/testReleaseUnitTest.exec"
+        properties["sonar.junit.reportsPath"] = "${buildDir}/test-results/release"
     }
 }
 

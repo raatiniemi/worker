@@ -67,7 +67,7 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
      * @return Content resolver.
      */
     @NonNull
-    protected ContentResolver getContentResolver() {
+    ContentResolver getContentResolver() {
         return mContentResolver;
     }
 
@@ -77,7 +77,7 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
      * @return Cursor mapper.
      */
     @NonNull
-    protected M getCursorMapper() {
+    M getCursorMapper() {
         return mCursorMapper;
     }
 
@@ -86,7 +86,7 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
      *
      * @return ContentValues mapper.
      */
-    public V getContentValuesMapper() {
+    V getContentValuesMapper() {
         return mContentValuesMapper;
     }
 }

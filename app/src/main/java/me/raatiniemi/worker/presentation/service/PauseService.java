@@ -61,11 +61,11 @@ public class PauseService extends OngoingService {
         }
     }
 
-    protected ClockOut buildClockOutUseCase() {
+    ClockOut buildClockOutUseCase() {
         return new ClockOut(getTimeRepository());
     }
 
-    protected GetProject buildGetProjectUseCase() {
+    GetProject buildGetProjectUseCase() {
         return new GetProject(getProjectRepository());
     }
 

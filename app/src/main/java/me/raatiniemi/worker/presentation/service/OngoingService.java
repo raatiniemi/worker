@@ -42,9 +42,9 @@ abstract class OngoingService extends IntentService {
         super(name);
     }
 
-    protected long getProjectId(Intent intent) {
+    long getProjectId(Intent intent) {
         String itemId = WorkerContract.ProjectContract.getItemId(intent.getData());
-        long projectId = Long.valueOf(itemId);
+        long projectId = Long.parseLong(itemId);
         if (0 == projectId) {
             throw new IllegalArgumentException("Unable to extract project id from URI");
         }
@@ -52,7 +52,7 @@ abstract class OngoingService extends IntentService {
         return projectId;
     }
 
-    protected TimeRepository getTimeRepository() {
+    TimeRepository getTimeRepository() {
         return new TimeResolverRepository(
                 getContentResolver(),
                 new TimeCursorMapper(),
@@ -60,7 +60,7 @@ abstract class OngoingService extends IntentService {
         );
     }
 
-    protected ProjectRepository getProjectRepository() {
+    ProjectRepository getProjectRepository() {
         return new ProjectResolverRepository(
                 getContentResolver(),
                 new ProjectCursorMapper(),
@@ -68,7 +68,7 @@ abstract class OngoingService extends IntentService {
         );
     }
 
-    protected void sendNotification(long projectId, Notification notification) {
+    void sendNotification(long projectId, Notification notification) {
         NotificationManager manager = getNotificationManager();
         manager.notify(
                 buildNotificationTag(projectId),
@@ -77,7 +77,7 @@ abstract class OngoingService extends IntentService {
         );
     }
 
-    protected void dismissNotification(long projectId) {
+    void dismissNotification(long projectId) {
         NotificationManager manager = getNotificationManager();
         manager.cancel(
                 buildNotificationTag(projectId),
@@ -85,25 +85,25 @@ abstract class OngoingService extends IntentService {
         );
     }
 
-    protected NotificationManager getNotificationManager() {
+    private NotificationManager getNotificationManager() {
         return (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    protected String buildNotificationTag(long projectId) {
+    private String buildNotificationTag(long projectId) {
         return String.valueOf(projectId);
     }
 
-    protected boolean isOngoingNotificationEnabled() {
+    boolean isOngoingNotificationEnabled() {
         return Settings.isOngoingNotificationEnabled(this);
     }
 
-    protected void updateUserInterface(long projectId) {
+    void updateUserInterface(long projectId) {
         getEventBus().post(
                 new OngoingNotificationActionEvent(projectId)
         );
     }
 
-    protected EventBus getEventBus() {
+    EventBus getEventBus() {
         return EventBus.getDefault();
     }
 }

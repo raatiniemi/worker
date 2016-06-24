@@ -74,21 +74,30 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public String getType(@NonNull Uri uri) {
+        String mimeType;
+
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                return ProjectContract.STREAM_TYPE;
+                mimeType = ProjectContract.STREAM_TYPE;
+                break;
             case PROJECTS_ID:
-                return ProjectContract.ITEM_TYPE;
+                mimeType = ProjectContract.ITEM_TYPE;
+                break;
             case PROJECTS_TIME:
-                return TimeContract.STREAM_TYPE;
+                mimeType = TimeContract.STREAM_TYPE;
+                break;
             case TIME:
-                return TimeContract.STREAM_TYPE;
+                mimeType = TimeContract.STREAM_TYPE;
+                break;
             case TIME_ID:
-                return TimeContract.ITEM_TYPE;
+                mimeType = TimeContract.ITEM_TYPE;
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
+        return mimeType;
     }
 
     @Override
@@ -111,24 +120,35 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        Uri createdResourceUri;
 
-        final long id;
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                id = db.insertOrThrow(Tables.PROJECT, null, values);
-                uri = ProjectContract.getItemUri(id);
+                createdResourceUri = insertProject(values);
                 break;
             case TIME:
-                id = db.insertOrThrow(Tables.TIME, null, values);
-                uri = TimeContract.getItemUri(id);
+                createdResourceUri = insertTime(values);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
         }
 
-        return uri;
+        return createdResourceUri;
+    }
+
+    private Uri insertProject(ContentValues values) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        long id = db.insertOrThrow(Tables.PROJECT, null, values);
+        return ProjectContract.getItemUri(id);
+    }
+
+    private Uri insertTime(ContentValues values) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        long id = db.insertOrThrow(Tables.TIME, null, values);
+        return TimeContract.getItemUri(id);
     }
 
     @Override
@@ -172,45 +192,84 @@ public class WorkerProvider extends ContentProvider {
      * @param uri URI for building the selection.
      * @return Selection ready to be queried.
      */
-    private SelectionBuilder buildSelection(Uri uri) {
-        SelectionBuilder builder = new SelectionBuilder();
+    private static SelectionBuilder buildSelection(Uri uri) {
+        SelectionBuilder builder;
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                builder.table(Tables.PROJECT);
+                builder = ProjectsSelection.build();
                 break;
             case PROJECTS_ID:
-                builder.table(Tables.PROJECT)
-                        .where(
-                                ProjectContract._ID + "=?",
-                                ProjectContract.getItemId(uri)
-                        );
+                builder = ProjectSelection.build(uri);
                 break;
             case PROJECTS_TIME:
-                builder.table(Tables.TIME)
-                        .where(
-                                TimeContract.PROJECT_ID + "=?",
-                                ProjectContract.getItemId(uri)
-                        );
+                builder = ProjectTimeSelection.build(uri);
                 break;
             case PROJECTS_TIMESHEET:
-                builder.table(Tables.TIME)
-                        .where(
-                                TimeContract.PROJECT_ID + "=?",
-                                ProjectContract.getItemId(uri)
-                        )
-                        .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+                builder = ProjectTimesheetSelection.build(uri);
                 break;
             case TIME_ID:
-                builder.table(Tables.TIME)
-                        .where(
-                                TimeContract._ID + "=?",
-                                TimeContract.getItemId(uri)
-                        );
+                builder = TimeSelection.build(uri);
                 break;
+            default:
+                throw new UnsupportedOperationException(
+                        "Unknown uri for selection: " + uri
+                );
         }
 
         return builder;
+    }
+
+    private static class ProjectsSelection {
+        private static SelectionBuilder build() {
+            return new SelectionBuilder()
+                    .table(Tables.PROJECT);
+        }
+    }
+
+    private static class ProjectSelection {
+        private static SelectionBuilder build(Uri uri) {
+            return new SelectionBuilder()
+                    .table(Tables.PROJECT)
+                    .where(
+                            ProjectContract._ID + "=?",
+                            ProjectContract.getItemId(uri)
+                    );
+        }
+    }
+
+    private static class ProjectTimeSelection {
+        private static SelectionBuilder build(Uri uri) {
+            return new SelectionBuilder()
+                    .table(Tables.TIME)
+                    .where(
+                            TimeContract.PROJECT_ID + "=?",
+                            ProjectContract.getItemId(uri)
+                    );
+        }
+    }
+
+    private static class ProjectTimesheetSelection {
+        private static SelectionBuilder build(Uri uri) {
+            return new SelectionBuilder()
+                    .table(Tables.TIME)
+                    .where(
+                            TimeContract.PROJECT_ID + "=?",
+                            ProjectContract.getItemId(uri)
+                    )
+                    .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+        }
+    }
+
+    private static class TimeSelection {
+        private static SelectionBuilder build(Uri uri) {
+            return new SelectionBuilder()
+                    .table(Tables.TIME)
+                    .where(
+                            TimeContract._ID + "=?",
+                            TimeContract.getItemId(uri)
+                    );
+        }
     }
 }

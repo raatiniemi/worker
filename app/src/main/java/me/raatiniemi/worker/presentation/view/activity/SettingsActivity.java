@@ -107,18 +107,19 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      *
      * @return Instance for the SettingsActivity.
      */
-    static SettingsActivity getInstance() {
+    private static SettingsActivity getInstance() {
         return sInstance;
+    }
+
+    private static synchronized void setInstance(SettingsActivity instance) {
+        sInstance = instance;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-        // Store the instance in a static variable,
-        // so it's accessible from the SettingsFragment.
-        sInstance = this;
+        setInstance(this);
 
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
@@ -177,7 +178,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      *
      * @param key Key for the new preference screen.
      */
-    void switchPreferenceScreen(String key) {
+    private void switchPreferenceScreen(String key) {
         Fragment fragment;
         switch (key) {
             case SETTINGS_DATA_KEY:
@@ -188,11 +189,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 break;
             default:
                 Log.w(TAG, "Switch to preference screen '" + key + "' is not implemented");
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        R.string.error_message_preference_screen_not_implemented,
-                        Snackbar.LENGTH_SHORT
-                ).show();
+                displayPreferenceScreenNotImplementedMessage();
                 return;
         }
 
@@ -200,6 +197,19 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 .replace(R.id.fragment_container, fragment, key)
                 .addToBackStack(key)
                 .commit();
+    }
+
+    private void displayPreferenceScreenNotImplementedMessage() {
+        View contentView = findViewById(android.R.id.content);
+        if (null == contentView) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.error_message_preference_screen_not_implemented,
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     @Override

@@ -44,7 +44,7 @@ public class Backup {
      * @return Backup directory, or null if none have been supplied.
      */
     @Nullable
-    public File getBackup() {
+    private File getBackup() {
         return mBackup;
     }
 
@@ -54,7 +54,7 @@ public class Backup {
      * @return Timestamp of the backup, or null if backup is not available.
      */
     @Nullable
-    public Long getTimestamp() {
+    private Long getTimestamp() {
         if (null == getBackup()) {
             return null;
         }

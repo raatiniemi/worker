@@ -20,12 +20,7 @@ package me.raatiniemi.worker.domain.exception;
  * Exception for when clock out occur before clock in.
  */
 public class ClockOutBeforeClockInException extends DomainException {
-    /**
-     * Constructor.
-     *
-     * @param message Message thrown with exception.
-     */
-    public ClockOutBeforeClockInException(String message) {
-        super(message);
+    public ClockOutBeforeClockInException() {
+        super("Clock out occur before clock in");
     }
 }

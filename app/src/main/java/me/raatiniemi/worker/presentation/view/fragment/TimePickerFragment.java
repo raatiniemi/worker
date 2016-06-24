@@ -47,7 +47,7 @@ public class TimePickerFragment extends DialogFragment {
         super.onAttach(activity);
 
         // Check that we actually have a listener available.
-        if (null == getOnTimeSetListener()) {
+        if (null == mOnTimeSetListener) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -69,7 +69,7 @@ public class TimePickerFragment extends DialogFragment {
         Calendar calendar = Calendar.getInstance();
         return new TimePickerDialog(
                 getActivity(),
-                getOnTimeSetListener(),
+                mOnTimeSetListener,
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(getActivity())
@@ -81,8 +81,8 @@ public class TimePickerFragment extends DialogFragment {
         super.onCancel(dialog);
 
         // Delegate the "onCancel" event to the listener, if available.
-        if (null != getOnCancelListener()) {
-            getOnCancelListener().onCancel(dialog);
+        if (null != mOnCancelListener) {
+            mOnCancelListener.onCancel(dialog);
         }
     }
 
@@ -91,18 +91,9 @@ public class TimePickerFragment extends DialogFragment {
         super.onDismiss(dialog);
 
         // Delegate the "onDismiss" event to the listener, if available.
-        if (null != getOnDismissListener()) {
-            getOnDismissListener().onDismiss(dialog);
+        if (null != mOnDismissListener) {
+            mOnDismissListener.onDismiss(dialog);
         }
-    }
-
-    /**
-     * Get the "OnTimeSetListener" for the TimePickerDialog.
-     *
-     * @return "OnTimeSetListener" for the TimePickerDialog.
-     */
-    public TimePickerDialog.OnTimeSetListener getOnTimeSetListener() {
-        return mOnTimeSetListener;
     }
 
     /**
@@ -114,16 +105,8 @@ public class TimePickerFragment extends DialogFragment {
         mOnTimeSetListener = listener;
     }
 
-    public DialogInterface.OnCancelListener getOnCancelListener() {
-        return mOnCancelListener;
-    }
-
     public void setOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
         mOnCancelListener = onCancelListener;
-    }
-
-    public DialogInterface.OnDismissListener getOnDismissListener() {
-        return mOnDismissListener;
     }
 
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {

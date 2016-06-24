@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.service;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -148,6 +149,7 @@ public class ClockOutServiceTest {
         );
     }
 
+    @SuppressLint("Registered")
     public static class TestService extends ClockOutService {
         private ClockOut mClockOut;
         private EventBus mEventBus;

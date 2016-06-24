@@ -43,11 +43,6 @@ public abstract class ExpandableListAdapter<
         extends AbstractExpandableItemAdapter<GVH, CVH>
         implements ListAdapter<T> {
     /**
-     * Tag for logging.
-     */
-    private static final String TAG = "ExpandableListAdapter";
-
-    /**
      * Available items.
      */
     private final List<T> mItems = new ArrayList<>();
@@ -88,7 +83,7 @@ public abstract class ExpandableListAdapter<
      * @param index Group index to check.
      * @return True if index exists, otherwise false.
      */
-    protected boolean has(int index) {
+    private boolean has(int index) {
         // Check if index is within bounds.
         return 0 <= index && getGroupCount() > index;
     }
@@ -101,7 +96,7 @@ public abstract class ExpandableListAdapter<
      * @return True if index exists, otherwise false.
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    protected boolean has(int index, int child) {
+    private boolean has(int index, int child) {
         // Check if index is within bounds.
         return has(index) && 0 <= child && getChildCount(index) > child;
     }
@@ -113,12 +108,16 @@ public abstract class ExpandableListAdapter<
     @NonNull
     public T get(int index) {
         if (!has(index)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index " + index + ", size is " + getGroupCount()
-            );
+            throwGroupIndexOutOfBounds(index);
         }
 
         return mItems.get(index);
+    }
+
+    private void throwGroupIndexOutOfBounds(int index) {
+        throw new IndexOutOfBoundsException(
+                "Invalid index " + index + ", size is " + getGroupCount()
+        );
     }
 
     /**
@@ -130,16 +129,20 @@ public abstract class ExpandableListAdapter<
      * @throws IndexOutOfBoundsException if index do not exists.
      */
     @NonNull
-    public C get(int group, int child) {
+    protected C get(int group, int child) {
         if (!has(group, child)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index [" + group + "][" + child + "] size is "
-                            + "[" + getGroupCount() + "]"
-                            + "[" + getChildCount(group) + "]"
-            );
+            throwChildIndexOutOfBounds(group, child);
         }
 
         return get(group).get(child);
+    }
+
+    private void throwChildIndexOutOfBounds(int group, int child) {
+        throw new IndexOutOfBoundsException(
+                "Invalid index [" + group + "][" + child + "] size is "
+                        + "[" + getGroupCount() + "]"
+                        + "[" + getChildCount(group) + "]"
+        );
     }
 
     /**
@@ -148,9 +151,7 @@ public abstract class ExpandableListAdapter<
     @Override
     public void set(int index, @NonNull T item) {
         if (!has(index)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index " + index + ", size is " + getGroupCount()
-            );
+            throwGroupIndexOutOfBounds(index);
         }
 
         // Update the item and notify the adapter.
@@ -166,14 +167,10 @@ public abstract class ExpandableListAdapter<
      * @param item  Item to update.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
-    public void set(int group, int child, @NonNull C item) {
+    protected void set(int group, int child, @NonNull C item) {
         // Check that the group/child index exists.
         if (!has(group, child)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index [" + group + "][" + child + "] size is "
-                            + "[" + getGroupCount() + "]"
-                            + "[" + getChildCount(group) + "]"
-            );
+            throwChildIndexOutOfBounds(group, child);
         }
 
         // Update the child item within the group item.
@@ -234,9 +231,7 @@ public abstract class ExpandableListAdapter<
     @NonNull
     public T remove(int index) {
         if (!has(index)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index " + index + ", size is " + getGroupCount()
-            );
+            throwGroupIndexOutOfBounds(index);
         }
 
         // Remove the group and notify the change.
@@ -253,13 +248,9 @@ public abstract class ExpandableListAdapter<
      * @param child Index of the child.
      * @throws IndexOutOfBoundsException if index do not exists.
      */
-    public void remove(int group, int child) {
+    protected void remove(int group, int child) {
         if (!has(group, child)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index [" + group + "][" + child + "] size is "
-                            + "[" + getGroupCount() + "]"
-                            + "[" + getChildCount(group) + "]"
-            );
+            throwChildIndexOutOfBounds(group, child);
         }
 
         // Remove the child item from the group.
@@ -301,7 +292,7 @@ public abstract class ExpandableListAdapter<
          *
          * @param group Group item.
          */
-        public ExpandableItem(@NonNull G group) {
+        protected ExpandableItem(@NonNull G group) {
             mGroup = group;
         }
 
@@ -311,7 +302,7 @@ public abstract class ExpandableListAdapter<
          * @return Group item.
          */
         @NonNull
-        public G getGroup() {
+        protected G getGroup() {
             return mGroup;
         }
     }

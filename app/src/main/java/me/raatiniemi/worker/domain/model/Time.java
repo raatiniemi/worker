@@ -59,7 +59,6 @@ public class Time extends DomainObject {
 
         if (builder.mStopInMilliseconds < builder.mStartInMilliseconds) {
             throw new ClockOutBeforeClockInException(
-                    "Clock out occur before clock in"
             );
         }
     }

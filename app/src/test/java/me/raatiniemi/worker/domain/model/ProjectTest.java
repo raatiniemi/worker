@@ -200,8 +200,6 @@ public class ProjectTest {
 
         assertNull(project.getId());
         assertEquals("Project name", project.getName());
-        assertNull(project.getDescription());
-        assertFalse(project.isArchived());
     }
 
     @Test
@@ -209,14 +207,10 @@ public class ProjectTest {
             throws InvalidProjectNameException {
         Project project = createProjectBuilder()
                 .id(2L)
-                .describe("Project description")
-                .archive()
                 .build();
 
         assertEquals("Project name", project.getName());
         assertEquals(Long.valueOf(2L), project.getId());
-        assertEquals("Project description", project.getDescription());
-        assertTrue(project.isArchived());
     }
 
     @Test(expected = InvalidProjectNameException.class)
@@ -240,91 +234,6 @@ public class ProjectTest {
                 .build();
 
         assertEquals("Project name", project.getName());
-    }
-
-    @Test(expected = InvalidProjectNameException.class)
-    public void rename_withNullName()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.rename(null);
-    }
-
-    @Test(expected = InvalidProjectNameException.class)
-    public void rename_withEmptyName()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.rename("");
-    }
-
-    @Test
-    public void rename()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.rename("New project name");
-
-        assertEquals("New project name", project.getName());
-    }
-
-    @Test
-    public void describe()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.describe("Project description");
-
-        assertEquals("Project description", project.getDescription());
-    }
-
-    @Test
-    public void describe_withNullDescription()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.describe(null);
-
-        assertNull(project.getDescription());
-    }
-
-    @Test
-    public void describe_withEmptyDescription()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.describe("");
-
-        assertNull(project.getDescription());
-    }
-
-    @Test
-    public void archive()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        assertFalse(project.isArchived());
-        project.archive();
-        assertTrue(project.isArchived());
-    }
-
-    @Test
-    public void unarchive()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .archive()
-                .build();
-
-        assertTrue(project.isArchived());
-        project.unarchive();
-        assertFalse(project.isArchived());
     }
 
     @Test
@@ -555,7 +464,6 @@ public class ProjectTest {
                 throws DomainException {
             Project project = new Project.Builder("Project name")
                     .id(1L)
-                    .describe("Project description")
                     .build();
 
             return Arrays.asList(
@@ -584,7 +492,6 @@ public class ProjectTest {
                                     project,
                                     new Project.Builder("Name")
                                             .id(1L)
-                                            .describe("Project description")
                                             .build()
                             },
                             {
@@ -593,26 +500,6 @@ public class ProjectTest {
                                     project,
                                     new Project.Builder("Project name")
                                             .id(2L)
-                                            .describe("Project description")
-                                            .build()
-                            },
-                            {
-                                    "With different description",
-                                    Boolean.FALSE,
-                                    project,
-                                    new Project.Builder("Project name")
-                                            .id(1L)
-                                            .describe("Description")
-                                            .build()
-                            },
-                            {
-                                    "With different archive status",
-                                    Boolean.FALSE,
-                                    project,
-                                    new Project.Builder("Project name")
-                                            .id(1L)
-                                            .describe("Project description")
-                                            .archive()
                                             .build()
                             },
                             {
@@ -629,7 +516,6 @@ public class ProjectTest {
                 throws DomainException {
             Project project = new Project.Builder("Project name")
                     .id(1L)
-                    .describe("Project description")
                     .build();
 
             Time time = new Time.Builder(1L)

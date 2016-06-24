@@ -63,7 +63,7 @@ public class ProjectResolverRepositoryTest {
      * @return Cursor.
      */
     private MatrixCursor createCursor() {
-        return new MatrixCursor(ProjectContract.COLUMNS);
+        return new MatrixCursor(ProjectContract.getColumns());
     }
 
     /**
@@ -71,23 +71,14 @@ public class ProjectResolverRepositoryTest {
      * <p/>
      * Used for building test data.
      *
-     * @param id          Id for the project.
-     * @param name        Name of the project.
-     * @param description Description for the project.
-     * @param archived    Archive flag for the project.
+     * @param id   Id for the project.
+     * @param name Name of the project.
      * @return Cursor with sample data.
      */
-    private List<Object> createCursorRow(
-            Long id,
-            String name,
-            String description,
-            Long archived
-    ) {
+    private List<Object> createCursorRow(Long id, String name) {
         List<Object> columns = new ArrayList<>();
         columns.add(id);
         columns.add(name);
-        columns.add(description);
-        columns.add(archived);
 
         return columns;
     }
@@ -98,7 +89,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -124,7 +115,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -146,13 +137,13 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void matching_withRow() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", "Description", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -174,17 +165,17 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void matching_withRows() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", "Description", 0L));
-        cursor.addRow(createCursorRow(2L, "Name", "Description", 0L));
-        cursor.addRow(createCursorRow(3L, "Name", "Description", 0L));
-        cursor.addRow(createCursorRow(4L, "Name", "Description", 0L));
-        cursor.addRow(createCursorRow(5L, "Name", "Description", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
+        cursor.addRow(createCursorRow(2L, "Name"));
+        cursor.addRow(createCursorRow(3L, "Name"));
+        cursor.addRow(createCursorRow(4L, "Name"));
+        cursor.addRow(createCursorRow(5L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -209,7 +200,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -234,7 +225,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -255,13 +246,13 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void get_projectsWithRow() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", "Description", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -282,17 +273,17 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void get_projectsWithRows() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", "Description", 0L));
-        cursor.addRow(createCursorRow(2L, "Name", "Description", 0L));
-        cursor.addRow(createCursorRow(3L, "Name", "Description", 0L));
-        cursor.addRow(createCursorRow(4L, "Name", "Description", 0L));
-        cursor.addRow(createCursorRow(5L, "Name", "Description", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
+        cursor.addRow(createCursorRow(2L, "Name"));
+        cursor.addRow(createCursorRow(3L, "Name"));
+        cursor.addRow(createCursorRow(4L, "Name"));
+        cursor.addRow(createCursorRow(5L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -316,7 +307,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getItemUri(1),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -340,7 +331,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getItemUri(1),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -360,13 +351,13 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void get_projectWithRow() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", "Description", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
 
         ContentResolver resolver = mock(ContentResolver.class);
         when(
                 resolver.query(
                         ProjectContract.getItemUri(1),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -386,10 +377,9 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void add() throws InvalidProjectNameException {
         MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name", "Description", 0L));
+        cursor.addRow(createCursorRow(1L, "Name"));
 
         Project project = new Project.Builder("Name")
-                .describe("Description")
                 .build();
 
         ContentResolver resolver = mock(ContentResolver.class);
@@ -406,7 +396,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getItemUri(1),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null

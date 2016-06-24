@@ -44,8 +44,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetAdapter.ItemViewHolder,
         TimesheetAdapter.ItemViewHolder
         > {
-    private static final String TAG = "TimesheetAdapter";
-
     private final TimesheetSelectionListener mSelectionListener;
     private Set<TimeInAdapterResult> mSelectedItems = new HashSet<>();
 

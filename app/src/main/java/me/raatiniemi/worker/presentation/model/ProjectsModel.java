@@ -50,29 +50,12 @@ public class ProjectsModel {
         return mProject.getName();
     }
 
-    public String getDescription() {
-        return mProject.getDescription();
-    }
-
-    public void setVisibilityForDescriptionView(TextView descriptionView) {
-        if (isDescriptionMissing()) {
-            hideTextView(descriptionView);
-            return;
-        }
-
-        showTextView(descriptionView);
-    }
-
-    private boolean isDescriptionMissing() {
-        return null == getDescription() || 0 == getDescription().length();
-    }
-
-    private void showTextView(TextView descriptionView) {
+    private static void showTextView(TextView descriptionView) {
         descriptionView.setVisibility(View.VISIBLE);
     }
 
-    private void hideTextView(TextView descriptionView) {
-        descriptionView.setVisibility(View.GONE);
+    private static void hideTextView(TextView textView) {
+        textView.setVisibility(View.GONE);
     }
 
     public String getTimeSummary() {
@@ -111,7 +94,7 @@ public class ProjectsModel {
         return mProject.isActive();
     }
 
-    private String getClockedInSinceFormatTemplate(Resources resources) {
+    private static String getClockedInSinceFormatTemplate(Resources resources) {
         return resources.getString(R.string.fragment_projects_item_clocked_in_since);
     }
 

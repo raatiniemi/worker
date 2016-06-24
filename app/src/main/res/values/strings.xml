@@ -10,7 +10,6 @@
 
     <string name="menu.actions.project.hide_registered">Hide registered</string>
 
-    <string name="menu.actions.project_timesheet.edit">Edit</string>
     <string name="menu.actions.project_timesheet.register">Mark as registered</string>
     <string name="menu.actions.project_timesheet.delete">Delete</string>
 

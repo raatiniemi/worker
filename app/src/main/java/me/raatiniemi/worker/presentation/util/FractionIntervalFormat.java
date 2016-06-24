@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.presentation.util;
 
+import java.util.Locale;
+
 import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.util.CalculateTime;
 
@@ -34,16 +36,17 @@ public class FractionIntervalFormat implements DateIntervalFormat {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
         return String.format(
+                Locale.getDefault(),
                 sFractionFormat,
                 calculateHoursWithFraction(calculatedTime)
         );
     }
 
-    private float calculateHoursWithFraction(CalculatedTime calculatedTime) {
+    private static float calculateHoursWithFraction(CalculatedTime calculatedTime) {
         return calculatedTime.getHours() + calculateFraction(calculatedTime.getMinutes());
     }
 
-    private float calculateFraction(long minutes) {
+    private static float calculateFraction(long minutes) {
         return (float) minutes / sMinutesInHour;
     }
 }

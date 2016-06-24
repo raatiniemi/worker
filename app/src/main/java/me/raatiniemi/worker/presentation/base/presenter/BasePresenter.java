@@ -43,7 +43,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      *
      * @param context Context used with the presenter.
      */
-    public BasePresenter(Context context) {
+    BasePresenter(Context context) {
         mContext = context;
     }
 
@@ -61,7 +61,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      *
      * @return Attached view if available, otherwise null.
      */
-    public V getView() {
+    protected V getView() {
         return null != mViewReference ? mViewReference.get() : null;
     }
 
@@ -71,7 +71,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @return True if a view is attached, otherwise false.
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean isViewAttached() {
+    protected boolean isViewAttached() {
         return null != getView();
     }
 

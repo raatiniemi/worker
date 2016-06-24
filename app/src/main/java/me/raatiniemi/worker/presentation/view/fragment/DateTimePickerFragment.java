@@ -81,30 +81,12 @@ public class DateTimePickerFragment extends BaseFragment
     }
 
     /**
-     * Retrieve the minimum date available for the date picker.
-     *
-     * @return Minimum date, or null if none is set.
-     */
-    public Calendar getMinDate() {
-        return mMinDate;
-    }
-
-    /**
      * Set the minimum date for the date picker.
      *
      * @param minDate Minimum date.
      */
-    public void setMinDate(Calendar minDate) {
+    void setMinDate(Calendar minDate) {
         mMinDate = minDate;
-    }
-
-    /**
-     * Retrieve the maximum date available for the date picker.
-     *
-     * @return Maximum date, or null if none is set.
-     */
-    public Calendar getMaxDate() {
-        return mMaxDate;
     }
 
     /**
@@ -112,7 +94,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param maxDate Maximum date.
      */
-    public void setMaxDate(Calendar maxDate) {
+    void setMaxDate(Calendar maxDate) {
         mMaxDate = maxDate;
     }
 
@@ -136,8 +118,8 @@ public class DateTimePickerFragment extends BaseFragment
         });
 
         // Set the min/max date for the picker.
-        mDatePicker.setMaxDate(getMaxDate());
-        mDatePicker.setMinDate(getMinDate());
+        mDatePicker.setMaxDate(mMaxDate);
+        mDatePicker.setMinDate(mMinDate);
 
         mDatePicker.show(
                 getFragmentManager().beginTransaction(),
@@ -221,22 +203,13 @@ public class DateTimePickerFragment extends BaseFragment
         mCalendar.set(Calendar.MINUTE, minute);
 
         // Check that we have been supplied with a listener.
-        if (null == getOnDateTimeSetListener()) {
+        if (null == mOnDateTimeSetListener) {
             Log.e(TAG, "No OnDateTimeSetListener have been supplied");
             return;
         }
 
         // Send the calendar to the listener.
-        getOnDateTimeSetListener().onDateTimeSet(mCalendar);
-    }
-
-    /**
-     * Get the "OnDateTimeSetListener", or null if none have been supplied.
-     *
-     * @return Listener for "OnDateTimeSetListener".
-     */
-    public OnDateTimeSetListener getOnDateTimeSetListener() {
-        return mOnDateTimeSetListener;
+        mOnDateTimeSetListener.onDateTimeSet(mCalendar);
     }
 
     /**
@@ -244,7 +217,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param onDateTimeSetListener Listener for "OnDateTimeSetListener".
      */
-    public void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
+    void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
         mOnDateTimeSetListener = onDateTimeSetListener;
     }
 

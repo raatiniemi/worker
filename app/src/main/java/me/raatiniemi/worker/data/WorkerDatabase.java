@@ -29,7 +29,7 @@ import me.raatiniemi.worker.Worker;
 /**
  * A helper class to manage database creation and version management.
  */
-public class WorkerDatabase extends SQLiteOpenHelper {
+class WorkerDatabase extends SQLiteOpenHelper {
     /**
      * Constructor.
      *
@@ -47,7 +47,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
      * @param column Name of the column.
      * @return true if column exists, otherwise false.
      */
-    private boolean columnExists(SQLiteDatabase db, String table, String column) {
+    private static boolean columnExists(SQLiteDatabase db, String table, String column) {
         boolean exists = false;
 
         // get the table structure and check if the column exists.

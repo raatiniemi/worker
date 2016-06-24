@@ -27,6 +27,7 @@ import me.raatiniemi.worker.presentation.base.view.adapter.ListAdapter;
  *
  * @param <A> Type reference for the {@link ListAdapter}.
  * @param <T> Type reference for the item within the {@link ListAdapter}.
+ * @deprecated Wrong level of abstraction and exposes to much of underlying data structure.
  */
 @Deprecated
 public interface ListFragment<A extends ListAdapter, T> {

@@ -40,7 +40,7 @@ public abstract class RxPresenter<V extends MvpView> extends BasePresenter<V> {
      *
      * @param context Context used with the presenter.
      */
-    public RxPresenter(Context context) {
+    protected RxPresenter(Context context) {
         super(context);
     }
 

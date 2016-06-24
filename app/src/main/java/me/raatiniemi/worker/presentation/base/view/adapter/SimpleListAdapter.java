@@ -104,7 +104,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @param index Index to check.
      * @return True if index exists, otherwise false.
      */
-    protected boolean has(int index) {
+    private boolean has(int index) {
         // Check if index is within bounds.
         return 0 <= index && getItemCount() > index;
     }
@@ -116,12 +116,16 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     @NonNull
     public T get(int index) {
         if (!has(index)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index " + index + ", size is " + getItemCount()
-            );
+            throwIndexOutOfBounds(index);
         }
 
         return mItems.get(index);
+    }
+
+    private void throwIndexOutOfBounds(int index) {
+        throw new IndexOutOfBoundsException(
+                "Invalid index " + index + ", size is " + getItemCount()
+        );
     }
 
     /**
@@ -130,9 +134,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     @Override
     public void set(int index, @NonNull T item) {
         if (!has(index)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index " + index + ", size is " + getItemCount()
-            );
+            throwIndexOutOfBounds(index);
         }
 
         // Update the item and notify the adapter.
@@ -168,9 +170,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         }
 
         if (!has(index)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index " + index + ", size is " + getItemCount()
-            );
+            throwIndexOutOfBounds(index);
         }
 
         // Add the item at the specified index.
@@ -204,9 +204,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     @NonNull
     public T remove(int index) {
         if (!has(index)) {
-            throw new IndexOutOfBoundsException(
-                    "Invalid index " + index + ", size is " + getItemCount()
-            );
+            throwIndexOutOfBounds(index);
         }
 
         // Remove the item from the internal data container.

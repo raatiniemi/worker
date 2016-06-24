@@ -49,7 +49,7 @@ public class ClockOutService extends OngoingService {
         }
     }
 
-    protected ClockOut buildClockOutUseCase() {
+    ClockOut buildClockOutUseCase() {
         return new ClockOut(getTimeRepository());
     }
 

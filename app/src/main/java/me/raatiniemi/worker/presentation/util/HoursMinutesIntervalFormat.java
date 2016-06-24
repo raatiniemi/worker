@@ -40,7 +40,7 @@ public class HoursMinutesIntervalFormat implements DateIntervalFormat {
         );
     }
 
-    private String getFormatTemplate(CalculatedTime calculatedTime) {
+    private static String getFormatTemplate(CalculatedTime calculatedTime) {
         if (0 == calculatedTime.getHours()) {
             return sMinutesFormat;
         }
