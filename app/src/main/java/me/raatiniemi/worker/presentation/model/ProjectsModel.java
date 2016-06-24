@@ -54,8 +54,8 @@ public class ProjectsModel {
         descriptionView.setVisibility(View.VISIBLE);
     }
 
-    private static void hideTextView(TextView descriptionView) {
-        descriptionView.setVisibility(View.GONE);
+    private static void hideTextView(TextView textView) {
+        textView.setVisibility(View.GONE);
     }
 
     public String getTimeSummary() {

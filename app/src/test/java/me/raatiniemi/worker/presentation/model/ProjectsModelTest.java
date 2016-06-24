@@ -281,10 +281,10 @@ public class ProjectsModelTest {
             int expectedViewVisibility
     ) throws InvalidProjectNameException, ClockOutBeforeClockInException {
         ProjectsModel model = new ProjectsModel(project);
-        TextView descriptionView = mock(TextView.class);
+        TextView textView = mock(TextView.class);
 
-        model.setVisibilityForClockedInSinceView(descriptionView);
+        model.setVisibilityForClockedInSinceView(textView);
 
-        verify(descriptionView, times(1)).setVisibility(expectedViewVisibility);
+        verify(textView, times(1)).setVisibility(expectedViewVisibility);
     }
 }
