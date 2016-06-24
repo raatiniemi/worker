@@ -25,11 +25,11 @@ public class TimesheetGroupModel
     private static float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
         String fraction = sIntervalFormat.format(intervalInMilliseconds);
 
-        return Float.valueOf(fraction);
+        return Float.parseFloat(fraction);
     }
 
     private static float calculateTimeDifference(String timeSummary) {
-        return Float.valueOf(timeSummary) - 8;
+        return Float.parseFloat(timeSummary) - 8;
     }
 
     private static String getFormattedTimeDifference(float difference) {

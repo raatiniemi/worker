@@ -95,7 +95,7 @@ public class TimeResolverRepository
                 TimeContract.getStreamUri(),
                 values
         );
-        return get(Long.valueOf(TimeContract.getItemId(uri)));
+        return get(Long.parseLong(TimeContract.getItemId(uri)));
     }
 
     /**
@@ -206,7 +206,7 @@ public class TimeResolverRepository
                 List<Time> items = new ArrayList<>();
                 for (String id : rows) {
                     try {
-                        items.add(get(Long.valueOf(id)));
+                        items.add(get(Long.parseLong(id)));
                     } catch (DomainException e) {
                         // TODO: Handle exception properly.
                     }

@@ -151,7 +151,7 @@ public class ProjectResolverRepository
                 ProjectContract.getStreamUri(),
                 getContentValuesMapper().transform(project)
         );
-        return get(Long.valueOf(ProjectContract.getItemId(uri)));
+        return get(Long.parseLong(ProjectContract.getItemId(uri)));
     }
 
     /**
