@@ -183,45 +183,84 @@ public class WorkerProvider extends ContentProvider {
      * @param uri URI for building the selection.
      * @return Selection ready to be queried.
      */
-    private SelectionBuilder buildSelection(Uri uri) {
-        SelectionBuilder builder = new SelectionBuilder();
+    private static SelectionBuilder buildSelection(Uri uri) {
+        SelectionBuilder builder;
 
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                builder.table(Tables.PROJECT);
+                builder = ProjectsSelection.build();
                 break;
             case PROJECTS_ID:
-                builder.table(Tables.PROJECT)
-                        .where(
-                                ProjectContract._ID + "=?",
-                                ProjectContract.getItemId(uri)
-                        );
+                builder = ProjectSelection.build(uri);
                 break;
             case PROJECTS_TIME:
-                builder.table(Tables.TIME)
-                        .where(
-                                TimeContract.PROJECT_ID + "=?",
-                                ProjectContract.getItemId(uri)
-                        );
+                builder = ProjectTimeSelection.build(uri);
                 break;
             case PROJECTS_TIMESHEET:
-                builder.table(Tables.TIME)
-                        .where(
-                                TimeContract.PROJECT_ID + "=?",
-                                ProjectContract.getItemId(uri)
-                        )
-                        .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+                builder = ProjectTimesheetSelection.build(uri);
                 break;
             case TIME_ID:
-                builder.table(Tables.TIME)
-                        .where(
-                                TimeContract._ID + "=?",
-                                TimeContract.getItemId(uri)
-                        );
+                builder = TimeSelection.build(uri);
                 break;
+            default:
+                throw new UnsupportedOperationException(
+                        "Unknown uri for selection: " + uri
+                );
         }
 
         return builder;
+    }
+
+    private static class ProjectsSelection {
+        private static SelectionBuilder build() {
+            return new SelectionBuilder()
+                    .table(Tables.PROJECT);
+        }
+    }
+
+    private static class ProjectSelection {
+        private static SelectionBuilder build(Uri uri) {
+            return new SelectionBuilder()
+                    .table(Tables.PROJECT)
+                    .where(
+                            ProjectContract._ID + "=?",
+                            ProjectContract.getItemId(uri)
+                    );
+        }
+    }
+
+    private static class ProjectTimeSelection {
+        private static SelectionBuilder build(Uri uri) {
+            return new SelectionBuilder()
+                    .table(Tables.TIME)
+                    .where(
+                            TimeContract.PROJECT_ID + "=?",
+                            ProjectContract.getItemId(uri)
+                    );
+        }
+    }
+
+    private static class ProjectTimesheetSelection {
+        private static SelectionBuilder build(Uri uri) {
+            return new SelectionBuilder()
+                    .table(Tables.TIME)
+                    .where(
+                            TimeContract.PROJECT_ID + "=?",
+                            ProjectContract.getItemId(uri)
+                    )
+                    .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+        }
+    }
+
+    private static class TimeSelection {
+        private static SelectionBuilder build(Uri uri) {
+            return new SelectionBuilder()
+                    .table(Tables.TIME)
+                    .where(
+                            TimeContract._ID + "=?",
+                            TimeContract.getItemId(uri)
+                    );
+        }
     }
 }
