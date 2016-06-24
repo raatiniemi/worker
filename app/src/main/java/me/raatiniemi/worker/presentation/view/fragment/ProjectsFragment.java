@@ -371,6 +371,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
                     .setTitle(getString(R.string.confirm_clock_out_title))
                     .setMessage(getString(R.string.confirm_clock_out_message))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
                         public void onClick(DialogInterface dialog, int whichButton) {
                             getPresenter().clockActivityChange(project, new Date());
                         }
