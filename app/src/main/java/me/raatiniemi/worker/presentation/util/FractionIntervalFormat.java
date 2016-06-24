@@ -42,11 +42,11 @@ public class FractionIntervalFormat implements DateIntervalFormat {
         );
     }
 
-    private float calculateHoursWithFraction(CalculatedTime calculatedTime) {
+    private static float calculateHoursWithFraction(CalculatedTime calculatedTime) {
         return calculatedTime.getHours() + calculateFraction(calculatedTime.getMinutes());
     }
 
-    private float calculateFraction(long minutes) {
+    private static float calculateFraction(long minutes) {
         return (float) minutes / sMinutesInHour;
     }
 }
