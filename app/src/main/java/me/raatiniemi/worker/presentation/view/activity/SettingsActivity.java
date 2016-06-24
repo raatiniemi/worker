@@ -189,11 +189,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 break;
             default:
                 Log.w(TAG, "Switch to preference screen '" + key + "' is not implemented");
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        R.string.error_message_preference_screen_not_implemented,
-                        Snackbar.LENGTH_SHORT
-                ).show();
+                displayPreferenceScreenNotImplementedMessage();
                 return;
         }
 
@@ -201,6 +197,19 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 .replace(R.id.fragment_container, fragment, key)
                 .addToBackStack(key)
                 .commit();
+    }
+
+    private void displayPreferenceScreenNotImplementedMessage() {
+        View contentView = findViewById(android.R.id.content);
+        if (null == contentView) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.error_message_preference_screen_not_implemented,
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     @Override
