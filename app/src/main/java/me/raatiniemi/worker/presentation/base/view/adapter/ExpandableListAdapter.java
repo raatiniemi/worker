@@ -43,11 +43,6 @@ public abstract class ExpandableListAdapter<
         extends AbstractExpandableItemAdapter<GVH, CVH>
         implements ListAdapter<T> {
     /**
-     * Tag for logging.
-     */
-    private static final String TAG = "ExpandableListAdapter";
-
-    /**
      * Available items.
      */
     private final List<T> mItems = new ArrayList<>();

@@ -41,11 +41,6 @@ import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
  */
 public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.ItemViewHolder> {
     /**
-     * Tag for logging within the ProjectsAdapter.
-     */
-    private static final String TAG = "ProjectsAdapter";
-
-    /**
      * Listener for project actions.
      */
     private final OnProjectActionListener mOnProjectActionListener;
