@@ -74,21 +74,30 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public String getType(@NonNull Uri uri) {
+        String mimeType;
+
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                return ProjectContract.STREAM_TYPE;
+                mimeType = ProjectContract.STREAM_TYPE;
+                break;
             case PROJECTS_ID:
-                return ProjectContract.ITEM_TYPE;
+                mimeType = ProjectContract.ITEM_TYPE;
+                break;
             case PROJECTS_TIME:
-                return TimeContract.STREAM_TYPE;
+                mimeType = TimeContract.STREAM_TYPE;
+                break;
             case TIME:
-                return TimeContract.STREAM_TYPE;
+                mimeType = TimeContract.STREAM_TYPE;
+                break;
             case TIME_ID:
-                return TimeContract.ITEM_TYPE;
+                mimeType = TimeContract.ITEM_TYPE;
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
+        return mimeType;
     }
 
     @Override
