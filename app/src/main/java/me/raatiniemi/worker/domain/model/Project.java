@@ -193,7 +193,7 @@ public class Project extends DomainObject {
     public Time clockInAt(final Date date)
             throws ClockActivityException, ClockOutBeforeClockInException {
         if (null == date) {
-            throw new NullPointerException("Time is not allowed to be null");
+            throw new NullPointerException("Date is not allowed to be null");
         }
 
         // If the project is already active, we can't clock in.
@@ -219,7 +219,7 @@ public class Project extends DomainObject {
     public Time clockOutAt(final Date date)
             throws ClockActivityException, ClockOutBeforeClockInException {
         if (null == date) {
-            throw new NullPointerException("Time is not allowed to be null");
+            throw new NullPointerException("Date is not allowed to be null");
         }
 
         // Retrieve the active Time domain object, and clock
