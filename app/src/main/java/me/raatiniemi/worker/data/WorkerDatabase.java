@@ -47,7 +47,7 @@ class WorkerDatabase extends SQLiteOpenHelper {
      * @param column Name of the column.
      * @return true if column exists, otherwise false.
      */
-    private boolean columnExists(SQLiteDatabase db, String table, String column) {
+    private static boolean columnExists(SQLiteDatabase db, String table, String column) {
         boolean exists = false;
 
         // get the table structure and check if the column exists.
