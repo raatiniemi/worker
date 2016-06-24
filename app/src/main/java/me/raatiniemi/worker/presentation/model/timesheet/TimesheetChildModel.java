@@ -41,6 +41,10 @@ public class TimesheetChildModel {
         mTime = time;
     }
 
+    private static Date buildDateFromMilliseconds(long milliseconds) {
+        return new Date(milliseconds);
+    }
+
     public Time asTime() {
         return mTime;
     }
@@ -77,10 +81,6 @@ public class TimesheetChildModel {
 
     private Date buildDateFromStopTime() {
         return buildDateFromMilliseconds(mTime.getStopInMilliseconds());
-    }
-
-    private Date buildDateFromMilliseconds(long milliseconds) {
-        return new Date(milliseconds);
     }
 
     public String getTimeSummary() {
