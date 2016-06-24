@@ -74,16 +74,6 @@ public class WorkerContract {
     }
 
     public static class ProjectContract implements ProjectColumns {
-        public static final String[] COLUMNS = {
-                ProjectColumns._ID,
-                ProjectColumns.NAME
-        };
-
-        public static final String[] COLUMNS_TIMESHEET = {
-                "MIN(" + TimeContract.START + ") AS date",
-                "GROUP_CONCAT(" + TimeContract._ID + ")"
-        };
-
         public static final String STREAM_TYPE =
                 "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 
@@ -111,6 +101,20 @@ public class WorkerContract {
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
         private ProjectContract() {
+        }
+
+        public static String[] getColumns() {
+            return new String[]{
+                    ProjectColumns._ID,
+                    ProjectColumns.NAME
+            };
+        }
+
+        public static String[] getTimesheetColumns() {
+            return new String[]{
+                    "MIN(" + TimeContract.START + ") AS date",
+                    "GROUP_CONCAT(" + TimeContract._ID + ")"
+            };
         }
 
         /**
@@ -164,14 +168,6 @@ public class WorkerContract {
     }
 
     public static class TimeContract implements TimeColumns {
-        public static final String[] COLUMNS = {
-                TimeColumns._ID,
-                TimeColumns.PROJECT_ID,
-                TimeColumns.START,
-                TimeColumns.STOP,
-                TimeColumns.REGISTERED
-        };
-
         public static final String STREAM_TYPE =
                 "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
 
@@ -181,6 +177,16 @@ public class WorkerContract {
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
 
         private TimeContract() {
+        }
+
+        public static String[] getColumns() {
+            return new String[]{
+                    TimeColumns._ID,
+                    TimeColumns.PROJECT_ID,
+                    TimeColumns.START,
+                    TimeColumns.STOP,
+                    TimeColumns.REGISTERED
+            };
         }
 
         /**

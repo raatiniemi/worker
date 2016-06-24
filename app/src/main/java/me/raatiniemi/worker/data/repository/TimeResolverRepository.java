@@ -63,7 +63,7 @@ public class TimeResolverRepository
     public Time get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 TimeContract.getItemUri(id),
-                TimeContract.COLUMNS,
+                TimeContract.getColumns(),
                 null,
                 null,
                 null
@@ -143,7 +143,7 @@ public class TimeResolverRepository
 
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(projectId),
-                TimeContract.COLUMNS,
+                TimeContract.getColumns(),
                 TimeContract.START + ">=? OR " + TimeContract.STOP + " = 0",
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
                 ProjectContract.ORDER_BY_TIME
@@ -186,7 +186,7 @@ public class TimeResolverRepository
         ContentResolverQuery query = ContentResolverQuery.from(criteria);
         final Cursor cursor = getContentResolver().query(
                 uri,
-                ProjectContract.COLUMNS_TIMESHEET,
+                ProjectContract.getTimesheetColumns(),
                 query.getSelection(),
                 query.getSelectionArgs(),
                 ProjectContract.ORDER_BY_TIMESHEET
@@ -233,7 +233,7 @@ public class TimeResolverRepository
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(projectId),
-                TimeContract.COLUMNS,
+                TimeContract.getColumns(),
                 TimeContract.STOP + " = 0",
                 null,
                 null

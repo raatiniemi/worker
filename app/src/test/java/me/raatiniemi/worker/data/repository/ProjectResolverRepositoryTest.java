@@ -63,7 +63,7 @@ public class ProjectResolverRepositoryTest {
      * @return Cursor.
      */
     private MatrixCursor createCursor() {
-        return new MatrixCursor(ProjectContract.COLUMNS);
+        return new MatrixCursor(ProjectContract.getColumns());
     }
 
     /**
@@ -89,7 +89,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -115,7 +115,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -143,7 +143,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -175,7 +175,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -200,7 +200,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -225,7 +225,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -252,7 +252,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -283,7 +283,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getStreamUri(),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -307,7 +307,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getItemUri(1),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -331,7 +331,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getItemUri(1),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -357,7 +357,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getItemUri(1),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null
@@ -396,7 +396,7 @@ public class ProjectResolverRepositoryTest {
         when(
                 resolver.query(
                         ProjectContract.getItemUri(1),
-                        ProjectContract.COLUMNS,
+                        ProjectContract.getColumns(),
                         null,
                         null,
                         null

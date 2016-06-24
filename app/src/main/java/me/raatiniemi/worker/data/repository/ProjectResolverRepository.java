@@ -61,7 +61,7 @@ public class ProjectResolverRepository
         ContentResolverQuery query = ContentResolverQuery.from(criteria);
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getStreamUri(),
-                ProjectContract.COLUMNS,
+                ProjectContract.getColumns(),
                 query.getSelection(),
                 query.getSelectionArgs(),
                 null
@@ -92,7 +92,7 @@ public class ProjectResolverRepository
 
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getStreamUri(),
-                ProjectContract.COLUMNS,
+                ProjectContract.getColumns(),
                 null,
                 null,
                 null
@@ -121,7 +121,7 @@ public class ProjectResolverRepository
     public Project get(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemUri(id),
-                ProjectContract.COLUMNS,
+                ProjectContract.getColumns(),
                 null,
                 null,
                 null
