@@ -98,6 +98,6 @@ public class ContentResolverQueryTest {
         ContentResolverQuery actual = ContentResolverQuery.from(mCriteria);
 
         assertNull(mMessage, actual.getSelection());
-        assertNull(mMessage, actual.getSelectionArgs());
+        assertTrue(mMessage, 0 == actual.getSelectionArgs().length);
     }
 }

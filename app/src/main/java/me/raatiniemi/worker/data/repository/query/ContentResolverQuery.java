@@ -39,7 +39,7 @@ public class ContentResolverQuery {
 
     public String[] getSelectionArgs() {
         if (null == mCriteria) {
-            return null;
+            return new String[]{};
         }
 
         return new String[]{mCriteria.getValue()};
