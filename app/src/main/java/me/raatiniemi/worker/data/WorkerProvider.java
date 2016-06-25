@@ -222,6 +222,9 @@ public class WorkerProvider extends ContentProvider {
     }
 
     private static class ProjectsSelection {
+        private ProjectsSelection() {
+        }
+
         private static SelectionBuilder build() {
             return new SelectionBuilder()
                     .table(Tables.PROJECT);
@@ -229,6 +232,9 @@ public class WorkerProvider extends ContentProvider {
     }
 
     private static class ProjectSelection {
+        private ProjectSelection() {
+        }
+
         private static SelectionBuilder build(Uri uri) {
             return new SelectionBuilder()
                     .table(Tables.PROJECT)
@@ -240,6 +246,9 @@ public class WorkerProvider extends ContentProvider {
     }
 
     private static class ProjectTimeSelection {
+        private ProjectTimeSelection() {
+        }
+
         private static SelectionBuilder build(Uri uri) {
             return new SelectionBuilder()
                     .table(Tables.TIME)
@@ -251,6 +260,9 @@ public class WorkerProvider extends ContentProvider {
     }
 
     private static class ProjectTimesheetSelection {
+        private ProjectTimesheetSelection() {
+        }
+
         private static SelectionBuilder build(Uri uri) {
             return new SelectionBuilder()
                     .table(Tables.TIME)
@@ -263,6 +275,9 @@ public class WorkerProvider extends ContentProvider {
     }
 
     private static class TimeSelection {
+        private TimeSelection() {
+        }
+
         private static SelectionBuilder build(Uri uri) {
             return new SelectionBuilder()
                     .table(Tables.TIME)
