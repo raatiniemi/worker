@@ -51,7 +51,7 @@ public class Time extends DomainObject {
         mRegistered = builder.mRegistered;
     }
 
-    private void validateTimeInterval(Builder builder)
+    private static void validateTimeInterval(Builder builder)
             throws ClockOutBeforeClockInException {
         if (builder.mStopInMilliseconds == 0) {
             return;

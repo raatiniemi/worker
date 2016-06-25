@@ -42,6 +42,10 @@ abstract class OngoingService extends IntentService {
         super(name);
     }
 
+    private static String buildNotificationTag(long projectId) {
+        return String.valueOf(projectId);
+    }
+
     long getProjectId(Intent intent) {
         String itemId = WorkerContract.ProjectContract.getItemId(intent.getData());
         long projectId = Long.parseLong(itemId);
@@ -87,10 +91,6 @@ abstract class OngoingService extends IntentService {
 
     private NotificationManager getNotificationManager() {
         return (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    }
-
-    private String buildNotificationTag(long projectId) {
-        return String.valueOf(projectId);
     }
 
     boolean isOngoingNotificationEnabled() {
