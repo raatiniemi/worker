@@ -24,6 +24,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 import java.util.ArrayList;
 import java.util.List;
 
+import me.raatiniemi.worker.presentation.base.model.ExpandableItem;
+
 /**
  * Base adapter for working with the expandable RecyclerView.
  *
@@ -36,7 +38,7 @@ import java.util.List;
 public abstract class ExpandableListAdapter<
         G,
         C,
-        T extends ExpandableListAdapter.ExpandableItem<G, C>,
+        T extends ExpandableItem<G, C>,
         GVH extends ViewHolder,
         CVH extends ViewHolder
         >
@@ -273,37 +275,5 @@ public abstract class ExpandableListAdapter<
     public void clear() {
         mItems.clear();
         notifyDataSetChanged();
-    }
-
-    /**
-     * Base type for the combined group and child item.
-     *
-     * @param <G> Reference type for the group item.
-     * @param <C> Reference type for the child item.
-     */
-    public static class ExpandableItem<G, C> extends ArrayList<C> {
-        /**
-         * Group item.
-         */
-        private final G mGroup;
-
-        /**
-         * Constructor, initialize with the group item.
-         *
-         * @param group Group item.
-         */
-        protected ExpandableItem(@NonNull G group) {
-            mGroup = group;
-        }
-
-        /**
-         * Get the group item.
-         *
-         * @return Group item.
-         */
-        @NonNull
-        protected G getGroup() {
-            return mGroup;
-        }
     }
 }

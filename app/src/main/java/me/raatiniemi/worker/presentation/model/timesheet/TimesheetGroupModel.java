@@ -4,12 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
+import me.raatiniemi.worker.presentation.base.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetGroupModel
-        extends ExpandableListAdapter.ExpandableItem<Date, TimesheetChildModel> {
+        extends ExpandableItem<Date, TimesheetChildModel> {
     private static final DateIntervalFormat sIntervalFormat;
 
     static {
@@ -62,7 +62,7 @@ public class TimesheetGroupModel
     public boolean isRegistered() {
         boolean registered = true;
 
-        for (TimesheetChildModel child : this) {
+        for (TimesheetChildModel child : getItems()) {
             if (!child.isRegistered()) {
                 registered = false;
                 break;
@@ -90,7 +90,7 @@ public class TimesheetGroupModel
     private float calculateTimeIntervalSummary() {
         float interval = 0;
 
-        for (TimesheetChildModel child : this) {
+        for (TimesheetChildModel child : getItems()) {
             interval += calculateFractionFromMilliseconds(
                     child.calculateIntervalInMilliseconds()
             );
