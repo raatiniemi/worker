@@ -43,7 +43,7 @@ public class ClockOutService extends OngoingService {
             dismissPauseNotification(projectId);
             updateUserInterface(projectId);
         } catch (Exception e) {
-            Log.w(TAG, "Unable to clock out project: " + e.getMessage());
+            Log.w(TAG, "Unable to clock out project", e);
 
             sendErrorNotification(projectId);
         }

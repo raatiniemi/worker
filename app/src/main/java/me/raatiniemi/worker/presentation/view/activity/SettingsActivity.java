@@ -260,7 +260,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 Log.i(TAG, "Unable to find fragment with tag: " + tag);
             }
         } catch (ClassCastException e) {
-            Log.w(TAG, "Unable to cast preference fragment: " + e.getMessage());
+            Log.w(TAG, "Unable to cast preference fragment", e);
         }
 
         return fragment;
@@ -334,7 +334,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                         (CheckBoxPreference) findPreference(SETTINGS_CONFIRM_CLOCK_OUT_KEY);
                 confirmClockOut.setChecked(Settings.shouldConfirmClockOut(getActivity()));
             } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to get value for 'confirm_clock_out'");
+                Log.w(TAG, "Unable to get value for 'confirm_clock_out'", e);
             }
         }
 
@@ -352,7 +352,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     Settings.setConfirmClockOut(getActivity(), checked);
                     return true;
                 } catch (ClassCastException e) {
-                    Log.w(TAG, "Unable to set value for 'confirm_clock_out'");
+                    Log.w(TAG, "Unable to set value for 'confirm_clock_out'", e);
                 }
             }
             return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -371,7 +371,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                         (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY);
                 ongoingNotification.setChecked(Settings.isOngoingNotificationEnabled(getActivity()));
             } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to get value for 'ongoing_notification'");
+                Log.w(TAG, "Unable to get value for 'ongoing_notification'", e);
             }
         }
 
@@ -389,7 +389,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     Settings.disableOngoingNotification(getActivity());
                     return true;
                 } catch (ClassCastException e) {
-                    Log.w(TAG, "Unable to set value for 'ongoing_notification'");
+                    Log.w(TAG, "Unable to set value for 'ongoing_notification'", e);
                 }
             }
             return super.onPreferenceTreeClick(preferenceScreen, preference);

@@ -107,10 +107,10 @@ public class DataIntentService extends IntentService {
             }
         } catch (IllegalStateException e) {
             // TODO: Post event `DataOperationFailure`.
-            Log.w(TAG, e.getMessage());
+            Log.w(TAG, "Failed to perform data operation", e);
         } catch (Exception e) {
             // TODO: Post event `DataOperationFailure`.
-            Log.w(TAG, e.getMessage());
+            Log.w(TAG, "Failed to perform data operation", e);
 
             // In case the data operation throw an exception we need to reset
             // the running flag, otherwise we might prevent actions to run.
@@ -139,10 +139,10 @@ public class DataIntentService extends IntentService {
             notification = BackupNotification.build(context);
         } catch (ClassCastException e) {
             // TODO: Post event for `BackupFailure`.
-            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
+            Log.w(TAG, "Unable to cast the NotificationManager", e);
         } catch (Exception e) {
             // TODO: Post event for `BackupFailure`.
-            Log.w(TAG, "Unable to backup: " + e.getMessage());
+            Log.w(TAG, "Unable to backup", e);
 
             // TODO: Display what was the cause of the backup failure.
             notification = ErrorNotification.build(
@@ -186,10 +186,10 @@ public class DataIntentService extends IntentService {
             // TODO: Post event for `RestoreSuccessful`.
         } catch (ClassCastException e) {
             // TODO: Post event for `RestoreFailure`.
-            Log.w(TAG, "Unable to cast the NotificationManager: " + e.getMessage());
+            Log.w(TAG, "Unable to cast the NotificationManager", e);
         } catch (Exception e) {
             // TODO: Post event for `RestoreFailure`.
-            Log.w(TAG, "Unable to restore backup: " + e.getMessage());
+            Log.w(TAG, "Unable to restore backup: ", e);
 
             // TODO: Display what was the cause of the restore failure.
             notification = ErrorNotification.build(

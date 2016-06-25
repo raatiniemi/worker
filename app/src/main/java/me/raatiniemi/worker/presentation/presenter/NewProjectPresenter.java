@@ -99,7 +99,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
                             Log.d(TAG, "createNewProject onError");
 
                             // Log the error even if the view have been detached.
-                            Log.w(TAG, "Failed to create project: " + e.getMessage());
+                            Log.w(TAG, "Failed to create project", e);
 
                             // Check that we still have the view attached. Since we're working
                             // with a dialog, we always expect to have the view attached.
@@ -126,7 +126,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
             // Check that we still have the view attached. Since we're working
             // with a dialog, we always expect to have the view attached.
             if (!isViewAttached()) {
-                Log.w(TAG, "View is not attached, failed to push error");
+                Log.w(TAG, "View is not attached, failed to push error", e);
                 return;
             }
 

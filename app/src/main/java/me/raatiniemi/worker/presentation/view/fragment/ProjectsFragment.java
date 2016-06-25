@@ -350,6 +350,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
             startActivity(intent);
         } catch (IndexOutOfBoundsException e) {
+            Log.w(TAG, "Unable to get project position", e);
             Snackbar.make(
                     getActivity().findViewById(android.R.id.content),
                     R.string.error_message_unable_to_find_project,

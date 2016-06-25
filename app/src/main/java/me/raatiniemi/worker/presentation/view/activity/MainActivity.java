@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity {
         } catch (ClassCastException e) {
             // Something has gone wrong with the fragment manager,
             // just print the exception and continue.
-            Log.e(TAG, "Unable to cast projects fragment: " + e.getMessage());
+            Log.e(TAG, "Unable to cast projects fragment", e);
         }
     }
 
@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity {
 
             manager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
         } catch (ClassCastException e) {
-            Log.w(TAG, "Unable to cast the AlarmManager: " + e.getMessage());
+            Log.w(TAG, "Unable to cast the AlarmManager", e);
         }
 
         finish();

@@ -169,7 +169,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.d(TAG, "getTimesheet onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get timesheet: " + e.getMessage());
+                        Log.w(TAG, "Failed to get timesheet", e);
 
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {
@@ -234,7 +234,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.d(TAG, "remove onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to remove time: " + e.getMessage());
+                        Log.w(TAG, "Failed to remove time", e);
 
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {
@@ -309,7 +309,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.d(TAG, "register onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to mark time as registered: " + e.getMessage());
+                        Log.w(TAG, "Failed to mark time as registered", e);
 
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {

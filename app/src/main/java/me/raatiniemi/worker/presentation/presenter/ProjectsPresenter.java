@@ -207,7 +207,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "beginRefreshingActiveProjects onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get positions: " + e.getMessage());
+                        Log.w(TAG, "Failed to get positions", e);
                     }
 
                     @Override
@@ -253,7 +253,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "refreshActiveProjects onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get positions: " + e.getMessage());
+                        Log.w(TAG, "Failed to get positions", e);
                     }
 
                     @Override
@@ -315,7 +315,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "getProjects onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get projects: " + e.getMessage());
+                        Log.w(TAG, "Failed to get projects", e);
 
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {
@@ -374,7 +374,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
                         // Even if the view have been detached we'd want the
                         // error messaged logged.
-                        Log.w(TAG, "Failed to delete project: " + e.getMessage());
+                        Log.w(TAG, "Failed to delete project", e);
 
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {
@@ -464,7 +464,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "clockActivityChange onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to change clock activity: " + e.getMessage());
+                        Log.w(TAG, "Failed to change clock activity", e);
 
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {

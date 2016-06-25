@@ -98,7 +98,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                         Log.d(TAG, "getLatestBackup onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get latest backup: " + e.getMessage());
+                        Log.w(TAG, "Failed to get latest backup", e);
 
                         // Check that we still have the view attached.
                         if (!isViewAttached()) {

@@ -55,7 +55,7 @@ public class ResumeService extends OngoingService {
 
             dismissResumeNotification(projectId);
         } catch (Exception e) {
-            Log.w(TAG, "Unable to resume project: " + e.getMessage());
+            Log.w(TAG, "Unable to resume project", e);
 
             sendErrorNotification(projectId);
         }

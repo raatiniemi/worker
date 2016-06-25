@@ -55,7 +55,7 @@ public class PauseService extends OngoingService {
 
             dismissPauseNotification(projectId);
         } catch (Exception e) {
-            Log.w(TAG, "Unable to pause project: " + e.getMessage());
+            Log.w(TAG, "Unable to pause project", e);
 
             sendErrorNotification(projectId);
         }
