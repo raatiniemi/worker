@@ -4,12 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
+import me.raatiniemi.worker.presentation.base.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetGroupModel
-        extends ExpandableListAdapter.ExpandableItem<Date, TimesheetChildModel> {
+        extends ExpandableItem<Date, TimesheetChildModel> {
     private static final DateIntervalFormat sIntervalFormat;
 
     static {
