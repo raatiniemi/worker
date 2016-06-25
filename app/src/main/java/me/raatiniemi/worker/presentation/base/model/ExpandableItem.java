@@ -19,6 +19,8 @@ package me.raatiniemi.worker.presentation.base.model;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Base type for the combined group and child item.
@@ -26,7 +28,9 @@ import java.util.ArrayList;
  * @param <G> Reference type for the group item.
  * @param <C> Reference type for the child item.
  */
-public class ExpandableItem<G, C> extends ArrayList<C> {
+public class ExpandableItem<G, C> {
+    private final List<C> mItems = new ArrayList<>();
+
     /**
      * Group item.
      */
@@ -49,5 +53,29 @@ public class ExpandableItem<G, C> extends ArrayList<C> {
     @NonNull
     protected G getGroup() {
         return mGroup;
+    }
+
+    public boolean add(C item) {
+        return mItems.add(item);
+    }
+
+    public C get(int index) {
+        return mItems.get(index);
+    }
+
+    public void set(int index, C item) {
+        mItems.set(index, item);
+    }
+
+    public C remove(int index) {
+        return mItems.remove(index);
+    }
+
+    public int size() {
+        return mItems.size();
+    }
+
+    protected List<C> getItems() {
+        return Collections.unmodifiableList(mItems);
     }
 }

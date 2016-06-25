@@ -7,7 +7,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -143,7 +142,9 @@ public class TimesheetGroupModelTest {
     @UseDataProvider("isRegistered_dataProvider")
     public void isRegistered(Boolean expected, TimesheetChildModel[] times) {
         TimesheetGroupModel timesheet = new TimesheetGroupModel(new Date());
-        timesheet.addAll(Arrays.asList(times));
+        for (TimesheetChildModel childModel : times) {
+            timesheet.add(childModel);
+        }
 
         if (expected) {
             assertTrue(timesheet.isRegistered());
@@ -156,7 +157,9 @@ public class TimesheetGroupModelTest {
     @UseDataProvider("getTimeSummaryWithDifference_dataProvider")
     public void getTimeSummaryWithDifference(String expected, TimesheetChildModel[] times) {
         TimesheetGroupModel timesheet = new TimesheetGroupModel(new Date());
-        timesheet.addAll(Arrays.asList(times));
+        for (TimesheetChildModel childModel : times) {
+            timesheet.add(childModel);
+        }
 
         assertEquals(expected, timesheet.getTimeSummaryWithDifference());
     }

@@ -62,7 +62,7 @@ public class TimesheetGroupModel
     public boolean isRegistered() {
         boolean registered = true;
 
-        for (TimesheetChildModel child : this) {
+        for (TimesheetChildModel child : getItems()) {
             if (!child.isRegistered()) {
                 registered = false;
                 break;
@@ -90,7 +90,7 @@ public class TimesheetGroupModel
     private float calculateTimeIntervalSummary() {
         float interval = 0;
 
-        for (TimesheetChildModel child : this) {
+        for (TimesheetChildModel child : getItems()) {
             interval += calculateFractionFromMilliseconds(
                     child.calculateIntervalInMilliseconds()
             );
