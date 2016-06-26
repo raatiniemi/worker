@@ -29,18 +29,18 @@ public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult
 
     private final Time mTime;
 
+    private TimeInAdapterResult(int group, int child, Time time) {
+        mGroup = group;
+        mChild = child;
+        mTime = time;
+    }
+
     public static TimeInAdapterResult build(int group, int child, Time time) {
         return new TimeInAdapterResult(group, child, time);
     }
 
     public static TimeInAdapterResult build(TimeInAdapterResult result, Time time) {
         return build(result.getGroup(), result.getChild(), time);
-    }
-
-    private TimeInAdapterResult(int group, int child, Time time) {
-        mGroup = group;
-        mChild = child;
-        mTime = time;
     }
 
     public int getGroup() {
