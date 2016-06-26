@@ -216,11 +216,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         );
     }
 
-    /**
-     * @inheritDoc
-     */
     @NonNull
-    @Override
     public TimesheetAdapter getAdapter() {
         if (null == mAdapter) {
             mAdapter = new TimesheetAdapter(this);
@@ -229,53 +225,24 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         return mAdapter;
     }
 
-    /**
-     * @inheritDoc
-     */
     @NonNull
-    @Override
     public TimesheetGroupModel get(int index) {
         return getAdapter().get(index);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
     public void set(int index, @NonNull TimesheetGroupModel item) {
         getAdapter().set(index, item);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
     public int add(@NonNull TimesheetGroupModel item) {
         return getAdapter().add(item);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void add(final int index, @NonNull final TimesheetGroupModel item) {
-        // TODO: Implement adding at specific index for TimesheetFragment.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
     public int add(@NonNull List<TimesheetGroupModel> items) {
         return getAdapter().add(items);
     }
 
-    /**
-     * @inheritDoc
-     */
     @NonNull
-    @Override
     public TimesheetGroupModel remove(int index) {
         return getAdapter().remove(index);
     }
