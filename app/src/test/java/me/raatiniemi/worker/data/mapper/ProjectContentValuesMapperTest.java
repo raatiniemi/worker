@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.mapper;
 
 import android.content.ContentValues;
+import android.provider.BaseColumns;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +59,7 @@ public class ProjectContentValuesMapperTest {
 
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
-        assertNull(contentValues.get(ProjectColumns._ID));
+        assertNull(contentValues.get(BaseColumns._ID));
         assertEquals(expected.get(ProjectColumns.NAME), contentValues.get(ProjectColumns.NAME));
 
         expected = createContentValues("Name");
@@ -67,7 +68,7 @@ public class ProjectContentValuesMapperTest {
 
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
-        assertNull(contentValues.get(ProjectColumns._ID));
+        assertNull(contentValues.get(BaseColumns._ID));
         assertEquals(expected.get(ProjectColumns.NAME), contentValues.get(ProjectColumns.NAME));
     }
 }

@@ -32,6 +32,7 @@ import java.util.Map;
 
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
@@ -144,7 +145,7 @@ public class TimeResolverRepository
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(projectId),
                 TimeContract.getColumns(),
-                TimeContract.START + ">=? OR " + TimeContract.STOP + " = 0",
+                TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0",
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
                 ProjectContract.ORDER_BY_TIME
         );
@@ -234,7 +235,7 @@ public class TimeResolverRepository
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(projectId),
                 TimeContract.getColumns(),
-                TimeContract.STOP + " = 0",
+                TimeColumns.STOP + " = 0",
                 null,
                 null
         );

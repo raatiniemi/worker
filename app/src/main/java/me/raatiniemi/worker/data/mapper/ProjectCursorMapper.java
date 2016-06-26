@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.mapper;
 
 import android.database.Cursor;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
@@ -33,7 +34,7 @@ public class ProjectCursorMapper implements CursorMapper<Project> {
     @Override
     @NonNull
     public Project transform(@NonNull Cursor cursor) throws InvalidProjectNameException {
-        long id = cursor.getLong(cursor.getColumnIndexOrThrow(ProjectColumns._ID));
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProjectColumns.NAME));
 
         return new Project.Builder(name)

@@ -20,6 +20,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
 
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
@@ -71,7 +72,7 @@ class WorkerDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create the structure for the `project`-table.
         db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
-                ProjectColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ProjectColumns.NAME + " TEXT NOT NULL, " +
                 ProjectColumns.DESCRIPTION + " TEXT NULL, " +
                 ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
@@ -79,7 +80,7 @@ class WorkerDatabase extends SQLiteOpenHelper {
 
         // Create the structure for the `time`-table.
         db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
-                TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
                 TimeColumns.START + " INTEGER NOT NULL, " +
                 TimeColumns.STOP + " INTEGER DEFAULT 0, " +
