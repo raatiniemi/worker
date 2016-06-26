@@ -25,12 +25,14 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.Tables;
+import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.util.SelectionBuilder;
 
@@ -239,7 +241,7 @@ public class WorkerProvider extends ContentProvider {
             return new SelectionBuilder()
                     .table(Tables.PROJECT)
                     .where(
-                            ProjectContract._ID + "=?",
+                            BaseColumns._ID + "=?",
                             ProjectContract.getItemId(uri)
                     );
         }
@@ -253,7 +255,7 @@ public class WorkerProvider extends ContentProvider {
             return new SelectionBuilder()
                     .table(Tables.TIME)
                     .where(
-                            TimeContract.PROJECT_ID + "=?",
+                            TimeColumns.PROJECT_ID + "=?",
                             ProjectContract.getItemId(uri)
                     );
         }
@@ -267,7 +269,7 @@ public class WorkerProvider extends ContentProvider {
             return new SelectionBuilder()
                     .table(Tables.TIME)
                     .where(
-                            TimeContract.PROJECT_ID + "=?",
+                            TimeColumns.PROJECT_ID + "=?",
                             ProjectContract.getItemId(uri)
                     )
                     .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
@@ -282,7 +284,7 @@ public class WorkerProvider extends ContentProvider {
             return new SelectionBuilder()
                     .table(Tables.TIME)
                     .where(
-                            TimeContract._ID + "=?",
+                            BaseColumns._ID + "=?",
                             TimeContract.getItemId(uri)
                     );
         }

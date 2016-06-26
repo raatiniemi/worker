@@ -43,37 +43,37 @@ public class WorkerContract {
     /**
      * Name for the available tables within the database.
      */
-    public interface Tables {
+    public final class Tables {
         /**
          * Name for the project table.
          */
-        String PROJECT = "project";
+        public static final String PROJECT = "project";
 
         /**
          * Name for the registered time table.
          */
-        String TIME = "time";
+        public static final String TIME = "time";
     }
 
-    public interface ProjectColumns extends BaseColumns {
-        String NAME = "name";
+    public final class ProjectColumns {
+        public static final String NAME = "name";
 
-        String DESCRIPTION = "description";
+        public static final String DESCRIPTION = "description";
 
-        String ARCHIVED = "archived";
+        public static final String ARCHIVED = "archived";
     }
 
-    public interface TimeColumns extends BaseColumns {
-        String PROJECT_ID = "project_id";
+    public final class TimeColumns {
+        public static final String PROJECT_ID = "project_id";
 
-        String START = "start";
+        public static final String START = "start";
 
-        String STOP = "stop";
+        public static final String STOP = "stop";
 
-        String REGISTERED = "registered";
+        public static final String REGISTERED = "registered";
     }
 
-    public static class ProjectContract implements ProjectColumns {
+    public static class ProjectContract {
         public static final String STREAM_TYPE =
                 "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 
@@ -90,13 +90,13 @@ public class WorkerContract {
          * Group by clause for timesheet.
          */
         public static final String GROUP_BY_TIMESHEET =
-                "strftime('%Y%m%d', " + TimeContract.START + " / 1000, 'unixepoch')";
+                "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
 
         /**
          * Order by clause for timesheet.
          */
         public static final String ORDER_BY_TIMESHEET =
-                TimeContract.START + " DESC," + TimeContract.STOP + " DESC";
+                TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
@@ -105,15 +105,15 @@ public class WorkerContract {
 
         public static String[] getColumns() {
             return new String[]{
-                    ProjectColumns._ID,
+                    BaseColumns._ID,
                     ProjectColumns.NAME
             };
         }
 
         public static String[] getTimesheetColumns() {
             return new String[]{
-                    "MIN(" + TimeContract.START + ") AS date",
-                    "GROUP_CONCAT(" + TimeContract._ID + ")"
+                    "MIN(" + TimeColumns.START + ") AS date",
+                    "GROUP_CONCAT(" + BaseColumns._ID + ")"
             };
         }
 
@@ -167,7 +167,7 @@ public class WorkerContract {
         }
     }
 
-    public static class TimeContract implements TimeColumns {
+    public static class TimeContract {
         public static final String STREAM_TYPE =
                 "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
 
@@ -181,7 +181,7 @@ public class WorkerContract {
 
         public static String[] getColumns() {
             return new String[]{
-                    TimeColumns._ID,
+                    BaseColumns._ID,
                     TimeColumns.PROJECT_ID,
                     TimeColumns.START,
                     TimeColumns.STOP,

@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.mapper;
 
 import android.database.Cursor;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
@@ -33,7 +34,7 @@ public class TimeCursorMapper implements CursorMapper<Time> {
     @Override
     @NonNull
     public Time transform(@NonNull Cursor cursor) throws ClockOutBeforeClockInException {
-        long id = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns._ID));
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.PROJECT_ID));
         long start = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.START));
 

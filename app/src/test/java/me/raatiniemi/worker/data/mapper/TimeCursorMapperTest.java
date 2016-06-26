@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.mapper;
 
 import android.database.Cursor;
+import android.provider.BaseColumns;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -38,7 +39,7 @@ public class TimeCursorMapperTest {
     private static Cursor createCursor(long id, long projectId, long start, Long stop, long registered) {
         Cursor cursor = mock(Cursor.class);
 
-        when(cursor.getColumnIndexOrThrow(TimeColumns._ID)).thenReturn(0);
+        when(cursor.getColumnIndexOrThrow(BaseColumns._ID)).thenReturn(0);
         when(cursor.getColumnIndexOrThrow(TimeColumns.PROJECT_ID)).thenReturn(1);
         when(cursor.getColumnIndexOrThrow(TimeColumns.START)).thenReturn(2);
         when(cursor.getColumnIndexOrThrow(TimeColumns.STOP)).thenReturn(3);

@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 
 import org.junit.After;
 import org.junit.Before;
@@ -141,7 +142,7 @@ public class WorkerDatabaseTest {
         public void onCreate(SQLiteDatabase db) {
             // Create the structure for the `project`-table.
             db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
-                    ProjectColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     ProjectColumns.NAME + " TEXT NOT NULL, " +
                     ProjectColumns.DESCRIPTION + " TEXT NULL, " +
                     ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
@@ -149,7 +150,7 @@ public class WorkerDatabaseTest {
 
             // Create the structure for the `time`-table.
             db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
-                    TimeColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
                     TimeColumns.START + " INTEGER NOT NULL, " +
                     TimeColumns.STOP + " INTEGER DEFAULT 0)");

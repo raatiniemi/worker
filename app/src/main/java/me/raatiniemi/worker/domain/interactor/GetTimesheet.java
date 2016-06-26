@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import me.raatiniemi.worker.data.WorkerContract;
+import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
@@ -59,7 +59,7 @@ public class GetTimesheet {
         Criteria criteria = null;
         if (hideRegisteredTime) {
             // TODO: Refactor to remove dependency on the data-package for column name.
-            criteria = Criteria.equalTo(WorkerContract.TimeContract.REGISTERED, "0");
+            criteria = Criteria.equalTo(TimeColumns.REGISTERED, "0");
         }
 
         return mTimeRepository.getTimesheet(projectId, offset, criteria);
