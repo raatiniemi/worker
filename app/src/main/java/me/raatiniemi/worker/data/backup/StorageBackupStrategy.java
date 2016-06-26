@@ -24,12 +24,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.data.util.ExternalStorage;
+import me.raatiniemi.worker.data.util.FileUtils;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
-import me.raatiniemi.worker.data.util.ExternalStorage;
-import me.raatiniemi.worker.data.util.FileUtils;
-import me.raatiniemi.worker.Worker;
 
 /**
  * Backup strategy for storage device.

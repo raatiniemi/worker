@@ -26,6 +26,7 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.backup.StorageBackupStrategy;
 import me.raatiniemi.worker.data.backup.StorageRestoreStrategy;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
@@ -35,7 +36,6 @@ import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
 import me.raatiniemi.worker.presentation.notification.BackupNotification;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.notification.RestoreNotification;
-import me.raatiniemi.worker.Worker;
 
 /**
  * Service coordinating data related operations.

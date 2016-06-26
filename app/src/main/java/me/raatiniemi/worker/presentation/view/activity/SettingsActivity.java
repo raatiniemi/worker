@@ -44,8 +44,8 @@ import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.service.DataIntentService;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
-import me.raatiniemi.worker.presentation.view.SettingsView;
 import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.view.SettingsView;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;

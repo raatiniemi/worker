@@ -25,11 +25,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 
+import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.view.SettingsView;
-import me.raatiniemi.worker.data.util.ExternalStorage;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func0;

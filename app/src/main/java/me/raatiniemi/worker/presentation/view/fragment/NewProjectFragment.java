@@ -37,8 +37,8 @@ import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.presentation.presenter.NewProjectPresenter;
-import me.raatiniemi.worker.presentation.view.NewProjectView;
 import me.raatiniemi.worker.presentation.util.Keyboard;
+import me.raatiniemi.worker.presentation.view.NewProjectView;
 
 public class NewProjectFragment extends DialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";

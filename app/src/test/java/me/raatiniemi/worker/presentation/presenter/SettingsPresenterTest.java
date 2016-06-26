@@ -18,12 +18,12 @@ package me.raatiniemi.worker.presentation.presenter;
 
 import android.content.Context;
 
+import org.greenrobot.eventbus.EventBus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import org.greenrobot.eventbus.EventBus;
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;

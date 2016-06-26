@@ -27,10 +27,10 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.Tables;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.Worker;
 
 import static org.mockito.Mockito.mock;
 

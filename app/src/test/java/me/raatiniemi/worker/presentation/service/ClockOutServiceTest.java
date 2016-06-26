@@ -40,12 +40,12 @@ import org.robolectric.util.ServiceController;
 import java.util.Date;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.Worker;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;

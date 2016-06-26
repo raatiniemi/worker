@@ -24,6 +24,7 @@ import android.content.Intent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
@@ -35,7 +36,6 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.util.Settings;
-import me.raatiniemi.worker.Worker;
 
 abstract class OngoingService extends IntentService {
     OngoingService(String name) {

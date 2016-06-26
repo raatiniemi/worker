@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
@@ -38,9 +39,8 @@ import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
-import me.raatiniemi.worker.presentation.view.ProjectsView;
 import me.raatiniemi.worker.presentation.util.Settings;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.presentation.view.ProjectsView;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
