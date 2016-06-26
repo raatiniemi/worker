@@ -43,16 +43,16 @@ public class WorkerContract {
     /**
      * Name for the available tables within the database.
      */
-    public interface Tables {
+    public final class Tables {
         /**
          * Name for the project table.
          */
-        String PROJECT = "project";
+        public static final String PROJECT = "project";
 
         /**
          * Name for the registered time table.
          */
-        String TIME = "time";
+        public static final String TIME = "time";
     }
 
     public interface ProjectColumns extends BaseColumns {
