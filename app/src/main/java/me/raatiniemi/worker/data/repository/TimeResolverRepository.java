@@ -16,10 +16,13 @@
 
 package me.raatiniemi.worker.data.repository;
 
+import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -124,6 +127,25 @@ public class TimeResolverRepository
                 null,
                 null
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void remove(List<Time> times) {
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
+
+        for (Time time : times) {
+            Uri uri = TimeContract.getItemUri(time.getId());
+            batch.add(ContentProviderOperation.newDelete(uri).build());
+        }
+
+        try {
+            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+        } catch (RemoteException | OperationApplicationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

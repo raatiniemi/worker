@@ -63,6 +63,13 @@ public interface TimeRepository {
     void remove(long id);
 
     /**
+     * Remove multiple items.
+     *
+     * @param times Items to remove.
+     */
+    void remove(List<Time> times);
+
+    /**
      * Get the time registered for a project since the beginning of the current month.
      *
      * @param projectId Id for the project.

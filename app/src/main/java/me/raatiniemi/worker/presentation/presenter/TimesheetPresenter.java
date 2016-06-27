@@ -199,20 +199,18 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
 
     public void remove(List<TimeInAdapterResult> results) {
         Observable.just(results)
-                .flatMapIterable(new Func1<List<TimeInAdapterResult>, Iterable<TimeInAdapterResult>>() {
+                .map(new Func1<List<TimeInAdapterResult>, List<TimeInAdapterResult>>() {
                     @Override
-                    public Iterable<TimeInAdapterResult> call(List<TimeInAdapterResult> results) {
+                    public List<TimeInAdapterResult> call(List<TimeInAdapterResult> results) {
+                        List<Time> timeToRemove = new ArrayList<>();
+                        for (TimeInAdapterResult result : results) {
+                            timeToRemove.add(result.getTime());
+                        }
+
+                        mRemoveTime.execute(timeToRemove);
                         return results;
                     }
                 })
-                .map(new Func1<TimeInAdapterResult, TimeInAdapterResult>() {
-                    @Override
-                    public TimeInAdapterResult call(TimeInAdapterResult result) {
-                        mRemoveTime.execute(result.getTime());
-                        return result;
-                    }
-                })
-                .toList()
                 .compose(this.<List<TimeInAdapterResult>>applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
