@@ -16,6 +16,11 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
@@ -54,5 +59,31 @@ public class MarkRegisteredTime {
         }
 
         return mTimeRepository.update(time.markAsRegistered());
+    }
+
+    public List<Time> execute(List<Time> times) throws DomainException {
+        List<Time> timeToUpdate = collectTimeToUpdate(times);
+        return mTimeRepository.update(timeToUpdate);
+    }
+
+    private List<Time> collectTimeToUpdate(List<Time> times)
+            throws ClockOutBeforeClockInException {
+        List<Time> timeToUpdate = new ArrayList<>();
+
+        boolean shouldMarkAsRegistered = shouldMarkAsRegistered(times);
+        for (Time time : times) {
+            if (shouldMarkAsRegistered) {
+                timeToUpdate.add(time.markAsRegistered());
+                continue;
+            }
+
+            timeToUpdate.add(time.unmarkRegistered());
+        }
+
+        return timeToUpdate;
+    }
+
+    private boolean shouldMarkAsRegistered(List<Time> times) {
+        return !times.get(0).isRegistered();
     }
 }

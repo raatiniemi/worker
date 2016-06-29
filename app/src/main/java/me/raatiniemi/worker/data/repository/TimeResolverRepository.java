@@ -16,10 +16,13 @@
 
 package me.raatiniemi.worker.data.repository;
 
+import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -118,12 +121,61 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
+    public List<Time> update(List<Time> times) throws ClockOutBeforeClockInException {
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
+
+        for (Time time : times) {
+            Uri uri = TimeContract.getItemUri(time.getId());
+
+            ContentProviderOperation operation = ContentProviderOperation.newUpdate(uri)
+                    .withValues(getContentValuesMapper().transform(time))
+                    .build();
+            batch.add(operation);
+        }
+
+        try {
+            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+        } catch (RemoteException | OperationApplicationException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Time> updatedTimes = new ArrayList<>();
+        for (Time time : times) {
+            updatedTimes.add(get(time.getId()));
+        }
+
+        return updatedTimes;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public void remove(final long id) {
         getContentResolver().delete(
                 TimeContract.getItemUri(id),
                 null,
                 null
         );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void remove(List<Time> times) {
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
+
+        for (Time time : times) {
+            Uri uri = TimeContract.getItemUri(time.getId());
+            batch.add(ContentProviderOperation.newDelete(uri).build());
+        }
+
+        try {
+            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+        } catch (RemoteException | OperationApplicationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
