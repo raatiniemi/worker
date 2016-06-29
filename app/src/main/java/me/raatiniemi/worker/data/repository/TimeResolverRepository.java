@@ -121,6 +121,36 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
+    public List<Time> update(List<Time> times) throws ClockOutBeforeClockInException {
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
+
+        for (Time time : times) {
+            Uri uri = TimeContract.getItemUri(time.getId());
+
+            ContentProviderOperation operation = ContentProviderOperation.newUpdate(uri)
+                    .withValues(getContentValuesMapper().transform(time))
+                    .build();
+            batch.add(operation);
+        }
+
+        try {
+            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+        } catch (RemoteException | OperationApplicationException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Time> updatedTimes = new ArrayList<>();
+        for (Time time : times) {
+            updatedTimes.add(get(time.getId()));
+        }
+
+        return updatedTimes;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public void remove(final long id) {
         getContentResolver().delete(
                 TimeContract.getItemUri(id),

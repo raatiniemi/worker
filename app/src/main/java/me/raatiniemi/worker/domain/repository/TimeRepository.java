@@ -56,6 +56,15 @@ public interface TimeRepository {
     Time update(Time time) throws DomainException;
 
     /**
+     * Update items.
+     *
+     * @param times Items to update.
+     * @return Updated items.
+     * @throws DomainException If domain rules are violated.
+     */
+    List<Time> update(List<Time> times) throws DomainException;
+
+    /**
      * Remove time by id.
      *
      * @param id Id of the time to remove.

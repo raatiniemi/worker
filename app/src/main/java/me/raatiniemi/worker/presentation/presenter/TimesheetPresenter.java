@@ -254,30 +254,37 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     public void register(List<TimeInAdapterResult> results) {
         // TODO: Refactor to use optimistic propagation.
         Observable.just(results)
-                .flatMapIterable(new Func1<List<TimeInAdapterResult>, Iterable<TimeInAdapterResult>>() {
+                .flatMap(new Func1<List<TimeInAdapterResult>, Observable<List<TimeInAdapterResult>>>() {
                     @Override
-                    public Iterable<TimeInAdapterResult> call(List<TimeInAdapterResult> results) {
-                        return results;
-                    }
-                })
-                .flatMap(new Func1<TimeInAdapterResult, Observable<TimeInAdapterResult>>() {
-                    @Override
-                    public Observable<TimeInAdapterResult> call(TimeInAdapterResult result) {
+                    public Observable<List<TimeInAdapterResult>> call(List<TimeInAdapterResult> results) {
+                        List<Time> timeToUpdate = new ArrayList<>();
+                        for (TimeInAdapterResult result : results) {
+                            timeToUpdate.add(result.getTime());
+                        }
+
                         try {
-                            return Observable.just(
-                                    TimeInAdapterResult.build(
-                                            result,
-                                            mMarkRegisteredTime.execute(
-                                                    result.getTime()
-                                            )
-                                    )
-                            );
+                            List<Time> updatedTime = mMarkRegisteredTime.execute(timeToUpdate);
+
+                            List<TimeInAdapterResult> newResults = new ArrayList<>();
+                            for (TimeInAdapterResult result : results) {
+                                Time previousTime = result.getTime();
+
+                                for (Time time : updatedTime) {
+                                    if (time.getId().equals(previousTime.getId())) {
+                                        newResults.add(
+                                                TimeInAdapterResult.build(result, time)
+                                        );
+                                        break;
+                                    }
+                                }
+                            }
+
+                            return Observable.just(newResults);
                         } catch (DomainException e) {
                             return Observable.error(e);
                         }
                     }
                 })
-                .toList()
                 .compose(this.<List<TimeInAdapterResult>>applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
