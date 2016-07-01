@@ -19,6 +19,7 @@ package me.raatiniemi.worker.presentation.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
@@ -36,12 +37,13 @@ import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter
 import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
         TimesheetChildModel,
         TimesheetGroupModel,
-        TimesheetAdapter.ItemViewHolder,
+        TimesheetAdapter.GroupItemViewHolder,
         TimesheetAdapter.ItemViewHolder
         > {
     private final TimesheetSelectionListener mSelectionListener;
@@ -54,11 +56,12 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public ItemViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
+    public GroupItemViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
-        ItemViewHolder viewHolder = new ItemViewHolder(view);
+        GroupItemViewHolder viewHolder = new GroupItemViewHolder(view);
+        viewHolder.mLetter = (ImageView) view.findViewById(R.id.fragment_timesheet_group_item_letter);
         viewHolder.mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
         viewHolder.mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
 
@@ -78,11 +81,15 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public void onBindGroupViewHolder(ItemViewHolder vh, int group, int viewType) {
+    public void onBindGroupViewHolder(GroupItemViewHolder vh, int group, int viewType) {
         TimesheetGroupModel item = get(group);
 
         vh.mTitle.setText(item.getTitle());
         vh.mSummarize.setText(item.getTimeSummaryWithDifference());
+
+        vh.mLetter.setImageDrawable(
+                LetterDrawable.build(item.getFirstLetterFromTitle())
+        );
 
         vh.itemView.setSelected(
                 isSelected(item.buildItemResultsWithGroupIndex(group))
@@ -208,7 +215,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public boolean onCheckCanExpandOrCollapseGroup(ItemViewHolder vh, int group, int x, int y, boolean expand) {
+    public boolean onCheckCanExpandOrCollapseGroup(GroupItemViewHolder vh, int group, int x, int y, boolean expand) {
         return true;
     }
 
@@ -252,11 +259,19 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {
-        private TextView mTitle;
+        protected TextView mTitle;
 
-        private TextView mSummarize;
+        protected TextView mSummarize;
 
         private ItemViewHolder(View view) {
+            super(view);
+        }
+    }
+
+    class GroupItemViewHolder extends ItemViewHolder {
+        private ImageView mLetter;
+
+        private GroupItemViewHolder(View view) {
             super(view);
         }
     }

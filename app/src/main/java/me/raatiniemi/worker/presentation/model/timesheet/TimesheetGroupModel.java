@@ -61,6 +61,10 @@ public class TimesheetGroupModel
         return sDateFormat.format(getGroup());
     }
 
+    public String getFirstLetterFromTitle() {
+        return String.valueOf(getTitle().charAt(0));
+    }
+
     public boolean isRegistered() {
         boolean registered = true;
 
