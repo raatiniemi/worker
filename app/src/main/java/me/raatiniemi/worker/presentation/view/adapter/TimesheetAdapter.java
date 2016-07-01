@@ -84,8 +84,29 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.mTitle.setText(item.getTitle());
         vh.mSummarize.setText(item.getTimeSummaryWithDifference());
 
-        vh.itemView.setActivated(item.isRegistered());
-        vh.itemView.setClickable(true);
+        vh.itemView.setSelected(
+                isSelected(item.buildItemResultsWithGroupIndex(group))
+        );
+
+        // In case the item have been selected, we should not activate
+        // it. The selected background color should take precedence.
+        vh.itemView.setActivated(false);
+        if (!vh.itemView.isSelected()) {
+            vh.itemView.setActivated(item.isRegistered());
+        }
+    }
+
+    private boolean isSelected(List<TimeInAdapterResult> results) {
+        boolean isSelected = true;
+
+        for (TimeInAdapterResult result : results) {
+            if (!isSelected(result)) {
+                isSelected = false;
+                break;
+            }
+        }
+
+        return isSelected;
     }
 
     @Override
