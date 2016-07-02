@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.presentation.view.adapter;
 
 import android.graphics.Point;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,7 @@ import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
-import me.raatiniemi.worker.presentation.util.SelectionManager;
+import me.raatiniemi.worker.presentation.util.SelectionManagerAdapterDecorator;
 import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
@@ -251,42 +250,6 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     public void deselectItems() {
         mSelectionManager.deselectItems();
-    }
-
-    private class SelectionManagerAdapterDecorator<T> extends SelectionManager<T> {
-        private RecyclerView.Adapter mAdapter;
-        private SelectionListener mSelectionListener;
-
-        public SelectionManagerAdapterDecorator(
-                RecyclerView.Adapter adapter,
-                SelectionListener selectionListener
-        ) {
-            mAdapter = adapter;
-            mSelectionListener = selectionListener;
-        }
-
-        @Override
-        public void selectItem(T result) {
-            super.selectItem(result);
-
-            mAdapter.notifyDataSetChanged();
-            mSelectionListener.onSelect();
-        }
-
-        @Override
-        public void deselectItem(T result) {
-            super.deselectItem(result);
-
-            mAdapter.notifyDataSetChanged();
-            mSelectionListener.onDeselect();
-        }
-
-        @Override
-        public void deselectItems() {
-            super.deselectItems();
-
-            mAdapter.notifyDataSetChanged();
-        }
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {
