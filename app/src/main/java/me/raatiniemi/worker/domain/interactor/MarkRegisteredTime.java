@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.domain.interactor;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
