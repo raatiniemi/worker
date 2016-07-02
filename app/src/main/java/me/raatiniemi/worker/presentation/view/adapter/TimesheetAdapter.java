@@ -36,6 +36,7 @@ import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter
 import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.util.SelectionManager;
 import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
@@ -48,7 +49,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         > {
     private final SelectionManagerAdapterDecorator<TimeInAdapterResult> mSelectionManager;
 
-    public TimesheetAdapter(TimesheetSelectionListener selectionListener) {
+    public TimesheetAdapter(SelectionListener selectionListener) {
         mSelectionManager = new SelectionManagerAdapterDecorator<>(this, selectionListener);
 
         setHasStableIds(true);
@@ -252,18 +253,13 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         mSelectionManager.deselectItems();
     }
 
-    public interface TimesheetSelectionListener {
-        void onSelect();
-        void onDeselect();
-    }
-
     private class SelectionManagerAdapterDecorator<T> extends SelectionManager<T> {
         private RecyclerView.Adapter mAdapter;
-        private TimesheetSelectionListener mSelectionListener;
+        private SelectionListener mSelectionListener;
 
         public SelectionManagerAdapterDecorator(
                 RecyclerView.Adapter adapter,
-                TimesheetSelectionListener selectionListener
+                SelectionListener selectionListener
         ) {
             mAdapter = adapter;
             mSelectionListener = selectionListener;
