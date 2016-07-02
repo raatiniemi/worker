@@ -50,13 +50,14 @@ import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
+import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.TimesheetView;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
-        implements TimesheetAdapter.TimesheetSelectionListener, TimesheetView {
+        implements SelectionListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
     private LinearLayoutManager mLinearLayoutManager;
