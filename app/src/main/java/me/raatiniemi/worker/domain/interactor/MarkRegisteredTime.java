@@ -45,6 +45,27 @@ public class MarkRegisteredTime {
         mTimeRepository = timeRepository;
     }
 
+    private static List<Time> collectTimeToUpdate(List<Time> times)
+            throws ClockOutBeforeClockInException {
+        List<Time> timeToUpdate = new ArrayList<>();
+
+        boolean shouldMarkAsRegistered = shouldMarkAsRegistered(times);
+        for (Time time : times) {
+            if (shouldMarkAsRegistered) {
+                timeToUpdate.add(time.markAsRegistered());
+                continue;
+            }
+
+            timeToUpdate.add(time.unmarkRegistered());
+        }
+
+        return timeToUpdate;
+    }
+
+    private static boolean shouldMarkAsRegistered(List<Time> times) {
+        return !times.get(0).isRegistered();
+    }
+
     /**
      * Mark time as registered.
      *
@@ -63,26 +84,5 @@ public class MarkRegisteredTime {
     public List<Time> execute(List<Time> times) throws DomainException {
         List<Time> timeToUpdate = collectTimeToUpdate(times);
         return mTimeRepository.update(timeToUpdate);
-    }
-
-    private List<Time> collectTimeToUpdate(List<Time> times)
-            throws ClockOutBeforeClockInException {
-        List<Time> timeToUpdate = new ArrayList<>();
-
-        boolean shouldMarkAsRegistered = shouldMarkAsRegistered(times);
-        for (Time time : times) {
-            if (shouldMarkAsRegistered) {
-                timeToUpdate.add(time.markAsRegistered());
-                continue;
-            }
-
-            timeToUpdate.add(time.unmarkRegistered());
-        }
-
-        return timeToUpdate;
-    }
-
-    private boolean shouldMarkAsRegistered(List<Time> times) {
-        return !times.get(0).isRegistered();
     }
 }
