@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.view.adapter;
 
+import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,17 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         mSelectionListener = selectionListener;
 
         setHasStableIds(true);
+    }
+
+    private static boolean isPointInView(Point point, View view) {
+        float x = view.getX();
+        float y = view.getY();
+        float width = x + view.getWidth();
+        float height = y + view.getHeight();
+
+        return !(point.x < x || point.y < y)
+                && point.x <= width
+                && point.y <= height;
     }
 
     @Override
@@ -255,7 +267,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupItemViewHolder vh, int group, int x, int y, boolean expand) {
-        return true;
+        return !isSelectionActivated() || !isPointInView(new Point(x, y), vh.mLetter);
     }
 
     public void remove(List<TimeInAdapterResult> results) {
