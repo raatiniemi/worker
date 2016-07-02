@@ -53,6 +53,9 @@ public class WorkerContract {
          * Name for the registered time table.
          */
         public static final String TIME = "time";
+
+        private Tables() {
+        }
     }
 
     public final class ProjectColumns {
@@ -61,6 +64,9 @@ public class WorkerContract {
         public static final String DESCRIPTION = "description";
 
         public static final String ARCHIVED = "archived";
+
+        private ProjectColumns() {
+        }
     }
 
     public final class TimeColumns {
@@ -71,6 +77,9 @@ public class WorkerContract {
         public static final String STOP = "stop";
 
         public static final String REGISTERED = "registered";
+
+        private TimeColumns() {
+        }
     }
 
     public static class ProjectContract {
