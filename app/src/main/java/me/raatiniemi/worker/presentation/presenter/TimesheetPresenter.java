@@ -177,8 +177,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                             return;
                         }
 
-                        // Push the error to the view.
-                        getView().showError(e);
+                        getView().showGetTimesheetErrorMessage();
                     }
 
                     @Override

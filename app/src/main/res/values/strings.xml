@@ -46,6 +46,8 @@
     <string name="error.message.clock_in">Failed to clock in project.</string>
     <string name="error.message.clock_out">Failed to clock out project.</string>
 
+    <string name="error.message.get_timesheet">Failed to retrieve timesheet.</string>
+
     <string name="message.permission.write_backup">Need permission to backup.</string>
     <string name="message.permission.read_backup">Need permission to read backup.</string>
 

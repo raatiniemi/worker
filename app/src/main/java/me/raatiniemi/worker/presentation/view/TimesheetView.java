@@ -18,6 +18,11 @@ package me.raatiniemi.worker.presentation.view;
 
 public interface TimesheetView {
     /**
+     * Show message for failed timesheet retrieval.
+     */
+    void showGetTimesheetErrorMessage();
+
+    /**
      * Initiate refresh of the view.
      */
     void refresh();
