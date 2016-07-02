@@ -91,9 +91,36 @@ public class TimesheetAdapter extends ExpandableListAdapter<
                 LetterDrawable.build(item.getFirstLetterFromTitle())
         );
 
-        vh.itemView.setSelected(
-                isSelected(item.buildItemResultsWithGroupIndex(group))
-        );
+        final List<TimeInAdapterResult> results = item.buildItemResultsWithGroupIndex(group);
+
+        vh.mLetter.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (isSelectionActivated()) {
+                    return false;
+                }
+
+                selectItems(results);
+                return true;
+            }
+        });
+
+        vh.mLetter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isSelectionActivated()) {
+                    return;
+                }
+
+                if (isSelected(results)) {
+                    deselectItems(results);
+                    return;
+                }
+                selectItems(results);
+            }
+        });
+
+        vh.itemView.setSelected(isSelected(results));
 
         // In case the item have been selected, we should not activate
         // it. The selected background color should take precedence.
@@ -114,6 +141,18 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         }
 
         return isSelected;
+    }
+
+    private void selectItems(List<TimeInAdapterResult> results) {
+        for (TimeInAdapterResult result : results) {
+            selectItem(result);
+        }
+    }
+
+    private void deselectItems(List<TimeInAdapterResult> results) {
+        for (TimeInAdapterResult result : results) {
+            deselectItem(result);
+        }
     }
 
     @Override
