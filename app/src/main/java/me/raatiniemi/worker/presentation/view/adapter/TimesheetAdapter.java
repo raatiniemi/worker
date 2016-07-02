@@ -16,9 +16,11 @@
 
 package me.raatiniemi.worker.presentation.view.adapter;
 
+import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
@@ -36,12 +38,13 @@ import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter
 import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
 public class TimesheetAdapter extends ExpandableListAdapter<
         Date,
         TimesheetChildModel,
         TimesheetGroupModel,
-        TimesheetAdapter.ItemViewHolder,
+        TimesheetAdapter.GroupItemViewHolder,
         TimesheetAdapter.ItemViewHolder
         > {
     private final TimesheetSelectionListener mSelectionListener;
@@ -53,12 +56,24 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         setHasStableIds(true);
     }
 
+    private static boolean isPointInView(Point point, View view) {
+        float x = view.getX();
+        float y = view.getY();
+        float width = x + view.getWidth();
+        float height = y + view.getHeight();
+
+        return !(point.x < x || point.y < y)
+                && point.x <= width
+                && point.y <= height;
+    }
+
     @Override
-    public ItemViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
+    public GroupItemViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
-        ItemViewHolder viewHolder = new ItemViewHolder(view);
+        GroupItemViewHolder viewHolder = new GroupItemViewHolder(view);
+        viewHolder.mLetter = (ImageView) view.findViewById(R.id.fragment_timesheet_group_item_letter);
         viewHolder.mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
         viewHolder.mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
 
@@ -78,14 +93,78 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public void onBindGroupViewHolder(ItemViewHolder vh, int group, int viewType) {
+    public void onBindGroupViewHolder(GroupItemViewHolder vh, int group, int viewType) {
         TimesheetGroupModel item = get(group);
 
         vh.mTitle.setText(item.getTitle());
         vh.mSummarize.setText(item.getTimeSummaryWithDifference());
 
-        vh.itemView.setActivated(item.isRegistered());
-        vh.itemView.setClickable(true);
+        vh.mLetter.setImageDrawable(
+                LetterDrawable.build(item.getFirstLetterFromTitle())
+        );
+
+        final List<TimeInAdapterResult> results = item.buildItemResultsWithGroupIndex(group);
+
+        vh.mLetter.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (isSelectionActivated()) {
+                    return false;
+                }
+
+                selectItems(results);
+                return true;
+            }
+        });
+
+        vh.mLetter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isSelectionActivated()) {
+                    return;
+                }
+
+                if (isSelected(results)) {
+                    deselectItems(results);
+                    return;
+                }
+                selectItems(results);
+            }
+        });
+
+        vh.itemView.setSelected(isSelected(results));
+
+        // In case the item have been selected, we should not activate
+        // it. The selected background color should take precedence.
+        vh.itemView.setActivated(false);
+        if (!vh.itemView.isSelected()) {
+            vh.itemView.setActivated(item.isRegistered());
+        }
+    }
+
+    private boolean isSelected(List<TimeInAdapterResult> results) {
+        boolean isSelected = true;
+
+        for (TimeInAdapterResult result : results) {
+            if (!isSelected(result)) {
+                isSelected = false;
+                break;
+            }
+        }
+
+        return isSelected;
+    }
+
+    private void selectItems(List<TimeInAdapterResult> results) {
+        for (TimeInAdapterResult result : results) {
+            selectItem(result);
+        }
+    }
+
+    private void deselectItems(List<TimeInAdapterResult> results) {
+        for (TimeInAdapterResult result : results) {
+            deselectItem(result);
+        }
     }
 
     @Override
@@ -187,8 +266,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public boolean onCheckCanExpandOrCollapseGroup(ItemViewHolder vh, int group, int x, int y, boolean expand) {
-        return true;
+    public boolean onCheckCanExpandOrCollapseGroup(GroupItemViewHolder vh, int group, int x, int y, boolean expand) {
+        return !isSelectionActivated() || !isPointInView(new Point(x, y), vh.mLetter);
     }
 
     public void remove(List<TimeInAdapterResult> results) {
@@ -231,11 +310,19 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {
-        private TextView mTitle;
+        protected TextView mTitle;
 
-        private TextView mSummarize;
+        protected TextView mSummarize;
 
         private ItemViewHolder(View view) {
+            super(view);
+        }
+    }
+
+    class GroupItemViewHolder extends ItemViewHolder {
+        private ImageView mLetter;
+
+        private GroupItemViewHolder(View view) {
             super(view);
         }
     }

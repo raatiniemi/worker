@@ -1,7 +1,9 @@
 package me.raatiniemi.worker.presentation.model.timesheet;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import me.raatiniemi.worker.presentation.base.model.ExpandableItem;
@@ -59,6 +61,10 @@ public class TimesheetGroupModel
         return sDateFormat.format(getGroup());
     }
 
+    public String getFirstLetterFromTitle() {
+        return String.valueOf(getTitle().charAt(0));
+    }
+
     public boolean isRegistered() {
         boolean registered = true;
 
@@ -97,5 +103,25 @@ public class TimesheetGroupModel
         }
 
         return interval;
+    }
+
+    public List<TimeInAdapterResult> buildItemResultsWithGroupIndex(int groupIndex) {
+        ArrayList<TimeInAdapterResult> results = new ArrayList<>();
+
+        int childIndex = 0;
+
+        for (TimesheetChildModel childModel : getItems()) {
+            results.add(
+                    TimeInAdapterResult.build(
+                            groupIndex,
+                            childIndex,
+                            childModel.asTime()
+                    )
+            );
+
+            childIndex++;
+        }
+
+        return results;
     }
 }
