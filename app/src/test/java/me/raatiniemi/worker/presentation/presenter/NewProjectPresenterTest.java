@@ -30,40 +30,38 @@ import me.raatiniemi.worker.presentation.view.fragment.NewProjectFragment;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class NewProjectPresenterTest {
-    private Context mContext;
-    private NewProjectFragment mFragment;
     private CreateProject mCreateProject;
+    private NewProjectPresenter mPresenter;
+    private NewProjectFragment mView;
 
     @Before
     public void setUp() {
-        mContext = mock(Context.class);
-        mFragment = mock(NewProjectFragment.class);
         mCreateProject = mock(CreateProject.class);
+        mPresenter = new NewProjectPresenter(
+                mock(Context.class),
+                mCreateProject
+        );
+        mView = mock(NewProjectFragment.class);
     }
 
     @Test
     public void createNewProject_withInvalidName() {
-        NewProjectPresenter presenter = new NewProjectPresenter(mContext, mCreateProject);
-        presenter.attachView(mFragment);
+        mPresenter.attachView(mView);
 
-        presenter.createNewProject("");
+        mPresenter.createNewProject("");
 
-        // Verify that the display invalid project name error have been invoked.
-        verify(mFragment, times(1)).showInvalidNameError();
+        verify(mView).showInvalidNameError();
     }
 
     @Test
     public void createNewProject_withInvalidNameWithoutAttachedView() {
-        NewProjectPresenter presenter = new NewProjectPresenter(mContext, mCreateProject);
+        mPresenter.createNewProject("");
 
-        presenter.createNewProject("");
-
-        verify(mFragment, never()).showInvalidNameError();
+        verify(mView, never()).showInvalidNameError();
     }
 }
