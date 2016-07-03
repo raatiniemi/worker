@@ -48,6 +48,11 @@
 
     <string name="error.message.get_timesheet">Failed to retrieve timesheet.</string>
 
+    <plurals name="error_message_delete_timesheet">
+        <item quantity="one">Failed to delete item.</item>
+        <item quantity="other">Failed to delete items.</item>
+    </plurals>
+
     <string name="message.permission.write_backup">Need permission to backup.</string>
     <string name="message.permission.read_backup">Need permission to read backup.</string>
 

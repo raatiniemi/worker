@@ -197,6 +197,8 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     }
 
     public void remove(List<TimeInAdapterResult> results) {
+        final int numberOfItems = results.size();
+
         Observable.just(results)
                 .map(new Func1<List<TimeInAdapterResult>, List<TimeInAdapterResult>>() {
                     @Override
@@ -239,8 +241,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                             return;
                         }
 
-                        // Push the error to the view.
-                        getView().showError(e);
+                        getView().showDeleteErrorMessage(numberOfItems);
                     }
 
                     @Override

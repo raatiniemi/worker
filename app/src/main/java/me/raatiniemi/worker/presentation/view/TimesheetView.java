@@ -23,6 +23,13 @@ public interface TimesheetView {
     void showGetTimesheetErrorMessage();
 
     /**
+     * Show message for failed item deletion.
+     *
+     * @param numberOfItems Number of items that were supposed to be deleted.
+     */
+    void showDeleteErrorMessage(int numberOfItems);
+
+    /**
      * Initiate refresh of the view.
      */
     void refresh();
