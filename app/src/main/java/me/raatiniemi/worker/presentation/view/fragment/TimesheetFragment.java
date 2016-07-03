@@ -276,6 +276,21 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         ).show();
     }
 
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showRegisterErrorMessage(int numberOfItems) {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                getResources().getQuantityText(
+                        R.plurals.error_message_register_timesheet,
+                        numberOfItems
+                ),
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
     @Override
     public void finishLoading() {
         mLoading = false;

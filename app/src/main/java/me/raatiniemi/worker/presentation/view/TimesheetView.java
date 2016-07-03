@@ -30,6 +30,13 @@ public interface TimesheetView {
     void showDeleteErrorMessage(int numberOfItems);
 
     /**
+     * Show message for failed item registration.
+     *
+     * @param numberOfItems Number of items that were supposed to be updated.
+     */
+    void showRegisterErrorMessage(int numberOfItems);
+
+    /**
      * Initiate refresh of the view.
      */
     void refresh();

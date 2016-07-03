@@ -252,6 +252,8 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     }
 
     public void register(List<TimeInAdapterResult> results) {
+        final int numberOfItems = results.size();
+
         // TODO: Refactor to use optimistic propagation.
         Observable.just(results)
                 .flatMap(new Func1<List<TimeInAdapterResult>, Observable<List<TimeInAdapterResult>>>() {
@@ -322,8 +324,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                             return;
                         }
 
-                        // Push the error to the view.
-                        getView().showError(e);
+                        getView().showRegisterErrorMessage(numberOfItems);
                     }
 
                     @Override

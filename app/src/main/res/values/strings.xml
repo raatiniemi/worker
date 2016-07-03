@@ -52,6 +52,10 @@
         <item quantity="one">Failed to delete item.</item>
         <item quantity="other">Failed to delete items.</item>
     </plurals>
+    <plurals name="error_message_register_timesheet">
+        <item quantity="one">Failed to update item.</item>
+        <item quantity="other">Failed to update items.</item>
+    </plurals>
 
     <string name="message.permission.write_backup">Need permission to backup.</string>
     <string name="message.permission.read_backup">Need permission to read backup.</string>
