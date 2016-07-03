@@ -39,6 +39,14 @@ android {
     // This causes issues since robolectric is running against an earlier
     // version of the SDK, and expects the class to be present.
     useLibrary 'org.apache.http.legacy'
+
+    testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
 }
 
 buildscript {
