@@ -29,6 +29,7 @@ import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.presentation.view.fragment.NewProjectFragment;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -61,8 +62,8 @@ public class NewProjectPresenterTest {
     public void createNewProject_withInvalidNameWithoutAttachedView() {
         NewProjectPresenter presenter = new NewProjectPresenter(mContext, mCreateProject);
 
-        // Failed test will throw `NullPointerException` when attempting to
-        // invoke the display error message on the unattached view.
         presenter.createNewProject("");
+
+        verify(mFragment, never()).showInvalidNameError();
     }
 }
