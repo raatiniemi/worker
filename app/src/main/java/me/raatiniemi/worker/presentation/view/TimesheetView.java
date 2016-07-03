@@ -18,6 +18,25 @@ package me.raatiniemi.worker.presentation.view;
 
 public interface TimesheetView {
     /**
+     * Show message for failed timesheet retrieval.
+     */
+    void showGetTimesheetErrorMessage();
+
+    /**
+     * Show message for failed item deletion.
+     *
+     * @param numberOfItems Number of items that were supposed to be deleted.
+     */
+    void showDeleteErrorMessage(int numberOfItems);
+
+    /**
+     * Show message for failed item registration.
+     *
+     * @param numberOfItems Number of items that were supposed to be updated.
+     */
+    void showRegisterErrorMessage(int numberOfItems);
+
+    /**
      * Initiate refresh of the view.
      */
     void refresh();

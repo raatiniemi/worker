@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -246,6 +247,48 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     @NonNull
     public TimesheetGroupModel remove(int index) {
         return getAdapter().remove(index);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showGetTimesheetErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_get_timesheet,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showDeleteErrorMessage(int numberOfItems) {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                getResources().getQuantityText(
+                        R.plurals.error_message_delete_timesheet,
+                        numberOfItems
+                ),
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showRegisterErrorMessage(int numberOfItems) {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                getResources().getQuantityText(
+                        R.plurals.error_message_register_timesheet,
+                        numberOfItems
+                ),
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     @Override
