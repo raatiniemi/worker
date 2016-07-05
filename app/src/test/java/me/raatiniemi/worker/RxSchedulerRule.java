@@ -20,18 +20,28 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
+import java.util.concurrent.TimeUnit;
+
 import rx.Scheduler;
 import rx.android.plugins.RxAndroidPlugins;
 import rx.android.plugins.RxAndroidSchedulersHook;
 import rx.plugins.RxJavaPlugins;
 import rx.plugins.RxJavaSchedulersHook;
 import rx.schedulers.Schedulers;
+import rx.schedulers.TestScheduler;
 
 public class RxSchedulerRule implements TestRule {
+    private static final TestScheduler sTestScheduler = new TestScheduler();
+
     private final RxJavaSchedulersHook mRxJavaSchedulersHook = new RxJavaSchedulersHook() {
         @Override
         public Scheduler getIOScheduler() {
             return Schedulers.immediate();
+        }
+
+        @Override
+        public Scheduler getNewThreadScheduler() {
+            return sTestScheduler;
         }
     };
 
@@ -59,5 +69,9 @@ public class RxSchedulerRule implements TestRule {
                 RxAndroidPlugins.getInstance().reset();
             }
         };
+    }
+
+    public void advanceTimeTo(long delayTime, TimeUnit unit) {
+        sTestScheduler.advanceTimeTo(delayTime, unit);
     }
 }

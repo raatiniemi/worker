@@ -34,6 +34,7 @@ import org.robolectric.shadows.ShadowContextImpl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.RxSchedulerRule;
@@ -109,6 +110,25 @@ public class ProjectsPresenterTest {
         mPresenter.detachView();
 
         verify(mEventBus).unregister(mPresenter);
+    }
+
+    @Test
+    public void beginRefreshingActiveProjects() throws DomainException {
+        Project activeProject = mock(Project.class);
+        when(activeProject.isActive()).thenReturn(true);
+        List<Project> projects = new ArrayList<>();
+        projects.add(new Project.Builder("Name").build());
+        projects.add(activeProject);
+        when(mView.getProjects()).thenReturn(projects);
+        mPresenter.attachView(mView);
+
+        mPresenter.beginRefreshingActiveProjects();
+        mRxSchedulersRule.advanceTimeTo(60, TimeUnit.SECONDS);
+        mPresenter.stopRefreshingActiveProjects();
+
+        List<Integer> positions = new ArrayList<>();
+        positions.add(1);
+        verify(mView).refreshPositions(positions);
     }
 
     @Test
