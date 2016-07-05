@@ -20,37 +20,53 @@ import android.content.Context;
 
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.RxSchedulerRule;
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
+import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
+import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
 
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ProjectsPresenterTest {
+    @Rule
+    public final RxSchedulerRule mRxSchedulersRule = new RxSchedulerRule();
+
     private EventBus mEventBus;
+    private GetProjects mGetProjects;
     private ProjectsPresenter mPresenter;
     private ProjectsView mView;
 
     @Before
     public void setUp() {
         mEventBus = mock(EventBus.class);
-        GetProjects getProjects = mock(GetProjects.class);
+        mGetProjects = mock(GetProjects.class);
         ClockActivityChange clockActivityChange = mock(ClockActivityChange.class);
         RemoveProject removeProject = mock(RemoveProject.class);
         mPresenter = new ProjectsPresenter(
                 mock(Context.class),
                 mEventBus,
-                getProjects,
+                mGetProjects,
                 clockActivityChange,
                 removeProject
         );
@@ -69,5 +85,49 @@ public class ProjectsPresenterTest {
         mPresenter.detachView();
 
         verify(mEventBus).unregister(mPresenter);
+    }
+
+    @Test
+    public void getProjects() throws DomainException {
+        List<Project> projects = new ArrayList<>();
+        projects.add(
+                new Project.Builder("Name")
+                        .build()
+        );
+        when(mGetProjects.execute()).thenReturn(projects);
+        mPresenter.attachView(mView);
+
+        mPresenter.getProjects();
+
+        verify(mView).addProjects(anyListOf(ProjectsModel.class));
+    }
+
+    @Test
+    public void getProjects_withoutAttachedView() throws DomainException {
+        List<Project> projects = new ArrayList<>();
+        when(mGetProjects.execute()).thenReturn(projects);
+
+        mPresenter.getProjects();
+
+        verify(mView, never()).addProjects(anyListOf(ProjectsModel.class));
+    }
+
+    @Test
+    public void getProjects_withError() throws DomainException {
+        when(mGetProjects.execute()).thenThrow(new RuntimeException());
+        mPresenter.attachView(mView);
+
+        mPresenter.getProjects();
+
+        verify(mView).showGetProjectsErrorMessage();
+    }
+
+    @Test
+    public void getProjects_withErrorAndWithoutAttachedView() throws DomainException {
+        when(mGetProjects.execute()).thenThrow(new ClockOutBeforeClockInException());
+
+        mPresenter.getProjects();
+
+        verify(mView, never()).showGetProjectsErrorMessage();
     }
 }
