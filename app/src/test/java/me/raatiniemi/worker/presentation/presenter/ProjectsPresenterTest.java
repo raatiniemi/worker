@@ -41,6 +41,7 @@ import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
 
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -54,6 +55,7 @@ public class ProjectsPresenterTest {
 
     private EventBus mEventBus;
     private GetProjects mGetProjects;
+    private RemoveProject mRemoveProject;
     private ProjectsPresenter mPresenter;
     private ProjectsView mView;
 
@@ -62,13 +64,13 @@ public class ProjectsPresenterTest {
         mEventBus = mock(EventBus.class);
         mGetProjects = mock(GetProjects.class);
         ClockActivityChange clockActivityChange = mock(ClockActivityChange.class);
-        RemoveProject removeProject = mock(RemoveProject.class);
+        mRemoveProject = mock(RemoveProject.class);
         mPresenter = new ProjectsPresenter(
                 mock(Context.class),
                 mEventBus,
                 mGetProjects,
                 clockActivityChange,
-                removeProject
+                mRemoveProject
         );
         mView = mock(ProjectsView.class);
     }
@@ -129,5 +131,37 @@ public class ProjectsPresenterTest {
         mPresenter.getProjects();
 
         verify(mView, never()).showGetProjectsErrorMessage();
+    }
+
+    @Test
+    public void deleteProject() throws DomainException {
+        Project project = new Project.Builder("Name")
+                .build();
+        List<Project> projects = new ArrayList<>();
+        projects.add(project);
+        when(mView.getProjects()).thenReturn(projects);
+        mPresenter.attachView(mView);
+
+        mPresenter.deleteProject(project);
+
+        verify(mView).deleteProjectAtPosition(0);
+        verify(mView).showDeleteProjectSuccessMessage();
+    }
+
+    @Test
+    public void deleteProject_withError() throws DomainException {
+        Project project = new Project.Builder("Name")
+                .build();
+        List<Project> projects = new ArrayList<>();
+        projects.add(project);
+        when(mView.getProjects()).thenReturn(projects);
+        doThrow(new RuntimeException()).when(mRemoveProject).execute(project);
+        mPresenter.attachView(mView);
+
+        mPresenter.deleteProject(project);
+
+        verify(mView).deleteProjectAtPosition(0);
+        verify(mView).restoreProjectAtPreviousPosition(0, project);
+        verify(mView).showDeleteProjectErrorMessage();
     }
 }
