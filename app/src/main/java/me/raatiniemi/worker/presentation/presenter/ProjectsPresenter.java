@@ -184,14 +184,13 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         stopRefreshingActiveProjects();
 
         Log.d(TAG, "Subscribe to the refresh of active projects");
-        mRefreshProjects = Observable.interval(60, TimeUnit.SECONDS)
+        mRefreshProjects = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .map(new Func1<Long, List<Integer>>() {
                     @Override
                     public List<Integer> call(Long aLong) {
                         return getPositionsForActiveProjects();
                     }
                 })
-                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Integer>>() {
                     @Override
