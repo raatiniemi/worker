@@ -112,6 +112,37 @@ public class ProjectsPresenterTest {
     }
 
     @Test
+    public void refreshActiveProjects() throws DomainException {
+        Project activeProject = mock(Project.class);
+        when(activeProject.isActive()).thenReturn(true);
+        List<Project> projects = new ArrayList<>();
+        projects.add(new Project.Builder("Name").build());
+        projects.add(activeProject);
+        when(mView.getProjects()).thenReturn(projects);
+        mPresenter.attachView(mView);
+
+        mPresenter.refreshActiveProjects();
+
+        List<Integer> positions = new ArrayList<>();
+        positions.add(1);
+        verify(mView).refreshPositions(positions);
+    }
+
+    @Test
+    public void refreshActiveProjects_withoutAttachedView() throws DomainException {
+        Project activeProject = mock(Project.class);
+        when(activeProject.isActive()).thenReturn(true);
+        List<Project> projects = new ArrayList<>();
+        projects.add(new Project.Builder("Name").build());
+        projects.add(activeProject);
+        when(mView.getProjects()).thenReturn(projects);
+
+        mPresenter.refreshActiveProjects();
+
+        verify(mView, never()).refreshPositions(anyListOf(Integer.class));
+    }
+
+    @Test
     public void getProjects() throws DomainException {
         List<Project> projects = new ArrayList<>();
         projects.add(
