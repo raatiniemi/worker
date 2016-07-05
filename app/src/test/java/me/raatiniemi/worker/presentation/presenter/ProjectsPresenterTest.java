@@ -44,6 +44,7 @@ import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
 
@@ -260,5 +261,21 @@ public class ProjectsPresenterTest {
 
         verify(mView, never()).showClockOutErrorMessage();
         verify(mView, never()).showClockInErrorMessage();
+    }
+
+    @Test
+    public void onEventMainThread_ongoingNotification() {
+        mPresenter.attachView(mView);
+
+        mPresenter.onEventMainThread(new OngoingNotificationActionEvent(1));
+
+        verify(mView).reloadProjects();
+    }
+
+    @Test
+    public void onEventMainThread_ongoingNotificationWithoutAttachedView() {
+        mPresenter.onEventMainThread(new OngoingNotificationActionEvent(1));
+
+        verify(mView, never()).reloadProjects();
     }
 }
