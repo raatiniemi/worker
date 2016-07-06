@@ -20,7 +20,6 @@ package me.raatiniemi.worker.domain.repository.query;
  * Criteria used for matching values.
  * <p/>
  * TODO: Add support for additional operators.
- * TODO: Add support for generic value types?
  */
 public class Criteria {
     /**
@@ -56,10 +55,11 @@ public class Criteria {
      *
      * @param field Name of the criteria field.
      * @param value Value to match against the field.
+     * @param <T>   Type reference for the value.
      * @return Criteria for field equal to the value.
      */
-    public static Criteria equalTo(final String field, final String value) {
-        return new Criteria(field, "=", value);
+    public static <T> Criteria equalTo(final String field, final T value) {
+        return new Criteria(field, "=", String.valueOf(value));
     }
 
     /**
