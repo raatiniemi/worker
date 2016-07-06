@@ -18,8 +18,6 @@ package me.raatiniemi.worker.domain.repository.query;
 
 /**
  * Criteria used for matching values.
- * <p/>
- * TODO: Add support for additional operators.
  */
 public class Criteria {
     /**
@@ -51,6 +49,30 @@ public class Criteria {
     }
 
     /**
+     * Create a criteria where the field is less than the value.
+     *
+     * @param field Name of the criteria field.
+     * @param value Value to match against the field.
+     * @param <T>   Type reference for the value.
+     * @return Criteria where the field is less than the value.
+     */
+    public static <T> Criteria lessThan(String field, T value) {
+        return new Criteria(field, "<", String.valueOf(value));
+    }
+
+    /**
+     * Create a criteria where the field is less than or equal to the value.
+     *
+     * @param field Name of the criteria field.
+     * @param value Value to match against the field.
+     * @param <T>   Type reference for the value.
+     * @return Criteria where the field is less than or equal to the value.
+     */
+    public static <T> Criteria lessThanOrEqualTo(String field, T value) {
+        return new Criteria(field, "<=", String.valueOf(value));
+    }
+
+    /**
      * Create a criteria where the field is equal to the value.
      *
      * @param field Name of the criteria field.
@@ -60,6 +82,30 @@ public class Criteria {
      */
     public static <T> Criteria equalTo(final String field, final T value) {
         return new Criteria(field, "=", String.valueOf(value));
+    }
+
+    /**
+     * Create a criteria where the field is more than or equal to the value.
+     *
+     * @param field Name of the criteria field.
+     * @param value Value to match against the field.
+     * @param <T>   Type reference for the value.
+     * @return Criteria where the field is more than or equal to the value.
+     */
+    public static <T> Criteria moreThanOrEqualTo(String field, T value) {
+        return new Criteria(field, ">=", String.valueOf(value));
+    }
+
+    /**
+     * Create a criteria where the field is more than the value.
+     *
+     * @param field Name of the criteria field.
+     * @param value Value to match against the field.
+     * @param <T>   Type reference for the value.
+     * @return Criteria where the field is more than the value.
+     */
+    public static <T> Criteria moreThan(String field, T value) {
+        return new Criteria(field, ">", String.valueOf(value));
     }
 
     /**

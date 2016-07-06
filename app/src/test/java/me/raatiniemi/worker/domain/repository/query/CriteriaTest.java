@@ -47,9 +47,29 @@ public class CriteriaTest {
         return Arrays.asList(
                 new Object[][]{
                         {
+                                "Less than",
+                                "foo<1",
+                                Criteria.lessThan("foo", 1)
+                        },
+                        {
+                                "Less than or equal to",
+                                "foo<=1",
+                                Criteria.lessThanOrEqualTo("foo", 1)
+                        },
+                        {
                                 "Equal to",
                                 "foo=bar",
                                 Criteria.equalTo("foo", "bar")
+                        },
+                        {
+                                "More than or equal to",
+                                "foo>=1",
+                                Criteria.moreThanOrEqualTo("foo", 1)
+                        },
+                        {
+                                "More than",
+                                "foo>1",
+                                Criteria.moreThan("foo", 1)
                         }
                 }
         );
