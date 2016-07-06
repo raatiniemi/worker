@@ -139,4 +139,30 @@ public class Criteria {
     public String toString() {
         return getField() + getOperator() + getValue();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Criteria)) {
+            return false;
+        }
+
+        Criteria criteria = (Criteria) o;
+        return mField.equals(criteria.getField())
+                && mOperator.equals(criteria.getOperator())
+                && mValue.equals(criteria.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + mField.hashCode();
+        result = 31 * result + mOperator.hashCode();
+        result = 31 * result + mValue.hashCode();
+
+        return result;
+    }
 }
