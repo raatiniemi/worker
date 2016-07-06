@@ -88,4 +88,9 @@ public class Criteria {
     public String getValue() {
         return mValue;
     }
+
+    @Override
+    public String toString() {
+        return getField() + getOperator() + getValue();
+    }
 }
