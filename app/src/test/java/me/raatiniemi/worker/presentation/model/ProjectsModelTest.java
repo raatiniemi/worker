@@ -29,11 +29,9 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
@@ -78,11 +76,22 @@ public class ProjectsModelTest {
         return new Object[][]{
                 {
                         "1h 0m",
-                        createTimeForGetTimeSummaryTest(3600)
+                        new Time[]{
+                                createTimeForGetTimeSummaryTest(3600)
+                        }
                 },
                 {
                         "2h 30m",
-                        createTimeForGetTimeSummaryTest(9000)
+                        new Time[]{
+                                createTimeForGetTimeSummaryTest(9000)
+                        }
+                },
+                {
+                        "3h 30m",
+                        new Time[]{
+                                createTimeForGetTimeSummaryTest(3600),
+                                createTimeForGetTimeSummaryTest(9000)
+                        }
                 }
         };
     }
@@ -228,13 +237,11 @@ public class ProjectsModelTest {
 
     @Test
     @UseDataProvider("getTimeSummary_dataProvider")
-    public void getTimeSummary(String expected, Time time)
+    public void getTimeSummary(String expected, Time[] registeredTime)
             throws InvalidProjectNameException, ClockOutBeforeClockInException {
         Project project = createProjectBuilder("Project name")
                 .build();
-        List<Time> times = new ArrayList<>();
-        times.add(time);
-        project.addTime(times);
+        project.addTime(Arrays.asList(registeredTime));
 
         ProjectsModel model = new ProjectsModel(project);
 

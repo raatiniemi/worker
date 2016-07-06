@@ -77,41 +77,6 @@ public class ProjectTest {
     }
 
     @DataProvider
-    public static Object[][] summarizeTime_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "without items",
-                        0L,
-                        new Time[]{}
-                },
-                {
-                        "with single item",
-                        60000L,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(60000L)
-                        }
-                },
-                {
-                        "with multiple items",
-                        90000L,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(60000L),
-                                createTimeWithIntervalInMilliseconds(30000L)
-                        }
-                },
-                {
-                        "with active time",
-                        60000L,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(60000L),
-                                createTimeWithIntervalInMilliseconds(0L)
-                        }
-                }
-        };
-    }
-
-    @DataProvider
     public static Object[][] getElapsed_dataProvider()
             throws ClockOutBeforeClockInException {
         return new Object[][]{
@@ -277,21 +242,6 @@ public class ProjectTest {
         project.addTime(times);
 
         assertTrue(project.getTime().isEmpty());
-    }
-
-    @Test
-    @UseDataProvider("summarizeTime_dataProvider")
-    public void summarizeTime(
-            String message,
-            long expected,
-            Time[] times
-    ) throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime(Arrays.asList(times));
-
-        assertEquals(message, expected, project.summarizeTime());
     }
 
     @Test

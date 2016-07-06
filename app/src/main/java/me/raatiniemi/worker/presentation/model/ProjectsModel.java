@@ -21,10 +21,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.HoursMinutesIntervalFormat;
 
@@ -37,9 +39,12 @@ public class ProjectsModel {
 
     private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private final Project mProject;
+    private long mTimeSummary = 0;
 
     public ProjectsModel(Project project) {
         mProject = project;
+
+        calculateTimeSummaryFromRegisteredTime(project.getTime());
     }
 
     private static void showTextView(TextView textView) {
@@ -54,6 +59,12 @@ public class ProjectsModel {
         return resources.getString(R.string.fragment_projects_item_clocked_in_since);
     }
 
+    private void calculateTimeSummaryFromRegisteredTime(List<Time> registeredTime) {
+        for (Time interval : registeredTime) {
+            mTimeSummary += interval.getTime();
+        }
+    }
+
     public Project asProject() {
         return mProject;
     }
@@ -63,7 +74,7 @@ public class ProjectsModel {
     }
 
     public String getTimeSummary() {
-        return sIntervalFormat.format(mProject.summarizeTime());
+        return sIntervalFormat.format(mTimeSummary);
     }
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
