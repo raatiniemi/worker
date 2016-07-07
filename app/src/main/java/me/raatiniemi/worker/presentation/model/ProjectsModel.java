@@ -73,6 +73,10 @@ public class ProjectsModel {
         return mProject.getName();
     }
 
+    public boolean isActive() {
+        return mProject.isActive();
+    }
+
     public String getTimeSummary() {
         return sIntervalFormat.format(mTimeSummary);
     }
@@ -103,10 +107,6 @@ public class ProjectsModel {
                 getFormattedClockedInSince(),
                 getFormattedElapsedTime()
         );
-    }
-
-    private boolean isActive() {
-        return mProject.isActive();
     }
 
     private String getFormattedClockedInSince() {
