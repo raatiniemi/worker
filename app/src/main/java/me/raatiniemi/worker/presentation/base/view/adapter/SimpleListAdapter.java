@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -95,7 +96,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     @Override
     @NonNull
     public List<T> getItems() {
-        return mItems;
+        return Collections.unmodifiableList(mItems);
     }
 
     /**
