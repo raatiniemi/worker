@@ -36,16 +36,16 @@ public interface ProjectsView extends MvpView {
     List<Project> getProjects();
 
     /**
+     * Show message for failed project retrieval.
+     */
+    void showGetProjectsErrorMessage();
+
+    /**
      * Add a list of projects to the view.
      *
      * @param projects List of projects to add.
      */
     void addProjects(List<ProjectsModel> projects);
-
-    /**
-     * Show message for failed project retrieval.
-     */
-    void showGetProjectsErrorMessage();
 
     /**
      * Add a created project to the view.
@@ -65,6 +65,16 @@ public interface ProjectsView extends MvpView {
      * @param project Project to update in the list.
      */
     void updateProject(Project project);
+
+    /**
+     * Show message for failed clock in action.
+     */
+    void showClockInErrorMessage();
+
+    /**
+     * Show message for failed clock out action.
+     */
+    void showClockOutErrorMessage();
 
     /**
      * Delete a project from the view at the given position.
@@ -93,16 +103,6 @@ public interface ProjectsView extends MvpView {
      * Show message for failed project deletion.
      */
     void showDeleteProjectErrorMessage();
-
-    /**
-     * Show message for failed clock in action.
-     */
-    void showClockInErrorMessage();
-
-    /**
-     * Show message for failed clock out action.
-     */
-    void showClockOutErrorMessage();
 
     /**
      * Open the dialog for creating a new project.

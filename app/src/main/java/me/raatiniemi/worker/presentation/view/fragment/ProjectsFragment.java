@@ -173,20 +173,20 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      * @inheritDoc
      */
     @Override
-    public void addProjects(List<ProjectsModel> projects) {
-        getAdapter().add(projects);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
     public void showGetProjectsErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_get_projects,
                 Snackbar.LENGTH_SHORT
         ).show();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void addProjects(List<ProjectsModel> projects) {
+        getAdapter().add(projects);
     }
 
     /**
@@ -228,6 +228,30 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      * @inheritDoc
      */
     @Override
+    public void showClockInErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_clock_in,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public void showClockOutErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_clock_out,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
     public void deleteProjectAtPosition(int position) {
         getAdapter().remove(position);
     }
@@ -263,30 +287,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_project_deleted,
-                Snackbar.LENGTH_SHORT
-        ).show();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showClockInErrorMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.error_message_clock_in,
-                Snackbar.LENGTH_SHORT
-        ).show();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showClockOutErrorMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.error_message_clock_out,
                 Snackbar.LENGTH_SHORT
         ).show();
     }
