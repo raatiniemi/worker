@@ -128,4 +128,26 @@ public class ProjectsModel {
 
         hideTextView(clockedInSinceView);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof ProjectsModel)) {
+            return false;
+        }
+
+        ProjectsModel that = (ProjectsModel) o;
+        return mProject.equals(that.mProject);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + mProject.hashCode();
+        return result;
+    }
 }
