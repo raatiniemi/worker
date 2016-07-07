@@ -42,20 +42,24 @@ public class ProjectsModel {
         mProject = project;
     }
 
-    public Project asProject() {
-        return mProject;
-    }
-
-    public String getTitle() {
-        return mProject.getName();
-    }
-
     private static void showTextView(TextView descriptionView) {
         descriptionView.setVisibility(View.VISIBLE);
     }
 
     private static void hideTextView(TextView textView) {
         textView.setVisibility(View.GONE);
+    }
+
+    private static String getClockedInSinceFormatTemplate(Resources resources) {
+        return resources.getString(R.string.fragment_projects_item_clocked_in_since);
+    }
+
+    public Project asProject() {
+        return mProject;
+    }
+
+    public String getTitle() {
+        return mProject.getName();
     }
 
     public String getTimeSummary() {
@@ -92,10 +96,6 @@ public class ProjectsModel {
 
     private boolean isActive() {
         return mProject.isActive();
-    }
-
-    private static String getClockedInSinceFormatTemplate(Resources resources) {
-        return resources.getString(R.string.fragment_projects_item_clocked_in_since);
     }
 
     private String getFormattedClockedInSince() {
