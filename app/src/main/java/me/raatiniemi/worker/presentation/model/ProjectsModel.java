@@ -42,8 +42,8 @@ public class ProjectsModel {
         mProject = project;
     }
 
-    private static void showTextView(TextView descriptionView) {
-        descriptionView.setVisibility(View.VISIBLE);
+    private static void showTextView(TextView textView) {
+        textView.setVisibility(View.VISIBLE);
     }
 
     private static void hideTextView(TextView textView) {
