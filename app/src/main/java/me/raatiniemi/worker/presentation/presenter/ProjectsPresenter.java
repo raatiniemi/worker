@@ -140,14 +140,14 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         }
 
         // Iterate the projects and collect the index of active projects.
-        List<Project> data = getView().getProjects();
-        for (Project project : data) {
+        List<ProjectsModel> projects = getView().getProjects();
+        for (ProjectsModel project : projects) {
             if (!project.isActive()) {
                 continue;
             }
 
-            Log.d(TAG, "Queuing refresh of project: " + project.getName());
-            positions.add(data.indexOf(project));
+            Log.d(TAG, "Queuing refresh of project: " + project.getTitle());
+            positions.add(projects.indexOf(project));
         }
         return positions;
     }
@@ -337,7 +337,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      *
      * @param project Project to be deleted.
      */
-    public void deleteProject(final Project project) {
+    public void deleteProject(final ProjectsModel project) {
         // Before removing the project we need its current index, it's
         // needed to handle the restoration if deletion fails.
         final int index = getView().getProjects().indexOf(project);
@@ -350,11 +350,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         getView().deleteProjectAtPosition(index);
 
         Observable.just(project)
-                .flatMap(new Func1<Project, Observable<Object>>() {
+                .flatMap(new Func1<ProjectsModel, Observable<Object>>() {
                     @Override
-                    public Observable<Object> call(Project project) {
+                    public Observable<Object> call(ProjectsModel project) {
                         // Attempt to delete project.
-                        mRemoveProject.execute(project);
+                        mRemoveProject.execute(project.asProject());
 
                         return Observable.empty();
                     }

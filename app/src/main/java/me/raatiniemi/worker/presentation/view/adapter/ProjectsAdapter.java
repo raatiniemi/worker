@@ -119,7 +119,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnProjectActionListener.onDelete(project);
+                mOnProjectActionListener.onDelete(item);
             }
         });
         vh.mDelete.setOnLongClickListener(mHintedImageButtonListener);
@@ -219,6 +219,6 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
          *
          * @param project Project to delete.
          */
-        void onDelete(@NonNull Project project);
+        void onDelete(@NonNull ProjectsModel project);
     }
 }

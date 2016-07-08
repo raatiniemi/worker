@@ -32,7 +32,6 @@ import android.view.ViewGroup;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -159,14 +158,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      * @inheritDoc
      */
     @Override
-    public List<Project> getProjects() {
-        List<Project> projects = new ArrayList<>();
-
-        for (ProjectsModel item : getAdapter().getItems()) {
-            projects.add(item.asProject());
-        }
-
-        return projects;
+    public List<ProjectsModel> getProjects() {
+        return getAdapter().getItems();
     }
 
     /**
@@ -262,10 +255,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @Override
     public void restoreProjectAtPreviousPosition(
             int previousPosition,
-            Project project
+            ProjectsModel project
     ) {
-        ProjectsModel item = new ProjectsModel(project);
-        getAdapter().add(previousPosition, item);
+        getAdapter().add(previousPosition, project);
 
         mRecyclerView.scrollToPosition(previousPosition);
     }
@@ -401,7 +393,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onDelete(@NonNull final Project project) {
+    public void onDelete(@NonNull final ProjectsModel project) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)

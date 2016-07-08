@@ -33,7 +33,7 @@ public interface ProjectsView extends MvpView {
      *
      * @return Projects from the view.
      */
-    List<Project> getProjects();
+    List<ProjectsModel> getProjects();
 
     /**
      * Show message for failed project retrieval.
@@ -91,7 +91,7 @@ public interface ProjectsView extends MvpView {
      */
     void restoreProjectAtPreviousPosition(
             int previousPosition,
-            Project project
+            ProjectsModel project
     );
 
     /**

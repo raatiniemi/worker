@@ -116,9 +116,9 @@ public class ProjectsPresenterTest {
     public void beginRefreshingActiveProjects() throws DomainException {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
-        List<Project> projects = new ArrayList<>();
-        projects.add(new Project.Builder("Name").build());
-        projects.add(activeProject);
+        List<ProjectsModel> projects = new ArrayList<>();
+        projects.add(new ProjectsModel(new Project.Builder("Name").build()));
+        projects.add(new ProjectsModel(activeProject));
         when(mView.getProjects()).thenReturn(projects);
         mPresenter.attachView(mView);
 
@@ -135,9 +135,9 @@ public class ProjectsPresenterTest {
     public void refreshActiveProjects() throws DomainException {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
-        List<Project> projects = new ArrayList<>();
-        projects.add(new Project.Builder("Name").build());
-        projects.add(activeProject);
+        List<ProjectsModel> projects = new ArrayList<>();
+        projects.add(new ProjectsModel(new Project.Builder("Name").build()));
+        projects.add(new ProjectsModel(activeProject));
         when(mView.getProjects()).thenReturn(projects);
         mPresenter.attachView(mView);
 
@@ -152,9 +152,9 @@ public class ProjectsPresenterTest {
     public void refreshActiveProjects_withoutAttachedView() throws DomainException {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
-        List<Project> projects = new ArrayList<>();
-        projects.add(new Project.Builder("Name").build());
-        projects.add(activeProject);
+        List<ProjectsModel> projects = new ArrayList<>();
+        projects.add(new ProjectsModel(new Project.Builder("Name").build()));
+        projects.add(new ProjectsModel(activeProject));
         when(mView.getProjects()).thenReturn(projects);
 
         mPresenter.refreshActiveProjects();
@@ -210,12 +210,13 @@ public class ProjectsPresenterTest {
     public void deleteProject() throws DomainException {
         Project project = new Project.Builder("Name")
                 .build();
-        List<Project> projects = new ArrayList<>();
-        projects.add(project);
+        ProjectsModel projectsModel = new ProjectsModel(project);
+        List<ProjectsModel> projects = new ArrayList<>();
+        projects.add(new ProjectsModel(project));
         when(mView.getProjects()).thenReturn(projects);
         mPresenter.attachView(mView);
 
-        mPresenter.deleteProject(project);
+        mPresenter.deleteProject(projectsModel);
 
         verify(mView).deleteProjectAtPosition(0);
         verify(mView).showDeleteProjectSuccessMessage();
@@ -225,16 +226,17 @@ public class ProjectsPresenterTest {
     public void deleteProject_withError() throws DomainException {
         Project project = new Project.Builder("Name")
                 .build();
-        List<Project> projects = new ArrayList<>();
-        projects.add(project);
+        ProjectsModel projectsModel = new ProjectsModel(project);
+        List<ProjectsModel> projects = new ArrayList<>();
+        projects.add(new ProjectsModel(project));
         when(mView.getProjects()).thenReturn(projects);
         doThrow(new RuntimeException()).when(mRemoveProject).execute(project);
         mPresenter.attachView(mView);
 
-        mPresenter.deleteProject(project);
+        mPresenter.deleteProject(projectsModel);
 
         verify(mView).deleteProjectAtPosition(0);
-        verify(mView).restoreProjectAtPreviousPosition(0, project);
+        verify(mView).restoreProjectAtPreviousPosition(0, projectsModel);
         verify(mView).showDeleteProjectErrorMessage();
     }
 
