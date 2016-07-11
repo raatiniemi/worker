@@ -15,21 +15,13 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-
-    <CheckBoxPreference
-        android:key="settings_project_ongoing_notification"
-        android:title="@string/activity.settings.project.ongoing_notification"
-        />
-
-    <ListPreference
-        android:key="settings_project_time_summary"
-        android:title="@string/activity.settings.project.time_summary.title"
-        android:summary="@string/activity.settings.project.time_summary.summary"
-        android:entries="@array/project_time_summary_alternative_text"
-        android:entryValues="@array/project_time_summary_alternative_value"
-        />
-
-</PreferenceScreen>
+<resources>
+    <string-array name="project_time_summary_alternative_text">
+        <item>@string/activity.settings.project.time_summary.week</item>
+        <item>@string/activity.settings.project.time_summary.month</item>
+    </string-array>
+    <string-array name="project_time_summary_alternative_value">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

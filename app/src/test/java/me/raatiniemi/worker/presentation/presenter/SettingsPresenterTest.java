@@ -28,10 +28,12 @@ import org.robolectric.annotation.Config;
 import java.io.File;
 
 import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.view.SettingsView;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -84,5 +86,52 @@ public class SettingsPresenterTest {
         mPresenter.onEventMainThread(event);
 
         verify(mView, never()).setLatestBackup(backup);
+    }
+
+    @Test
+    public void changeTimeSummaryStartingPoint_withMonth() {
+        mPresenter.attachView(mView);
+
+        mPresenter.changeTimeSummaryStartingPoint(
+                GetProjectTimeSince.sMonth
+        );
+
+        verify(mView).showChangeTimeSummaryStartingPointSuccessMessage();
+    }
+
+    @Test
+    public void changeTimeSummaryStartingPoint_withWeek() {
+        mPresenter.attachView(mView);
+
+        mPresenter.changeTimeSummaryStartingPoint(
+                GetProjectTimeSince.sWeek
+        );
+
+        verify(mView).showChangeTimeSummaryStartingPointSuccessMessage();
+    }
+
+    @Test
+    public void changeTimeSummaryStartingPoint_withoutAttachedView() {
+        mPresenter.changeTimeSummaryStartingPoint(
+                GetProjectTimeSince.sMonth
+        );
+
+        verify(mView, never()).showChangeTimeSummaryStartingPointSuccessMessage();
+    }
+
+    @Test
+    public void changeTimeSummaryStartingPoint_invalidStartingPoint() {
+        mPresenter.attachView(mView);
+
+        mPresenter.changeTimeSummaryStartingPoint(0);
+
+        verify(mView).showChangeTimeSummaryStartingPointErrorMessage();
+    }
+
+    @Test
+    public void changeTimeSummaryStartingPoint_invalidStartingPointWithoutAttachedView() {
+        mPresenter.changeTimeSummaryStartingPoint(0);
+
+        verify(mView, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 }

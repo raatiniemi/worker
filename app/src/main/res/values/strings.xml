@@ -76,6 +76,10 @@
     <string name="activity.settings.restore.from" formatted="false">Restore backup from %s.\nAfter restore you have to restart the application.</string>
     <string name="activity.settings.project">Project</string>
     <string name="activity.settings.project.ongoing_notification">Ongoing notification</string>
+    <string name="activity.settings.project.time_summary.title">Time summary</string>
+    <string name="activity.settings.project.time_summary.summary">Starting point for the collection of registered time used for the time summary.</string>
+    <string name="activity.settings.project.time_summary.week">Week</string>
+    <string name="activity.settings.project.time_summary.month">Month</string>
 
     <string name="notification.backup.title">Backup complete</string>
     <string name="notification.backup.message">Backup to external storage was successful.</string>
@@ -95,6 +99,9 @@
 
     <string name="error.message.preference_screen_not_implemented">Preference screen is not implemented.</string>
     <string name="error.message.preference_not_implemented">Preference is not implemented.</string>
+
+    <string name="message.change_time_summary_starting_point">Changed time summary starting point.</string>
+    <string name="error.message.change_time_summary_starting_point">Unable to change time summary starting point.</string>
 
     <string name="error.message.data_operation_already_running">Data operation is already running…</string>
 

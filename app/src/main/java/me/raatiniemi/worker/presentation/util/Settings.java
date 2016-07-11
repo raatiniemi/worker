@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 
 /**
@@ -133,5 +134,25 @@ public class Settings {
     public static int getStartingPointForTimeSummary(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.sMonth);
+    }
+
+    /**
+     * Use week for time summary starting point, i.e. {@link GetProjectTimeSince#sWeek}.
+     *
+     * @param context Context to be used to edit the {@link SharedPreferences}.
+     */
+    public static void useWeekForTimeSummaryStartingPoint(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.sWeek).apply();
+    }
+
+    /**
+     * Use month for time summary starting point, i.e. {@link GetProjectTimeSince#sMonth}.
+     *
+     * @param context Context to be used to edit the {@link SharedPreferences}.
+     */
+    public static void useMonthForTimeSummaryStartingPoint(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.sMonth).apply();
     }
 }
