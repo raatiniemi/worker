@@ -90,18 +90,6 @@ public class SettingsPresenterTest {
     }
 
     @Test
-    public void changeTimeSummaryStartingPoint_withMonth() {
-        mPresenter.attachView(mView);
-
-        mPresenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.sMonth
-        );
-
-        verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(mView).showChangeTimeSummaryStartingPointSuccessMessage();
-    }
-
-    @Test
     public void changeTimeSummaryStartingPoint_withWeek() {
         mPresenter.attachView(mView);
 
@@ -114,9 +102,21 @@ public class SettingsPresenterTest {
     }
 
     @Test
-    public void changeTimeSummaryStartingPoint_withoutAttachedView() {
+    public void changeTimeSummaryStartingPoint_withPreviousValue() {
+        mPresenter.attachView(mView);
+
         mPresenter.changeTimeSummaryStartingPoint(
                 GetProjectTimeSince.sMonth
+        );
+
+        verify(mEventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(mView, never()).showChangeTimeSummaryStartingPointSuccessMessage();
+    }
+
+    @Test
+    public void changeTimeSummaryStartingPoint_withoutAttachedView() {
+        mPresenter.changeTimeSummaryStartingPoint(
+                GetProjectTimeSince.sWeek
         );
 
         verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));

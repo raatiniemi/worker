@@ -137,6 +137,11 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
 
     public void changeTimeSummaryStartingPoint(int newStartingPoint) {
         try {
+            int currentStartingPoint = Settings.getStartingPointForTimeSummary(getContext());
+            if (currentStartingPoint == newStartingPoint) {
+                return;
+            }
+
             switch (newStartingPoint) {
                 case GetProjectTimeSince.sWeek:
                     Settings.useWeekForTimeSummaryStartingPoint(getContext());
