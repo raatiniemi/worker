@@ -100,7 +100,8 @@
     <string name="error.message.preference_screen_not_implemented">Preference screen is not implemented.</string>
     <string name="error.message.preference_not_implemented">Preference is not implemented.</string>
 
-    <string name="message.change_time_summary_starting_point">Changed time summary starting point.</string>
+    <string name="message.change_time_summary_starting_point_week">Time summary will show current week</string>
+    <string name="message.change_time_summary_starting_point_month">Time summary will show current month</string>
     <string name="error.message.change_time_summary_starting_point">Unable to change time summary starting point.</string>
 
     <string name="error.message.data_operation_already_running">Data operation is already running…</string>

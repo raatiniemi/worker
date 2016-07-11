@@ -160,7 +160,11 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
             if (!isViewAttached()) {
                 return;
             }
-            getView().showChangeTimeSummaryStartingPointSuccessMessage();
+            if (GetProjectTimeSince.sWeek == newStartingPoint) {
+                getView().showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+                return;
+            }
+            getView().showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         } catch (InvalidStartingPointException e) {
             Log.w(TAG, "Unable to set new starting point", e);
 

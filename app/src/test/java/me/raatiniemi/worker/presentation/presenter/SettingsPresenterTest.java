@@ -98,7 +98,7 @@ public class SettingsPresenterTest {
         );
 
         verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(mView).showChangeTimeSummaryStartingPointSuccessMessage();
+        verify(mView).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
     }
 
     @Test
@@ -110,7 +110,7 @@ public class SettingsPresenterTest {
         );
 
         verify(mEventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(mView, never()).showChangeTimeSummaryStartingPointSuccessMessage();
+        verify(mView, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
     }
 
     @Test
@@ -120,7 +120,7 @@ public class SettingsPresenterTest {
         );
 
         verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(mView, never()).showChangeTimeSummaryStartingPointSuccessMessage();
+        verify(mView, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
     }
 
     @Test

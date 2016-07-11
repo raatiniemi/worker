@@ -295,7 +295,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     }
 
     @Override
-    public void showChangeTimeSummaryStartingPointSuccessMessage() {
+    public void showChangeTimeSummaryStartingPointToWeekSuccessMessage() {
         View contentView = findViewById(android.R.id.content);
         if (null == contentView) {
             return;
@@ -303,7 +303,21 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         Snackbar.make(
                 contentView,
-                R.string.message_change_time_summary_starting_point,
+                R.string.message_change_time_summary_starting_point_week,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
+    public void showChangeTimeSummaryStartingPointToMonthSuccessMessage() {
+        View contentView = findViewById(android.R.id.content);
+        if (null == contentView) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.message_change_time_summary_starting_point_month,
                 Snackbar.LENGTH_LONG
         ).show();
     }
