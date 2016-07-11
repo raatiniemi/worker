@@ -29,6 +29,7 @@ import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.util.Settings;
@@ -148,6 +149,8 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                             "Starting point '" + newStartingPoint + "' is not valid"
                     );
             }
+
+            mEventBus.post(new TimeSummaryStartingPointChangeEvent());
 
             if (!isViewAttached()) {
                 return;

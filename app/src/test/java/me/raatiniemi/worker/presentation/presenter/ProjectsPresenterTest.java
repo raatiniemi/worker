@@ -49,6 +49,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
 
 import static org.mockito.Matchers.any;
@@ -350,6 +351,22 @@ public class ProjectsPresenterTest {
 
         verify(mView, never()).showClockOutErrorMessage();
         verify(mView, never()).showClockInErrorMessage();
+    }
+
+    @Test
+    public void onEventMainThread_changeTimeSummaryStartingPoint() {
+        mPresenter.attachView(mView);
+
+        mPresenter.onEventMainThread(new TimeSummaryStartingPointChangeEvent());
+
+        verify(mView).reloadProjects();
+    }
+
+    @Test
+    public void onEventMainThread_changeTimeSummaryStartingPointWithoutAttachedView() {
+        mPresenter.onEventMainThread(new TimeSummaryStartingPointChangeEvent());
+
+        verify(mView, never()).reloadProjects();
     }
 
     @Test

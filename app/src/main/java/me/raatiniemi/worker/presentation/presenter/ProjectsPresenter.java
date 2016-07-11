@@ -41,6 +41,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
@@ -522,6 +523,16 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "clockActivityChange onCompleted");
                     }
                 });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
+        if (!isViewAttached()) {
+            Log.d(TAG, "View is not attached, skip reloading projects");
+            return;
+        }
+
+        getView().reloadProjects();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

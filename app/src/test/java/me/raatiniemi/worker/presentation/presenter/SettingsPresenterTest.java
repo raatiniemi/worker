@@ -29,6 +29,7 @@ import java.io.File;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
+import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.view.SettingsView;
@@ -96,6 +97,7 @@ public class SettingsPresenterTest {
                 GetProjectTimeSince.sMonth
         );
 
+        verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(mView).showChangeTimeSummaryStartingPointSuccessMessage();
     }
 
@@ -107,6 +109,7 @@ public class SettingsPresenterTest {
                 GetProjectTimeSince.sWeek
         );
 
+        verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(mView).showChangeTimeSummaryStartingPointSuccessMessage();
     }
 
@@ -116,6 +119,7 @@ public class SettingsPresenterTest {
                 GetProjectTimeSince.sMonth
         );
 
+        verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(mView, never()).showChangeTimeSummaryStartingPointSuccessMessage();
     }
 
