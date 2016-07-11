@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
+
 /**
  * Communicate with the shared preferences.
  */
@@ -38,6 +40,11 @@ public class Settings {
      * Preference key to check if ongoing notification is enabled.
      */
     private static final String PREF_ONGOING_NOTIFICATION_ENABLED = "pref_ongoing_notification_enabled";
+
+    /**
+     * Preference key to check which starting point to use for time summary.
+     */
+    private static final String PREF_TIME_SUMMARY = "pref_time_summary";
 
     private Settings() {
     }
@@ -115,5 +122,16 @@ public class Settings {
     public static void disableOngoingNotification(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, false).apply();
+    }
+
+    /**
+     * Get the time summary starting point, default value is {@link GetProjectTimeSince#sMonth}.
+     *
+     * @param context Context to be used to read from the {@link android.content.SharedPreferences}.
+     * @return Time summary starting point, e.g. {@link GetProjectTimeSince#sWeek} or {@link GetProjectTimeSince#sMonth}.
+     */
+    public static int getStartingPointForTimeSummary(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.sMonth);
     }
 }

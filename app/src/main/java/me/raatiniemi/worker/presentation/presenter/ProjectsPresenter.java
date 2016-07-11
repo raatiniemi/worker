@@ -347,10 +347,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
     private List<Time> getRegisteredTime(Project project) {
         try {
-            return mGetProjectTimeSince.execute(
-                    project,
-                    GetProjectTimeSince.sMonth
-            );
+            int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getContext());
+
+            return mGetProjectTimeSince.execute(project, startingPointForTimeSummary);
         } catch (DomainException e) {
             Log.w(TAG, "Unable to get registered time for project", e);
         }
