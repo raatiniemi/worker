@@ -403,25 +403,37 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     /**
      * Change the clock activity status for project, i.e. clock in/out.
      *
-     * @param project Project to change clock activity status.
-     * @param date    Date and time to use for the clock activity change.
+     * @param projectsModel Project to change clock activity status.
+     * @param date          Date and time to use for the clock activity change.
      */
-    public void clockActivityChange(final Project project, final Date date) {
-        Observable.defer(new Func0<Observable<Project>>() {
-            @Override
-            public Observable<Project> call() {
-                try {
-                    return Observable.just(
-                            mClockActivityChange.execute(project, date)
-                    );
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        }).compose(this.<Project>applySchedulers())
-                .doOnNext(new Action1<Project>() {
+    public void clockActivityChange(final ProjectsModel projectsModel, final Date date) {
+        Observable.just(projectsModel)
+                .flatMap(new Func1<ProjectsModel, Observable<Project>>() {
                     @Override
-                    public void call(Project project) {
+                    public Observable<Project> call(ProjectsModel projectsModel) {
+                        try {
+                            return Observable.just(
+                                    mClockActivityChange.execute(
+                                            projectsModel.asProject(),
+                                            date
+                                    )
+                            );
+                        } catch (DomainException e) {
+                            return Observable.error(e);
+                        }
+                    }
+                })
+                .map(new Func1<Project, ProjectsModel>() {
+                    @Override
+                    public ProjectsModel call(Project project) {
+                        return new ProjectsModel(project);
+                    }
+                })
+                .compose(this.<ProjectsModel>applySchedulers())
+                .doOnNext(new Action1<ProjectsModel>() {
+                    @Override
+                    public void call(ProjectsModel projectsModel) {
+                        Project project = projectsModel.asProject();
                         NotificationManager manager = (NotificationManager) getContext()
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -443,9 +455,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         }
                     }
                 })
-                .subscribe(new Subscriber<Project>() {
+                .subscribe(new Subscriber<ProjectsModel>() {
                     @Override
-                    public void onNext(Project project) {
+                    public void onNext(ProjectsModel project) {
                         Log.d(TAG, "clockActivityChange onNext");
 
                         // Check that we still have the view attached.
@@ -471,7 +483,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                             return;
                         }
 
-                        if (project.isActive()) {
+                        if (projectsModel.isActive()) {
                             getView().showClockOutErrorMessage();
                             return;
                         }

@@ -245,11 +245,12 @@ public class ProjectsPresenterTest {
         Project project = new Project.Builder("Name")
                 .id(1L)
                 .build();
+        ProjectsModel projectsModel = new ProjectsModel(project);
         when(mClockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
         mPresenter.attachView(mView);
 
-        mPresenter.clockActivityChange(project, new Date());
+        mPresenter.clockActivityChange(projectsModel, new Date());
 
         verify(mNotificationManager)
                 .cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
@@ -258,7 +259,7 @@ public class ProjectsPresenterTest {
                 eq(Worker.NOTIFICATION_ON_GOING_ID),
                 isA(Notification.class)
         );
-        verify(mView).updateProject(project);
+        verify(mView).updateProject(projectsModel);
     }
 
     @Test
@@ -266,24 +267,26 @@ public class ProjectsPresenterTest {
         Project project = new Project.Builder("Name")
                 .id(1L)
                 .build();
+        ProjectsModel projectsModel = new ProjectsModel(project);
         when(mClockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
 
-        mPresenter.clockActivityChange(project, new Date());
+        mPresenter.clockActivityChange(projectsModel, new Date());
 
         verify(mNotificationManager).cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
-        verify(mView, never()).updateProject(project);
+        verify(mView, never()).updateProject(projectsModel);
     }
 
     @Test
     public void clockActivityChange_withClockInError() throws DomainException {
         Project project = new Project.Builder("Name")
                 .build();
+        ProjectsModel projectsModel = new ProjectsModel(project);
         when(mClockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
         mPresenter.attachView(mView);
 
-        mPresenter.clockActivityChange(project, new Date());
+        mPresenter.clockActivityChange(projectsModel, new Date());
 
         verify(mView, never()).showClockOutErrorMessage();
         verify(mView).showClockInErrorMessage();
@@ -293,11 +296,12 @@ public class ProjectsPresenterTest {
     public void clockActivityChange_withClockOutError() throws DomainException {
         Project project = mock(Project.class);
         when(project.isActive()).thenReturn(true);
+        ProjectsModel projectsModel = new ProjectsModel(project);
         when(mClockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
         mPresenter.attachView(mView);
 
-        mPresenter.clockActivityChange(project, new Date());
+        mPresenter.clockActivityChange(projectsModel, new Date());
 
         verify(mView).showClockOutErrorMessage();
         verify(mView, never()).showClockInErrorMessage();
@@ -307,10 +311,11 @@ public class ProjectsPresenterTest {
     public void clockActivityChange_withErrorAndWithoutAttachedView() throws DomainException {
         Project project = mock(Project.class);
         when(project.isActive()).thenReturn(true);
+        ProjectsModel projectsModel = new ProjectsModel(project);
         when(mClockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
 
-        mPresenter.clockActivityChange(project, new Date());
+        mPresenter.clockActivityChange(projectsModel, new Date());
 
         verify(mView, never()).showClockOutErrorMessage();
         verify(mView, never()).showClockInErrorMessage();

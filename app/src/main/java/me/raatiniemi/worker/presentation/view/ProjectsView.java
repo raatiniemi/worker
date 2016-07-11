@@ -64,7 +64,7 @@ public interface ProjectsView extends MvpView {
      *
      * @param project Project to update in the list.
      */
-    void updateProject(Project project);
+    void updateProject(ProjectsModel project);
 
     /**
      * Show message for failed clock in action.

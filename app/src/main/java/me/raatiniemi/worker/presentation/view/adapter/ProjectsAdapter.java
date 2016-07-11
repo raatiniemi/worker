@@ -99,7 +99,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnProjectActionListener.onClockActivityToggle(project);
+                mOnProjectActionListener.onClockActivityToggle(item);
             }
         });
         vh.mClockActivityToggle.setOnLongClickListener(mHintedImageButtonListener);
@@ -111,7 +111,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnProjectActionListener.onClockActivityAt(project);
+                mOnProjectActionListener.onClockActivityAt(item);
             }
         });
         vh.mClockActivityAt.setOnLongClickListener(mHintedImageButtonListener);
@@ -125,12 +125,11 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.mDelete.setOnLongClickListener(mHintedImageButtonListener);
     }
 
-    public int findProject(final Project project) {
+    public int findProject(final ProjectsModel project) {
         // TODO: Clean up the comparator.
         final ProjectComparator comparator = new ProjectComparator();
 
-        ProjectsModel item = new ProjectsModel(project);
-        return Collections.binarySearch(getItems(), item, new Comparator<ProjectsModel>() {
+        return Collections.binarySearch(getItems(), project, new Comparator<ProjectsModel>() {
             @Override
             public int compare(ProjectsModel lhs, ProjectsModel rhs) {
                 return comparator.compare(
@@ -205,14 +204,14 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
          *
          * @param project Project to change the clock activity.
          */
-        void onClockActivityToggle(@NonNull Project project);
+        void onClockActivityToggle(@NonNull ProjectsModel project);
 
         /**
          * Toggle the clock activity change, with date and time.
          *
          * @param project Project to change the clock activity.
          */
-        void onClockActivityAt(@NonNull Project project);
+        void onClockActivityAt(@NonNull ProjectsModel project);
 
         /**
          * Handle project delete action from user.

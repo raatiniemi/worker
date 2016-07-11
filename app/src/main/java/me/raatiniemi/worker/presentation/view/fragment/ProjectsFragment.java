@@ -206,15 +206,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void updateProject(Project project) {
+    public void updateProject(ProjectsModel project) {
         int position = getAdapter().findProject(project);
         if (0 > position) {
             Log.e(TAG, "Unable to find position for project in the adapter");
             return;
         }
 
-        ProjectsModel item = new ProjectsModel(project);
-        getAdapter().set(position, item);
+        getAdapter().set(position, project);
     }
 
     /**
@@ -352,7 +351,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onClockActivityToggle(@NonNull final Project project) {
+    public void onClockActivityToggle(@NonNull final ProjectsModel project) {
         if (project.isActive()) {
             // Check if clock out require confirmation.
             if (!Settings.shouldConfirmClockOut(getActivity())) {
@@ -378,8 +377,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onClockActivityAt(@NonNull final Project project) {
-        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project);
+    public void onClockActivityAt(@NonNull final ProjectsModel project) {
+        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project.asProject());
         fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
             @Override
             public void onClockActivityAt(Calendar calendar) {
