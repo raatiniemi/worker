@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -32,9 +33,11 @@ import java.util.concurrent.TimeUnit;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
@@ -67,6 +70,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     private final GetProjects mGetProjects;
 
     /**
+     * Use case for getting registered project time.
+     */
+    private final GetProjectTimeSince mGetProjectTimeSince;
+
+    /**
      * Use case for project clock in/out.
      */
     private final ClockActivityChange mClockActivityChange;
@@ -87,6 +95,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * @param context             Context used with the presenter.
      * @param eventBus            Event bus.
      * @param getProjects         Use case for getting projects.
+     * @param getProjectTimeSince Use case for getting registered project time.
      * @param clockActivityChange Use case for project clock in/out.
      * @param removeProject       Use case for removing projects.
      */
@@ -94,6 +103,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
             Context context,
             EventBus eventBus,
             GetProjects getProjects,
+            GetProjectTimeSince getProjectTimeSince,
             ClockActivityChange clockActivityChange,
             RemoveProject removeProject
     ) {
@@ -101,6 +111,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
         mEventBus = eventBus;
         mGetProjects = getProjects;
+        mGetProjectTimeSince = getProjectTimeSince;
         mClockActivityChange = clockActivityChange;
         mRemoveProject = removeProject;
     }
@@ -288,7 +299,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         List<ProjectsModel> items = new ArrayList<>();
 
                         for (Project project : projects) {
-                            items.add(new ProjectsModel(project));
+                            List<Time> registeredTime = getRegisteredTime(project);
+
+                            items.add(new ProjectsModel(project, registeredTime));
                         }
 
                         return items;
@@ -330,6 +343,19 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "getProjects onCompleted");
                     }
                 });
+    }
+
+    private List<Time> getRegisteredTime(Project project) {
+        try {
+            return mGetProjectTimeSince.execute(
+                    project,
+                    GetProjectTimeSince.sMonth
+            );
+        } catch (DomainException e) {
+            Log.w(TAG, "Unable to get registered time for project", e);
+        }
+
+        return Collections.emptyList();
     }
 
     /**
@@ -426,7 +452,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                 .map(new Func1<Project, ProjectsModel>() {
                     @Override
                     public ProjectsModel call(Project project) {
-                        return new ProjectsModel(project);
+                        List<Time> registeredTime = getRegisteredTime(project);
+
+                        return new ProjectsModel(project, registeredTime);
                     }
                 })
                 .compose(this.<ProjectsModel>applySchedulers())

@@ -41,10 +41,14 @@ public class ProjectsModel {
     private final Project mProject;
     private long mTimeSummary = 0;
 
-    public ProjectsModel(Project project) {
+    public ProjectsModel(Project project, List<Time> registeredTime) {
         mProject = project;
 
-        calculateTimeSummaryFromRegisteredTime(project.getTime());
+        calculateTimeSummaryFromRegisteredTime(registeredTime);
+    }
+
+    public ProjectsModel(Project project) {
+        this(project, project.getTime());
     }
 
     private static void showTextView(TextView textView) {

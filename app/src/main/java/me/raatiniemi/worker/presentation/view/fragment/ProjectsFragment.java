@@ -44,6 +44,7 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -136,6 +137,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
                 getActivity(),
                 EventBus.getDefault(),
                 new GetProjects(projectRepository, timeRepository),
+                new GetProjectTimeSince(timeRepository),
                 new ClockActivityChange(projectRepository, timeRepository),
                 new RemoveProject(projectRepository)
         );

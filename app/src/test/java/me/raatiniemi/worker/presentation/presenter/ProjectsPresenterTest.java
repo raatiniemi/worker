@@ -42,14 +42,17 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
@@ -68,6 +71,7 @@ public class ProjectsPresenterTest {
     private Context mContext = RuntimeEnvironment.application.getBaseContext();
     private EventBus mEventBus;
     private GetProjects mGetProjects;
+    private GetProjectTimeSince mGetProjectTimeSince;
     private ClockActivityChange mClockActivityChange;
     private RemoveProject mRemoveProject;
     private ProjectsPresenter mPresenter;
@@ -78,12 +82,14 @@ public class ProjectsPresenterTest {
     public void setUp() {
         mEventBus = mock(EventBus.class);
         mGetProjects = mock(GetProjects.class);
+        mGetProjectTimeSince = mock(GetProjectTimeSince.class);
         mClockActivityChange = mock(ClockActivityChange.class);
         mRemoveProject = mock(RemoveProject.class);
         mPresenter = new ProjectsPresenter(
                 mContext,
                 mEventBus,
                 mGetProjects,
+                mGetProjectTimeSince,
                 mClockActivityChange,
                 mRemoveProject
         );
@@ -170,10 +176,31 @@ public class ProjectsPresenterTest {
                         .build()
         );
         when(mGetProjects.execute()).thenReturn(projects);
+        when(mGetProjectTimeSince.execute(any(Project.class), anyInt()))
+                .thenReturn(anyListOf(Time.class));
         mPresenter.attachView(mView);
 
         mPresenter.getProjects();
 
+        verify(mGetProjectTimeSince).execute(any(Project.class), anyInt());
+        verify(mView).addProjects(anyListOf(ProjectsModel.class));
+    }
+
+    @Test
+    public void getProjects_failureToGetRegisteredTime() throws DomainException {
+        List<Project> projects = new ArrayList<>();
+        projects.add(
+                new Project.Builder("Name")
+                        .build()
+        );
+        when(mGetProjects.execute()).thenReturn(projects);
+        when(mGetProjectTimeSince.execute(any(Project.class), anyInt()))
+                .thenThrow(new ClockOutBeforeClockInException());
+        mPresenter.attachView(mView);
+
+        mPresenter.getProjects();
+
+        verify(mGetProjectTimeSince).execute(any(Project.class), anyInt());
         verify(mView).addProjects(anyListOf(ProjectsModel.class));
     }
 
@@ -194,6 +221,7 @@ public class ProjectsPresenterTest {
 
         mPresenter.getProjects();
 
+        verify(mGetProjectTimeSince, never()).execute(any(Project.class), anyInt());
         verify(mView).showGetProjectsErrorMessage();
     }
 
@@ -248,6 +276,8 @@ public class ProjectsPresenterTest {
         ProjectsModel projectsModel = new ProjectsModel(project);
         when(mClockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
+        when(mGetProjectTimeSince.execute(any(Project.class), anyInt()))
+                .thenReturn(anyListOf(Time.class));
         mPresenter.attachView(mView);
 
         mPresenter.clockActivityChange(projectsModel, new Date());
@@ -259,6 +289,7 @@ public class ProjectsPresenterTest {
                 eq(Worker.NOTIFICATION_ON_GOING_ID),
                 isA(Notification.class)
         );
+        verify(mGetProjectTimeSince).execute(any(Project.class), anyInt());
         verify(mView).updateProject(projectsModel);
     }
 
