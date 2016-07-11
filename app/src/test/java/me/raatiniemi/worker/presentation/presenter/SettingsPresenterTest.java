@@ -19,10 +19,13 @@ package me.raatiniemi.worker.presentation.presenter;
 import android.content.Context;
 
 import org.greenrobot.eventbus.EventBus;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.io.File;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
@@ -31,66 +34,55 @@ import me.raatiniemi.worker.presentation.view.SettingsView;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class SettingsPresenterTest {
+    private EventBus mEventBus;
+    private SettingsPresenter mPresenter;
+    private SettingsView mView;
+
+    @Before
+    public void setUp() throws Exception {
+        Context context = mock(Context.class);
+        mEventBus = mock(EventBus.class);
+        mPresenter = new SettingsPresenter(context, mEventBus);
+        mView = mock(SettingsView.class);
+    }
+
     @Test
     public void attachView_registerEventBus() {
-        Context context = mock(Context.class);
-        EventBus eventBus = mock(EventBus.class);
-        SettingsView view = mock(SettingsView.class);
+        mPresenter.attachView(mView);
 
-        SettingsPresenter presenter = new SettingsPresenter(context, eventBus);
-        presenter.attachView(view);
-
-        verify(eventBus, times(1)).register(presenter);
+        verify(mEventBus).register(mPresenter);
     }
 
     @Test
     public void detachView_unregisterEventBus() {
-        Context context = mock(Context.class);
-        EventBus eventBus = mock(EventBus.class);
+        mPresenter.detachView();
 
-        SettingsPresenter presenter = new SettingsPresenter(context, eventBus);
-        presenter.detachView();
-
-        verify(eventBus, times(1)).unregister(presenter);
+        verify(mEventBus).unregister(mPresenter);
     }
 
     @Test
     public void onEventMainThread_successfulBackupEvent() {
-        Context context = mock(Context.class);
-        EventBus eventBus = mock(EventBus.class);
-        SettingsView view = mock(SettingsView.class);
+        Backup backup = new Backup(new File("backup-file"));
+        BackupSuccessfulEvent event = new BackupSuccessfulEvent(backup);
+        mPresenter.attachView(mView);
 
-        Backup backup = mock(Backup.class);
-        BackupSuccessfulEvent event = mock(BackupSuccessfulEvent.class);
-        when(event.getBackup()).thenReturn(backup);
+        mPresenter.onEventMainThread(event);
 
-        SettingsPresenter presenter = new SettingsPresenter(context, eventBus);
-        presenter.attachView(view);
-        presenter.onEventMainThread(event);
-
-        verify(view, times(1)).setLatestBackup(backup);
+        verify(mView).setLatestBackup(backup);
     }
 
     @Test
     public void onEventMainThread_successfulBackupEventWithoutView() {
-        Context context = mock(Context.class);
-        EventBus eventBus = mock(EventBus.class);
-        SettingsView view = mock(SettingsView.class);
+        Backup backup = new Backup(new File("backup-file"));
+        BackupSuccessfulEvent event = new BackupSuccessfulEvent(backup);
 
-        Backup backup = mock(Backup.class);
-        BackupSuccessfulEvent event = mock(BackupSuccessfulEvent.class);
-        when(event.getBackup()).thenReturn(backup);
+        mPresenter.onEventMainThread(event);
 
-        SettingsPresenter presenter = new SettingsPresenter(context, eventBus);
-        presenter.onEventMainThread(event);
-
-        verify(view, never()).setLatestBackup(backup);
+        verify(mView, never()).setLatestBackup(backup);
     }
 }
