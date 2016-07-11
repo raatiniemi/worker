@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -32,12 +33,15 @@ import java.util.concurrent.TimeUnit;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.ProjectsView;
@@ -67,6 +71,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     private final GetProjects mGetProjects;
 
     /**
+     * Use case for getting registered project time.
+     */
+    private final GetProjectTimeSince mGetProjectTimeSince;
+
+    /**
      * Use case for project clock in/out.
      */
     private final ClockActivityChange mClockActivityChange;
@@ -87,6 +96,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * @param context             Context used with the presenter.
      * @param eventBus            Event bus.
      * @param getProjects         Use case for getting projects.
+     * @param getProjectTimeSince Use case for getting registered project time.
      * @param clockActivityChange Use case for project clock in/out.
      * @param removeProject       Use case for removing projects.
      */
@@ -94,6 +104,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
             Context context,
             EventBus eventBus,
             GetProjects getProjects,
+            GetProjectTimeSince getProjectTimeSince,
             ClockActivityChange clockActivityChange,
             RemoveProject removeProject
     ) {
@@ -101,6 +112,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
         mEventBus = eventBus;
         mGetProjects = getProjects;
+        mGetProjectTimeSince = getProjectTimeSince;
         mClockActivityChange = clockActivityChange;
         mRemoveProject = removeProject;
     }
@@ -140,14 +152,14 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         }
 
         // Iterate the projects and collect the index of active projects.
-        List<Project> data = getView().getProjects();
-        for (Project project : data) {
+        List<ProjectsModel> projects = getView().getProjects();
+        for (ProjectsModel project : projects) {
             if (!project.isActive()) {
                 continue;
             }
 
-            Log.d(TAG, "Queuing refresh of project: " + project.getName());
-            positions.add(data.indexOf(project));
+            Log.d(TAG, "Queuing refresh of project: " + project.getTitle());
+            positions.add(projects.indexOf(project));
         }
         return positions;
     }
@@ -288,7 +300,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         List<ProjectsModel> items = new ArrayList<>();
 
                         for (Project project : projects) {
-                            items.add(new ProjectsModel(project));
+                            List<Time> registeredTime = getRegisteredTime(project);
+
+                            items.add(new ProjectsModel(project, registeredTime));
                         }
 
                         return items;
@@ -332,12 +346,24 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                 });
     }
 
+    private List<Time> getRegisteredTime(Project project) {
+        try {
+            int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getContext());
+
+            return mGetProjectTimeSince.execute(project, startingPointForTimeSummary);
+        } catch (DomainException e) {
+            Log.w(TAG, "Unable to get registered time for project", e);
+        }
+
+        return Collections.emptyList();
+    }
+
     /**
      * Delete project.
      *
      * @param project Project to be deleted.
      */
-    public void deleteProject(final Project project) {
+    public void deleteProject(final ProjectsModel project) {
         // Before removing the project we need its current index, it's
         // needed to handle the restoration if deletion fails.
         final int index = getView().getProjects().indexOf(project);
@@ -350,11 +376,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         getView().deleteProjectAtPosition(index);
 
         Observable.just(project)
-                .flatMap(new Func1<Project, Observable<Object>>() {
+                .flatMap(new Func1<ProjectsModel, Observable<Object>>() {
                     @Override
-                    public Observable<Object> call(Project project) {
+                    public Observable<Object> call(ProjectsModel project) {
                         // Attempt to delete project.
-                        mRemoveProject.execute(project);
+                        mRemoveProject.execute(project.asProject());
 
                         return Observable.empty();
                     }
@@ -403,25 +429,39 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     /**
      * Change the clock activity status for project, i.e. clock in/out.
      *
-     * @param project Project to change clock activity status.
-     * @param date    Date and time to use for the clock activity change.
+     * @param projectsModel Project to change clock activity status.
+     * @param date          Date and time to use for the clock activity change.
      */
-    public void clockActivityChange(final Project project, final Date date) {
-        Observable.defer(new Func0<Observable<Project>>() {
-            @Override
-            public Observable<Project> call() {
-                try {
-                    return Observable.just(
-                            mClockActivityChange.execute(project, date)
-                    );
-                } catch (DomainException e) {
-                    return Observable.error(e);
-                }
-            }
-        }).compose(this.<Project>applySchedulers())
-                .doOnNext(new Action1<Project>() {
+    public void clockActivityChange(final ProjectsModel projectsModel, final Date date) {
+        Observable.just(projectsModel)
+                .flatMap(new Func1<ProjectsModel, Observable<Project>>() {
                     @Override
-                    public void call(Project project) {
+                    public Observable<Project> call(ProjectsModel projectsModel) {
+                        try {
+                            return Observable.just(
+                                    mClockActivityChange.execute(
+                                            projectsModel.asProject(),
+                                            date
+                                    )
+                            );
+                        } catch (DomainException e) {
+                            return Observable.error(e);
+                        }
+                    }
+                })
+                .map(new Func1<Project, ProjectsModel>() {
+                    @Override
+                    public ProjectsModel call(Project project) {
+                        List<Time> registeredTime = getRegisteredTime(project);
+
+                        return new ProjectsModel(project, registeredTime);
+                    }
+                })
+                .compose(this.<ProjectsModel>applySchedulers())
+                .doOnNext(new Action1<ProjectsModel>() {
+                    @Override
+                    public void call(ProjectsModel projectsModel) {
+                        Project project = projectsModel.asProject();
                         NotificationManager manager = (NotificationManager) getContext()
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -443,9 +483,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         }
                     }
                 })
-                .subscribe(new Subscriber<Project>() {
+                .subscribe(new Subscriber<ProjectsModel>() {
                     @Override
-                    public void onNext(Project project) {
+                    public void onNext(ProjectsModel project) {
                         Log.d(TAG, "clockActivityChange onNext");
 
                         // Check that we still have the view attached.
@@ -471,7 +511,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                             return;
                         }
 
-                        if (project.isActive()) {
+                        if (projectsModel.isActive()) {
                             getView().showClockOutErrorMessage();
                             return;
                         }
@@ -483,6 +523,16 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "clockActivityChange onCompleted");
                     }
                 });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
+        if (!isViewAttached()) {
+            Log.d(TAG, "View is not attached, skip reloading projects");
+            return;
+        }
+
+        getView().reloadProjects();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

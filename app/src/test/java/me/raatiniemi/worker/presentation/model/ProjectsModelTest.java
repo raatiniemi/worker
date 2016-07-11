@@ -29,11 +29,9 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
@@ -42,6 +40,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -73,16 +72,42 @@ public class ProjectsModelTest {
     };
 
     @DataProvider
+    public static Object[][] isActive_dataProvider()
+            throws ClockOutBeforeClockInException {
+        return new Object[][]{
+                {
+                        Boolean.FALSE,
+                        mockProjectWithActiveIndicator(Boolean.FALSE)
+                },
+                {
+                        Boolean.TRUE,
+                        mockProjectWithActiveIndicator(Boolean.TRUE)
+                }
+        };
+    }
+
+    @DataProvider
     public static Object[][] getTimeSummary_dataProvider()
             throws ClockOutBeforeClockInException {
         return new Object[][]{
                 {
                         "1h 0m",
-                        createTimeForGetTimeSummaryTest(3600)
+                        new Time[]{
+                                createTimeForGetTimeSummaryTest(3600)
+                        }
                 },
                 {
                         "2h 30m",
-                        createTimeForGetTimeSummaryTest(9000)
+                        new Time[]{
+                                createTimeForGetTimeSummaryTest(9000)
+                        }
+                },
+                {
+                        "3h 30m",
+                        new Time[]{
+                                createTimeForGetTimeSummaryTest(3600),
+                                createTimeForGetTimeSummaryTest(9000)
+                        }
                 }
         };
     }
@@ -227,14 +252,24 @@ public class ProjectsModelTest {
     }
 
     @Test
+    @UseDataProvider("isActive_dataProvider")
+    public void isActive(Boolean expected, Project project) {
+        ProjectsModel model = new ProjectsModel(project);
+
+        if (expected) {
+            assertTrue(model.isActive());
+            return;
+        }
+        assertFalse(model.isActive());
+    }
+
+    @Test
     @UseDataProvider("getTimeSummary_dataProvider")
-    public void getTimeSummary(String expected, Time time)
+    public void getTimeSummary(String expected, Time[] registeredTime)
             throws InvalidProjectNameException, ClockOutBeforeClockInException {
         Project project = createProjectBuilder("Project name")
                 .build();
-        List<Time> times = new ArrayList<>();
-        times.add(time);
-        project.addTime(times);
+        project.addTime(Arrays.asList(registeredTime));
 
         ProjectsModel model = new ProjectsModel(project);
 

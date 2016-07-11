@@ -32,7 +32,6 @@ import android.view.ViewGroup;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +44,7 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -137,6 +137,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
                 getActivity(),
                 EventBus.getDefault(),
                 new GetProjects(projectRepository, timeRepository),
+                new GetProjectTimeSince(timeRepository),
                 new ClockActivityChange(projectRepository, timeRepository),
                 new RemoveProject(projectRepository)
         );
@@ -159,14 +160,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      * @inheritDoc
      */
     @Override
-    public List<Project> getProjects() {
-        List<Project> projects = new ArrayList<>();
-
-        for (ProjectsModel item : getAdapter().getItems()) {
-            projects.add(item.asProject());
-        }
-
-        return projects;
+    public List<ProjectsModel> getProjects() {
+        return getAdapter().getItems();
     }
 
     /**
@@ -213,15 +208,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void updateProject(Project project) {
+    public void updateProject(ProjectsModel project) {
         int position = getAdapter().findProject(project);
         if (0 > position) {
             Log.e(TAG, "Unable to find position for project in the adapter");
             return;
         }
 
-        ProjectsModel item = new ProjectsModel(project);
-        getAdapter().set(position, item);
+        getAdapter().set(position, project);
     }
 
     /**
@@ -262,10 +256,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @Override
     public void restoreProjectAtPreviousPosition(
             int previousPosition,
-            Project project
+            ProjectsModel project
     ) {
-        ProjectsModel item = new ProjectsModel(project);
-        getAdapter().add(previousPosition, item);
+        getAdapter().add(previousPosition, project);
 
         mRecyclerView.scrollToPosition(previousPosition);
     }
@@ -360,7 +353,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onClockActivityToggle(@NonNull final Project project) {
+    public void onClockActivityToggle(@NonNull final ProjectsModel project) {
         if (project.isActive()) {
             // Check if clock out require confirmation.
             if (!Settings.shouldConfirmClockOut(getActivity())) {
@@ -386,8 +379,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onClockActivityAt(@NonNull final Project project) {
-        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project);
+    public void onClockActivityAt(@NonNull final ProjectsModel project) {
+        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project.asProject());
         fragment.setOnClockActivityAtListener(new ClockActivityAtFragment.OnClockActivityAtListener() {
             @Override
             public void onClockActivityAt(Calendar calendar) {
@@ -401,7 +394,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onDelete(@NonNull final Project project) {
+    public void onDelete(@NonNull final ProjectsModel project) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)

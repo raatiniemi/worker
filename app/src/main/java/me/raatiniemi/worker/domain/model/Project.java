@@ -108,27 +108,6 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Summarize the registered time for the project in milliseconds.
-     *
-     * @return Registered time in milliseconds.
-     */
-    public long summarizeTime() {
-        // Total time in number of seconds.
-        long total = 0;
-
-        List<Time> time = getTime();
-        if (!time.isEmpty()) {
-            // Iterate of the registered time and
-            // retrieve the time interval.
-            for (Time item : time) {
-                total += item.getTime();
-            }
-        }
-
-        return total;
-    }
-
-    /**
      * Retrieve the elapsed time for an active project.
      *
      * @return Elapsed time in milliseconds, zero if project is not active.

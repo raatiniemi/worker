@@ -26,9 +26,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 
 import me.raatiniemi.worker.data.util.ExternalStorage;
+import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
+import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.SettingsView;
 import rx.Observable;
 import rx.Subscriber;
@@ -129,5 +133,46 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
 
         // Push the latest backup to the view for update.
         getView().setLatestBackup(event.getBackup());
+    }
+
+    public void changeTimeSummaryStartingPoint(int newStartingPoint) {
+        try {
+            int currentStartingPoint = Settings.getStartingPointForTimeSummary(getContext());
+            if (currentStartingPoint == newStartingPoint) {
+                return;
+            }
+
+            switch (newStartingPoint) {
+                case GetProjectTimeSince.sWeek:
+                    Settings.useWeekForTimeSummaryStartingPoint(getContext());
+                    break;
+                case GetProjectTimeSince.sMonth:
+                    Settings.useMonthForTimeSummaryStartingPoint(getContext());
+                    break;
+                default:
+                    throw new InvalidStartingPointException(
+                            "Starting point '" + newStartingPoint + "' is not valid"
+                    );
+            }
+
+            mEventBus.post(new TimeSummaryStartingPointChangeEvent());
+
+            if (!isViewAttached()) {
+                return;
+            }
+            if (GetProjectTimeSince.sWeek == newStartingPoint) {
+                getView().showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+                return;
+            }
+            getView().showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+        } catch (InvalidStartingPointException e) {
+            Log.w(TAG, "Unable to set new starting point", e);
+
+            if (!isViewAttached()) {
+                Log.w(TAG, "View is not attached, failed to push error");
+                return;
+            }
+            getView().showChangeTimeSummaryStartingPointErrorMessage();
+        }
     }
 }

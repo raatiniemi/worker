@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
@@ -28,6 +29,16 @@ import me.raatiniemi.worker.domain.repository.query.Criteria;
  * Represent a unified interface for working with time intervals using different data sources.
  */
 public interface TimeRepository {
+    /**
+     * Find registered time for a project matching criteria.
+     *
+     * @param project  Project for which to get the registered time.
+     * @param criteria Criteria for matching time intervals.
+     * @return Registered time for project matching criteria.
+     * @throws DomainException If domain rules are violated.
+     */
+    List<Time> matching(Project project, Criteria criteria) throws DomainException;
+
     /**
      * Get time by id.
      *

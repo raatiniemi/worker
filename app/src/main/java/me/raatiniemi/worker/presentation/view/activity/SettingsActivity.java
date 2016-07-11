@@ -21,6 +21,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -66,6 +67,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      * Key for ongoing notification preference.
      */
     private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY = "settings_project_ongoing_notification";
+
+    /**
+     * Key for time summary preference.
+     */
+    private static final String SETTINGS_PROJECT_TIME_SUMMARY_KEY = "settings_project_time_summary";
 
     /**
      * Key for confirm clock out preference.
@@ -288,6 +294,48 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         fragment.setRestoreSummary(backup);
     }
 
+    @Override
+    public void showChangeTimeSummaryStartingPointToWeekSuccessMessage() {
+        View contentView = findViewById(android.R.id.content);
+        if (null == contentView) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.message_change_time_summary_starting_point_week,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
+    public void showChangeTimeSummaryStartingPointToMonthSuccessMessage() {
+        View contentView = findViewById(android.R.id.content);
+        if (null == contentView) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.message_change_time_summary_starting_point_month,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
+    public void showChangeTimeSummaryStartingPointErrorMessage() {
+        View contentView = findViewById(android.R.id.content);
+        if (null == contentView) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.error_message_change_time_summary_starting_point,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
     public abstract static class BasePreferenceFragment extends PreferenceFragment {
         @Override
         public void onResume() {
@@ -359,7 +407,8 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         }
     }
 
-    public static class ProjectFragment extends BasePreferenceFragment {
+    public static class ProjectFragment extends BasePreferenceFragment
+            implements Preference.OnPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -373,10 +422,24 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             } catch (ClassCastException e) {
                 Log.w(TAG, "Unable to get value for 'ongoing_notification'", e);
             }
+
+            try {
+                int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getActivity());
+
+                ListPreference timeSummary = (ListPreference) findPreference(SETTINGS_PROJECT_TIME_SUMMARY_KEY);
+                timeSummary.setValue(String.valueOf(startingPointForTimeSummary));
+                timeSummary.setOnPreferenceChangeListener(this);
+            } catch (ClassCastException e) {
+                Log.w(TAG, "Unable to set listener for 'time_summary'", e);
+            }
         }
 
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
+            if (SETTINGS_PROJECT_TIME_SUMMARY_KEY.equals(preference.getKey())) {
+                return true;
+            }
+
             if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY.equals(preference.getKey())) {
                 try {
                     // Set the clock out confirmation preference.
@@ -398,6 +461,21 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         @Override
         public int getTitle() {
             return R.string.activity_settings_project;
+        }
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            if (SETTINGS_PROJECT_TIME_SUMMARY_KEY.equals(preference.getKey())) {
+                changeTimeSummaryStartingPoint(newValue);
+                return true;
+            }
+            return false;
+        }
+
+        private void changeTimeSummaryStartingPoint(Object newStartingPoint) {
+            int startingPoint = Integer.parseInt((String) newStartingPoint);
+            getInstance().getPresenter()
+                    .changeTimeSummaryStartingPoint(startingPoint);
         }
     }
 

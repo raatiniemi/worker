@@ -21,10 +21,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.HoursMinutesIntervalFormat;
 
@@ -37,9 +39,16 @@ public class ProjectsModel {
 
     private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private final Project mProject;
+    private long mTimeSummary = 0;
+
+    public ProjectsModel(Project project, List<Time> registeredTime) {
+        mProject = project;
+
+        calculateTimeSummaryFromRegisteredTime(registeredTime);
+    }
 
     public ProjectsModel(Project project) {
-        mProject = project;
+        this(project, project.getTime());
     }
 
     private static void showTextView(TextView textView) {
@@ -54,6 +63,12 @@ public class ProjectsModel {
         return resources.getString(R.string.fragment_projects_item_clocked_in_since);
     }
 
+    private void calculateTimeSummaryFromRegisteredTime(List<Time> registeredTime) {
+        for (Time interval : registeredTime) {
+            mTimeSummary += interval.getTime();
+        }
+    }
+
     public Project asProject() {
         return mProject;
     }
@@ -62,8 +77,12 @@ public class ProjectsModel {
         return mProject.getName();
     }
 
+    public boolean isActive() {
+        return mProject.isActive();
+    }
+
     public String getTimeSummary() {
-        return sIntervalFormat.format(mProject.summarizeTime());
+        return sIntervalFormat.format(mTimeSummary);
     }
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
@@ -94,10 +113,6 @@ public class ProjectsModel {
         );
     }
 
-    private boolean isActive() {
-        return mProject.isActive();
-    }
-
     private String getFormattedClockedInSince() {
         // TODO: Handle if the time session overlap days.
         // The timestamp should include the date it was
@@ -116,5 +131,27 @@ public class ProjectsModel {
         }
 
         hideTextView(clockedInSinceView);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof ProjectsModel)) {
+            return false;
+        }
+
+        ProjectsModel that = (ProjectsModel) o;
+        return mProject.equals(that.mProject);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + mProject.hashCode();
+        return result;
     }
 }

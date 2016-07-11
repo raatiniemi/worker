@@ -33,7 +33,7 @@ public interface ProjectsView extends MvpView {
      *
      * @return Projects from the view.
      */
-    List<Project> getProjects();
+    List<ProjectsModel> getProjects();
 
     /**
      * Show message for failed project retrieval.
@@ -64,7 +64,7 @@ public interface ProjectsView extends MvpView {
      *
      * @param project Project to update in the list.
      */
-    void updateProject(Project project);
+    void updateProject(ProjectsModel project);
 
     /**
      * Show message for failed clock in action.
@@ -91,7 +91,7 @@ public interface ProjectsView extends MvpView {
      */
     void restoreProjectAtPreviousPosition(
             int previousPosition,
-            Project project
+            ProjectsModel project
     );
 
     /**

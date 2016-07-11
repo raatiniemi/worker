@@ -42,6 +42,7 @@ import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
@@ -58,6 +59,38 @@ public class TimeResolverRepository
             @NonNull final TimeContentValuesMapper contentValuesMapper
     ) {
         super(contentResolver, cursorMapper, contentValuesMapper);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public List<Time> matching(Project project, Criteria criteria) throws DomainException {
+        List<Time> time = new ArrayList<>();
+
+        ContentResolverQuery query = ContentResolverQuery.from(criteria);
+        Cursor cursor = getContentResolver().query(
+                ProjectContract.getItemTimeUri(project.getId()),
+                TimeContract.getColumns(),
+                query.getSelection(),
+                query.getSelectionArgs(),
+                null
+        );
+        if (null == cursor) {
+            return time;
+        }
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    time.add(getCursorMapper().transform(cursor));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return time;
     }
 
     /**
