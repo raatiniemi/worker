@@ -22,6 +22,8 @@ import android.content.Intent;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.NotificationCompat;
 
+import java.util.Date;
+
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.service.ResumeService;
@@ -61,6 +63,16 @@ public class ResumeNotification extends OngoingNotification {
 
     private String getTextForResumeAction() {
         return getStringWithResourceId(R.string.notification_pause_action_resume);
+    }
+
+    @Override
+    protected boolean shouldUseChronometer() {
+        return true;
+    }
+
+    @Override
+    protected long getWhenForChronometer() {
+        return new Date().getTime();
     }
 
     @Override

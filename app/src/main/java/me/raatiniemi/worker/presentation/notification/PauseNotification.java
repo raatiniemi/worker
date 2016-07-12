@@ -81,6 +81,16 @@ public class PauseNotification extends OngoingNotification {
     }
 
     @Override
+    protected boolean shouldUseChronometer() {
+        return false;
+    }
+
+    @Override
+    protected long getWhenForChronometer() {
+        return 0;
+    }
+
+    @Override
     protected Notification build() {
         return buildWithActions(
                 buildPauseAction(),

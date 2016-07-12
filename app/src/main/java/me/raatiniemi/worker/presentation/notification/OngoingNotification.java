@@ -85,12 +85,21 @@ abstract class OngoingNotification {
     protected Notification buildWithActions(
             NotificationCompat.Action... actions
     ) {
+        if (shouldUseChronometer()) {
+            mBuilder.setWhen(getWhenForChronometer())
+                    .setUsesChronometer(shouldUseChronometer());
+        }
+
         for (NotificationCompat.Action action : actions) {
             mBuilder.addAction(action);
         }
 
         return mBuilder.build();
     }
+
+    protected abstract boolean shouldUseChronometer();
+
+    protected abstract long getWhenForChronometer();
 
     protected abstract Notification build();
 }
