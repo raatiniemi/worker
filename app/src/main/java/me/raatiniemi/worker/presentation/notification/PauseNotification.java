@@ -21,9 +21,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+
+import java.util.Date;
+import java.util.List;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
+import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
+import me.raatiniemi.worker.data.repository.TimeResolverRepository;
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.service.ClockOutService;
 import me.raatiniemi.worker.presentation.service.PauseService;
 
@@ -31,19 +42,64 @@ import me.raatiniemi.worker.presentation.service.PauseService;
  * Notification for pausing or clocking out an active project.
  */
 public class PauseNotification extends OngoingNotification {
+    private static final String TAG = "PauseNotification";
     private static final int sSmallIcon = R.drawable.ic_timer_black_24dp;
 
     private static final int sPauseIcon = 0;
 
     private static final int sClockOutIcon = 0;
 
+    private boolean mUseChronometer;
+    private long mRegisteredTime;
+
     private PauseNotification(Context context, Project project) {
         super(context, project);
+
+        populateRegisteredTime(context, project);
     }
 
     public static Notification build(Context context, Project project) {
         PauseNotification notification = new PauseNotification(context, project);
         return notification.build();
+    }
+
+    private void populateRegisteredTime(Context context, Project project) {
+        mUseChronometer = true;
+
+        try {
+            List<Time> registeredTime = getRegisteredTime(context, project);
+            for (Time time : registeredTime) {
+                mRegisteredTime += time.getTime();
+            }
+        } catch (DomainException e) {
+            Log.w(TAG, "Unable to populate registered time", e);
+            mUseChronometer = false;
+        }
+    }
+
+    private List<Time> getRegisteredTime(
+            Context context,
+            Project project
+    ) throws DomainException {
+        TimeRepository repository = buildTimeRepository(context);
+        GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(repository);
+
+        return registeredTimeUseCase.execute(
+                project,
+                GetProjectTimeSince.sDay
+        );
+    }
+
+    private TimeRepository buildTimeRepository(Context context) {
+        return new TimeResolverRepository(
+                context.getContentResolver(),
+                new TimeCursorMapper(),
+                new TimeContentValuesMapper()
+        );
+    }
+
+    private GetProjectTimeSince buildRegisteredTimeUseCase(TimeRepository repository) {
+        return new GetProjectTimeSince(repository);
     }
 
     @Override
@@ -82,12 +138,13 @@ public class PauseNotification extends OngoingNotification {
 
     @Override
     protected boolean shouldUseChronometer() {
-        return false;
+        return mUseChronometer;
     }
 
     @Override
     protected long getWhenForChronometer() {
-        return 0;
+        long currentTimestamp = new Date().getTime();
+        return currentTimestamp - mRegisteredTime;
     }
 
     @Override
