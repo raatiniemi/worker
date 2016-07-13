@@ -17,33 +17,25 @@
 package me.raatiniemi.worker.presentation.notification;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.service.ResumeService;
-import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
-import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 
 /**
  * Notification for resuming an inactive project.
  */
-public class ResumeNotification {
+public class ResumeNotification extends OngoingNotification {
     private static final int sSmallIcon = R.drawable.ic_timer_off_black_24dp;
 
     private static final int sResumeIcon = 0;
 
-    private final Context mContext;
-    private final Project mProject;
-
     private ResumeNotification(Context context, Project project) {
-        mContext = context;
-        mProject = project;
+        super(context, project);
     }
 
     public static Notification build(Context context, Project project) {
@@ -51,53 +43,30 @@ public class ResumeNotification {
         return notification.build();
     }
 
-    private Notification build() {
-        return new NotificationCompat.Builder(mContext)
-                .setContentTitle(mProject.getName())
-                .setSmallIcon(sSmallIcon)
-                .addAction(buildResumeAction())
-                .setContentIntent(buildContentAction())
-                .build();
+    @Override
+    @DrawableRes
+    protected int getSmallIcon() {
+        return sSmallIcon;
     }
 
     private NotificationCompat.Action buildResumeAction() {
-        Intent intent = new Intent(mContext, ResumeService.class);
-        intent.setData(getDataUri());
+        Intent intent = buildIntentWithService(ResumeService.class);
 
         return new NotificationCompat.Action(
                 sResumeIcon,
-                mContext.getString(R.string.notification_pause_action_resume),
+                getTextForResumeAction(),
                 buildPendingIntentWithService(intent)
         );
     }
 
-    private Uri getDataUri() {
-        return WorkerContract.ProjectContract.getItemUri(mProject.getId());
+    private String getTextForResumeAction() {
+        return getStringWithResourceId(R.string.notification_pause_action_resume);
     }
 
-    private PendingIntent buildPendingIntentWithService(Intent intent) {
-        return PendingIntent.getService(
-                mContext,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
-    }
-
-    private PendingIntent buildContentAction() {
-        Intent intent = new Intent(mContext, ProjectActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, mProject.getId());
-
-        return buildPendingIntentWithActivity(intent);
-    }
-
-    private PendingIntent buildPendingIntentWithActivity(Intent intent) {
-        return PendingIntent.getActivity(
-                mContext,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+    @Override
+    protected Notification build() {
+        return buildWithActions(
+                buildResumeAction()
         );
     }
 }

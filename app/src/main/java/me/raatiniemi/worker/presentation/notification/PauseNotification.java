@@ -17,36 +17,28 @@
 package me.raatiniemi.worker.presentation.notification;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.service.ClockOutService;
 import me.raatiniemi.worker.presentation.service.PauseService;
-import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
-import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 
 /**
  * Notification for pausing or clocking out an active project.
  */
-public class PauseNotification {
+public class PauseNotification extends OngoingNotification {
     private static final int sSmallIcon = R.drawable.ic_timer_black_24dp;
 
     private static final int sPauseIcon = 0;
 
     private static final int sClockOutIcon = 0;
 
-    private final Context mContext;
-    private final Project mProject;
-
     private PauseNotification(Context context, Project project) {
-        mContext = context;
-        mProject = project;
+        super(context, project);
     }
 
     public static Notification build(Context context, Project project) {
@@ -54,65 +46,45 @@ public class PauseNotification {
         return notification.build();
     }
 
-    private Notification build() {
-        return new NotificationCompat.Builder(mContext)
-                .setContentTitle(mProject.getName())
-                .setSmallIcon(sSmallIcon)
-                .addAction(buildPauseAction())
-                .addAction(buildClockOutAction())
-                .setContentIntent(buildContentAction())
-                .build();
+    @Override
+    @DrawableRes
+    protected int getSmallIcon() {
+        return sSmallIcon;
     }
 
     private NotificationCompat.Action buildPauseAction() {
-        Intent intent = new Intent(mContext, PauseService.class);
-        intent.setData(getDataUri());
+        Intent intent = buildIntentWithService(PauseService.class);
 
         return new NotificationCompat.Action(
                 sPauseIcon,
-                mContext.getString(R.string.notification_pause_action_pause),
+                getTextForPauseAction(),
                 buildPendingIntentWithService(intent)
         );
+    }
+
+    private String getTextForPauseAction() {
+        return getStringWithResourceId(R.string.notification_pause_action_pause);
     }
 
     private NotificationCompat.Action buildClockOutAction() {
-        Intent intent = new Intent(mContext, ClockOutService.class);
-        intent.setData(getDataUri());
+        Intent intent = buildIntentWithService(ClockOutService.class);
 
         return new NotificationCompat.Action(
                 sClockOutIcon,
-                mContext.getString(R.string.notification_pause_action_clock_out),
+                getTextForClockOutAction(),
                 buildPendingIntentWithService(intent)
         );
     }
 
-    private Uri getDataUri() {
-        return WorkerContract.ProjectContract.getItemUri(mProject.getId());
+    private String getTextForClockOutAction() {
+        return getStringWithResourceId(R.string.notification_pause_action_clock_out);
     }
 
-    private PendingIntent buildPendingIntentWithService(Intent intent) {
-        return PendingIntent.getService(
-                mContext,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
-    }
-
-    private PendingIntent buildContentAction() {
-        Intent intent = new Intent(mContext, ProjectActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, mProject.getId());
-
-        return buildPendingIntentWithActivity(intent);
-    }
-
-    private PendingIntent buildPendingIntentWithActivity(Intent intent) {
-        return PendingIntent.getActivity(
-                mContext,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+    @Override
+    protected Notification build() {
+        return buildWithActions(
+                buildPauseAction(),
+                buildClockOutAction()
         );
     }
 }
