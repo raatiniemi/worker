@@ -38,62 +38,63 @@ public class ResumeNotification {
 
     private static final int sResumeIcon = 0;
 
-    private ResumeNotification() {
+    private final Context mContext;
+    private final Project mProject;
+
+    private ResumeNotification(Context context, Project project) {
+        mContext = context;
+        mProject = project;
     }
 
     public static Notification build(Context context, Project project) {
-        return new NotificationCompat.Builder(context)
-                .setContentTitle(project.getName())
+        ResumeNotification notification = new ResumeNotification(context, project);
+        return notification.build();
+    }
+
+    private Notification build() {
+        return new NotificationCompat.Builder(mContext)
+                .setContentTitle(mProject.getName())
                 .setSmallIcon(sSmallIcon)
-                .addAction(buildResumeAction(context, project))
-                .setContentIntent(buildContentAction(context, project))
+                .addAction(buildResumeAction())
+                .setContentIntent(buildContentAction())
                 .build();
     }
 
-    private static NotificationCompat.Action buildResumeAction(
-            Context context,
-            Project project
-    ) {
-        Intent intent = new Intent(context, ResumeService.class);
-        intent.setData(getDataUri(project));
+    private NotificationCompat.Action buildResumeAction() {
+        Intent intent = new Intent(mContext, ResumeService.class);
+        intent.setData(getDataUri());
 
         return new NotificationCompat.Action(
                 sResumeIcon,
-                context.getString(R.string.notification_pause_action_resume),
-                buildPendingIntentWithService(context, intent)
+                mContext.getString(R.string.notification_pause_action_resume),
+                buildPendingIntentWithService(intent)
         );
     }
 
-    private static Uri getDataUri(Project project) {
-        return WorkerContract.ProjectContract.getItemUri(project.getId());
+    private Uri getDataUri() {
+        return WorkerContract.ProjectContract.getItemUri(mProject.getId());
     }
 
-    private static PendingIntent buildPendingIntentWithService(
-            Context context,
-            Intent intent
-    ) {
+    private PendingIntent buildPendingIntentWithService(Intent intent) {
         return PendingIntent.getService(
-                context,
+                mContext,
                 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
     }
 
-    private static PendingIntent buildContentAction(Context context, Project project) {
-        Intent intent = new Intent(context, ProjectActivity.class);
+    private PendingIntent buildContentAction() {
+        Intent intent = new Intent(mContext, ProjectActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
+        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, mProject.getId());
 
-        return buildPendingIntentWithActivity(context, intent);
+        return buildPendingIntentWithActivity(intent);
     }
 
-    private static PendingIntent buildPendingIntentWithActivity(
-            Context context,
-            Intent intent
-    ) {
+    private PendingIntent buildPendingIntentWithActivity(Intent intent) {
         return PendingIntent.getActivity(
-                context,
+                mContext,
                 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
