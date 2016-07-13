@@ -41,77 +41,75 @@ public class PauseNotification {
 
     private static final int sClockOutIcon = 0;
 
-    private PauseNotification() {
+    private final Context mContext;
+    private final Project mProject;
+
+    private PauseNotification(Context context, Project project) {
+        mContext = context;
+        mProject = project;
     }
 
     public static Notification build(Context context, Project project) {
-        return new NotificationCompat.Builder(context)
-                .setContentTitle(project.getName())
+        PauseNotification notification = new PauseNotification(context, project);
+        return notification.build();
+    }
+
+    private Notification build() {
+        return new NotificationCompat.Builder(mContext)
+                .setContentTitle(mProject.getName())
                 .setSmallIcon(sSmallIcon)
-                .addAction(buildPauseAction(context, project))
-                .addAction(buildClockOutAction(context, project))
-                .setContentIntent(buildContentAction(context, project))
+                .addAction(buildPauseAction())
+                .addAction(buildClockOutAction())
+                .setContentIntent(buildContentAction())
                 .build();
     }
 
-    private static NotificationCompat.Action buildPauseAction(
-            Context context,
-            Project project
-    ) {
-        Intent intent = new Intent(context, PauseService.class);
-        intent.setData(getDataUri(project));
+    private NotificationCompat.Action buildPauseAction() {
+        Intent intent = new Intent(mContext, PauseService.class);
+        intent.setData(getDataUri());
 
         return new NotificationCompat.Action(
                 sPauseIcon,
-                context.getString(R.string.notification_pause_action_pause),
-                buildPendingIntentWithService(context, intent)
+                mContext.getString(R.string.notification_pause_action_pause),
+                buildPendingIntentWithService(intent)
         );
     }
 
-    private static NotificationCompat.Action buildClockOutAction(
-            Context context,
-            Project project
-    ) {
-        Intent intent = new Intent(context, ClockOutService.class);
-        intent.setData(getDataUri(project));
+    private NotificationCompat.Action buildClockOutAction() {
+        Intent intent = new Intent(mContext, ClockOutService.class);
+        intent.setData(getDataUri());
 
         return new NotificationCompat.Action(
                 sClockOutIcon,
-                context.getString(R.string.notification_pause_action_clock_out),
-                buildPendingIntentWithService(context, intent)
+                mContext.getString(R.string.notification_pause_action_clock_out),
+                buildPendingIntentWithService(intent)
         );
     }
 
-    private static Uri getDataUri(Project project) {
-        return WorkerContract.ProjectContract.getItemUri(project.getId());
+    private Uri getDataUri() {
+        return WorkerContract.ProjectContract.getItemUri(mProject.getId());
     }
 
-    private static PendingIntent buildPendingIntentWithService(
-            Context context,
-            Intent intent
-    ) {
+    private PendingIntent buildPendingIntentWithService(Intent intent) {
         return PendingIntent.getService(
-                context,
+                mContext,
                 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
     }
 
-    private static PendingIntent buildContentAction(Context context, Project project) {
-        Intent intent = new Intent(context, ProjectActivity.class);
+    private PendingIntent buildContentAction() {
+        Intent intent = new Intent(mContext, ProjectActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
+        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, mProject.getId());
 
-        return buildPendingIntentWithActivity(context, intent);
+        return buildPendingIntentWithActivity(intent);
     }
 
-    private static PendingIntent buildPendingIntentWithActivity(
-            Context context,
-            Intent intent
-    ) {
+    private PendingIntent buildPendingIntentWithActivity(Intent intent) {
         return PendingIntent.getActivity(
-                context,
+                mContext,
                 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
