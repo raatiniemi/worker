@@ -203,7 +203,7 @@ public class ProjectResolverRepositoryTest {
                         ProjectContract.getColumns(),
                         null,
                         null,
-                        null
+                        ProjectContract.ORDER_BY
                 )
         ).thenReturn(null);
 
@@ -228,7 +228,7 @@ public class ProjectResolverRepositoryTest {
                         ProjectContract.getColumns(),
                         null,
                         null,
-                        null
+                        ProjectContract.ORDER_BY
                 )
         ).thenReturn(cursor);
 
@@ -255,7 +255,7 @@ public class ProjectResolverRepositoryTest {
                         ProjectContract.getColumns(),
                         null,
                         null,
-                        null
+                        ProjectContract.ORDER_BY
                 )
         ).thenReturn(cursor);
 
@@ -286,7 +286,7 @@ public class ProjectResolverRepositoryTest {
                         ProjectContract.getColumns(),
                         null,
                         null,
-                        null
+                        ProjectContract.ORDER_BY
                 )
         ).thenReturn(cursor);
 

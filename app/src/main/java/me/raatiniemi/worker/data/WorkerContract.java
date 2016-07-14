@@ -89,6 +89,8 @@ public class WorkerContract {
         public static final String ITEM_TYPE =
                 "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
+        public static final String ORDER_BY = BaseColumns._ID + " ASC";
+
         /**
          * Order by clause for project time.
          */

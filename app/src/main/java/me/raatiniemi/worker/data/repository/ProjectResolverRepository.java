@@ -95,7 +95,7 @@ public class ProjectResolverRepository
                 ProjectContract.getColumns(),
                 null,
                 null,
-                null
+                ProjectContract.ORDER_BY
         );
         if (null == cursor) {
             return projects;
