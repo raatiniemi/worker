@@ -37,6 +37,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.service.ClockOutService;
 import me.raatiniemi.worker.presentation.service.PauseService;
+import me.raatiniemi.worker.presentation.util.Settings;
 
 /**
  * Notification for pausing or clocking out an active project.
@@ -55,7 +56,10 @@ public class PauseNotification extends OngoingNotification {
     private PauseNotification(Context context, Project project) {
         super(context, project);
 
-        populateRegisteredTime(context, project);
+        mUseChronometer = Settings.isOngoingNotificationChronometerEnabled(context);
+        if (mUseChronometer) {
+            populateRegisteredTime(context, project);
+        }
     }
 
     public static Notification build(Context context, Project project) {

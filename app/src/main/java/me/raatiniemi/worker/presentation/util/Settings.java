@@ -43,6 +43,12 @@ public class Settings {
     private static final String PREF_ONGOING_NOTIFICATION_ENABLED = "pref_ongoing_notification_enabled";
 
     /**
+     * Preference key to check if the ongoing notification chronometer is enabled.
+     */
+    private static final String PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED
+            = "pref_ongoing_notification_chronometer_enabled";
+
+    /**
      * Preference key to check which starting point to use for time summary.
      */
     private static final String PREF_TIME_SUMMARY = "pref_time_summary";
@@ -123,6 +129,37 @@ public class Settings {
     public static void disableOngoingNotification(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, false).apply();
+    }
+
+    /**
+     * Check if the ongoing notification chronometer is enabled.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @return 'true' if the ongoing notification chronometer is enabled, otherwise 'false'.
+     */
+    public static boolean isOngoingNotificationChronometerEnabled(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true);
+    }
+
+    /**
+     * Enable the ongoing notification chronometer.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     */
+    public static void enableOngoingNotificationChronometer(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true).apply();
+    }
+
+    /**
+     * Disable the ongoing notification chronometer.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     */
+    public static void disableOngoingNotificationChronometer(Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, false).apply();
     }
 
     /**

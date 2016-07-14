@@ -69,6 +69,12 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY = "settings_project_ongoing_notification";
 
     /**
+     * Key for the ongoing notification chronometer preference.
+     */
+    private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY
+            = "settings_project_ongoing_notification_chronometer";
+
+    /**
      * Key for time summary preference.
      */
     private static final String SETTINGS_PROJECT_TIME_SUMMARY_KEY = "settings_project_time_summary";
@@ -424,6 +430,14 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             }
 
             try {
+                CheckBoxPreference ongoingNotificationChronometer =
+                        (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY);
+                ongoingNotificationChronometer.setChecked(Settings.isOngoingNotificationChronometerEnabled(getActivity()));
+            } catch (ClassCastException e) {
+                Log.w(TAG, "Unable to get value for 'ongoing_notification_chronometer'", e);
+            }
+
+            try {
                 int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getActivity());
 
                 ListPreference timeSummary = (ListPreference) findPreference(SETTINGS_PROJECT_TIME_SUMMARY_KEY);
@@ -453,6 +467,21 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     return true;
                 } catch (ClassCastException e) {
                     Log.w(TAG, "Unable to set value for 'ongoing_notification'", e);
+                }
+            }
+            if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY.equals(preference.getKey())) {
+                try {
+                    // Set the clock out confirmation preference.
+                    boolean checked = ((CheckBoxPreference) preference).isChecked();
+                    if (checked) {
+                        Settings.enableOngoingNotificationChronometer(getActivity());
+                        return true;
+                    }
+
+                    Settings.disableOngoingNotificationChronometer(getActivity());
+                    return true;
+                } catch (ClassCastException e) {
+                    Log.w(TAG, "Unable to set value for 'ongoing_notification_chronometer'", e);
                 }
             }
             return super.onPreferenceTreeClick(preferenceScreen, preference);
