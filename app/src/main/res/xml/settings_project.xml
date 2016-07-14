@@ -24,6 +24,11 @@
         android:title="@string/activity.settings.project.ongoing_notification"
         />
 
+    <CheckBoxPreference
+        android:key="settings_project_ongoing_notification_chronometer"
+        android:title="@string/activity.settings.project.ongoing_notification_chronometer"
+        />
+
     <ListPreference
         android:key="settings_project_time_summary"
         android:title="@string/activity.settings.project.time_summary.title"

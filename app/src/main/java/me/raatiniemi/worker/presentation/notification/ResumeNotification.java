@@ -17,86 +17,73 @@
 package me.raatiniemi.worker.presentation.notification;
 
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.NotificationCompat;
 
+import java.util.Date;
+
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.service.ResumeService;
-import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
-import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
+import me.raatiniemi.worker.presentation.util.Settings;
 
 /**
  * Notification for resuming an inactive project.
  */
-public class ResumeNotification {
+public class ResumeNotification extends OngoingNotification {
     private static final int sSmallIcon = R.drawable.ic_timer_off_black_24dp;
 
     private static final int sResumeIcon = 0;
 
-    private ResumeNotification() {
+    private boolean mUseChronometer;
+
+    private ResumeNotification(Context context, Project project) {
+        super(context, project);
+
+        mUseChronometer = Settings.isOngoingNotificationChronometerEnabled(context);
     }
 
     public static Notification build(Context context, Project project) {
-        return new NotificationCompat.Builder(context)
-                .setContentTitle(project.getName())
-                .setSmallIcon(sSmallIcon)
-                .addAction(buildResumeAction(context, project))
-                .setContentIntent(buildContentAction(context, project))
-                .build();
+        ResumeNotification notification = new ResumeNotification(context, project);
+        return notification.build();
     }
 
-    private static NotificationCompat.Action buildResumeAction(
-            Context context,
-            Project project
-    ) {
-        Intent intent = new Intent(context, ResumeService.class);
-        intent.setData(getDataUri(project));
+    @Override
+    @DrawableRes
+    protected int getSmallIcon() {
+        return sSmallIcon;
+    }
+
+    private NotificationCompat.Action buildResumeAction() {
+        Intent intent = buildIntentWithService(ResumeService.class);
 
         return new NotificationCompat.Action(
                 sResumeIcon,
-                context.getString(R.string.notification_pause_action_resume),
-                buildPendingIntentWithService(context, intent)
+                getTextForResumeAction(),
+                buildPendingIntentWithService(intent)
         );
     }
 
-    private static Uri getDataUri(Project project) {
-        return WorkerContract.ProjectContract.getItemUri(project.getId());
+    private String getTextForResumeAction() {
+        return getStringWithResourceId(R.string.notification_pause_action_resume);
     }
 
-    private static PendingIntent buildPendingIntentWithService(
-            Context context,
-            Intent intent
-    ) {
-        return PendingIntent.getService(
-                context,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+    @Override
+    protected boolean shouldUseChronometer() {
+        return mUseChronometer;
     }
 
-    private static PendingIntent buildContentAction(Context context, Project project) {
-        Intent intent = new Intent(context, ProjectActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
-
-        return buildPendingIntentWithActivity(context, intent);
+    @Override
+    protected long getWhenForChronometer() {
+        return new Date().getTime();
     }
 
-    private static PendingIntent buildPendingIntentWithActivity(
-            Context context,
-            Intent intent
-    ) {
-        return PendingIntent.getActivity(
-                context,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+    @Override
+    protected Notification build() {
+        return buildWithActions(
+                buildResumeAction()
         );
     }
 }
