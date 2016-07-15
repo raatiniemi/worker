@@ -45,7 +45,8 @@ abstract class OngoingNotification {
         mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(getSmallIcon())
                 .setContentTitle(project.getName())
-                .setContentIntent(buildContentAction());
+                .setContentIntent(buildContentAction())
+                .setOngoing(true);
     }
 
     @DrawableRes
