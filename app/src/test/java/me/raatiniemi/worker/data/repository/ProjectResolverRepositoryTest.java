@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
@@ -42,40 +42,43 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ProjectResolverRepositoryTest {
-    /**
-     * Mapper for transforming {@link Cursor} to {@link Project}.
-     */
     private final ProjectCursorMapper mCursorMapper = new ProjectCursorMapper();
-
-    /**
-     * Mapper for transforming {@link Project} to {@link ContentValues}.
-     */
     private final ProjectContentValuesMapper mContentValuesMapper = new ProjectContentValuesMapper();
+    private ContentResolver mContentResolver;
+    private ProjectResolverRepository mRepository;
 
-    /**
-     * Create cursor for test data.
-     *
-     * @return Cursor.
-     */
-    private MatrixCursor createCursor() {
-        return new MatrixCursor(ProjectContract.getColumns());
+    @Before
+    public void setUp() {
+        mContentResolver = mock(ContentResolver.class);
+        mRepository = new ProjectResolverRepository(
+                mContentResolver,
+                mCursorMapper,
+                mContentValuesMapper
+        );
     }
 
-    /**
-     * Create a row for the cursor.
-     * <p/>
-     * Used for building test data.
-     *
-     * @param id   Id for the project.
-     * @param name Name of the project.
-     * @return Cursor with sample data.
-     */
-    private List<Object> createCursorRow(Long id, String name) {
+    private Cursor buildCursorWithNumberOfItems(int numberOfItems) {
+        MatrixCursor cursor = buildCursor();
+
+        for (long i = 1; i <= numberOfItems; i++) {
+            cursor.addRow(buildCursorRow(i, "Name"));
+        }
+
+        return cursor;
+    }
+
+    private MatrixCursor buildCursor() {
+        return spy(new MatrixCursor(ProjectContract.getColumns()));
+    }
+
+    private List<Object> buildCursorRow(Long id, String name) {
         List<Object> columns = new ArrayList<>();
         columns.add(id);
         columns.add(name);
@@ -85,9 +88,8 @@ public class ProjectResolverRepositoryTest {
 
     @Test
     public void matching_withNullCursor() throws InvalidProjectNameException {
-        ContentResolver resolver = mock(ContentResolver.class);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
@@ -96,24 +98,17 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(null);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
-
         Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        List<Project> projects = mRepository.matching(criteria);
+
         assertTrue(projects.isEmpty());
     }
 
     @Test
     public void matching_withEmptyCursor() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-
-        ContentResolver resolver = mock(ContentResolver.class);
+        Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
@@ -122,26 +117,18 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
-
         Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        List<Project> projects = mRepository.matching(criteria);
+
         assertTrue(projects.isEmpty());
         assertTrue("Failed to close cursor", cursor.isClosed());
     }
 
     @Test
     public void matching_withRow() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name"));
-
-        ContentResolver resolver = mock(ContentResolver.class);
+        Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
@@ -150,30 +137,18 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
-
         Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        List<Project> projects = mRepository.matching(criteria);
+
         assertTrue(1 == projects.size());
-        assertTrue("Failed to close cursor", cursor.isClosed());
+        verify(cursor).close();
     }
 
     @Test
     public void matching_withRows() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name"));
-        cursor.addRow(createCursorRow(2L, "Name"));
-        cursor.addRow(createCursorRow(3L, "Name"));
-        cursor.addRow(createCursorRow(4L, "Name"));
-        cursor.addRow(createCursorRow(5L, "Name"));
-
-        ContentResolver resolver = mock(ContentResolver.class);
+        Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
@@ -182,23 +157,17 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
-
         Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        List<Project> projects = mRepository.matching(criteria);
+
         assertTrue(5 == projects.size());
-        assertTrue("Failed to close cursor", cursor.isClosed());
+        verify(cursor).close();
     }
 
     @Test
     public void get_projectsWithNullCursor() throws InvalidProjectNameException {
-        ContentResolver resolver = mock(ContentResolver.class);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         null,
@@ -207,23 +176,16 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(null);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
+        List<Project> projects = mRepository.get();
 
-        List<Project> projects = repository.get();
         assertTrue(projects.isEmpty());
     }
 
     @Test
     public void get_projectsWithEmptyCursor() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-
-        ContentResolver resolver = mock(ContentResolver.class);
+        Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         null,
@@ -232,25 +194,17 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
+        List<Project> projects = mRepository.get();
 
-        List<Project> projects = repository.get();
         assertTrue(projects.isEmpty());
-        assertTrue("Failed to close cursor", cursor.isClosed());
+        verify(cursor).close();
     }
 
     @Test
     public void get_projectsWithRow() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name"));
-
-        ContentResolver resolver = mock(ContentResolver.class);
+        Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         null,
@@ -259,29 +213,17 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
+        List<Project> projects = mRepository.get();
 
-        List<Project> projects = repository.get();
         assertTrue(1 == projects.size());
-        assertTrue("Failed to close cursor", cursor.isClosed());
+        verify(cursor).close();
     }
 
     @Test
     public void get_projectsWithRows() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name"));
-        cursor.addRow(createCursorRow(2L, "Name"));
-        cursor.addRow(createCursorRow(3L, "Name"));
-        cursor.addRow(createCursorRow(4L, "Name"));
-        cursor.addRow(createCursorRow(5L, "Name"));
-
-        ContentResolver resolver = mock(ContentResolver.class);
+        Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         null,
@@ -290,22 +232,16 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
+        List<Project> projects = mRepository.get();
 
-        List<Project> projects = repository.get();
         assertTrue(5 == projects.size());
         assertTrue("Failed to close cursor", cursor.isClosed());
     }
 
     @Test
     public void get_projectWithNullCursor() throws InvalidProjectNameException {
-        ContentResolver resolver = mock(ContentResolver.class);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getItemUri(1),
                         ProjectContract.getColumns(),
                         null,
@@ -314,22 +250,16 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(null);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
+        Project project = mRepository.get(1);
 
-        assertNull(repository.get(1));
+        assertNull(project);
     }
 
     @Test
     public void get_projectWithoutRow() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-
-        ContentResolver resolver = mock(ContentResolver.class);
+        Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getItemUri(1),
                         ProjectContract.getColumns(),
                         null,
@@ -338,24 +268,17 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
+        Project project = mRepository.get(1);
 
-        assertNull(repository.get(1));
-        assertTrue("Failed to close cursor", cursor.isClosed());
+        assertNull(project);
+        verify(cursor).close();
     }
 
     @Test
     public void get_projectWithRow() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name"));
-
-        ContentResolver resolver = mock(ContentResolver.class);
+        Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getItemUri(1),
                         ProjectContract.getColumns(),
                         null,
@@ -364,37 +287,27 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
+        Project project = mRepository.get(1);
 
-        assertNotNull(repository.get(1));
-        assertTrue("Failed to close cursor", cursor.isClosed());
+        assertNotNull(project);
+        verify(cursor).close();
     }
 
     @Test
     public void add() throws InvalidProjectNameException {
-        MatrixCursor cursor = createCursor();
-        cursor.addRow(createCursorRow(1L, "Name"));
-
         Project project = new Project.Builder("Name")
                 .build();
-
-        ContentResolver resolver = mock(ContentResolver.class);
-
+        Cursor cursor = buildCursorWithNumberOfItems(1);
         // insert...
         when(
-                resolver.insert(
+                mContentResolver.insert(
                         ProjectContract.getStreamUri(),
                         mContentValuesMapper.transform(project)
                 )
         ).thenReturn(ProjectContract.getItemUri(1));
-
         // get...
         when(
-                resolver.query(
+                mContentResolver.query(
                         ProjectContract.getItemUri(1),
                         ProjectContract.getColumns(),
                         null,
@@ -403,14 +316,10 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        ProjectResolverRepository repository = new ProjectResolverRepository(
-                resolver,
-                mCursorMapper,
-                mContentValuesMapper
-        );
+        project = mRepository.add(project);
 
-        project = repository.add(project);
         assertNotNull(project);
         assertEquals(Long.valueOf(1L), project.getId());
+        verify(cursor).close();
     }
 }
