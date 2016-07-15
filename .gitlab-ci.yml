@@ -1,9 +1,10 @@
+image: raatiniemi/android-environment:latest
+
 stages:
   - test
   - build
 
 test:
-  image: raatiniemi/android-environment:latest
   stage: test
   script:
     - ./bin/test
@@ -11,7 +12,6 @@ test:
     - docker
 
 sonar:
-  image: raatiniemi/android-environment:latest-jdk-8
   stage: test
   script:
     - ./bin/sonar
@@ -21,7 +21,6 @@ sonar:
     - docker
 
 build:
-  image: raatiniemi/android-environment:latest
   stage: build
   script:
     - ./bin/build
