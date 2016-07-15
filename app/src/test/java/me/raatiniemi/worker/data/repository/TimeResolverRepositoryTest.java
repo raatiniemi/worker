@@ -53,6 +53,30 @@ public class TimeResolverRepositoryTest {
     private TimeResolverRepository mRepository;
     private Project mProject;
 
+    @Before
+    public void setUp() throws Exception {
+        mContentResolver = mock(ContentResolver.class);
+        mRepository = new TimeResolverRepository(
+                mContentResolver,
+                new TimeCursorMapper(),
+                new TimeContentValuesMapper()
+        );
+
+        mProject = new Project.Builder("Name")
+                .id(1L)
+                .build();
+    }
+
+    private Cursor buildCursorWithNumberOfItems(int numberOfItems) {
+        MatrixCursor cursor = buildCursor();
+
+        for (long i = 0; i < numberOfItems; i++) {
+            cursor.addRow(buildCursorRow());
+        }
+
+        return cursor;
+    }
+
     private MatrixCursor buildCursor() {
         return spy(new MatrixCursor(TimeContract.getColumns()));
     }
@@ -66,20 +90,6 @@ public class TimeResolverRepositoryTest {
         values.add(0L);
 
         return values;
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        mContentResolver = mock(ContentResolver.class);
-        mRepository = new TimeResolverRepository(
-                mContentResolver,
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
-
-        mProject = new Project.Builder("Name")
-                .id(1L)
-                .build();
     }
 
     @Test
@@ -102,7 +112,7 @@ public class TimeResolverRepositoryTest {
 
     @Test
     public void matching_withEmptyCursor() throws DomainException {
-        Cursor cursor = buildCursor();
+        Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
                 mContentResolver.query(
                         ProjectContract.getItemTimeUri(1),
@@ -122,8 +132,7 @@ public class TimeResolverRepositoryTest {
 
     @Test
     public void matching_withRow() throws DomainException {
-        MatrixCursor cursor = buildCursor();
-        cursor.addRow(buildCursorRow());
+        Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 mContentResolver.query(
                         ProjectContract.getItemTimeUri(1),
@@ -143,12 +152,7 @@ public class TimeResolverRepositoryTest {
 
     @Test
     public void matching_withRows() throws DomainException {
-        MatrixCursor cursor = buildCursor();
-        cursor.addRow(buildCursorRow());
-        cursor.addRow(buildCursorRow());
-        cursor.addRow(buildCursorRow());
-        cursor.addRow(buildCursorRow());
-        cursor.addRow(buildCursorRow());
+        Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
                 mContentResolver.query(
                         ProjectContract.getItemTimeUri(1),
