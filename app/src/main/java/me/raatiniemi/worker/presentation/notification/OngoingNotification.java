@@ -88,6 +88,7 @@ abstract class OngoingNotification {
     ) {
         if (shouldUseChronometer()) {
             mBuilder.setWhen(getWhenForChronometer())
+                    .setShowWhen(shouldUseChronometer())
                     .setUsesChronometer(shouldUseChronometer());
         }
 
