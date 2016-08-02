@@ -26,19 +26,19 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 
 public class BackupNotification {
-    private static final int sTitle = R.string.notification_backup_title;
-    private static final int sText = R.string.notification_backup_message;
+    private static final int TITLE = R.string.notification_backup_title;
+    private static final int MESSAGE = R.string.notification_backup_message;
 
-    private static final int sSmallIcon = R.drawable.ic_archive_white_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_archive_white_24dp;
 
     private BackupNotification() {
     }
 
     public static Notification build(Context context) {
         return new NotificationCompat.Builder(context)
-                .setContentTitle(context.getString(sTitle))
-                .setContentText(context.getString(sText))
-                .setSmallIcon(sSmallIcon)
+                .setContentTitle(context.getString(TITLE))
+                .setContentText(context.getString(MESSAGE))
+                .setSmallIcon(SMALL_ICON)
                 .setContentIntent(buildContentAction(context))
                 .setAutoCancel(true)
                 .build();

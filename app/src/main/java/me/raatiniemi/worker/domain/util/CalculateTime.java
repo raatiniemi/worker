@@ -19,11 +19,11 @@ package me.raatiniemi.worker.domain.util;
 import me.raatiniemi.worker.domain.model.CalculatedTime;
 
 public class CalculateTime {
-    private static final int sHoursInDay = 24;
-    private static final int sMinutesInHour = 60;
-    private static final int sSecondsInMinute = 60;
-    private static final int sSecondsInHour = sSecondsInMinute * sMinutesInHour;
-    private static final int sSecondsInDay = sSecondsInHour * sHoursInDay;
+    private static final int HOURS_IN_DAY = 24;
+    private static final int MINUTES_IN_HOUR = 60;
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR;
+    private static final int SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
 
     private long mMilliseconds;
 
@@ -40,7 +40,7 @@ public class CalculateTime {
         long minutes = calculateMinutes();
         long hours = calculateHours();
 
-        if (sMinutesInHour == minutes) {
+        if (MINUTES_IN_HOUR == minutes) {
             minutes = 0;
             hours++;
         }
@@ -54,9 +54,9 @@ public class CalculateTime {
 
     private long calculateMinutes() {
         long seconds = calculateSeconds();
-        long minutes = seconds / sSecondsInMinute % sMinutesInHour;
+        long minutes = seconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR;
 
-        long secondsRemaining = seconds % sSecondsInMinute;
+        long secondsRemaining = seconds % SECONDS_IN_MINUTE;
         if (secondsRemaining >= 30) {
             minutes++;
         }
@@ -66,11 +66,11 @@ public class CalculateTime {
 
     private long calculateHours() {
         long seconds = calculateSeconds();
-        long hours = seconds / sSecondsInHour % sHoursInDay;
+        long hours = seconds / SECONDS_IN_HOUR % HOURS_IN_DAY;
 
-        long days = seconds / sSecondsInDay;
+        long days = seconds / SECONDS_IN_DAY;
         if (days > 0) {
-            hours += days * sHoursInDay;
+            hours += days * HOURS_IN_DAY;
         }
 
         return hours;

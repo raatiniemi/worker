@@ -23,7 +23,7 @@ import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
 
 public class LetterDrawable extends ShapeDrawable {
-    private static final int mColor = Color.GRAY;
+    private static final int COLOR = Color.GRAY;
 
     private final Paint mTextPaint = new Paint();
     private final String mText;
@@ -39,7 +39,7 @@ public class LetterDrawable extends ShapeDrawable {
         mTextPaint.setTextAlign(Paint.Align.CENTER);
 
         Paint paint = getPaint();
-        paint.setColor(mColor);
+        paint.setColor(COLOR);
     }
 
     public static LetterDrawable build(String text) {

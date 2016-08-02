@@ -94,7 +94,7 @@ public class SettingsPresenterTest {
         mPresenter.attachView(mView);
 
         mPresenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.sWeek
+                GetProjectTimeSince.WEEK
         );
 
         verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
@@ -106,7 +106,7 @@ public class SettingsPresenterTest {
         mPresenter.attachView(mView);
 
         mPresenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.sMonth
+                GetProjectTimeSince.MONTH
         );
 
         verify(mEventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
@@ -116,7 +116,7 @@ public class SettingsPresenterTest {
     @Test
     public void changeTimeSummaryStartingPoint_withoutAttachedView() {
         mPresenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.sWeek
+                GetProjectTimeSince.WEEK
         );
 
         verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));

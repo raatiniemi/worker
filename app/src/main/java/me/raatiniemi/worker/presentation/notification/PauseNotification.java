@@ -44,11 +44,11 @@ import me.raatiniemi.worker.presentation.util.Settings;
  */
 public class PauseNotification extends OngoingNotification {
     private static final String TAG = "PauseNotification";
-    private static final int sSmallIcon = R.drawable.ic_timer_black_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_timer_black_24dp;
 
-    private static final int sPauseIcon = 0;
+    private static final int PAUSE_ICON = 0;
 
-    private static final int sClockOutIcon = 0;
+    private static final int CLOCK_OUT_ICON = 0;
 
     private boolean mUseChronometer;
     private long mRegisteredTime;
@@ -90,7 +90,7 @@ public class PauseNotification extends OngoingNotification {
 
         return registeredTimeUseCase.execute(
                 project,
-                GetProjectTimeSince.sDay
+                GetProjectTimeSince.DAY
         );
     }
 
@@ -109,14 +109,14 @@ public class PauseNotification extends OngoingNotification {
     @Override
     @DrawableRes
     protected int getSmallIcon() {
-        return sSmallIcon;
+        return SMALL_ICON;
     }
 
     private NotificationCompat.Action buildPauseAction() {
         Intent intent = buildIntentWithService(PauseService.class);
 
         return new NotificationCompat.Action(
-                sPauseIcon,
+                PAUSE_ICON,
                 getTextForPauseAction(),
                 buildPendingIntentWithService(intent)
         );
@@ -130,7 +130,7 @@ public class PauseNotification extends OngoingNotification {
         Intent intent = buildIntentWithService(ClockOutService.class);
 
         return new NotificationCompat.Action(
-                sClockOutIcon,
+                CLOCK_OUT_ICON,
                 getTextForClockOutAction(),
                 buildPendingIntentWithService(intent)
         );

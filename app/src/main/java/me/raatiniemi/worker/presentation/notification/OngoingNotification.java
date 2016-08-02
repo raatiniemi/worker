@@ -31,7 +31,7 @@ import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
 import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 
 abstract class OngoingNotification {
-    private static final int sPendingIntentFlag = PendingIntent.FLAG_UPDATE_CURRENT;
+    private static final int PENDING_INTENT_FLAG = PendingIntent.FLAG_UPDATE_CURRENT;
 
     private final Context mContext;
     private final Project mProject;
@@ -61,7 +61,7 @@ abstract class OngoingNotification {
     }
 
     private PendingIntent buildPendingIntentWithActivity(Intent intent) {
-        return PendingIntent.getActivity(mContext, 0, intent, sPendingIntentFlag);
+        return PendingIntent.getActivity(mContext, 0, intent, PENDING_INTENT_FLAG);
     }
 
     protected Intent buildIntentWithService(Class serviceClass) {
@@ -76,7 +76,7 @@ abstract class OngoingNotification {
     }
 
     protected PendingIntent buildPendingIntentWithService(Intent intent) {
-        return PendingIntent.getService(mContext, 0, intent, sPendingIntentFlag);
+        return PendingIntent.getService(mContext, 0, intent, PENDING_INTENT_FLAG);
     }
 
     protected String getStringWithResourceId(@StringRes int resourceId) {

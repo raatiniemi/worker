@@ -28,13 +28,13 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
 /**
- * Get the registered time for a project since a defined starting point, i.e. {@link #sDay},
- * {@link #sWeek}, or {@link #sMonth}.
+ * Get the registered time for a project since a defined starting point, i.e. {@link #DAY},
+ * {@link #WEEK}, or {@link #MONTH}.
  */
 public class GetProjectTimeSince {
-    public static final int sDay = 0;
-    public static final int sWeek = 1;
-    public static final int sMonth = 2;
+    public static final int DAY = 0;
+    public static final int WEEK = 1;
+    public static final int MONTH = 2;
 
     private final TimeRepository mTimeRepository;
 
@@ -59,12 +59,12 @@ public class GetProjectTimeSince {
         calendar.set(Calendar.MILLISECOND, 0);
 
         switch (startingPoint) {
-            case GetProjectTimeSince.sDay:
+            case GetProjectTimeSince.DAY:
                 break;
-            case GetProjectTimeSince.sWeek:
+            case GetProjectTimeSince.WEEK:
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
                 break;
-            case GetProjectTimeSince.sMonth:
+            case GetProjectTimeSince.MONTH:
                 calendar.set(Calendar.DAY_OF_MONTH, 1);
                 break;
             default:
@@ -80,7 +80,7 @@ public class GetProjectTimeSince {
      * Get the registered time for a project since the starting point.
      *
      * @param project       Project for which to get the registered time.
-     * @param startingPoint Starting point, i.e. {@link #sDay}, {@link #sWeek}, or {@link #sMonth}.
+     * @param startingPoint Starting point, i.e. {@link #DAY}, {@link #WEEK}, or {@link #MONTH}.
      * @return Registered time for the project since the starting point.
      * @throws DomainException If domain rules are violated.
      */

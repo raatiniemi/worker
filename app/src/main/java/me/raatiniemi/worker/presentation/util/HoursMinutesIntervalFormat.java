@@ -23,8 +23,8 @@ import me.raatiniemi.worker.domain.util.CalculateTime;
  * Format a time interval into hours and minutes, i.e. 1h 30m.
  */
 public class HoursMinutesIntervalFormat implements DateIntervalFormat {
-    private static final String sHoursMinutesFormat = "%1$dh %2$dm";
-    private static final String sMinutesFormat = "%2$dm";
+    private static final String HOURS_MINUTES_FORMAT = "%1$dh %2$dm";
+    private static final String MINUTES_FORMAT = "%2$dm";
 
     /**
      * @inheritDoc
@@ -42,9 +42,9 @@ public class HoursMinutesIntervalFormat implements DateIntervalFormat {
 
     private static String getFormatTemplate(CalculatedTime calculatedTime) {
         if (0 == calculatedTime.getHours()) {
-            return sMinutesFormat;
+            return MINUTES_FORMAT;
         }
 
-        return sHoursMinutesFormat;
+        return HOURS_MINUTES_FORMAT;
     }
 }

@@ -163,33 +163,33 @@ public class Settings {
     }
 
     /**
-     * Get the time summary starting point, default value is {@link GetProjectTimeSince#sMonth}.
+     * Get the time summary starting point, default value is {@link GetProjectTimeSince#MONTH}.
      *
      * @param context Context to be used to read from the {@link android.content.SharedPreferences}.
-     * @return Time summary starting point, e.g. {@link GetProjectTimeSince#sWeek} or {@link GetProjectTimeSince#sMonth}.
+     * @return Time summary starting point, e.g. {@link GetProjectTimeSince#WEEK} or {@link GetProjectTimeSince#MONTH}.
      */
     public static int getStartingPointForTimeSummary(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.sMonth);
+        return sp.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH);
     }
 
     /**
-     * Use week for time summary starting point, i.e. {@link GetProjectTimeSince#sWeek}.
+     * Use week for time summary starting point, i.e. {@link GetProjectTimeSince#WEEK}.
      *
      * @param context Context to be used to edit the {@link SharedPreferences}.
      */
     public static void useWeekForTimeSummaryStartingPoint(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.sWeek).apply();
+        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.WEEK).apply();
     }
 
     /**
-     * Use month for time summary starting point, i.e. {@link GetProjectTimeSince#sMonth}.
+     * Use month for time summary starting point, i.e. {@link GetProjectTimeSince#MONTH}.
      *
      * @param context Context to be used to edit the {@link SharedPreferences}.
      */
     public static void useMonthForTimeSummaryStartingPoint(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.sMonth).apply();
+        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH).apply();
     }
 }

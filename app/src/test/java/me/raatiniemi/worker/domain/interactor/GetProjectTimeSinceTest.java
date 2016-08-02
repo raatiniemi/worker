@@ -54,12 +54,12 @@ public class GetProjectTimeSinceTest {
         calendar.set(Calendar.MILLISECOND, 0);
 
         switch (startingPoint) {
-            case GetProjectTimeSince.sDay:
+            case GetProjectTimeSince.DAY:
                 break;
-            case GetProjectTimeSince.sWeek:
+            case GetProjectTimeSince.WEEK:
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
                 break;
-            case GetProjectTimeSince.sMonth:
+            case GetProjectTimeSince.MONTH:
                 calendar.set(Calendar.DAY_OF_MONTH, 1);
                 break;
             default:
@@ -82,34 +82,34 @@ public class GetProjectTimeSinceTest {
 
     @Test
     public void execute_withDay() throws DomainException {
-        getProjectTimeSince.execute(mProject, GetProjectTimeSince.sDay);
+        getProjectTimeSince.execute(mProject, GetProjectTimeSince.DAY);
 
         verify(mTimeRepository)
                 .matching(
                         mProject,
-                        buildStartingPointCriteria(GetProjectTimeSince.sDay)
+                        buildStartingPointCriteria(GetProjectTimeSince.DAY)
                 );
     }
 
     @Test
     public void execute_withWeek() throws DomainException {
-        getProjectTimeSince.execute(mProject, GetProjectTimeSince.sWeek);
+        getProjectTimeSince.execute(mProject, GetProjectTimeSince.WEEK);
 
         verify(mTimeRepository)
                 .matching(
                         mProject,
-                        buildStartingPointCriteria(GetProjectTimeSince.sWeek)
+                        buildStartingPointCriteria(GetProjectTimeSince.WEEK)
                 );
     }
 
     @Test
     public void execute_withMonth() throws DomainException {
-        getProjectTimeSince.execute(mProject, GetProjectTimeSince.sMonth);
+        getProjectTimeSince.execute(mProject, GetProjectTimeSince.MONTH);
 
         verify(mTimeRepository)
                 .matching(
                         mProject,
-                        buildStartingPointCriteria(GetProjectTimeSince.sMonth)
+                        buildStartingPointCriteria(GetProjectTimeSince.MONTH)
                 );
     }
 

@@ -33,9 +33,9 @@ import me.raatiniemi.worker.presentation.util.Settings;
  * Notification for resuming an inactive project.
  */
 public class ResumeNotification extends OngoingNotification {
-    private static final int sSmallIcon = R.drawable.ic_timer_off_black_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_timer_off_black_24dp;
 
-    private static final int sResumeIcon = 0;
+    private static final int RESUME_ICON = 0;
 
     private boolean mUseChronometer;
 
@@ -53,14 +53,14 @@ public class ResumeNotification extends OngoingNotification {
     @Override
     @DrawableRes
     protected int getSmallIcon() {
-        return sSmallIcon;
+        return SMALL_ICON;
     }
 
     private NotificationCompat.Action buildResumeAction() {
         Intent intent = buildIntentWithService(ResumeService.class);
 
         return new NotificationCompat.Action(
-                sResumeIcon,
+                RESUME_ICON,
                 getTextForResumeAction(),
                 buildPendingIntentWithService(intent)
         );

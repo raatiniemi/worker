@@ -143,10 +143,10 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
             }
 
             switch (newStartingPoint) {
-                case GetProjectTimeSince.sWeek:
+                case GetProjectTimeSince.WEEK:
                     Settings.useWeekForTimeSummaryStartingPoint(getContext());
                     break;
-                case GetProjectTimeSince.sMonth:
+                case GetProjectTimeSince.MONTH:
                     Settings.useMonthForTimeSummaryStartingPoint(getContext());
                     break;
                 default:
@@ -160,7 +160,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
             if (!isViewAttached()) {
                 return;
             }
-            if (GetProjectTimeSince.sWeek == newStartingPoint) {
+            if (GetProjectTimeSince.WEEK == newStartingPoint) {
                 getView().showChangeTimeSummaryStartingPointToWeekSuccessMessage();
                 return;
             }
