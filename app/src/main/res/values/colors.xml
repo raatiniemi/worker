@@ -18,4 +18,6 @@
 
     <color name="itemDivider">#20000000</color>
 
+    <color name="timesheetGroupText">#aa505050</color>
+
 </resources>
