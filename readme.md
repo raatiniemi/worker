@@ -7,9 +7,8 @@ Worker is a simple Android application for keeping track of time.
 
 ## Contributing
 
-The project have defined code and git style guidelines that are expected to be followed.
+The project have defined git style guidelines that is expected to be followed.
 
-* [Code style](https://source.android.com/source/code-style.html)
 * [Git style](https://github.com/agis-/git-style-guide)
 
 ## License

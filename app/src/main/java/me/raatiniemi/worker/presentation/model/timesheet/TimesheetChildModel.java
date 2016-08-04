@@ -27,7 +27,7 @@ import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetChildModel {
-    private static final String sTimeSeparator = " - ";
+    private static final String TIME_SEPARATOR = " - ";
     private static final DateIntervalFormat sIntervalFormat;
 
     static {
@@ -75,7 +75,7 @@ public class TimesheetChildModel {
     }
 
     private void appendStopTimeWithSeparator(StringBuilder title) {
-        title.append(sTimeSeparator);
+        title.append(TIME_SEPARATOR);
         title.append(mTimeFormat.format(buildDateFromStopTime()));
     }
 

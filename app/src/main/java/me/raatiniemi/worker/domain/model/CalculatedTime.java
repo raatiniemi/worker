@@ -17,9 +17,9 @@
 package me.raatiniemi.worker.domain.model;
 
 public class CalculatedTime {
-    private static final int sMinutesInHour = 60;
-    private static final int sSecondsInMinute = 60;
-    private static final int sMillisecondsInSecond = 1000;
+    private static final int MINUTES_IN_HOUR = 60;
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int MILLISECONDS_IN_SECOND = 1000;
     private final long mHours;
     private final long mMinutes;
 
@@ -37,15 +37,15 @@ public class CalculatedTime {
     }
 
     public long asMilliseconds() {
-        return calculateSeconds() * sMillisecondsInSecond;
+        return calculateSeconds() * MILLISECONDS_IN_SECOND;
     }
 
     private long calculateSeconds() {
-        return calculateMinutes() * sSecondsInMinute;
+        return calculateMinutes() * SECONDS_IN_MINUTE;
     }
 
     private long calculateMinutes() {
-        final long hoursInMinutes = getHours() * sMinutesInHour;
+        final long hoursInMinutes = getHours() * MINUTES_IN_HOUR;
 
         return hoursInMinutes + getMinutes();
     }

@@ -27,19 +27,19 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.view.activity.MainActivity;
 
 public class RestoreNotification {
-    private static final int sTitle = R.string.notification_restore_title;
-    private static final int sMessage = R.string.notification_restore_message;
+    private static final int TITLE = R.string.notification_restore_title;
+    private static final int MESSAGE = R.string.notification_restore_message;
 
-    private static final int sSmallIcon = R.drawable.ic_restore_white_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_restore_white_24dp;
 
     private RestoreNotification() {
     }
 
     public static Notification build(Context context) {
         return new NotificationCompat.Builder(context)
-                .setContentTitle(context.getString(sTitle))
-                .setContentText(context.getString(sMessage))
-                .setSmallIcon(sSmallIcon)
+                .setContentTitle(context.getString(TITLE))
+                .setContentText(context.getString(MESSAGE))
+                .setSmallIcon(SMALL_ICON)
                 .setContentIntent(buildContentAction(context))
                 .setAutoCancel(true)
                 .build();
