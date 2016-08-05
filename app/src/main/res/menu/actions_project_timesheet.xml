@@ -6,7 +6,7 @@
     <item
         android:id="@+id/actions_project_timesheet_register"
         android:title="@string/menu.actions.project_timesheet.register"
-        android:icon="@drawable/ic_check_circle_white_24dp"
+        android:icon="@drawable/ic_timesheet_mark_registered"
         />
 
     <item
