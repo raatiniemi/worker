@@ -23,6 +23,7 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/fragment_timesheet_child_item_summarize"
             tools:text="07:45 - 11:45"
+            android:textColor="@color/timesheetChildText"
             />
 
         <TextView
@@ -32,6 +33,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             tools:text="4.5"
+            android:textColor="@color/timesheetChildText"
             />
 
     </RelativeLayout>

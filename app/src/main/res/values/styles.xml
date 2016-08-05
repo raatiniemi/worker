@@ -9,14 +9,18 @@
 
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
 
         <item name="colorButtonNormal">@color/accent</item>
 
         <item name="android:textColor">@drawable/text_foreground</item>
         <item name="android:textColorSecondary">@color/textSecondary</item>
 
+        <item name="android:actionModeBackground">@color/primary</item>
+
         <item name="android:dialogTheme">@style/Theme.Dialog</item>
         <item name="android:alertDialogTheme">@style/Theme.Dialog</item>
+
     </style>
 
     <style
