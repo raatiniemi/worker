@@ -5,23 +5,11 @@
 
     <item
         android:state_activated="true"
-        >
-
-        <bitmap
-            android:src="@drawable/ic_timer_black_24dp"
-            android:tint="@color/actionIconTintActive"
-            />
-
-    </item>
+        android:drawable="@drawable/ic_projects_item_action_clock_in"
+        />
 
     <item
-        >
-
-        <bitmap
-            android:src="@drawable/ic_timer_off_black_24dp"
-            android:tint="@color/actionIconTint"
-            />
-
-    </item>
+        android:drawable="@drawable/ic_projects_item_action_clock_out"
+        />
 
 </selector>
