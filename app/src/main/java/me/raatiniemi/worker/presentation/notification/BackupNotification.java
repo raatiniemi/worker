@@ -29,7 +29,7 @@ public class BackupNotification {
     private static final int TITLE = R.string.notification_backup_title;
     private static final int MESSAGE = R.string.notification_backup_message;
 
-    private static final int SMALL_ICON = R.drawable.ic_archive_white_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_backup_notification;
 
     private BackupNotification() {
     }
