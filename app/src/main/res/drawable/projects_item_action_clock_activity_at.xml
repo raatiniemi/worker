@@ -4,13 +4,7 @@
     >
 
     <item
-        >
-
-        <bitmap
-            android:src="@drawable/ic_event_black_24dp"
-            android:tint="@color/actionIconTint"
-            />
-
-    </item>
+        android:drawable="@drawable/ic_projects_item_action_clock_activity_at"
+        />
 
 </selector>

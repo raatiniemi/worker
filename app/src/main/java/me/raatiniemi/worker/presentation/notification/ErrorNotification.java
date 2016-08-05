@@ -23,7 +23,7 @@ import android.support.v4.app.NotificationCompat;
 import me.raatiniemi.worker.R;
 
 public class ErrorNotification {
-    private static final int SMALL_ICON = R.drawable.ic_error_outline_white_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_error_notification;
 
     private ErrorNotification() {
     }

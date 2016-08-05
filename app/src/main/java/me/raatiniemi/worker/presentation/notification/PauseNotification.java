@@ -44,7 +44,7 @@ import me.raatiniemi.worker.presentation.util.Settings;
  */
 public class PauseNotification extends OngoingNotification {
     private static final String TAG = "PauseNotification";
-    private static final int SMALL_ICON = R.drawable.ic_timer_black_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_pause_notification;
 
     private static final int PAUSE_ICON = 0;
 

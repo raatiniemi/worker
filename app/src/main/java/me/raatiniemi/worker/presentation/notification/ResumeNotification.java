@@ -33,7 +33,7 @@ import me.raatiniemi.worker.presentation.util.Settings;
  * Notification for resuming an inactive project.
  */
 public class ResumeNotification extends OngoingNotification {
-    private static final int SMALL_ICON = R.drawable.ic_timer_off_black_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_resume_notification;
 
     private static final int RESUME_ICON = 0;
 

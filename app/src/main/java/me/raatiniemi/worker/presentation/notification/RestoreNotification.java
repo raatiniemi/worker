@@ -30,7 +30,7 @@ public class RestoreNotification {
     private static final int TITLE = R.string.notification_restore_title;
     private static final int MESSAGE = R.string.notification_restore_message;
 
-    private static final int SMALL_ICON = R.drawable.ic_restore_white_24dp;
+    private static final int SMALL_ICON = R.drawable.ic_restore_notification;
 
     private RestoreNotification() {
     }
