@@ -82,7 +82,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     /**
      * Key for confirm clock out preference.
      */
-    private static final String SETTINGS_CONFIRM_CLOCK_OUT_KEY = "settings_confirm_clock_out";
+    private static final String SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out";
 
     /**
      * Key for the data preference.
@@ -381,35 +381,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.settings);
-
-            try {
-                // Set the preference value for the clock out confirmation.
-                CheckBoxPreference confirmClockOut =
-                        (CheckBoxPreference) findPreference(SETTINGS_CONFIRM_CLOCK_OUT_KEY);
-                confirmClockOut.setChecked(Settings.shouldConfirmClockOut(getActivity()));
-            } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to get value for 'confirm_clock_out'", e);
-            }
         }
 
         @Override
         public int getTitle() {
             return R.string.activity_settings_preferences;
-        }
-
-        @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-            if (SETTINGS_CONFIRM_CLOCK_OUT_KEY.equals(preference.getKey())) {
-                try {
-                    // Set the clock out confirmation preference.
-                    boolean checked = ((CheckBoxPreference) preference).isChecked();
-                    Settings.setConfirmClockOut(getActivity(), checked);
-                    return true;
-                } catch (ClassCastException e) {
-                    Log.w(TAG, "Unable to set value for 'confirm_clock_out'", e);
-                }
-            }
-            return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
     }
 
@@ -420,6 +396,15 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.settings_project);
+
+            try {
+                // Set the preference value for the clock out confirmation.
+                CheckBoxPreference confirmClockOut =
+                        (CheckBoxPreference) findPreference(SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY);
+                confirmClockOut.setChecked(Settings.shouldConfirmClockOut(getActivity()));
+            } catch (ClassCastException e) {
+                Log.w(TAG, "Unable to get value for 'confirm_clock_out'", e);
+            }
 
             try {
                 CheckBoxPreference ongoingNotification =
@@ -452,6 +437,17 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
             if (SETTINGS_PROJECT_TIME_SUMMARY_KEY.equals(preference.getKey())) {
                 return true;
+            }
+
+            if (SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY.equals(preference.getKey())) {
+                try {
+                    // Set the clock out confirmation preference.
+                    boolean checked = ((CheckBoxPreference) preference).isChecked();
+                    Settings.setConfirmClockOut(getActivity(), checked);
+                    return true;
+                } catch (ClassCastException e) {
+                    Log.w(TAG, "Unable to set value for 'confirm_clock_out'", e);
+                }
             }
 
             if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY.equals(preference.getKey())) {

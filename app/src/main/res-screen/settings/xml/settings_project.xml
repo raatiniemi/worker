@@ -20,6 +20,11 @@
     >
 
     <CheckBoxPreference
+        android:key="settings_project_confirm_clock_out"
+        android:title="@string/activity.settings.project.confirm_clock_out"
+        />
+
+    <CheckBoxPreference
         android:key="settings_project_ongoing_notification"
         android:title="@string/activity.settings.project.ongoing_notification"
         />
