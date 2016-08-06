@@ -42,6 +42,7 @@ android {
         main {
             res.srcDirs = [
                     'src/main/res-main',
+                    'src/main/res-screen/project',
                     'src/main/res-screen/projects'
             ]
         }
