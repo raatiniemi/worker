@@ -64,6 +64,16 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     private static final String SETTINGS_PROJECT_KEY = "settings_project";
 
     /**
+     * Key for confirm clock out preference.
+     */
+    private static final String SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out";
+
+    /**
+     * Key for time summary preference.
+     */
+    private static final String SETTINGS_PROJECT_TIME_SUMMARY_KEY = "settings_project_time_summary";
+
+    /**
      * Key for ongoing notification preference.
      */
     private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
@@ -73,16 +83,6 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      */
     private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY
             = "settings_project_ongoing_notification_chronometer";
-
-    /**
-     * Key for time summary preference.
-     */
-    private static final String SETTINGS_PROJECT_TIME_SUMMARY_KEY = "settings_project_time_summary";
-
-    /**
-     * Key for confirm clock out preference.
-     */
-    private static final String SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out";
 
     /**
      * Key for the data preference.
@@ -193,11 +193,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     private void switchPreferenceScreen(String key) {
         Fragment fragment;
         switch (key) {
-            case SETTINGS_DATA_KEY:
-                fragment = new DataFragment();
-                break;
             case SETTINGS_PROJECT_KEY:
                 fragment = new ProjectFragment();
+                break;
+            case SETTINGS_DATA_KEY:
+                fragment = new DataFragment();
                 break;
             default:
                 Log.w(TAG, "Switch to preference screen '" + key + "' is not implemented");
@@ -407,6 +407,16 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             }
 
             try {
+                int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getActivity());
+
+                ListPreference timeSummary = (ListPreference) findPreference(SETTINGS_PROJECT_TIME_SUMMARY_KEY);
+                timeSummary.setValue(String.valueOf(startingPointForTimeSummary));
+                timeSummary.setOnPreferenceChangeListener(this);
+            } catch (ClassCastException e) {
+                Log.w(TAG, "Unable to set listener for 'time_summary'", e);
+            }
+
+            try {
                 CheckBoxPreference ongoingNotification =
                         (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY);
                 ongoingNotification.setChecked(Settings.isOngoingNotificationEnabled(getActivity()));
@@ -421,24 +431,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             } catch (ClassCastException e) {
                 Log.w(TAG, "Unable to get value for 'ongoing_notification_chronometer'", e);
             }
-
-            try {
-                int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getActivity());
-
-                ListPreference timeSummary = (ListPreference) findPreference(SETTINGS_PROJECT_TIME_SUMMARY_KEY);
-                timeSummary.setValue(String.valueOf(startingPointForTimeSummary));
-                timeSummary.setOnPreferenceChangeListener(this);
-            } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to set listener for 'time_summary'", e);
-            }
         }
 
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-            if (SETTINGS_PROJECT_TIME_SUMMARY_KEY.equals(preference.getKey())) {
-                return true;
-            }
-
             if (SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY.equals(preference.getKey())) {
                 try {
                     // Set the clock out confirmation preference.
@@ -448,6 +444,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 } catch (ClassCastException e) {
                     Log.w(TAG, "Unable to set value for 'confirm_clock_out'", e);
                 }
+            }
+
+            if (SETTINGS_PROJECT_TIME_SUMMARY_KEY.equals(preference.getKey())) {
+                return true;
             }
 
             if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY.equals(preference.getKey())) {
