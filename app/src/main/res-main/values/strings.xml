@@ -74,13 +74,15 @@
     <string name="activity.settings.restore.none_available">Nothing to restore, no backup is available.</string>
     <string name="activity.settings.restore.from" formatted="false">Restore backup from %s.\nAfter restore you have to restart the application.</string>
     <string name="activity.settings.project">Project</string>
+    <string name="activity.settings.project.general">General</string>
     <string name="activity.settings.project.confirm_clock_out">Confirm clock out</string>
-    <string name="activity.settings.project.ongoing_notification">Ongoing notification</string>
-    <string name="activity.settings.project.ongoing_notification_chronometer">Notification timer</string>
     <string name="activity.settings.project.time_summary.title">Time summary</string>
     <string name="activity.settings.project.time_summary.summary">Starting point for the collection of registered time used for the time summary.</string>
     <string name="activity.settings.project.time_summary.week">Week</string>
     <string name="activity.settings.project.time_summary.month">Month</string>
+    <string name="activity.settings.project.ongoing_notification">Ongoing notification</string>
+    <string name="activity.settings.project.ongoing_notification.enable">Enable</string>
+    <string name="activity.settings.project.ongoing_notification.chronometer">Notification timer</string>
 
     <string name="notification.backup.title">Backup complete</string>
     <string name="notification.backup.message">Backup to external storage was successful.</string>

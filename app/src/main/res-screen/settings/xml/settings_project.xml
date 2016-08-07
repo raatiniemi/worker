@@ -19,27 +19,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-    <CheckBoxPreference
-        android:key="settings_project_confirm_clock_out"
-        android:title="@string/activity.settings.project.confirm_clock_out"
-        />
+    <PreferenceCategory
+        android:title="@string/activity.settings.project.general"
+        >
 
-    <CheckBoxPreference
-        android:key="settings_project_ongoing_notification"
+        <CheckBoxPreference
+            android:key="settings_project_confirm_clock_out"
+            android:title="@string/activity.settings.project.confirm_clock_out"
+            />
+
+        <ListPreference
+            android:key="settings_project_time_summary"
+            android:title="@string/activity.settings.project.time_summary.title"
+            android:summary="@string/activity.settings.project.time_summary.summary"
+            android:entries="@array/project_time_summary_alternative_text"
+            android:entryValues="@array/project_time_summary_alternative_value"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/activity.settings.project.ongoing_notification"
-        />
+        >
 
-    <CheckBoxPreference
-        android:key="settings_project_ongoing_notification_chronometer"
-        android:title="@string/activity.settings.project.ongoing_notification_chronometer"
-        />
+        <CheckBoxPreference
+            android:key="settings_project_ongoing_notification_enable"
+            android:title="@string/activity.settings.project.ongoing_notification.enable"
+            />
 
-    <ListPreference
-        android:key="settings_project_time_summary"
-        android:title="@string/activity.settings.project.time_summary.title"
-        android:summary="@string/activity.settings.project.time_summary.summary"
-        android:entries="@array/project_time_summary_alternative_text"
-        android:entryValues="@array/project_time_summary_alternative_value"
-        />
+        <CheckBoxPreference
+            android:key="settings_project_ongoing_notification_chronometer"
+            android:title="@string/activity.settings.project.ongoing_notification.chronometer"
+            />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

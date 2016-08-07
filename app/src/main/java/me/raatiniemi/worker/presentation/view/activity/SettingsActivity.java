@@ -66,7 +66,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     /**
      * Key for ongoing notification preference.
      */
-    private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY = "settings_project_ongoing_notification";
+    private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
 
     /**
      * Key for the ongoing notification chronometer preference.
@@ -408,7 +408,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             try {
                 CheckBoxPreference ongoingNotification =
-                        (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY);
+                        (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY);
                 ongoingNotification.setChecked(Settings.isOngoingNotificationEnabled(getActivity()));
             } catch (ClassCastException e) {
                 Log.w(TAG, "Unable to get value for 'ongoing_notification'", e);
@@ -450,7 +450,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 }
             }
 
-            if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_KEY.equals(preference.getKey())) {
+            if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY.equals(preference.getKey())) {
                 try {
                     // Set the clock out confirmation preference.
                     boolean checked = ((CheckBoxPreference) preference).isChecked();
