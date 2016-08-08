@@ -74,6 +74,10 @@ buildscript {
     }
 }
 
+Closure<String> combineSourceSetDirectories = { sourceSet ->
+    return (sourceSet.java.srcDirs + sourceSet.res.srcDirs).join(',')
+}
+
 tasks.sonarqube.dependsOn 'testReleaseUnitTest'
 
 sonarqube {
@@ -92,7 +96,8 @@ sonarqube {
         properties["sonar.projectVersion"] = "${android.defaultConfig.versionName}"
 
         properties["sonar.sourceEncoding"] = "UTF-8"
-        properties["sonar.sources"] = "src/main/java,src/main/res"
+        // noinspection GroovyAssignabilityCheck
+        properties["sonar.sources"] = combineSourceSetDirectories android.sourceSets.main
         properties["sonar.binaries"] = binaries
         properties["sonar.libraries"] = libraries
         properties["sonar.java.binaries"] = binaries
