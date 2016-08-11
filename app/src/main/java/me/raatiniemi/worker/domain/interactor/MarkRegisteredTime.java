@@ -34,7 +34,7 @@ public class MarkRegisteredTime {
     /**
      * Time repository.
      */
-    private final TimeRepository mTimeRepository;
+    private final TimeRepository timeRepository;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class MarkRegisteredTime {
      * @param timeRepository Time repository.
      */
     public MarkRegisteredTime(TimeRepository timeRepository) {
-        mTimeRepository = timeRepository;
+        this.timeRepository = timeRepository;
     }
 
     private static List<Time> collectTimeToUpdate(List<Time> times)
@@ -75,14 +75,14 @@ public class MarkRegisteredTime {
      */
     public Time execute(final Time time) throws DomainException {
         if (time.isRegistered()) {
-            return mTimeRepository.update(time.unmarkRegistered());
+            return timeRepository.update(time.unmarkRegistered());
         }
 
-        return mTimeRepository.update(time.markAsRegistered());
+        return timeRepository.update(time.markAsRegistered());
     }
 
     public List<Time> execute(List<Time> times) throws DomainException {
         List<Time> timeToUpdate = collectTimeToUpdate(times);
-        return mTimeRepository.update(timeToUpdate);
+        return timeRepository.update(timeToUpdate);
     }
 }

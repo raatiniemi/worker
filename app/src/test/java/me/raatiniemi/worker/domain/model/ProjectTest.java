@@ -392,10 +392,10 @@ public class ProjectTest {
 
     @RunWith(Parameterized.class)
     public static class ProjectTest_equals {
-        private String mMessage;
-        private Boolean mExpected;
-        private Project mProject;
-        private Object mCompareTo;
+        private String message;
+        private Boolean expected;
+        private Project project;
+        private Object compareTo;
 
         public ProjectTest_equals(
                 String message,
@@ -403,10 +403,10 @@ public class ProjectTest {
                 Project project,
                 Object compareTo
         ) {
-            mMessage = message;
-            mExpected = expected;
-            mProject = project;
-            mCompareTo = compareTo;
+            this.message = message;
+            this.expected = expected;
+            this.project = project;
+            this.compareTo = compareTo;
         }
 
         @Parameters
@@ -491,31 +491,31 @@ public class ProjectTest {
         }
 
         private Boolean shouldBeEqual() {
-            return mExpected;
+            return expected;
         }
 
         private void assertEqual() {
-            assertTrue(mMessage, mProject.equals(mCompareTo));
+            assertTrue(message, project.equals(compareTo));
 
             validateHashCodeWhenEqual();
         }
 
         private void validateHashCodeWhenEqual() {
-            assertTrue(mMessage, mProject.hashCode() == mCompareTo.hashCode());
+            assertTrue(message, project.hashCode() == compareTo.hashCode());
         }
 
         private void assertNotEqual() {
-            assertFalse(mMessage, mProject.equals(mCompareTo));
+            assertFalse(message, project.equals(compareTo));
 
             validateHashCodeWhenNotEqual();
         }
 
         private void validateHashCodeWhenNotEqual() {
-            if (null == mCompareTo) {
+            if (null == compareTo) {
                 return;
             }
 
-            assertFalse(mMessage, mProject.hashCode() == mCompareTo.hashCode());
+            assertFalse(message, project.hashCode() == compareTo.hashCode());
         }
     }
 }

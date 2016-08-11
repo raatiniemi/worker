@@ -32,12 +32,12 @@ public class Project extends DomainObject {
     /**
      * Name for the project.
      */
-    private String mName;
+    private String name;
 
     /**
      * Time registered for the project.
      */
-    private final List<Time> mTime;
+    private final List<Time> time;
 
     /**
      * Constructor.
@@ -53,7 +53,7 @@ public class Project extends DomainObject {
         setName(name);
 
         // Set default value for non-constructor arguments.
-        mTime = new ArrayList<>();
+        time = new ArrayList<>();
     }
 
     /**
@@ -62,7 +62,7 @@ public class Project extends DomainObject {
      * @return Project name.
      */
     public String getName() {
-        return mName;
+        return name;
     }
 
     /**
@@ -76,7 +76,7 @@ public class Project extends DomainObject {
             throw new InvalidProjectNameException();
         }
 
-        mName = name;
+        this.name = name;
     }
 
     /**
@@ -85,7 +85,7 @@ public class Project extends DomainObject {
      * @return Project time.
      */
     public List<Time> getTime() {
-        return mTime;
+        return time;
     }
 
     /**
@@ -212,7 +212,7 @@ public class Project extends DomainObject {
         }
 
         time = time.clockOutAt(date);
-        mTime.set(0, time);
+        this.time.set(0, time);
 
         return time;
     }
@@ -252,20 +252,20 @@ public class Project extends DomainObject {
     }
 
     public static class Builder {
-        private final String mProjectName;
-        private Long mId;
+        private final String projectName;
+        private Long id;
 
         public Builder(String projectName) {
-            mProjectName = projectName;
+            this.projectName = projectName;
         }
 
         public Builder id(Long id) {
-            mId = id;
+            this.id = id;
             return this;
         }
 
         public Project build() throws InvalidProjectNameException {
-            return new Project(mId, mProjectName);
+            return new Project(id, projectName);
         }
     }
 }

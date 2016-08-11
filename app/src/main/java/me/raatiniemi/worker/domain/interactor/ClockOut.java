@@ -27,10 +27,10 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
  * Use case for clocking out.
  */
 public class ClockOut {
-    private final TimeRepository mTimeRepository;
+    private final TimeRepository timeRepository;
 
     public ClockOut(TimeRepository timeRepository) {
-        mTimeRepository = timeRepository;
+        this.timeRepository = timeRepository;
     }
 
     /**
@@ -42,12 +42,12 @@ public class ClockOut {
      */
     public void execute(long projectId, Date date)
             throws DomainException {
-        Time time = mTimeRepository.getActiveTimeForProject(projectId);
+        Time time = timeRepository.getActiveTimeForProject(projectId);
         if (null == time) {
             throw new ClockActivityException("Project is not active");
         }
 
-        mTimeRepository.update(
+        timeRepository.update(
                 time.clockOutAt(date)
         );
     }

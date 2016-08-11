@@ -35,19 +35,19 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class ClockOutTest {
-    private TimeRepository mTimeRepository;
+    private TimeRepository timeRepository;
 
     @Before
     public void setUp() {
-        mTimeRepository = mock(TimeRepository.class);
+        timeRepository = mock(TimeRepository.class);
     }
 
     @Test(expected = ClockActivityException.class)
     public void execute_withoutActiveTime() throws DomainException {
-        when(mTimeRepository.getActiveTimeForProject(1L))
+        when(timeRepository.getActiveTimeForProject(1L))
                 .thenReturn(null);
 
-        ClockOut clockOut = new ClockOut(mTimeRepository);
+        ClockOut clockOut = new ClockOut(timeRepository);
         clockOut.execute(1L, new Date());
     }
 
@@ -56,12 +56,12 @@ public class ClockOutTest {
         Time time = new Time.Builder(1L)
                 .build();
 
-        when(mTimeRepository.getActiveTimeForProject(1L))
+        when(timeRepository.getActiveTimeForProject(1L))
                 .thenReturn(time);
 
-        ClockOut clockOut = new ClockOut(mTimeRepository);
+        ClockOut clockOut = new ClockOut(timeRepository);
         clockOut.execute(1L, new Date());
 
-        verify(mTimeRepository).update(isA(Time.class));
+        verify(timeRepository).update(isA(Time.class));
     }
 }

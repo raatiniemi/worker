@@ -32,7 +32,7 @@ public class CreateProject {
     /**
      * Project repository.
      */
-    private final ProjectRepository mRepository;
+    private final ProjectRepository repository;
 
     /**
      * Constructor.
@@ -40,7 +40,7 @@ public class CreateProject {
      * @param repository Project repository.
      */
     public CreateProject(ProjectRepository repository) {
-        mRepository = repository;
+        this.repository = repository;
     }
 
     /**
@@ -52,13 +52,13 @@ public class CreateProject {
     public Project execute(final Project project) throws DomainException {
         // TODO: Refactor to remove dependency on the data-package for column name.
         Criteria criteria = Criteria.equalTo(ProjectColumns.NAME, project.getName());
-        List<Project> projects = mRepository.matching(criteria);
+        List<Project> projects = repository.matching(criteria);
         if (!projects.isEmpty()) {
             throw new ProjectAlreadyExistsException(
                     "Project '" + project.getName() + "' already exists"
             );
         }
 
-        return mRepository.add(project);
+        return repository.add(project);
     }
 }

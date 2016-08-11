@@ -23,7 +23,7 @@ abstract class DomainObject {
     /**
      * Id for the domain object.
      */
-    private final Long mId;
+    private final Long id;
 
     /**
      * Instantiate the domain object with id.
@@ -31,7 +31,7 @@ abstract class DomainObject {
      * @param id Id for the domain object.
      */
     DomainObject(final Long id) {
-        mId = id;
+        this.id = id;
     }
 
     /**
@@ -40,6 +40,6 @@ abstract class DomainObject {
      * @return Id for the domain object.
      */
     public Long getId() {
-        return mId;
+        return id;
     }
 }

@@ -35,9 +35,9 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class GetProjectTimeSinceTest {
-    private TimeRepository mTimeRepository;
+    private TimeRepository timeRepository;
     private GetProjectTimeSince getProjectTimeSince;
-    private Project mProject;
+    private Project project;
 
     private static Criteria buildStartingPointCriteria(int startingPoint) {
         return Criteria.moreThanOrEqualTo(
@@ -73,48 +73,48 @@ public class GetProjectTimeSinceTest {
 
     @Before
     public void setUp() throws Exception {
-        mTimeRepository = mock(TimeRepository.class);
-        getProjectTimeSince = new GetProjectTimeSince(mTimeRepository);
-        mProject = new Project.Builder("Name")
+        timeRepository = mock(TimeRepository.class);
+        getProjectTimeSince = new GetProjectTimeSince(timeRepository);
+        project = new Project.Builder("Name")
                 .id(1L)
                 .build();
     }
 
     @Test
     public void execute_withDay() throws DomainException {
-        getProjectTimeSince.execute(mProject, GetProjectTimeSince.DAY);
+        getProjectTimeSince.execute(project, GetProjectTimeSince.DAY);
 
-        verify(mTimeRepository)
+        verify(timeRepository)
                 .matching(
-                        mProject,
+                        project,
                         buildStartingPointCriteria(GetProjectTimeSince.DAY)
                 );
     }
 
     @Test
     public void execute_withWeek() throws DomainException {
-        getProjectTimeSince.execute(mProject, GetProjectTimeSince.WEEK);
+        getProjectTimeSince.execute(project, GetProjectTimeSince.WEEK);
 
-        verify(mTimeRepository)
+        verify(timeRepository)
                 .matching(
-                        mProject,
+                        project,
                         buildStartingPointCriteria(GetProjectTimeSince.WEEK)
                 );
     }
 
     @Test
     public void execute_withMonth() throws DomainException {
-        getProjectTimeSince.execute(mProject, GetProjectTimeSince.MONTH);
+        getProjectTimeSince.execute(project, GetProjectTimeSince.MONTH);
 
-        verify(mTimeRepository)
+        verify(timeRepository)
                 .matching(
-                        mProject,
+                        project,
                         buildStartingPointCriteria(GetProjectTimeSince.MONTH)
                 );
     }
 
     @Test(expected = InvalidStartingPointException.class)
     public void execute_withInvalidStartingPoint() throws DomainException {
-        getProjectTimeSince.execute(mProject, -1);
+        getProjectTimeSince.execute(project, -1);
     }
 }

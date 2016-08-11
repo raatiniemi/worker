@@ -24,10 +24,10 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
  * Use case for getting a project.
  */
 public class GetProject {
-    private final ProjectRepository mProjectRepository;
+    private final ProjectRepository projectRepository;
 
     public GetProject(ProjectRepository projectRepository) {
-        mProjectRepository = projectRepository;
+        this.projectRepository = projectRepository;
     }
 
     /**
@@ -39,6 +39,6 @@ public class GetProject {
      */
     public Project execute(long projectId)
             throws DomainException {
-        return mProjectRepository.get(projectId);
+        return projectRepository.get(projectId);
     }
 }

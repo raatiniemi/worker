@@ -38,11 +38,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class CreateProjectTest {
-    private ProjectRepository mProjectRepository;
+    private ProjectRepository projectRepository;
 
     @Before
     public void setUp() {
-        mProjectRepository = mock(ProjectRepository.class);
+        projectRepository = mock(ProjectRepository.class);
     }
 
     @Test(expected = ProjectAlreadyExistsException.class)
@@ -52,10 +52,10 @@ public class CreateProjectTest {
         List<Project> projects = new ArrayList<>();
         projects.add(project);
 
-        when(mProjectRepository.matching(any(Criteria.class)))
+        when(projectRepository.matching(any(Criteria.class)))
                 .thenReturn(projects);
 
-        CreateProject createProject = new CreateProject(mProjectRepository);
+        CreateProject createProject = new CreateProject(projectRepository);
         createProject.execute(project);
     }
 
@@ -65,12 +65,12 @@ public class CreateProjectTest {
         Project project = new Project.Builder("Project Name")
                 .build();
 
-        when(mProjectRepository.matching(any(Criteria.class)))
+        when(projectRepository.matching(any(Criteria.class)))
                 .thenReturn(new ArrayList<Project>());
 
-        CreateProject createProject = new CreateProject(mProjectRepository);
+        CreateProject createProject = new CreateProject(projectRepository);
         createProject.execute(project);
 
-        verify(mProjectRepository).add(isA(Project.class));
+        verify(projectRepository).add(isA(Project.class));
     }
 }

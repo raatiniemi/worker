@@ -29,10 +29,10 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class CriteriaEqualsHashCodeTest {
-    private String mMessage;
-    private Boolean mExpected;
-    private Criteria mCriteria;
-    private Object mCompareTo;
+    private String message;
+    private Boolean expected;
+    private Criteria criteria;
+    private Object compareTo;
 
     public CriteriaEqualsHashCodeTest(
             String message,
@@ -40,10 +40,10 @@ public class CriteriaEqualsHashCodeTest {
             Criteria criteria,
             Object compareTo
     ) {
-        mMessage = message;
-        mExpected = expected;
-        mCriteria = criteria;
-        mCompareTo = compareTo;
+        this.message = message;
+        this.expected = expected;
+        this.criteria = criteria;
+        this.compareTo = compareTo;
     }
 
     @Parameters
@@ -103,31 +103,31 @@ public class CriteriaEqualsHashCodeTest {
     }
 
     private Boolean shouldBeEqual() {
-        return mExpected;
+        return expected;
     }
 
     private void assertEqual() {
-        assertTrue(mMessage, mCriteria.equals(mCompareTo));
+        assertTrue(message, criteria.equals(compareTo));
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(mMessage, mCriteria.hashCode() == mCompareTo.hashCode());
+        assertTrue(message, criteria.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(mMessage, mCriteria.equals(mCompareTo));
+        assertFalse(message, criteria.equals(compareTo));
 
 
         validateHashCodeWhenNotEqual();
     }
 
     private void validateHashCodeWhenNotEqual() {
-        if (null == mCompareTo) {
+        if (null == compareTo) {
             return;
         }
 
-        assertFalse(mMessage, mCriteria.hashCode() == mCompareTo.hashCode());
+        assertFalse(message, criteria.hashCode() == compareTo.hashCode());
     }
 }

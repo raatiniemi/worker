@@ -27,7 +27,7 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class ProjectComparatorTest {
-    private final ProjectComparator mComparator = new ProjectComparator();
+    private final ProjectComparator comparator = new ProjectComparator();
 
     private Project createProject(long id)
             throws InvalidProjectNameException {
@@ -42,7 +42,7 @@ public class ProjectComparatorTest {
         Project lhs = createProject(1L);
         Project rhs = createProject(1L);
 
-        assertTrue(0 == mComparator.compare(lhs, rhs));
+        assertTrue(0 == comparator.compare(lhs, rhs));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class ProjectComparatorTest {
         Project lhs = createProject(1L);
         Project rhs = createProject(2L);
 
-        assertTrue(0 > mComparator.compare(lhs, rhs));
+        assertTrue(0 > comparator.compare(lhs, rhs));
     }
 
     @Test
@@ -60,6 +60,6 @@ public class ProjectComparatorTest {
         Project lhs = createProject(2L);
         Project rhs = createProject(1L);
 
-        assertTrue(0 < mComparator.compare(lhs, rhs));
+        assertTrue(0 < comparator.compare(lhs, rhs));
     }
 }

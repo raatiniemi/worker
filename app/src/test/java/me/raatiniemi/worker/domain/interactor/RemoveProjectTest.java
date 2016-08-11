@@ -31,11 +31,11 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class RemoveProjectTest {
-    private ProjectRepository mProjectRepository;
+    private ProjectRepository projectRepository;
 
     @Before
     public void setUp() {
-        mProjectRepository = mock(ProjectRepository.class);
+        projectRepository = mock(ProjectRepository.class);
     }
 
     @Test
@@ -44,9 +44,9 @@ public class RemoveProjectTest {
                 .id(1L)
                 .build();
 
-        RemoveProject removeProject = new RemoveProject(mProjectRepository);
+        RemoveProject removeProject = new RemoveProject(projectRepository);
         removeProject.execute(project);
 
-        verify(mProjectRepository).remove(eq(1L));
+        verify(projectRepository).remove(eq(1L));
     }
 }

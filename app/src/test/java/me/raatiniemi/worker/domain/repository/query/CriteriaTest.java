@@ -28,18 +28,18 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class CriteriaTest {
-    private String mMessage;
-    private String mExpected;
-    private Criteria mCriteria;
+    private String message;
+    private String expected;
+    private Criteria criteria;
 
     public CriteriaTest(
             String message,
             String expected,
             Criteria criteria
     ) {
-        mMessage = message;
-        mExpected = expected;
-        mCriteria = criteria;
+        this.message = message;
+        this.expected = expected;
+        this.criteria = criteria;
     }
 
     @Parameters
@@ -77,6 +77,6 @@ public class CriteriaTest {
 
     @Test
     public void validate() {
-        assertEquals(mMessage, mExpected, mCriteria.toString());
+        assertEquals(message, expected, criteria.toString());
     }
 }

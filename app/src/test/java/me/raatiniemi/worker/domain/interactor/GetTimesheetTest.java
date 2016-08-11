@@ -33,26 +33,26 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class GetTimesheetTest {
-    private TimeRepository mTimeRepository;
+    private TimeRepository timeRepository;
 
     @Before
     public void setUp() {
-        mTimeRepository = mock(TimeRepository.class);
+        timeRepository = mock(TimeRepository.class);
     }
 
     @Test
     public void execute_hideRegisteredTime() throws DomainException {
-        GetTimesheet getTimesheet = new GetTimesheet(mTimeRepository);
+        GetTimesheet getTimesheet = new GetTimesheet(timeRepository);
         getTimesheet.execute(1L, 0, true);
 
-        verify(mTimeRepository).getTimesheet(eq(1L), eq(0), any(Criteria.class));
+        verify(timeRepository).getTimesheet(eq(1L), eq(0), any(Criteria.class));
     }
 
     @Test
     public void execute_withRegisteredTime() throws DomainException {
-        GetTimesheet getTimesheet = new GetTimesheet(mTimeRepository);
+        GetTimesheet getTimesheet = new GetTimesheet(timeRepository);
         getTimesheet.execute(1L, 0, false);
 
-        verify(mTimeRepository).getTimesheet(eq(1L), eq(0), isNull(Criteria.class));
+        verify(timeRepository).getTimesheet(eq(1L), eq(0), isNull(Criteria.class));
     }
 }

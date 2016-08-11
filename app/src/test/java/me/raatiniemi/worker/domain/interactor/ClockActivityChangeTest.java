@@ -40,8 +40,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class ClockActivityChangeTest {
-    private ProjectRepository mProjectRepository;
-    private TimeRepository mTimeRepository;
+    private ProjectRepository projectRepository;
+    private TimeRepository timeRepository;
 
     private Project buildProject() throws InvalidProjectNameException {
         return new Project.Builder("Project name")
@@ -51,27 +51,27 @@ public class ClockActivityChangeTest {
 
     @Before
     public void setUp() {
-        mProjectRepository = mock(ProjectRepository.class);
-        mTimeRepository = mock(TimeRepository.class);
+        projectRepository = mock(ProjectRepository.class);
+        timeRepository = mock(TimeRepository.class);
     }
 
     @Test
     public void execute_clockInProject() throws DomainException {
         Project project = buildProject();
 
-        when(mProjectRepository.get(1L)).thenReturn(project);
-        when(mTimeRepository.getProjectTimeSinceBeginningOfMonth(1L))
+        when(projectRepository.get(1L)).thenReturn(project);
+        when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<Time>());
 
         ClockActivityChange clockActivityChange = new ClockActivityChange(
-                mProjectRepository,
-                mTimeRepository
+                projectRepository,
+                timeRepository
         );
         clockActivityChange.execute(project, new Date());
 
-        verify(mTimeRepository).add(isA(Time.class));
-        verify(mProjectRepository).get(eq(1L));
-        verify(mTimeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
+        verify(timeRepository).add(isA(Time.class));
+        verify(projectRepository).get(eq(1L));
+        verify(timeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
     }
 
     @Test
@@ -86,18 +86,18 @@ public class ClockActivityChangeTest {
         Project project = buildProject();
         project.addTime(registeredTime);
 
-        when(mProjectRepository.get(1L)).thenReturn(project);
-        when(mTimeRepository.getProjectTimeSinceBeginningOfMonth(1L))
+        when(projectRepository.get(1L)).thenReturn(project);
+        when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<Time>());
 
         ClockActivityChange clockActivityChange = new ClockActivityChange(
-                mProjectRepository,
-                mTimeRepository
+                projectRepository,
+                timeRepository
         );
         clockActivityChange.execute(project, new Date());
 
-        verify(mTimeRepository).update(isA(Time.class));
-        verify(mProjectRepository).get(eq(1L));
-        verify(mTimeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
+        verify(timeRepository).update(isA(Time.class));
+        verify(projectRepository).get(eq(1L));
+        verify(timeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
     }
 }

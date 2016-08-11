@@ -23,7 +23,7 @@ public class CreateBackup {
     /**
      * Strategy for creating a backup.
      */
-    private final BackupStrategy mStrategy;
+    private final BackupStrategy strategy;
 
     /**
      * Constructor.
@@ -31,7 +31,7 @@ public class CreateBackup {
      * @param strategy Strategy for creating a backup.
      */
     public CreateBackup(BackupStrategy strategy) {
-        mStrategy = strategy;
+        this.strategy = strategy;
     }
 
     /**
@@ -39,6 +39,6 @@ public class CreateBackup {
      */
     public void execute() {
         // Execute the backup strategy.
-        mStrategy.execute();
+        strategy.execute();
     }
 }

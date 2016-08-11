@@ -23,17 +23,17 @@ public class Criteria {
     /**
      * Name of the criteria field.
      */
-    private final String mField;
+    private final String field;
 
     /**
      * Operator to use.
      */
-    private final String mOperator;
+    private final String operator;
 
     /**
      * Value to match against the field.
      */
-    private final String mValue;
+    private final String value;
 
     /**
      * Constructor.
@@ -43,9 +43,9 @@ public class Criteria {
      * @param value    Value to match against the field.
      */
     private Criteria(final String field, final String operator, final String value) {
-        mField = field;
-        mOperator = operator;
-        mValue = value;
+        this.field = field;
+        this.operator = operator;
+        this.value = value;
     }
 
     /**
@@ -114,7 +114,7 @@ public class Criteria {
      * @return Name of the criteria field.
      */
     public String getField() {
-        return mField;
+        return field;
     }
 
     /**
@@ -123,7 +123,7 @@ public class Criteria {
      * @return Operator to use.
      */
     public String getOperator() {
-        return mOperator;
+        return operator;
     }
 
     /**
@@ -132,7 +132,7 @@ public class Criteria {
      * @return Value to match against the field.
      */
     public String getValue() {
-        return mValue;
+        return value;
     }
 
     @Override
@@ -151,17 +151,17 @@ public class Criteria {
         }
 
         Criteria criteria = (Criteria) o;
-        return mField.equals(criteria.getField())
-                && mOperator.equals(criteria.getOperator())
-                && mValue.equals(criteria.getValue());
+        return field.equals(criteria.getField())
+                && operator.equals(criteria.getOperator())
+                && value.equals(criteria.getValue());
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + mField.hashCode();
-        result = 31 * result + mOperator.hashCode();
-        result = 31 * result + mValue.hashCode();
+        result = 31 * result + field.hashCode();
+        result = 31 * result + operator.hashCode();
+        result = 31 * result + value.hashCode();
 
         return result;
     }

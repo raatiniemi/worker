@@ -27,20 +27,20 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
  * Use case for clocking in.
  */
 public class ClockIn {
-    private final TimeRepository mTimeRepository;
+    private final TimeRepository timeRepository;
 
     public ClockIn(TimeRepository timeRepository) {
-        mTimeRepository = timeRepository;
+        this.timeRepository = timeRepository;
     }
 
     public void execute(long projectId, Date date)
             throws DomainException {
-        Time time = mTimeRepository.getActiveTimeForProject(projectId);
+        Time time = timeRepository.getActiveTimeForProject(projectId);
         if (null != time) {
             throw new ClockActivityException("Project is active");
         }
 
-        mTimeRepository.add(
+        timeRepository.add(
                 new Time.Builder(projectId)
                         .startInMilliseconds(date.getTime())
                         .build()

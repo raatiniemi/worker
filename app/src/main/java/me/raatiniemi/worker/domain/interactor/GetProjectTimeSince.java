@@ -36,10 +36,10 @@ public class GetProjectTimeSince {
     public static final int WEEK = 1;
     public static final int MONTH = 2;
 
-    private final TimeRepository mTimeRepository;
+    private final TimeRepository timeRepository;
 
     public GetProjectTimeSince(TimeRepository timeRepository) {
-        mTimeRepository = timeRepository;
+        this.timeRepository = timeRepository;
     }
 
     private static Criteria buildStartingPointCriteria(int startingPoint) {
@@ -85,6 +85,6 @@ public class GetProjectTimeSince {
      * @throws DomainException If domain rules are violated.
      */
     public List<Time> execute(Project project, int startingPoint) throws DomainException {
-        return mTimeRepository.matching(project, buildStartingPointCriteria(startingPoint));
+        return timeRepository.matching(project, buildStartingPointCriteria(startingPoint));
     }
 }

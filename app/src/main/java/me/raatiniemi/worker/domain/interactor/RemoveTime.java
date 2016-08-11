@@ -28,7 +28,7 @@ public class RemoveTime {
     /**
      * Time repository.
      */
-    private final TimeRepository mTimeRepository;
+    private final TimeRepository timeRepository;
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public class RemoveTime {
      * @param timeRepository Time repository.
      */
     public RemoveTime(TimeRepository timeRepository) {
-        mTimeRepository = timeRepository;
+        this.timeRepository = timeRepository;
     }
 
     /**
@@ -45,7 +45,7 @@ public class RemoveTime {
      * @param time Time to remove.
      */
     public void execute(final Time time) {
-        mTimeRepository.remove(time.getId());
+        timeRepository.remove(time.getId());
     }
 
     /**
@@ -54,6 +54,6 @@ public class RemoveTime {
      * @param items Items to remove.
      */
     public void execute(List<Time> items) {
-        mTimeRepository.remove(items);
+        timeRepository.remove(items);
     }
 }

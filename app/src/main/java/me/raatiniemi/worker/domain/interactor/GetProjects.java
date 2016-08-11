@@ -30,12 +30,12 @@ public class GetProjects {
     /**
      * Project repository.
      */
-    private final ProjectRepository mProjectRepository;
+    private final ProjectRepository projectRepository;
 
     /**
      * Time repository.
      */
-    private final TimeRepository mTimeRepository;
+    private final TimeRepository timeRepository;
 
     /**
      * Constructor.
@@ -47,8 +47,8 @@ public class GetProjects {
             ProjectRepository projectRepository,
             TimeRepository timeRepository
     ) {
-        mProjectRepository = projectRepository;
-        mTimeRepository = timeRepository;
+        this.projectRepository = projectRepository;
+        this.timeRepository = timeRepository;
     }
 
     /**
@@ -58,12 +58,12 @@ public class GetProjects {
      * @throws DomainException If domain rules are violated.
      */
     public List<Project> execute() throws DomainException {
-        List<Project> projects = mProjectRepository.get();
+        List<Project> projects = projectRepository.get();
 
         for (Project project : projects) {
             // Populate the project with the registered time.
             project.addTime(
-                    mTimeRepository.getProjectTimeSinceBeginningOfMonth(project.getId())
+                    timeRepository.getProjectTimeSinceBeginningOfMonth(project.getId())
             );
         }
 
