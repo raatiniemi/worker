@@ -39,7 +39,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
     /**
      * Use case for creating new projects.
      */
-    private final CreateProject mCreateProject;
+    private final CreateProject createProject;
 
     /**
      * Constructor.
@@ -53,7 +53,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
     ) {
         super(context);
 
-        mCreateProject = createProject;
+        this.createProject = createProject;
     }
 
     /**
@@ -71,7 +71,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
                         @Override
                         public Observable<Project> call(final Project project) {
                             try {
-                                return Observable.just(mCreateProject.execute(project));
+                                return Observable.just(createProject.execute(project));
                             } catch (Exception e) {
                                 return Observable.error(e);
                             }

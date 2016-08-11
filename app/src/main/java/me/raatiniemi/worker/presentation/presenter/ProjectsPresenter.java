@@ -63,32 +63,32 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      */
     private static final String TAG = "ProjectsPresenter";
 
-    private final EventBus mEventBus;
+    private final EventBus eventBus;
 
     /**
      * Use case for getting projects.
      */
-    private final GetProjects mGetProjects;
+    private final GetProjects getProjects;
 
     /**
      * Use case for getting registered project time.
      */
-    private final GetProjectTimeSince mGetProjectTimeSince;
+    private final GetProjectTimeSince getProjectTimeSince;
 
     /**
      * Use case for project clock in/out.
      */
-    private final ClockActivityChange mClockActivityChange;
+    private final ClockActivityChange clockActivityChange;
 
     /**
      * Use case for removing projects.
      */
-    private final RemoveProject mRemoveProject;
+    private final RemoveProject removeProject;
 
     /**
      * Interval iterator for refreshing active projects.
      */
-    private Subscription mRefreshProjects;
+    private Subscription refreshProjects;
 
     /**
      * Constructor.
@@ -110,11 +110,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     ) {
         super(context);
 
-        mEventBus = eventBus;
-        mGetProjects = getProjects;
-        mGetProjectTimeSince = getProjectTimeSince;
-        mClockActivityChange = clockActivityChange;
-        mRemoveProject = removeProject;
+        this.eventBus = eventBus;
+        this.getProjects = getProjects;
+        this.getProjectTimeSince = getProjectTimeSince;
+        this.clockActivityChange = clockActivityChange;
+        this.removeProject = removeProject;
     }
 
     /**
@@ -124,7 +124,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     public void attachView(ProjectsView view) {
         super.attachView(view);
 
-        mEventBus.register(this);
+        eventBus.register(this);
     }
 
     /**
@@ -134,7 +134,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     public void detachView() {
         super.detachView();
 
-        mEventBus.unregister(this);
+        eventBus.unregister(this);
     }
 
     /**
@@ -196,7 +196,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         stopRefreshingActiveProjects();
 
         Log.d(TAG, "Subscribe to the refresh of active projects");
-        mRefreshProjects = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
+        refreshProjects = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .map(new Func1<Long, List<Integer>>() {
                     @Override
                     public List<Integer> call(Long aLong) {
@@ -232,11 +232,11 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * Unsubscribe to the refresh of active projects.
      */
     public void stopRefreshingActiveProjects() {
-        if (null != mRefreshProjects && !mRefreshProjects.isUnsubscribed()) {
+        if (null != refreshProjects && !refreshProjects.isUnsubscribed()) {
             Log.d(TAG, "Unsubscribe to the refresh of active projects");
-            mRefreshProjects.unsubscribe();
+            refreshProjects.unsubscribe();
         }
-        mRefreshProjects = null;
+        refreshProjects = null;
     }
 
     /**
@@ -288,7 +288,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                     @Override
                     public Observable<List<Project>> call() {
                         try {
-                            return Observable.just(mGetProjects.execute());
+                            return Observable.just(getProjects.execute());
                         } catch (DomainException e) {
                             return Observable.error(e);
                         }
@@ -350,7 +350,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         try {
             int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getContext());
 
-            return mGetProjectTimeSince.execute(project, startingPointForTimeSummary);
+            return getProjectTimeSince.execute(project, startingPointForTimeSummary);
         } catch (DomainException e) {
             Log.w(TAG, "Unable to get registered time for project", e);
         }
@@ -380,7 +380,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                     @Override
                     public Observable<Object> call(ProjectsModel project) {
                         // Attempt to delete project.
-                        mRemoveProject.execute(project.asProject());
+                        removeProject.execute(project.asProject());
 
                         return Observable.empty();
                     }
@@ -439,7 +439,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                     public Observable<Project> call(ProjectsModel projectsModel) {
                         try {
                             return Observable.just(
-                                    mClockActivityChange.execute(
+                                    clockActivityChange.execute(
                                             projectsModel.asProject(),
                                             date
                                     )

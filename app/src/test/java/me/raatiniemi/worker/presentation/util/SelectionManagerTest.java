@@ -30,27 +30,27 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class SelectionManagerTest {
-    private SelectionManager<String> mSelectionManager;
+    private SelectionManager<String> selectionManager;
 
     @Before
     public void setUp() throws Exception {
-        mSelectionManager = new SelectionManager<>();
+        selectionManager = new SelectionManager<>();
     }
 
     @Test
     public void isSelectionActivated_withoutItems() {
-        assertFalse(mSelectionManager.isSelectionActivated());
+        assertFalse(selectionManager.isSelectionActivated());
     }
 
     @Test
     public void isSelectionActivated_withItems() {
-        mSelectionManager.selectItem("isSelectionActivated_withItems");
-        assertTrue(mSelectionManager.isSelectionActivated());
+        selectionManager.selectItem("isSelectionActivated_withItems");
+        assertTrue(selectionManager.isSelectionActivated());
     }
 
     @Test
     public void getSelectedItems_withoutItems() {
-        assertTrue(mSelectionManager.getSelectedItems().isEmpty());
+        assertTrue(selectionManager.getSelectedItems().isEmpty());
     }
 
     @Test
@@ -58,48 +58,48 @@ public class SelectionManagerTest {
         List<String> selection = new ArrayList<>();
         selection.add("getSelectedItems_withItems");
 
-        mSelectionManager.selectItems(selection);
-        assertEquals(selection, mSelectionManager.getSelectedItems());
+        selectionManager.selectItems(selection);
+        assertEquals(selection, selectionManager.getSelectedItems());
     }
 
     @Test
     public void isSelected_withoutItems() {
         List<String> selection = new ArrayList<>();
 
-        assertFalse(mSelectionManager.isSelected(selection));
+        assertFalse(selectionManager.isSelected(selection));
     }
 
     @Test
     public void isSelected_withPartialSelection() {
-        mSelectionManager.selectItem("isSelected_withPartialSelection");
+        selectionManager.selectItem("isSelected_withPartialSelection");
 
         List<String> selection = new ArrayList<>();
         selection.add("isSelected_withPartialSelection");
         selection.add("isSelected_withFullSelection");
 
-        assertFalse(mSelectionManager.isSelected(selection));
+        assertFalse(selectionManager.isSelected(selection));
     }
 
     @Test
     public void isSelected_withFullSelection() {
-        mSelectionManager.selectItem("isSelected_withFullSelection");
+        selectionManager.selectItem("isSelected_withFullSelection");
 
         List<String> selection = new ArrayList<>();
         selection.add("isSelected_withFullSelection");
 
-        assertTrue(mSelectionManager.isSelected(selection));
+        assertTrue(selectionManager.isSelected(selection));
     }
 
     @Test
     public void isSelected_withoutItem() {
-        assertFalse(mSelectionManager.isSelected("isSelected_withoutItem"));
+        assertFalse(selectionManager.isSelected("isSelected_withoutItem"));
     }
 
     @Test
     public void isSelected_withItem() {
-        mSelectionManager.selectItem("isSelected_withItem");
+        selectionManager.selectItem("isSelected_withItem");
 
-        assertTrue(mSelectionManager.isSelected("isSelected_withItem"));
+        assertTrue(selectionManager.isSelected("isSelected_withItem"));
     }
 
     @Test
@@ -108,16 +108,16 @@ public class SelectionManagerTest {
         selection.add("selectItems");
         selection.add("selectItem");
 
-        mSelectionManager.selectItems(selection);
+        selectionManager.selectItems(selection);
 
-        assertTrue(mSelectionManager.isSelected(selection));
+        assertTrue(selectionManager.isSelected(selection));
     }
 
     @Test
     public void selectItem() {
-        mSelectionManager.selectItem("selectItem");
+        selectionManager.selectItem("selectItem");
 
-        assertTrue(mSelectionManager.isSelected("selectItem"));
+        assertTrue(selectionManager.isSelected("selectItem"));
     }
 
     @Test
@@ -126,25 +126,25 @@ public class SelectionManagerTest {
         selection.add("deselectItems");
         selection.add("deselectItem");
 
-        mSelectionManager.selectItems(selection);
-        mSelectionManager.deselectItems(selection);
+        selectionManager.selectItems(selection);
+        selectionManager.deselectItems(selection);
 
-        assertFalse(mSelectionManager.isSelected(selection));
+        assertFalse(selectionManager.isSelected(selection));
     }
 
     @Test
     public void deselectItem_withItem() {
-        mSelectionManager.selectItem("deselectItem");
-        mSelectionManager.deselectItem("deselectItem");
+        selectionManager.selectItem("deselectItem");
+        selectionManager.deselectItem("deselectItem");
 
-        assertFalse(mSelectionManager.isSelected("deselectItem"));
+        assertFalse(selectionManager.isSelected("deselectItem"));
     }
 
     @Test
     public void deselectItems() {
-        mSelectionManager.selectItem("deselectItems");
-        mSelectionManager.deselectItems();
+        selectionManager.selectItem("deselectItems");
+        selectionManager.deselectItems();
 
-        assertFalse(mSelectionManager.isSelectionActivated());
+        assertFalse(selectionManager.isSelectionActivated());
     }
 }

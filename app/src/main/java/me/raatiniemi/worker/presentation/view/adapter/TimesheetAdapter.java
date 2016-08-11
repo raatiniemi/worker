@@ -46,10 +46,10 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetAdapter.GroupItemViewHolder,
         TimesheetAdapter.ItemViewHolder
         > {
-    private final SelectionManagerAdapterDecorator<TimeInAdapterResult> mSelectionManager;
+    private final SelectionManagerAdapterDecorator<TimeInAdapterResult> selectionManager;
 
     public TimesheetAdapter(SelectionListener selectionListener) {
-        mSelectionManager = new SelectionManagerAdapterDecorator<>(this, selectionListener);
+        selectionManager = new SelectionManagerAdapterDecorator<>(this, selectionListener);
 
         setHasStableIds(true);
     }
@@ -71,9 +71,9 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         View view = inflater.inflate(viewType, viewGroup, false);
 
         GroupItemViewHolder viewHolder = new GroupItemViewHolder(view);
-        viewHolder.mLetter = (ImageView) view.findViewById(R.id.fragment_timesheet_group_item_letter);
-        viewHolder.mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
-        viewHolder.mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
+        viewHolder.letter = (ImageView) view.findViewById(R.id.fragment_timesheet_group_item_letter);
+        viewHolder.title = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
+        viewHolder.summarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
 
         return viewHolder;
     }
@@ -84,8 +84,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         View view = inflater.inflate(viewType, viewGroup, false);
 
         ItemViewHolder viewHolder = new ItemViewHolder(view);
-        viewHolder.mTitle = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
-        viewHolder.mSummarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
+        viewHolder.title = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
+        viewHolder.summarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
 
         return viewHolder;
     }
@@ -94,43 +94,43 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     public void onBindGroupViewHolder(GroupItemViewHolder vh, int group, int viewType) {
         TimesheetGroupModel item = get(group);
 
-        vh.mTitle.setText(item.getTitle());
-        vh.mSummarize.setText(item.getTimeSummaryWithDifference());
+        vh.title.setText(item.getTitle());
+        vh.summarize.setText(item.getTimeSummaryWithDifference());
 
-        vh.mLetter.setImageDrawable(
+        vh.letter.setImageDrawable(
                 LetterDrawable.build(item.getFirstLetterFromTitle())
         );
 
         final List<TimeInAdapterResult> results = item.buildItemResultsWithGroupIndex(group);
 
-        vh.mLetter.setOnLongClickListener(new View.OnLongClickListener() {
+        vh.letter.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (mSelectionManager.isSelectionActivated()) {
+                if (selectionManager.isSelectionActivated()) {
                     return false;
                 }
 
-                mSelectionManager.selectItems(results);
+                selectionManager.selectItems(results);
                 return true;
             }
         });
 
-        vh.mLetter.setOnClickListener(new View.OnClickListener() {
+        vh.letter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mSelectionManager.isSelectionActivated()) {
+                if (!selectionManager.isSelectionActivated()) {
                     return;
                 }
 
-                if (mSelectionManager.isSelected(results)) {
-                    mSelectionManager.deselectItems(results);
+                if (selectionManager.isSelected(results)) {
+                    selectionManager.deselectItems(results);
                     return;
                 }
-                mSelectionManager.selectItems(results);
+                selectionManager.selectItems(results);
             }
         });
 
-        vh.itemView.setSelected(mSelectionManager.isSelected(results));
+        vh.itemView.setSelected(selectionManager.isSelected(results));
 
         // In case the item have been selected, we should not activate
         // it. The selected background color should take precedence.
@@ -151,35 +151,35 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (mSelectionManager.isSelectionActivated()) {
+                if (selectionManager.isSelectionActivated()) {
                     return false;
                 }
 
-                if (mSelectionManager.isSelected(result)) {
+                if (selectionManager.isSelected(result)) {
                     return false;
                 }
 
-                mSelectionManager.selectItem(result);
+                selectionManager.selectItem(result);
                 return true;
             }
         });
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mSelectionManager.isSelectionActivated()) {
+                if (!selectionManager.isSelectionActivated()) {
                     return;
                 }
 
-                if (mSelectionManager.isSelected(result)) {
-                    mSelectionManager.deselectItem(result);
+                if (selectionManager.isSelected(result)) {
+                    selectionManager.deselectItem(result);
                     return;
                 }
 
-                mSelectionManager.selectItem(result);
+                selectionManager.selectItem(result);
             }
         });
 
-        vh.itemView.setSelected(mSelectionManager.isSelected(result));
+        vh.itemView.setSelected(selectionManager.isSelected(result));
 
         // In case the item have been selected, we should not activate
         // it. The selected background color should take precedence.
@@ -188,8 +188,8 @@ public class TimesheetAdapter extends ExpandableListAdapter<
             vh.itemView.setActivated(item.isRegistered());
         }
 
-        vh.mTitle.setText(item.getTitle());
-        vh.mSummarize.setText(item.getTimeSummary());
+        vh.title.setText(item.getTitle());
+        vh.summarize.setText(item.getTimeSummary());
     }
 
     @Override
@@ -216,7 +216,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupItemViewHolder vh, int group, int x, int y, boolean expand) {
-        return !mSelectionManager.isSelectionActivated() || !isPointInView(new Point(x, y), vh.mLetter);
+        return !selectionManager.isSelectionActivated() || !isPointInView(new Point(x, y), vh.letter);
     }
 
     public void remove(List<TimeInAdapterResult> results) {
@@ -241,21 +241,21 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     public boolean haveSelectedItems() {
-        return mSelectionManager.isSelectionActivated();
+        return selectionManager.isSelectionActivated();
     }
 
     public List<TimeInAdapterResult> getSelectedItems() {
-        return mSelectionManager.getSelectedItems();
+        return selectionManager.getSelectedItems();
     }
 
     public void deselectItems() {
-        mSelectionManager.deselectItems();
+        selectionManager.deselectItems();
     }
 
     class ItemViewHolder extends AbstractExpandableItemViewHolder {
-        protected TextView mTitle;
+        protected TextView title;
 
-        protected TextView mSummarize;
+        protected TextView summarize;
 
         private ItemViewHolder(View view) {
             super(view);
@@ -263,7 +263,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     class GroupItemViewHolder extends ItemViewHolder {
-        private ImageView mLetter;
+        private ImageView letter;
 
         private GroupItemViewHolder(View view) {
             super(view);

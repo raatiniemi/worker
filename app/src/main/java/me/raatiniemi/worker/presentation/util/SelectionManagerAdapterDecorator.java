@@ -19,37 +19,37 @@ package me.raatiniemi.worker.presentation.util;
 import android.support.v7.widget.RecyclerView;
 
 public class SelectionManagerAdapterDecorator<T> extends SelectionManager<T> {
-    private RecyclerView.Adapter mAdapter;
-    private SelectionListener mSelectionListener;
+    private RecyclerView.Adapter adapter;
+    private SelectionListener selectionListener;
 
     public SelectionManagerAdapterDecorator(
             RecyclerView.Adapter adapter,
             SelectionListener selectionListener
     ) {
-        mAdapter = adapter;
-        mSelectionListener = selectionListener;
+        this.adapter = adapter;
+        this.selectionListener = selectionListener;
     }
 
     @Override
     public void selectItem(T result) {
         super.selectItem(result);
 
-        mAdapter.notifyDataSetChanged();
-        mSelectionListener.onSelect();
+        adapter.notifyDataSetChanged();
+        selectionListener.onSelect();
     }
 
     @Override
     public void deselectItem(T result) {
         super.deselectItem(result);
 
-        mAdapter.notifyDataSetChanged();
-        mSelectionListener.onDeselect();
+        adapter.notifyDataSetChanged();
+        selectionListener.onDeselect();
     }
 
     @Override
     public void deselectItems() {
         super.deselectItems();
 
-        mAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }

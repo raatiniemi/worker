@@ -36,18 +36,18 @@ public class TimePickerFragment extends DialogFragment {
     /**
      * The "OnTimeSetListener" for the TimePickerDialog.
      */
-    private TimePickerDialog.OnTimeSetListener mOnTimeSetListener;
+    private TimePickerDialog.OnTimeSetListener onTimeSetListener;
 
-    private DialogInterface.OnCancelListener mOnCancelListener;
+    private DialogInterface.OnCancelListener onCancelListener;
 
-    private DialogInterface.OnDismissListener mOnDismissListener;
+    private DialogInterface.OnDismissListener onDismissListener;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         // Check that we actually have a listener available.
-        if (null == mOnTimeSetListener) {
+        if (null == onTimeSetListener) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -69,7 +69,7 @@ public class TimePickerFragment extends DialogFragment {
         Calendar calendar = Calendar.getInstance();
         return new TimePickerDialog(
                 getActivity(),
-                mOnTimeSetListener,
+                onTimeSetListener,
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(getActivity())
@@ -81,8 +81,8 @@ public class TimePickerFragment extends DialogFragment {
         super.onCancel(dialog);
 
         // Delegate the "onCancel" event to the listener, if available.
-        if (null != mOnCancelListener) {
-            mOnCancelListener.onCancel(dialog);
+        if (null != onCancelListener) {
+            onCancelListener.onCancel(dialog);
         }
     }
 
@@ -91,8 +91,8 @@ public class TimePickerFragment extends DialogFragment {
         super.onDismiss(dialog);
 
         // Delegate the "onDismiss" event to the listener, if available.
-        if (null != mOnDismissListener) {
-            mOnDismissListener.onDismiss(dialog);
+        if (null != onDismissListener) {
+            onDismissListener.onDismiss(dialog);
         }
     }
 
@@ -102,14 +102,14 @@ public class TimePickerFragment extends DialogFragment {
      * @param listener "OnTimeSetListener" for the TimePickerDialog.
      */
     public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener) {
-        mOnTimeSetListener = listener;
+        onTimeSetListener = listener;
     }
 
     public void setOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
-        mOnCancelListener = onCancelListener;
+        this.onCancelListener = onCancelListener;
     }
 
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
-        mOnDismissListener = onDismissListener;
+        this.onDismissListener = onDismissListener;
     }
 }

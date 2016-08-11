@@ -33,16 +33,16 @@ import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 abstract class OngoingNotification {
     private static final int PENDING_INTENT_FLAG = PendingIntent.FLAG_UPDATE_CURRENT;
 
-    private final Context mContext;
-    private final Project mProject;
+    private final Context context;
+    private final Project project;
 
-    private final NotificationCompat.Builder mBuilder;
+    private final NotificationCompat.Builder builder;
 
     protected OngoingNotification(Context context, Project project) {
-        mContext = context;
-        mProject = project;
+        this.context = context;
+        this.project = project;
 
-        mBuilder = new NotificationCompat.Builder(context)
+        builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(getSmallIcon())
                 .setContentTitle(project.getName())
                 .setContentIntent(buildContentAction())
@@ -53,50 +53,50 @@ abstract class OngoingNotification {
     protected abstract int getSmallIcon();
 
     private PendingIntent buildContentAction() {
-        Intent intent = new Intent(mContext, ProjectActivity.class);
+        Intent intent = new Intent(context, ProjectActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, mProject.getId());
+        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
 
         return buildPendingIntentWithActivity(intent);
     }
 
     private PendingIntent buildPendingIntentWithActivity(Intent intent) {
-        return PendingIntent.getActivity(mContext, 0, intent, PENDING_INTENT_FLAG);
+        return PendingIntent.getActivity(context, 0, intent, PENDING_INTENT_FLAG);
     }
 
     protected Intent buildIntentWithService(Class serviceClass) {
-        Intent intent = new Intent(mContext, serviceClass);
+        Intent intent = new Intent(context, serviceClass);
         intent.setData(getDataUri());
 
         return intent;
     }
 
     private Uri getDataUri() {
-        return WorkerContract.ProjectContract.getItemUri(mProject.getId());
+        return WorkerContract.ProjectContract.getItemUri(project.getId());
     }
 
     protected PendingIntent buildPendingIntentWithService(Intent intent) {
-        return PendingIntent.getService(mContext, 0, intent, PENDING_INTENT_FLAG);
+        return PendingIntent.getService(context, 0, intent, PENDING_INTENT_FLAG);
     }
 
     protected String getStringWithResourceId(@StringRes int resourceId) {
-        return mContext.getString(resourceId);
+        return context.getString(resourceId);
     }
 
     protected Notification buildWithActions(
             NotificationCompat.Action... actions
     ) {
         if (shouldUseChronometer()) {
-            mBuilder.setWhen(getWhenForChronometer())
+            builder.setWhen(getWhenForChronometer())
                     .setShowWhen(shouldUseChronometer())
                     .setUsesChronometer(shouldUseChronometer());
         }
 
         for (NotificationCompat.Action action : actions) {
-            mBuilder.addAction(action);
+            builder.addAction(action);
         }
 
-        return mBuilder.build();
+        return builder.build();
     }
 
     protected abstract boolean shouldUseChronometer();

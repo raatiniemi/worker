@@ -50,7 +50,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class ProjectsModelTest {
-    private static final Resources sResources = new MockResources() {
+    private static final Resources resources = new MockResources() {
         @NonNull
         @Override
         public String getString(int id) throws NotFoundException {
@@ -281,7 +281,7 @@ public class ProjectsModelTest {
     public void getHelpTextForClockActivityToggle(String expectedHelpText, Project project) {
         ProjectsModel model = new ProjectsModel(project);
 
-        assertEquals(expectedHelpText, model.getHelpTextForClockActivityToggle(sResources));
+        assertEquals(expectedHelpText, model.getHelpTextForClockActivityToggle(resources));
     }
 
     @Test
@@ -289,7 +289,7 @@ public class ProjectsModelTest {
     public void getHelpTextForClockActivityAt(String expectedHelpText, Project project) {
         ProjectsModel model = new ProjectsModel(project);
 
-        assertEquals(expectedHelpText, model.getHelpTextForClockActivityAt(sResources));
+        assertEquals(expectedHelpText, model.getHelpTextForClockActivityAt(resources));
     }
 
     @Test
@@ -301,12 +301,12 @@ public class ProjectsModelTest {
 
         ProjectsModel model = new ProjectsModel(project);
         if (null == times) {
-            assertNull(message, model.getClockedInSince(sResources));
+            assertNull(message, model.getClockedInSince(resources));
             return;
         }
         project.addTime(Arrays.asList(times));
 
-        assertEquals(message, expected, model.getClockedInSince(sResources));
+        assertEquals(message, expected, model.getClockedInSince(resources));
     }
 
     @Test

@@ -59,7 +59,7 @@ public class DataIntentService extends IntentService {
     /**
      * Type of running data operation.
      */
-    private static boolean sRunning = false;
+    private static boolean running = false;
 
     /**
      * Constructor.
@@ -74,7 +74,7 @@ public class DataIntentService extends IntentService {
      * @return True if data operation is running, otherwise false.
      */
     public static boolean isRunning() {
-        return sRunning;
+        return running;
     }
 
     @Override
@@ -93,14 +93,14 @@ public class DataIntentService extends IntentService {
             String action = intent.getAction();
             switch (action) {
                 case INTENT_ACTION_BACKUP:
-                    sRunning = true;
+                    running = true;
                     runBackup(context, eventBus);
-                    sRunning = false;
+                    running = false;
                     break;
                 case INTENT_ACTION_RESTORE:
-                    sRunning = true;
+                    running = true;
                     runRestore(context);
-                    sRunning = false;
+                    running = false;
                     break;
                 default:
                     throw new IllegalStateException("Received unknown action: " + action);
@@ -114,7 +114,7 @@ public class DataIntentService extends IntentService {
 
             // In case the data operation throw an exception we need to reset
             // the running flag, otherwise we might prevent actions to run.
-            sRunning = false;
+            running = false;
         }
     }
 

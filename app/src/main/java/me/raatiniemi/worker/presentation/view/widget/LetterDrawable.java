@@ -25,18 +25,18 @@ import android.graphics.drawable.ShapeDrawable;
 public class LetterDrawable extends ShapeDrawable {
     private static final int BACKGROUND_COLOR = 0x94797979;
 
-    private final Paint mTextPaint = new Paint();
-    private final String mText;
+    private final Paint textPaint = new Paint();
+    private final String text;
 
     private LetterDrawable(String text) {
         super();
 
-        mText = text;
+        this.text = text;
 
-        mTextPaint.setColor(Color.WHITE);
-        mTextPaint.setAntiAlias(true);
-        mTextPaint.setFakeBoldText(true);
-        mTextPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setColor(Color.WHITE);
+        textPaint.setAntiAlias(true);
+        textPaint.setFakeBoldText(true);
+        textPaint.setTextAlign(Paint.Align.CENTER);
 
         Paint paint = getPaint();
         paint.setColor(BACKGROUND_COLOR);
@@ -50,10 +50,10 @@ public class LetterDrawable extends ShapeDrawable {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        mTextPaint.setTextSize(getFontSize());
+        textPaint.setTextSize(getFontSize());
 
         Point textPosition = calculateTextPosition();
-        canvas.drawText(mText, textPosition.x, textPosition.y, mTextPaint);
+        canvas.drawText(text, textPosition.x, textPosition.y, textPaint);
     }
 
     private int getFontSize() {
@@ -78,7 +78,7 @@ public class LetterDrawable extends ShapeDrawable {
     }
 
     private int adjustCalculationForFont(int verticalCenterPosition) {
-        int calculatedFontAdjustment = (int) (mTextPaint.ascent() + mTextPaint.descent()) / 2;
+        int calculatedFontAdjustment = (int) (textPaint.ascent() + textPaint.descent()) / 2;
 
         return verticalCenterPosition - calculatedFontAdjustment;
     }

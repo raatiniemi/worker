@@ -28,17 +28,17 @@ import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetChildModel {
     private static final String TIME_SEPARATOR = " - ";
-    private static final DateIntervalFormat sIntervalFormat;
+    private static final DateIntervalFormat intervalFormat;
 
     static {
-        sIntervalFormat = new FractionIntervalFormat();
+        intervalFormat = new FractionIntervalFormat();
     }
 
-    private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    private final Time mTime;
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final Time time;
 
     public TimesheetChildModel(Time time) {
-        mTime = time;
+        this.time = time;
     }
 
     private static Date buildDateFromMilliseconds(long milliseconds) {
@@ -46,17 +46,17 @@ public class TimesheetChildModel {
     }
 
     public Time asTime() {
-        return mTime;
+        return time;
     }
 
     public long getId() {
-        return mTime.getId();
+        return time.getId();
     }
 
     public String getTitle() {
         StringBuilder title = buildTitleFromStartTime();
 
-        if (!mTime.isActive()) {
+        if (!time.isActive()) {
             appendStopTimeWithSeparator(title);
         }
 
@@ -65,34 +65,34 @@ public class TimesheetChildModel {
 
     private StringBuilder buildTitleFromStartTime() {
         StringBuilder builder = new StringBuilder();
-        builder.append(mTimeFormat.format(buildDateFromStartTime()));
+        builder.append(timeFormat.format(buildDateFromStartTime()));
 
         return builder;
     }
 
     private Date buildDateFromStartTime() {
-        return buildDateFromMilliseconds(mTime.getStartInMilliseconds());
+        return buildDateFromMilliseconds(time.getStartInMilliseconds());
     }
 
     private void appendStopTimeWithSeparator(StringBuilder title) {
         title.append(TIME_SEPARATOR);
-        title.append(mTimeFormat.format(buildDateFromStopTime()));
+        title.append(timeFormat.format(buildDateFromStopTime()));
     }
 
     private Date buildDateFromStopTime() {
-        return buildDateFromMilliseconds(mTime.getStopInMilliseconds());
+        return buildDateFromMilliseconds(time.getStopInMilliseconds());
     }
 
     public String getTimeSummary() {
-        return sIntervalFormat.format(mTime.getInterval());
+        return intervalFormat.format(time.getInterval());
     }
 
     public boolean isRegistered() {
-        return mTime.isRegistered();
+        return time.isRegistered();
     }
 
     long calculateIntervalInMilliseconds() {
-        CalculatedTime calculatedTime = CalculateTime.calculateTime(mTime.getInterval());
+        CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
         return calculatedTime.asMilliseconds();
     }
 }

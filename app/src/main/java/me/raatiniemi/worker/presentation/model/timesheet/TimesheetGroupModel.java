@@ -12,20 +12,20 @@ import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetGroupModel
         extends ExpandableItem<Date, TimesheetChildModel> {
-    private static final DateIntervalFormat sIntervalFormat;
+    private static final DateIntervalFormat intervalFormat;
 
     static {
-        sIntervalFormat = new FractionIntervalFormat();
+        intervalFormat = new FractionIntervalFormat();
     }
 
-    private final SimpleDateFormat sDateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
 
     public TimesheetGroupModel(Date group) {
         super(group);
     }
 
     private static float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
-        String fraction = sIntervalFormat.format(intervalInMilliseconds);
+        String fraction = intervalFormat.format(intervalInMilliseconds);
 
         return Float.parseFloat(fraction);
     }
@@ -58,7 +58,7 @@ public class TimesheetGroupModel
     }
 
     public String getTitle() {
-        return sDateFormat.format(getGroup());
+        return dateFormat.format(getGroup());
     }
 
     public String getFirstLetterFromTitle() {

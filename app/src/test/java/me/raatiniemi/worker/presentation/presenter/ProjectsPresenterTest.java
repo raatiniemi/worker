@@ -67,56 +67,56 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ProjectsPresenterTest {
     @Rule
-    public final RxSchedulerRule mRxSchedulersRule = new RxSchedulerRule();
+    public final RxSchedulerRule rxSchedulersRule = new RxSchedulerRule();
 
-    private Context mContext = RuntimeEnvironment.application.getBaseContext();
-    private EventBus mEventBus;
-    private GetProjects mGetProjects;
-    private GetProjectTimeSince mGetProjectTimeSince;
-    private ClockActivityChange mClockActivityChange;
-    private RemoveProject mRemoveProject;
-    private ProjectsPresenter mPresenter;
-    private ProjectsView mView;
-    private NotificationManager mNotificationManager;
+    private Context context = RuntimeEnvironment.application.getBaseContext();
+    private EventBus eventBus;
+    private GetProjects getProjects;
+    private GetProjectTimeSince getProjectTimeSince;
+    private ClockActivityChange clockActivityChange;
+    private RemoveProject removeProject;
+    private ProjectsPresenter presenter;
+    private ProjectsView view;
+    private NotificationManager notificationManager;
 
     @Before
     public void setUp() {
-        mEventBus = mock(EventBus.class);
-        mGetProjects = mock(GetProjects.class);
-        mGetProjectTimeSince = mock(GetProjectTimeSince.class);
-        mClockActivityChange = mock(ClockActivityChange.class);
-        mRemoveProject = mock(RemoveProject.class);
-        mPresenter = new ProjectsPresenter(
-                mContext,
-                mEventBus,
-                mGetProjects,
-                mGetProjectTimeSince,
-                mClockActivityChange,
-                mRemoveProject
+        eventBus = mock(EventBus.class);
+        getProjects = mock(GetProjects.class);
+        getProjectTimeSince = mock(GetProjectTimeSince.class);
+        clockActivityChange = mock(ClockActivityChange.class);
+        removeProject = mock(RemoveProject.class);
+        presenter = new ProjectsPresenter(
+                context,
+                eventBus,
+                getProjects,
+                getProjectTimeSince,
+                clockActivityChange,
+                removeProject
         );
-        mView = mock(ProjectsView.class);
+        view = mock(ProjectsView.class);
 
         setupNotificationManager();
     }
 
     private void setupNotificationManager() {
-        mNotificationManager = mock(NotificationManager.class);
-        ShadowContextImpl shadowContext = (ShadowContextImpl) Shadows.shadowOf(mContext);
-        shadowContext.setSystemService(Context.NOTIFICATION_SERVICE, mNotificationManager);
+        notificationManager = mock(NotificationManager.class);
+        ShadowContextImpl shadowContext = (ShadowContextImpl) Shadows.shadowOf(context);
+        shadowContext.setSystemService(Context.NOTIFICATION_SERVICE, notificationManager);
     }
 
     @Test
     public void attachView_registerEventBus() {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        verify(mEventBus).register(mPresenter);
+        verify(eventBus).register(presenter);
     }
 
     @Test
     public void detachView_unregisterEventBus() {
-        mPresenter.detachView();
+        presenter.detachView();
 
-        verify(mEventBus).unregister(mPresenter);
+        verify(eventBus).unregister(presenter);
     }
 
     @Test
@@ -126,16 +126,16 @@ public class ProjectsPresenterTest {
         List<ProjectsModel> projects = new ArrayList<>();
         projects.add(new ProjectsModel(new Project.Builder("Name").build()));
         projects.add(new ProjectsModel(activeProject));
-        when(mView.getProjects()).thenReturn(projects);
-        mPresenter.attachView(mView);
+        when(view.getProjects()).thenReturn(projects);
+        presenter.attachView(view);
 
-        mPresenter.beginRefreshingActiveProjects();
-        mRxSchedulersRule.advanceTimeTo(60, TimeUnit.SECONDS);
-        mPresenter.stopRefreshingActiveProjects();
+        presenter.beginRefreshingActiveProjects();
+        rxSchedulersRule.advanceTimeTo(60, TimeUnit.SECONDS);
+        presenter.stopRefreshingActiveProjects();
 
         List<Integer> positions = new ArrayList<>();
         positions.add(1);
-        verify(mView).refreshPositions(positions);
+        verify(view).refreshPositions(positions);
     }
 
     @Test
@@ -145,14 +145,14 @@ public class ProjectsPresenterTest {
         List<ProjectsModel> projects = new ArrayList<>();
         projects.add(new ProjectsModel(new Project.Builder("Name").build()));
         projects.add(new ProjectsModel(activeProject));
-        when(mView.getProjects()).thenReturn(projects);
-        mPresenter.attachView(mView);
+        when(view.getProjects()).thenReturn(projects);
+        presenter.attachView(view);
 
-        mPresenter.refreshActiveProjects();
+        presenter.refreshActiveProjects();
 
         List<Integer> positions = new ArrayList<>();
         positions.add(1);
-        verify(mView).refreshPositions(positions);
+        verify(view).refreshPositions(positions);
     }
 
     @Test
@@ -162,11 +162,11 @@ public class ProjectsPresenterTest {
         List<ProjectsModel> projects = new ArrayList<>();
         projects.add(new ProjectsModel(new Project.Builder("Name").build()));
         projects.add(new ProjectsModel(activeProject));
-        when(mView.getProjects()).thenReturn(projects);
+        when(view.getProjects()).thenReturn(projects);
 
-        mPresenter.refreshActiveProjects();
+        presenter.refreshActiveProjects();
 
-        verify(mView, never()).refreshPositions(anyListOf(Integer.class));
+        verify(view, never()).refreshPositions(anyListOf(Integer.class));
     }
 
     @Test
@@ -176,15 +176,15 @@ public class ProjectsPresenterTest {
                 new Project.Builder("Name")
                         .build()
         );
-        when(mGetProjects.execute()).thenReturn(projects);
-        when(mGetProjectTimeSince.execute(any(Project.class), anyInt()))
+        when(getProjects.execute()).thenReturn(projects);
+        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(anyListOf(Time.class));
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.getProjects();
+        presenter.getProjects();
 
-        verify(mGetProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(mView).addProjects(anyListOf(ProjectsModel.class));
+        verify(getProjectTimeSince).execute(any(Project.class), anyInt());
+        verify(view).addProjects(anyListOf(ProjectsModel.class));
     }
 
     @Test
@@ -194,45 +194,45 @@ public class ProjectsPresenterTest {
                 new Project.Builder("Name")
                         .build()
         );
-        when(mGetProjects.execute()).thenReturn(projects);
-        when(mGetProjectTimeSince.execute(any(Project.class), anyInt()))
+        when(getProjects.execute()).thenReturn(projects);
+        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenThrow(new ClockOutBeforeClockInException());
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.getProjects();
+        presenter.getProjects();
 
-        verify(mGetProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(mView).addProjects(anyListOf(ProjectsModel.class));
+        verify(getProjectTimeSince).execute(any(Project.class), anyInt());
+        verify(view).addProjects(anyListOf(ProjectsModel.class));
     }
 
     @Test
     public void getProjects_withoutAttachedView() throws DomainException {
         List<Project> projects = new ArrayList<>();
-        when(mGetProjects.execute()).thenReturn(projects);
+        when(getProjects.execute()).thenReturn(projects);
 
-        mPresenter.getProjects();
+        presenter.getProjects();
 
-        verify(mView, never()).addProjects(anyListOf(ProjectsModel.class));
+        verify(view, never()).addProjects(anyListOf(ProjectsModel.class));
     }
 
     @Test
     public void getProjects_withError() throws DomainException {
-        when(mGetProjects.execute()).thenThrow(new RuntimeException());
-        mPresenter.attachView(mView);
+        when(getProjects.execute()).thenThrow(new RuntimeException());
+        presenter.attachView(view);
 
-        mPresenter.getProjects();
+        presenter.getProjects();
 
-        verify(mGetProjectTimeSince, never()).execute(any(Project.class), anyInt());
-        verify(mView).showGetProjectsErrorMessage();
+        verify(getProjectTimeSince, never()).execute(any(Project.class), anyInt());
+        verify(view).showGetProjectsErrorMessage();
     }
 
     @Test
     public void getProjects_withErrorAndWithoutAttachedView() throws DomainException {
-        when(mGetProjects.execute()).thenThrow(new ClockOutBeforeClockInException());
+        when(getProjects.execute()).thenThrow(new ClockOutBeforeClockInException());
 
-        mPresenter.getProjects();
+        presenter.getProjects();
 
-        verify(mView, never()).showGetProjectsErrorMessage();
+        verify(view, never()).showGetProjectsErrorMessage();
     }
 
     @Test
@@ -242,13 +242,13 @@ public class ProjectsPresenterTest {
         ProjectsModel projectsModel = new ProjectsModel(project);
         List<ProjectsModel> projects = new ArrayList<>();
         projects.add(new ProjectsModel(project));
-        when(mView.getProjects()).thenReturn(projects);
-        mPresenter.attachView(mView);
+        when(view.getProjects()).thenReturn(projects);
+        presenter.attachView(view);
 
-        mPresenter.deleteProject(projectsModel);
+        presenter.deleteProject(projectsModel);
 
-        verify(mView).deleteProjectAtPosition(0);
-        verify(mView).showDeleteProjectSuccessMessage();
+        verify(view).deleteProjectAtPosition(0);
+        verify(view).showDeleteProjectSuccessMessage();
     }
 
     @Test
@@ -258,15 +258,15 @@ public class ProjectsPresenterTest {
         ProjectsModel projectsModel = new ProjectsModel(project);
         List<ProjectsModel> projects = new ArrayList<>();
         projects.add(new ProjectsModel(project));
-        when(mView.getProjects()).thenReturn(projects);
-        doThrow(new RuntimeException()).when(mRemoveProject).execute(project);
-        mPresenter.attachView(mView);
+        when(view.getProjects()).thenReturn(projects);
+        doThrow(new RuntimeException()).when(removeProject).execute(project);
+        presenter.attachView(view);
 
-        mPresenter.deleteProject(projectsModel);
+        presenter.deleteProject(projectsModel);
 
-        verify(mView).deleteProjectAtPosition(0);
-        verify(mView).restoreProjectAtPreviousPosition(0, projectsModel);
-        verify(mView).showDeleteProjectErrorMessage();
+        verify(view).deleteProjectAtPosition(0);
+        verify(view).restoreProjectAtPreviousPosition(0, projectsModel);
+        verify(view).showDeleteProjectErrorMessage();
     }
 
     @Test
@@ -275,23 +275,23 @@ public class ProjectsPresenterTest {
                 .id(1L)
                 .build();
         ProjectsModel projectsModel = new ProjectsModel(project);
-        when(mClockActivityChange.execute(eq(project), any(Date.class)))
+        when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
-        when(mGetProjectTimeSince.execute(any(Project.class), anyInt()))
+        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(anyListOf(Time.class));
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsModel, new Date());
 
-        verify(mNotificationManager)
+        verify(notificationManager)
                 .cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
-        verify(mNotificationManager, never()).notify(
+        verify(notificationManager, never()).notify(
                 eq("1"),
                 eq(Worker.NOTIFICATION_ON_GOING_ID),
                 isA(Notification.class)
         );
-        verify(mGetProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(mView).updateProject(projectsModel);
+        verify(getProjectTimeSince).execute(any(Project.class), anyInt());
+        verify(view).updateProject(projectsModel);
     }
 
     @Test
@@ -300,13 +300,13 @@ public class ProjectsPresenterTest {
                 .id(1L)
                 .build();
         ProjectsModel projectsModel = new ProjectsModel(project);
-        when(mClockActivityChange.execute(eq(project), any(Date.class)))
+        when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
 
-        mPresenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsModel, new Date());
 
-        verify(mNotificationManager).cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
-        verify(mView, never()).updateProject(projectsModel);
+        verify(notificationManager).cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
+        verify(view, never()).updateProject(projectsModel);
     }
 
     @Test
@@ -314,14 +314,14 @@ public class ProjectsPresenterTest {
         Project project = new Project.Builder("Name")
                 .build();
         ProjectsModel projectsModel = new ProjectsModel(project);
-        when(mClockActivityChange.execute(eq(project), any(Date.class)))
+        when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsModel, new Date());
 
-        verify(mView, never()).showClockOutErrorMessage();
-        verify(mView).showClockInErrorMessage();
+        verify(view, never()).showClockOutErrorMessage();
+        verify(view).showClockInErrorMessage();
     }
 
     @Test
@@ -329,14 +329,14 @@ public class ProjectsPresenterTest {
         Project project = mock(Project.class);
         when(project.isActive()).thenReturn(true);
         ProjectsModel projectsModel = new ProjectsModel(project);
-        when(mClockActivityChange.execute(eq(project), any(Date.class)))
+        when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsModel, new Date());
 
-        verify(mView).showClockOutErrorMessage();
-        verify(mView, never()).showClockInErrorMessage();
+        verify(view).showClockOutErrorMessage();
+        verify(view, never()).showClockInErrorMessage();
     }
 
     @Test
@@ -344,44 +344,44 @@ public class ProjectsPresenterTest {
         Project project = mock(Project.class);
         when(project.isActive()).thenReturn(true);
         ProjectsModel projectsModel = new ProjectsModel(project);
-        when(mClockActivityChange.execute(eq(project), any(Date.class)))
+        when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
 
-        mPresenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsModel, new Date());
 
-        verify(mView, never()).showClockOutErrorMessage();
-        verify(mView, never()).showClockInErrorMessage();
+        verify(view, never()).showClockOutErrorMessage();
+        verify(view, never()).showClockInErrorMessage();
     }
 
     @Test
     public void onEventMainThread_changeTimeSummaryStartingPoint() {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.onEventMainThread(new TimeSummaryStartingPointChangeEvent());
+        presenter.onEventMainThread(new TimeSummaryStartingPointChangeEvent());
 
-        verify(mView).reloadProjects();
+        verify(view).reloadProjects();
     }
 
     @Test
     public void onEventMainThread_changeTimeSummaryStartingPointWithoutAttachedView() {
-        mPresenter.onEventMainThread(new TimeSummaryStartingPointChangeEvent());
+        presenter.onEventMainThread(new TimeSummaryStartingPointChangeEvent());
 
-        verify(mView, never()).reloadProjects();
+        verify(view, never()).reloadProjects();
     }
 
     @Test
     public void onEventMainThread_ongoingNotification() {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.onEventMainThread(new OngoingNotificationActionEvent(1));
+        presenter.onEventMainThread(new OngoingNotificationActionEvent(1));
 
-        verify(mView).reloadProjects();
+        verify(view).reloadProjects();
     }
 
     @Test
     public void onEventMainThread_ongoingNotificationWithoutAttachedView() {
-        mPresenter.onEventMainThread(new OngoingNotificationActionEvent(1));
+        presenter.onEventMainThread(new OngoingNotificationActionEvent(1));
 
-        verify(mView, never()).reloadProjects();
+        verify(view, never()).reloadProjects();
     }
 }

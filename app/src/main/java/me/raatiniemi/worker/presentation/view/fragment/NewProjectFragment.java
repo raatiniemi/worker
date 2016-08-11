@@ -46,17 +46,17 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     /**
      * Presenter for creating new projects.
      */
-    private NewProjectPresenter mPresenter;
+    private NewProjectPresenter presenter;
 
     /**
      * Text field for the project name.
      */
-    private EditText mProjectName;
+    private EditText projectName;
 
     /**
      * Callback handler for the "OnCreateProjectListener".
      */
-    private OnCreateProjectListener mOnCreateProjectListener;
+    private OnCreateProjectListener onCreateProjectListener;
 
     /**
      * Retrieve the presenter instance, create if none is available.
@@ -64,19 +64,19 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      * @return Presenter instance.
      */
     private NewProjectPresenter getPresenter() {
-        if (null == mPresenter) {
+        if (null == presenter) {
             ProjectRepository projectRepository = new ProjectResolverRepository(
                     getActivity().getContentResolver(),
                     new ProjectCursorMapper(),
                     new ProjectContentValuesMapper()
             );
 
-            mPresenter = new NewProjectPresenter(
+            presenter = new NewProjectPresenter(
                     getActivity(),
                     new CreateProject(projectRepository)
             );
         }
-        return mPresenter;
+        return presenter;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
 
         // Check that we actually have a listener available, otherwise we
         // should not attempt to create new projects.
-        if (null == mOnCreateProjectListener) {
+        if (null == onCreateProjectListener) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -126,14 +126,14 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         getDialog().setTitle(getString(R.string.fragment_new_project_title));
 
         // Retrieve the text field for project name.
-        mProjectName = (EditText) view.findViewById(R.id.fragment_new_project_name);
+        projectName = (EditText) view.findViewById(R.id.fragment_new_project_name);
 
         // Add the click listener for the create button.
         TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String projectName = mProjectName.getText().toString();
+                String projectName = NewProjectFragment.this.projectName.getText().toString();
                 getPresenter().createNewProject(projectName);
             }
         });
@@ -168,7 +168,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      */
     @Override
     public void createProjectSuccessful(final Project project) {
-        mOnCreateProjectListener.onCreateProject(project);
+        onCreateProjectListener.onCreateProject(project);
 
         dismiss();
     }
@@ -178,7 +178,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      */
     @Override
     public void showInvalidNameError() {
-        mProjectName.setError(getString(R.string.error_message_project_name_missing));
+        projectName.setError(getString(R.string.error_message_project_name_missing));
     }
 
     /**
@@ -186,7 +186,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      */
     @Override
     public void showDuplicateNameError() {
-        mProjectName.setError(getString(R.string.error_message_project_name_already_exists));
+        projectName.setError(getString(R.string.error_message_project_name_already_exists));
     }
 
     /**
@@ -194,11 +194,11 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      */
     @Override
     public void showUnknownError() {
-        mProjectName.setError(getString(R.string.error_message_unknown));
+        projectName.setError(getString(R.string.error_message_unknown));
     }
 
     public void setOnCreateProjectListener(OnCreateProjectListener onCreateProjectListener) {
-        mOnCreateProjectListener = onCreateProjectListener;
+        this.onCreateProjectListener = onCreateProjectListener;
     }
 
     /**

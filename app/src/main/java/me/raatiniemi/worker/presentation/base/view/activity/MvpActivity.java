@@ -28,7 +28,7 @@ public abstract class MvpActivity<P extends MvpPresenter> extends BaseActivity i
     /**
      * Instance for the presenter.
      */
-    private P mPresenter;
+    private P presenter;
 
     /**
      * Create the instance for the presenter.
@@ -43,10 +43,10 @@ public abstract class MvpActivity<P extends MvpPresenter> extends BaseActivity i
      * @return Instance for the presenter.
      */
     protected P getPresenter() {
-        if (null == mPresenter) {
-            mPresenter = createPresenter();
+        if (null == presenter) {
+            presenter = createPresenter();
         }
-        return mPresenter;
+        return presenter;
     }
 
     /**

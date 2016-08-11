@@ -50,14 +50,14 @@ public class PauseNotification extends OngoingNotification {
 
     private static final int CLOCK_OUT_ICON = 0;
 
-    private boolean mUseChronometer;
-    private long mRegisteredTime;
+    private boolean useChronometer;
+    private long registeredTime;
 
     private PauseNotification(Context context, Project project) {
         super(context, project);
 
-        mUseChronometer = Settings.isOngoingNotificationChronometerEnabled(context);
-        if (mUseChronometer) {
+        useChronometer = Settings.isOngoingNotificationChronometerEnabled(context);
+        if (useChronometer) {
             populateRegisteredTime(context, project);
         }
     }
@@ -68,16 +68,16 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private void populateRegisteredTime(Context context, Project project) {
-        mUseChronometer = true;
+        useChronometer = true;
 
         try {
             List<Time> registeredTime = getRegisteredTime(context, project);
             for (Time time : registeredTime) {
-                mRegisteredTime += time.getTime();
+                this.registeredTime += time.getTime();
             }
         } catch (DomainException e) {
             Log.w(TAG, "Unable to populate registered time", e);
-            mUseChronometer = false;
+            useChronometer = false;
         }
     }
 
@@ -142,13 +142,13 @@ public class PauseNotification extends OngoingNotification {
 
     @Override
     protected boolean shouldUseChronometer() {
-        return mUseChronometer;
+        return useChronometer;
     }
 
     @Override
     protected long getWhenForChronometer() {
         long currentTimestamp = new Date().getTime();
-        return currentTimestamp - mRegisteredTime;
+        return currentTimestamp - registeredTime;
     }
 
     @Override

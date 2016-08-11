@@ -34,7 +34,7 @@ public class ProjectActivity extends BaseActivity {
     /**
      * Reference to the timesheet fragment.
      */
-    private TimesheetFragment mTimesheetFragment;
+    private TimesheetFragment timesheetFragment;
 
     /**
      * Get the timesheet fragment, handles construction if needed.
@@ -42,12 +42,12 @@ public class ProjectActivity extends BaseActivity {
      * @return Timesheet fragment.
      */
     private TimesheetFragment getTimesheetFragment() {
-        if (null == mTimesheetFragment) {
-            mTimesheetFragment = new TimesheetFragment();
-            mTimesheetFragment.setArguments(getIntent().getExtras());
+        if (null == timesheetFragment) {
+            timesheetFragment = new TimesheetFragment();
+            timesheetFragment.setArguments(getIntent().getExtras());
         }
 
-        return mTimesheetFragment;
+        return timesheetFragment;
     }
 
     @Override

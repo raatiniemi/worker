@@ -64,12 +64,12 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class PauseServiceTest {
-    private ServiceController<TestService> mServiceController;
+    private ServiceController<TestService> serviceController;
 
-    private NotificationManager mNotificationManager;
-    private ClockOut mClockOut;
-    private GetProject mGetProject;
-    private EventBus mEventBus;
+    private NotificationManager notificationManager;
+    private ClockOut clockOut;
+    private GetProject getProject;
+    private EventBus eventBus;
 
     private Intent buildIntentForService() {
         return new Intent(
@@ -91,8 +91,8 @@ public class PauseServiceTest {
 
     @Before
     public void setUp() {
-        mServiceController = Robolectric.buildService(TestService.class);
-        mServiceController.attach()
+        serviceController = Robolectric.buildService(TestService.class);
+        serviceController.attach()
                 .create()
                 .get();
 
@@ -101,27 +101,27 @@ public class PauseServiceTest {
     }
 
     private void setUpNotificationManager() {
-        mNotificationManager = mock(NotificationManager.class);
+        notificationManager = mock(NotificationManager.class);
 
         Application application = RuntimeEnvironment.application;
         ShadowContextImpl shadowContext = (ShadowContextImpl) Shadows.shadowOf(application.getBaseContext());
-        shadowContext.setSystemService(Context.NOTIFICATION_SERVICE, mNotificationManager);
+        shadowContext.setSystemService(Context.NOTIFICATION_SERVICE, notificationManager);
     }
 
     private void setUpService() {
         TestService service = getService();
-        service.mClockOut = mClockOut = mock(ClockOut.class);
-        service.mGetProject = mGetProject = mock(GetProject.class);
-        service.mEventBus = mEventBus = mock(EventBus.class);
+        service.clockOut = clockOut = mock(ClockOut.class);
+        service.getProject = getProject = mock(GetProject.class);
+        service.eventBus = eventBus = mock(EventBus.class);
     }
 
     private TestService getService() {
-        return mServiceController.get();
+        return serviceController.get();
     }
 
     @After
     public void tearDown() {
-        mServiceController.destroy();
+        serviceController.destroy();
     }
 
     @Test
@@ -131,14 +131,14 @@ public class PauseServiceTest {
         intent.setData(buildProjectDataUri());
 
         doThrow(ClockActivityException.class)
-                .when(mClockOut)
+                .when(clockOut)
                 .execute(eq(1L), isA(Date.class));
 
-        mServiceController.withIntent(intent)
+        serviceController.withIntent(intent)
                 .startCommand(0, 0);
 
-        verify(mEventBus, never()).post(isA(OngoingNotificationActionEvent.class));
-        verify(mNotificationManager).notify(
+        verify(eventBus, never()).post(isA(OngoingNotificationActionEvent.class));
+        verify(notificationManager).notify(
                 eq("1"),
                 eq(Worker.NOTIFICATION_ON_GOING_ID),
                 isA(Notification.class)
@@ -153,25 +153,25 @@ public class PauseServiceTest {
         getService().enableOngoingNotification();
 
         when(
-                mGetProject.execute(1L)
+                getProject.execute(1L)
         ).thenReturn(buildProject(1L));
 
-        mServiceController.withIntent(intent)
+        serviceController.withIntent(intent)
                 .startCommand(0, 0);
 
-        verify(mClockOut).execute(
+        verify(clockOut).execute(
                 eq(1L),
                 isA(Date.class)
         );
-        verify(mEventBus).post(isA(OngoingNotificationActionEvent.class));
-        verify(mGetProject).execute(eq(1L));
-        verify(mNotificationManager).notify(
+        verify(eventBus).post(isA(OngoingNotificationActionEvent.class));
+        verify(getProject).execute(eq(1L));
+        verify(notificationManager).notify(
                 eq("1"),
                 eq(Worker.NOTIFICATION_ON_GOING_ID),
                 isA(Notification.class)
         );
 
-        verify(mNotificationManager, never())
+        verify(notificationManager, never())
                 .cancel(anyString(), anyInt());
     }
 
@@ -182,23 +182,23 @@ public class PauseServiceTest {
         intent.setData(buildProjectDataUri());
 
         when(
-                mGetProject.execute(1L)
+                getProject.execute(1L)
         ).thenReturn(buildProject(1L));
 
-        mServiceController.withIntent(intent)
+        serviceController.withIntent(intent)
                 .startCommand(0, 0);
 
-        verify(mClockOut).execute(
+        verify(clockOut).execute(
                 eq(1L),
                 isA(Date.class)
         );
-        verify(mEventBus).post(isA(OngoingNotificationActionEvent.class));
-        verify(mNotificationManager).cancel(
+        verify(eventBus).post(isA(OngoingNotificationActionEvent.class));
+        verify(notificationManager).cancel(
                 eq("1"),
                 eq(Worker.NOTIFICATION_ON_GOING_ID)
         );
 
-        verify(mNotificationManager, never()).notify(
+        verify(notificationManager, never()).notify(
                 anyString(),
                 anyInt(),
                 any(Notification.class)
@@ -207,10 +207,10 @@ public class PauseServiceTest {
 
     @SuppressLint("Registered")
     public static class TestService extends PauseService {
-        private ClockOut mClockOut;
-        private GetProject mGetProject;
-        private EventBus mEventBus;
-        private boolean mIsOngoingNotificationEnabled = false;
+        private ClockOut clockOut;
+        private GetProject getProject;
+        private EventBus eventBus;
+        private boolean isOngoingNotificationEnabled = false;
 
         @Override
         public void onStart(Intent intent, int startId) {
@@ -220,26 +220,26 @@ public class PauseServiceTest {
 
         @Override
         protected EventBus getEventBus() {
-            return mEventBus;
+            return eventBus;
         }
 
         @Override
         protected boolean isOngoingNotificationEnabled() {
-            return mIsOngoingNotificationEnabled;
+            return isOngoingNotificationEnabled;
         }
 
         private void enableOngoingNotification() {
-            mIsOngoingNotificationEnabled = true;
+            isOngoingNotificationEnabled = true;
         }
 
         @Override
         protected ClockOut buildClockOutUseCase() {
-            return mClockOut;
+            return clockOut;
         }
 
         @Override
         protected GetProject buildGetProjectUseCase() {
-            return mGetProject;
+            return getProject;
         }
     }
 }

@@ -57,11 +57,11 @@ import static org.mockito.Mockito.verify;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ClockOutServiceTest {
-    private ServiceController<TestService> mServiceController;
+    private ServiceController<TestService> serviceController;
 
-    private NotificationManager mNotificationManager;
-    private ClockOut mClockOut;
-    private EventBus mEventBus;
+    private NotificationManager notificationManager;
+    private ClockOut clockOut;
+    private EventBus eventBus;
 
     private Intent buildIntentForService() {
         return new Intent(
@@ -76,8 +76,8 @@ public class ClockOutServiceTest {
 
     @Before
     public void setUp() {
-        mServiceController = Robolectric.buildService(TestService.class);
-        mServiceController.attach()
+        serviceController = Robolectric.buildService(TestService.class);
+        serviceController.attach()
                 .create()
                 .get();
 
@@ -86,26 +86,26 @@ public class ClockOutServiceTest {
     }
 
     private void setUpNotificationManager() {
-        mNotificationManager = mock(NotificationManager.class);
+        notificationManager = mock(NotificationManager.class);
 
         Application application = RuntimeEnvironment.application;
         ShadowContextImpl shadowContext = (ShadowContextImpl) Shadows.shadowOf(application.getBaseContext());
-        shadowContext.setSystemService(Context.NOTIFICATION_SERVICE, mNotificationManager);
+        shadowContext.setSystemService(Context.NOTIFICATION_SERVICE, notificationManager);
     }
 
     private void setUpService() {
         TestService service = getService();
-        service.mClockOut = mClockOut = mock(ClockOut.class);
-        service.mEventBus = mEventBus = mock(EventBus.class);
+        service.clockOut = clockOut = mock(ClockOut.class);
+        service.eventBus = eventBus = mock(EventBus.class);
     }
 
     private TestService getService() {
-        return mServiceController.get();
+        return serviceController.get();
     }
 
     @After
     public void tearDown() {
-        mServiceController.destroy();
+        serviceController.destroy();
     }
 
     @Test
@@ -115,14 +115,14 @@ public class ClockOutServiceTest {
         intent.setData(buildProjectDataUri());
 
         doThrow(ClockActivityException.class)
-                .when(mClockOut)
+                .when(clockOut)
                 .execute(eq(1L), isA(Date.class));
 
-        mServiceController.withIntent(intent)
+        serviceController.withIntent(intent)
                 .startCommand(0, 0);
 
-        verify(mEventBus, never()).post(isA(OngoingNotificationActionEvent.class));
-        verify(mNotificationManager).notify(
+        verify(eventBus, never()).post(isA(OngoingNotificationActionEvent.class));
+        verify(notificationManager).notify(
                 eq("1"),
                 eq(Worker.NOTIFICATION_ON_GOING_ID),
                 isA(Notification.class)
@@ -135,15 +135,15 @@ public class ClockOutServiceTest {
         Intent intent = buildIntentForService();
         intent.setData(buildProjectDataUri());
 
-        mServiceController.withIntent(intent)
+        serviceController.withIntent(intent)
                 .startCommand(0, 0);
 
-        verify(mClockOut).execute(
+        verify(clockOut).execute(
                 eq(1L),
                 isA(Date.class)
         );
-        verify(mEventBus).post(isA(OngoingNotificationActionEvent.class));
-        verify(mNotificationManager).cancel(
+        verify(eventBus).post(isA(OngoingNotificationActionEvent.class));
+        verify(notificationManager).cancel(
                 eq("1"),
                 eq(Worker.NOTIFICATION_ON_GOING_ID)
         );
@@ -151,8 +151,8 @@ public class ClockOutServiceTest {
 
     @SuppressLint("Registered")
     public static class TestService extends ClockOutService {
-        private ClockOut mClockOut;
-        private EventBus mEventBus;
+        private ClockOut clockOut;
+        private EventBus eventBus;
 
         @Override
         public void onStart(Intent intent, int startId) {
@@ -162,12 +162,12 @@ public class ClockOutServiceTest {
 
         @Override
         protected EventBus getEventBus() {
-            return mEventBus;
+            return eventBus;
         }
 
         @Override
         protected ClockOut buildClockOutUseCase() {
-            return mClockOut;
+            return clockOut;
         }
     }
 }

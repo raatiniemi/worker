@@ -33,7 +33,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     /**
      * Listener for "OnClockActivityAtListener".
      */
-    private OnClockActivityAtListener mOnClockActivityAtListener;
+    private OnClockActivityAtListener onClockActivityAtListener;
 
     /**
      * Create a new instance for project clock in/out with date and time.
@@ -86,14 +86,14 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
 
     @Override
     public void onDateTimeSet(Calendar calendar) {
-        if (null == mOnClockActivityAtListener) {
+        if (null == onClockActivityAtListener) {
             Log.e(TAG, "No OnClockActivityAtListener have been supplied");
             return;
         }
 
         // Send the project row position with the selected
         // date and time to the listener.
-        mOnClockActivityAtListener.onClockActivityAt(calendar);
+        onClockActivityAtListener.onClockActivityAt(calendar);
     }
 
     /**
@@ -102,7 +102,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
      * @param onClockActivityAtListener Listener for "OnClockActivityAtListener".
      */
     public void setOnClockActivityAtListener(OnClockActivityAtListener onClockActivityAtListener) {
-        mOnClockActivityAtListener = onClockActivityAtListener;
+        this.onClockActivityAtListener = onClockActivityAtListener;
     }
 
     /**

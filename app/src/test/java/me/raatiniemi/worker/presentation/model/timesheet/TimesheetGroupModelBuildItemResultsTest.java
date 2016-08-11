@@ -33,10 +33,10 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetGroupModelBuildItemResultsTest {
-    private String mMessage;
-    private List<TimeInAdapterResult> mExpected;
-    private int mGroupIndex;
-    private TimesheetGroupModel mTimesheetGroupModel;
+    private String message;
+    private List<TimeInAdapterResult> expected;
+    private int groupIndex;
+    private TimesheetGroupModel timesheetGroupModel;
 
     public TimesheetGroupModelBuildItemResultsTest(
             String message,
@@ -44,10 +44,10 @@ public class TimesheetGroupModelBuildItemResultsTest {
             int groupIndex,
             TimesheetGroupModel timesheetGroupModel
     ) {
-        mMessage = message;
-        mExpected = Arrays.asList(expected);
-        mGroupIndex = groupIndex;
-        mTimesheetGroupModel = timesheetGroupModel;
+        this.message = message;
+        this.expected = Arrays.asList(expected);
+        this.groupIndex = groupIndex;
+        this.timesheetGroupModel = timesheetGroupModel;
     }
 
     private static TimesheetGroupModel buildTimesheetGroupWithNumberOfChildModelItems(
@@ -110,8 +110,8 @@ public class TimesheetGroupModelBuildItemResultsTest {
     @Test
     public void buildItemResultsWithGroupIndex() {
         List<TimeInAdapterResult> actual =
-                mTimesheetGroupModel.buildItemResultsWithGroupIndex(mGroupIndex);
+                timesheetGroupModel.buildItemResultsWithGroupIndex(groupIndex);
 
-        assertEquals(mMessage, mExpected, actual);
+        assertEquals(message, expected, actual);
     }
 }

@@ -43,86 +43,86 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class NewProjectPresenterTest {
     @Rule
-    public final RxSchedulerRule mRxSchedulersRule = new RxSchedulerRule();
+    public final RxSchedulerRule rxSchedulersRule = new RxSchedulerRule();
 
-    private CreateProject mCreateProject;
-    private NewProjectPresenter mPresenter;
-    private NewProjectFragment mView;
+    private CreateProject createProject;
+    private NewProjectPresenter presenter;
+    private NewProjectFragment view;
 
     @Before
     public void setUp() {
-        mCreateProject = mock(CreateProject.class);
-        mPresenter = new NewProjectPresenter(
+        createProject = mock(CreateProject.class);
+        presenter = new NewProjectPresenter(
                 mock(Context.class),
-                mCreateProject
+                createProject
         );
-        mView = mock(NewProjectFragment.class);
+        view = mock(NewProjectFragment.class);
     }
 
     @Test
     public void createNewProject_withInvalidName() {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.createNewProject("");
+        presenter.createNewProject("");
 
-        verify(mView).showInvalidNameError();
+        verify(view).showInvalidNameError();
     }
 
     @Test
     public void createNewProject_withInvalidNameWithoutAttachedView() {
-        mPresenter.createNewProject("");
+        presenter.createNewProject("");
 
-        verify(mView, never()).showInvalidNameError();
+        verify(view, never()).showInvalidNameError();
     }
 
     @Test
     public void createNewProject() throws DomainException {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.createNewProject("Name");
+        presenter.createNewProject("Name");
 
-        verify(mView).createProjectSuccessful(any(Project.class));
+        verify(view).createProjectSuccessful(any(Project.class));
     }
 
     @Test
     public void createNewProject_withoutAttachedView() throws DomainException {
-        mPresenter.createNewProject("Name");
+        presenter.createNewProject("Name");
 
-        verify(mView, never()).createProjectSuccessful(any(Project.class));
+        verify(view, never()).createProjectSuccessful(any(Project.class));
     }
 
     @Test
     public void createNewProject_withDuplicateName() throws DomainException {
-        when(mCreateProject.execute(any(Project.class)))
+        when(createProject.execute(any(Project.class)))
                 .thenThrow(new ProjectAlreadyExistsException(""));
 
-        mPresenter.attachView(mView);
-        mPresenter.createNewProject("Name");
+        presenter.attachView(view);
+        presenter.createNewProject("Name");
 
-        verify(mView).showDuplicateNameError();
-        verify(mView, never()).showUnknownError();
+        verify(view).showDuplicateNameError();
+        verify(view, never()).showUnknownError();
     }
 
     @Test
     public void createNewProject_withUnknownError() throws DomainException {
-        when(mCreateProject.execute(any(Project.class)))
+        when(createProject.execute(any(Project.class)))
                 .thenThrow(new RuntimeException());
 
-        mPresenter.attachView(mView);
-        mPresenter.createNewProject("Name");
+        presenter.attachView(view);
+        presenter.createNewProject("Name");
 
-        verify(mView, never()).showDuplicateNameError();
-        verify(mView).showUnknownError();
+        verify(view, never()).showDuplicateNameError();
+        verify(view).showUnknownError();
     }
 
     @Test
     public void createNewProject_withUnknownErrorAndWithoutAttachedView() throws DomainException {
-        when(mCreateProject.execute(any(Project.class)))
+        when(createProject.execute(any(Project.class)))
                 .thenThrow(new RuntimeException());
 
-        mPresenter.createNewProject("Name");
+        presenter.createNewProject("Name");
 
-        verify(mView, never()).showDuplicateNameError();
-        verify(mView, never()).showUnknownError();
+        verify(view, never()).showDuplicateNameError();
+        verify(view, never()).showUnknownError();
     }
 }

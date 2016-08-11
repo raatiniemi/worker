@@ -32,7 +32,7 @@ public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment i
     /**
      * Instance for the presenter.
      */
-    private P mPresenter;
+    private P presenter;
 
     /**
      * Create the instance for the presenter.
@@ -47,10 +47,10 @@ public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment i
      * @return Instance for the presenter.
      */
     protected P getPresenter() {
-        if (null == mPresenter) {
-            mPresenter = createPresenter();
+        if (null == presenter) {
+            presenter = createPresenter();
         }
-        return mPresenter;
+        return presenter;
     }
 
     /**
