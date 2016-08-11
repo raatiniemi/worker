@@ -49,20 +49,20 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TimeResolverRepositoryTest {
-    private ContentResolver mContentResolver;
-    private TimeResolverRepository mRepository;
-    private Project mProject;
+    private ContentResolver contentResolver;
+    private TimeResolverRepository repository;
+    private Project project;
 
     @Before
     public void setUp() throws Exception {
-        mContentResolver = mock(ContentResolver.class);
-        mRepository = new TimeResolverRepository(
-                mContentResolver,
+        contentResolver = mock(ContentResolver.class);
+        repository = new TimeResolverRepository(
+                contentResolver,
                 new TimeCursorMapper(),
                 new TimeContentValuesMapper()
         );
 
-        mProject = new Project.Builder("Name")
+        project = new Project.Builder("Name")
                 .id(1L)
                 .build();
     }
@@ -95,7 +95,7 @@ public class TimeResolverRepositoryTest {
     @Test
     public void matching_withNullCursor() throws DomainException {
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
                         TimeContract.getColumns(),
                         "start>=? COLLATE NOCASE",
@@ -105,7 +105,7 @@ public class TimeResolverRepositoryTest {
         ).thenReturn(null);
 
         Criteria criteria = Criteria.moreThanOrEqualTo(TimeColumns.START, 1234567890);
-        List<Time> time = mRepository.matching(mProject, criteria);
+        List<Time> time = repository.matching(project, criteria);
 
         assertTrue(time.isEmpty());
     }
@@ -114,7 +114,7 @@ public class TimeResolverRepositoryTest {
     public void matching_withEmptyCursor() throws DomainException {
         Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
                         TimeContract.getColumns(),
                         "start>=? COLLATE NOCASE",
@@ -124,7 +124,7 @@ public class TimeResolverRepositoryTest {
         ).thenReturn(cursor);
 
         Criteria criteria = Criteria.moreThanOrEqualTo(TimeColumns.START, 1234567890);
-        List<Time> time = mRepository.matching(mProject, criteria);
+        List<Time> time = repository.matching(project, criteria);
 
         assertTrue(time.isEmpty());
         verify(cursor).close();
@@ -134,7 +134,7 @@ public class TimeResolverRepositoryTest {
     public void matching_withRow() throws DomainException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
                         TimeContract.getColumns(),
                         "start>=? COLLATE NOCASE",
@@ -144,7 +144,7 @@ public class TimeResolverRepositoryTest {
         ).thenReturn(cursor);
 
         Criteria criteria = Criteria.moreThanOrEqualTo(TimeColumns.START, 1234567890);
-        List<Time> time = mRepository.matching(mProject, criteria);
+        List<Time> time = repository.matching(project, criteria);
 
         assertTrue(1 == time.size());
         verify(cursor).close();
@@ -154,7 +154,7 @@ public class TimeResolverRepositoryTest {
     public void matching_withRows() throws DomainException {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
                         TimeContract.getColumns(),
                         "start>=? COLLATE NOCASE",
@@ -164,7 +164,7 @@ public class TimeResolverRepositoryTest {
         ).thenReturn(cursor);
 
         Criteria criteria = Criteria.moreThanOrEqualTo(TimeColumns.START, 1234567890);
-        List<Time> time = mRepository.matching(mProject, criteria);
+        List<Time> time = repository.matching(project, criteria);
 
         assertTrue(5 == time.size());
         verify(cursor).close();

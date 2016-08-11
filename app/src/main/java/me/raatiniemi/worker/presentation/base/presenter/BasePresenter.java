@@ -31,12 +31,12 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
     /**
      * Context used with the presenter.
      */
-    private final Context mContext;
+    private final Context context;
 
     /**
      * Weak reference for the view attached to the presenter.
      */
-    private WeakReference<V> mViewReference;
+    private WeakReference<V> view;
 
     /**
      * Constructor.
@@ -44,7 +44,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @param context Context used with the presenter.
      */
     BasePresenter(Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @return Context used with the presenter.
      */
     protected Context getContext() {
-        return mContext;
+        return context;
     }
 
     /**
@@ -62,7 +62,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @return Attached view if available, otherwise null.
      */
     protected V getView() {
-        return null != mViewReference ? mViewReference.get() : null;
+        return null != view ? view.get() : null;
     }
 
     /**
@@ -82,7 +82,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      */
     @Override
     public void attachView(V view) {
-        mViewReference = new WeakReference<>(view);
+        this.view = new WeakReference<>(view);
     }
 
     /**
@@ -90,9 +90,9 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      */
     @Override
     public void detachView() {
-        if (null != mViewReference) {
-            mViewReference.clear();
-            mViewReference = null;
+        if (null != view) {
+            view.clear();
+            view = null;
         }
     }
 }

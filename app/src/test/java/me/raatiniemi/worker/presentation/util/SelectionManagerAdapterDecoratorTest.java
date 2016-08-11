@@ -33,43 +33,43 @@ import static org.mockito.Mockito.verify;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class SelectionManagerAdapterDecoratorTest {
-    private RecyclerView.Adapter mAdapter;
-    private SelectionListener mSelectionListener;
+    private RecyclerView.Adapter adapter;
+    private SelectionListener selectionListener;
 
-    private SelectionManager<String> mSelectionManager;
+    private SelectionManager<String> selectionManager;
 
     @Before
     public void setUp() throws Exception {
-        mAdapter = mock(RecyclerView.Adapter.class);
-        mSelectionListener = mock(SelectionListener.class);
+        adapter = mock(RecyclerView.Adapter.class);
+        selectionListener = mock(SelectionListener.class);
 
-        mSelectionManager = new SelectionManagerAdapterDecorator<>(
-                mAdapter,
-                mSelectionListener
+        selectionManager = new SelectionManagerAdapterDecorator<>(
+                adapter,
+                selectionListener
         );
     }
 
     @Test
     public void selectItem() {
-        mSelectionManager.selectItem("selectItem");
+        selectionManager.selectItem("selectItem");
 
-        verify(mAdapter).notifyDataSetChanged();
-        verify(mSelectionListener).onSelect();
+        verify(adapter).notifyDataSetChanged();
+        verify(selectionListener).onSelect();
     }
 
     @Test
     public void deselectItem() {
-        mSelectionManager.deselectItem("deselectItem");
+        selectionManager.deselectItem("deselectItem");
 
-        verify(mAdapter).notifyDataSetChanged();
-        verify(mSelectionListener).onDeselect();
+        verify(adapter).notifyDataSetChanged();
+        verify(selectionListener).onDeselect();
     }
 
     @Test
     public void deselectItems() {
-        mSelectionManager.deselectItems();
+        selectionManager.deselectItems();
 
-        verify(mAdapter).notifyDataSetChanged();
-        verify(mSelectionListener, never()).onDeselect();
+        verify(adapter).notifyDataSetChanged();
+        verify(selectionListener, never()).onDeselect();
     }
 }

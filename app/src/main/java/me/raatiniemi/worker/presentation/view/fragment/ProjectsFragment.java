@@ -73,9 +73,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     private static final String TAG = "ProjectsFragment";
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView recyclerView;
 
-    private ProjectsAdapter mAdapter;
+    private ProjectsAdapter adapter;
 
     public ProjectsFragment() {
         super();
@@ -90,9 +90,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(getAdapter());
+        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(getAdapter());
 
         getPresenter().attachView(this);
         getPresenter().getProjects();
@@ -145,15 +145,15 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     @NonNull
     private ProjectsAdapter getAdapter() {
-        if (null == mAdapter) {
-            mAdapter = new ProjectsAdapter(getActivity(), this);
-            mAdapter.setHintedImageButtonListener(
+        if (null == adapter) {
+            adapter = new ProjectsAdapter(getActivity(), this);
+            adapter.setHintedImageButtonListener(
                     new HintedImageButtonListener(getActivity())
             );
-            mAdapter.setOnItemClickListener(this);
+            adapter.setOnItemClickListener(this);
         }
 
-        return mAdapter;
+        return adapter;
     }
 
     /**
@@ -192,7 +192,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         ProjectsModel item = new ProjectsModel(project);
         int position = getAdapter().add(item);
 
-        mRecyclerView.scrollToPosition(position);
+        recyclerView.scrollToPosition(position);
     }
 
     /**
@@ -260,7 +260,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     ) {
         getAdapter().add(previousPosition, project);
 
-        mRecyclerView.scrollToPosition(previousPosition);
+        recyclerView.scrollToPosition(previousPosition);
     }
 
     @Override
@@ -327,7 +327,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @Override
     public void onItemClick(@NonNull View view) {
         // Retrieve the position for the project from the RecyclerView.
-        final int position = mRecyclerView.getChildAdapterPosition(view);
+        final int position = recyclerView.getChildAdapterPosition(view);
         if (RecyclerView.NO_POSITION == position) {
             Log.w(TAG, "Unable to retrieve project position for onItemClick");
             return;

@@ -37,12 +37,12 @@ public class ResumeNotification extends OngoingNotification {
 
     private static final int RESUME_ICON = 0;
 
-    private boolean mUseChronometer;
+    private boolean useChronometer;
 
     private ResumeNotification(Context context, Project project) {
         super(context, project);
 
-        mUseChronometer = Settings.isOngoingNotificationChronometerEnabled(context);
+        useChronometer = Settings.isOngoingNotificationChronometerEnabled(context);
     }
 
     public static Notification build(Context context, Project project) {
@@ -72,7 +72,7 @@ public class ResumeNotification extends OngoingNotification {
 
     @Override
     protected boolean shouldUseChronometer() {
-        return mUseChronometer;
+        return useChronometer;
     }
 
     @Override

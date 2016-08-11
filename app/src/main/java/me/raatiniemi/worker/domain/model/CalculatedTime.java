@@ -20,20 +20,20 @@ public class CalculatedTime {
     private static final int MINUTES_IN_HOUR = 60;
     private static final int SECONDS_IN_MINUTE = 60;
     private static final int MILLISECONDS_IN_SECOND = 1000;
-    private final long mHours;
-    private final long mMinutes;
+    private final long hours;
+    private final long minutes;
 
     public CalculatedTime(long hours, long minutes) {
-        mHours = hours;
-        mMinutes = minutes;
+        this.hours = hours;
+        this.minutes = minutes;
     }
 
     public long getHours() {
-        return mHours;
+        return hours;
     }
 
     public long getMinutes() {
-        return mMinutes;
+        return minutes;
     }
 
     public long asMilliseconds() {

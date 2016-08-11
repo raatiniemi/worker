@@ -27,7 +27,7 @@ public class Backup {
     /**
      * Backup directory.
      */
-    private File mBackup;
+    private File backup;
 
     /**
      * Constructor.
@@ -35,7 +35,7 @@ public class Backup {
      * @param backup Backup directory.
      */
     public Backup(@Nullable File backup) {
-        mBackup = backup;
+        this.backup = backup;
     }
 
     /**
@@ -45,7 +45,7 @@ public class Backup {
      */
     @Nullable
     private File getBackup() {
-        return mBackup;
+        return backup;
     }
 
     /**

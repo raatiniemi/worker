@@ -30,12 +30,12 @@ public class ClockActivityChange {
     /**
      * Project repository.
      */
-    private final ProjectRepository mProjectRepository;
+    private final ProjectRepository projectRepository;
 
     /**
      * Time repository.
      */
-    private final TimeRepository mTimeRepository;
+    private final TimeRepository timeRepository;
 
     /**
      * Constructor.
@@ -47,8 +47,8 @@ public class ClockActivityChange {
             ProjectRepository projectRepository,
             TimeRepository timeRepository
     ) {
-        mProjectRepository = projectRepository;
-        mTimeRepository = timeRepository;
+        this.projectRepository = projectRepository;
+        this.timeRepository = timeRepository;
     }
 
     /**
@@ -68,16 +68,16 @@ public class ClockActivityChange {
         // Depending on whether the project is active we have
         // to clock in or clock out at the given date.
         if (!project.isActive()) {
-            mTimeRepository.add(project.clockInAt(date));
+            timeRepository.add(project.clockInAt(date));
         } else {
-            mTimeRepository.update(project.clockOutAt(date));
+            timeRepository.update(project.clockOutAt(date));
         }
 
         // Reload the project and populate it with the registered time.
         // TODO: Migrate populate time to separate use case?
-        project = mProjectRepository.get(project.getId());
+        project = projectRepository.get(project.getId());
         project.addTime(
-                mTimeRepository.getProjectTimeSinceBeginningOfMonth(
+                timeRepository.getProjectTimeSinceBeginningOfMonth(
                         project.getId()
                 )
         );

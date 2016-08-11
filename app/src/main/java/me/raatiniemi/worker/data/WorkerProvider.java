@@ -49,9 +49,9 @@ public class WorkerProvider extends ContentProvider {
 
     private static final int TIME_ID = 201;
 
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
+    private static final UriMatcher uriMatcher = buildUriMatcher();
 
-    private WorkerDatabase mOpenHelper;
+    private WorkerDatabase openHelper;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -70,7 +70,7 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mOpenHelper = new WorkerDatabase(getContext());
+        openHelper = new WorkerDatabase(getContext());
         return true;
     }
 
@@ -78,7 +78,7 @@ public class WorkerProvider extends ContentProvider {
     public String getType(@NonNull Uri uri) {
         String mimeType;
 
-        final int match = sUriMatcher.match(uri);
+        final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
                 mimeType = ProjectContract.STREAM_TYPE;
@@ -117,14 +117,14 @@ public class WorkerProvider extends ContentProvider {
 
         return buildSelection(uri)
                 .where(selection, selectionArgs)
-                .query(mOpenHelper.getReadableDatabase(), projection, sortOrder, limit);
+                .query(openHelper.getReadableDatabase(), projection, sortOrder, limit);
     }
 
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
         Uri createdResourceUri;
 
-        final int match = sUriMatcher.match(uri);
+        final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
                 createdResourceUri = insertProject(values);
@@ -140,14 +140,14 @@ public class WorkerProvider extends ContentProvider {
     }
 
     private Uri insertProject(ContentValues values) {
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = openHelper.getWritableDatabase();
 
         long id = db.insertOrThrow(Tables.PROJECT, null, values);
         return ProjectContract.getItemUri(id);
     }
 
     private Uri insertTime(ContentValues values) {
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = openHelper.getWritableDatabase();
 
         long id = db.insertOrThrow(Tables.TIME, null, values);
         return TimeContract.getItemUri(id);
@@ -157,14 +157,14 @@ public class WorkerProvider extends ContentProvider {
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return buildSelection(uri)
                 .where(selection, selectionArgs)
-                .update(mOpenHelper.getWritableDatabase(), values);
+                .update(openHelper.getWritableDatabase(), values);
     }
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         return buildSelection(uri)
                 .where(selection, selectionArgs)
-                .delete(mOpenHelper.getWritableDatabase());
+                .delete(openHelper.getWritableDatabase());
     }
 
     @Override
@@ -172,7 +172,7 @@ public class WorkerProvider extends ContentProvider {
     public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations)
             throws OperationApplicationException {
 
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final SQLiteDatabase db = openHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             final int numberOfOperations = operations.size();
@@ -197,7 +197,7 @@ public class WorkerProvider extends ContentProvider {
     private static SelectionBuilder buildSelection(Uri uri) {
         SelectionBuilder builder;
 
-        final int match = sUriMatcher.match(uri);
+        final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
                 builder = ProjectsSelection.build();

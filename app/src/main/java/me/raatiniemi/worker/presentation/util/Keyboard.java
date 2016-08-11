@@ -31,7 +31,7 @@ public class Keyboard {
     /**
      * Store the InputMethodManager.
      */
-    private static InputMethodManager mInputMethodManager;
+    private static InputMethodManager inputMethodManager;
 
     private Keyboard() {
     }
@@ -46,15 +46,15 @@ public class Keyboard {
     private static InputMethodManager getInputMethodManager(@NonNull Context context) {
         // If we don't have the input method manager available,
         // we have to retrieve it from the context.
-        if (null == mInputMethodManager) {
+        if (null == inputMethodManager) {
             try {
-                mInputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             } catch (ClassCastException e) {
                 Log.w(TAG, "Unable to cast the Context.INPUT_METHOD_SERVICE to InputMethodManager", e);
             }
         }
 
-        return mInputMethodManager;
+        return inputMethodManager;
     }
 
     /**

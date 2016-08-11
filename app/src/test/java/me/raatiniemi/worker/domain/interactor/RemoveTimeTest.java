@@ -31,11 +31,11 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class RemoveTimeTest {
-    private TimeRepository mTimeRepository;
+    private TimeRepository timeRepository;
 
     @Before
     public void setUp() {
-        mTimeRepository = mock(TimeRepository.class);
+        timeRepository = mock(TimeRepository.class);
     }
 
     @Test
@@ -44,9 +44,9 @@ public class RemoveTimeTest {
                 .id(1L)
                 .build();
 
-        RemoveTime removeTime = new RemoveTime(mTimeRepository);
+        RemoveTime removeTime = new RemoveTime(timeRepository);
         removeTime.execute(time);
 
-        verify(mTimeRepository).remove(eq(1L));
+        verify(timeRepository).remove(eq(1L));
     }
 }

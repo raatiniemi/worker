@@ -26,18 +26,18 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class RestoreBackupTest {
-    private RestoreStrategy mRestoreStrategy;
+    private RestoreStrategy restoreStrategy;
 
     @Before
     public void setUp() {
-        mRestoreStrategy = mock(RestoreStrategy.class);
+        restoreStrategy = mock(RestoreStrategy.class);
     }
 
     @Test
     public void execute() {
-        RestoreBackup restoreBackup = new RestoreBackup(mRestoreStrategy);
+        RestoreBackup restoreBackup = new RestoreBackup(restoreStrategy);
         restoreBackup.execute();
 
-        verify(mRestoreStrategy).execute();
+        verify(restoreStrategy).execute();
     }
 }

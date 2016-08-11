@@ -42,32 +42,32 @@ public class DateTimePickerFragment extends BaseFragment
     /**
      * Date and time set by the "DateTimePickerFragment".
      */
-    private final Calendar mCalendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     /**
      * Listener for the selected date and time.
      */
-    private OnDateTimeSetListener mOnDateTimeSetListener;
+    private OnDateTimeSetListener onDateTimeSetListener;
 
     /**
      * Minimum date available for the date picker.
      */
-    private Calendar mMinDate;
+    private Calendar minDate;
 
     /**
      * Maximum date available for the date picker.
      */
-    private Calendar mMaxDate;
+    private Calendar maxDate;
 
     /**
      * Instance for the date picker.
      */
-    private DatePickerFragment mDatePicker;
+    private DatePickerFragment datePicker;
 
     /**
      * Instance for the time picker.
      */
-    private TimePickerFragment mTimePicker;
+    private TimePickerFragment timePicker;
 
     /**
      * Dismiss the DateTimePickerFragment.
@@ -86,7 +86,7 @@ public class DateTimePickerFragment extends BaseFragment
      * @param minDate Minimum date.
      */
     void setMinDate(Calendar minDate) {
-        mMinDate = minDate;
+        this.minDate = minDate;
     }
 
     /**
@@ -95,7 +95,7 @@ public class DateTimePickerFragment extends BaseFragment
      * @param maxDate Maximum date.
      */
     void setMaxDate(Calendar maxDate) {
-        mMaxDate = maxDate;
+        this.maxDate = maxDate;
     }
 
     /**
@@ -103,14 +103,14 @@ public class DateTimePickerFragment extends BaseFragment
      * between API versions.
      */
     private void setup() {
-        mDatePicker = new DatePickerFragment();
-        mDatePicker.setOnDateSetListener(this);
+        datePicker = new DatePickerFragment();
+        datePicker.setOnDateSetListener(this);
 
         // The date picker only needs to listen to the "onCancel"-event
         // to initialize fragment clean up.
         //
         // The "onDismiss"-event will run for both set date and cancel.
-        mDatePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        datePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
                 dismiss();
@@ -118,10 +118,10 @@ public class DateTimePickerFragment extends BaseFragment
         });
 
         // Set the min/max date for the picker.
-        mDatePicker.setMaxDate(mMaxDate);
-        mDatePicker.setMinDate(mMinDate);
+        datePicker.setMaxDate(maxDate);
+        datePicker.setMinDate(minDate);
 
-        mDatePicker.show(
+        datePicker.show(
                 getFragmentManager().beginTransaction(),
                 FRAGMENT_DATE_PICKER_TAG
         );
@@ -153,28 +153,28 @@ public class DateTimePickerFragment extends BaseFragment
     public void onDetach() {
         super.onDetach();
 
-        if (null != mDatePicker) {
+        if (null != datePicker) {
             getFragmentManager().beginTransaction()
-                    .remove(mDatePicker)
+                    .remove(datePicker)
                     .commit();
         }
-        mDatePicker = null;
+        datePicker = null;
 
-        if (null != mTimePicker) {
+        if (null != timePicker) {
             getFragmentManager().beginTransaction()
-                    .remove(mTimePicker)
+                    .remove(timePicker)
                     .commit();
         }
-        mTimePicker = null;
+        timePicker = null;
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         // Relay the selected year, month, and day to the stored calendar.
-        mCalendar.set(year, month, day);
+        calendar.set(year, month, day);
 
-        mTimePicker = new TimePickerFragment();
-        mTimePicker.setOnTimeSetListener(this);
+        timePicker = new TimePickerFragment();
+        timePicker.setOnTimeSetListener(this);
 
         // The timer picker only needs to listen to the "onDismiss"-event since
         // it will run for both set time and cancel.
@@ -183,14 +183,14 @@ public class DateTimePickerFragment extends BaseFragment
         //
         // Also, I was unable to get the TimePickerDialog to trigger the
         // "onCancel"-event to the DialogFragment.
-        mTimePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        timePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 dismiss();
             }
         });
 
-        mTimePicker.show(
+        timePicker.show(
                 getFragmentManager().beginTransaction(),
                 FRAGMENT_TIME_PICKER_TAG
         );
@@ -199,17 +199,17 @@ public class DateTimePickerFragment extends BaseFragment
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
         // Relay the selected hour and minute to the stored calendar.
-        mCalendar.set(Calendar.HOUR_OF_DAY, hour);
-        mCalendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
 
         // Check that we have been supplied with a listener.
-        if (null == mOnDateTimeSetListener) {
+        if (null == onDateTimeSetListener) {
             Log.e(TAG, "No OnDateTimeSetListener have been supplied");
             return;
         }
 
         // Send the calendar to the listener.
-        mOnDateTimeSetListener.onDateTimeSet(mCalendar);
+        onDateTimeSetListener.onDateTimeSet(calendar);
     }
 
     /**
@@ -218,7 +218,7 @@ public class DateTimePickerFragment extends BaseFragment
      * @param onDateTimeSetListener Listener for "OnDateTimeSetListener".
      */
     void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
-        mOnDateTimeSetListener = onDateTimeSetListener;
+        this.onDateTimeSetListener = onDateTimeSetListener;
     }
 
     /**

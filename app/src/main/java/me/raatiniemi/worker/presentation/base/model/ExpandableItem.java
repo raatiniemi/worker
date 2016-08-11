@@ -29,12 +29,12 @@ import java.util.List;
  * @param <C> Reference type for the child item.
  */
 public class ExpandableItem<G, C> {
-    private final List<C> mItems = new ArrayList<>();
+    private final List<C> items = new ArrayList<>();
 
     /**
      * Group item.
      */
-    private final G mGroup;
+    private final G group;
 
     /**
      * Constructor, initialize with the group item.
@@ -42,7 +42,7 @@ public class ExpandableItem<G, C> {
      * @param group Group item.
      */
     protected ExpandableItem(@NonNull G group) {
-        mGroup = group;
+        this.group = group;
     }
 
     /**
@@ -52,30 +52,30 @@ public class ExpandableItem<G, C> {
      */
     @NonNull
     protected G getGroup() {
-        return mGroup;
+        return group;
     }
 
     public boolean add(C item) {
-        return mItems.add(item);
+        return items.add(item);
     }
 
     public C get(int index) {
-        return mItems.get(index);
+        return items.get(index);
     }
 
     public void set(int index, C item) {
-        mItems.set(index, item);
+        items.set(index, item);
     }
 
     public C remove(int index) {
-        return mItems.remove(index);
+        return items.remove(index);
     }
 
     public int size() {
-        return mItems.size();
+        return items.size();
     }
 
     protected List<C> getItems() {
-        return Collections.unmodifiableList(mItems);
+        return Collections.unmodifiableList(items);
     }
 }

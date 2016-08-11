@@ -43,13 +43,13 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
     /**
      * Listener for project actions.
      */
-    private final OnProjectActionListener mOnProjectActionListener;
-    private final Resources mResources;
+    private final OnProjectActionListener onProjectActionListener;
+    private final Resources resources;
 
     /**
      * Listener for hinting images.
      */
-    private HintedImageButtonListener mHintedImageButtonListener;
+    private HintedImageButtonListener hintedImageButtonListener;
 
     /**
      * Construct the ProjectsAdapter.
@@ -63,8 +63,8 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
     ) {
         super(context);
 
-        mOnProjectActionListener = projectActionListener;
-        mResources = getContext().getResources();
+        onProjectActionListener = projectActionListener;
+        resources = getContext().getResources();
     }
 
     @Override
@@ -85,44 +85,44 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         final ProjectsModel item = get(index);
         final Project project = item.asProject();
 
-        vh.mName.setText(item.getTitle());
-        vh.mTime.setText(item.getTimeSummary());
+        vh.name.setText(item.getTitle());
+        vh.time.setText(item.getTimeSummary());
 
-        vh.mClockedInSince.setText(item.getClockedInSince(mResources));
-        item.setVisibilityForClockedInSinceView(vh.mClockedInSince);
+        vh.clockedInSince.setText(item.getClockedInSince(resources));
+        item.setVisibilityForClockedInSinceView(vh.clockedInSince);
 
         vh.itemView.setOnClickListener(getOnClickListener());
 
-        vh.mClockActivityToggle.setContentDescription(
-                item.getHelpTextForClockActivityToggle(mResources)
+        vh.clockActivityToggle.setContentDescription(
+                item.getHelpTextForClockActivityToggle(resources)
         );
-        vh.mClockActivityToggle.setOnClickListener(new View.OnClickListener() {
+        vh.clockActivityToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnProjectActionListener.onClockActivityToggle(item);
+                onProjectActionListener.onClockActivityToggle(item);
             }
         });
-        vh.mClockActivityToggle.setOnLongClickListener(mHintedImageButtonListener);
-        vh.mClockActivityToggle.setActivated(project.isActive());
+        vh.clockActivityToggle.setOnLongClickListener(hintedImageButtonListener);
+        vh.clockActivityToggle.setActivated(project.isActive());
 
-        vh.mClockActivityAt.setContentDescription(
-                item.getHelpTextForClockActivityAt(mResources)
+        vh.clockActivityAt.setContentDescription(
+                item.getHelpTextForClockActivityAt(resources)
         );
-        vh.mClockActivityAt.setOnClickListener(new View.OnClickListener() {
+        vh.clockActivityAt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnProjectActionListener.onClockActivityAt(item);
+                onProjectActionListener.onClockActivityAt(item);
             }
         });
-        vh.mClockActivityAt.setOnLongClickListener(mHintedImageButtonListener);
+        vh.clockActivityAt.setOnLongClickListener(hintedImageButtonListener);
 
-        vh.mDelete.setOnClickListener(new View.OnClickListener() {
+        vh.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnProjectActionListener.onDelete(item);
+                onProjectActionListener.onDelete(item);
             }
         });
-        vh.mDelete.setOnLongClickListener(mHintedImageButtonListener);
+        vh.delete.setOnLongClickListener(hintedImageButtonListener);
     }
 
     public int findProject(final ProjectsModel project) {
@@ -146,7 +146,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
      * @param hintedImageButtonListener Listener for hinting images.
      */
     public void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
-        mHintedImageButtonListener = hintedImageButtonListener;
+        this.hintedImageButtonListener = hintedImageButtonListener;
     }
 
     /**
@@ -156,42 +156,42 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         /**
          * Field for the project name.
          */
-        private final TextView mName;
+        private final TextView name;
 
         /**
          * Field for the registered project time.
          */
-        private final TextView mTime;
+        private final TextView time;
 
         /**
          * Icon for toggling the project activity.
          */
-        private final ImageButton mClockActivityToggle;
+        private final ImageButton clockActivityToggle;
 
         /**
          * Icon for toggling the project activity, with date and time.
          */
-        private final ImageButton mClockActivityAt;
+        private final ImageButton clockActivityAt;
 
         /**
          * Icon for deleting project.
          */
-        private final ImageButton mDelete;
+        private final ImageButton delete;
 
         /**
          * Field for the time when the project was clocked in.
          */
-        private final TextView mClockedInSince;
+        private final TextView clockedInSince;
 
         private ItemViewHolder(View view) {
             super(view);
 
-            mName = (TextView) view.findViewById(R.id.fragment_projects_item_name);
-            mTime = (TextView) view.findViewById(R.id.fragment_projects_item_time);
-            mClockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_toggle);
-            mClockActivityAt = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_at);
-            mDelete = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_delete);
-            mClockedInSince = (TextView) view.findViewById(R.id.fragment_projects_item_clocked_in_since);
+            name = (TextView) view.findViewById(R.id.fragment_projects_item_name);
+            time = (TextView) view.findViewById(R.id.fragment_projects_item_time);
+            clockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_toggle);
+            clockActivityAt = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_at);
+            delete = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_delete);
+            clockedInSince = (TextView) view.findViewById(R.id.fragment_projects_item_clocked_in_since);
         }
     }
 

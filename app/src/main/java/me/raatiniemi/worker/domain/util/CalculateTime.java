@@ -25,10 +25,10 @@ public class CalculateTime {
     private static final int SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR;
     private static final int SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
 
-    private long mMilliseconds;
+    private long milliseconds;
 
     private CalculateTime(long milliseconds) {
-        mMilliseconds = milliseconds;
+        this.milliseconds = milliseconds;
     }
 
     public static CalculatedTime calculateTime(long milliseconds) {
@@ -49,7 +49,7 @@ public class CalculateTime {
     }
 
     private long calculateSeconds() {
-        return mMilliseconds / 1000;
+        return milliseconds / 1000;
     }
 
     private long calculateMinutes() {

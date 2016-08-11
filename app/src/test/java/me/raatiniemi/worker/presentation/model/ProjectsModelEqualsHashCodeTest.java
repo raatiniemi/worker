@@ -32,10 +32,10 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class ProjectsModelEqualsHashCodeTest {
-    private String mMessage;
-    private Boolean mExpected;
-    private ProjectsModel mProjectsModel;
-    private Object mCompareTo;
+    private String message;
+    private Boolean expected;
+    private ProjectsModel projectsModel;
+    private Object compareTo;
 
     public ProjectsModelEqualsHashCodeTest(
             String message,
@@ -43,10 +43,10 @@ public class ProjectsModelEqualsHashCodeTest {
             ProjectsModel projectsModel,
             Object compareTo
     ) {
-        mMessage = message;
-        mExpected = expected;
-        mProjectsModel = projectsModel;
-        mCompareTo = compareTo;
+        this.message = message;
+        this.expected = expected;
+        this.projectsModel = projectsModel;
+        this.compareTo = compareTo;
     }
 
     @Parameters
@@ -101,30 +101,30 @@ public class ProjectsModelEqualsHashCodeTest {
     }
 
     private Boolean shouldBeEqual() {
-        return mExpected;
+        return expected;
     }
 
     private void assertEqual() {
-        assertTrue(mMessage, mProjectsModel.equals(mCompareTo));
+        assertTrue(message, projectsModel.equals(compareTo));
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(mMessage, mProjectsModel.hashCode() == mCompareTo.hashCode());
+        assertTrue(message, projectsModel.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(mMessage, mProjectsModel.equals(mCompareTo));
+        assertFalse(message, projectsModel.equals(compareTo));
 
         validateHashCodeWhenNotEqual();
     }
 
     private void validateHashCodeWhenNotEqual() {
-        if (null == mCompareTo) {
+        if (null == compareTo) {
             return;
         }
 
-        assertFalse(mMessage, mProjectsModel.hashCode() == mCompareTo.hashCode());
+        assertFalse(message, projectsModel.hashCode() == compareTo.hashCode());
     }
 }

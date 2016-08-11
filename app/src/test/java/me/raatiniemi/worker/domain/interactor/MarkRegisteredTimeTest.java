@@ -36,7 +36,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class MarkRegisteredTimeTest {
-    private TimeRepository mTimeRepository;
+    private TimeRepository timeRepository;
 
     private static Time buildTime() throws ClockOutBeforeClockInException {
         return new Time.Builder(1L)
@@ -51,7 +51,7 @@ public class MarkRegisteredTimeTest {
 
     @Before
     public void setUp() {
-        mTimeRepository = mock(TimeRepository.class);
+        timeRepository = mock(TimeRepository.class);
     }
 
     @Test
@@ -60,11 +60,11 @@ public class MarkRegisteredTimeTest {
                 .register()
                 .build();
 
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(mTimeRepository);
+        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
         markRegisteredTime.execute(markedTime);
 
         Time unmarkedTime = markedTime.unmarkRegistered();
-        verify(mTimeRepository).update(eq(unmarkedTime));
+        verify(timeRepository).update(eq(unmarkedTime));
     }
 
     @Test
@@ -72,11 +72,11 @@ public class MarkRegisteredTimeTest {
         Time unmarkedTime = new Time.Builder(1L)
                 .build();
 
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(mTimeRepository);
+        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
         markRegisteredTime.execute(unmarkedTime);
 
         Time markedTime = unmarkedTime.markAsRegistered();
-        verify(mTimeRepository).update(eq(markedTime));
+        verify(timeRepository).update(eq(markedTime));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class MarkRegisteredTimeTest {
         timeToUpdate.add(buildTime());
         timeToUpdate.add(buildTime());
 
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(mTimeRepository);
+        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
         markRegisteredTime.execute(timeToUpdate);
 
         List<Time> expectedTime = new ArrayList<>();
@@ -96,7 +96,7 @@ public class MarkRegisteredTimeTest {
         expectedTime.add(buildRegisteredTime());
         expectedTime.add(buildRegisteredTime());
 
-        verify(mTimeRepository, times(1)).update(expectedTime);
+        verify(timeRepository, times(1)).update(expectedTime);
     }
 
     @Test
@@ -107,7 +107,7 @@ public class MarkRegisteredTimeTest {
         timeToUpdate.add(buildRegisteredTime());
         timeToUpdate.add(buildRegisteredTime());
 
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(mTimeRepository);
+        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
         markRegisteredTime.execute(timeToUpdate);
 
         List<Time> expectedTime = new ArrayList<>();
@@ -116,7 +116,7 @@ public class MarkRegisteredTimeTest {
         expectedTime.add(buildTime());
         expectedTime.add(buildTime());
 
-        verify(mTimeRepository, times(1)).update(expectedTime);
+        verify(timeRepository, times(1)).update(expectedTime);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class MarkRegisteredTimeTest {
         timeToUpdate.add(buildRegisteredTime());
         timeToUpdate.add(buildRegisteredTime());
 
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(mTimeRepository);
+        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
         markRegisteredTime.execute(timeToUpdate);
 
         List<Time> expectedTime = new ArrayList<>();
@@ -136,6 +136,6 @@ public class MarkRegisteredTimeTest {
         expectedTime.add(buildRegisteredTime());
         expectedTime.add(buildRegisteredTime());
 
-        verify(mTimeRepository, times(1)).update(expectedTime);
+        verify(timeRepository, times(1)).update(expectedTime);
     }
 }

@@ -31,7 +31,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
     /**
      * Context to use.
      */
-    private final Context mContext;
+    private final Context context;
 
     /**
      * Constructor.
@@ -39,7 +39,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
      * @param context Context to use.
      */
     public HintedImageButtonListener(@NonNull final Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     /**
@@ -64,7 +64,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
         int[] position = new int[2];
         view.getLocationInWindow(position);
 
-        final Toast toast = Toast.makeText(mContext, description, Toast.LENGTH_SHORT);
+        final Toast toast = Toast.makeText(context, description, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP | Gravity.START, position[0], position[1]);
         toast.show();
 

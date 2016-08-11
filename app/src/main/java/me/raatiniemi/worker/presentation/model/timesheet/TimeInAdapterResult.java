@@ -23,16 +23,16 @@ import java.util.Objects;
 import me.raatiniemi.worker.domain.model.Time;
 
 public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult> {
-    private final int mGroup;
+    private final int group;
 
-    private final int mChild;
+    private final int child;
 
-    private final Time mTime;
+    private final Time time;
 
     private TimeInAdapterResult(int group, int child, Time time) {
-        mGroup = group;
-        mChild = child;
-        mTime = time;
+        this.group = group;
+        this.child = child;
+        this.time = time;
     }
 
     public static TimeInAdapterResult build(int group, int child, Time time) {
@@ -44,15 +44,15 @@ public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult
     }
 
     public int getGroup() {
-        return mGroup;
+        return group;
     }
 
     public int getChild() {
-        return mChild;
+        return child;
     }
 
     public Time getTime() {
-        return mTime;
+        return time;
     }
 
     @Override
@@ -66,17 +66,17 @@ public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult
         }
 
         TimeInAdapterResult result = (TimeInAdapterResult) o;
-        return mGroup == result.mGroup
-                && mChild == result.mChild
-                && Objects.equals(mTime, result.mTime);
+        return group == result.group
+                && child == result.child
+                && Objects.equals(time, result.time);
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + mGroup;
-        result = 31 * result + mChild;
-        result = 31 * result + Objects.hashCode(mTime);
+        result = 31 * result + group;
+        result = 31 * result + child;
+        result = 31 * result + Objects.hashCode(time);
 
         return result;
     }

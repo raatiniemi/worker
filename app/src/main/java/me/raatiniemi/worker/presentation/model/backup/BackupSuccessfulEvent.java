@@ -19,14 +19,14 @@ package me.raatiniemi.worker.presentation.model.backup;
 import android.support.annotation.NonNull;
 
 public class BackupSuccessfulEvent {
-    private final Backup mBackup;
+    private final Backup backup;
 
     public BackupSuccessfulEvent(@NonNull Backup backup) {
-        mBackup = backup;
+        this.backup = backup;
     }
 
     @NonNull
     public Backup getBackup() {
-        return mBackup;
+        return backup;
     }
 }

@@ -42,41 +42,41 @@ import static org.mockito.Mockito.verify;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class SettingsPresenterTest {
-    private EventBus mEventBus;
-    private SettingsPresenter mPresenter;
-    private SettingsView mView;
+    private EventBus eventBus;
+    private SettingsPresenter presenter;
+    private SettingsView view;
 
     @Before
     public void setUp() throws Exception {
         Context context = mock(Context.class);
-        mEventBus = mock(EventBus.class);
-        mPresenter = new SettingsPresenter(context, mEventBus);
-        mView = mock(SettingsView.class);
+        eventBus = mock(EventBus.class);
+        presenter = new SettingsPresenter(context, eventBus);
+        view = mock(SettingsView.class);
     }
 
     @Test
     public void attachView_registerEventBus() {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        verify(mEventBus).register(mPresenter);
+        verify(eventBus).register(presenter);
     }
 
     @Test
     public void detachView_unregisterEventBus() {
-        mPresenter.detachView();
+        presenter.detachView();
 
-        verify(mEventBus).unregister(mPresenter);
+        verify(eventBus).unregister(presenter);
     }
 
     @Test
     public void onEventMainThread_successfulBackupEvent() {
         Backup backup = new Backup(new File("backup-file"));
         BackupSuccessfulEvent event = new BackupSuccessfulEvent(backup);
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.onEventMainThread(event);
+        presenter.onEventMainThread(event);
 
-        verify(mView).setLatestBackup(backup);
+        verify(view).setLatestBackup(backup);
     }
 
     @Test
@@ -84,58 +84,58 @@ public class SettingsPresenterTest {
         Backup backup = new Backup(new File("backup-file"));
         BackupSuccessfulEvent event = new BackupSuccessfulEvent(backup);
 
-        mPresenter.onEventMainThread(event);
+        presenter.onEventMainThread(event);
 
-        verify(mView, never()).setLatestBackup(backup);
+        verify(view, never()).setLatestBackup(backup);
     }
 
     @Test
     public void changeTimeSummaryStartingPoint_withWeek() {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.changeTimeSummaryStartingPoint(
+        presenter.changeTimeSummaryStartingPoint(
                 GetProjectTimeSince.WEEK
         );
 
-        verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(mView).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
     }
 
     @Test
     public void changeTimeSummaryStartingPoint_withPreviousValue() {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.changeTimeSummaryStartingPoint(
+        presenter.changeTimeSummaryStartingPoint(
                 GetProjectTimeSince.MONTH
         );
 
-        verify(mEventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(mView, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+        verify(eventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
     }
 
     @Test
     public void changeTimeSummaryStartingPoint_withoutAttachedView() {
-        mPresenter.changeTimeSummaryStartingPoint(
+        presenter.changeTimeSummaryStartingPoint(
                 GetProjectTimeSince.WEEK
         );
 
-        verify(mEventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(mView, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
     }
 
     @Test
     public void changeTimeSummaryStartingPoint_invalidStartingPoint() {
-        mPresenter.attachView(mView);
+        presenter.attachView(view);
 
-        mPresenter.changeTimeSummaryStartingPoint(0);
+        presenter.changeTimeSummaryStartingPoint(0);
 
-        verify(mView).showChangeTimeSummaryStartingPointErrorMessage();
+        verify(view).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
     public void changeTimeSummaryStartingPoint_invalidStartingPointWithoutAttachedView() {
-        mPresenter.changeTimeSummaryStartingPoint(0);
+        presenter.changeTimeSummaryStartingPoint(0);
 
-        verify(mView, never()).showChangeTimeSummaryStartingPointErrorMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 }

@@ -31,10 +31,10 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimeInAdapterResultComparableTest {
-    private String mMessage;
-    private int mExpected;
-    private TimeInAdapterResult mLhs;
-    private TimeInAdapterResult mRhs;
+    private String message;
+    private int expected;
+    private TimeInAdapterResult lhs;
+    private TimeInAdapterResult rhs;
 
     public TimeInAdapterResultComparableTest(
             String message,
@@ -42,10 +42,10 @@ public class TimeInAdapterResultComparableTest {
             TimeInAdapterResult lhs,
             TimeInAdapterResult rhs
     ) {
-        mMessage = message;
-        mExpected = expected;
-        mLhs = lhs;
-        mRhs = rhs;
+        this.message = message;
+        this.expected = expected;
+        this.lhs = lhs;
+        this.rhs = rhs;
     }
 
     @Parameters
@@ -93,9 +93,9 @@ public class TimeInAdapterResultComparableTest {
     @Test
     public void compareTo() {
         assertEquals(
-                mMessage,
-                mExpected,
-                mLhs.compareTo(mRhs)
+                message,
+                expected,
+                lhs.compareTo(rhs)
         );
     }
 }

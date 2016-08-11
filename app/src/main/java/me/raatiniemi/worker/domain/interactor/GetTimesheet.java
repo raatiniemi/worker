@@ -32,7 +32,7 @@ public class GetTimesheet {
     /**
      * Time repository.
      */
-    private final TimeRepository mTimeRepository;
+    private final TimeRepository timeRepository;
 
     /**
      * Constructor.
@@ -40,7 +40,7 @@ public class GetTimesheet {
      * @param timeRepository Time repository.
      */
     public GetTimesheet(TimeRepository timeRepository) {
-        mTimeRepository = timeRepository;
+        this.timeRepository = timeRepository;
     }
 
     /**
@@ -62,6 +62,6 @@ public class GetTimesheet {
             criteria = Criteria.equalTo(TimeColumns.REGISTERED, "0");
         }
 
-        return mTimeRepository.getTimesheet(projectId, offset, criteria);
+        return timeRepository.getTimesheet(projectId, offset, criteria);
     }
 }

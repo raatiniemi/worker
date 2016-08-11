@@ -29,18 +29,18 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class GetProjectTest {
-    private ProjectRepository mProjectRepository;
+    private ProjectRepository projectRepository;
 
     @Before
     public void setUp() {
-        mProjectRepository = mock(ProjectRepository.class);
+        projectRepository = mock(ProjectRepository.class);
     }
 
     @Test
     public void execute() throws DomainException {
-        GetProject getProject = new GetProject(mProjectRepository);
+        GetProject getProject = new GetProject(projectRepository);
         getProject.execute(1L);
 
-        verify(mProjectRepository).get(1L);
+        verify(projectRepository).get(1L);
     }
 }

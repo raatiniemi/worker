@@ -32,10 +32,10 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class TimeInAdapterResultTest {
-    private String mMessage;
-    private Boolean mExpected;
-    private TimeInAdapterResult mTimeInAdapterResult;
-    private Object mCompareTo;
+    private String message;
+    private Boolean expected;
+    private TimeInAdapterResult timeInAdapterResult;
+    private Object compareTo;
 
     public TimeInAdapterResultTest(
             String message,
@@ -43,10 +43,10 @@ public class TimeInAdapterResultTest {
             TimeInAdapterResult timeInAdapterResult,
             Object compareTo
     ) {
-        mMessage = message;
-        mExpected = expected;
-        mTimeInAdapterResult = timeInAdapterResult;
-        mCompareTo = compareTo;
+        this.message = message;
+        this.expected = expected;
+        this.timeInAdapterResult = timeInAdapterResult;
+        this.compareTo = compareTo;
     }
 
     @Parameters
@@ -117,26 +117,26 @@ public class TimeInAdapterResultTest {
     }
 
     private Boolean shouldBeEqual() {
-        return mExpected;
+        return expected;
     }
 
     private void assertEqual() {
-        assertTrue(mMessage, mTimeInAdapterResult.equals(mCompareTo));
+        assertTrue(message, timeInAdapterResult.equals(compareTo));
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(mMessage, mTimeInAdapterResult.hashCode() == mCompareTo.hashCode());
+        assertTrue(message, timeInAdapterResult.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(mMessage, mTimeInAdapterResult.equals(mCompareTo));
+        assertFalse(message, timeInAdapterResult.equals(compareTo));
     }
 
     private void validateHashCodeWhenNotEqual() {
-        if (null == mCompareTo) {
+        if (null == compareTo) {
             return;
         }
 
-        assertFalse(mMessage, mTimeInAdapterResult.hashCode() == mCompareTo.hashCode());
+        assertFalse(message, timeInAdapterResult.hashCode() == compareTo.hashCode());
     }
 }

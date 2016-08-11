@@ -26,7 +26,7 @@ public class RemoveProject {
     /**
      * Project repository.
      */
-    private final ProjectRepository mRepository;
+    private final ProjectRepository repository;
 
     /**
      * Constructor.
@@ -34,7 +34,7 @@ public class RemoveProject {
      * @param repository Project repository.
      */
     public RemoveProject(final ProjectRepository repository) {
-        mRepository = repository;
+        this.repository = repository;
     }
 
     /**
@@ -43,6 +43,6 @@ public class RemoveProject {
      * @param project Project to remove.
      */
     public void execute(final Project project) {
-        mRepository.remove(project.getId());
+        repository.remove(project.getId());
     }
 }

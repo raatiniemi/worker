@@ -35,28 +35,28 @@ public class DatePickerFragment extends DialogFragment {
     /**
      * Minimum date available for the date picker.
      */
-    private Calendar mMinDate;
+    private Calendar minDate;
 
     /**
      * Maximum date available for the date picker.
      */
-    private Calendar mMaxDate;
+    private Calendar maxDate;
 
     /**
      * The "OnDateSetListener" for the DatePickerDialog.
      */
-    private DatePickerDialog.OnDateSetListener mOnDateSetListener;
+    private DatePickerDialog.OnDateSetListener onDateSetListener;
 
-    private DialogInterface.OnCancelListener mOnCancelListener;
+    private DialogInterface.OnCancelListener onCancelListener;
 
-    private DialogInterface.OnDismissListener mOnDismissListener;
+    private DialogInterface.OnDismissListener onDismissListener;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         // Check that we actually have a listener available.
-        if (null == mOnDateSetListener) {
+        if (null == onDateSetListener) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -78,7 +78,7 @@ public class DatePickerFragment extends DialogFragment {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog dialog = new DatePickerDialog(
                 getActivity(),
-                mOnDateSetListener,
+                onDateSetListener,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
@@ -86,14 +86,14 @@ public class DatePickerFragment extends DialogFragment {
 
         // If a minimum date is available we have
         // to set it on the date picker.
-        if (null != mMinDate) {
-            dialog.getDatePicker().setMinDate(mMinDate.getTimeInMillis());
+        if (null != minDate) {
+            dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
         }
 
         // If a maximum date is available we have
         // to set it on the date picker.
-        if (null != mMaxDate) {
-            dialog.getDatePicker().setMaxDate(mMaxDate.getTimeInMillis());
+        if (null != maxDate) {
+            dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
         }
 
         return dialog;
@@ -104,8 +104,8 @@ public class DatePickerFragment extends DialogFragment {
         super.onCancel(dialog);
 
         // Delegate the "onCancel" event to the listener, if available.
-        if (null != mOnCancelListener) {
-            mOnCancelListener.onCancel(dialog);
+        if (null != onCancelListener) {
+            onCancelListener.onCancel(dialog);
         }
     }
 
@@ -114,8 +114,8 @@ public class DatePickerFragment extends DialogFragment {
         super.onDismiss(dialog);
 
         // Delegate the "onDismiss" event to the listener, if available.
-        if (null != mOnDismissListener) {
-            mOnDismissListener.onDismiss(dialog);
+        if (null != onDismissListener) {
+            onDismissListener.onDismiss(dialog);
         }
     }
 
@@ -125,7 +125,7 @@ public class DatePickerFragment extends DialogFragment {
      * @param minDate Minimum date.
      */
     public void setMinDate(Calendar minDate) {
-        mMinDate = minDate;
+        this.minDate = minDate;
     }
 
     /**
@@ -134,7 +134,7 @@ public class DatePickerFragment extends DialogFragment {
      * @param maxDate Maximum date.
      */
     public void setMaxDate(Calendar maxDate) {
-        mMaxDate = maxDate;
+        this.maxDate = maxDate;
     }
 
     /**
@@ -143,14 +143,14 @@ public class DatePickerFragment extends DialogFragment {
      * @param listener "OnDateSetListener" for the DatePickerDialog.
      */
     public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
-        mOnDateSetListener = listener;
+        onDateSetListener = listener;
     }
 
     public void setOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
-        mOnCancelListener = onCancelListener;
+        this.onCancelListener = onCancelListener;
     }
 
     public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
-        mOnDismissListener = onDismissListener;
+        this.onDismissListener = onDismissListener;
     }
 }

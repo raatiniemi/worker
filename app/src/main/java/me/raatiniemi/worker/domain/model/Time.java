@@ -28,36 +28,36 @@ public class Time extends DomainObject {
     /**
      * Id for the project connected to the time interval.
      */
-    private final long mProjectId;
+    private final long projectId;
 
-    private final long mStartInMilliseconds;
+    private final long startInMilliseconds;
 
-    private final long mStopInMilliseconds;
+    private final long stopInMilliseconds;
 
     /**
      * Flag for registered time.
      */
-    private final boolean mRegistered;
+    private final boolean registered;
 
     private Time(Builder builder)
             throws ClockOutBeforeClockInException {
-        super(builder.mId);
+        super(builder.id);
 
         validateTimeInterval(builder);
 
-        mProjectId = builder.mProjectId;
-        mStartInMilliseconds = builder.mStartInMilliseconds;
-        mStopInMilliseconds = builder.mStopInMilliseconds;
-        mRegistered = builder.mRegistered;
+        projectId = builder.projectId;
+        startInMilliseconds = builder.startInMilliseconds;
+        stopInMilliseconds = builder.stopInMilliseconds;
+        registered = builder.registered;
     }
 
     private static void validateTimeInterval(Builder builder)
             throws ClockOutBeforeClockInException {
-        if (builder.mStopInMilliseconds == 0) {
+        if (builder.stopInMilliseconds == 0) {
             return;
         }
 
-        if (builder.mStopInMilliseconds < builder.mStartInMilliseconds) {
+        if (builder.stopInMilliseconds < builder.startInMilliseconds) {
             throw new ClockOutBeforeClockInException(
             );
         }
@@ -69,15 +69,15 @@ public class Time extends DomainObject {
      * @return Id for the project connected to the time interval.
      */
     public long getProjectId() {
-        return mProjectId;
+        return projectId;
     }
 
     public long getStartInMilliseconds() {
-        return mStartInMilliseconds;
+        return startInMilliseconds;
     }
 
     public long getStopInMilliseconds() {
-        return mStopInMilliseconds;
+        return stopInMilliseconds;
     }
 
     /**
@@ -86,7 +86,7 @@ public class Time extends DomainObject {
      * @return True if time is registered, otherwise false.
      */
     public boolean isRegistered() {
-        return mRegistered;
+        return registered;
     }
 
     public Time markAsRegistered() throws ClockOutBeforeClockInException {
@@ -213,33 +213,33 @@ public class Time extends DomainObject {
     }
 
     public static class Builder {
-        private final long mProjectId;
-        private Long mId = null;
-        private long mStartInMilliseconds = 0L;
-        private long mStopInMilliseconds = 0L;
-        private boolean mRegistered = false;
+        private final long projectId;
+        private Long id = null;
+        private long startInMilliseconds = 0L;
+        private long stopInMilliseconds = 0L;
+        private boolean registered = false;
 
         public Builder(long projectId) {
-            mProjectId = projectId;
+            this.projectId = projectId;
         }
 
         public Builder id(Long id) {
-            mId = id;
+            this.id = id;
             return this;
         }
 
         public Builder startInMilliseconds(long startInMilliseconds) {
-            mStartInMilliseconds = startInMilliseconds;
+            this.startInMilliseconds = startInMilliseconds;
             return this;
         }
 
         public Builder stopInMilliseconds(long stopInMilliseconds) {
-            mStopInMilliseconds = stopInMilliseconds;
+            this.stopInMilliseconds = stopInMilliseconds;
             return this;
         }
 
         public Builder register() {
-            mRegistered = true;
+            registered = true;
             return this;
         }
 

@@ -38,12 +38,12 @@ import static org.mockito.Mockito.mock;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class WorkerDatabaseTest {
-    private SQLiteDatabase mDatabase;
+    private SQLiteDatabase database;
 
     @Before
     public void setUp() {
         // Create an in-memory database used for running unit tests.
-        mDatabase = SQLiteDatabase.openDatabase(
+        database = SQLiteDatabase.openDatabase(
                 ":memory:",
                 null,
                 SQLiteDatabase.CREATE_IF_NECESSARY
@@ -53,10 +53,10 @@ public class WorkerDatabaseTest {
     @After
     public void tearDown() {
         // If needed close the in-memory database.
-        if (null != mDatabase && mDatabase.isOpen()) {
-            mDatabase.close();
+        if (null != database && database.isOpen()) {
+            database.close();
         }
-        mDatabase = null;
+        database = null;
     }
 
     @Test
@@ -64,7 +64,7 @@ public class WorkerDatabaseTest {
         Context context = mock(Context.class);
         WorkerDatabase helper = new WorkerDatabase(context);
 
-        helper.onCreate(mDatabase);
+        helper.onCreate(database);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -72,7 +72,7 @@ public class WorkerDatabaseTest {
         Context context = mock(Context.class);
         WorkerDatabase helper = new WorkerDatabase(context);
 
-        helper.onUpgrade(mDatabase, 0, 1);
+        helper.onUpgrade(database, 0, 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -81,7 +81,7 @@ public class WorkerDatabaseTest {
         WorkerDatabase helper = new WorkerDatabase(context);
 
         int newVersion = Worker.DATABASE_VERSION + 1;
-        helper.onUpgrade(mDatabase, 1, newVersion);
+        helper.onUpgrade(database, 1, newVersion);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -89,29 +89,29 @@ public class WorkerDatabaseTest {
         Context context = mock(Context.class);
         WorkerDatabase helper = new WorkerDatabase(context);
 
-        helper.onUpgrade(mDatabase, 2, 1);
+        helper.onUpgrade(database, 2, 1);
     }
 
     @Test
     public void onUpgrade_upgradeFromBaseToLatest() {
         Context context = mock(Context.class);
         WorkerBaseDatabase helper = new WorkerBaseDatabase(context);
-        helper.onCreate(mDatabase);
+        helper.onCreate(database);
 
         // If no exceptions have been thrown the test should be considered OK.
-        helper.onUpgrade(mDatabase, 1, Worker.DATABASE_VERSION);
+        helper.onUpgrade(database, 1, Worker.DATABASE_VERSION);
     }
 
     @Test
     public void onUpgrade_upgradeAfterDowngrade() {
         Context context = mock(Context.class);
         WorkerBaseDatabase helper = new WorkerBaseDatabase(context);
-        helper.onCreate(mDatabase);
+        helper.onCreate(database);
 
         // If no exceptions have been thrown the test should be considered OK.
-        helper.onUpgrade(mDatabase, 1, Worker.DATABASE_VERSION);
-        helper.onDowngrade(mDatabase, Worker.DATABASE_VERSION, 1);
-        helper.onUpgrade(mDatabase, 1, Worker.DATABASE_VERSION);
+        helper.onUpgrade(database, 1, Worker.DATABASE_VERSION);
+        helper.onDowngrade(database, Worker.DATABASE_VERSION, 1);
+        helper.onUpgrade(database, 1, Worker.DATABASE_VERSION);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -119,7 +119,7 @@ public class WorkerDatabaseTest {
         Context context = mock(Context.class);
         WorkerDatabase helper = new WorkerDatabase(context);
 
-        helper.onDowngrade(mDatabase, 1, 0);
+        helper.onDowngrade(database, 1, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -127,7 +127,7 @@ public class WorkerDatabaseTest {
         Context context = mock(Context.class);
         WorkerDatabase helper = new WorkerDatabase(context);
 
-        helper.onDowngrade(mDatabase, 1, 2);
+        helper.onDowngrade(database, 1, 2);
     }
 
     /**

@@ -35,11 +35,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class ClockInTest {
-    private TimeRepository mTimeRepository;
+    private TimeRepository timeRepository;
 
     @Before
     public void setUp() {
-        mTimeRepository = mock(TimeRepository.class);
+        timeRepository = mock(TimeRepository.class);
     }
 
     @Test(expected = ClockActivityException.class)
@@ -47,21 +47,21 @@ public class ClockInTest {
         Time time = new Time.Builder(1L)
                 .build();
 
-        when(mTimeRepository.getActiveTimeForProject(1L))
+        when(timeRepository.getActiveTimeForProject(1L))
                 .thenReturn(time);
 
-        ClockIn clockIn = new ClockIn(mTimeRepository);
+        ClockIn clockIn = new ClockIn(timeRepository);
         clockIn.execute(1L, new Date());
     }
 
     @Test
     public void execute() throws DomainException {
-        when(mTimeRepository.getActiveTimeForProject(1L))
+        when(timeRepository.getActiveTimeForProject(1L))
                 .thenReturn(null);
 
-        ClockIn clockIn = new ClockIn(mTimeRepository);
+        ClockIn clockIn = new ClockIn(timeRepository);
         clockIn.execute(1L, new Date());
 
-        verify(mTimeRepository).add(isA(Time.class));
+        verify(timeRepository).add(isA(Time.class));
     }
 }

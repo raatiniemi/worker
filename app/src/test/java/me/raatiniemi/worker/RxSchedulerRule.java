@@ -31,9 +31,9 @@ import rx.schedulers.Schedulers;
 import rx.schedulers.TestScheduler;
 
 public class RxSchedulerRule implements TestRule {
-    private static final TestScheduler sTestScheduler = new TestScheduler();
+    private static final TestScheduler testScheduler = new TestScheduler();
 
-    private final RxJavaSchedulersHook mRxJavaSchedulersHook = new RxJavaSchedulersHook() {
+    private final RxJavaSchedulersHook rxJavaSchedulersHook = new RxJavaSchedulersHook() {
         @Override
         public Scheduler getIOScheduler() {
             return Schedulers.immediate();
@@ -41,11 +41,11 @@ public class RxSchedulerRule implements TestRule {
 
         @Override
         public Scheduler getNewThreadScheduler() {
-            return sTestScheduler;
+            return testScheduler;
         }
     };
 
-    private final RxAndroidSchedulersHook mRxAndroidSchedulersHook = new RxAndroidSchedulersHook() {
+    private final RxAndroidSchedulersHook rxAndroidSchedulersHook = new RxAndroidSchedulersHook() {
         @Override
         public Scheduler getMainThreadScheduler() {
             return Schedulers.immediate();
@@ -58,10 +58,10 @@ public class RxSchedulerRule implements TestRule {
             @Override
             public void evaluate() throws Throwable {
                 RxJavaPlugins.getInstance().reset();
-                RxJavaPlugins.getInstance().registerSchedulersHook(mRxJavaSchedulersHook);
+                RxJavaPlugins.getInstance().registerSchedulersHook(rxJavaSchedulersHook);
 
                 RxAndroidPlugins.getInstance().reset();
-                RxAndroidPlugins.getInstance().registerSchedulersHook(mRxAndroidSchedulersHook);
+                RxAndroidPlugins.getInstance().registerSchedulersHook(rxAndroidSchedulersHook);
 
                 base.evaluate();
 
@@ -72,6 +72,6 @@ public class RxSchedulerRule implements TestRule {
     }
 
     public void advanceTimeTo(long delayTime, TimeUnit unit) {
-        sTestScheduler.advanceTimeTo(delayTime, unit);
+        testScheduler.advanceTimeTo(delayTime, unit);
     }
 }

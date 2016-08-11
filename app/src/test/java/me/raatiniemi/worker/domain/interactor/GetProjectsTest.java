@@ -39,13 +39,13 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class GetProjectsTest {
-    private ProjectRepository mProjectRepository;
-    private TimeRepository mTimeRepository;
+    private ProjectRepository projectRepository;
+    private TimeRepository timeRepository;
 
     @Before
     public void setUp() {
-        mProjectRepository = mock(ProjectRepository.class);
-        mTimeRepository = mock(TimeRepository.class);
+        projectRepository = mock(ProjectRepository.class);
+        timeRepository = mock(TimeRepository.class);
     }
 
     private Project buildProject(Long id, String name)
@@ -61,18 +61,18 @@ public class GetProjectsTest {
         projects.add(buildProject(1L, "Project #1"));
         projects.add(buildProject(2L, "Project #2"));
 
-        when(mProjectRepository.get())
+        when(projectRepository.get())
                 .thenReturn(projects);
 
         GetProjects getProjects = new GetProjects(
-                mProjectRepository,
-                mTimeRepository
+                projectRepository,
+                timeRepository
         );
         List<Project> actual = getProjects.execute();
 
         assertEquals(projects, actual);
 
-        verify(mProjectRepository, times(1)).get();
-        verify(mTimeRepository, times(2)).getProjectTimeSinceBeginningOfMonth(anyLong());
+        verify(projectRepository, times(1)).get();
+        verify(timeRepository, times(2)).getProjectTimeSinceBeginningOfMonth(anyLong());
     }
 }

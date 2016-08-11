@@ -33,7 +33,7 @@ public abstract class RxPresenter<V extends MvpView> extends BasePresenter<V> {
     /**
      * Subscription for retrieving data for the presenter/view.
      */
-    protected Subscription mSubscription;
+    protected Subscription subscription;
 
     /**
      * Constructor.
@@ -58,10 +58,10 @@ public abstract class RxPresenter<V extends MvpView> extends BasePresenter<V> {
      */
     protected void unsubscribe() {
         // If have to verify that there is an active subscription.
-        if (null != mSubscription && !mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (null != subscription && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
         }
-        mSubscription = null;
+        subscription = null;
     }
 
     /**

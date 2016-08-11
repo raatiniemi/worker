@@ -17,13 +17,13 @@
 package me.raatiniemi.worker.presentation.model;
 
 public class OngoingNotificationActionEvent {
-    private final long mProjectId;
+    private final long projectId;
 
     public OngoingNotificationActionEvent(long projectId) {
-        mProjectId = projectId;
+        this.projectId = projectId;
     }
 
     public long getProjectId() {
-        return mProjectId;
+        return projectId;
     }
 }

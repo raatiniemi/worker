@@ -31,18 +31,18 @@ import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.HoursMinutesIntervalFormat;
 
 public class ProjectsModel {
-    private static final DateIntervalFormat sIntervalFormat;
+    private static final DateIntervalFormat intervalFormat;
 
     static {
-        sIntervalFormat = new HoursMinutesIntervalFormat();
+        intervalFormat = new HoursMinutesIntervalFormat();
     }
 
-    private final SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    private final Project mProject;
-    private long mTimeSummary = 0;
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final Project project;
+    private long timeSummary = 0;
 
     public ProjectsModel(Project project, List<Time> registeredTime) {
-        mProject = project;
+        this.project = project;
 
         calculateTimeSummaryFromRegisteredTime(registeredTime);
     }
@@ -65,24 +65,24 @@ public class ProjectsModel {
 
     private void calculateTimeSummaryFromRegisteredTime(List<Time> registeredTime) {
         for (Time interval : registeredTime) {
-            mTimeSummary += interval.getTime();
+            timeSummary += interval.getTime();
         }
     }
 
     public Project asProject() {
-        return mProject;
+        return project;
     }
 
     public String getTitle() {
-        return mProject.getName();
+        return project.getName();
     }
 
     public boolean isActive() {
-        return mProject.isActive();
+        return project.isActive();
     }
 
     public String getTimeSummary() {
-        return sIntervalFormat.format(mTimeSummary);
+        return intervalFormat.format(timeSummary);
     }
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
@@ -117,11 +117,11 @@ public class ProjectsModel {
         // TODO: Handle if the time session overlap days.
         // The timestamp should include the date it was
         // checked in, e.g. 21 May 1:06PM.
-        return mTimeFormat.format(mProject.getClockedInSince());
+        return timeFormat.format(project.getClockedInSince());
     }
 
     private String getFormattedElapsedTime() {
-        return sIntervalFormat.format(mProject.getElapsed());
+        return intervalFormat.format(project.getElapsed());
     }
 
     public void setVisibilityForClockedInSinceView(TextView clockedInSinceView) {
@@ -144,14 +144,14 @@ public class ProjectsModel {
         }
 
         ProjectsModel that = (ProjectsModel) o;
-        return mProject.equals(that.mProject);
+        return project.equals(that.project);
 
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + mProject.hashCode();
+        result = 31 * result + project.hashCode();
         return result;
     }
 }

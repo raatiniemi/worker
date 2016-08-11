@@ -44,7 +44,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
      */
     private static final String TAG = "SettingsPresenter";
 
-    private final EventBus mEventBus;
+    private final EventBus eventBus;
 
     /**
      * Constructor.
@@ -54,21 +54,21 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
     public SettingsPresenter(Context context, EventBus eventBus) {
         super(context);
 
-        mEventBus = eventBus;
+        this.eventBus = eventBus;
     }
 
     @Override
     public void attachView(SettingsView view) {
         super.attachView(view);
 
-        mEventBus.register(this);
+        eventBus.register(this);
     }
 
     @Override
     public void detachView() {
         super.detachView();
 
-        mEventBus.unregister(this);
+        eventBus.unregister(this);
     }
 
     /**
@@ -155,7 +155,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                     );
             }
 
-            mEventBus.post(new TimeSummaryStartingPointChangeEvent());
+            eventBus.post(new TimeSummaryStartingPointChangeEvent());
 
             if (!isViewAttached()) {
                 return;

@@ -34,7 +34,7 @@ public class StorageRestoreStrategy implements RestoreStrategy {
     /**
      * Application context.
      */
-    private final Context mContext;
+    private final Context context;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class StorageRestoreStrategy implements RestoreStrategy {
      * @param context Application context.
      */
     public StorageRestoreStrategy(Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     /**
@@ -64,7 +64,7 @@ public class StorageRestoreStrategy implements RestoreStrategy {
 
             // Retrieve the source and destination file locations.
             File from = new File(directory, Worker.DATABASE_NAME);
-            File to = mContext.getDatabasePath(Worker.DATABASE_NAME);
+            File to = context.getDatabasePath(Worker.DATABASE_NAME);
 
             // Perform the file copy.
             FileUtils.copy(from, to);

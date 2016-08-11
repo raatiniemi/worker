@@ -61,13 +61,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         implements SelectionListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
-    private LinearLayoutManager mLinearLayoutManager;
+    private LinearLayoutManager linearLayoutManager;
 
-    private TimesheetAdapter mAdapter;
+    private TimesheetAdapter adapter;
 
-    private ActionMode mActionMode;
+    private ActionMode actionMode;
 
-    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             actionMode.setTitle(R.string.menu_title_actions);
@@ -126,11 +126,11 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         public void onDestroyActionMode(ActionMode actionMode) {
             getAdapter().deselectItems();
 
-            mActionMode = null;
+            TimesheetFragment.this.actionMode = null;
         }
     };
 
-    private boolean mLoading = false;
+    private boolean loading = false;
 
     private long getProjectId() {
         return getArguments().getLong(ProjectsFragment.MESSAGE_PROJECT_ID, -1);
@@ -145,13 +145,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getActivity());
 
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
                 = new RecyclerViewExpandableItemManager(savedInstanceState);
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
-        recyclerView.setLayoutManager(mLinearLayoutManager);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
         recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(getAdapter()));
         recyclerView.addItemDecoration(
@@ -167,21 +167,21 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 // Make sure we're not loading data before checking the position.
-                if (!mLoading) {
+                if (!loading) {
                     // Retrieve positional data, needed for the calculation on whether
                     // we are close to the end of the list or not.
-                    int visibleItems = mLinearLayoutManager.getChildCount();
-                    int firstVisiblePosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+                    int visibleItems = linearLayoutManager.getChildCount();
+                    int firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition();
 
                     // Retrieve the total number of items within the recycler view,
                     // this will include both the group and the children.
-                    int totalItems = mLinearLayoutManager.getItemCount();
+                    int totalItems = linearLayoutManager.getItemCount();
 
                     // Check if the last row in the list is visible.
                     if ((visibleItems + firstVisiblePosition) >= totalItems) {
                         // We are about to start loading data, and thus we need
                         // to block additional loading requests.
-                        mLoading = true;
+                        loading = true;
 
                         // Retrieve the total number of groups within the view, we need to
                         // exclude the children otherwise the offset will be wrong.
@@ -220,11 +220,11 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     @NonNull
     public TimesheetAdapter getAdapter() {
-        if (null == mAdapter) {
-            mAdapter = new TimesheetAdapter(this);
+        if (null == adapter) {
+            adapter = new TimesheetAdapter(this);
         }
 
-        return mAdapter;
+        return adapter;
     }
 
     @NonNull
@@ -293,7 +293,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     @Override
     public void finishLoading() {
-        mLoading = false;
+        loading = false;
     }
 
     @Override
@@ -313,14 +313,14 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     @Override
     public void onSelect() {
-        if (null == mActionMode) {
-            mActionMode = getActivity().startActionMode(mActionModeCallback);
+        if (null == actionMode) {
+            actionMode = getActivity().startActionMode(actionModeCallback);
         }
     }
 
     @Override
     public void onDeselect() {
-        if (null == mActionMode) {
+        if (null == actionMode) {
             return;
         }
 
@@ -328,6 +328,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
             return;
         }
 
-        mActionMode.finish();
+        actionMode.finish();
     }
 }

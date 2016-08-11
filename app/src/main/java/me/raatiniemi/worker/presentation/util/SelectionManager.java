@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.Set;
 
 public class SelectionManager<T> {
-    private Set<T> mSelectedItems = new HashSet<>();
+    private Set<T> selectedItems = new HashSet<>();
 
     public boolean isSelectionActivated() {
-        return !mSelectedItems.isEmpty();
+        return !selectedItems.isEmpty();
     }
 
     public List<T> getSelectedItems() {
-        return new ArrayList<>(mSelectedItems);
+        return new ArrayList<>(selectedItems);
     }
 
     public boolean isSelected(List<T> results) {
@@ -50,7 +50,7 @@ public class SelectionManager<T> {
     }
 
     public boolean isSelected(T result) {
-        return mSelectedItems.contains(result);
+        return selectedItems.contains(result);
     }
 
     public void selectItems(List<T> results) {
@@ -60,7 +60,7 @@ public class SelectionManager<T> {
     }
 
     public void selectItem(T result) {
-        mSelectedItems.add(result);
+        selectedItems.add(result);
     }
 
     public void deselectItems(List<T> results) {
@@ -70,10 +70,10 @@ public class SelectionManager<T> {
     }
 
     public void deselectItem(T result) {
-        mSelectedItems.remove(result);
+        selectedItems.remove(result);
     }
 
     public void deselectItems() {
-        mSelectedItems.clear();
+        selectedItems.clear();
     }
 }

@@ -51,24 +51,24 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
      */
     private static final String TAG = "TimesheetPresenter";
 
-    private final EventBus mEventBus;
+    private final EventBus eventBus;
 
-    private final long mProjectId;
+    private final long projectId;
 
     /**
      * Use case for getting project timesheet.
      */
-    private final GetTimesheet mGetTimesheet;
+    private final GetTimesheet getTimesheet;
 
     /**
      * Use case for marking time as registered.
      */
-    private final MarkRegisteredTime mMarkRegisteredTime;
+    private final MarkRegisteredTime markRegisteredTime;
 
     /**
      * Use case for removing time.
      */
-    private final RemoveTime mRemoveTime;
+    private final RemoveTime removeTime;
 
     /**
      * Constructor.
@@ -90,11 +90,11 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     ) {
         super(context);
 
-        mEventBus = eventBus;
-        mProjectId = projectId;
-        mGetTimesheet = getTimesheet;
-        mMarkRegisteredTime = markRegisteredTime;
-        mRemoveTime = removeTime;
+        this.eventBus = eventBus;
+        this.projectId = projectId;
+        this.getTimesheet = getTimesheet;
+        this.markRegisteredTime = markRegisteredTime;
+        this.removeTime = removeTime;
     }
 
     /**
@@ -104,7 +104,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     public void attachView(TimesheetFragment view) {
         super.attachView(view);
 
-        mEventBus.register(this);
+        eventBus.register(this);
     }
 
     /**
@@ -114,7 +114,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
     public void detachView() {
         super.detachView();
 
-        mEventBus.unregister(this);
+        eventBus.unregister(this);
     }
 
     public void getTimesheet(final Long id, final int offset) {
@@ -123,13 +123,13 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
         unsubscribe();
 
         // Setup the subscription for retrieving timesheet.
-        mSubscription = Observable
+        subscription = Observable
                 .defer(new Func0<Observable<Map<Date, List<Time>>>>() {
                     @Override
                     public Observable<Map<Date, List<Time>>> call() {
                         boolean hideRegisteredTime = Settings.shouldHideRegisteredTime(getContext());
                         return Observable.just(
-                                mGetTimesheet.execute(id, offset, hideRegisteredTime)
+                                getTimesheet.execute(id, offset, hideRegisteredTime)
                         );
                     }
                 })
@@ -208,7 +208,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                             timeToRemove.add(result.getTime());
                         }
 
-                        mRemoveTime.execute(timeToRemove);
+                        removeTime.execute(timeToRemove);
                         return results;
                     }
                 })
@@ -265,7 +265,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         }
 
                         try {
-                            List<Time> updatedTime = mMarkRegisteredTime.execute(timeToUpdate);
+                            List<Time> updatedTime = markRegisteredTime.execute(timeToUpdate);
 
                             List<TimeInAdapterResult> newResults = new ArrayList<>();
                             for (TimeInAdapterResult result : results) {
@@ -341,7 +341,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
             return;
         }
 
-        if (event.getProjectId() != mProjectId) {
+        if (event.getProjectId() != projectId) {
             Log.d(TAG, "No need to refresh, event is related to another project");
             return;
         }

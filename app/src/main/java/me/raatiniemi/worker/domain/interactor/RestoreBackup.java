@@ -23,7 +23,7 @@ public class RestoreBackup {
     /**
      * Strategy for restoring a backup.
      */
-    private final RestoreStrategy mStrategy;
+    private final RestoreStrategy strategy;
 
     /**
      * Constructor.
@@ -31,7 +31,7 @@ public class RestoreBackup {
      * @param strategy Strategy for restoring a backup.
      */
     public RestoreBackup(RestoreStrategy strategy) {
-        mStrategy = strategy;
+        this.strategy = strategy;
     }
 
     /**
@@ -39,6 +39,6 @@ public class RestoreBackup {
      */
     public void execute() {
         // Execute the restoration strategy.
-        mStrategy.execute();
+        strategy.execute();
     }
 }

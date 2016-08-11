@@ -227,10 +227,10 @@ public class TimeTest {
 
     @RunWith(Parameterized.class)
     public static class TimeTest_equals {
-        private String mMessage;
-        private Boolean mExpected;
-        private Time mTime;
-        private Object mCompareTo;
+        private String message;
+        private Boolean expected;
+        private Time time;
+        private Object compareTo;
 
         public TimeTest_equals(
                 String message,
@@ -238,10 +238,10 @@ public class TimeTest {
                 Time time,
                 Object compareTo
         ) {
-            mMessage = message;
-            mExpected = expected;
-            mTime = time;
-            mCompareTo = compareTo;
+            this.message = message;
+            this.expected = expected;
+            this.time = time;
+            this.compareTo = compareTo;
         }
 
         @Parameters
@@ -339,31 +339,31 @@ public class TimeTest {
         }
 
         private Boolean shouldBeEqual() {
-            return mExpected;
+            return expected;
         }
 
         private void assertEqual() {
-            assertTrue(mMessage, mTime.equals(mCompareTo));
+            assertTrue(message, time.equals(compareTo));
 
             validateHashCodeWhenEqual();
         }
 
         private void validateHashCodeWhenEqual() {
-            assertTrue(mMessage, mTime.hashCode() == mCompareTo.hashCode());
+            assertTrue(message, time.hashCode() == compareTo.hashCode());
         }
 
         private void assertNotEqual() {
-            assertFalse(mMessage, mTime.equals(mCompareTo));
+            assertFalse(message, time.equals(compareTo));
 
             validateHashCodeWhenNotEqual();
         }
 
         private void validateHashCodeWhenNotEqual() {
-            if (null == mCompareTo) {
+            if (null == compareTo) {
                 return;
             }
 
-            assertFalse(mMessage, mTime.hashCode() == mCompareTo.hashCode());
+            assertFalse(message, time.hashCode() == compareTo.hashCode());
         }
     }
 }

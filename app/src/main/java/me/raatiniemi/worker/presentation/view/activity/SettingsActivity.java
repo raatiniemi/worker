@@ -112,7 +112,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     /**
      * Instance for the SettingsActivity.
      */
-    private static SettingsActivity sInstance;
+    private static SettingsActivity instance;
 
     /**
      * Retrieve the instance for the SettingsActivity.
@@ -120,11 +120,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      * @return Instance for the SettingsActivity.
      */
     private static SettingsActivity getInstance() {
-        return sInstance;
+        return instance;
     }
 
     private static synchronized void setInstance(SettingsActivity instance) {
-        sInstance = instance;
+        SettingsActivity.instance = instance;
     }
 
     @Override
@@ -505,7 +505,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     }
 
     public static class DataFragment extends BasePreferenceFragment {
-        private final SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -687,7 +687,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 if (null != date) {
                     text = getString(
                             R.string.activity_settings_backup_performed_at,
-                            mFormat.format(date)
+                            format.format(date)
                     );
                 }
             }
@@ -716,7 +716,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 if (null != date) {
                     text = getString(
                             R.string.activity_settings_restore_from,
-                            mFormat.format(date)
+                            format.format(date)
                     );
                     enable = true;
                 }
