@@ -32,17 +32,17 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
     /**
      * Content resolver used with the repository.
      */
-    private final ContentResolver mContentResolver;
+    private final ContentResolver contentResolver;
 
     /**
      * Cursor mapper used with the repository.
      */
-    private final M mCursorMapper;
+    private final M cursorMapper;
 
     /**
      * ContentValues mapper used with the repository.
      */
-    private final V mContentValuesMapper;
+    private final V contentValuesMapper;
 
     /**
      * Constructor.
@@ -56,9 +56,9 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
             @NonNull M cursorMapper,
             @NonNull V contentValuesMapper
     ) {
-        mContentResolver = contentResolver;
-        mCursorMapper = cursorMapper;
-        mContentValuesMapper = contentValuesMapper;
+        this.contentResolver = contentResolver;
+        this.cursorMapper = cursorMapper;
+        this.contentValuesMapper = contentValuesMapper;
     }
 
     /**
@@ -68,7 +68,7 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
      */
     @NonNull
     ContentResolver getContentResolver() {
-        return mContentResolver;
+        return contentResolver;
     }
 
     /**
@@ -78,7 +78,7 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
      */
     @NonNull
     M getCursorMapper() {
-        return mCursorMapper;
+        return cursorMapper;
     }
 
     /**
@@ -87,6 +87,6 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
      * @return ContentValues mapper.
      */
     V getContentValuesMapper() {
-        return mContentValuesMapper;
+        return contentValuesMapper;
     }
 }

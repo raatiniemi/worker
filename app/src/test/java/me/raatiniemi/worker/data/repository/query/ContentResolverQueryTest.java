@@ -32,10 +32,10 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class ContentResolverQueryTest {
-    private final String mMessage;
-    private final String mExpectedSelection;
-    private final String[] mExpectedSelectionArgs;
-    private final Criteria mCriteria;
+    private final String message;
+    private final String expectedSelection;
+    private final String[] expectedSelectionArgs;
+    private final Criteria criteria;
 
     public ContentResolverQueryTest(
             String message,
@@ -43,10 +43,10 @@ public class ContentResolverQueryTest {
             String[] expectedSelectionArgs,
             Criteria criteria
     ) {
-        mMessage = message;
-        mExpectedSelection = expectedSelection;
-        mExpectedSelectionArgs = expectedSelectionArgs;
-        mCriteria = criteria;
+        this.message = message;
+        this.expectedSelection = expectedSelection;
+        this.expectedSelectionArgs = expectedSelectionArgs;
+        this.criteria = criteria;
     }
 
     @Parameters
@@ -78,26 +78,26 @@ public class ContentResolverQueryTest {
     }
 
     private boolean haveValidCriteria() {
-        return null != mCriteria;
+        return null != criteria;
     }
 
     private void assertContentResolverQuery() {
-        ContentResolverQuery actual = ContentResolverQuery.from(mCriteria);
+        ContentResolverQuery actual = ContentResolverQuery.from(criteria);
 
-        assertEquals(mMessage, mExpectedSelection, actual.getSelection());
+        assertEquals(message, expectedSelection, actual.getSelection());
 
         String[] actualSelectionArgs = actual.getSelectionArgs();
-        assertTrue(mMessage, mExpectedSelectionArgs.length == actualSelectionArgs.length);
+        assertTrue(message, expectedSelectionArgs.length == actualSelectionArgs.length);
 
-        for (int i = 0, l = mExpectedSelectionArgs.length; i < l; i++) {
-            assertEquals(mMessage, mExpectedSelectionArgs[i], actualSelectionArgs[i]);
+        for (int i = 0, l = expectedSelectionArgs.length; i < l; i++) {
+            assertEquals(message, expectedSelectionArgs[i], actualSelectionArgs[i]);
         }
     }
 
     private void assertNullCriteria() {
-        ContentResolverQuery actual = ContentResolverQuery.from(mCriteria);
+        ContentResolverQuery actual = ContentResolverQuery.from(criteria);
 
-        assertNull(mMessage, actual.getSelection());
-        assertTrue(mMessage, 0 == actual.getSelectionArgs().length);
+        assertNull(message, actual.getSelection());
+        assertTrue(message, 0 == actual.getSelectionArgs().length);
     }
 }

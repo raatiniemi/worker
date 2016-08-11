@@ -49,18 +49,18 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ProjectResolverRepositoryTest {
-    private final ProjectCursorMapper mCursorMapper = new ProjectCursorMapper();
-    private final ProjectContentValuesMapper mContentValuesMapper = new ProjectContentValuesMapper();
-    private ContentResolver mContentResolver;
-    private ProjectResolverRepository mRepository;
+    private final ProjectCursorMapper cursorMapper = new ProjectCursorMapper();
+    private final ProjectContentValuesMapper contentValuesMapper = new ProjectContentValuesMapper();
+    private ContentResolver contentResolver;
+    private ProjectResolverRepository repository;
 
     @Before
     public void setUp() {
-        mContentResolver = mock(ContentResolver.class);
-        mRepository = new ProjectResolverRepository(
-                mContentResolver,
-                mCursorMapper,
-                mContentValuesMapper
+        contentResolver = mock(ContentResolver.class);
+        repository = new ProjectResolverRepository(
+                contentResolver,
+                cursorMapper,
+                contentValuesMapper
         );
     }
 
@@ -89,7 +89,7 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void matching_withNullCursor() throws InvalidProjectNameException {
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
@@ -99,7 +99,7 @@ public class ProjectResolverRepositoryTest {
         ).thenReturn(null);
 
         Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = mRepository.matching(criteria);
+        List<Project> projects = repository.matching(criteria);
 
         assertTrue(projects.isEmpty());
     }
@@ -108,7 +108,7 @@ public class ProjectResolverRepositoryTest {
     public void matching_withEmptyCursor() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
@@ -118,7 +118,7 @@ public class ProjectResolverRepositoryTest {
         ).thenReturn(cursor);
 
         Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = mRepository.matching(criteria);
+        List<Project> projects = repository.matching(criteria);
 
         assertTrue(projects.isEmpty());
         assertTrue("Failed to close cursor", cursor.isClosed());
@@ -128,7 +128,7 @@ public class ProjectResolverRepositoryTest {
     public void matching_withRow() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
@@ -138,7 +138,7 @@ public class ProjectResolverRepositoryTest {
         ).thenReturn(cursor);
 
         Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = mRepository.matching(criteria);
+        List<Project> projects = repository.matching(criteria);
 
         assertTrue(1 == projects.size());
         verify(cursor).close();
@@ -148,7 +148,7 @@ public class ProjectResolverRepositoryTest {
     public void matching_withRows() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         "name=? COLLATE NOCASE",
@@ -158,7 +158,7 @@ public class ProjectResolverRepositoryTest {
         ).thenReturn(cursor);
 
         Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = mRepository.matching(criteria);
+        List<Project> projects = repository.matching(criteria);
 
         assertTrue(5 == projects.size());
         verify(cursor).close();
@@ -167,7 +167,7 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void get_projectsWithNullCursor() throws InvalidProjectNameException {
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         null,
@@ -176,7 +176,7 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(null);
 
-        List<Project> projects = mRepository.get();
+        List<Project> projects = repository.get();
 
         assertTrue(projects.isEmpty());
     }
@@ -185,7 +185,7 @@ public class ProjectResolverRepositoryTest {
     public void get_projectsWithEmptyCursor() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         null,
@@ -194,7 +194,7 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        List<Project> projects = mRepository.get();
+        List<Project> projects = repository.get();
 
         assertTrue(projects.isEmpty());
         verify(cursor).close();
@@ -204,7 +204,7 @@ public class ProjectResolverRepositoryTest {
     public void get_projectsWithRow() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         null,
@@ -213,7 +213,7 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        List<Project> projects = mRepository.get();
+        List<Project> projects = repository.get();
 
         assertTrue(1 == projects.size());
         verify(cursor).close();
@@ -223,7 +223,7 @@ public class ProjectResolverRepositoryTest {
     public void get_projectsWithRows() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
                         null,
@@ -232,7 +232,7 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        List<Project> projects = mRepository.get();
+        List<Project> projects = repository.get();
 
         assertTrue(5 == projects.size());
         assertTrue("Failed to close cursor", cursor.isClosed());
@@ -241,7 +241,7 @@ public class ProjectResolverRepositoryTest {
     @Test
     public void get_projectWithNullCursor() throws InvalidProjectNameException {
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getItemUri(1),
                         ProjectContract.getColumns(),
                         null,
@@ -250,7 +250,7 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(null);
 
-        Project project = mRepository.get(1);
+        Project project = repository.get(1);
 
         assertNull(project);
     }
@@ -259,7 +259,7 @@ public class ProjectResolverRepositoryTest {
     public void get_projectWithoutRow() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getItemUri(1),
                         ProjectContract.getColumns(),
                         null,
@@ -268,7 +268,7 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        Project project = mRepository.get(1);
+        Project project = repository.get(1);
 
         assertNull(project);
         verify(cursor).close();
@@ -278,7 +278,7 @@ public class ProjectResolverRepositoryTest {
     public void get_projectWithRow() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getItemUri(1),
                         ProjectContract.getColumns(),
                         null,
@@ -287,7 +287,7 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        Project project = mRepository.get(1);
+        Project project = repository.get(1);
 
         assertNotNull(project);
         verify(cursor).close();
@@ -300,14 +300,14 @@ public class ProjectResolverRepositoryTest {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         // insert...
         when(
-                mContentResolver.insert(
+                contentResolver.insert(
                         ProjectContract.getStreamUri(),
-                        mContentValuesMapper.transform(project)
+                        contentValuesMapper.transform(project)
                 )
         ).thenReturn(ProjectContract.getItemUri(1));
         // get...
         when(
-                mContentResolver.query(
+                contentResolver.query(
                         ProjectContract.getItemUri(1),
                         ProjectContract.getColumns(),
                         null,
@@ -316,7 +316,7 @@ public class ProjectResolverRepositoryTest {
                 )
         ).thenReturn(cursor);
 
-        project = mRepository.add(project);
+        project = repository.add(project);
 
         assertNotNull(project);
         assertEquals(Long.valueOf(1L), project.getId());

@@ -38,12 +38,12 @@ public class StorageBackupStrategy implements BackupStrategy {
     /**
      * Application context.
      */
-    private final Context mContext;
+    private final Context context;
 
     /**
      * Event bus used for notification.
      */
-    private final EventBus mEventBus;
+    private final EventBus eventBus;
 
     /**
      * Constructor.
@@ -52,8 +52,8 @@ public class StorageBackupStrategy implements BackupStrategy {
      * @param eventBus Event bus used for notification.
      */
     public StorageBackupStrategy(Context context, EventBus eventBus) {
-        mContext = context;
-        mEventBus = eventBus;
+        this.context = context;
+        this.eventBus = eventBus;
     }
 
     /**
@@ -74,7 +74,7 @@ public class StorageBackupStrategy implements BackupStrategy {
             }
 
             // Retrieve the source and destination file locations.
-            File from = mContext.getDatabasePath(Worker.DATABASE_NAME);
+            File from = context.getDatabasePath(Worker.DATABASE_NAME);
             File to = new File(directory, Worker.DATABASE_NAME);
 
             // Perform the file copy.
@@ -82,7 +82,7 @@ public class StorageBackupStrategy implements BackupStrategy {
 
             // Assemble and post the successful backup event.
             Backup backup = new Backup(directory);
-            mEventBus.post(new BackupSuccessfulEvent(backup));
+            eventBus.post(new BackupSuccessfulEvent(backup));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -19,10 +19,10 @@ package me.raatiniemi.worker.data.repository.query;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
 public class ContentResolverQuery {
-    private final Criteria mCriteria;
+    private final Criteria criteria;
 
     private ContentResolverQuery(Criteria criteria) {
-        mCriteria = criteria;
+        this.criteria = criteria;
     }
 
     public static ContentResolverQuery from(Criteria criteria) {
@@ -30,18 +30,18 @@ public class ContentResolverQuery {
     }
 
     public String getSelection() {
-        if (null == mCriteria) {
+        if (null == criteria) {
             return null;
         }
 
-        return mCriteria.getField() + mCriteria.getOperator() + "? COLLATE NOCASE";
+        return criteria.getField() + criteria.getOperator() + "? COLLATE NOCASE";
     }
 
     public String[] getSelectionArgs() {
-        if (null == mCriteria) {
+        if (null == criteria) {
             return new String[]{};
         }
 
-        return new String[]{mCriteria.getValue()};
+        return new String[]{criteria.getValue()};
     }
 }

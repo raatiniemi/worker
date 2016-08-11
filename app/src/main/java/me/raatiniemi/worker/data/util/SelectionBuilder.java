@@ -26,18 +26,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class SelectionBuilder {
-    private String mTable;
+    private String table;
 
-    private final StringBuilder mSelection = new StringBuilder();
+    private final StringBuilder selection = new StringBuilder();
 
-    private final List<String> mSelectionArgs = new ArrayList<>();
+    private final List<String> selectionArgs = new ArrayList<>();
 
-    private String mGroupBy;
+    private String groupBy;
 
-    private String mHaving;
+    private String having;
 
     public SelectionBuilder table(String table) {
-        mTable = table;
+        this.table = table;
         return this;
     }
 
@@ -49,34 +49,34 @@ public class SelectionBuilder {
 
         // If we are using multiple selections we need to
         // match all of the selections.
-        if (0 < mSelection.length()) {
-            mSelection.append(" AND ");
+        if (0 < this.selection.length()) {
+            this.selection.append(" AND ");
         }
 
         // In case we are using multiple selections we have
         // to encapsulate each of the selections.
-        mSelection.append("(").append(selection).append(")");
+        this.selection.append("(").append(selection).append(")");
         if (null != selectionArgs) {
-            Collections.addAll(mSelectionArgs, selectionArgs);
+            Collections.addAll(this.selectionArgs, selectionArgs);
         }
         return this;
     }
 
     private String selection() {
-        return mSelection.toString();
+        return selection.toString();
     }
 
     private String[] selectionArgs() {
-        return mSelectionArgs.toArray(new String[mSelectionArgs.size()]);
+        return selectionArgs.toArray(new String[selectionArgs.size()]);
     }
 
     public SelectionBuilder groupBy(String groupBy) {
-        mGroupBy = groupBy;
+        this.groupBy = groupBy;
         return this;
     }
 
     public SelectionBuilder having(String having) {
-        mHaving = having;
+        this.having = having;
         return this;
     }
 
@@ -86,12 +86,12 @@ public class SelectionBuilder {
 
     public Cursor query(SQLiteDatabase db, String[] columns, String orderBy, String limit) {
         return db.query(
-                mTable,
+                table,
                 columns,
                 selection(),
                 selectionArgs(),
-                mGroupBy,
-                mHaving,
+                groupBy,
+                having,
                 orderBy,
                 limit
         );
@@ -99,7 +99,7 @@ public class SelectionBuilder {
 
     public int update(SQLiteDatabase db, ContentValues values) {
         return db.update(
-                mTable,
+                table,
                 values,
                 selection(),
                 selectionArgs()
@@ -107,6 +107,6 @@ public class SelectionBuilder {
     }
 
     public int delete(SQLiteDatabase db) {
-        return db.delete(mTable, selection(), selectionArgs());
+        return db.delete(table, selection(), selectionArgs());
     }
 }
