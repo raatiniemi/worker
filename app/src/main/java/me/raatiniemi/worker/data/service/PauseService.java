@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.service;
+package me.raatiniemi.worker.data.service;
 
 import android.content.Intent;
 import android.util.Log;
@@ -22,16 +22,16 @@ import android.util.Log;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.interactor.ClockIn;
+import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.notification.ErrorNotification;
-import me.raatiniemi.worker.presentation.notification.PauseNotification;
+import me.raatiniemi.worker.presentation.notification.ResumeNotification;
 
-public class ResumeService extends OngoingService {
-    private static final String TAG = "ResumeService";
+public class PauseService extends OngoingService {
+    private static final String TAG = "PauseService";
 
-    public ResumeService() {
+    public PauseService() {
         super(TAG);
     }
 
@@ -40,8 +40,8 @@ public class ResumeService extends OngoingService {
         long projectId = getProjectId(intent);
 
         try {
-            ClockIn clockIn = buildClockInUseCase();
-            clockIn.execute(projectId, new Date());
+            ClockOut clockOut = buildClockOutUseCase();
+            clockOut.execute(projectId, new Date());
 
             updateUserInterface(projectId);
 
@@ -49,34 +49,34 @@ public class ResumeService extends OngoingService {
                 GetProject getProject = buildGetProjectUseCase();
                 Project project = getProject.execute(projectId);
 
-                sendPauseNotification(project);
+                sendResumeNotification(project);
                 return;
             }
 
-            dismissResumeNotification(projectId);
+            dismissPauseNotification(projectId);
         } catch (Exception e) {
-            Log.w(TAG, "Unable to resume project", e);
+            Log.w(TAG, "Unable to pause project", e);
 
             sendErrorNotification(projectId);
         }
     }
 
-    ClockIn buildClockInUseCase() {
-        return new ClockIn(getTimeRepository());
+    ClockOut buildClockOutUseCase() {
+        return new ClockOut(getTimeRepository());
     }
 
     GetProject buildGetProjectUseCase() {
         return new GetProject(getProjectRepository());
     }
 
-    private void sendPauseNotification(Project project) {
+    private void sendResumeNotification(Project project) {
         sendNotification(
                 project.getId(),
-                PauseNotification.build(this, project)
+                ResumeNotification.build(this, project)
         );
     }
 
-    private void dismissResumeNotification(long projectId) {
+    private void dismissPauseNotification(long projectId) {
         dismissNotification(projectId);
     }
 
@@ -85,8 +85,8 @@ public class ResumeService extends OngoingService {
                 projectId,
                 ErrorNotification.build(
                         this,
-                        getString(R.string.error_notification_resume_title),
-                        getString(R.string.error_notification_resume_message)
+                        getString(R.string.error_notification_pause_title),
+                        getString(R.string.error_notification_pause_message)
                 )
         );
     }

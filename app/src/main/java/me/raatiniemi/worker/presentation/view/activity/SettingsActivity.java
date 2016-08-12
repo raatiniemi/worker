@@ -40,10 +40,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.data.service.DataIntentService;
 import me.raatiniemi.worker.presentation.base.view.activity.MvpActivity;
 import me.raatiniemi.worker.presentation.model.backup.Backup;
 import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
-import me.raatiniemi.worker.presentation.service.DataIntentService;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.SettingsView;

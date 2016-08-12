@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.service;
+package me.raatiniemi.worker.data.service;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -44,49 +44,34 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
-import me.raatiniemi.worker.domain.interactor.GetProject;
-import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class PauseServiceTest {
+public class ClockOutServiceTest {
     private ServiceController<TestService> serviceController;
 
     private NotificationManager notificationManager;
     private ClockOut clockOut;
-    private GetProject getProject;
     private EventBus eventBus;
 
     private Intent buildIntentForService() {
         return new Intent(
                 RuntimeEnvironment.application,
-                PauseService.class
+                ClockOutService.class
         );
     }
 
     private Uri buildProjectDataUri() {
         return WorkerContract.ProjectContract.getItemUri(1L);
-    }
-
-    private Project buildProject(long projectId)
-            throws InvalidProjectNameException {
-        return new Project.Builder("Project name")
-                .id(projectId)
-                .build();
     }
 
     @Before
@@ -111,7 +96,6 @@ public class PauseServiceTest {
     private void setUpService() {
         TestService service = getService();
         service.clockOut = clockOut = mock(ClockOut.class);
-        service.getProject = getProject = mock(GetProject.class);
         service.eventBus = eventBus = mock(EventBus.class);
     }
 
@@ -146,44 +130,10 @@ public class PauseServiceTest {
     }
 
     @Test
-    public void onHandleIntent_withOngoingNotificationEnabled()
+    public void onHandleIntent()
             throws DomainException {
         Intent intent = buildIntentForService();
         intent.setData(buildProjectDataUri());
-        getService().enableOngoingNotification();
-
-        when(
-                getProject.execute(1L)
-        ).thenReturn(buildProject(1L));
-
-        serviceController.withIntent(intent)
-                .startCommand(0, 0);
-
-        verify(clockOut).execute(
-                eq(1L),
-                isA(Date.class)
-        );
-        verify(eventBus).post(isA(OngoingNotificationActionEvent.class));
-        verify(getProject).execute(eq(1L));
-        verify(notificationManager).notify(
-                eq("1"),
-                eq(Worker.NOTIFICATION_ON_GOING_ID),
-                isA(Notification.class)
-        );
-
-        verify(notificationManager, never())
-                .cancel(anyString(), anyInt());
-    }
-
-    @Test
-    public void onHandleIntent_withOngoingNotificationDisabled()
-            throws DomainException {
-        Intent intent = buildIntentForService();
-        intent.setData(buildProjectDataUri());
-
-        when(
-                getProject.execute(1L)
-        ).thenReturn(buildProject(1L));
 
         serviceController.withIntent(intent)
                 .startCommand(0, 0);
@@ -197,20 +147,12 @@ public class PauseServiceTest {
                 eq("1"),
                 eq(Worker.NOTIFICATION_ON_GOING_ID)
         );
-
-        verify(notificationManager, never()).notify(
-                anyString(),
-                anyInt(),
-                any(Notification.class)
-        );
     }
 
     @SuppressLint("Registered")
-    public static class TestService extends PauseService {
+    public static class TestService extends ClockOutService {
         private ClockOut clockOut;
-        private GetProject getProject;
         private EventBus eventBus;
-        private boolean isOngoingNotificationEnabled = false;
 
         @Override
         public void onStart(Intent intent, int startId) {
@@ -224,22 +166,8 @@ public class PauseServiceTest {
         }
 
         @Override
-        protected boolean isOngoingNotificationEnabled() {
-            return isOngoingNotificationEnabled;
-        }
-
-        private void enableOngoingNotification() {
-            isOngoingNotificationEnabled = true;
-        }
-
-        @Override
         protected ClockOut buildClockOutUseCase() {
             return clockOut;
-        }
-
-        @Override
-        protected GetProject buildGetProjectUseCase() {
-            return getProject;
         }
     }
 }
