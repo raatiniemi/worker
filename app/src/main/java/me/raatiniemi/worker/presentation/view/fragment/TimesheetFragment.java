@@ -51,6 +51,7 @@ import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
+import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.TimesheetView;
 import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;

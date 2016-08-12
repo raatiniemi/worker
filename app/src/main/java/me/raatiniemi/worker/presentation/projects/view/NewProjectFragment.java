@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.fragment;
+package me.raatiniemi.worker.presentation.projects.view;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -36,9 +36,8 @@ import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.presentation.presenter.NewProjectPresenter;
+import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
 import me.raatiniemi.worker.presentation.util.Keyboard;
-import me.raatiniemi.worker.presentation.view.NewProjectView;
 
 public class NewProjectFragment extends DialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";

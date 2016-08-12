@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.adapter;
+package me.raatiniemi.worker.presentation.projects.view;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -33,7 +33,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.presentation.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 
 /**

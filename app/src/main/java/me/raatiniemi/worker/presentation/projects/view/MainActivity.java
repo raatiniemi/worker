@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.activity;
+package me.raatiniemi.worker.presentation.projects.view;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -29,8 +29,7 @@ import android.view.MenuItem;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.base.view.activity.BaseActivity;
-import me.raatiniemi.worker.presentation.view.ProjectsView;
-import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
+import me.raatiniemi.worker.presentation.view.activity.SettingsActivity;
 
 public class MainActivity extends BaseActivity {
     /**

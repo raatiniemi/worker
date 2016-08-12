@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.presenter;
+package me.raatiniemi.worker.presentation.projects.presenter;
 
 import android.content.Context;
 import android.util.Log;
@@ -24,8 +24,8 @@ import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
-import me.raatiniemi.worker.presentation.view.NewProjectView;
-import me.raatiniemi.worker.presentation.view.fragment.NewProjectFragment;
+import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
+import me.raatiniemi.worker.presentation.projects.view.NewProjectView;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;

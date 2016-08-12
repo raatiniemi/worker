@@ -23,7 +23,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.view.activity.MainActivity;
+import me.raatiniemi.worker.presentation.projects.view.MainActivity;
 
 public class BackupNotification {
     private static final int TITLE = R.string.notification_backup_title;

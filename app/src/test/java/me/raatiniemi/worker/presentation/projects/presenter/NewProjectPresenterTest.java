@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.presenter;
+package me.raatiniemi.worker.presentation.projects.presenter;
 
 import android.content.Context;
 
@@ -31,7 +31,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.view.fragment.NewProjectFragment;
+import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;

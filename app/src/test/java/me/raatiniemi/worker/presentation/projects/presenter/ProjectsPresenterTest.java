@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.presenter;
+package me.raatiniemi.worker.presentation.projects.presenter;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -48,9 +48,9 @@ import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.presentation.view.ProjectsView;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;

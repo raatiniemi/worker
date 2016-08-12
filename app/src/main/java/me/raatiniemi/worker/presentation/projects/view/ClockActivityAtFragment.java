@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.fragment;
+package me.raatiniemi.worker.presentation.projects.view;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -25,6 +25,7 @@ import android.util.Log;
 import java.util.Calendar;
 
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.view.fragment.DateTimePickerFragment;
 
 public class ClockActivityAtFragment extends DateTimePickerFragment
         implements DateTimePickerFragment.OnDateTimeSetListener {

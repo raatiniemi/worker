@@ -27,8 +27,8 @@ import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
-import me.raatiniemi.worker.presentation.view.fragment.ProjectsFragment;
 
 abstract class OngoingNotification {
     private static final int PENDING_INTENT_FLAG = PendingIntent.FLAG_UPDATE_CURRENT;

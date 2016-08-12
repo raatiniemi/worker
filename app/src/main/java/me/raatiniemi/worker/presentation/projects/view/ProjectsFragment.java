@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.fragment;
+package me.raatiniemi.worker.presentation.projects.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -52,13 +52,11 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
-import me.raatiniemi.worker.presentation.model.ProjectsModel;
-import me.raatiniemi.worker.presentation.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.Settings;
-import me.raatiniemi.worker.presentation.view.ProjectsView;
 import me.raatiniemi.worker.presentation.view.activity.ProjectActivity;
-import me.raatiniemi.worker.presentation.view.adapter.ProjectsAdapter;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.presenter;
+package me.raatiniemi.worker.presentation.projects.presenter;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -40,11 +40,11 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.notification.PauseNotification;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.util.Settings;
-import me.raatiniemi.worker.presentation.view.ProjectsView;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
