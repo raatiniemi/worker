@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.adapter;
+package me.raatiniemi.worker.presentation.project.view;
 
 import android.graphics.Point;
 import android.view.LayoutInflater;
@@ -32,9 +32,9 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
-import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
+import me.raatiniemi.worker.presentation.project.model.TimesheetChildModel;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.util.SelectionManagerAdapterDecorator;
 import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;

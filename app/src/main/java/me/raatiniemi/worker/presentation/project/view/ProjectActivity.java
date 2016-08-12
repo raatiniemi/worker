@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.activity;
+package me.raatiniemi.worker.presentation.project.view;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,7 +23,6 @@ import android.view.MenuItem;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.base.view.activity.BaseActivity;
 import me.raatiniemi.worker.presentation.util.Settings;
-import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 
 public class ProjectActivity extends BaseActivity {
     /**

@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.presentation.model.timesheet;
+package me.raatiniemi.worker.presentation.project.model;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;

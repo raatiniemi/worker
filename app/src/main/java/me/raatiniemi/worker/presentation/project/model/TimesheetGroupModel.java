@@ -1,4 +1,4 @@
-package me.raatiniemi.worker.presentation.model.timesheet;
+package me.raatiniemi.worker.presentation.project.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.presenter;
+package me.raatiniemi.worker.presentation.project.presenter;
 
 import android.content.Context;
 import android.util.Log;
@@ -35,11 +35,11 @@ import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetChildModel;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
+import me.raatiniemi.worker.presentation.project.model.TimesheetChildModel;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
 import me.raatiniemi.worker.presentation.util.Settings;
-import me.raatiniemi.worker.presentation.view.fragment.TimesheetFragment;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func0;

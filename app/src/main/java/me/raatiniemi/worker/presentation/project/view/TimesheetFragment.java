@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.fragment;
+package me.raatiniemi.worker.presentation.project.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -48,13 +48,11 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
-import me.raatiniemi.worker.presentation.model.timesheet.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.model.timesheet.TimesheetGroupModel;
-import me.raatiniemi.worker.presentation.presenter.TimesheetPresenter;
+import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
-import me.raatiniemi.worker.presentation.view.TimesheetView;
-import me.raatiniemi.worker.presentation.view.adapter.TimesheetAdapter;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
