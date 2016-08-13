@@ -28,7 +28,7 @@ import java.io.File;
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;

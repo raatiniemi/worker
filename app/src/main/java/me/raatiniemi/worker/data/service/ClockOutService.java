@@ -23,7 +23,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
-import me.raatiniemi.worker.presentation.notification.ErrorNotification;
+import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 
 public class ClockOutService extends OngoingService {
     private static final String TAG = "ClockOutService";

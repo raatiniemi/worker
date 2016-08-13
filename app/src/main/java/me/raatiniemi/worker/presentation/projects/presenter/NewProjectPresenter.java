@@ -23,7 +23,7 @@ import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.base.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
 import me.raatiniemi.worker.presentation.projects.view.NewProjectView;
 import rx.Observable;

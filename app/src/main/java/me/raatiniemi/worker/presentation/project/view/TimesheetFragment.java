@@ -47,12 +47,12 @@ import me.raatiniemi.worker.domain.interactor.GetTimesheet;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
+import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 

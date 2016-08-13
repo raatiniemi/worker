@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.base.model;
+package me.raatiniemi.worker.presentation.model;
 
 import android.support.annotation.NonNull;
 

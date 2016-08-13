@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.notification;
+package me.raatiniemi.worker.presentation.view.notification;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -23,15 +23,16 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.projects.view.MainActivity;
 
-public class BackupNotification {
-    private static final int TITLE = R.string.notification_backup_title;
-    private static final int MESSAGE = R.string.notification_backup_message;
+public class RestoreNotification {
+    private static final int TITLE = R.string.notification_restore_title;
+    private static final int MESSAGE = R.string.notification_restore_message;
 
-    private static final int SMALL_ICON = R.drawable.ic_backup_notification;
+    private static final int SMALL_ICON = R.drawable.ic_restore_notification;
 
-    private BackupNotification() {
+    private RestoreNotification() {
     }
 
     public static Notification build(Context context) {
@@ -46,7 +47,9 @@ public class BackupNotification {
 
     private static PendingIntent buildContentAction(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setAction(Worker.INTENT_ACTION_RESTART);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         return buildPendingIntentWithActivity(context, intent);
     }

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.base.view.adapter;
+package me.raatiniemi.worker.presentation.view.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -24,7 +24,7 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.presentation.base.model.ExpandableItem;
+import me.raatiniemi.worker.presentation.model.ExpandableItem;
 
 /**
  * Base adapter for working with the expandable RecyclerView.

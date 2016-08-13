@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.presentation.projects.view;
 
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.base.view.MvpView;
+import me.raatiniemi.worker.presentation.view.MvpView;
 
 /**
  * View-interface for creating new projects.

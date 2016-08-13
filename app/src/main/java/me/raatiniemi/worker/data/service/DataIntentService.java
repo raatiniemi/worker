@@ -33,9 +33,9 @@ import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.domain.interactor.CreateBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
-import me.raatiniemi.worker.presentation.notification.BackupNotification;
-import me.raatiniemi.worker.presentation.notification.ErrorNotification;
-import me.raatiniemi.worker.presentation.notification.RestoreNotification;
+import me.raatiniemi.worker.presentation.view.notification.BackupNotification;
+import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
+import me.raatiniemi.worker.presentation.view.notification.RestoreNotification;
 
 /**
  * Service coordinating data related operations.

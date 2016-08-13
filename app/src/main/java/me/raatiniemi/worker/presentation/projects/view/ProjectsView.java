@@ -21,8 +21,8 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.base.view.MvpView;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.view.MvpView;
 
 /**
  * Methods related to handling of the project view.

@@ -14,17 +14,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.base.view.activity;
+package me.raatiniemi.worker.presentation.view.fragment;
 
-import me.raatiniemi.worker.presentation.base.presenter.MvpPresenter;
-import me.raatiniemi.worker.presentation.base.view.MvpView;
+import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
+
+import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.presentation.presenter.MvpPresenter;
+import me.raatiniemi.worker.presentation.view.MvpView;
 
 /**
- * Base for the model-view-presenter activity.
+ * Base for the model-view-presenter fragment.
  *
- * @param <P> Presenter used with the activity.
+ * @param <P> Presenter to use with the fragment.
  */
-public abstract class MvpActivity<P extends MvpPresenter> extends BaseActivity implements MvpView {
+public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment implements MvpView {
     /**
      * Instance for the presenter.
      */
@@ -50,11 +54,32 @@ public abstract class MvpActivity<P extends MvpPresenter> extends BaseActivity i
     }
 
     /**
-     * Handles clean up when the activity is destroyed.
+     * Display an error message to the user.
+     *
+     * @param e Exception has been thrown.
+     */
+    public void showError(Throwable e) {
+        // Check if the exception message have been populated,
+        // otherwise use the default error message.
+        String message = e.getMessage();
+        if (TextUtils.isEmpty(message)) {
+            message = getString(R.string.error_message_unknown);
+        }
+
+        // Display the error message.
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                message,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    /**
+     * Handles clean up when the fragment view is destroyed.
      */
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
 
         // If the presenter is still active, we have to detach it.
         if (null != getPresenter()) {

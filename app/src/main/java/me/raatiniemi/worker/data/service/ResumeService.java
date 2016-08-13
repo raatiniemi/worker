@@ -25,8 +25,8 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.interactor.ClockIn;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.notification.ErrorNotification;
-import me.raatiniemi.worker.presentation.notification.PauseNotification;
+import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
+import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
 
 public class ResumeService extends OngoingService {
     private static final String TAG = "ResumeService";

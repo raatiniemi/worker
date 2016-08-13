@@ -25,8 +25,8 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.notification.ErrorNotification;
-import me.raatiniemi.worker.presentation.notification.ResumeNotification;
+import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
+import me.raatiniemi.worker.presentation.view.notification.ResumeNotification;
 
 public class PauseService extends OngoingService {
     private static final String TAG = "PauseService";

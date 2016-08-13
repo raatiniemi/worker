@@ -28,8 +28,8 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.presentation.base.view.activity.BaseActivity;
 import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
+import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
 public class MainActivity extends BaseActivity {
     /**

@@ -32,9 +32,9 @@ import java.util.Comparator;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
+import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 
 /**
  * Adapter for listing available projects.

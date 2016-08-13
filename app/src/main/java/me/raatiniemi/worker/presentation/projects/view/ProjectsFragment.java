@@ -50,13 +50,13 @@ import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.presentation.base.view.fragment.MvpFragment;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
+import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {

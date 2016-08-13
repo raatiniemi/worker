@@ -14,10 +14,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.base.view;
+package me.raatiniemi.worker.presentation.presenter;
+
+import me.raatiniemi.worker.presentation.view.MvpView;
 
 /**
- * Marker interface for the model-view-presenter view.
+ * Interface for the presenter.
+ *
+ * @param <V> Reference type for the view attached to the presenter.
  */
-public interface MvpView {
+public interface MvpPresenter<V extends MvpView> {
+    /**
+     * Attach a view to the presenter.
+     *
+     * @param view View to attach to the presenter.
+     */
+    void attachView(V view);
+
+    /**
+     * Detach the view from the presenter.
+     */
+    void detachView();
 }

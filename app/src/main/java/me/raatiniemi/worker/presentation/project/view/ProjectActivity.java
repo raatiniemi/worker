@@ -21,8 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.base.view.activity.BaseActivity;
 import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
 public class ProjectActivity extends BaseActivity {
     /**

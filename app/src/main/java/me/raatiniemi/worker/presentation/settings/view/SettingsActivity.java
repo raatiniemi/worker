@@ -41,11 +41,11 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.service.DataIntentService;
-import me.raatiniemi.worker.presentation.base.view.activity.MvpActivity;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.view.activity.MvpActivity;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;

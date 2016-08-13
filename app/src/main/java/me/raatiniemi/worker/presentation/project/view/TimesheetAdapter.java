@@ -31,12 +31,12 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.presentation.base.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.util.SelectionManagerAdapterDecorator;
+import me.raatiniemi.worker.presentation.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
 public class TimesheetAdapter extends ExpandableListAdapter<

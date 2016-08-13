@@ -14,14 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.base.view.activity;
-
-import android.annotation.SuppressLint;
-import android.support.v7.app.AppCompatActivity;
+package me.raatiniemi.worker.presentation.view;
 
 /**
- * Base for the application activities.
+ * Marker interface for the model-view-presenter view.
  */
-@SuppressLint("Registered")
-public class BaseActivity extends AppCompatActivity {
+public interface MvpView {
 }

@@ -29,8 +29,6 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.presentation.base.view.fragment.BaseFragment;
-
 public class DateTimePickerFragment extends BaseFragment
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String TAG = "DateTimePickerFragment";

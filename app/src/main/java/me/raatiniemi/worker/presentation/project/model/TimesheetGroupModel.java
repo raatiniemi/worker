@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import me.raatiniemi.worker.presentation.base.model.ExpandableItem;
+import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 

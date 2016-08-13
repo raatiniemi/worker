@@ -14,13 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.base.presenter;
+package me.raatiniemi.worker.presentation.presenter;
 
 import android.content.Context;
 
 import java.lang.ref.WeakReference;
 
-import me.raatiniemi.worker.presentation.base.view.MvpView;
+import me.raatiniemi.worker.presentation.view.MvpView;
 
 /**
  * Base presenter with basic functionality.

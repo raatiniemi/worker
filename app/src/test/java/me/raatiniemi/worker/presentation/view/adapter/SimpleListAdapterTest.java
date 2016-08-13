@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.base.view;
+package me.raatiniemi.worker.presentation.view.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.presentation.base.view.adapter.SimpleListAdapter;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;

@@ -14,25 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.base.presenter;
+package me.raatiniemi.worker.presentation.view.activity;
 
-import me.raatiniemi.worker.presentation.base.view.MvpView;
+import android.annotation.SuppressLint;
+import android.support.v7.app.AppCompatActivity;
 
 /**
- * Interface for the presenter.
- *
- * @param <V> Reference type for the view attached to the presenter.
+ * Base for the application activities.
  */
-public interface MvpPresenter<V extends MvpView> {
-    /**
-     * Attach a view to the presenter.
-     *
-     * @param view View to attach to the presenter.
-     */
-    void attachView(V view);
-
-    /**
-     * Detach the view from the presenter.
-     */
-    void detachView();
+@SuppressLint("Registered")
+public class BaseActivity extends AppCompatActivity {
 }
