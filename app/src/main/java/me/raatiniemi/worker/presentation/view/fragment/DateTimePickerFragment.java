@@ -29,8 +29,6 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.presentation.base.view.fragment.BaseFragment;
-
 public class DateTimePickerFragment extends BaseFragment
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String TAG = "DateTimePickerFragment";
@@ -85,7 +83,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param minDate Minimum date.
      */
-    void setMinDate(Calendar minDate) {
+    protected void setMinDate(Calendar minDate) {
         this.minDate = minDate;
     }
 
@@ -94,7 +92,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param maxDate Maximum date.
      */
-    void setMaxDate(Calendar maxDate) {
+    protected void setMaxDate(Calendar maxDate) {
         this.maxDate = maxDate;
     }
 
@@ -217,7 +215,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param onDateTimeSetListener Listener for "OnDateTimeSetListener".
      */
-    void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
+    protected void setOnDateTimeSetListener(OnDateTimeSetListener onDateTimeSetListener) {
         this.onDateTimeSetListener = onDateTimeSetListener;
     }
 
