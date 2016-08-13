@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view.activity;
+package me.raatiniemi.worker.presentation.settings.view;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -42,11 +42,10 @@ import java.util.Locale;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.service.DataIntentService;
 import me.raatiniemi.worker.presentation.base.view.activity.MvpActivity;
-import me.raatiniemi.worker.presentation.model.backup.Backup;
-import me.raatiniemi.worker.presentation.presenter.SettingsPresenter;
+import me.raatiniemi.worker.presentation.settings.model.Backup;
+import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
-import me.raatiniemi.worker.presentation.view.SettingsView;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;

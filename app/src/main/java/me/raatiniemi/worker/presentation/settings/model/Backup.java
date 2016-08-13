@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.model.backup;
+package me.raatiniemi.worker.presentation.settings.model;
 
 import android.support.annotation.Nullable;
 

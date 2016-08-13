@@ -41,7 +41,7 @@
             />
 
         <activity
-            android:name=".presentation.view.activity.SettingsActivity"
+            android:name=".presentation.settings.view.SettingsActivity"
             android:parentActivityName=".presentation.projects.view.MainActivity"
             />
 

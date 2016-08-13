@@ -14,12 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.view;
+package me.raatiniemi.worker.presentation.settings.view;
 
 import android.support.annotation.Nullable;
 
 import me.raatiniemi.worker.presentation.base.view.MvpView;
-import me.raatiniemi.worker.presentation.model.backup.Backup;
+import me.raatiniemi.worker.presentation.settings.model.Backup;
 
 /**
  * Methods related to handling of the settings view.

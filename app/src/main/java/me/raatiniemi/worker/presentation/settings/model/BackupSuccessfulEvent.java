@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Worker Project
+ * Copyright (C) 2015-2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.model;
+package me.raatiniemi.worker.presentation.settings.model;
 
-public class TimeSummaryStartingPointChangeEvent {
+import android.support.annotation.NonNull;
+
+public class BackupSuccessfulEvent {
+    private final Backup backup;
+
+    public BackupSuccessfulEvent(@NonNull Backup backup) {
+        this.backup = backup;
+    }
+
+    @NonNull
+    public Backup getBackup() {
+        return backup;
+    }
 }

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.presenter;
+package me.raatiniemi.worker.presentation.settings.presenter;
 
 import android.content.Context;
 
@@ -29,10 +29,10 @@ import java.io.File;
 
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.presentation.model.backup.Backup;
-import me.raatiniemi.worker.presentation.model.backup.BackupSuccessfulEvent;
-import me.raatiniemi.worker.presentation.view.SettingsView;
+import me.raatiniemi.worker.presentation.settings.model.Backup;
+import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
+import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
+import me.raatiniemi.worker.presentation.settings.view.SettingsView;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;

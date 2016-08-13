@@ -48,9 +48,9 @@ import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
+import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
