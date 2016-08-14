@@ -334,9 +334,10 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
             final ProjectsModel item = getAdapter().get(position);
             final Project project = item.asProject();
 
-            Intent intent = new Intent(getActivity(), ProjectActivity.class);
-            intent.putExtra(ProjectActivity.MESSAGE_PROJECT_ID, project.getId());
-
+            Intent intent = ProjectActivity.newIntent(
+                    getActivity(),
+                    project.getId()
+            );
             startActivity(intent);
         } catch (IndexOutOfBoundsException e) {
             Log.w(TAG, "Unable to get project position", e);

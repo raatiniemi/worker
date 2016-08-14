@@ -52,10 +52,10 @@ abstract class OngoingNotification {
     protected abstract int getSmallIcon();
 
     private PendingIntent buildContentAction() {
-        Intent intent = new Intent(context, ProjectActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(ProjectActivity.MESSAGE_PROJECT_ID, project.getId());
-
+        Intent intent = ProjectActivity.newIntent(
+                context,
+                project.getId()
+        );
         return buildPendingIntentWithActivity(intent);
     }
 
