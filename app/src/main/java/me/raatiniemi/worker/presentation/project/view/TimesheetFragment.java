@@ -50,7 +50,6 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
-import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 
@@ -132,7 +131,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     private boolean loading = false;
 
     private long getProjectId() {
-        return getArguments().getLong(ProjectsFragment.MESSAGE_PROJECT_ID, -1);
+        return getArguments().getLong(ProjectActivity.MESSAGE_PROJECT_ID, -1);
     }
 
     @Override

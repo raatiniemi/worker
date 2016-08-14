@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.presentation.project.view;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +27,8 @@ import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
 public class ProjectActivity extends BaseActivity {
+    static final String MESSAGE_PROJECT_ID = "project id";
+
     /**
      * Tag for the timesheet fragment.
      */
@@ -34,6 +38,14 @@ public class ProjectActivity extends BaseActivity {
      * Reference to the timesheet fragment.
      */
     private TimesheetFragment timesheetFragment;
+
+    public static Intent newIntent(Context context, Long projectId) {
+        Intent intent = new Intent(context, ProjectActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra(ProjectActivity.MESSAGE_PROJECT_ID, projectId);
+
+        return intent;
+    }
 
     /**
      * Get the timesheet fragment, handles construction if needed.

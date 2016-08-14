@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity {
      * Open the settings.
      */
     private void openSettings() {
-        Intent intent = new Intent(this, SettingsActivity.class);
+        Intent intent = SettingsActivity.newIntent(this);
         startActivity(intent);
     }
 
