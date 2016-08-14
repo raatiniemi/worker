@@ -60,8 +60,6 @@ import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
-    public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
-
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
     /**
@@ -337,7 +335,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
             final Project project = item.asProject();
 
             Intent intent = new Intent(getActivity(), ProjectActivity.class);
-            intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
+            intent.putExtra(ProjectActivity.MESSAGE_PROJECT_ID, project.getId());
 
             startActivity(intent);
         } catch (IndexOutOfBoundsException e) {

@@ -28,7 +28,6 @@ import android.support.v4.app.NotificationCompat;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
-import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 
 abstract class OngoingNotification {
     private static final int PENDING_INTENT_FLAG = PendingIntent.FLAG_UPDATE_CURRENT;
@@ -55,7 +54,7 @@ abstract class OngoingNotification {
     private PendingIntent buildContentAction() {
         Intent intent = new Intent(context, ProjectActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.putExtra(ProjectsFragment.MESSAGE_PROJECT_ID, project.getId());
+        intent.putExtra(ProjectActivity.MESSAGE_PROJECT_ID, project.getId());
 
         return buildPendingIntentWithActivity(intent);
     }

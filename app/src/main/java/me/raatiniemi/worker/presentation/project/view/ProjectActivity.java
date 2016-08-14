@@ -25,6 +25,8 @@ import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
 public class ProjectActivity extends BaseActivity {
+    public static final String MESSAGE_PROJECT_ID = "me.raatiniemi.activity.project.id";
+
     /**
      * Tag for the timesheet fragment.
      */
