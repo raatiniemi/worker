@@ -18,6 +18,7 @@ package me.raatiniemi.worker.presentation.settings.view;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -124,6 +125,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
     private static synchronized void setInstance(SettingsActivity instance) {
         SettingsActivity.instance = instance;
+    }
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, SettingsActivity.class);
     }
 
     @Override
