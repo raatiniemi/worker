@@ -146,7 +146,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         List<Integer> positions = new ArrayList<>();
 
         // Check that we still have the view attached.
-        if (!isViewAttached()) {
+        if (isViewDetached()) {
             Log.d(TAG, "View is not attached, skip checking active projects");
             return positions;
         }
@@ -177,7 +177,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         }
 
         // Check that we still have the view attached.
-        if (!isViewAttached()) {
+        if (isViewDetached()) {
             Log.d(TAG, "View is not attached, skip refreshing active projects");
             return;
         }
@@ -315,7 +315,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "getProjects onNext");
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing projects");
                             return;
                         }
@@ -331,7 +331,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.w(TAG, "Failed to get projects", e);
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing error");
                             return;
                         }
@@ -402,7 +402,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.w(TAG, "Failed to delete project", e);
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing error");
                             return;
                         }
@@ -416,7 +416,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "deleteProject onCompleted");
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing successful deletion");
                             return;
                         }
@@ -489,7 +489,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "clockActivityChange onNext");
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip updating project");
                             return;
                         }
@@ -506,7 +506,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.w(TAG, "Failed to change clock activity", e);
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing error");
                             return;
                         }
@@ -527,7 +527,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
-        if (!isViewAttached()) {
+        if (isViewDetached()) {
             Log.d(TAG, "View is not attached, skip reloading projects");
             return;
         }
@@ -537,7 +537,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OngoingNotificationActionEvent event) {
-        if (!isViewAttached()) {
+        if (isViewDetached()) {
             Log.d(TAG, "View is not attached, skip reloading projects");
             return;
         }

@@ -88,7 +88,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                         Log.d(TAG, "getLatestBackup onNext");
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing the latest backup");
                             return;
                         }
@@ -105,7 +105,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                         Log.w(TAG, "Failed to get latest backup", e);
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing the latest backup");
                             return;
                         }
@@ -126,7 +126,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(BackupSuccessfulEvent event) {
         // Check that we still have the view attached.
-        if (!isViewAttached()) {
+        if (isViewDetached()) {
             Log.d(TAG, "View is not attached, skip pushing the latest backup");
             return;
         }
@@ -157,7 +157,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
 
             eventBus.post(new TimeSummaryStartingPointChangeEvent());
 
-            if (!isViewAttached()) {
+            if (isViewDetached()) {
                 return;
             }
             if (GetProjectTimeSince.WEEK == newStartingPoint) {
@@ -168,7 +168,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
         } catch (InvalidStartingPointException e) {
             Log.w(TAG, "Unable to set new starting point", e);
 
-            if (!isViewAttached()) {
+            if (isViewDetached()) {
                 Log.w(TAG, "View is not attached, failed to push error");
                 return;
             }

@@ -155,7 +155,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.d(TAG, "getTimesheet onNext");
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing item");
                             return;
                         }
@@ -172,7 +172,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.w(TAG, "Failed to get timesheet", e);
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing error");
                             return;
                         }
@@ -185,7 +185,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.d(TAG, "getTimesheet onCompleted");
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing finish");
                             return;
                         }
@@ -219,7 +219,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.d(TAG, "remove onNext");
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing time deletion");
                             return;
                         }
@@ -236,7 +236,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.w(TAG, "Failed to remove time", e);
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing error");
                             return;
                         }
@@ -294,7 +294,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.d(TAG, "register onNext");
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing time update");
                             return;
                         }
@@ -319,7 +319,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
                         Log.w(TAG, "Failed to mark time as registered", e);
 
                         // Check that we still have the view attached.
-                        if (!isViewAttached()) {
+                        if (isViewDetached()) {
                             Log.d(TAG, "View is not attached, skip pushing error");
                             return;
                         }
@@ -336,7 +336,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OngoingNotificationActionEvent event) {
-        if (!isViewAttached()) {
+        if (isViewDetached()) {
             Log.d(TAG, "View is not attached, skip reloading timesheet");
             return;
         }

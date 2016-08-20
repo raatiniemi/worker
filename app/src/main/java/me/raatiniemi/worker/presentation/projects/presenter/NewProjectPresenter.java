@@ -85,7 +85,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
 
                             // Check that we still have the view attached. Since we're working
                             // with a dialog, we always expect to have the view attached.
-                            if (!isViewAttached()) {
+                            if (isViewDetached()) {
                                 Log.w(TAG, "View is not attached, failed to push project");
                                 return;
                             }
@@ -103,7 +103,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
 
                             // Check that we still have the view attached. Since we're working
                             // with a dialog, we always expect to have the view attached.
-                            if (!isViewAttached()) {
+                            if (isViewDetached()) {
                                 Log.w(TAG, "View is not attached, failed to push error");
                                 return;
                             }
@@ -125,7 +125,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
         } catch (InvalidProjectNameException e) {
             // Check that we still have the view attached. Since we're working
             // with a dialog, we always expect to have the view attached.
-            if (!isViewAttached()) {
+            if (isViewDetached()) {
                 Log.w(TAG, "View is not attached, failed to push error", e);
                 return;
             }
