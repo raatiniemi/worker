@@ -42,7 +42,7 @@ public class ResumeNotification extends OngoingNotification {
     private ResumeNotification(Context context, Project project) {
         super(context, project);
 
-        useChronometer = Settings.isOngoingNotificationChronometerEnabled(context);
+        useChronometer = Settings.isOngoingNotificationChronometerEnabled(getContext());
     }
 
     public static Notification build(Context context, Project project) {
