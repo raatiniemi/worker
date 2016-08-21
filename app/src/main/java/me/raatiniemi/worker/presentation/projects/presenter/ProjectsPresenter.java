@@ -309,6 +309,14 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                     }
                 })
                 .compose(this.<List<ProjectsModel>>applySchedulers())
+                .doOnNext(new Action1<List<ProjectsModel>>() {
+                    @Override
+                    public void call(List<ProjectsModel> projectsModels) {
+                        for (ProjectsModel projectsModel : projectsModels) {
+                            postOngoingNotification(projectsModel.asProject());
+                        }
+                    }
+                })
                 .subscribe(new Subscriber<List<ProjectsModel>>() {
                     @Override
                     public void onNext(List<ProjectsModel> items) {
@@ -462,25 +470,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                     @Override
                     public void call(ProjectsModel projectsModel) {
                         Project project = projectsModel.asProject();
-                        NotificationManager manager = (NotificationManager) getContext()
-                                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-                        manager.cancel(
-                                String.valueOf(project.getId()),
-                                Worker.NOTIFICATION_ON_GOING_ID
-                        );
-
-                        if (!Settings.isOngoingNotificationEnabled(getContext())) {
-                            return;
-                        }
-
-                        if (project.isActive()) {
-                            manager.notify(
-                                    String.valueOf(project.getId()),
-                                    Worker.NOTIFICATION_ON_GOING_ID,
-                                    PauseNotification.build(getContext(), project)
-                            );
-                        }
+                        postOngoingNotification(project);
                     }
                 })
                 .subscribe(new Subscriber<ProjectsModel>() {
@@ -523,6 +513,28 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "clockActivityChange onCompleted");
                     }
                 });
+    }
+
+    private void postOngoingNotification(Project project) {
+        NotificationManager manager = (NotificationManager) getContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+
+        manager.cancel(
+                String.valueOf(project.getId()),
+                Worker.NOTIFICATION_ON_GOING_ID
+        );
+
+        if (!Settings.isOngoingNotificationEnabled(getContext())) {
+            return;
+        }
+
+        if (project.isActive()) {
+            manager.notify(
+                    String.valueOf(project.getId()),
+                    Worker.NOTIFICATION_ON_GOING_ID,
+                    PauseNotification.build(getContext(), project)
+            );
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
