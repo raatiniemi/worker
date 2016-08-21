@@ -58,7 +58,7 @@ public class PauseNotification extends OngoingNotification {
 
         useChronometer = Settings.isOngoingNotificationChronometerEnabled(getContext());
         if (useChronometer) {
-            populateRegisteredTime(project);
+            populateRegisteredTime();
         }
     }
 
@@ -67,11 +67,11 @@ public class PauseNotification extends OngoingNotification {
         return notification.build();
     }
 
-    private void populateRegisteredTime(Project project) {
+    private void populateRegisteredTime() {
         useChronometer = true;
 
         try {
-            List<Time> registeredTime = getRegisteredTime(project);
+            List<Time> registeredTime = getRegisteredTime();
             for (Time time : registeredTime) {
                 this.registeredTime += time.getTime();
             }
@@ -81,14 +81,12 @@ public class PauseNotification extends OngoingNotification {
         }
     }
 
-    private List<Time> getRegisteredTime(
-            Project project
-    ) throws DomainException {
+    private List<Time> getRegisteredTime() throws DomainException {
         TimeRepository repository = buildTimeRepository();
         GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(repository);
 
         return registeredTimeUseCase.execute(
-                project,
+                getProject(),
                 GetProjectTimeSince.DAY
         );
     }

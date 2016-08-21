@@ -52,6 +52,10 @@ abstract class OngoingNotification {
         return context;
     }
 
+    protected Project getProject() {
+        return project;
+    }
+
     @DrawableRes
     protected abstract int getSmallIcon();
 
