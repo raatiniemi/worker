@@ -48,6 +48,10 @@ abstract class OngoingNotification {
                 .setOngoing(true);
     }
 
+    protected Context getContext() {
+        return context;
+    }
+
     @DrawableRes
     protected abstract int getSmallIcon();
 

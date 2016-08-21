@@ -56,9 +56,9 @@ public class PauseNotification extends OngoingNotification {
     private PauseNotification(Context context, Project project) {
         super(context, project);
 
-        useChronometer = Settings.isOngoingNotificationChronometerEnabled(context);
+        useChronometer = Settings.isOngoingNotificationChronometerEnabled(getContext());
         if (useChronometer) {
-            populateRegisteredTime(context, project);
+            populateRegisteredTime(project);
         }
     }
 
@@ -67,11 +67,11 @@ public class PauseNotification extends OngoingNotification {
         return notification.build();
     }
 
-    private void populateRegisteredTime(Context context, Project project) {
+    private void populateRegisteredTime(Project project) {
         useChronometer = true;
 
         try {
-            List<Time> registeredTime = getRegisteredTime(context, project);
+            List<Time> registeredTime = getRegisteredTime(project);
             for (Time time : registeredTime) {
                 this.registeredTime += time.getTime();
             }
@@ -82,10 +82,9 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private List<Time> getRegisteredTime(
-            Context context,
             Project project
     ) throws DomainException {
-        TimeRepository repository = buildTimeRepository(context);
+        TimeRepository repository = buildTimeRepository();
         GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(repository);
 
         return registeredTimeUseCase.execute(
@@ -94,9 +93,9 @@ public class PauseNotification extends OngoingNotification {
         );
     }
 
-    private TimeRepository buildTimeRepository(Context context) {
+    private TimeRepository buildTimeRepository() {
         return new TimeResolverRepository(
-                context.getContentResolver(),
+                getContext().getContentResolver(),
                 new TimeCursorMapper(),
                 new TimeContentValuesMapper()
         );
