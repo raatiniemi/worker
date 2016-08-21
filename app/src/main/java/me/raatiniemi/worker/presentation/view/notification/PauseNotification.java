@@ -52,6 +52,7 @@ public class PauseNotification extends OngoingNotification {
 
     private boolean useChronometer;
     private long registeredTime;
+    private TimeResolverRepository repository;
 
     private PauseNotification(Context context, Project project) {
         super(context, project);
@@ -71,10 +72,13 @@ public class PauseNotification extends OngoingNotification {
         useChronometer = true;
 
         try {
-            List<Time> registeredTime = getRegisteredTime();
-            for (Time time : registeredTime) {
-                this.registeredTime += time.getTime();
+            long registeredTime = 0L;
+
+            for (Time time : getRegisteredTime()) {
+                registeredTime += time.getTime();
             }
+
+            this.registeredTime = includeActiveTime(registeredTime);
         } catch (DomainException e) {
             Log.w(TAG, "Unable to populate registered time", e);
             useChronometer = false;
@@ -82,7 +86,7 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private List<Time> getRegisteredTime() throws DomainException {
-        TimeRepository repository = buildTimeRepository();
+        TimeRepository repository = getTimeRepository();
         GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(repository);
 
         return registeredTimeUseCase.execute(
@@ -91,16 +95,34 @@ public class PauseNotification extends OngoingNotification {
         );
     }
 
-    private TimeRepository buildTimeRepository() {
-        return new TimeResolverRepository(
-                getContext().getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
+    private TimeRepository getTimeRepository() {
+        if (null == repository) {
+            repository = new TimeResolverRepository(
+                    getContext().getContentResolver(),
+                    new TimeCursorMapper(),
+                    new TimeContentValuesMapper()
+            );
+        }
+
+        return repository;
     }
 
     private GetProjectTimeSince buildRegisteredTimeUseCase(TimeRepository repository) {
         return new GetProjectTimeSince(repository);
+    }
+
+    private long includeActiveTime(long registeredTime) throws DomainException {
+        Time activeTime = getActiveTimeForProject();
+        if (null != activeTime) {
+            registeredTime += activeTime.getInterval();
+        }
+
+        return registeredTime;
+    }
+
+    private Time getActiveTimeForProject() throws DomainException {
+        return getTimeRepository()
+                .getActiveTimeForProject(getProject().getId());
     }
 
     @Override
