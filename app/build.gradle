@@ -4,14 +4,14 @@ apply plugin: 'org.sonarqube'
 
 def androidSupportVersion = '24.1.1'
 
-def rxandroidVersion = '1.2.0'
-def eventbusVersion = "3.0.0"
 def advancedrecyclerviewVersion = "0.9.1"
+def eventbusVersion = "3.0.0"
+def rxandroidVersion = '1.2.0'
 
 def junitVersion = "4.12"
 def junitDataProviderVersion = "1.11.0"
-def robolectricVersion = "3.0"
 def mockitoVersion = "1.10.19"
+def robolectricVersion = "3.0"
 
 android {
     compileSdkVersion 24
@@ -123,19 +123,18 @@ jacoco {
 }
 
 dependencies {
-    compile "com.android.support:recyclerview-v7:${androidSupportVersion}"
-    compile "com.android.support:cardview-v7:${androidSupportVersion}"
     compile "com.android.support:appcompat-v7:${androidSupportVersion}"
+    compile "com.android.support:cardview-v7:${androidSupportVersion}"
     compile "com.android.support:design:${androidSupportVersion}"
+    compile "com.android.support:recyclerview-v7:${androidSupportVersion}"
     compile "com.android.support:support-annotations:${androidSupportVersion}"
 
-    compile "io.reactivex:rxandroid:${rxandroidVersion}"
-
-    compile "org.greenrobot:eventbus:${eventbusVersion}"
     compile "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${advancedrecyclerviewVersion}"
+    compile "io.reactivex:rxandroid:${rxandroidVersion}"
+    compile "org.greenrobot:eventbus:${eventbusVersion}"
 
     testCompile "junit:junit:${junitVersion}"
     testCompile "com.tngtech.java:junit-dataprovider:${junitDataProviderVersion}"
-    testCompile "org.robolectric:robolectric:${robolectricVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
+    testCompile "org.robolectric:robolectric:${robolectricVersion}"
 }
