@@ -127,6 +127,7 @@ dependencies {
     compile "com.android.support:cardview-v7:${androidSupportVersion}"
     compile "com.android.support:appcompat-v7:${androidSupportVersion}"
     compile "com.android.support:design:${androidSupportVersion}"
+    compile "com.android.support:support-annotations:${androidSupportVersion}"
 
     compile "io.reactivex:rxandroid:${rxandroidVersion}"
 
