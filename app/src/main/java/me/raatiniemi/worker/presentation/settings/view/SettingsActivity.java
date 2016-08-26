@@ -625,10 +625,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     Snackbar.LENGTH_SHORT
             ).show();
 
-            // Start the restore action.
-            Intent intent = new Intent(getActivity(), DataIntentService.class);
-            intent.setAction(DataIntentService.INTENT_ACTION_RESTORE);
-            getActivity().startService(intent);
+            DataIntentService.startRestore(getActivity());
         }
 
         /**
