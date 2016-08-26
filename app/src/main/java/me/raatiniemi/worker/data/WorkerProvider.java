@@ -51,7 +51,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
-    private WorkerDatabase openHelper;
+    WorkerDatabase openHelper;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -87,8 +87,7 @@ public class WorkerProvider extends ContentProvider {
                 mimeType = ProjectContract.ITEM_TYPE;
                 break;
             case PROJECTS_TIME:
-                mimeType = TimeContract.STREAM_TYPE;
-                break;
+            case PROJECTS_TIMESHEET:
             case TIME:
                 mimeType = TimeContract.STREAM_TYPE;
                 break;
@@ -109,6 +108,7 @@ public class WorkerProvider extends ContentProvider {
         // TODO: Simplify the process of retrieving offset and limit.
         String limit = null;
         if (null != uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT)) {
+            limit = "";
             if (null != uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET)) {
                 limit = uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET) + ",";
             }
