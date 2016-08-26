@@ -44,7 +44,7 @@ public class DataIntentService extends IntentService {
     /**
      * Intent action for running the backup operation.
      */
-    public static final String INTENT_ACTION_BACKUP = "backup";
+    private static final String INTENT_ACTION_BACKUP = "backup";
 
     /**
      * Intent action for running the restore operation.
@@ -66,6 +66,13 @@ public class DataIntentService extends IntentService {
      */
     public DataIntentService() {
         super(TAG);
+    }
+
+    public static void startBackup(Context context) {
+        Intent intent = new Intent(context, DataIntentService.class);
+        intent.setAction(INTENT_ACTION_BACKUP);
+
+        context.startService(intent);
     }
 
     /**

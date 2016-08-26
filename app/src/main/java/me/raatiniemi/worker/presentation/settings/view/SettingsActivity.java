@@ -585,12 +585,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                         Snackbar.LENGTH_SHORT
                 ).show();
 
-                // Start the backup action.
-                Intent intent = new Intent(getActivity(), DataIntentService.class);
-                intent.setAction(DataIntentService.INTENT_ACTION_BACKUP);
-                getActivity().startService(intent);
-
-                // No need to go any further.
+                DataIntentService.startBackup(getActivity());
                 return;
             }
 
