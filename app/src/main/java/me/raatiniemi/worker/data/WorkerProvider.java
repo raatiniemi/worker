@@ -108,6 +108,7 @@ public class WorkerProvider extends ContentProvider {
         // TODO: Simplify the process of retrieving offset and limit.
         String limit = null;
         if (null != uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT)) {
+            limit = "";
             if (null != uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET)) {
                 limit = uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET) + ",";
             }
