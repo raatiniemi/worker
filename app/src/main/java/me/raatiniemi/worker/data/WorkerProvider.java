@@ -51,7 +51,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
-    private WorkerDatabase openHelper;
+    WorkerDatabase openHelper;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
