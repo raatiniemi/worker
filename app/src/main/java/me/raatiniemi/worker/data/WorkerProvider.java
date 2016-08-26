@@ -87,6 +87,7 @@ public class WorkerProvider extends ContentProvider {
                 mimeType = ProjectContract.ITEM_TYPE;
                 break;
             case PROJECTS_TIME:
+            case PROJECTS_TIMESHEET:
             case TIME:
                 mimeType = TimeContract.STREAM_TYPE;
                 break;
