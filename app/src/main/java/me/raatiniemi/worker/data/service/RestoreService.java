@@ -79,7 +79,7 @@ public class RestoreService extends IntentService {
             // ClassCastException have been thrown.
             if (null != manager && null != notification) {
                 manager.notify(
-                        Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
+                        Worker.NOTIFICATION_RESTORE_SERVICE_ID,
                         notification
                 );
             }

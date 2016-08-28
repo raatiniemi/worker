@@ -35,15 +35,13 @@ public final class Worker {
      */
     public static final int DATABASE_VERSION = 2;
 
-    /**
-     * Id for the notifications from the DataIntentService-class.
-     */
-    public static final int NOTIFICATION_DATA_INTENT_SERVICE_ID = 1;
+    public static final int NOTIFICATION_BACKUP_SERVICE_ID = 1;
+    public static final int NOTIFICATION_RESTORE_SERVICE_ID = 2;
 
     /**
      * Id for on-going notification.
      */
-    public static final int NOTIFICATION_ON_GOING_ID = 2;
+    public static final int NOTIFICATION_ON_GOING_ID = 3;
 
     /**
      * Prefix for backup directories.

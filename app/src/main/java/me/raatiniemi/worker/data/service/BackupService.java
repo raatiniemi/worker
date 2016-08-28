@@ -84,7 +84,7 @@ public class BackupService extends IntentService {
             // ClassCastException have been thrown.
             if (null != manager && null != notification) {
                 manager.notify(
-                        Worker.NOTIFICATION_DATA_INTENT_SERVICE_ID,
+                        Worker.NOTIFICATION_BACKUP_SERVICE_ID,
                         notification
                 );
             }
