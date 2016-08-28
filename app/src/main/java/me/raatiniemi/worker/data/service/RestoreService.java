@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Worker Project
+ * Copyright (C) 2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,101 +31,32 @@ import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.notification.RestoreNotification;
 
-/**
- * Service coordinating data related operations.
- */
-public class DataIntentService extends IntentService {
-    /**
-     * Intent action for running the restore operation.
-     */
-    private static final String INTENT_ACTION_RESTORE = "restore";
-
-    /**
-     * Tag for logging.
-     */
-    private static final String TAG = "DataIntentService";
-
-    /**
-     * Type of running data operation.
-     */
-    private static boolean running = false;
-
-    /**
-     * Constructor.
-     */
-    public DataIntentService() {
-        super(TAG);
-    }
+public class RestoreService extends IntentService {
+    private static final String TAG = "RestoreService";
 
     public static void startRestore(Context context) {
-        Intent intent = new Intent(context, DataIntentService.class);
-        intent.setAction(INTENT_ACTION_RESTORE);
-
+        Intent intent = new Intent(context, RestoreService.class);
         context.startService(intent);
     }
 
-    /**
-     * Check whether a data operation is running.
-     *
-     * @return True if data operation is running, otherwise false.
-     */
-    public static boolean isRunning() {
-        return running;
+    public RestoreService() {
+        super(TAG);
     }
 
     @Override
-    protected synchronized void onHandleIntent(Intent intent) {
-        try {
-            // If an operation is already running, we should not allow another to
-            // start. We wouldn't want backup and restore running simultaneously.
-            if (DataIntentService.isRunning()) {
-                throw new IllegalStateException("Data operation is already running");
-            }
-
-            Context context = getApplicationContext();
-
-            // Check which data operation we should execute.
-            String action = intent.getAction();
-            switch (action) {
-                case INTENT_ACTION_RESTORE:
-                    running = true;
-                    runRestore(context);
-                    running = false;
-                    break;
-                default:
-                    throw new IllegalStateException("Received unknown action: " + action);
-            }
-        } catch (IllegalStateException e) {
-            // TODO: Post event `DataOperationFailure`.
-            Log.w(TAG, "Failed to perform data operation", e);
-        } catch (Exception e) {
-            // TODO: Post event `DataOperationFailure`.
-            Log.w(TAG, "Failed to perform data operation", e);
-
-            // In case the data operation throw an exception we need to reset
-            // the running flag, otherwise we might prevent actions to run.
-            running = false;
-        }
-    }
-
-    /**
-     * Execute the restore process.
-     *
-     * @param context Application context.
-     */
-    private void runRestore(Context context) {
+    protected void onHandleIntent(Intent intent) {
         NotificationManager manager = null;
         Notification notification = null;
 
         try {
-            manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             // Restore the backup.
-            RestoreStrategy restoreStrategy = new StorageRestoreStrategy(context);
+            RestoreStrategy restoreStrategy = new StorageRestoreStrategy(this);
             RestoreBackup restoreBackup = new RestoreBackup(restoreStrategy);
             restoreBackup.execute();
 
-            notification = RestoreNotification.build(context);
+            notification = RestoreNotification.build(this);
             // TODO: Post event for `RestoreSuccessful`.
         } catch (ClassCastException e) {
             // TODO: Post event for `RestoreFailure`.
@@ -136,7 +67,7 @@ public class DataIntentService extends IntentService {
 
             // TODO: Display what was the cause of the restore failure.
             notification = ErrorNotification.build(
-                    context,
+                    this,
                     getString(R.string.error_notification_restore_title),
                     getString(R.string.error_notification_restore_message)
             );

@@ -54,12 +54,12 @@
             />
 
         <service
-            android:name=".data.service.DataIntentService"
+            android:name=".data.service.BackupService"
             android:exported="false"
             />
 
         <service
-            android:name=".data.service.BackupService"
+            android:name=".data.service.RestoreService"
             android:exported="false"
             />
 

@@ -42,7 +42,7 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.service.BackupService;
-import me.raatiniemi.worker.data.service.DataIntentService;
+import me.raatiniemi.worker.data.service.RestoreService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
@@ -546,36 +546,9 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         }
 
         /**
-         * Check if a backup/restore action is already running.
-         *
-         * @return true if action is running, otherwise false.
-         */
-        private boolean checkRunningAction() {
-            // Check that no other data operation is already running, we
-            // don't want two actions to run simultaneously.
-            if (DataIntentService.isRunning()) {
-                Snackbar.make(
-                        getActivity().findViewById(android.R.id.content),
-                        R.string.error_message_data_operation_already_running,
-                        Snackbar.LENGTH_LONG
-                ).show();
-
-                return true;
-            }
-            return false;
-        }
-
-        /**
          * Initiate the backup action.
          */
         private void runBackup() {
-            // Check if a action is already running, we don't want two actions
-            // to run simultaneously.
-            if (checkRunningAction()) {
-                // Another action is running, no need to go any further.
-                return;
-            }
-
             // We should only attempt to backup if permission to write
             // to the external storage have been granted.
             if (PermissionUtil.havePermission(getActivity(), WRITE_EXTERNAL_STORAGE)) {
@@ -613,20 +586,13 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
          * Initiate the restore action.
          */
         private void runRestore() {
-            // Check if a action is already running, we don't want two actions
-            // to run simultaneously.
-            if (checkRunningAction()) {
-                // Another action is running, no need to go any further.
-                return;
-            }
-
             Snackbar.make(
                     getActivity().findViewById(android.R.id.content),
                     R.string.message_restoring_data,
                     Snackbar.LENGTH_SHORT
             ).show();
 
-            DataIntentService.startRestore(getActivity());
+            RestoreService.startRestore(getActivity());
         }
 
         /**
