@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.data.service.BackupService;
 import me.raatiniemi.worker.data.service.DataIntentService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
@@ -585,7 +586,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                         Snackbar.LENGTH_SHORT
                 ).show();
 
-                DataIntentService.startBackup(getActivity());
+                BackupService.startBackup(getActivity());
                 return;
             }
 

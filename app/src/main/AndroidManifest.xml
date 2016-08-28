@@ -59,6 +59,11 @@
             />
 
         <service
+            android:name=".data.service.BackupService"
+            android:exported="false"
+            />
+
+        <service
             android:name=".data.service.PauseService"
             android:exported="false"
             />
