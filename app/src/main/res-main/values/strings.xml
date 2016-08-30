@@ -107,8 +107,6 @@
     <string name="message.change_time_summary_starting_point_month">Time summary will show current month</string>
     <string name="error.message.change_time_summary_starting_point">Unable to change time summary starting point.</string>
 
-    <string name="error.message.data_operation_already_running">Data operation is already running…</string>
-
     <string name="error.notification.backup.title">Backup failed</string>
     <string name="error.notification.backup.message">Backup to external storage failed.</string>
 
