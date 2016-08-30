@@ -25,7 +25,7 @@ import android.support.v4.app.NotificationCompat;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.service.ResumeService;
+import me.raatiniemi.worker.data.service.ongoing.ResumeService;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.util.Settings;
 

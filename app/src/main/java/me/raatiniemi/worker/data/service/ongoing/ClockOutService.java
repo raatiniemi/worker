@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.service;
+package me.raatiniemi.worker.data.service.ongoing;
 
 import android.content.Intent;
 import android.util.Log;

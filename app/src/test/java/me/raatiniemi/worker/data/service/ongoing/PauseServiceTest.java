@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.service;
+package me.raatiniemi.worker.data.service.ongoing;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -42,10 +42,11 @@ import java.util.Date;
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract;
+import me.raatiniemi.worker.data.service.ongoing.PauseService;
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.domain.interactor.ClockIn;
+import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
@@ -63,18 +64,18 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class ResumeServiceTest {
+public class PauseServiceTest {
     private ServiceController<TestService> serviceController;
 
     private NotificationManager notificationManager;
-    private ClockIn clockIn;
+    private ClockOut clockOut;
     private GetProject getProject;
     private EventBus eventBus;
 
     private Intent buildIntentForService() {
         return new Intent(
                 RuntimeEnvironment.application,
-                ResumeService.class
+                PauseService.class
         );
     }
 
@@ -110,7 +111,7 @@ public class ResumeServiceTest {
 
     private void setUpService() {
         TestService service = getService();
-        service.clockIn = clockIn = mock(ClockIn.class);
+        service.clockOut = clockOut = mock(ClockOut.class);
         service.getProject = getProject = mock(GetProject.class);
         service.eventBus = eventBus = mock(EventBus.class);
     }
@@ -131,7 +132,7 @@ public class ResumeServiceTest {
         intent.setData(buildProjectDataUri());
 
         doThrow(ClockActivityException.class)
-                .when(clockIn)
+                .when(clockOut)
                 .execute(eq(1L), isA(Date.class));
 
         serviceController.withIntent(intent)
@@ -159,7 +160,7 @@ public class ResumeServiceTest {
         serviceController.withIntent(intent)
                 .startCommand(0, 0);
 
-        verify(clockIn).execute(
+        verify(clockOut).execute(
                 eq(1L),
                 isA(Date.class)
         );
@@ -188,7 +189,7 @@ public class ResumeServiceTest {
         serviceController.withIntent(intent)
                 .startCommand(0, 0);
 
-        verify(clockIn).execute(
+        verify(clockOut).execute(
                 eq(1L),
                 isA(Date.class)
         );
@@ -206,8 +207,8 @@ public class ResumeServiceTest {
     }
 
     @SuppressLint("Registered")
-    public static class TestService extends ResumeService {
-        private ClockIn clockIn;
+    public static class TestService extends PauseService {
+        private ClockOut clockOut;
         private GetProject getProject;
         private EventBus eventBus;
         private boolean isOngoingNotificationEnabled = false;
@@ -233,8 +234,8 @@ public class ResumeServiceTest {
         }
 
         @Override
-        protected ClockIn buildClockInUseCase() {
-            return clockIn;
+        protected ClockOut buildClockOutUseCase() {
+            return clockOut;
         }
 
         @Override

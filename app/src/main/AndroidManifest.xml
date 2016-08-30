@@ -54,27 +54,27 @@
             />
 
         <service
-            android:name=".data.service.BackupService"
+            android:name=".data.service.data.BackupService"
             android:exported="false"
             />
 
         <service
-            android:name=".data.service.RestoreService"
+            android:name=".data.service.data.RestoreService"
             android:exported="false"
             />
 
         <service
-            android:name=".data.service.PauseService"
+            android:name=".data.service.ongoing.PauseService"
             android:exported="false"
             />
 
         <service
-            android:name=".data.service.ClockOutService"
+            android:name=".data.service.ongoing.ClockOutService"
             android:exported="false"
             />
 
         <service
-            android:name=".data.service.ResumeService"
+            android:name=".data.service.ongoing.ResumeService"
             android:exported="false"
             />
 

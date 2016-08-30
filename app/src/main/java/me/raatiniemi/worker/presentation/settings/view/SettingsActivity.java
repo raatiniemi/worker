@@ -41,8 +41,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.service.BackupService;
-import me.raatiniemi.worker.data.service.RestoreService;
+import me.raatiniemi.worker.data.service.data.BackupService;
+import me.raatiniemi.worker.data.service.data.RestoreService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
