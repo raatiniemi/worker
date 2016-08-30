@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.data.backup.StorageBackupStrategy;
+import me.raatiniemi.worker.data.service.data.strategy.StorageBackupStrategy;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.domain.interactor.CreateBackup;
 import me.raatiniemi.worker.presentation.view.notification.BackupNotification;

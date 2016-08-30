@@ -25,7 +25,7 @@ import android.util.Log;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.data.backup.StorageRestoreStrategy;
+import me.raatiniemi.worker.data.service.data.strategy.StorageRestoreStrategy;
 import me.raatiniemi.worker.domain.interactor.RestoreBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
