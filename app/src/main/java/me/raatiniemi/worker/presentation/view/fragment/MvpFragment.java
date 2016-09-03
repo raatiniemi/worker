@@ -21,14 +21,13 @@ import android.text.TextUtils;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.presenter.MvpPresenter;
-import me.raatiniemi.worker.presentation.view.MvpView;
 
 /**
  * Base for the model-view-presenter fragment.
  *
  * @param <P> Presenter to use with the fragment.
  */
-public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment implements MvpView {
+public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment {
     /**
      * Instance for the presenter.
      */
