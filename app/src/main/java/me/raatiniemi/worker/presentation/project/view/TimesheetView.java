@@ -16,7 +16,9 @@
 
 package me.raatiniemi.worker.presentation.project.view;
 
-public interface TimesheetView {
+import me.raatiniemi.worker.presentation.view.MvpView;
+
+public interface TimesheetView extends MvpView {
     /**
      * Show message for failed timesheet retrieval.
      */
