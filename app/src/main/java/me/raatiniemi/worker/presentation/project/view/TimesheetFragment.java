@@ -243,6 +243,16 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         getAdapter().add(items);
     }
 
+    @Override
+    public void update(List<TimeInAdapterResult> results) {
+        getAdapter().set(results);
+    }
+
+    @Override
+    public void remove(List<TimeInAdapterResult> results) {
+        getAdapter().remove(results);
+    }
+
     @NonNull
     public TimesheetGroupModel remove(int index) {
         return getAdapter().remove(index);
@@ -300,16 +310,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         // Clear the items from the list and start loading from the beginning...
         getAdapter().clear();
         getPresenter().getTimesheet(getProjectId(), 0);
-    }
-
-    @Override
-    public void remove(List<TimeInAdapterResult> results) {
-        getAdapter().remove(results);
-    }
-
-    @Override
-    public void update(List<TimeInAdapterResult> results) {
-        getAdapter().set(results);
     }
 
     @Override
