@@ -390,7 +390,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         @Override
         public int getTitle() {
-            return R.string.activity_settings_preferences;
+            return R.string.activity_settings_title;
         }
     }
 
