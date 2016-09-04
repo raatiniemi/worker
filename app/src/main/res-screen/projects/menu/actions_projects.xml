@@ -5,13 +5,13 @@
 
     <item
         android:id="@+id/actions_main_create_new_project"
-        android:title="@string/menu.actions.main.create_new_project"
+        android:title="@string/menu.actions.projects.create_new_project"
         android:icon="@android:drawable/ic_menu_add"
         />
 
     <item
         android:id="@+id/actions_main_settings"
-        android:title="@string/menu.actions.main.settings"
+        android:title="@string/menu.actions.projects.settings"
         android:icon="@android:drawable/ic_menu_preferences"
         />
 

@@ -31,18 +31,18 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
-public class MainActivity extends BaseActivity {
+public class ProjectsActivity extends BaseActivity {
     /**
      * Tag for the project list fragment.
      */
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ProjectsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_projects);
 
         if (shouldRestartApplication()) {
             restart();
@@ -67,7 +67,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actions_main, menu);
+        inflater.inflate(R.menu.actions_projects, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity {
             // we have stopped the application, i.e. it will restart.
             AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, ProjectsActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

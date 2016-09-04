@@ -24,7 +24,7 @@ import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.presentation.projects.view.MainActivity;
+import me.raatiniemi.worker.presentation.projects.view.ProjectsActivity;
 
 public class RestoreNotification {
     private static final int TITLE = R.string.notification_restore_title;
@@ -46,7 +46,7 @@ public class RestoreNotification {
     }
 
     private static PendingIntent buildContentAction(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, ProjectsActivity.class);
         intent.setAction(Worker.INTENT_ACTION_RESTART);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

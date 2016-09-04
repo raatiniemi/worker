@@ -23,7 +23,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.projects.view.MainActivity;
+import me.raatiniemi.worker.presentation.projects.view.ProjectsActivity;
 
 public class BackupNotification {
     private static final int TITLE = R.string.notification_backup_title;
@@ -45,7 +45,7 @@ public class BackupNotification {
     }
 
     private static PendingIntent buildContentAction(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, ProjectsActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         return buildPendingIntentWithActivity(context, intent);
