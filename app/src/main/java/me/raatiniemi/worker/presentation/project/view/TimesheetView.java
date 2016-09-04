@@ -16,9 +16,19 @@
 
 package me.raatiniemi.worker.presentation.project.view;
 
+import java.util.List;
+
+import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.view.MvpView;
 
 public interface TimesheetView extends MvpView {
+    int add(List<TimesheetGroupModel> items);
+
+    void update(List<TimeInAdapterResult> results);
+
+    void remove(List<TimeInAdapterResult> results);
+
     /**
      * Show message for failed timesheet retrieval.
      */

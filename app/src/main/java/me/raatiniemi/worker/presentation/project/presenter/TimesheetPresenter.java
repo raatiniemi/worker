@@ -38,14 +38,14 @@ import me.raatiniemi.worker.presentation.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
-import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
+import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
-public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
+public class TimesheetPresenter extends RxPresenter<TimesheetView> {
     /**
      * Tag used when logging.
      */
@@ -101,7 +101,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetFragment> {
      * @inheritDoc
      */
     @Override
-    public void attachView(TimesheetFragment view) {
+    public void attachView(TimesheetView view) {
         super.attachView(view);
 
         eventBus.register(this);

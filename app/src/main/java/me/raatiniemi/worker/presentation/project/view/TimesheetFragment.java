@@ -238,6 +238,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         return getAdapter().add(item);
     }
 
+    @Override
     public int add(@NonNull List<TimesheetGroupModel> items) {
         return getAdapter().add(items);
     }
@@ -301,10 +302,12 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         getPresenter().getTimesheet(getProjectId(), 0);
     }
 
+    @Override
     public void remove(List<TimeInAdapterResult> results) {
         getAdapter().remove(results);
     }
 
+    @Override
     public void update(List<TimeInAdapterResult> results) {
         getAdapter().set(results);
     }
