@@ -239,8 +239,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     }
 
     @Override
-    public int add(@NonNull List<TimesheetGroupModel> items) {
-        return getAdapter().add(items);
+    public void add(@NonNull List<TimesheetGroupModel> items) {
+        getAdapter().add(items);
     }
 
     @NonNull

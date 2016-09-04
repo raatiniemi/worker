@@ -23,7 +23,7 @@ import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.view.MvpView;
 
 public interface TimesheetView extends MvpView {
-    int add(List<TimesheetGroupModel> items);
+    void add(List<TimesheetGroupModel> items);
 
     void update(List<TimeInAdapterResult> results);
 
