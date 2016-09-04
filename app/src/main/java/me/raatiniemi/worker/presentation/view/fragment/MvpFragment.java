@@ -53,27 +53,6 @@ public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment {
     }
 
     /**
-     * Display an error message to the user.
-     *
-     * @param e Exception has been thrown.
-     */
-    public void showError(Throwable e) {
-        // Check if the exception message have been populated,
-        // otherwise use the default error message.
-        String message = e.getMessage();
-        if (TextUtils.isEmpty(message)) {
-            message = getString(R.string.error_message_unknown);
-        }
-
-        // Display the error message.
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                message,
-                Snackbar.LENGTH_LONG
-        ).show();
-    }
-
-    /**
      * Handles clean up when the fragment view is destroyed.
      */
     @Override
