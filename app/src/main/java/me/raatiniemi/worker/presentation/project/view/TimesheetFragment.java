@@ -225,19 +225,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         return adapter;
     }
 
-    @NonNull
-    public TimesheetGroupModel get(int index) {
-        return getAdapter().get(index);
-    }
-
-    public void set(int index, @NonNull TimesheetGroupModel item) {
-        getAdapter().set(index, item);
-    }
-
-    public int add(@NonNull TimesheetGroupModel item) {
-        return getAdapter().add(item);
-    }
-
     @Override
     public void add(@NonNull List<TimesheetGroupModel> items) {
         getAdapter().add(items);
@@ -251,11 +238,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     @Override
     public void remove(List<TimeInAdapterResult> results) {
         getAdapter().remove(results);
-    }
-
-    @NonNull
-    public TimesheetGroupModel remove(int index) {
-        return getAdapter().remove(index);
     }
 
     /**
