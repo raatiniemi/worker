@@ -16,10 +16,6 @@
 
 package me.raatiniemi.worker.presentation.view.fragment;
 
-import android.support.design.widget.Snackbar;
-import android.text.TextUtils;
-
-import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.presenter.MvpPresenter;
 
 /**
