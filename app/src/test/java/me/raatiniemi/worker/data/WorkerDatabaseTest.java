@@ -28,7 +28,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.Tables;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
@@ -80,7 +79,7 @@ public class WorkerDatabaseTest {
         Context context = mock(Context.class);
         WorkerDatabase helper = new WorkerDatabase(context);
 
-        int newVersion = Worker.DATABASE_VERSION + 1;
+        int newVersion = WorkerDatabase.DATABASE_VERSION + 1;
         helper.onUpgrade(database, 1, newVersion);
     }
 
@@ -99,7 +98,7 @@ public class WorkerDatabaseTest {
         helper.onCreate(database);
 
         // If no exceptions have been thrown the test should be considered OK.
-        helper.onUpgrade(database, 1, Worker.DATABASE_VERSION);
+        helper.onUpgrade(database, 1, WorkerDatabase.DATABASE_VERSION);
     }
 
     @Test
@@ -109,9 +108,9 @@ public class WorkerDatabaseTest {
         helper.onCreate(database);
 
         // If no exceptions have been thrown the test should be considered OK.
-        helper.onUpgrade(database, 1, Worker.DATABASE_VERSION);
-        helper.onDowngrade(database, Worker.DATABASE_VERSION, 1);
-        helper.onUpgrade(database, 1, Worker.DATABASE_VERSION);
+        helper.onUpgrade(database, 1, WorkerDatabase.DATABASE_VERSION);
+        helper.onDowngrade(database, WorkerDatabase.DATABASE_VERSION, 1);
+        helper.onUpgrade(database, 1, WorkerDatabase.DATABASE_VERSION);
     }
 
     @Test(expected = IllegalArgumentException.class)

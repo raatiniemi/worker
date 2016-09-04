@@ -31,13 +31,15 @@ import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
  * A helper class to manage database creation and version management.
  */
 class WorkerDatabase extends SQLiteOpenHelper {
+    static final int DATABASE_VERSION = 2;
+
     /**
      * Constructor.
      *
      * @param context Context used with the database.
      */
     public WorkerDatabase(Context context) {
-        super(context, Worker.DATABASE_NAME, null, Worker.DATABASE_VERSION);
+        super(context, Worker.DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     /**
@@ -109,9 +111,9 @@ class WorkerDatabase extends SQLiteOpenHelper {
 
         // Check the state of the newVersion, we cannot allow to upgrade past
         // the latest available version (i.e. `Worker.DATABASE_VERSION`).
-        if (Worker.DATABASE_VERSION < newVersion) {
+        if (DATABASE_VERSION < newVersion) {
             throw new IllegalArgumentException(
-                    "newVersion cannot be more than " + Worker.DATABASE_VERSION
+                    "newVersion cannot be more than " + DATABASE_VERSION
             );
         }
 

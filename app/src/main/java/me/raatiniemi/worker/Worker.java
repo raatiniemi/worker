@@ -30,11 +30,6 @@ public final class Worker {
      */
     public static final String DATABASE_NAME = "worker";
 
-    /**
-     * Version of the application database structure.
-     */
-    public static final int DATABASE_VERSION = 2;
-
     public static final int NOTIFICATION_BACKUP_SERVICE_ID = 1;
     public static final int NOTIFICATION_RESTORE_SERVICE_ID = 2;
 
