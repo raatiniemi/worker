@@ -30,22 +30,6 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(DataProviderRunner.class)
 public class CalculatedTimeTest {
     @DataProvider
-    public static Object[][] asMilliseconds_dataProvider() {
-        return new Object[][]{
-                {60000L, createCalculatedTime(0, 1)},
-                {600000L, createCalculatedTime(0, 10)},
-                {900000L, createCalculatedTime(0, 15)},
-                {1800000L, createCalculatedTime(0, 30)},
-                {3600000L, createCalculatedTime(1, 0)},
-                {4500000L, createCalculatedTime(1, 15)},
-                {7200000L, createCalculatedTime(2, 0)},
-                {27000000L, createCalculatedTime(7, 30)},
-                {108000000L, createCalculatedTime(30, 0)},
-                {203100000L, createCalculatedTime(56, 25)}
-        };
-    }
-
-    @DataProvider
     public static Object[][] equals_dataProvider() {
         return new Object[][]{
                 {
@@ -68,12 +52,6 @@ public class CalculatedTimeTest {
 
     private static CalculatedTime createCalculatedTime(int hours, int minutes) {
         return new CalculatedTime(hours, minutes);
-    }
-
-    @Test
-    @UseDataProvider("asMilliseconds_dataProvider")
-    public void asMilliseconds(long expected, CalculatedTime actual) {
-        assertEquals(expected, actual.asMilliseconds());
     }
 
     @Test
