@@ -16,15 +16,12 @@
 
 package me.raatiniemi.worker.domain.model;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -59,32 +56,6 @@ public class ProjectTest {
         return new Time.Builder(1L)
                 .startInMilliseconds(clockedInSinceInMilliseconds)
                 .build();
-    }
-
-    @DataProvider
-    public static Object[][] getClockedInSince_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "without items",
-                        null,
-                        new Time[]{}
-                },
-                {
-                        "without active item",
-                        null,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(1L)
-                        }
-                },
-                {
-                        "with active item",
-                        new Date(50000L),
-                        new Time[]{
-                                createActiveTimeWithStartInMilliseconds(50000L)
-                        }
-                }
-        };
     }
 
     @Test
@@ -172,27 +143,6 @@ public class ProjectTest {
         project.addTime(times);
 
         assertTrue(project.getTime().isEmpty());
-    }
-
-    @Test
-    @UseDataProvider("getClockedInSince_dataProvider")
-    public void getClockedInSince(
-            String message,
-            Date expected,
-            Time[] times
-    ) throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime(Arrays.asList(times));
-
-        if (null == expected) {
-            assertNull(message, project.getClockedInSince());
-            return;
-        }
-
-        Date actual = project.getClockedInSince();
-        assertEquals(message, expected.getTime(), actual.getTime());
     }
 
     @Test(expected = NullPointerException.class)
