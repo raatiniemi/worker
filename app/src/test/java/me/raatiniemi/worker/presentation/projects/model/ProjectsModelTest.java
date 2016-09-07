@@ -56,30 +56,11 @@ public class ProjectsModelTest {
             switch (id) {
                 case R.string.fragment_projects_item_clocked_in_since:
                     return "Since %s (%s)";
-                case R.string.fragment_projects_item_clock_in_at:
-                    return "Clock in at given date and time";
-                case R.string.fragment_projects_item_clock_out_at:
-                    return "Clock out at given date and time";
             }
 
             return super.getString(id);
         }
     };
-
-    @DataProvider
-    public static Object[][] getHelpTextForClockActivityAt_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "Clock in at given date and time",
-                        mockProjectWithActiveIndicator(Boolean.FALSE)
-                },
-                {
-                        "Clock out at given date and time",
-                        mockProjectWithActiveIndicator(Boolean.TRUE)
-                }
-        };
-    }
 
     @DataProvider
     public static Object[][] getClockedInSince_dataProvider()
@@ -181,14 +162,6 @@ public class ProjectsModelTest {
         ProjectsModel model = new ProjectsModel(project);
 
         assertEquals("Project name", model.getTitle());
-    }
-
-    @Test
-    @UseDataProvider("getHelpTextForClockActivityAt_dataProvider")
-    public void getHelpTextForClockActivityAt(String expectedHelpText, Project project) {
-        ProjectsModel model = new ProjectsModel(project);
-
-        assertEquals(expectedHelpText, model.getHelpTextForClockActivityAt(resources));
     }
 
     @Test
