@@ -16,34 +16,78 @@
 
 package me.raatiniemi.worker.domain.util;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import me.raatiniemi.worker.domain.model.CalculatedTime;
 
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(Parameterized.class)
 public class CalculateTimeTest {
-    @DataProvider
-    public static Object[][] calculateTime_dataProvider() {
-        return new Object[][]{
-                {60000L, createCalculatedTime(0, 1)},
-                {600000L, createCalculatedTime(0, 10)},
-                {900000L, createCalculatedTime(0, 15)},
-                {1800000L, createCalculatedTime(0, 30)},
-                {3580000L, createCalculatedTime(1, 0)},
-                {3600000L, createCalculatedTime(1, 0)},
-                {4500000L, createCalculatedTime(1, 15)},
-                {7175000L, createCalculatedTime(2, 0)},
-                {27000000L, createCalculatedTime(7, 30)},
-                {108000000L, createCalculatedTime(30, 0)},
-                {203100000L, createCalculatedTime(56, 25)}
-        };
+    private CalculatedTime expected;
+    private long milliseconds;
+
+    public CalculateTimeTest(CalculatedTime expected, long milliseconds) {
+        this.expected = expected;
+        this.milliseconds = milliseconds;
+    }
+
+    @Parameters
+    public static Collection<Object[]> getParameters() {
+        return Arrays.asList(
+                new Object[][]{
+                        {
+                                createCalculatedTime(0, 1),
+                                60000L
+                        },
+                        {
+                                createCalculatedTime(0, 10),
+                                600000L
+                        },
+                        {
+                                createCalculatedTime(0, 15),
+                                900000L
+                        },
+                        {
+                                createCalculatedTime(0, 30),
+                                1800000L
+                        },
+                        {
+                                createCalculatedTime(1, 0),
+                                3580000L
+                        },
+                        {
+                                createCalculatedTime(1, 0),
+                                3600000L
+                        },
+                        {
+                                createCalculatedTime(1, 15),
+                                4500000L
+                        },
+                        {
+                                createCalculatedTime(2, 0),
+                                7175000L
+                        },
+                        {
+                                createCalculatedTime(7, 30),
+                                27000000L
+                        },
+                        {
+                                createCalculatedTime(30, 0),
+                                108000000L
+                        },
+                        {
+                                createCalculatedTime(56, 25),
+                                203100000L
+                        }
+                }
+        );
     }
 
     private static CalculatedTime createCalculatedTime(int hours, int minutes) {
@@ -51,11 +95,7 @@ public class CalculateTimeTest {
     }
 
     @Test
-    @UseDataProvider("calculateTime_dataProvider")
-    public void calculateTime(Long milliseconds, CalculatedTime expected) {
-        CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
-
-        assertEquals(expected, calculatedTime);
+    public void calculateTime() {
+        assertEquals(expected, CalculateTime.calculateTime(milliseconds));
     }
 }
-
