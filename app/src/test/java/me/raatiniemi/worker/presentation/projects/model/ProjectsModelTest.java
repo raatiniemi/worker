@@ -71,32 +71,6 @@ public class ProjectsModelTest {
     };
 
     @DataProvider
-    public static Object[][] getTimeSummary_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "1h 0m",
-                        new Time[]{
-                                createTimeForGetTimeSummaryTest(3600)
-                        }
-                },
-                {
-                        "2h 30m",
-                        new Time[]{
-                                createTimeForGetTimeSummaryTest(9000)
-                        }
-                },
-                {
-                        "3h 30m",
-                        new Time[]{
-                                createTimeForGetTimeSummaryTest(3600),
-                                createTimeForGetTimeSummaryTest(9000)
-                        }
-                }
-        };
-    }
-
-    @DataProvider
     public static Object[][] getHelpTextForClockActivityToggle_dataProvider()
             throws ClockOutBeforeClockInException {
         return new Object[][]{
@@ -182,13 +156,6 @@ public class ProjectsModelTest {
         };
     }
 
-    private static Time createTimeForGetTimeSummaryTest(long intervalInSeconds)
-            throws ClockOutBeforeClockInException {
-        return new Time.Builder(1L)
-                .stopInMilliseconds(intervalInSeconds * 1000)
-                .build();
-    }
-
     private static Time createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
             long intervalInSeconds,
             Calendar clockedInTime
@@ -233,19 +200,6 @@ public class ProjectsModelTest {
         ProjectsModel model = new ProjectsModel(project);
 
         assertEquals("Project name", model.getTitle());
-    }
-
-    @Test
-    @UseDataProvider("getTimeSummary_dataProvider")
-    public void getTimeSummary(String expected, Time[] registeredTime)
-            throws InvalidProjectNameException, ClockOutBeforeClockInException {
-        Project project = createProjectBuilder("Project name")
-                .build();
-        project.addTime(Arrays.asList(registeredTime));
-
-        ProjectsModel model = new ProjectsModel(project);
-
-        assertEquals(expected, model.getTimeSummary());
     }
 
     @Test
