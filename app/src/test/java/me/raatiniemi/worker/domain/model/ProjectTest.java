@@ -16,10 +16,9 @@
 
 package me.raatiniemi.worker.domain.model;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +35,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(JUnit4.class)
 public class ProjectTest {
     private static Project.Builder createProjectBuilder() {
         return new Project.Builder("Project name");
