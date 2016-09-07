@@ -1,15 +1,14 @@
 package me.raatiniemi.worker.presentation.project.model;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(JUnit4.class)
 public class TimesheetGroupModelTest {
     @Test
     public void getId() {
