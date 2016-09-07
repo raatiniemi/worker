@@ -16,38 +16,74 @@
 
 package me.raatiniemi.worker.domain.model;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
-import static junit.framework.Assert.assertEquals;
+import java.util.Arrays;
+import java.util.Collection;
+
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(Parameterized.class)
 public class CalculatedTimeTest {
-    @DataProvider
-    public static Object[][] equals_dataProvider() {
-        return new Object[][]{
-                {
-                        Boolean.TRUE,
-                        createCalculatedTime(3, 15),
-                        createCalculatedTime(3, 15)
-                },
-                {
-                        Boolean.FALSE,
-                        createCalculatedTime(3, 15),
-                        createCalculatedTime(5, 15)
-                },
-                {
-                        Boolean.FALSE,
-                        createCalculatedTime(3, 14),
-                        createCalculatedTime(3, 15)
+    private String message;
+    private Boolean expected;
+    private CalculatedTime calculatedTime;
+    private Object compareTo;
+
+    public CalculatedTimeTest(
+            String message,
+            Boolean expected,
+            CalculatedTime calculatedTime,
+            Object compareTo
+    ) {
+        this.message = message;
+        this.expected = expected;
+        this.calculatedTime = calculatedTime;
+        this.compareTo = compareTo;
+    }
+
+    @Parameters
+    public static Collection<Object[]> getParameters() {
+        CalculatedTime calculatedTime = createCalculatedTime(3, 15);
+
+        return Arrays.asList(
+                new Object[][]{
+                        {
+                                "With same instance",
+                                Boolean.TRUE,
+                                calculatedTime,
+                                calculatedTime
+                        },
+                        {
+                                "With null",
+                                Boolean.FALSE,
+                                calculatedTime,
+                                null
+                        },
+                        {
+                                "Same hour and minutes",
+                                Boolean.TRUE,
+                                calculatedTime,
+                                createCalculatedTime(3, 15)
+                        },
+                        {
+                                "Different hour",
+                                Boolean.FALSE,
+                                calculatedTime,
+                                createCalculatedTime(4, 15)
+                        },
+                        {
+                                "Different minute",
+                                Boolean.FALSE,
+                                calculatedTime,
+                                createCalculatedTime(3, 16)
+                        }
                 }
-        };
+        );
     }
 
     private static CalculatedTime createCalculatedTime(int hours, int minutes) {
@@ -55,38 +91,40 @@ public class CalculatedTimeTest {
     }
 
     @Test
-    public void equals_withSameInstance() {
-        CalculatedTime calculatedTime = new CalculatedTime(1, 0);
-        //noinspection EqualsWithItself
-        assertTrue(calculatedTime.equals(calculatedTime));
-    }
-
-    @Test
-    public void equals_withNull() {
-        CalculatedTime calculatedTime = new CalculatedTime(1, 0);
-        //noinspection ObjectEqualsNull
-        assertFalse(calculatedTime.equals(null));
-    }
-
-    @Test
-    @UseDataProvider("equals_dataProvider")
-    public void equals(Boolean expected, CalculatedTime lh, CalculatedTime rh) {
-        if (expected) {
-            assertTrue(lh.equals(rh));
-            assertTrue(rh.equals(lh));
+    public void equals() {
+        if (shouldBeEqual()) {
+            assertEqual();
             return;
         }
-        assertFalse(lh.equals(rh));
-        assertFalse(rh.equals(lh));
+
+        assertNotEqual();
     }
 
-    @Test
-    @UseDataProvider("equals_dataProvider")
-    public void hashCode(Boolean expected, CalculatedTime lh, CalculatedTime rh) {
-        if (expected) {
-            assertTrue(lh.hashCode() == rh.hashCode());
+    private Boolean shouldBeEqual() {
+        return expected;
+    }
+
+    private void assertEqual() {
+        assertTrue(message, calculatedTime.equals(compareTo));
+
+        validateHashCodeWhenEqual();
+    }
+
+    private void validateHashCodeWhenEqual() {
+        assertTrue(message, calculatedTime.hashCode() == compareTo.hashCode());
+    }
+
+    private void assertNotEqual() {
+        assertFalse(message, calculatedTime.equals(compareTo));
+
+        validateHashCodeWhenNotEqual();
+    }
+
+    private void validateHashCodeWhenNotEqual() {
+        if (null == compareTo) {
             return;
         }
-        assertFalse(lh.hashCode() == rh.hashCode());
+
+        assertFalse(message, calculatedTime.hashCode() == compareTo.hashCode());
     }
 }
