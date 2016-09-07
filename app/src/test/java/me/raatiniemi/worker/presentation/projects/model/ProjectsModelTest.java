@@ -40,7 +40,6 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -70,21 +69,6 @@ public class ProjectsModelTest {
             return super.getString(id);
         }
     };
-
-    @DataProvider
-    public static Object[][] isActive_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        Boolean.FALSE,
-                        mockProjectWithActiveIndicator(Boolean.FALSE)
-                },
-                {
-                        Boolean.TRUE,
-                        mockProjectWithActiveIndicator(Boolean.TRUE)
-                }
-        };
-    }
 
     @DataProvider
     public static Object[][] getTimeSummary_dataProvider()
@@ -249,18 +233,6 @@ public class ProjectsModelTest {
         ProjectsModel model = new ProjectsModel(project);
 
         assertEquals("Project name", model.getTitle());
-    }
-
-    @Test
-    @UseDataProvider("isActive_dataProvider")
-    public void isActive(Boolean expected, Project project) {
-        ProjectsModel model = new ProjectsModel(project);
-
-        if (expected) {
-            assertTrue(model.isActive());
-            return;
-        }
-        assertFalse(model.isActive());
     }
 
     @Test
