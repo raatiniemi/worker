@@ -22,16 +22,6 @@ import static org.mockito.Mockito.when;
 @RunWith(DataProviderRunner.class)
 public class TimesheetGroupModelTest {
     @DataProvider
-    public static Object[][] getTitle_dataProvider() {
-        return new Object[][]{
-                {
-                        "Sunday (February 28)",
-                        new GregorianCalendar(2016, 1, 28)
-                }
-        };
-    }
-
-    @DataProvider
     public static Object[][] getFirstTitleLetter_dataProvider() {
         return new Object[][]{
                 {
@@ -162,14 +152,6 @@ public class TimesheetGroupModelTest {
         TimesheetGroupModel groupModel = new TimesheetGroupModel(date);
 
         assertEquals(date.getTime(), groupModel.getId());
-    }
-
-    @Test
-    @UseDataProvider("getTitle_dataProvider")
-    public void getTitle(String expected, Calendar calendar) {
-        TimesheetGroupModel timesheet = new TimesheetGroupModel(calendar.getTime());
-
-        assertEquals(expected, timesheet.getTitle());
     }
 
     @Test
