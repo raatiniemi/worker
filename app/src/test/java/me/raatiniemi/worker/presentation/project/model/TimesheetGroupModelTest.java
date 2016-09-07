@@ -12,45 +12,11 @@ import java.util.Date;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class TimesheetGroupModelTest {
-    @DataProvider
-    public static Object[][] isRegistered_dataProvider() {
-        return new Object[][]{
-                {
-                        Boolean.TRUE,
-                        new TimesheetChildModel[]{
-                                createChildForIsRegisteredTest(true)
-                        }
-                },
-                {
-                        Boolean.FALSE,
-                        new TimesheetChildModel[]{
-                                createChildForIsRegisteredTest(false)
-                        }
-                },
-                {
-                        Boolean.FALSE,
-                        new TimesheetChildModel[]{
-                                createChildForIsRegisteredTest(false),
-                                createChildForIsRegisteredTest(true)
-                        }
-                },
-                {
-                        Boolean.TRUE,
-                        new TimesheetChildModel[]{
-                                createChildForIsRegisteredTest(true),
-                                createChildForIsRegisteredTest(true)
-                        }
-                }
-        };
-    }
-
     @DataProvider
     public static Object[][] getTimeSummaryWithDifference_dataProvider() {
         return new Object[][]{
@@ -96,13 +62,6 @@ public class TimesheetGroupModelTest {
         };
     }
 
-    private static TimesheetChildModel createChildForIsRegisteredTest(boolean registered) {
-        Time time = mock(Time.class);
-        when(time.isRegistered()).thenReturn(registered);
-
-        return new TimesheetChildModel(time);
-    }
-
     private static TimesheetChildModel createChildForGetTimeSummaryWithDifferenceTest(long interval) {
         Time time = mock(Time.class);
         when(time.getInterval()).thenReturn(interval);
@@ -116,21 +75,6 @@ public class TimesheetGroupModelTest {
         TimesheetGroupModel groupModel = new TimesheetGroupModel(date);
 
         assertEquals(date.getTime(), groupModel.getId());
-    }
-
-    @Test
-    @UseDataProvider("isRegistered_dataProvider")
-    public void isRegistered(Boolean expected, TimesheetChildModel[] times) {
-        TimesheetGroupModel timesheet = new TimesheetGroupModel(new Date());
-        for (TimesheetChildModel childModel : times) {
-            timesheet.add(childModel);
-        }
-
-        if (expected) {
-            assertTrue(timesheet.isRegistered());
-            return;
-        }
-        assertFalse(timesheet.isRegistered());
     }
 
     @Test
