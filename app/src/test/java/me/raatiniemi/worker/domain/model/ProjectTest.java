@@ -87,32 +87,6 @@ public class ProjectTest {
         };
     }
 
-    @DataProvider
-    public static Object[][] isActive_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "without items",
-                        false,
-                        new Time[]{}
-                },
-                {
-                        "without active item",
-                        false,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(1L)
-                        }
-                },
-                {
-                        "with active item",
-                        true,
-                        new Time[]{
-                                createActiveTimeWithStartInMilliseconds(50000L)
-                        }
-                }
-        };
-    }
-
     @Test
     public void Builder_withDefaultValues()
             throws InvalidProjectNameException {
@@ -314,20 +288,5 @@ public class ProjectTest {
         // The `clockOutAt` modifies the active time, i.e. the project should
         // be inactive after clocking out.
         assertFalse(project.isActive());
-    }
-
-    @Test
-    @UseDataProvider("isActive_dataProvider")
-    public void isActive(
-            String message,
-            boolean expected,
-            Time[] times
-    ) throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime(Arrays.asList(times));
-
-        assertTrue(message, expected == project.isActive());
     }
 }
