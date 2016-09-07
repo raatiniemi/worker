@@ -22,12 +22,9 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -388,134 +385,5 @@ public class ProjectTest {
         project.addTime(Arrays.asList(times));
 
         assertTrue(message, expected == project.isActive());
-    }
-
-    @RunWith(Parameterized.class)
-    public static class ProjectTest_equals {
-        private String message;
-        private Boolean expected;
-        private Project project;
-        private Object compareTo;
-
-        public ProjectTest_equals(
-                String message,
-                Boolean expected,
-                Project project,
-                Object compareTo
-        ) {
-            this.message = message;
-            this.expected = expected;
-            this.project = project;
-            this.compareTo = compareTo;
-        }
-
-        @Parameters
-        public static Collection<Object[]> parameters()
-                throws DomainException {
-            Project project = new Project.Builder("Project name")
-                    .id(1L)
-                    .build();
-
-            return Arrays.asList(
-                    new Object[][]{
-                            {
-                                    "With same instance",
-                                    Boolean.TRUE,
-                                    project,
-                                    project
-                            },
-                            {
-                                    "With null",
-                                    Boolean.FALSE,
-                                    project,
-                                    null
-                            },
-                            {
-                                    "With incompatible object",
-                                    Boolean.FALSE,
-                                    project,
-                                    ""
-                            },
-                            {
-                                    "With different project name",
-                                    Boolean.FALSE,
-                                    project,
-                                    new Project.Builder("Name")
-                                            .id(1L)
-                                            .build()
-                            },
-                            {
-                                    "With different id",
-                                    Boolean.FALSE,
-                                    project,
-                                    new Project.Builder("Project name")
-                                            .id(2L)
-                                            .build()
-                            },
-                            {
-                                    "With different registered time",
-                                    Boolean.FALSE,
-                                    project,
-                                    buildProjectWithRegisteredTime()
-                            }
-                    }
-            );
-        }
-
-        private static Project buildProjectWithRegisteredTime()
-                throws DomainException {
-            Project project = new Project.Builder("Project name")
-                    .id(1L)
-                    .build();
-
-            Time time = new Time.Builder(1L)
-                    .startInMilliseconds(1L)
-                    .stopInMilliseconds(2L)
-                    .build();
-
-            List<Time> registeredTime = new ArrayList<>();
-            registeredTime.add(time);
-
-            project.addTime(registeredTime);
-            return project;
-        }
-
-        @Test
-        public void equals() {
-            if (shouldBeEqual()) {
-                assertEqual();
-                return;
-            }
-
-            assertNotEqual();
-        }
-
-        private Boolean shouldBeEqual() {
-            return expected;
-        }
-
-        private void assertEqual() {
-            assertTrue(message, project.equals(compareTo));
-
-            validateHashCodeWhenEqual();
-        }
-
-        private void validateHashCodeWhenEqual() {
-            assertTrue(message, project.hashCode() == compareTo.hashCode());
-        }
-
-        private void assertNotEqual() {
-            assertFalse(message, project.equals(compareTo));
-
-            validateHashCodeWhenNotEqual();
-        }
-
-        private void validateHashCodeWhenNotEqual() {
-            if (null == compareTo) {
-                return;
-            }
-
-            assertFalse(message, project.hashCode() == compareTo.hashCode());
-        }
     }
 }
