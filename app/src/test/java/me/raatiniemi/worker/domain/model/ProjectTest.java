@@ -38,8 +38,6 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class ProjectTest {
@@ -55,51 +53,12 @@ public class ProjectTest {
                 .build();
     }
 
-    private static Time createActiveTimeWithElapsedTimeInMilliseconds(
-            long elapsedTimeInMilliseconds
-    ) {
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(true);
-        when(time.getInterval()).thenReturn(elapsedTimeInMilliseconds);
-
-        return time;
-    }
-
     private static Time createActiveTimeWithStartInMilliseconds(
             long clockedInSinceInMilliseconds
     ) throws ClockOutBeforeClockInException {
         return new Time.Builder(1L)
                 .startInMilliseconds(clockedInSinceInMilliseconds)
                 .build();
-    }
-
-    @DataProvider
-    public static Object[][] getElapsed_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "without items",
-                        0L,
-                        new Time[]{}
-                },
-                {
-                        "without active item",
-                        0L,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(1L)
-                        }
-                },
-                {
-                        // Due to the implementation of the elapsed calculation
-                        // (i.e. it creates a new Date instance as reference),
-                        // a mock is needed required to test the behaviour.
-                        "with active item",
-                        50000L,
-                        new Time[]{
-                                createActiveTimeWithElapsedTimeInMilliseconds(50000L)
-                        }
-                }
-        };
     }
 
     @DataProvider
@@ -239,21 +198,6 @@ public class ProjectTest {
         project.addTime(times);
 
         assertTrue(project.getTime().isEmpty());
-    }
-
-    @Test
-    @UseDataProvider("getElapsed_dataProvider")
-    public void getElapsed(
-            String message,
-            long expected,
-            Time[] times
-    ) throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime(Arrays.asList(times));
-
-        assertEquals(message, expected, project.getElapsed());
     }
 
     @Test
