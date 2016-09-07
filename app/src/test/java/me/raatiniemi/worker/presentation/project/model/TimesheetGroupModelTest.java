@@ -7,9 +7,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import me.raatiniemi.worker.domain.model.Time;
 
@@ -21,40 +19,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class TimesheetGroupModelTest {
-    @DataProvider
-    public static Object[][] getFirstTitleLetter_dataProvider() {
-        return new Object[][]{
-                {
-                        "F",
-                        new GregorianCalendar(2016, 6, 1)
-                },
-                {
-                        "S",
-                        new GregorianCalendar(2016, 6, 2)
-                },
-                {
-                        "S",
-                        new GregorianCalendar(2016, 6, 3)
-                },
-                {
-                        "M",
-                        new GregorianCalendar(2016, 6, 4)
-                },
-                {
-                        "T",
-                        new GregorianCalendar(2016, 6, 5)
-                },
-                {
-                        "W",
-                        new GregorianCalendar(2016, 6, 6)
-                },
-                {
-                        "T",
-                        new GregorianCalendar(2016, 6, 7)
-                }
-        };
-    }
-
     @DataProvider
     public static Object[][] isRegistered_dataProvider() {
         return new Object[][]{
@@ -152,14 +116,6 @@ public class TimesheetGroupModelTest {
         TimesheetGroupModel groupModel = new TimesheetGroupModel(date);
 
         assertEquals(date.getTime(), groupModel.getId());
-    }
-
-    @Test
-    @UseDataProvider("getFirstTitleLetter_dataProvider")
-    public void getFirstTitleLetter(String expected, Calendar calendar) {
-        TimesheetGroupModel timesheet = new TimesheetGroupModel(calendar.getTime());
-
-        assertEquals(expected, timesheet.getFirstLetterFromTitle());
     }
 
     @Test
