@@ -16,32 +16,60 @@
 
 package me.raatiniemi.worker.presentation.util;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(Parameterized.class)
 public class FractionIntervalFormatTest {
-    @DataProvider
-    public static Object[][] format_dataProvider() {
-        return new Object[][]{
-                {900000L, "0.25"},
-                {3600000L, "1.00"},
-                {4500000L, "1.25"},
-                {7175000L, "2.00"},
-                {108000000L, "30.00"},
-                {203100000L, "56.42"}
-        };
+    private String expected;
+    private long intervalInMilliseconds;
+
+    public FractionIntervalFormatTest(String expected, long intervalInMilliseconds) {
+        this.expected = expected;
+        this.intervalInMilliseconds = intervalInMilliseconds;
+    }
+
+    @Parameters
+    public static Collection<Object[]> getParameters() {
+        return Arrays.asList(
+                new Object[][]{
+                        {
+                                "0.25",
+                                900000L
+                        },
+                        {
+                                "1.00",
+                                3600000L
+                        },
+                        {
+                                "1.25",
+                                4500000L
+                        },
+                        {
+                                "2.00",
+                                7175000L
+                        },
+                        {
+                                "30.00",
+                                108000000L
+                        },
+                        {
+                                "56.42",
+                                203100000L
+                        }
+                }
+        );
     }
 
     @Test
-    @UseDataProvider("format_dataProvider")
-    public void format(Long intervalInMilliseconds, String expected) {
+    public void format() {
         DateIntervalFormat intervalFormat = new FractionIntervalFormat();
 
         assertEquals(expected, intervalFormat.format(intervalInMilliseconds));
