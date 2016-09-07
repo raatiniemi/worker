@@ -16,17 +16,16 @@
 
 package me.raatiniemi.worker.presentation.project.model;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertTrue;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(JUnit4.class)
 public class TimesheetChildModelTest {
     @Test
     public void asTime() throws ClockOutBeforeClockInException {
