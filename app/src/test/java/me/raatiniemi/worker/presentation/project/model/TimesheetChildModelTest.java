@@ -35,29 +35,6 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(DataProviderRunner.class)
 public class TimesheetChildModelTest {
     @DataProvider
-    public static Object[][] getTitle_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "active time",
-                        "08:00",
-                        createTimeForGetTitleTest(
-                                new GregorianCalendar(2016, 1, 28, 8, 0),
-                                null
-                        )
-                },
-                {
-                        "inactive time",
-                        "08:00 - 11:30",
-                        createTimeForGetTitleTest(
-                                new GregorianCalendar(2016, 1, 28, 8, 0),
-                                new GregorianCalendar(2016, 1, 28, 11, 30)
-                        )
-                }
-        };
-    }
-
-    @DataProvider
     public static Object[][] getTimeSummary_dataProvider()
             throws ClockOutBeforeClockInException {
         return new Object[][]{
@@ -87,18 +64,6 @@ public class TimesheetChildModelTest {
                         createTimeForIsRegisteredTest(false)
                 }
         };
-    }
-
-    private static Time createTimeForGetTitleTest(Calendar start, Calendar stop)
-            throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(1L)
-                .startInMilliseconds(start.getTimeInMillis());
-
-        if (null != stop) {
-            builder.stopInMilliseconds(stop.getTimeInMillis());
-        }
-
-        return builder.build();
     }
 
     private static Time createTimeForGetTimeSummaryTest(long interval)
@@ -135,14 +100,6 @@ public class TimesheetChildModelTest {
         TimesheetChildModel model = new TimesheetChildModel(time);
 
         assertTrue(time.getId() == model.getId());
-    }
-
-    @Test
-    @UseDataProvider("getTitle_dataProvider")
-    public void getTitle(String message, String expected, Time time) {
-        TimesheetChildModel item = new TimesheetChildModel(time);
-
-        assertEquals(message, expected, item.getTitle());
     }
 
     @Test
