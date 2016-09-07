@@ -16,34 +16,68 @@
 
 package me.raatiniemi.worker.presentation.util;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(Parameterized.class)
 public class HoursMinutesIntervalFormatTest {
-    @DataProvider
-    public static Object[][] format_dataProvider() {
-        return new Object[][]{
-                {60000L, "1m"},
-                {600000L, "10m"},
-                {1800000L, "30m"},
-                {3600000L, "1h 0m"},
-                {27000000L, "7h 30m"},
-                {108000000L, "30h 0m"},
-                {203100000L, "56h 25m"},
-                {3580000L, "1h 0m"}
-        };
+    private String expected;
+    private long intervalInMilliseconds;
+
+    public HoursMinutesIntervalFormatTest(String expected, long intervalInMilliseconds) {
+        this.expected = expected;
+        this.intervalInMilliseconds = intervalInMilliseconds;
+    }
+
+    @Parameters
+    public static Collection<Object[]> getParameters() {
+        return Arrays.asList(
+                new Object[][]{
+                        {
+                                "1m",
+                                60000L
+                        },
+                        {
+                                "10m",
+                                600000L
+                        },
+                        {
+                                "30m",
+                                1800000L
+                        },
+                        {
+                                "1h 0m",
+                                3600000L
+                        },
+                        {
+                                "7h 30m",
+                                27000000L
+                        },
+                        {
+                                "30h 0m",
+                                108000000L
+                        },
+                        {
+                                "56h 25m",
+                                203100000L
+                        },
+                        {
+                                "1h 0m",
+                                3580000L
+                        }
+                }
+        );
     }
 
     @Test
-    @UseDataProvider("format_dataProvider")
-    public void format(Long intervalInMilliseconds, String expected) {
+    public void format() {
         DateIntervalFormat intervalFormat = new HoursMinutesIntervalFormat();
 
         assertEquals(expected, intervalFormat.format(intervalInMilliseconds));
