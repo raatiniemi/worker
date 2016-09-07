@@ -28,13 +28,13 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class CalculatedTimeTest {
+public class CalculatedTimeEqualsHashCodeTest {
     private String message;
     private Boolean expected;
     private CalculatedTime calculatedTime;
     private Object compareTo;
 
-    public CalculatedTimeTest(
+    public CalculatedTimeEqualsHashCodeTest(
             String message,
             Boolean expected,
             CalculatedTime calculatedTime,
