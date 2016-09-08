@@ -16,10 +16,9 @@
 
 package me.raatiniemi.worker.presentation.projects.model;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
@@ -27,18 +26,12 @@ import me.raatiniemi.worker.domain.model.Project;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(JUnit4.class)
 public class ProjectsModelTest {
-    private Project.Builder createProjectBuilder(String projectName) {
-        return new Project.Builder(projectName);
-    }
-
     @Test
-    public void asProject()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder("Project name")
+    public void asProject() throws InvalidProjectNameException {
+        Project project = new Project.Builder("Project name")
                 .build();
-
         ProjectsModel model = new ProjectsModel(project);
 
         assertTrue(project == model.asProject());
@@ -46,9 +39,8 @@ public class ProjectsModelTest {
 
     @Test
     public void getTitle() throws InvalidProjectNameException {
-        Project project = createProjectBuilder("Project name")
+        Project project = new Project.Builder("Project name")
                 .build();
-
         ProjectsModel model = new ProjectsModel(project);
 
         assertEquals("Project name", model.getTitle());
