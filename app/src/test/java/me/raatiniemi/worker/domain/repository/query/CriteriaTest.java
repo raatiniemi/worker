@@ -43,7 +43,7 @@ public class CriteriaTest {
     }
 
     @Parameters
-    public static Collection<Object[]> parameters() {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {

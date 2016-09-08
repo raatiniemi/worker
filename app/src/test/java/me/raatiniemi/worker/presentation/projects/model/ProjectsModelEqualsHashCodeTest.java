@@ -50,7 +50,7 @@ public class ProjectsModelEqualsHashCodeTest {
     }
 
     @Parameters
-    public static Collection<Object[]> parameters()
+    public static Collection<Object[]> getParameters()
             throws InvalidProjectNameException {
         Project project = new Project.Builder("Name")
                 .id(1L)

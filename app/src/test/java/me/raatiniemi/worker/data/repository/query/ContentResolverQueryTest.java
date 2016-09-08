@@ -50,7 +50,7 @@ public class ContentResolverQueryTest {
     }
 
     @Parameters
-    public static Collection<Object[]> parameters() {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(new Object[][]{
                 {
                         "null criteria",
