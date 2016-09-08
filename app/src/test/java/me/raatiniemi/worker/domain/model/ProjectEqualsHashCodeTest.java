@@ -14,80 +14,111 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.projects.model;
+package me.raatiniemi.worker.domain.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.exception.DomainException;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelEqualsHashCodeTest {
+public class ProjectEqualsHashCodeTest {
     private String message;
     private Boolean expected;
-    private ProjectsModel projectsModel;
+    private Project project;
     private Object compareTo;
 
-    public ProjectsModelEqualsHashCodeTest(
+    public ProjectEqualsHashCodeTest(
             String message,
             Boolean expected,
-            ProjectsModel projectsModel,
+            Project project,
             Object compareTo
     ) {
         this.message = message;
         this.expected = expected;
-        this.projectsModel = projectsModel;
+        this.project = project;
         this.compareTo = compareTo;
     }
 
     @Parameters
     public static Collection<Object[]> getParameters()
-            throws InvalidProjectNameException {
-        Project project = new Project.Builder("Name")
+            throws DomainException {
+        Project project = new Project.Builder("Project name")
                 .id(1L)
                 .build();
-        ProjectsModel projectsModel = new ProjectsModel(project);
+
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "With same instance",
                                 Boolean.TRUE,
-                                projectsModel,
-                                projectsModel
+                                project,
+                                project
                         },
                         {
                                 "With null",
                                 Boolean.FALSE,
-                                projectsModel,
+                                project,
                                 null
                         },
                         {
                                 "With incompatible object",
                                 Boolean.FALSE,
-                                projectsModel,
+                                project,
                                 ""
                         },
                         {
-                                "With different project",
+                                "With different project name",
                                 Boolean.FALSE,
-                                projectsModel,
-                                new ProjectsModel(
-                                        new Project.Builder("Project name")
-                                                .id(2L)
-                                                .build()
-                                )
+                                project,
+                                new Project.Builder("Name")
+                                        .id(1L)
+                                        .build()
+                        },
+                        {
+                                "With different id",
+                                Boolean.FALSE,
+                                project,
+                                new Project.Builder("Project name")
+                                        .id(2L)
+                                        .build()
+                        },
+                        {
+                                "With different registered time",
+                                Boolean.FALSE,
+                                project,
+                                buildProjectWithRegisteredTime()
                         }
                 }
         );
+    }
+
+    private static Project buildProjectWithRegisteredTime()
+            throws DomainException {
+        Project project = new Project.Builder("Project name")
+                .id(1L)
+                .build();
+
+        Time time = new Time.Builder(1L)
+                .startInMilliseconds(1L)
+                .stopInMilliseconds(2L)
+                .build();
+
+        List<Time> registeredTime = new ArrayList<>();
+        registeredTime.add(time);
+
+        project.addTime(registeredTime);
+        return project;
     }
 
     @Test
@@ -105,17 +136,17 @@ public class ProjectsModelEqualsHashCodeTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, projectsModel.equals(compareTo));
+        assertTrue(message, project.equals(compareTo));
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, projectsModel.hashCode() == compareTo.hashCode());
+        assertTrue(message, project.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, projectsModel.equals(compareTo));
+        assertFalse(message, project.equals(compareTo));
 
         validateHashCodeWhenNotEqual();
     }
@@ -125,6 +156,6 @@ public class ProjectsModelEqualsHashCodeTest {
             return;
         }
 
-        assertFalse(message, projectsModel.hashCode() == compareTo.hashCode());
+        assertFalse(message, project.hashCode() == compareTo.hashCode());
     }
 }

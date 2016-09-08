@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.util;
+package me.raatiniemi.worker.domain.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,18 +24,16 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.model.CalculatedTime;
-
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class CalculateTimeTest {
-    private CalculatedTime expected;
-    private long milliseconds;
+public class CalculatedTimeAsMillisecondsTest {
+    private long expected;
+    private CalculatedTime calculatedTime;
 
-    public CalculateTimeTest(CalculatedTime expected, long milliseconds) {
+    public CalculatedTimeAsMillisecondsTest(long expected, CalculatedTime calculatedTime) {
         this.expected = expected;
-        this.milliseconds = milliseconds;
+        this.calculatedTime = calculatedTime;
     }
 
     @Parameters
@@ -43,48 +41,44 @@ public class CalculateTimeTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                createCalculatedTime(0, 1),
-                                60000L
+                                60000L,
+                                createCalculatedTime(0, 1)
                         },
                         {
-                                createCalculatedTime(0, 10),
-                                600000L
+                                600000L,
+                                createCalculatedTime(0, 10)
                         },
                         {
-                                createCalculatedTime(0, 15),
-                                900000L
+                                900000L,
+                                createCalculatedTime(0, 15)
                         },
                         {
-                                createCalculatedTime(0, 30),
-                                1800000L
+                                1800000L,
+                                createCalculatedTime(0, 30)
                         },
                         {
-                                createCalculatedTime(1, 0),
-                                3580000L
+                                3600000L,
+                                createCalculatedTime(1, 0)
                         },
                         {
-                                createCalculatedTime(1, 0),
-                                3600000L
+                                4500000L,
+                                createCalculatedTime(1, 15)
                         },
                         {
-                                createCalculatedTime(1, 15),
-                                4500000L
+                                7200000L,
+                                createCalculatedTime(2, 0)
                         },
                         {
-                                createCalculatedTime(2, 0),
-                                7175000L
+                                27000000L,
+                                createCalculatedTime(7, 30)
                         },
                         {
-                                createCalculatedTime(7, 30),
-                                27000000L
+                                108000000L,
+                                createCalculatedTime(30, 0)
                         },
                         {
-                                createCalculatedTime(30, 0),
-                                108000000L
-                        },
-                        {
-                                createCalculatedTime(56, 25),
-                                203100000L
+                                203100000L,
+                                createCalculatedTime(56, 25)
                         }
                 }
         );
@@ -95,7 +89,7 @@ public class CalculateTimeTest {
     }
 
     @Test
-    public void calculateTime() {
-        assertEquals(expected, CalculateTime.calculateTime(milliseconds));
+    public void asMilliseconds() {
+        assertEquals(expected, calculatedTime.asMilliseconds());
     }
 }

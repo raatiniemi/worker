@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.projects.model;
+package me.raatiniemi.worker.domain.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,70 +24,70 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.domain.model.Project;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelEqualsHashCodeTest {
+public class CalculatedTimeEqualsHashCodeTest {
     private String message;
     private Boolean expected;
-    private ProjectsModel projectsModel;
+    private CalculatedTime calculatedTime;
     private Object compareTo;
 
-    public ProjectsModelEqualsHashCodeTest(
+    public CalculatedTimeEqualsHashCodeTest(
             String message,
             Boolean expected,
-            ProjectsModel projectsModel,
+            CalculatedTime calculatedTime,
             Object compareTo
     ) {
         this.message = message;
         this.expected = expected;
-        this.projectsModel = projectsModel;
+        this.calculatedTime = calculatedTime;
         this.compareTo = compareTo;
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws InvalidProjectNameException {
-        Project project = new Project.Builder("Name")
-                .id(1L)
-                .build();
-        ProjectsModel projectsModel = new ProjectsModel(project);
+    public static Collection<Object[]> getParameters() {
+        CalculatedTime calculatedTime = createCalculatedTime(3, 15);
+
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "With same instance",
                                 Boolean.TRUE,
-                                projectsModel,
-                                projectsModel
+                                calculatedTime,
+                                calculatedTime
                         },
                         {
                                 "With null",
                                 Boolean.FALSE,
-                                projectsModel,
+                                calculatedTime,
                                 null
                         },
                         {
-                                "With incompatible object",
-                                Boolean.FALSE,
-                                projectsModel,
-                                ""
+                                "Same hour and minutes",
+                                Boolean.TRUE,
+                                calculatedTime,
+                                createCalculatedTime(3, 15)
                         },
                         {
-                                "With different project",
+                                "Different hour",
                                 Boolean.FALSE,
-                                projectsModel,
-                                new ProjectsModel(
-                                        new Project.Builder("Project name")
-                                                .id(2L)
-                                                .build()
-                                )
+                                calculatedTime,
+                                createCalculatedTime(4, 15)
+                        },
+                        {
+                                "Different minute",
+                                Boolean.FALSE,
+                                calculatedTime,
+                                createCalculatedTime(3, 16)
                         }
                 }
         );
+    }
+
+    private static CalculatedTime createCalculatedTime(int hours, int minutes) {
+        return new CalculatedTime(hours, minutes);
     }
 
     @Test
@@ -105,17 +105,17 @@ public class ProjectsModelEqualsHashCodeTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, projectsModel.equals(compareTo));
+        assertTrue(message, calculatedTime.equals(compareTo));
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, projectsModel.hashCode() == compareTo.hashCode());
+        assertTrue(message, calculatedTime.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, projectsModel.equals(compareTo));
+        assertFalse(message, calculatedTime.equals(compareTo));
 
         validateHashCodeWhenNotEqual();
     }
@@ -125,6 +125,6 @@ public class ProjectsModelEqualsHashCodeTest {
             return;
         }
 
-        assertFalse(message, projectsModel.hashCode() == compareTo.hashCode());
+        assertFalse(message, calculatedTime.hashCode() == compareTo.hashCode());
     }
 }

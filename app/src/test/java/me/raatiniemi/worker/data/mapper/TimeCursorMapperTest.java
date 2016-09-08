@@ -19,12 +19,13 @@ package me.raatiniemi.worker.data.mapper;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
@@ -34,9 +35,63 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(Parameterized.class)
 public class TimeCursorMapperTest {
-    private static Cursor createCursor(long id, long projectId, long start, Long stop, long registered) {
+    private Time expected;
+    private Cursor cursor;
+
+    public TimeCursorMapperTest(Time expected, Cursor cursor) {
+        this.expected = expected;
+        this.cursor = cursor;
+    }
+
+    @Parameters
+    public static Collection<Object[]> getParameters()
+            throws ClockOutBeforeClockInException {
+        return Arrays.asList(
+                new Object[][]{
+                        {
+                                createTime(1, 1, 1, 0, false),
+                                createCursor(1, 1, 1, null, 0)
+                        },
+                        {
+                                createTime(1, 1, 1, 2L, false),
+                                createCursor(1, 1, 1, 2L, 0)
+                        },
+                        {
+                                createTime(1, 1, 1, 2L, true),
+                                createCursor(1, 1, 1, 2L, 1)
+                        }
+                }
+        );
+    }
+
+    private static Time createTime(
+            long id,
+            long projectId,
+            long start,
+            long stop,
+            boolean registered
+    ) throws ClockOutBeforeClockInException {
+        Time.Builder builder = new Time.Builder(projectId)
+                .id(id)
+                .startInMilliseconds(start)
+                .stopInMilliseconds(stop);
+
+        if (registered) {
+            builder.register();
+        }
+
+        return builder.build();
+    }
+
+    private static Cursor createCursor(
+            long id,
+            long projectId,
+            long start,
+            Long stop,
+            long registered
+    ) {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndexOrThrow(BaseColumns._ID)).thenReturn(0);
@@ -61,38 +116,15 @@ public class TimeCursorMapperTest {
         return cursor;
     }
 
-    private static Time createTime(long id, long projectId, long start, long stop, boolean registered) throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(projectId)
-                .id(id)
-                .startInMilliseconds(start)
-                .stopInMilliseconds(stop);
-
-        if (registered) {
-            builder.register();
-        }
-
-        return builder.build();
-    }
-
-    @DataProvider
-    public static Object[][] transform_dataProvider() throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {createCursor(1, 1, 1, null, 0), createTime(1, 1, 1, 0, false)},
-                {createCursor(1, 1, 1, 2L, 0), createTime(1, 1, 1, 2L, false)},
-                {createCursor(1, 1, 1, 2L, 1), createTime(1, 1, 1, 2L, true)}
-        };
-    }
-
     @Test
-    @UseDataProvider("transform_dataProvider")
-    public void transform(Cursor cursor, Time expected) throws ClockOutBeforeClockInException {
-        TimeCursorMapper entityMapper = new TimeCursorMapper();
-        Time entity = entityMapper.transform(cursor);
+    public void transform() throws ClockOutBeforeClockInException {
+        TimeCursorMapper mapper = new TimeCursorMapper();
+        Time actual = mapper.transform(cursor);
 
-        assertEquals(expected.getId(), entity.getId());
-        assertEquals(expected.getProjectId(), entity.getProjectId());
-        assertEquals(expected.getStartInMilliseconds(), entity.getStartInMilliseconds());
-        assertEquals(expected.getStopInMilliseconds(), entity.getStopInMilliseconds());
-        assertEquals(expected.isRegistered(), entity.isRegistered());
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getProjectId(), actual.getProjectId());
+        assertEquals(expected.getStartInMilliseconds(), actual.getStartInMilliseconds());
+        assertEquals(expected.getStopInMilliseconds(), actual.getStopInMilliseconds());
+        assertEquals(expected.isRegistered(), actual.isRegistered());
     }
 }

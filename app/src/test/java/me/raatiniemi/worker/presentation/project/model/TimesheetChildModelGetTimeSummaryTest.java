@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util;
+package me.raatiniemi.worker.presentation.project.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,54 +24,46 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
+import me.raatiniemi.worker.domain.model.Time;
+
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class FractionIntervalFormatTest {
+public class TimesheetChildModelGetTimeSummaryTest {
     private String expected;
-    private long intervalInMilliseconds;
+    private Time time;
 
-    public FractionIntervalFormatTest(String expected, long intervalInMilliseconds) {
+    public TimesheetChildModelGetTimeSummaryTest(String expected, Time time) {
         this.expected = expected;
-        this.intervalInMilliseconds = intervalInMilliseconds;
+        this.time = time;
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters() {
+    public static Collection<Object[]> getParameters()
+            throws ClockOutBeforeClockInException {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "0.25",
-                                900000L
-                        },
-                        {
                                 "1.00",
-                                3600000L
+                                new Time.Builder(1L)
+                                        .stopInMilliseconds(3600000)
+                                        .build()
                         },
                         {
-                                "1.25",
-                                4500000L
-                        },
-                        {
-                                "2.00",
-                                7175000L
-                        },
-                        {
-                                "30.00",
-                                108000000L
-                        },
-                        {
-                                "56.42",
-                                203100000L
+                                "9.00",
+                                new Time.Builder(1L)
+                                        .stopInMilliseconds(32400000)
+                                        .build()
                         }
                 }
         );
     }
 
     @Test
-    public void format() {
-        DateIntervalFormat intervalFormat = new FractionIntervalFormat();
+    public void getTimeSummary() {
+        TimesheetChildModel item = new TimesheetChildModel(time);
 
-        assertEquals(expected, intervalFormat.format(intervalInMilliseconds));
+        assertEquals(expected, item.getTimeSummary());
     }
 }

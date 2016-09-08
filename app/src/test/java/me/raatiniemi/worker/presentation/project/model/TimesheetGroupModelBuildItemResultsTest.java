@@ -71,7 +71,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
     }
 
     @Parameters
-    public static Collection<Object[]> parameters()
+    public static Collection<Object[]> getParameters()
             throws ClockOutBeforeClockInException {
         return Arrays.asList(
                 new Object[][]{

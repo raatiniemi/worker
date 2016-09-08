@@ -9,7 +9,6 @@ def eventbusVersion = "3.0.0"
 def rxandroidVersion = '1.2.0'
 
 def junitVersion = "4.12"
-def junitDataProviderVersion = "1.11.0"
 def mockitoVersion = "1.10.19"
 def robolectricVersion = "3.0"
 
@@ -134,7 +133,6 @@ dependencies {
     compile "org.greenrobot:eventbus:${eventbusVersion}"
 
     testCompile "junit:junit:${junitVersion}"
-    testCompile "com.tngtech.java:junit-dataprovider:${junitDataProviderVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
     testCompile "org.robolectric:robolectric:${robolectricVersion}"
 }

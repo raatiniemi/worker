@@ -16,18 +16,11 @@
 
 package me.raatiniemi.worker.domain.model;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -41,10 +34,8 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(JUnit4.class)
 public class ProjectTest {
     private static Project.Builder createProjectBuilder() {
         return new Project.Builder("Project name");
@@ -58,103 +49,12 @@ public class ProjectTest {
                 .build();
     }
 
-    private static Time createActiveTimeWithElapsedTimeInMilliseconds(
-            long elapsedTimeInMilliseconds
-    ) {
-        Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(true);
-        when(time.getInterval()).thenReturn(elapsedTimeInMilliseconds);
-
-        return time;
-    }
-
     private static Time createActiveTimeWithStartInMilliseconds(
             long clockedInSinceInMilliseconds
     ) throws ClockOutBeforeClockInException {
         return new Time.Builder(1L)
                 .startInMilliseconds(clockedInSinceInMilliseconds)
                 .build();
-    }
-
-    @DataProvider
-    public static Object[][] getElapsed_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "without items",
-                        0L,
-                        new Time[]{}
-                },
-                {
-                        "without active item",
-                        0L,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(1L)
-                        }
-                },
-                {
-                        // Due to the implementation of the elapsed calculation
-                        // (i.e. it creates a new Date instance as reference),
-                        // a mock is needed required to test the behaviour.
-                        "with active item",
-                        50000L,
-                        new Time[]{
-                                createActiveTimeWithElapsedTimeInMilliseconds(50000L)
-                        }
-                }
-        };
-    }
-
-    @DataProvider
-    public static Object[][] getClockedInSince_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "without items",
-                        null,
-                        new Time[]{}
-                },
-                {
-                        "without active item",
-                        null,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(1L)
-                        }
-                },
-                {
-                        "with active item",
-                        new Date(50000L),
-                        new Time[]{
-                                createActiveTimeWithStartInMilliseconds(50000L)
-                        }
-                }
-        };
-    }
-
-    @DataProvider
-    public static Object[][] isActive_dataProvider()
-            throws ClockOutBeforeClockInException {
-        return new Object[][]{
-                {
-                        "without items",
-                        false,
-                        new Time[]{}
-                },
-                {
-                        "without active item",
-                        false,
-                        new Time[]{
-                                createTimeWithIntervalInMilliseconds(1L)
-                        }
-                },
-                {
-                        "with active item",
-                        true,
-                        new Time[]{
-                                createActiveTimeWithStartInMilliseconds(50000L)
-                        }
-                }
-        };
     }
 
     @Test
@@ -242,42 +142,6 @@ public class ProjectTest {
         project.addTime(times);
 
         assertTrue(project.getTime().isEmpty());
-    }
-
-    @Test
-    @UseDataProvider("getElapsed_dataProvider")
-    public void getElapsed(
-            String message,
-            long expected,
-            Time[] times
-    ) throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime(Arrays.asList(times));
-
-        assertEquals(message, expected, project.getElapsed());
-    }
-
-    @Test
-    @UseDataProvider("getClockedInSince_dataProvider")
-    public void getClockedInSince(
-            String message,
-            Date expected,
-            Time[] times
-    ) throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime(Arrays.asList(times));
-
-        if (null == expected) {
-            assertNull(message, project.getClockedInSince());
-            return;
-        }
-
-        Date actual = project.getClockedInSince();
-        assertEquals(message, expected.getTime(), actual.getTime());
     }
 
     @Test(expected = NullPointerException.class)
@@ -373,149 +237,5 @@ public class ProjectTest {
         // The `clockOutAt` modifies the active time, i.e. the project should
         // be inactive after clocking out.
         assertFalse(project.isActive());
-    }
-
-    @Test
-    @UseDataProvider("isActive_dataProvider")
-    public void isActive(
-            String message,
-            boolean expected,
-            Time[] times
-    ) throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime(Arrays.asList(times));
-
-        assertTrue(message, expected == project.isActive());
-    }
-
-    @RunWith(Parameterized.class)
-    public static class ProjectTest_equals {
-        private String message;
-        private Boolean expected;
-        private Project project;
-        private Object compareTo;
-
-        public ProjectTest_equals(
-                String message,
-                Boolean expected,
-                Project project,
-                Object compareTo
-        ) {
-            this.message = message;
-            this.expected = expected;
-            this.project = project;
-            this.compareTo = compareTo;
-        }
-
-        @Parameters
-        public static Collection<Object[]> parameters()
-                throws DomainException {
-            Project project = new Project.Builder("Project name")
-                    .id(1L)
-                    .build();
-
-            return Arrays.asList(
-                    new Object[][]{
-                            {
-                                    "With same instance",
-                                    Boolean.TRUE,
-                                    project,
-                                    project
-                            },
-                            {
-                                    "With null",
-                                    Boolean.FALSE,
-                                    project,
-                                    null
-                            },
-                            {
-                                    "With incompatible object",
-                                    Boolean.FALSE,
-                                    project,
-                                    ""
-                            },
-                            {
-                                    "With different project name",
-                                    Boolean.FALSE,
-                                    project,
-                                    new Project.Builder("Name")
-                                            .id(1L)
-                                            .build()
-                            },
-                            {
-                                    "With different id",
-                                    Boolean.FALSE,
-                                    project,
-                                    new Project.Builder("Project name")
-                                            .id(2L)
-                                            .build()
-                            },
-                            {
-                                    "With different registered time",
-                                    Boolean.FALSE,
-                                    project,
-                                    buildProjectWithRegisteredTime()
-                            }
-                    }
-            );
-        }
-
-        private static Project buildProjectWithRegisteredTime()
-                throws DomainException {
-            Project project = new Project.Builder("Project name")
-                    .id(1L)
-                    .build();
-
-            Time time = new Time.Builder(1L)
-                    .startInMilliseconds(1L)
-                    .stopInMilliseconds(2L)
-                    .build();
-
-            List<Time> registeredTime = new ArrayList<>();
-            registeredTime.add(time);
-
-            project.addTime(registeredTime);
-            return project;
-        }
-
-        @Test
-        public void equals() {
-            if (shouldBeEqual()) {
-                assertEqual();
-                return;
-            }
-
-            assertNotEqual();
-        }
-
-        private Boolean shouldBeEqual() {
-            return expected;
-        }
-
-        private void assertEqual() {
-            assertTrue(message, project.equals(compareTo));
-
-            validateHashCodeWhenEqual();
-        }
-
-        private void validateHashCodeWhenEqual() {
-            assertTrue(message, project.hashCode() == compareTo.hashCode());
-        }
-
-        private void assertNotEqual() {
-            assertFalse(message, project.equals(compareTo));
-
-            validateHashCodeWhenNotEqual();
-        }
-
-        private void validateHashCodeWhenNotEqual() {
-            if (null == compareTo) {
-                return;
-            }
-
-            assertFalse(message, project.hashCode() == compareTo.hashCode());
-        }
     }
 }

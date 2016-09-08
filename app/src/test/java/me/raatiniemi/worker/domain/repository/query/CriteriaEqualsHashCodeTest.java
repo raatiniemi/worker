@@ -47,7 +47,7 @@ public class CriteriaEqualsHashCodeTest {
     }
 
     @Parameters
-    public static Collection<Object[]> parameters() {
+    public static Collection<Object[]> getParameters() {
         Criteria criteria = Criteria.equalTo("foo", "bar");
 
         return Arrays.asList(

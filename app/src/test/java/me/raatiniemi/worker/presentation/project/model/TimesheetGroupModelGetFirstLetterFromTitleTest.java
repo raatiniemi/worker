@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util;
+package me.raatiniemi.worker.presentation.project.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,18 +22,20 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class FractionIntervalFormatTest {
+public class TimesheetGroupModelGetFirstLetterFromTitleTest {
     private String expected;
-    private long intervalInMilliseconds;
+    private Calendar calendar;
 
-    public FractionIntervalFormatTest(String expected, long intervalInMilliseconds) {
+    public TimesheetGroupModelGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
-        this.intervalInMilliseconds = intervalInMilliseconds;
+        this.calendar = calendar;
     }
 
     @Parameters
@@ -41,37 +43,41 @@ public class FractionIntervalFormatTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "0.25",
-                                900000L
+                                "F",
+                                new GregorianCalendar(2016, 6, 1)
                         },
                         {
-                                "1.00",
-                                3600000L
+                                "S",
+                                new GregorianCalendar(2016, 6, 2)
                         },
                         {
-                                "1.25",
-                                4500000L
+                                "S",
+                                new GregorianCalendar(2016, 6, 3)
                         },
                         {
-                                "2.00",
-                                7175000L
+                                "M",
+                                new GregorianCalendar(2016, 6, 4)
                         },
                         {
-                                "30.00",
-                                108000000L
+                                "T",
+                                new GregorianCalendar(2016, 6, 5)
                         },
                         {
-                                "56.42",
-                                203100000L
+                                "W",
+                                new GregorianCalendar(2016, 6, 6)
+                        },
+                        {
+                                "T",
+                                new GregorianCalendar(2016, 6, 7)
                         }
                 }
         );
     }
 
     @Test
-    public void format() {
-        DateIntervalFormat intervalFormat = new FractionIntervalFormat();
+    public void getFirstLetterFromTitle() {
+        TimesheetGroupModel item = new TimesheetGroupModel(calendar.getTime());
 
-        assertEquals(expected, intervalFormat.format(intervalInMilliseconds));
+        assertEquals(expected, item.getFirstLetterFromTitle());
     }
 }

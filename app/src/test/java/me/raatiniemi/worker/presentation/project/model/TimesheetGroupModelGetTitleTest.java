@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util;
+package me.raatiniemi.worker.presentation.project.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,18 +22,20 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class FractionIntervalFormatTest {
+public class TimesheetGroupModelGetTitleTest {
     private String expected;
-    private long intervalInMilliseconds;
+    private Calendar calendar;
 
-    public FractionIntervalFormatTest(String expected, long intervalInMilliseconds) {
+    public TimesheetGroupModelGetTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
-        this.intervalInMilliseconds = intervalInMilliseconds;
+        this.calendar = calendar;
     }
 
     @Parameters
@@ -41,37 +43,17 @@ public class FractionIntervalFormatTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "0.25",
-                                900000L
-                        },
-                        {
-                                "1.00",
-                                3600000L
-                        },
-                        {
-                                "1.25",
-                                4500000L
-                        },
-                        {
-                                "2.00",
-                                7175000L
-                        },
-                        {
-                                "30.00",
-                                108000000L
-                        },
-                        {
-                                "56.42",
-                                203100000L
+                                "Sunday (February 28)",
+                                new GregorianCalendar(2016, 1, 28)
                         }
                 }
         );
     }
 
     @Test
-    public void format() {
-        DateIntervalFormat intervalFormat = new FractionIntervalFormat();
+    public void getTitle() {
+        TimesheetGroupModel item = new TimesheetGroupModel(calendar.getTime());
 
-        assertEquals(expected, intervalFormat.format(intervalInMilliseconds));
+        assertEquals(expected, item.getTitle());
     }
 }

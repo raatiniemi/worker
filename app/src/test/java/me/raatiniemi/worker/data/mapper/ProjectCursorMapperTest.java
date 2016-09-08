@@ -19,12 +19,13 @@ package me.raatiniemi.worker.data.mapper;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
@@ -34,8 +35,40 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(DataProviderRunner.class)
+@RunWith(Parameterized.class)
 public class ProjectCursorMapperTest {
+    private Project expected;
+    private Cursor cursor;
+
+    public ProjectCursorMapperTest(Project expected, Cursor cursor) {
+        this.expected = expected;
+        this.cursor = cursor;
+    }
+
+    @Parameters
+    public static Collection<Object[]> getParameters()
+            throws InvalidProjectNameException {
+        return Arrays.asList(
+                new Object[][]{
+                        {
+                                createProject(1, "Name"),
+                                createCursor(1, "Name")
+                        },
+                        {
+                                createProject(1, "Name"),
+                                createCursor(1, "Name")
+                        }
+                }
+        );
+    }
+
+    private static Project createProject(long id, String name)
+            throws InvalidProjectNameException {
+        return new Project.Builder(name)
+                .id(id)
+                .build();
+    }
+
     private static Cursor createCursor(long id, String name) {
         Cursor cursor = mock(Cursor.class);
 
@@ -48,28 +81,12 @@ public class ProjectCursorMapperTest {
         return cursor;
     }
 
-    private static Project createProject(long id, String name)
-            throws InvalidProjectNameException {
-        return new Project.Builder(name)
-                .id(id)
-                .build();
-    }
-
-    @DataProvider
-    public static Object[][] transform_dataProvider() throws InvalidProjectNameException {
-        return new Object[][]{
-                {createCursor(1, "Name"), createProject(1, "Name")},
-                {createCursor(1, "Name"), createProject(1, "Name")}
-        };
-    }
-
     @Test
-    @UseDataProvider("transform_dataProvider")
-    public void transform(Cursor cursor, Project expected) throws InvalidProjectNameException {
-        ProjectCursorMapper entityMapper = new ProjectCursorMapper();
-        Project entity = entityMapper.transform(cursor);
+    public void transform() throws InvalidProjectNameException {
+        ProjectCursorMapper mapper = new ProjectCursorMapper();
+        Project actual = mapper.transform(cursor);
 
-        assertEquals(expected.getId(), entity.getId());
-        assertEquals(expected.getName(), entity.getName());
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getName(), actual.getName());
     }
 }
