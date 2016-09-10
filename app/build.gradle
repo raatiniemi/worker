@@ -48,6 +48,12 @@ android {
         }
     }
 
+    dexOptions {
+        incremental true
+        maxProcessCount 2
+        javaMaxHeapSize "2g"
+    }
+
     // AndroidHttpClient was removed from the SDK in v23 of the build tools.
     // This causes issues since robolectric is running against an earlier
     // version of the SDK, and expects the class to be present.
