@@ -16,10 +16,14 @@
 
 package me.raatiniemi.worker;
 
+import android.app.Application;
+
+import com.squareup.leakcanary.LeakCanary;
+
 /**
  * Stores application constants.
  */
-public final class Worker {
+public final class Worker extends Application {
     /**
      * Package for the application.
      */
@@ -54,6 +58,10 @@ public final class Worker {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
-    private Worker() {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        LeakCanary.install(this);
     }
 }
