@@ -21,8 +21,8 @@ android {
         applicationId "me.raatiniemi.worker"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 22
-        versionName "0.9.3"
+        versionCode 23
+        versionName "0.9.4"
 
         jackOptions {
             enabled true
