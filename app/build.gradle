@@ -27,6 +27,8 @@ android {
         jackOptions {
             enabled true
         }
+
+        resConfigs "en"
     }
     buildTypes {
         release {
