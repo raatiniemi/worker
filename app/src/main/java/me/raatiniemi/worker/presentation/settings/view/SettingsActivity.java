@@ -110,24 +110,6 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      */
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
-    /**
-     * Instance for the SettingsActivity.
-     */
-    private static SettingsActivity instance;
-
-    /**
-     * Retrieve the instance for the SettingsActivity.
-     *
-     * @return Instance for the SettingsActivity.
-     */
-    private static SettingsActivity getInstance() {
-        return instance;
-    }
-
-    private static synchronized void setInstance(SettingsActivity instance) {
-        SettingsActivity.instance = instance;
-    }
-
     public static Intent newIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
     }
@@ -136,7 +118,6 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        setInstance(this);
 
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
@@ -356,11 +337,15 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             getActivity().setTitle(getTitle());
         }
 
+        SettingsActivity getSettingsActivity() {
+            return (SettingsActivity) getActivity();
+        }
+
         @Override
         public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
             super.onPreferenceTreeClick(preferenceScreen, preference);
             if (preference instanceof PreferenceScreen) {
-                getInstance().switchPreferenceScreen(preference.getKey());
+                getSettingsActivity().switchPreferenceScreen(preference.getKey());
             } else {
                 Log.d(TAG, "Preference '" + preference.getTitle() + "' is not implemented");
                 Snackbar.make(
@@ -504,7 +489,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         private void changeTimeSummaryStartingPoint(Object newStartingPoint) {
             int startingPoint = Integer.parseInt((String) newStartingPoint);
-            getInstance().getPresenter()
+            getSettingsActivity().getPresenter()
                     .changeTimeSummaryStartingPoint(startingPoint);
         }
     }
@@ -604,7 +589,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             if (PermissionUtil.havePermission(getActivity(), READ_EXTERNAL_STORAGE)) {
                 // Tell the SettingsActivity to fetch the latest backup.
                 Log.d(TAG, "Permission for reading external storage is granted");
-                getInstance().getPresenter()
+                getSettingsActivity().getPresenter()
                         .getLatestBackup();
 
                 // No need to go any further.
