@@ -13,6 +13,14 @@ def junitVersion = "4.12"
 def mockitoVersion = "1.10.19"
 def robolectricVersion = "3.0"
 
+Closure<Integer> getVersionCodeFromNumberOfTags = {
+    def tags = 'git tag'.execute()
+            .getText()
+            .readLines()
+
+    return tags.size()
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
@@ -21,7 +29,7 @@ android {
         applicationId "me.raatiniemi.worker"
         minSdkVersion 21
         targetSdkVersion 24
-        versionCode 23
+        versionCode getVersionCodeFromNumberOfTags()
         versionName "0.9.4"
 
         jackOptions {
