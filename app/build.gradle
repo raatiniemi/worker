@@ -21,6 +21,13 @@ Closure<Integer> getVersionCodeFromNumberOfTags = {
     return tags.size()
 }
 
+Closure<String> getVersionNameFromTag = {
+    def tag = 'git describe --tags --abbrev=0'.execute()
+            .getText()
+
+    return tag.toString().trim()
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
@@ -30,7 +37,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 24
         versionCode getVersionCodeFromNumberOfTags()
-        versionName "0.9.4"
+        versionName getVersionNameFromTag()
 
         jackOptions {
             enabled true
