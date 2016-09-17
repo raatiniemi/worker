@@ -1,15 +1,6 @@
 #!/bin/bash
-# Make sure we're working from the project root directory.
-cd "$(dirname $0)/..";
-
-GRADLE="gradle";
+GRADLE_RUNNER="$(dirname $0)/gradle";
 TASKS="clean test";
 
-# If gradle is not available, use the gradle wrapper.
-$(which gradle &>/dev/null);
-if [ $? -ne 0 ]; then
-    GRADLE="./gradlew";
-fi;
-
-$GRADLE $TASKS;
+$GRADLE_RUNNER $TASKS;
 exit $?;
