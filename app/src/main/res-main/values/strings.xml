@@ -91,6 +91,9 @@
     <string name="notification.restore.title">Restore complete</string>
     <string name="notification.restore.message">Press notification to restart application.</string>
 
+    <string name="activity.settings.restore.confirm.title">Restore data</string>
+    <string name="activity.settings.restore.confirm.message">Restoring data will override the current data and is not reversible.\n\nDo you which to continue?</string>
+
     <string name="notification.pause.action.pause">Pause</string>
     <string name="notification.pause.action.clock_out">Clock out</string>
     <string name="notification.pause.action.resume">Resume</string>

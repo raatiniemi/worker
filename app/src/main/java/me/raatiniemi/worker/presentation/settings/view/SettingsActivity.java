@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.settings.view;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -571,13 +572,20 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
          * Initiate the restore action.
          */
         private void runRestore() {
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    R.string.message_restoring_data,
-                    Snackbar.LENGTH_SHORT
-            ).show();
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.activity_settings_restore_confirm_title)
+                    .setMessage(R.string.activity_settings_restore_confirm_message)
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        Snackbar.make(
+                                getActivity().findViewById(android.R.id.content),
+                                R.string.message_restoring_data,
+                                Snackbar.LENGTH_SHORT
+                        ).show();
 
-            RestoreService.startRestore(getActivity());
+                        RestoreService.startRestore(getActivity());
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
         }
 
         /**
