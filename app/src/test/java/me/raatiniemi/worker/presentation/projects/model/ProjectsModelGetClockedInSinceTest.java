@@ -16,10 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.model;
 
-import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.test.mock.MockResources;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -30,7 +26,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
-import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
@@ -42,20 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelGetClockedInSinceTest {
-    private static final Resources resources = new MockResources() {
-        @NonNull
-        @Override
-        public String getString(int id) throws NotFoundException {
-            switch (id) {
-                case R.string.fragment_projects_item_clocked_in_since:
-                    return "Since %s (%s)";
-            }
-
-            return super.getString(id);
-        }
-    };
-
+public class ProjectsModelGetClockedInSinceTest extends ProjectsModelResourceTest {
     private String message;
     private String expected;
     private Time[] registeredTime;
@@ -133,11 +115,11 @@ public class ProjectsModelGetClockedInSinceTest {
                 .build();
         ProjectsModel model = new ProjectsModel(project);
         if (null == registeredTime) {
-            assertNull(message, model.getClockedInSince(resources));
+            assertNull(message, model.getClockedInSince(getResources()));
             return;
         }
         project.addTime(Arrays.asList(registeredTime));
 
-        assertEquals(expected, model.getClockedInSince(resources));
+        assertEquals(expected, model.getClockedInSince(getResources()));
     }
 }

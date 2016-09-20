@@ -16,10 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.model;
 
-import android.content.res.Resources;
-import android.support.annotation.NonNull;
-import android.test.mock.MockResources;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -28,7 +24,6 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertEquals;
@@ -36,22 +31,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelGetHelpTextForClockActivityToggleTest {
-    private static final Resources resources = new MockResources() {
-        @NonNull
-        @Override
-        public String getString(int id) throws NotFoundException {
-            switch (id) {
-                case R.string.fragment_projects_item_clock_in:
-                    return "Clock in now";
-                case R.string.fragment_projects_item_clock_out:
-                    return "Clock out now";
-            }
-
-            return super.getString(id);
-        }
-    };
-
+public class ProjectsModelGetHelpTextForClockActivityToggleTest extends ProjectsModelResourceTest {
     private String expected;
     private Project project;
 
@@ -90,6 +70,6 @@ public class ProjectsModelGetHelpTextForClockActivityToggleTest {
     public void getHelpTextForClockActivityToggle() {
         ProjectsModel model = new ProjectsModel(project);
 
-        assertEquals(expected, model.getHelpTextForClockActivityToggle(resources));
+        assertEquals(expected, model.getHelpTextForClockActivityToggle(getResources()));
     }
 }
