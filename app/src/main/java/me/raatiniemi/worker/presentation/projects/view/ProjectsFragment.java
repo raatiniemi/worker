@@ -206,7 +206,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @Override
     public void updateProject(ProjectsModel project) {
         int position = getAdapter().findProject(project);
-        if (0 > position) {
+        if (RecyclerView.NO_POSITION == position) {
             Log.e(TAG, "Unable to find position for project in the adapter");
             return;
         }

@@ -129,7 +129,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         // TODO: Clean up the comparator.
         final ProjectComparator comparator = new ProjectComparator();
 
-        return Collections.binarySearch(getItems(), project, new Comparator<ProjectsModel>() {
+        int position = Collections.binarySearch(getItems(), project, new Comparator<ProjectsModel>() {
             @Override
             public int compare(ProjectsModel lhs, ProjectsModel rhs) {
                 return comparator.compare(
@@ -138,6 +138,11 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
                 );
             }
         });
+        if (0 > position) {
+            return RecyclerView.NO_POSITION;
+        }
+
+        return position;
     }
 
     /**
