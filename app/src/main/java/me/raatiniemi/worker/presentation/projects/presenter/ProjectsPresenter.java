@@ -309,14 +309,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                     }
                 })
                 .compose(this.<List<ProjectsModel>>applySchedulers())
-                .doOnNext(new Action1<List<ProjectsModel>>() {
-                    @Override
-                    public void call(List<ProjectsModel> projectsModels) {
-                        for (ProjectsModel projectsModel : projectsModels) {
-                            postOngoingNotification(projectsModel.asProject());
-                        }
-                    }
-                })
                 .subscribe(new Subscriber<List<ProjectsModel>>() {
                     @Override
                     public void onNext(List<ProjectsModel> items) {

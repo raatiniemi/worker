@@ -79,6 +79,11 @@
             android:exported="false"
             />
 
+        <service
+            android:name=".data.service.ongoing.ReloadNotificationService"
+            android:exported="false"
+            />
+
     </application>
 
 </manifest>

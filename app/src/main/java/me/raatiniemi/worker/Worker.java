@@ -20,6 +20,8 @@ import android.app.Application;
 
 import com.squareup.leakcanary.LeakCanary;
 
+import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
+
 /**
  * Stores application constants.
  */
@@ -63,5 +65,6 @@ public final class Worker extends Application {
         super.onCreate();
 
         LeakCanary.install(this);
+        ReloadNotificationService.startServiceWithContext(this);
     }
 }
