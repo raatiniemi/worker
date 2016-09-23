@@ -25,7 +25,7 @@ import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
 /**
  * Stores application constants.
  */
-public final class Worker extends Application {
+public class Worker extends Application {
     /**
      * Package for the application.
      */
@@ -64,7 +64,13 @@ public final class Worker extends Application {
     public void onCreate() {
         super.onCreate();
 
-        LeakCanary.install(this);
-        ReloadNotificationService.startServiceWithContext(this);
+        if (!isUnitTesting()) {
+            LeakCanary.install(this);
+            ReloadNotificationService.startServiceWithContext(this);
+        }
+    }
+
+    boolean isUnitTesting() {
+        return false;
     }
 }
