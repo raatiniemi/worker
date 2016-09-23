@@ -7,7 +7,7 @@ def androidSupportVersion = '24.1.1'
 def advancedrecyclerviewVersion = "0.9.1"
 def eventbusVersion = "3.0.0"
 def rxandroidVersion = '1.2.0'
-def leakCanaryVersion = '1.4-beta2'
+def leakCanaryVersion = '1.4'
 
 def junitVersion = "4.12"
 def mockitoVersion = "1.10.19"
