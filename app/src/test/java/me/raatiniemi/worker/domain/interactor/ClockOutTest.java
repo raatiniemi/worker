@@ -23,8 +23,8 @@ import org.junit.runners.JUnit4;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
@@ -42,7 +42,7 @@ public class ClockOutTest {
         timeRepository = mock(TimeRepository.class);
     }
 
-    @Test(expected = ClockActivityException.class)
+    @Test(expected = InactiveProjectException.class)
     public void execute_withoutActiveTime() throws DomainException {
         when(timeRepository.getActiveTimeForProject(1L))
                 .thenReturn(null);
