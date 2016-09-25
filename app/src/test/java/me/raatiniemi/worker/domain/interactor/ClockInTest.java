@@ -44,11 +44,11 @@ public class ClockInTest {
 
     @Test(expected = ActiveProjectException.class)
     public void execute_withActiveTime() throws DomainException {
-        Time time = new Time.Builder(1L)
-                .build();
-
         when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(time);
+                .thenReturn(
+                        new Time.Builder(1L)
+                                .build()
+                );
 
         ClockIn clockIn = new ClockIn(timeRepository);
         clockIn.execute(1L, new Date());
