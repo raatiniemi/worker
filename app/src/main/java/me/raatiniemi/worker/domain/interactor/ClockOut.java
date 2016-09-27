@@ -18,8 +18,8 @@ package me.raatiniemi.worker.domain.interactor;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
@@ -38,13 +38,12 @@ public class ClockOut {
      *
      * @param projectId Id for the project to clock out.
      * @param date      Date to clock out.
-     * @throws DomainException If domain rules are violated.
+     * @throws InactiveProjectException If project is inactive.
      */
-    public void execute(long projectId, Date date)
-            throws DomainException {
+    public void execute(long projectId, Date date) throws DomainException {
         Time time = timeRepository.getActiveTimeForProject(projectId);
         if (null == time) {
-            throw new ClockActivityException("Project is not active");
+            throw new InactiveProjectException("Project is not active");
         }
 
         timeRepository.update(

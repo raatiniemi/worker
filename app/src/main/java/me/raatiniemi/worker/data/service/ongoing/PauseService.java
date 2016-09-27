@@ -22,6 +22,8 @@ import android.util.Log;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -40,8 +42,7 @@ public class PauseService extends OngoingService {
         long projectId = getProjectId(intent);
 
         try {
-            ClockOut clockOut = buildClockOutUseCase();
-            clockOut.execute(projectId, new Date());
+            clockOutProjectNow(projectId);
 
             updateUserInterface(projectId);
 
@@ -58,6 +59,15 @@ public class PauseService extends OngoingService {
             Log.w(TAG, "Unable to pause project", e);
 
             sendErrorNotification(projectId);
+        }
+    }
+
+    private void clockOutProjectNow(long projectId) throws DomainException {
+        try {
+            ClockOut clockOut = buildClockOutUseCase();
+            clockOut.execute(projectId, new Date());
+        } catch (InactiveProjectException e) {
+            Log.e(TAG, "Pause service called with inactive project", e);
         }
     }
 

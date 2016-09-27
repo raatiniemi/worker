@@ -44,6 +44,7 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProject;
@@ -125,14 +126,11 @@ public class PauseServiceTest {
     }
 
     @Test
-    public void onHandleIntent_whenClockOutFail()
-            throws DomainException {
+    public void onHandleIntent_whenClockOutFail() throws DomainException {
         Intent intent = buildIntentForService();
         intent.setData(buildProjectDataUri());
-
-        doThrow(ClockActivityException.class)
-                .when(clockOut)
-                .execute(eq(1L), isA(Date.class));
+        doThrow(DomainException.class)
+                .when(clockOut).execute(eq(1L), isA(Date.class));
 
         serviceController.withIntent(intent)
                 .startCommand(0, 0);
@@ -203,6 +201,55 @@ public class PauseServiceTest {
                 anyInt(),
                 any(Notification.class)
         );
+    }
+
+    @Test
+    public void onHandleIntent_withInactiveProjectAndOngoingNotificationEnabled()
+            throws DomainException {
+        getService().enableOngoingNotification();
+        Intent intent = buildIntentForService();
+        intent.setData(buildProjectDataUri());
+        doThrow(InactiveProjectException.class)
+                .when(clockOut).execute(eq(1L), any(Date.class));
+        when(getProject.execute(1L))
+                .thenReturn(buildProject(1L));
+
+        serviceController.withIntent(intent)
+                .startCommand(0, 0);
+
+        verify(clockOut).execute(eq(1L), isA(Date.class));
+        verify(eventBus).post(isA(OngoingNotificationActionEvent.class));
+        verify(getProject).execute(eq(1L));
+        verify(notificationManager).notify(
+                eq("1"),
+                eq(Worker.NOTIFICATION_ON_GOING_ID),
+                isA(Notification.class)
+        );
+        verify(notificationManager, never())
+                .cancel(anyString(), anyInt());
+    }
+
+    @Test
+    public void onHandleIntent_withInactiveProjectAndOngoingNotificationDisabled()
+            throws DomainException {
+        Intent intent = buildIntentForService();
+        intent.setData(buildProjectDataUri());
+        doThrow(InactiveProjectException.class)
+                .when(clockOut).execute(eq(1L), any(Date.class));
+        when(getProject.execute(1L))
+                .thenReturn(buildProject(1L));
+
+        serviceController.withIntent(intent)
+                .startCommand(0, 0);
+
+        verify(clockOut).execute(eq(1L), isA(Date.class));
+        verify(eventBus).post(isA(OngoingNotificationActionEvent.class));
+        verify(notificationManager).cancel(
+                eq("1"),
+                eq(Worker.NOTIFICATION_ON_GOING_ID)
+        );
+        verify(notificationManager, never())
+                .notify(anyString(), anyInt(), any(Notification.class));
     }
 
     @SuppressLint("Registered")

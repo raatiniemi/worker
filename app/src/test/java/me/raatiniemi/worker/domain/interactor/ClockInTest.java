@@ -23,7 +23,7 @@ import org.junit.runners.JUnit4;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.domain.exception.ClockActivityException;
+import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
@@ -42,13 +42,13 @@ public class ClockInTest {
         timeRepository = mock(TimeRepository.class);
     }
 
-    @Test(expected = ClockActivityException.class)
+    @Test(expected = ActiveProjectException.class)
     public void execute_withActiveTime() throws DomainException {
-        Time time = new Time.Builder(1L)
-                .build();
-
         when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(time);
+                .thenReturn(
+                        new Time.Builder(1L)
+                                .build()
+                );
 
         ClockIn clockIn = new ClockIn(timeRepository);
         clockIn.execute(1L, new Date());

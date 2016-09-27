@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.interactor;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.domain.exception.ClockActivityException;
+import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
@@ -33,11 +33,17 @@ public class ClockIn {
         this.timeRepository = timeRepository;
     }
 
-    public void execute(long projectId, Date date)
-            throws DomainException {
+    /**
+     * Clock in the project at the given date.
+     *
+     * @param projectId Id for the project to clock in.
+     * @param date      Date to clock in.
+     * @throws ActiveProjectException If project is active.
+     */
+    public void execute(long projectId, Date date) throws DomainException {
         Time time = timeRepository.getActiveTimeForProject(projectId);
         if (null != time) {
-            throw new ClockActivityException("Project is active");
+            throw new ActiveProjectException("Project is active");
         }
 
         timeRepository.add(
