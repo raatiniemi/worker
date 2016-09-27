@@ -22,6 +22,8 @@ import android.util.Log;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.domain.exception.ActiveProjectException;
+import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockIn;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -40,8 +42,7 @@ public class ResumeService extends OngoingService {
         long projectId = getProjectId(intent);
 
         try {
-            ClockIn clockIn = buildClockInUseCase();
-            clockIn.execute(projectId, new Date());
+            clockInProjectNow(projectId);
 
             updateUserInterface(projectId);
 
@@ -58,6 +59,15 @@ public class ResumeService extends OngoingService {
             Log.w(TAG, "Unable to resume project", e);
 
             sendErrorNotification(projectId);
+        }
+    }
+
+    private void clockInProjectNow(long projectId) throws DomainException {
+        try {
+            ClockIn clockIn = buildClockInUseCase();
+            clockIn.execute(projectId, new Date());
+        } catch (ActiveProjectException e) {
+            Log.e(TAG, "Resume service called with active project", e);
         }
     }
 
