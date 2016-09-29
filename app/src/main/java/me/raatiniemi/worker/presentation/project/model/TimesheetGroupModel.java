@@ -18,7 +18,7 @@ public class TimesheetGroupModel
         intervalFormat = new FractionIntervalFormat();
     }
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE (MMMM d)", Locale.getDefault());
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.getDefault());
 
     public TimesheetGroupModel(Date group) {
         super(group);

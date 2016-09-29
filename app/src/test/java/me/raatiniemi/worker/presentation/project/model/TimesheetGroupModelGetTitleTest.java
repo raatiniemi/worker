@@ -43,7 +43,7 @@ public class TimesheetGroupModelGetTitleTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Sunday (February 28)",
+                                "Sun (Feb 28)",
                                 new GregorianCalendar(2016, 1, 28)
                         }
                 }
