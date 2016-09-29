@@ -41,6 +41,7 @@ android {
 
         jackOptions {
             enabled true
+            additionalParameters("jack.incremental" : "true")
         }
 
         resConfigs "en"
@@ -64,12 +65,6 @@ android {
                     'src/main/res-screen/settings'
             ]
         }
-    }
-
-    dexOptions {
-        incremental true
-        maxProcessCount 2
-        javaMaxHeapSize "2g"
     }
 
     // AndroidHttpClient was removed from the SDK in v23 of the build tools.
