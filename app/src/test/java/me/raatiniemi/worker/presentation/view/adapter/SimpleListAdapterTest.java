@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.view.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
@@ -37,7 +38,7 @@ import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class SimpleListAdapterTest {
     @Test
     public void getItemCount_withoutItems() {

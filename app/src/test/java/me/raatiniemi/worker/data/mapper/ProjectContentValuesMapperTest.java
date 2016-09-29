@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.mapper;
 
 import android.content.ContentValues;
+import android.os.Build;
 import android.provider.BaseColumns;
 
 import org.junit.Test;
@@ -33,7 +34,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class ProjectContentValuesMapperTest {
     private static ContentValues createContentValues(final String name) {
         ContentValues contentValues = new ContentValues();

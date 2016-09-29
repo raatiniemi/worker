@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data.repository;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.os.Build;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class TimeResolverRepositoryTest {
     private ContentResolver contentResolver;
     private TimeResolverRepository repository;

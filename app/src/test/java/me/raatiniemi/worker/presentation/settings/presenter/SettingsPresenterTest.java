@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.settings.presenter;
 
 import android.content.Context;
+import android.os.Build;
 
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
@@ -40,7 +41,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class SettingsPresenterTest {
     private EventBus eventBus;
     private SettingsPresenter presenter;

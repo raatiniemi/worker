@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.provider.BaseColumns;
 
 import org.junit.After;
@@ -35,7 +36,7 @@ import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class WorkerDatabaseTest {
     private SQLiteDatabase database;
 

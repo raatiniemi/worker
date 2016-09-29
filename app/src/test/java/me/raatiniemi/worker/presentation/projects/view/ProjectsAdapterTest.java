@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.projects.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 
 import org.junit.Before;
@@ -34,7 +35,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class ProjectsAdapterTest {
     private ProjectsAdapter adapter;
 

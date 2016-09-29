@@ -18,6 +18,7 @@ package me.raatiniemi.worker.presentation.util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +33,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class PermissionUtilTest {
     private static final String PERMISSION = "Permission";
 

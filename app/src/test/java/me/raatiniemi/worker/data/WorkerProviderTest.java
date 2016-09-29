@@ -21,6 +21,7 @@ import android.content.ContentValues;
 import android.content.OperationApplicationException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.BaseColumns;
 
 import org.junit.Before;
@@ -48,7 +49,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class WorkerProviderTest {
     private SQLiteDatabase database;
     private WorkerProvider provider;

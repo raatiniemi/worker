@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.util;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 
 import org.junit.Before;
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class SelectionManagerAdapterDecoratorTest {
     private RecyclerView.Adapter adapter;
     private SelectionListener selectionListener;

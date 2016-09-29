@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.projects.presenter;
 
 import android.content.Context;
+import android.os.Build;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +41,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class NewProjectPresenterTest {
     @Rule
     public final RxSchedulerRule rxSchedulersRule = new RxSchedulerRule();
