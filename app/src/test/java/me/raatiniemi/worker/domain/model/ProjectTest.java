@@ -31,7 +31,6 @@ import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
@@ -142,48 +141,6 @@ public class ProjectTest {
         project.addTime(times);
 
         assertTrue(project.getTime().isEmpty());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void clockInAt_withNullDate()
-            throws DomainException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.clockInAt(null);
-    }
-
-    @Test(expected = ClockActivityException.class)
-    public void clockInAt_withActiveTime()
-            throws DomainException {
-        Project project = createProjectBuilder()
-                .build();
-
-        List<Time> times = new ArrayList<>();
-        times.add(
-                createActiveTimeWithStartInMilliseconds(0L)
-        );
-        project.addTime(times);
-
-        Date date = new Date();
-        project.clockInAt(date);
-    }
-
-    @Test
-    public void clockInAt_withoutActiveTime()
-            throws DomainException {
-        Project project = createProjectBuilder()
-                .id(1L)
-                .build();
-
-        Date date = new Date(100L);
-
-        Time time = project.clockInAt(date);
-        assertNotNull(time);
-        assertNull(time.getId());
-        assertEquals(1L, time.getProjectId());
-        assertEquals(100L, time.getStartInMilliseconds());
-        assertEquals(0L, time.getStopInMilliseconds());
     }
 
     @Test(expected = NullPointerException.class)
