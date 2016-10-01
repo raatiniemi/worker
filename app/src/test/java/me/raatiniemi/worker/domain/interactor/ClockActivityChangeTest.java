@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
@@ -32,8 +33,10 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,6 +45,7 @@ import static org.mockito.Mockito.when;
 public class ClockActivityChangeTest {
     private ProjectRepository projectRepository;
     private TimeRepository timeRepository;
+    private ClockIn clockIn;
     private ClockActivityChange clockActivityChange;
 
     private Project buildProject() throws InvalidProjectNameException {
@@ -54,9 +58,11 @@ public class ClockActivityChangeTest {
     public void setUp() {
         projectRepository = mock(ProjectRepository.class);
         timeRepository = mock(TimeRepository.class);
+        clockIn = mock(ClockIn.class);
         clockActivityChange = new ClockActivityChange(
                 projectRepository,
-                timeRepository
+                timeRepository,
+                clockIn
         );
     }
 
@@ -69,9 +75,18 @@ public class ClockActivityChangeTest {
 
         clockActivityChange.execute(project, new Date());
 
-        verify(timeRepository).add(isA(Time.class));
+        verify(clockIn).execute(eq(1L), any(Date.class));
         verify(projectRepository).get(eq(1L));
         verify(timeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
+    }
+
+    @Test(expected = ActiveProjectException.class)
+    public void execute_clockInActiveProject() throws DomainException {
+        Project project = buildProject();
+        doThrow(ActiveProjectException.class)
+                .when(clockIn).execute(eq(1L), any(Date.class));
+
+        clockActivityChange.execute(project, new Date());
     }
 
     @Test

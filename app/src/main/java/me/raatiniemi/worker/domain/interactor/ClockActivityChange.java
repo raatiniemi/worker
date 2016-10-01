@@ -36,19 +36,23 @@ public class ClockActivityChange {
      * Time repository.
      */
     private final TimeRepository timeRepository;
+    private final ClockIn clockIn;
 
     /**
      * Constructor.
      *
      * @param projectRepository Project repository.
      * @param timeRepository    Time repository.
+     * @param clockIn           Use case for clocking in projects.
      */
     public ClockActivityChange(
             ProjectRepository projectRepository,
-            TimeRepository timeRepository
+            TimeRepository timeRepository,
+            ClockIn clockIn
     ) {
         this.projectRepository = projectRepository;
         this.timeRepository = timeRepository;
+        this.clockIn = clockIn;
     }
 
     /**
@@ -68,7 +72,7 @@ public class ClockActivityChange {
         // Depending on whether the project is active we have
         // to clock in or clock out at the given date.
         if (!project.isActive()) {
-            timeRepository.add(project.clockInAt(date));
+            clockIn.execute(project.getId(), date);
         } else {
             timeRepository.update(project.clockOutAt(date));
         }
