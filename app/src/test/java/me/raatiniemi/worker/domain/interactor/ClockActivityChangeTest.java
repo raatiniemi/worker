@@ -42,6 +42,7 @@ import static org.mockito.Mockito.when;
 public class ClockActivityChangeTest {
     private ProjectRepository projectRepository;
     private TimeRepository timeRepository;
+    private ClockActivityChange clockActivityChange;
 
     private Project buildProject() throws InvalidProjectNameException {
         return new Project.Builder("Project name")
@@ -53,20 +54,19 @@ public class ClockActivityChangeTest {
     public void setUp() {
         projectRepository = mock(ProjectRepository.class);
         timeRepository = mock(TimeRepository.class);
+        clockActivityChange = new ClockActivityChange(
+                projectRepository,
+                timeRepository
+        );
     }
 
     @Test
     public void execute_clockInProject() throws DomainException {
         Project project = buildProject();
-
         when(projectRepository.get(1L)).thenReturn(project);
         when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<Time>());
 
-        ClockActivityChange clockActivityChange = new ClockActivityChange(
-                projectRepository,
-                timeRepository
-        );
         clockActivityChange.execute(project, new Date());
 
         verify(timeRepository).add(isA(Time.class));
@@ -79,21 +79,14 @@ public class ClockActivityChangeTest {
         Time time = new Time.Builder(1L)
                 .startInMilliseconds(1L)
                 .build();
-
         List<Time> registeredTime = new ArrayList<>();
         registeredTime.add(time);
-
         Project project = buildProject();
         project.addTime(registeredTime);
-
         when(projectRepository.get(1L)).thenReturn(project);
         when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<Time>());
 
-        ClockActivityChange clockActivityChange = new ClockActivityChange(
-                projectRepository,
-                timeRepository
-        );
         clockActivityChange.execute(project, new Date());
 
         verify(timeRepository).update(isA(Time.class));
