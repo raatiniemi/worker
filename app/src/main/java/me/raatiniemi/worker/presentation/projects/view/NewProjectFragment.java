@@ -16,9 +16,12 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -86,10 +89,28 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         return presenter;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        setup();
+    }
+
+    /**
+     * TODO: Remove method call when `minSdkVersion` is +23.
+     */
+    @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            setup();
+        }
+    }
+
+    private void setup() {
         // Check that we actually have a listener available, otherwise we
         // should not attempt to create new projects.
         if (null == onCreateProjectListener) {

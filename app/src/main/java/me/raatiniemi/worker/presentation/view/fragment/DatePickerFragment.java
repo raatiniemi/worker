@@ -16,11 +16,14 @@
 
 package me.raatiniemi.worker.presentation.view.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -51,10 +54,28 @@ public class DatePickerFragment extends DialogFragment {
 
     private DialogInterface.OnDismissListener onDismissListener;
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        setup();
+    }
+
+    /**
+     * TODO: Remove method call when `minSdkVersion` is +23.
+     */
+    @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            setup();
+        }
+    }
+
+    private void setup() {
         // Check that we actually have a listener available.
         if (null == onDateSetListener) {
             // The real reason for failure is to technical to display to the
