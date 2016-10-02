@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -124,17 +123,8 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         getDialog().setTitle(R.string.fragment_new_project_title);
-
-        // Add the click listener for the cancel button.
-        TextView cancel = (TextView) view.findViewById(R.id.fragment_new_project_cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
         getDialog().setOnShowListener(this);
     }
 
@@ -142,6 +132,11 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     void createProject() {
         String projectName = this.projectName.getText().toString();
         getPresenter().createNewProject(projectName);
+    }
+
+    @OnClick(R.id.fragment_new_project_cancel)
+    void dismissDialog() {
+        dismiss();
     }
 
     @Override
