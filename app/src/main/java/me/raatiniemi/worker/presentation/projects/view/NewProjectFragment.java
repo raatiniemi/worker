@@ -165,7 +165,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      */
     @Override
     public void createProjectSuccessful(final Project project) {
-        onCreateProjectListener.onCreateProject(project);
+        onCreateProjectListener.accept(project);
 
         dismiss();
     }
@@ -196,6 +196,6 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
 
     @FunctionalInterface
     public interface OnCreateProjectListener {
-        void onCreateProject(Project project);
+        void accept(Project project);
     }
 }

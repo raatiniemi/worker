@@ -291,7 +291,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     public void createNewProject() {
         NewProjectFragment newProject = NewProjectFragment.newFragment(new NewProjectFragment.OnCreateProjectListener() {
             @Override
-            public void onCreateProject(Project project) {
+            public void accept(Project project) {
                 addCreatedProject(project);
 
                 showCreateProjectSuccessMessage();
