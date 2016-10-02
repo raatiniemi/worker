@@ -45,6 +45,7 @@ import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.ClockIn;
+import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
@@ -138,7 +139,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
                 new ClockActivityChange(
                         projectRepository,
                         timeRepository,
-                        new ClockIn(timeRepository)
+                        new ClockIn(timeRepository),
+                        new ClockOut(timeRepository)
                 ),
                 new RemoveProject(projectRepository)
         );
