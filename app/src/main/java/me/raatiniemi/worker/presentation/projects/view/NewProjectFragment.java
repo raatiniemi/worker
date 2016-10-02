@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
@@ -125,16 +126,6 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         super.onViewCreated(view, savedInstanceState);
         getDialog().setTitle(R.string.fragment_new_project_title);
 
-        // Add the click listener for the create button.
-        TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String projectName = NewProjectFragment.this.projectName.getText().toString();
-                getPresenter().createNewProject(projectName);
-            }
-        });
-
         // Add the click listener for the cancel button.
         TextView cancel = (TextView) view.findViewById(R.id.fragment_new_project_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +136,12 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         });
 
         getDialog().setOnShowListener(this);
+    }
+
+    @OnClick(R.id.fragment_new_project_create)
+    void createProject() {
+        String projectName = this.projectName.getText().toString();
+        getPresenter().createNewProject(projectName);
     }
 
     @Override
