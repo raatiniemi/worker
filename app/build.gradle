@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 
 def androidSupportVersion = '24.1.1'
-
+def butterKnifeVersion = '8.4.0'
 def advancedrecyclerviewVersion = "0.9.1"
 def eventbusVersion = "3.0.0"
 def rxandroidVersion = '1.2.0'
@@ -141,6 +141,8 @@ jacoco {
 }
 
 dependencies {
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+
     debugCompile "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}"
 
     compile "com.android.support:appcompat-v7:${androidSupportVersion}"
@@ -148,7 +150,7 @@ dependencies {
     compile "com.android.support:design:${androidSupportVersion}"
     compile "com.android.support:recyclerview-v7:${androidSupportVersion}"
     compile "com.android.support:support-annotations:${androidSupportVersion}"
-
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
     compile "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${advancedrecyclerviewVersion}"
     compile "io.reactivex:rxandroid:${rxandroidVersion}"
     compile "org.greenrobot:eventbus:${eventbusVersion}"
