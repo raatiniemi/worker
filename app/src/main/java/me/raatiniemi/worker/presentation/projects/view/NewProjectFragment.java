@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -27,8 +28,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
@@ -42,20 +45,25 @@ import me.raatiniemi.worker.presentation.util.Keyboard;
 public class NewProjectFragment extends DialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";
 
+    @BindView(R.id.fragment_new_project_name)
+    EditText projectName;
+
     /**
      * Presenter for creating new projects.
      */
     private NewProjectPresenter presenter;
 
     /**
-     * Text field for the project name.
-     */
-    private EditText projectName;
-
-    /**
      * Callback handler for the "OnCreateProjectListener".
      */
     private OnCreateProjectListener onCreateProjectListener;
+
+    public static NewProjectFragment newFragment(@NonNull OnCreateProjectListener onCreateProjectListener) {
+        NewProjectFragment fragment = new NewProjectFragment();
+        fragment.onCreateProjectListener = onCreateProjectListener;
+
+        return fragment;
+    }
 
     /**
      * Retrieve the presenter instance, create if none is available.
@@ -114,39 +122,29 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_new_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_project, container, false);
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Retrieve and set the title for the dialog.
-        getDialog().setTitle(getString(R.string.fragment_new_project_title));
-
-        // Retrieve the text field for project name.
-        projectName = (EditText) view.findViewById(R.id.fragment_new_project_name);
-
-        // Add the click listener for the create button.
-        TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String projectName = NewProjectFragment.this.projectName.getText().toString();
-                getPresenter().createNewProject(projectName);
-            }
-        });
-
-        // Add the click listener for the cancel button.
-        TextView cancel = (TextView) view.findViewById(R.id.fragment_new_project_cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
+        getDialog().setTitle(R.string.fragment_new_project_title);
         getDialog().setOnShowListener(this);
+    }
+
+    @OnClick(R.id.fragment_new_project_create)
+    void createProject() {
+        String projectName = this.projectName.getText().toString();
+        getPresenter().createNewProject(projectName);
+    }
+
+    @OnClick(R.id.fragment_new_project_cancel)
+    void dismissDialog() {
+        dismiss();
     }
 
     @Override
@@ -167,7 +165,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      */
     @Override
     public void createProjectSuccessful(final Project project) {
-        onCreateProjectListener.onCreateProject(project);
+        onCreateProjectListener.accept(project);
 
         dismiss();
     }
@@ -196,19 +194,8 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         projectName.setError(getString(R.string.error_message_unknown));
     }
 
-    public void setOnCreateProjectListener(OnCreateProjectListener onCreateProjectListener) {
-        this.onCreateProjectListener = onCreateProjectListener;
-    }
-
-    /**
-     * Public interface for the "OnCreateProjectListener".
-     */
+    @FunctionalInterface
     public interface OnCreateProjectListener {
-        /**
-         * When a new project have been created the project is sent to this method.
-         *
-         * @param project The newly created project.
-         */
-        void onCreateProject(Project project);
+        void accept(Project project);
     }
 }
