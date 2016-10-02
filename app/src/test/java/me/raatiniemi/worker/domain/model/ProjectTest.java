@@ -21,16 +21,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
@@ -38,22 +34,6 @@ import static junit.framework.Assert.assertTrue;
 public class ProjectTest {
     private static Project.Builder createProjectBuilder() {
         return new Project.Builder("Project name");
-    }
-
-    private static Time createTimeWithIntervalInMilliseconds(
-            long intervalInMilliseconds
-    ) throws ClockOutBeforeClockInException {
-        return new Time.Builder(1L)
-                .stopInMilliseconds(intervalInMilliseconds)
-                .build();
-    }
-
-    private static Time createActiveTimeWithStartInMilliseconds(
-            long clockedInSinceInMilliseconds
-    ) throws ClockOutBeforeClockInException {
-        return new Time.Builder(1L)
-                .startInMilliseconds(clockedInSinceInMilliseconds)
-                .build();
     }
 
     @Test
@@ -141,58 +121,5 @@ public class ProjectTest {
         project.addTime(times);
 
         assertTrue(project.getTime().isEmpty());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void clockOutAt_withNullDate()
-            throws DomainException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.clockOutAt(null);
-    }
-
-    @Test(expected = ClockActivityException.class)
-    public void clockOutAt_withoutTime()
-            throws DomainException {
-        Project project = createProjectBuilder()
-                .build();
-
-        Date date = new Date();
-        project.clockOutAt(date);
-    }
-
-    @Test(expected = ClockActivityException.class)
-    public void clockOutAt_withoutActiveTime()
-            throws DomainException {
-        Project project = createProjectBuilder()
-                .build();
-
-        List<Time> times = new ArrayList<>();
-        times.add(createTimeWithIntervalInMilliseconds(500L));
-        project.addTime(times);
-
-        Date date = new Date();
-        project.clockOutAt(date);
-    }
-
-    @Test
-    public void clockOutAt_withActiveTime()
-            throws DomainException {
-        Project project = createProjectBuilder()
-                .build();
-
-        List<Time> times = new ArrayList<>();
-        times.add(createActiveTimeWithStartInMilliseconds(100L));
-        project.addTime(times);
-
-        Date date = new Date(200L);
-        Time time = project.clockOutAt(date);
-        assertEquals(100L, time.getStartInMilliseconds());
-        assertEquals(200L, time.getStopInMilliseconds());
-
-        // The `clockOutAt` modifies the active time, i.e. the project should
-        // be inactive after clocking out.
-        assertFalse(project.isActive());
     }
 }

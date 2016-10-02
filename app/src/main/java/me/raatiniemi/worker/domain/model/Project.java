@@ -21,8 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import me.raatiniemi.worker.domain.exception.ClockActivityException;
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
 /**
@@ -159,36 +157,6 @@ public class Project extends DomainObject {
 
         // TODO: Do not instantiate inside method, return value from get start?
         return new Date(time.getStartInMilliseconds());
-    }
-
-    /**
-     * Clock out project at a given date and time.
-     *
-     * @param date Date and time for when to clock out the project.
-     * @return The clocked out Time.
-     * @throws ClockActivityException         If the project is not active.
-     * @throws ClockOutBeforeClockInException If clock out occur before clock in.
-     */
-    public Time clockOutAt(final Date date)
-            throws ClockActivityException, ClockOutBeforeClockInException {
-        if (null == date) {
-            throw new NullPointerException("Date is not allowed to be null");
-        }
-
-        // Retrieve the active Time domain object, and clock
-        // out with the supplied date.
-        //
-        // If none is available, i.e. we have not clocked in,
-        // we can't clock out.
-        Time time = getActiveTime();
-        if (null == time) {
-            throw new ClockActivityException("Unable to clock out, project is not active");
-        }
-
-        time = time.clockOutAt(date);
-        this.time.set(0, time);
-
-        return time;
     }
 
     /**
