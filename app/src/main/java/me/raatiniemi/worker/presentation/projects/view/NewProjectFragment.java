@@ -120,9 +120,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // Retrieve and set the title for the dialog.
-        getDialog().setTitle(getString(R.string.fragment_new_project_title));
+        getDialog().setTitle(R.string.fragment_new_project_title);
 
         // Retrieve the text field for project name.
         projectName = (EditText) view.findViewById(R.id.fragment_new_project_name);
