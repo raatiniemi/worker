@@ -63,7 +63,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         setOnDateTimeSetListener(this);
     }
 
-    @TargetApi(23)
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

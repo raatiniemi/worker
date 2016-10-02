@@ -125,7 +125,7 @@ public class DateTimePickerFragment extends BaseFragment
         );
     }
 
-    @TargetApi(23)
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
