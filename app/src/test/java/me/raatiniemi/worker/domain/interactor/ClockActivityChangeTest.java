@@ -74,7 +74,7 @@ public class ClockActivityChangeTest {
         Project project = buildProject();
         when(projectRepository.get(1L)).thenReturn(project);
         when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
-                .thenReturn(new ArrayList<Time>());
+                .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
@@ -103,7 +103,7 @@ public class ClockActivityChangeTest {
         project.addTime(registeredTime);
         when(projectRepository.get(1L)).thenReturn(project);
         when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
-                .thenReturn(new ArrayList<Time>());
+                .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
