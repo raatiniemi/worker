@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -56,6 +57,13 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
      * Callback handler for the "OnCreateProjectListener".
      */
     private OnCreateProjectListener onCreateProjectListener;
+
+    public static NewProjectFragment newFragment(@NonNull OnCreateProjectListener onCreateProjectListener) {
+        NewProjectFragment fragment = new NewProjectFragment();
+        fragment.onCreateProjectListener = onCreateProjectListener;
+
+        return fragment;
+    }
 
     /**
      * Retrieve the presenter instance, create if none is available.
@@ -184,10 +192,6 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     @Override
     public void showUnknownError() {
         projectName.setError(getString(R.string.error_message_unknown));
-    }
-
-    public void setOnCreateProjectListener(OnCreateProjectListener onCreateProjectListener) {
-        this.onCreateProjectListener = onCreateProjectListener;
     }
 
     /**
