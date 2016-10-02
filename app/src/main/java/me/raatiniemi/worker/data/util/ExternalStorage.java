@@ -132,12 +132,7 @@ public class ExternalStorage {
 
         File directory = getDirectory();
         if (null != directory) {
-            directories = directory.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File file) {
-                    return file.isDirectory();
-                }
-            });
+            directories = directory.listFiles(File::isDirectory);
         }
 
         return directories;
