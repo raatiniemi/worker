@@ -29,6 +29,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
@@ -42,15 +44,13 @@ import me.raatiniemi.worker.presentation.util.Keyboard;
 public class NewProjectFragment extends DialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";
 
+    @BindView(R.id.fragment_new_project_name)
+    EditText projectName;
+
     /**
      * Presenter for creating new projects.
      */
     private NewProjectPresenter presenter;
-
-    /**
-     * Text field for the project name.
-     */
-    private EditText projectName;
 
     /**
      * Callback handler for the "OnCreateProjectListener".
@@ -114,16 +114,16 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_new_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_project, container, false);
+        ButterKnife.bind(this, view);
+
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getDialog().setTitle(R.string.fragment_new_project_title);
-
-        // Retrieve the text field for project name.
-        projectName = (EditText) view.findViewById(R.id.fragment_new_project_name);
 
         // Add the click listener for the create button.
         TextView create = (TextView) view.findViewById(R.id.fragment_new_project_create);
