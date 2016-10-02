@@ -194,15 +194,8 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         projectName.setError(getString(R.string.error_message_unknown));
     }
 
-    /**
-     * Public interface for the "OnCreateProjectListener".
-     */
+    @FunctionalInterface
     public interface OnCreateProjectListener {
-        /**
-         * When a new project have been created the project is sent to this method.
-         *
-         * @param project The newly created project.
-         */
         void onCreateProject(Project project);
     }
 }
