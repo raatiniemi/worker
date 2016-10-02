@@ -77,7 +77,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
                             }
                         }
                     })
-                    .compose(this.<Project>applySchedulers())
+                    .compose(applySchedulers())
                     .subscribe(new Subscriber<Project>() {
                         @Override
                         public void onNext(Project project) {

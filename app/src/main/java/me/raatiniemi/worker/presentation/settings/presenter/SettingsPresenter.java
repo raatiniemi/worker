@@ -81,7 +81,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                 File directory = ExternalStorage.getLatestBackupDirectory();
                 return Observable.just(new Backup(directory));
             }
-        }).compose(this.<Backup>applySchedulers())
+        }).compose(applySchedulers())
                 .subscribe(new Subscriber<Backup>() {
                     @Override
                     public void onNext(Backup backup) {

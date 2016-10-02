@@ -148,7 +148,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
                         return items;
                     }
                 })
-                .compose(this.<List<TimesheetGroupModel>>applySchedulers())
+                .compose(applySchedulers())
                 .subscribe(new Subscriber<List<TimesheetGroupModel>>() {
                     @Override
                     public void onNext(List<TimesheetGroupModel> items) {
@@ -212,7 +212,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
                         return results;
                     }
                 })
-                .compose(this.<List<TimeInAdapterResult>>applySchedulers())
+                .compose(applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
                     public void onNext(List<TimeInAdapterResult> results) {
@@ -287,7 +287,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
                         }
                     }
                 })
-                .compose(this.<List<TimeInAdapterResult>>applySchedulers())
+                .compose(applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
                     public void onNext(List<TimeInAdapterResult> results) {

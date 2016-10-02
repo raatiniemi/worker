@@ -66,7 +66,7 @@ public class CreateProjectTest {
                 .build();
 
         when(projectRepository.matching(any(Criteria.class)))
-                .thenReturn(new ArrayList<Project>());
+                .thenReturn(new ArrayList<>());
 
         CreateProject createProject = new CreateProject(projectRepository);
         createProject.execute(project);

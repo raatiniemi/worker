@@ -249,7 +249,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
             public Observable<List<Integer>> call() {
                 return Observable.just(getPositionsForActiveProjects());
             }
-        }).compose(this.<List<Integer>>applySchedulers())
+        }).compose(applySchedulers())
                 .subscribe(new Subscriber<List<Integer>>() {
                     @Override
                     public void onNext(List<Integer> positions) {
@@ -308,7 +308,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         return items;
                     }
                 })
-                .compose(this.<List<ProjectsModel>>applySchedulers())
+                .compose(applySchedulers())
                 .subscribe(new Subscriber<List<ProjectsModel>>() {
                     @Override
                     public void onNext(List<ProjectsModel> items) {
@@ -457,7 +457,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         return new ProjectsModel(project, registeredTime);
                     }
                 })
-                .compose(this.<ProjectsModel>applySchedulers())
+                .compose(applySchedulers())
                 .doOnNext(new Action1<ProjectsModel>() {
                     @Override
                     public void call(ProjectsModel projectsModel) {
