@@ -49,7 +49,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -412,22 +411,8 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * @param date          Date and time to use for the clock activity change.
      */
     public void clockActivityChange(final ProjectsModel projectsModel, final Date date) {
-        Observable.just(projectsModel)
-                .flatMap(new Func1<ProjectsModel, Observable<Project>>() {
-                    @Override
-                    public Observable<Project> call(ProjectsModel projectsModel) {
-                        try {
-                            return Observable.just(
-                                    clockActivityChange.execute(
-                                            projectsModel.asProject(),
-                                            date
-                                    )
-                            );
-                        } catch (DomainException e) {
-                            return Observable.error(e);
-                        }
-                    }
-                })
+        Observable.just(projectsModel.asProject())
+                .flatMap(project -> clockActivityChangeViaUseCase(project, date))
                 .map(project -> {
                     List<Time> registeredTime = getRegisteredTime(project);
 
@@ -475,6 +460,14 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         Log.d(TAG, "clockActivityChange onCompleted");
                     }
                 });
+    }
+
+    private Observable<Project> clockActivityChangeViaUseCase(Project project, Date date) {
+        try {
+            return Observable.just(clockActivityChange.execute(project, date));
+        } catch (DomainException e) {
+            return Observable.error(e);
+        }
     }
 
     private void postOngoingNotification(ProjectsModel projectsModel) {
