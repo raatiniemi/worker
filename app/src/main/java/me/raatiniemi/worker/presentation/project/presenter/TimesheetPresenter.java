@@ -42,7 +42,6 @@ import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Func1;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetView> {
     /**
@@ -246,37 +245,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
 
         // TODO: Refactor to use optimistic propagation.
         Observable.just(results)
-                .flatMap(new Func1<List<TimeInAdapterResult>, Observable<List<TimeInAdapterResult>>>() {
-                    @Override
-                    public Observable<List<TimeInAdapterResult>> call(List<TimeInAdapterResult> results) {
-                        List<Time> timeToUpdate = new ArrayList<>();
-                        for (TimeInAdapterResult result : results) {
-                            timeToUpdate.add(result.getTime());
-                        }
-
-                        try {
-                            List<Time> updatedTime = markRegisteredTime.execute(timeToUpdate);
-
-                            List<TimeInAdapterResult> newResults = new ArrayList<>();
-                            for (TimeInAdapterResult result : results) {
-                                Time previousTime = result.getTime();
-
-                                for (Time time : updatedTime) {
-                                    if (time.getId().equals(previousTime.getId())) {
-                                        newResults.add(
-                                                TimeInAdapterResult.build(result, time)
-                                        );
-                                        break;
-                                    }
-                                }
-                            }
-
-                            return Observable.just(newResults);
-                        } catch (DomainException e) {
-                            return Observable.error(e);
-                        }
-                    }
-                })
+                .flatMap(this::registerTimeViaUseCase)
                 .compose(applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
@@ -322,6 +291,33 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
                         Log.d(TAG, "register onCompleted");
                     }
                 });
+    }
+
+    private Observable<List<TimeInAdapterResult>> registerTimeViaUseCase(List<TimeInAdapterResult> results) {
+        List<Time> timeToUpdate = new ArrayList<>();
+        for (TimeInAdapterResult result : results) {
+            timeToUpdate.add(result.getTime());
+        }
+
+        try {
+            List<Time> updatedTime = markRegisteredTime.execute(timeToUpdate);
+
+            List<TimeInAdapterResult> newResults = new ArrayList<>();
+            for (TimeInAdapterResult result : results) {
+                Time previousTime = result.getTime();
+
+                for (Time time : updatedTime) {
+                    if (time.getId().equals(previousTime.getId())) {
+                        newResults.add(TimeInAdapterResult.build(result, time));
+                        break;
+                    }
+                }
+            }
+
+            return Observable.just(newResults);
+        } catch (DomainException e) {
+            return Observable.error(e);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
