@@ -458,13 +458,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                     }
                 })
                 .compose(applySchedulers())
-                .doOnNext(new Action1<ProjectsModel>() {
-                    @Override
-                    public void call(ProjectsModel projectsModel) {
-                        Project project = projectsModel.asProject();
-                        postOngoingNotification(project);
-                    }
-                })
+                .doOnNext(this::postOngoingNotification)
                 .subscribe(new Subscriber<ProjectsModel>() {
                     @Override
                     public void onNext(ProjectsModel project) {
@@ -507,7 +501,9 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                 });
     }
 
-    private void postOngoingNotification(Project project) {
+    private void postOngoingNotification(ProjectsModel projectsModel) {
+        Project project = projectsModel.asProject();
+
         NotificationManager manager = (NotificationManager) getContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
