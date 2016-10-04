@@ -49,8 +49,6 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -197,12 +195,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
         Log.d(TAG, "Subscribe to the refresh of active projects");
         refreshProjects = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
-                .map(new Func1<Long, List<Integer>>() {
-                    @Override
-                    public List<Integer> call(Long aLong) {
-                        return getPositionsForActiveProjects();
-                    }
-                })
+                .map(aLong -> getPositionsForActiveProjects())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Integer>>() {
                     @Override
@@ -244,12 +237,8 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      */
     public void refreshActiveProjects() {
         Log.d(TAG, "Refreshing active projects");
-        Observable.defer(new Func0<Observable<List<Integer>>>() {
-            @Override
-            public Observable<List<Integer>> call() {
-                return Observable.just(getPositionsForActiveProjects());
-            }
-        }).compose(applySchedulers())
+        Observable.defer(() -> Observable.just(getPositionsForActiveProjects()))
+                .compose(applySchedulers())
                 .subscribe(new Subscriber<List<Integer>>() {
                     @Override
                     public void onNext(List<Integer> positions) {
@@ -284,29 +273,23 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
         // Setup the subscription for retrieving projects.
         Observable
-                .defer(new Func0<Observable<List<Project>>>() {
-                    @Override
-                    public Observable<List<Project>> call() {
-                        try {
-                            return Observable.just(getProjects.execute());
-                        } catch (DomainException e) {
-                            return Observable.error(e);
-                        }
+                .defer(() -> {
+                    try {
+                        return Observable.just(getProjects.execute());
+                    } catch (DomainException e) {
+                        return Observable.error(e);
                     }
                 })
-                .map(new Func1<List<Project>, List<ProjectsModel>>() {
-                    @Override
-                    public List<ProjectsModel> call(List<Project> projects) {
-                        List<ProjectsModel> items = new ArrayList<>();
+                .map(projects -> {
+                    List<ProjectsModel> items = new ArrayList<>();
 
-                        for (Project project : projects) {
-                            List<Time> registeredTime = getRegisteredTime(project);
+                    for (Project project : projects) {
+                        List<Time> registeredTime = getRegisteredTime(project);
 
-                            items.add(new ProjectsModel(project, registeredTime));
-                        }
-
-                        return items;
+                        items.add(new ProjectsModel(project, registeredTime));
                     }
+
+                    return items;
                 })
                 .compose(applySchedulers())
                 .subscribe(new Subscriber<List<ProjectsModel>>() {
@@ -376,14 +359,10 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         getView().deleteProjectAtPosition(index);
 
         Observable.just(project)
-                .flatMap(new Func1<ProjectsModel, Observable<Object>>() {
-                    @Override
-                    public Observable<Object> call(ProjectsModel project) {
-                        // Attempt to delete project.
-                        removeProject.execute(project.asProject());
+                .flatMap(projectsModel -> {
+                    removeProject.execute(projectsModel.asProject());
 
-                        return Observable.empty();
-                    }
+                    return Observable.empty();
                 })
                 .compose(applySchedulers())
                 .subscribe(new Subscriber<Object>() {
@@ -449,13 +428,10 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
                         }
                     }
                 })
-                .map(new Func1<Project, ProjectsModel>() {
-                    @Override
-                    public ProjectsModel call(Project project) {
-                        List<Time> registeredTime = getRegisteredTime(project);
+                .map(project -> {
+                    List<Time> registeredTime = getRegisteredTime(project);
 
-                        return new ProjectsModel(project, registeredTime);
-                    }
+                    return new ProjectsModel(project, registeredTime);
                 })
                 .compose(applySchedulers())
                 .doOnNext(this::postOngoingNotification)

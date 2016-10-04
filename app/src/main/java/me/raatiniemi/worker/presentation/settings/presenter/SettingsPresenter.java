@@ -36,7 +36,6 @@ import me.raatiniemi.worker.presentation.settings.view.SettingsView;
 import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Func0;
 
 public class SettingsPresenter extends RxPresenter<SettingsView> {
     /**
@@ -75,13 +74,12 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
      * Retrieve the latest backup and update the view.
      */
     public void getLatestBackup() {
-        Observable.defer(new Func0<Observable<Backup>>() {
-            @Override
-            public Observable<Backup> call() {
-                File directory = ExternalStorage.getLatestBackupDirectory();
-                return Observable.just(new Backup(directory));
-            }
-        }).compose(applySchedulers())
+        Observable
+                .defer(() -> {
+                    File directory = ExternalStorage.getLatestBackupDirectory();
+                    return Observable.just(new Backup(directory));
+                })
+                .compose(applySchedulers())
                 .subscribe(new Subscriber<Backup>() {
                     @Override
                     public void onNext(Backup backup) {

@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.util.Log;
 import android.widget.DatePicker;
@@ -108,12 +107,7 @@ public class DateTimePickerFragment extends BaseFragment
         // to initialize fragment clean up.
         //
         // The "onDismiss"-event will run for both set date and cancel.
-        datePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                dismiss();
-            }
-        });
+        datePicker.setOnCancelListener(dialogInterface -> dismiss());
 
         // Set the min/max date for the picker.
         datePicker.setMaxDate(maxDate);
@@ -181,12 +175,7 @@ public class DateTimePickerFragment extends BaseFragment
         //
         // Also, I was unable to get the TimePickerDialog to trigger the
         // "onCancel"-event to the DialogFragment.
-        timePicker.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                dismiss();
-            }
-        });
+        timePicker.setOnDismissListener(dialogInterface -> dismiss());
 
         timePicker.show(
                 getFragmentManager().beginTransaction(),

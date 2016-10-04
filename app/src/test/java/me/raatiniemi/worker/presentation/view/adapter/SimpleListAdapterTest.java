@@ -20,7 +20,6 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.view.View;
 import android.view.ViewGroup;
 
 import org.junit.Test;
@@ -165,10 +164,7 @@ public class SimpleListAdapterTest {
         Context context = mock(Context.class);
         Adapter<String> adapter = new Adapter<>(context);
 
-        SimpleListAdapter.OnItemClickListener listener = new SimpleListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull View view) {
-            }
+        SimpleListAdapter.OnItemClickListener listener = view -> {
         };
         adapter.setOnItemClickListener(listener);
 

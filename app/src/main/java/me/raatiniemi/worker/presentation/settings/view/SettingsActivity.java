@@ -556,16 +556,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     getActivity().findViewById(android.R.id.content),
                     R.string.message_permission_write_backup,
                     Snackbar.LENGTH_INDEFINITE
-            ).setAction(android.R.string.ok, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ActivityCompat.requestPermissions(
-                            getActivity(),
-                            new String[]{WRITE_EXTERNAL_STORAGE},
-                            REQUEST_WRITE_EXTERNAL_STORAGE
-                    );
-                }
-            }).show();
+            ).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(
+                    getActivity(),
+                    new String[]{WRITE_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_EXTERNAL_STORAGE
+            )).show();
         }
 
         /**
@@ -611,16 +606,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     getActivity().findViewById(android.R.id.content),
                     R.string.message_permission_read_backup,
                     Snackbar.LENGTH_INDEFINITE
-            ).setAction(android.R.string.ok, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ActivityCompat.requestPermissions(
-                            getActivity(),
-                            new String[]{READ_EXTERNAL_STORAGE},
-                            REQUEST_READ_EXTERNAL_STORAGE
-                    );
-                }
-            }).show();
+            ).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(
+                    getActivity(),
+                    new String[]{READ_EXTERNAL_STORAGE},
+                    REQUEST_READ_EXTERNAL_STORAGE
+            )).show();
         }
 
         /**
