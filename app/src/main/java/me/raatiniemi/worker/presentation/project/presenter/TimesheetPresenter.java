@@ -194,6 +194,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
         Observable.just(results)
                 .map(items -> {
                     List<Time> timeToRemove = new ArrayList<>();
+                    // noinspection Convert2streamapi
                     for (TimeInAdapterResult result : items) {
                         timeToRemove.add(result.getTime());
                     }
@@ -295,6 +296,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
 
     private Observable<List<TimeInAdapterResult>> registerTimeViaUseCase(List<TimeInAdapterResult> results) {
         List<Time> timeToUpdate = new ArrayList<>();
+        // noinspection Convert2streamapi
         for (TimeInAdapterResult result : results) {
             timeToUpdate.add(result.getTime());
         }

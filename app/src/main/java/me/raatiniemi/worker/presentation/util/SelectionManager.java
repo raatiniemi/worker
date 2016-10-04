@@ -54,6 +54,7 @@ public class SelectionManager<T> {
     }
 
     public void selectItems(List<T> results) {
+        // noinspection Convert2streamapi
         for (T result : results) {
             selectItem(result);
         }
@@ -64,6 +65,7 @@ public class SelectionManager<T> {
     }
 
     public void deselectItems(List<T> results) {
+        // noinspection Convert2streamapi
         for (T result : results) {
             deselectItem(result);
         }
