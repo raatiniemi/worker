@@ -28,7 +28,6 @@ import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
 import me.raatiniemi.worker.presentation.projects.view.NewProjectView;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Func1;
 
 /**
  * Presenter for the {@link NewProjectFragment}.
@@ -67,16 +66,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
                     .build();
 
             Observable.just(project)
-                    .flatMap(new Func1<Project, Observable<Project>>() {
-                        @Override
-                        public Observable<Project> call(final Project project) {
-                            try {
-                                return Observable.just(createProject.execute(project));
-                            } catch (Exception e) {
-                                return Observable.error(e);
-                            }
-                        }
-                    })
+                    .flatMap(this::createProjectViaUseCase)
                     .compose(applySchedulers())
                     .subscribe(new Subscriber<Project>() {
                         @Override
@@ -131,6 +121,14 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
             }
 
             getView().showInvalidNameError();
+        }
+    }
+
+    private Observable<Project> createProjectViaUseCase(Project project) {
+        try {
+            return Observable.just(createProject.execute(project));
+        } catch (Exception e) {
+            return Observable.error(e);
         }
     }
 }
