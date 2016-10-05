@@ -103,31 +103,25 @@ public class TimesheetAdapter extends ExpandableListAdapter<
 
         final List<TimeInAdapterResult> results = item.buildItemResultsWithGroupIndex(group);
 
-        vh.letter.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (selectionManager.isSelectionActivated()) {
-                    return false;
-                }
-
-                selectionManager.selectItems(results);
-                return true;
+        vh.letter.setOnLongClickListener(view -> {
+            if (selectionManager.isSelectionActivated()) {
+                return false;
             }
+
+            selectionManager.selectItems(results);
+            return true;
         });
 
-        vh.letter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!selectionManager.isSelectionActivated()) {
-                    return;
-                }
-
-                if (selectionManager.isSelected(results)) {
-                    selectionManager.deselectItems(results);
-                    return;
-                }
-                selectionManager.selectItems(results);
+        vh.letter.setOnClickListener(view -> {
+            if (!selectionManager.isSelectionActivated()) {
+                return;
             }
+
+            if (selectionManager.isSelected(results)) {
+                selectionManager.deselectItems(results);
+                return;
+            }
+            selectionManager.selectItems(results);
         });
 
         vh.itemView.setSelected(selectionManager.isSelected(results));
@@ -148,35 +142,29 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         final TimeInAdapterResult result = TimeInAdapterResult.build(group, child, time);
 
         // Register the long click listener on the time item.
-        vh.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (selectionManager.isSelectionActivated()) {
-                    return false;
-                }
-
-                if (selectionManager.isSelected(result)) {
-                    return false;
-                }
-
-                selectionManager.selectItem(result);
-                return true;
+        vh.itemView.setOnLongClickListener(view -> {
+            if (selectionManager.isSelectionActivated()) {
+                return false;
             }
+
+            if (selectionManager.isSelected(result)) {
+                return false;
+            }
+
+            selectionManager.selectItem(result);
+            return true;
         });
-        vh.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!selectionManager.isSelectionActivated()) {
-                    return;
-                }
-
-                if (selectionManager.isSelected(result)) {
-                    selectionManager.deselectItem(result);
-                    return;
-                }
-
-                selectionManager.selectItem(result);
+        vh.itemView.setOnClickListener(view -> {
+            if (!selectionManager.isSelectionActivated()) {
+                return;
             }
+
+            if (selectionManager.isSelected(result)) {
+                selectionManager.deselectItem(result);
+                return;
+            }
+
+            selectionManager.selectItem(result);
         });
 
         vh.itemView.setSelected(selectionManager.isSelected(result));

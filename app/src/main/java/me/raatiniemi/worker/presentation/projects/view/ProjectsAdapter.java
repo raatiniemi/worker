@@ -27,7 +27,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Collections;
-import java.util.Comparator;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
@@ -96,48 +95,28 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.clockActivityToggle.setContentDescription(
                 item.getHelpTextForClockActivityToggle(resources)
         );
-        vh.clockActivityToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onProjectActionListener.onClockActivityToggle(item);
-            }
-        });
+        vh.clockActivityToggle.setOnClickListener(view -> onProjectActionListener.onClockActivityToggle(item));
         vh.clockActivityToggle.setOnLongClickListener(hintedImageButtonListener);
         vh.clockActivityToggle.setActivated(project.isActive());
 
         vh.clockActivityAt.setContentDescription(
                 item.getHelpTextForClockActivityAt(resources)
         );
-        vh.clockActivityAt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onProjectActionListener.onClockActivityAt(item);
-            }
-        });
+        vh.clockActivityAt.setOnClickListener(view -> onProjectActionListener.onClockActivityAt(item));
         vh.clockActivityAt.setOnLongClickListener(hintedImageButtonListener);
 
-        vh.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onProjectActionListener.onDelete(item);
-            }
-        });
+        vh.delete.setOnClickListener(view -> onProjectActionListener.onDelete(item));
         vh.delete.setOnLongClickListener(hintedImageButtonListener);
     }
 
     public int findProject(final ProjectsModel project) {
         // TODO: Clean up the comparator.
         final ProjectComparator comparator = new ProjectComparator();
-
-        int position = Collections.binarySearch(getItems(), project, new Comparator<ProjectsModel>() {
-            @Override
-            public int compare(ProjectsModel lhs, ProjectsModel rhs) {
-                return comparator.compare(
-                        lhs.asProject(),
-                        rhs.asProject()
-                );
-            }
-        });
+        int position = Collections.binarySearch(
+                getItems(),
+                project,
+                (lhs, rhs) -> comparator.compare(lhs.asProject(), rhs.asProject())
+        );
         if (0 > position) {
             return RecyclerView.NO_POSITION;
         }

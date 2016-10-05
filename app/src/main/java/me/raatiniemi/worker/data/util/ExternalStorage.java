@@ -22,7 +22,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -149,13 +148,8 @@ public class ExternalStorage {
 
         File directory = getDirectory();
         if (null != directory) {
-            directories = directory.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File file) {
-                    return file.isDirectory() &&
-                            file.getName().matches(Worker.STORAGE_BACKUP_DIRECTORY_PATTERN);
-                }
-            });
+            directories = directory.listFiles(file -> file.isDirectory() &&
+                    file.getName().matches(Worker.STORAGE_BACKUP_DIRECTORY_PATTERN));
         }
 
         return new ArrayList<>(Arrays.asList(directories));

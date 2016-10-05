@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.presentation.project.view;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -89,14 +88,11 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                     new AlertDialog.Builder(getActivity())
                             .setTitle(R.string.confirm_delete_time_title)
                             .setMessage(R.string.confirm_delete_time_message)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    getPresenter().remove(getAdapter().getSelectedItems());
+                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                                getPresenter().remove(getAdapter().getSelectedItems());
 
-                                    // Since the item have been removed, we can finish the action.
-                                    actionMode.finish();
-                                }
+                                // Since the item have been removed, we can finish the action.
+                                actionMode.finish();
                             })
                             .setNegativeButton(android.R.string.no, null)
                             .show();
