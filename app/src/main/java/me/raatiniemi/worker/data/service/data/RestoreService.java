@@ -34,13 +34,13 @@ import me.raatiniemi.worker.presentation.view.notification.RestoreNotification;
 public class RestoreService extends IntentService {
     private static final String TAG = "RestoreService";
 
+    public RestoreService() {
+        super(TAG);
+    }
+
     public static void startRestore(Context context) {
         Intent intent = new Intent(context, RestoreService.class);
         context.startService(intent);
-    }
-
-    public RestoreService() {
-        super(TAG);
     }
 
     @Override

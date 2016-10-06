@@ -38,15 +38,15 @@ public class BackupService extends IntentService {
 
     private EventBus eventBus;
 
-    public static void startBackup(Context context) {
-        Intent intent = new Intent(context, BackupService.class);
-        context.startService(intent);
-    }
-
     public BackupService() {
         super(TAG);
 
         this.eventBus = EventBus.getDefault();
+    }
+
+    public static void startBackup(Context context) {
+        Intent intent = new Intent(context, BackupService.class);
+        context.startService(intent);
     }
 
     @Override
