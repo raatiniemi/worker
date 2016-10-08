@@ -37,7 +37,7 @@ abstract class OngoingNotification {
 
     private final NotificationCompat.Builder builder;
 
-    protected OngoingNotification(Context context, Project project) {
+    OngoingNotification(Context context, Project project) {
         this.context = context;
         this.project = project;
 
@@ -48,11 +48,11 @@ abstract class OngoingNotification {
                 .setOngoing(true);
     }
 
-    protected Context getContext() {
+    Context getContext() {
         return context;
     }
 
-    protected Project getProject() {
+    Project getProject() {
         return project;
     }
 
@@ -71,7 +71,7 @@ abstract class OngoingNotification {
         return PendingIntent.getActivity(context, 0, intent, PENDING_INTENT_FLAG);
     }
 
-    protected Intent buildIntentWithService(Class serviceClass) {
+    Intent buildIntentWithService(Class serviceClass) {
         Intent intent = new Intent(context, serviceClass);
         intent.setData(getDataUri());
 
@@ -82,15 +82,15 @@ abstract class OngoingNotification {
         return WorkerContract.ProjectContract.getItemUri(project.getId());
     }
 
-    protected PendingIntent buildPendingIntentWithService(Intent intent) {
+    PendingIntent buildPendingIntentWithService(Intent intent) {
         return PendingIntent.getService(context, 0, intent, PENDING_INTENT_FLAG);
     }
 
-    protected String getStringWithResourceId(@StringRes int resourceId) {
+    String getStringWithResourceId(@StringRes int resourceId) {
         return context.getString(resourceId);
     }
 
-    protected Notification buildWithActions(
+    Notification buildWithActions(
             NotificationCompat.Action... actions
     ) {
         if (shouldUseChronometer()) {

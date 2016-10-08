@@ -40,7 +40,7 @@ import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 /**
  * Adapter for listing available projects.
  */
-public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.ItemViewHolder> {
+class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.ItemViewHolder> {
     /**
      * Listener for project actions.
      */
@@ -58,7 +58,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
      * @param context               Context to use.
      * @param projectActionListener Listener for project actions.
      */
-    public ProjectsAdapter(
+    ProjectsAdapter(
             Context context,
             OnProjectActionListener projectActionListener
     ) {
@@ -111,7 +111,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         vh.delete.setOnLongClickListener(hintedImageButtonListener);
     }
 
-    public int findProject(final ProjectsModel project) {
+    int findProject(final ProjectsModel project) {
         // TODO: Clean up the comparator.
         final ProjectComparator comparator = new ProjectComparator();
         int position = Collections.binarySearch(
@@ -131,7 +131,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
      *
      * @param hintedImageButtonListener Listener for hinting images.
      */
-    public void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
+    void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
         this.hintedImageButtonListener = hintedImageButtonListener;
     }
 
@@ -164,7 +164,7 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
     /**
      * Interface for project actions.
      */
-    public interface OnProjectActionListener {
+    interface OnProjectActionListener {
         /**
          * Toggle the clock activity change.
          *

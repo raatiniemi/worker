@@ -41,7 +41,7 @@ import me.raatiniemi.worker.presentation.util.SelectionManagerAdapterDecorator;
 import me.raatiniemi.worker.presentation.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
-public class TimesheetAdapter extends ExpandableListAdapter<
+class TimesheetAdapter extends ExpandableListAdapter<
         Date,
         TimesheetChildModel,
         TimesheetGroupModel,
@@ -50,7 +50,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         > {
     private final SelectionManagerAdapterDecorator<TimeInAdapterResult> selectionManager;
 
-    public TimesheetAdapter(SelectionListener selectionListener) {
+    TimesheetAdapter(SelectionListener selectionListener) {
         selectionManager = new SelectionManagerAdapterDecorator<>(this, selectionListener);
 
         setHasStableIds(true);
@@ -221,15 +221,15 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         }
     }
 
-    public boolean haveSelectedItems() {
+    boolean haveSelectedItems() {
         return selectionManager.isSelectionActivated();
     }
 
-    public List<TimeInAdapterResult> getSelectedItems() {
+    List<TimeInAdapterResult> getSelectedItems() {
         return selectionManager.getSelectedItems();
     }
 
-    public void deselectItems() {
+    void deselectItems() {
         selectionManager.deselectItems();
     }
 

@@ -214,7 +214,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     }
 
     @NonNull
-    public TimesheetAdapter getAdapter() {
+    private TimesheetAdapter getAdapter() {
         if (null == adapter) {
             adapter = new TimesheetAdapter(this);
         }

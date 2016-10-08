@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @param <T> Type of item stored within the list adapter.
  */
-public interface ListAdapter<T> {
+interface ListAdapter<T> {
     /**
      * Get items.
      *
