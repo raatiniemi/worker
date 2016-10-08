@@ -29,6 +29,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
@@ -44,7 +46,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetChildModel,
         TimesheetGroupModel,
         TimesheetAdapter.GroupItemViewHolder,
-        TimesheetAdapter.ItemViewHolder
+        TimesheetAdapter.ChildItemViewHolder
         > {
     private final SelectionManagerAdapterDecorator<TimeInAdapterResult> selectionManager;
 
@@ -70,24 +72,15 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
-        GroupItemViewHolder viewHolder = new GroupItemViewHolder(view);
-        viewHolder.letter = (ImageView) view.findViewById(R.id.fragment_timesheet_group_item_letter);
-        viewHolder.title = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_title);
-        viewHolder.summarize = (TextView) view.findViewById(R.id.fragment_timesheet_group_item_summarize);
-
-        return viewHolder;
+        return new GroupItemViewHolder(view);
     }
 
     @Override
-    public ItemViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
+    public ChildItemViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
-        ItemViewHolder viewHolder = new ItemViewHolder(view);
-        viewHolder.title = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_title);
-        viewHolder.summarize = (TextView) view.findViewById(R.id.fragment_timesheet_child_item_summarize);
-
-        return viewHolder;
+        return new ChildItemViewHolder(view);
     }
 
     @Override
@@ -135,7 +128,7 @@ public class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     @Override
-    public void onBindChildViewHolder(ItemViewHolder vh, final int group, final int child, int viewType) {
+    public void onBindChildViewHolder(ChildItemViewHolder vh, final int group, final int child, int viewType) {
         final TimesheetChildModel item = get(group, child);
         final Time time = item.asTime();
 
@@ -240,21 +233,35 @@ public class TimesheetAdapter extends ExpandableListAdapter<
         selectionManager.deselectItems();
     }
 
-    class ItemViewHolder extends AbstractExpandableItemViewHolder {
-        protected TextView title;
+    class GroupItemViewHolder extends AbstractExpandableItemViewHolder {
+        @BindView(R.id.fragment_timesheet_group_item_letter)
+        ImageView letter;
 
-        protected TextView summarize;
+        @BindView(R.id.fragment_timesheet_group_item_title)
+        TextView title;
 
-        private ItemViewHolder(View view) {
-            super(view);
-        }
-    }
-
-    class GroupItemViewHolder extends ItemViewHolder {
-        private ImageView letter;
+        @BindView(R.id.fragment_timesheet_group_item_summarize)
+        TextView summarize;
 
         private GroupItemViewHolder(View view) {
             super(view);
+
+            ButterKnife.bind(this, view);
+        }
+
+    }
+
+    class ChildItemViewHolder extends AbstractExpandableItemViewHolder {
+        @BindView(R.id.fragment_timesheet_child_item_title)
+        TextView title;
+
+        @BindView(R.id.fragment_timesheet_child_item_summarize)
+        TextView summarize;
+
+        private ChildItemViewHolder(View view) {
+            super(view);
+
+            ButterKnife.bind(this, view);
         }
     }
 }

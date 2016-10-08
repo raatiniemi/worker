@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
@@ -86,7 +87,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_projects);
+        recyclerView = ButterKnife.findById(view, R.id.fragment_projects);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(getAdapter());
 
