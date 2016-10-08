@@ -35,6 +35,7 @@ import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
@@ -50,6 +51,8 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
 
     @BindView(R.id.fragment_new_project_name)
     EditText projectName;
+
+    private Unbinder unbinder;
 
     /**
      * Presenter for creating new projects.
@@ -144,9 +147,16 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_project, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        unbinder.unbind();
     }
 
     @Override
