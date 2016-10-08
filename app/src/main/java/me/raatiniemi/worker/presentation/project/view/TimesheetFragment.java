@@ -38,6 +38,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
@@ -144,7 +145,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
                 = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_timesheet);
+        RecyclerView recyclerView = ButterKnife.findById(view, R.id.fragment_timesheet);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
         recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(getAdapter()));
