@@ -138,13 +138,6 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-
-        getPresenter().detachView();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_project, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -153,29 +146,11 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        unbinder.unbind();
-    }
-
-    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getDialog().setTitle(R.string.fragment_new_project_title);
         getDialog().setOnShowListener(this);
-    }
-
-    @OnClick(R.id.fragment_new_project_create)
-    void createProject() {
-        String projectName = this.projectName.getText().toString();
-        getPresenter().createNewProject(projectName);
-    }
-
-    @OnClick(R.id.fragment_new_project_cancel)
-    void dismissDialog() {
-        dismiss();
     }
 
     @Override
@@ -189,6 +164,31 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
 
         // Force the keyboard to show when the dialog is showing.
         Keyboard.show(getActivity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        getPresenter().detachView();
+    }
+
+    @OnClick(R.id.fragment_new_project_create)
+    void createProject() {
+        String projectName = this.projectName.getText().toString();
+        getPresenter().createNewProject(projectName);
+    }
+
+    @OnClick(R.id.fragment_new_project_cancel)
+    void dismissDialog() {
+        dismiss();
     }
 
     /**
