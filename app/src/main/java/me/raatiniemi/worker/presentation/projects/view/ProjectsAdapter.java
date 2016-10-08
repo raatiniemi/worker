@@ -28,6 +28,8 @@ import android.widget.TextView;
 
 import java.util.Collections;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.domain.model.Project;
@@ -133,49 +135,29 @@ public class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAd
         this.hintedImageButtonListener = hintedImageButtonListener;
     }
 
-    /**
-     * View holder for the project item view.
-     */
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        /**
-         * Field for the project name.
-         */
-        private final TextView name;
+        @BindView(R.id.fragment_projects_item_name)
+        TextView name;
 
-        /**
-         * Field for the registered project time.
-         */
-        private final TextView time;
+        @BindView(R.id.fragment_projects_item_time)
+        TextView time;
 
-        /**
-         * Icon for toggling the project activity.
-         */
-        private final ImageButton clockActivityToggle;
+        @BindView(R.id.fragment_projects_item_action_clock_activity_toggle)
+        ImageButton clockActivityToggle;
 
-        /**
-         * Icon for toggling the project activity, with date and time.
-         */
-        private final ImageButton clockActivityAt;
+        @BindView(R.id.fragment_projects_item_action_clock_activity_at)
+        ImageButton clockActivityAt;
 
-        /**
-         * Icon for deleting project.
-         */
-        private final ImageButton delete;
+        @BindView(R.id.fragment_projects_item_action_delete)
+        ImageButton delete;
 
-        /**
-         * Field for the time when the project was clocked in.
-         */
-        private final TextView clockedInSince;
+        @BindView(R.id.fragment_projects_item_clocked_in_since)
+        TextView clockedInSince;
 
         private ItemViewHolder(View view) {
             super(view);
 
-            name = (TextView) view.findViewById(R.id.fragment_projects_item_name);
-            time = (TextView) view.findViewById(R.id.fragment_projects_item_time);
-            clockActivityToggle = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_toggle);
-            clockActivityAt = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_clock_activity_at);
-            delete = (ImageButton) view.findViewById(R.id.fragment_projects_item_action_delete);
-            clockedInSince = (TextView) view.findViewById(R.id.fragment_projects_item_clocked_in_since);
+            ButterKnife.bind(this, view);
         }
     }
 
