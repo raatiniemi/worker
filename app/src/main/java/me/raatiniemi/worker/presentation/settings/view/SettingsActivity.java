@@ -35,13 +35,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.service.data.BackupService;
 import me.raatiniemi.worker.data.service.data.RestoreService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
@@ -111,7 +112,8 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      */
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
-    private SettingsPresenter presenter;
+    @Inject
+    SettingsPresenter presenter;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
@@ -128,15 +130,14 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     .commit();
         }
 
+        ((Worker) getApplication()).getSettingsComponent()
+                .inject(this);
+
         getPresenter().attachView(this);
     }
 
     @Override
     protected SettingsPresenter getPresenter() {
-        if (null == presenter) {
-            presenter = new SettingsPresenter(this, EventBus.getDefault());
-        }
-
         return presenter;
     }
 

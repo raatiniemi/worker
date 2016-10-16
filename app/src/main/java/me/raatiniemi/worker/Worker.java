@@ -25,6 +25,9 @@ import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.projects.DaggerProjectsComponent;
 import me.raatiniemi.worker.presentation.projects.ProjectsComponent;
 import me.raatiniemi.worker.presentation.projects.ProjectsModule;
+import me.raatiniemi.worker.presentation.settings.DaggerSettingsComponent;
+import me.raatiniemi.worker.presentation.settings.SettingsComponent;
+import me.raatiniemi.worker.presentation.settings.SettingsModule;
 
 /**
  * Stores application constants.
@@ -65,14 +68,20 @@ public class Worker extends Application {
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
     private ProjectsComponent projectsComponent;
+    private SettingsComponent settingsComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        AndroidModule androidModule = new AndroidModule(this);
         projectsComponent = DaggerProjectsComponent.builder()
-                .androidModule(new AndroidModule(this))
+                .androidModule(androidModule)
                 .projectsModule(new ProjectsModule())
+                .build();
+        settingsComponent = DaggerSettingsComponent.builder()
+                .androidModule(androidModule)
+                .settingsModule(new SettingsModule())
                 .build();
 
         if (!isUnitTesting()) {
@@ -83,6 +92,10 @@ public class Worker extends Application {
 
     public ProjectsComponent getProjectsComponent() {
         return projectsComponent;
+    }
+
+    public SettingsComponent getSettingsComponent() {
+        return settingsComponent;
     }
 
     boolean isUnitTesting() {
