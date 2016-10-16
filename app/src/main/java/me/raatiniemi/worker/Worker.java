@@ -21,6 +21,10 @@ import android.app.Application;
 import com.squareup.leakcanary.LeakCanary;
 
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
+import me.raatiniemi.worker.presentation.AndroidModule;
+import me.raatiniemi.worker.presentation.projects.DaggerProjectsComponent;
+import me.raatiniemi.worker.presentation.projects.ProjectsComponent;
+import me.raatiniemi.worker.presentation.projects.ProjectsModule;
 
 /**
  * Stores application constants.
@@ -60,14 +64,25 @@ public class Worker extends Application {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
+    private ProjectsComponent projectsComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        projectsComponent = DaggerProjectsComponent.builder()
+                .androidModule(new AndroidModule(this))
+                .projectsModule(new ProjectsModule())
+                .build();
 
         if (!isUnitTesting()) {
             LeakCanary.install(this);
             ReloadNotificationService.startServiceWithContext(this);
         }
+    }
+
+    public ProjectsComponent getProjectsComponent() {
+        return projectsComponent;
     }
 
     boolean isUnitTesting() {

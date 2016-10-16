@@ -32,17 +32,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
-import me.raatiniemi.worker.domain.interactor.CreateProject;
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
 import me.raatiniemi.worker.presentation.util.Keyboard;
 
@@ -52,12 +50,10 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     @BindView(R.id.fragment_new_project_name)
     EditText projectName;
 
-    private Unbinder unbinder;
+    @Inject
+    NewProjectPresenter presenter;
 
-    /**
-     * Presenter for creating new projects.
-     */
-    private NewProjectPresenter presenter;
+    private Unbinder unbinder;
 
     /**
      * Callback handler for the "OnCreateProjectListener".
@@ -69,27 +65,6 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         fragment.onCreateProjectListener = onCreateProjectListener;
 
         return fragment;
-    }
-
-    /**
-     * Retrieve the presenter instance, create if none is available.
-     *
-     * @return Presenter instance.
-     */
-    private NewProjectPresenter getPresenter() {
-        if (null == presenter) {
-            ProjectRepository projectRepository = new ProjectResolverRepository(
-                    getActivity().getContentResolver(),
-                    new ProjectCursorMapper(),
-                    new ProjectContentValuesMapper()
-            );
-
-            presenter = new NewProjectPresenter(
-                    getActivity(),
-                    new CreateProject(projectRepository)
-            );
-        }
-        return presenter;
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -134,7 +109,10 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
             return;
         }
 
-        getPresenter().attachView(this);
+        ((Worker) getActivity().getApplication()).getProjectsComponent()
+                .inject(this);
+
+        presenter.attachView(this);
     }
 
     @Override
@@ -177,13 +155,13 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     public void onDetach() {
         super.onDetach();
 
-        getPresenter().detachView();
+        presenter.detachView();
     }
 
     @OnClick(R.id.fragment_new_project_create)
     void createProject() {
         String projectName = this.projectName.getText().toString();
-        getPresenter().createNewProject(projectName);
+        presenter.createNewProject(projectName);
     }
 
     @OnClick(R.id.fragment_new_project_cancel)
