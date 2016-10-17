@@ -111,6 +111,8 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      */
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
+    private SettingsPresenter presenter;
+
     public static Intent newIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
     }
@@ -130,8 +132,12 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     }
 
     @Override
-    protected SettingsPresenter createPresenter() {
-        return new SettingsPresenter(this, EventBus.getDefault());
+    protected SettingsPresenter getPresenter() {
+        if (null == presenter) {
+            presenter = new SettingsPresenter(this, EventBus.getDefault());
+        }
+
+        return presenter;
     }
 
     @Override
