@@ -24,29 +24,7 @@ import me.raatiniemi.worker.presentation.presenter.MvpPresenter;
  * @param <P> Presenter to use with the fragment.
  */
 public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment {
-    /**
-     * Instance for the presenter.
-     */
-    private P presenter;
-
-    /**
-     * Create the instance for the presenter.
-     *
-     * @return Instance for the presenter.
-     */
-    protected abstract P createPresenter();
-
-    /**
-     * Retrieve the presenter, create instance if none is available.
-     *
-     * @return Instance for the presenter.
-     */
-    protected P getPresenter() {
-        if (null == presenter) {
-            presenter = createPresenter();
-        }
-        return presenter;
-    }
+    protected abstract P getPresenter();
 
     /**
      * Handles clean up when the fragment view is destroyed.

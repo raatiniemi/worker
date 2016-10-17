@@ -70,6 +70,8 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     private static final String TAG = "ProjectsFragment";
 
+    private ProjectsPresenter presenter;
+
     private RecyclerView recyclerView;
 
     private ProjectsAdapter adapter;
@@ -96,6 +98,38 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
+    protected ProjectsPresenter getPresenter() {
+        if (null == presenter) {
+            ProjectRepository projectRepository = new ProjectResolverRepository(
+                    getActivity().getContentResolver(),
+                    new ProjectCursorMapper(),
+                    new ProjectContentValuesMapper()
+            );
+            TimeRepository timeRepository = new TimeResolverRepository(
+                    getActivity().getContentResolver(),
+                    new TimeCursorMapper(),
+                    new TimeContentValuesMapper()
+            );
+
+            presenter = new ProjectsPresenter(
+                    getActivity(),
+                    EventBus.getDefault(),
+                    new GetProjects(projectRepository, timeRepository),
+                    new GetProjectTimeSince(timeRepository),
+                    new ClockActivityChange(
+                            projectRepository,
+                            timeRepository,
+                            new ClockIn(timeRepository),
+                            new ClockOut(timeRepository)
+                    ),
+                    new RemoveProject(projectRepository)
+            );
+        }
+
+        return presenter;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -112,37 +146,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
         // Unsubscribe to the refreshing of active projects.
         getPresenter().stopRefreshingActiveProjects();
-    }
-
-    @Override
-    protected ProjectsPresenter createPresenter() {
-        // Create the project repository.
-        ProjectRepository projectRepository = new ProjectResolverRepository(
-                getActivity().getContentResolver(),
-                new ProjectCursorMapper(),
-                new ProjectContentValuesMapper()
-        );
-
-        // Create the time repository.
-        TimeRepository timeRepository = new TimeResolverRepository(
-                getActivity().getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
-
-        return new ProjectsPresenter(
-                getActivity(),
-                EventBus.getDefault(),
-                new GetProjects(projectRepository, timeRepository),
-                new GetProjectTimeSince(timeRepository),
-                new ClockActivityChange(
-                        projectRepository,
-                        timeRepository,
-                        new ClockIn(timeRepository),
-                        new ClockOut(timeRepository)
-                ),
-                new RemoveProject(projectRepository)
-        );
     }
 
     @NonNull

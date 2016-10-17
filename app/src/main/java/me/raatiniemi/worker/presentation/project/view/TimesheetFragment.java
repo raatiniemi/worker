@@ -59,6 +59,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         implements SelectionListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
+    private TimesheetPresenter presenter;
+
     private LinearLayoutManager linearLayoutManager;
 
     private TimesheetAdapter adapter;
@@ -195,22 +197,25 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     }
 
     @Override
-    protected TimesheetPresenter createPresenter() {
-        // Create the time repository.
-        TimeRepository timeRepository = new TimeResolverRepository(
-                getActivity().getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
+    protected TimesheetPresenter getPresenter() {
+        if (null == presenter) {
+            TimeRepository timeRepository = new TimeResolverRepository(
+                    getActivity().getContentResolver(),
+                    new TimeCursorMapper(),
+                    new TimeContentValuesMapper()
+            );
 
-        return new TimesheetPresenter(
-                getActivity(),
-                EventBus.getDefault(),
-                getProjectId(),
-                new GetTimesheet(timeRepository),
-                new MarkRegisteredTime(timeRepository),
-                new RemoveTime(timeRepository)
-        );
+            presenter = new TimesheetPresenter(
+                    getActivity(),
+                    EventBus.getDefault(),
+                    getProjectId(),
+                    new GetTimesheet(timeRepository),
+                    new MarkRegisteredTime(timeRepository),
+                    new RemoveTime(timeRepository)
+            );
+        }
+
+        return presenter;
     }
 
     @NonNull
