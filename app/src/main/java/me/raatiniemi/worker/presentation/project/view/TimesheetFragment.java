@@ -34,19 +34,13 @@ import android.view.ViewGroup;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.repository.TimeResolverRepository;
-import me.raatiniemi.worker.domain.interactor.GetTimesheet;
-import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
-import me.raatiniemi.worker.domain.interactor.RemoveTime;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
@@ -59,7 +53,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         implements SelectionListener, TimesheetView {
     private static final String TAG = "TimesheetFragment";
 
-    private TimesheetPresenter presenter;
+    @Inject
+    TimesheetPresenter presenter;
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -193,28 +188,15 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         });
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
+        ((Worker) getActivity().getApplication()).getProjectComponent()
+                .inject(this);
+
         getPresenter().attachView(this);
         getPresenter().getTimesheet(getProjectId(), 0);
     }
 
     @Override
     protected TimesheetPresenter getPresenter() {
-        if (null == presenter) {
-            TimeRepository timeRepository = new TimeResolverRepository(
-                    getActivity().getContentResolver(),
-                    new TimeCursorMapper(),
-                    new TimeContentValuesMapper()
-            );
-
-            presenter = new TimesheetPresenter(
-                    getActivity(),
-                    EventBus.getDefault(),
-                    new GetTimesheet(timeRepository),
-                    new MarkRegisteredTime(timeRepository),
-                    new RemoveTime(timeRepository)
-            );
-        }
-
         return presenter;
     }
 
