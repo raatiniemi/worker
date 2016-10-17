@@ -51,8 +51,6 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
 
     private final EventBus eventBus;
 
-    private final long projectId;
-
     /**
      * Use case for getting project timesheet.
      */
@@ -73,7 +71,6 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
      *
      * @param context            Context used with the presenter.
      * @param eventBus           Event bus.
-     * @param projectId          Id for the project.
      * @param getTimesheet       Use case for getting project timesheet.
      * @param markRegisteredTime Use case for marking time as registered.
      * @param removeTime         Use case for removing time.
@@ -81,7 +78,6 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
     public TimesheetPresenter(
             Context context,
             EventBus eventBus,
-            long projectId,
             GetTimesheet getTimesheet,
             MarkRegisteredTime markRegisteredTime,
             RemoveTime removeTime
@@ -89,7 +85,6 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
         super(context);
 
         this.eventBus = eventBus;
-        this.projectId = projectId;
         this.getTimesheet = getTimesheet;
         this.markRegisteredTime = markRegisteredTime;
         this.removeTime = removeTime;
@@ -329,7 +324,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
             return;
         }
 
-        if (event.getProjectId() != projectId) {
+        if (event.getProjectId() != getView().getProjectId()) {
             Log.d(TAG, "No need to refresh, event is related to another project");
             return;
         }

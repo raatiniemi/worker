@@ -129,7 +129,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     private boolean loading = false;
 
-    private long getProjectId() {
+    @Override
+    public long getProjectId() {
         return getArguments().getLong(ProjectActivity.MESSAGE_PROJECT_ID, -1);
     }
 
@@ -208,7 +209,6 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
             presenter = new TimesheetPresenter(
                     getActivity(),
                     EventBus.getDefault(),
-                    getProjectId(),
                     new GetTimesheet(timeRepository),
                     new MarkRegisteredTime(timeRepository),
                     new RemoveTime(timeRepository)
