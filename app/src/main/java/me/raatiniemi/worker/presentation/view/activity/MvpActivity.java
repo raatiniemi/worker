@@ -25,29 +25,7 @@ import me.raatiniemi.worker.presentation.view.MvpView;
  * @param <P> Presenter used with the activity.
  */
 public abstract class MvpActivity<P extends MvpPresenter> extends BaseActivity implements MvpView {
-    /**
-     * Instance for the presenter.
-     */
-    private P presenter;
-
-    /**
-     * Create the instance for the presenter.
-     *
-     * @return Instance for the presenter.
-     */
-    protected abstract P createPresenter();
-
-    /**
-     * Retrieve the presenter, create instance if none is available.
-     *
-     * @return Instance for the presenter.
-     */
-    protected P getPresenter() {
-        if (null == presenter) {
-            presenter = createPresenter();
-        }
-        return presenter;
-    }
+    protected abstract P getPresenter();
 
     /**
      * Handles clean up when the activity is destroyed.

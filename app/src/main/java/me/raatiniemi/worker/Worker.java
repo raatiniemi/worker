@@ -21,6 +21,16 @@ import android.app.Application;
 import com.squareup.leakcanary.LeakCanary;
 
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
+import me.raatiniemi.worker.presentation.AndroidModule;
+import me.raatiniemi.worker.presentation.project.DaggerProjectComponent;
+import me.raatiniemi.worker.presentation.project.ProjectComponent;
+import me.raatiniemi.worker.presentation.project.ProjectModule;
+import me.raatiniemi.worker.presentation.projects.DaggerProjectsComponent;
+import me.raatiniemi.worker.presentation.projects.ProjectsComponent;
+import me.raatiniemi.worker.presentation.projects.ProjectsModule;
+import me.raatiniemi.worker.presentation.settings.DaggerSettingsComponent;
+import me.raatiniemi.worker.presentation.settings.SettingsComponent;
+import me.raatiniemi.worker.presentation.settings.SettingsModule;
 
 /**
  * Stores application constants.
@@ -60,14 +70,44 @@ public class Worker extends Application {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
+    private ProjectComponent projectComponent;
+    private ProjectsComponent projectsComponent;
+    private SettingsComponent settingsComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        AndroidModule androidModule = new AndroidModule(this);
+        projectComponent = DaggerProjectComponent.builder()
+                .androidModule(androidModule)
+                .projectModule(new ProjectModule())
+                .build();
+        projectsComponent = DaggerProjectsComponent.builder()
+                .androidModule(androidModule)
+                .projectsModule(new ProjectsModule())
+                .build();
+        settingsComponent = DaggerSettingsComponent.builder()
+                .androidModule(androidModule)
+                .settingsModule(new SettingsModule())
+                .build();
 
         if (!isUnitTesting()) {
             LeakCanary.install(this);
             ReloadNotificationService.startServiceWithContext(this);
         }
+    }
+
+    public ProjectComponent getProjectComponent() {
+        return projectComponent;
+    }
+
+    public ProjectsComponent getProjectsComponent() {
+        return projectsComponent;
+    }
+
+    public SettingsComponent getSettingsComponent() {
+        return settingsComponent;
     }
 
     boolean isUnitTesting() {
