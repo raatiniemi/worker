@@ -29,6 +29,8 @@ import static me.raatiniemi.util.NullUtil.nonNull;
 public class DatePickerFragment extends BaseDialogFragment {
     private static final String TAG = "DatePickerFragment";
 
+    private DatePickerDialog.OnDateSetListener onDateSetListener;
+
     /**
      * Minimum date available for the date picker.
      */
@@ -39,10 +41,14 @@ public class DatePickerFragment extends BaseDialogFragment {
      */
     private Calendar maxDate;
 
-    /**
-     * The "OnDateSetListener" for the DatePickerDialog.
-     */
-    private DatePickerDialog.OnDateSetListener onDateSetListener;
+    public static DatePickerFragment newInstance(
+            DatePickerDialog.OnDateSetListener onTimeSetListener
+    ) {
+        DatePickerFragment fragment = new DatePickerFragment();
+        fragment.onDateSetListener = onTimeSetListener;
+
+        return fragment;
+    }
 
     @Override
     protected boolean isStateValid() {
@@ -96,14 +102,5 @@ public class DatePickerFragment extends BaseDialogFragment {
      */
     public void setMaxDate(Calendar maxDate) {
         this.maxDate = maxDate;
-    }
-
-    /**
-     * Set the "OnDateSetListener" for the DatePickerDialog.
-     *
-     * @param listener "OnDateSetListener" for the DatePickerDialog.
-     */
-    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
-        onDateSetListener = listener;
     }
 }

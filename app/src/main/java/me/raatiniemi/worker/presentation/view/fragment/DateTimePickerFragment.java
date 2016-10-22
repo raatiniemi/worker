@@ -103,8 +103,7 @@ public class DateTimePickerFragment extends BaseFragment
      * between API versions.
      */
     private void setup() {
-        datePicker = new DatePickerFragment();
-        datePicker.setOnDateSetListener(this);
+        datePicker = DatePickerFragment.newInstance(this);
 
         // The date picker only needs to listen to the "onCancel"-event
         // to initialize fragment clean up.
