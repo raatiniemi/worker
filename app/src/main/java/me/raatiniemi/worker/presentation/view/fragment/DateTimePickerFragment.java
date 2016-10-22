@@ -167,8 +167,7 @@ public class DateTimePickerFragment extends BaseFragment
         // Relay the selected year, month, and day to the stored calendar.
         calendar.set(year, month, day);
 
-        timePicker = new TimePickerFragment();
-        timePicker.setOnTimeSetListener(this);
+        timePicker = TimePickerFragment.newInstance(this);
 
         // The timer picker only needs to listen to the "onDismiss"-event since
         // it will run for both set time and cancel.

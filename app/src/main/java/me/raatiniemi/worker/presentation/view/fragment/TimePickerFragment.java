@@ -29,10 +29,16 @@ import static me.raatiniemi.util.NullUtil.isNull;
 public class TimePickerFragment extends BaseDialogFragment {
     private static final String TAG = "TimePickerFragment";
 
-    /**
-     * The "OnTimeSetListener" for the TimePickerDialog.
-     */
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;
+
+    public static TimePickerFragment newInstance(
+            TimePickerDialog.OnTimeSetListener onTimeSetListener
+    ) {
+        TimePickerFragment fragment = new TimePickerFragment();
+        fragment.onTimeSetListener = onTimeSetListener;
+
+        return fragment;
+    }
 
     @Override
     protected boolean isStateValid() {
@@ -54,14 +60,5 @@ public class TimePickerFragment extends BaseDialogFragment {
                 calendar.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(getActivity())
         );
-    }
-
-    /**
-     * Set the "OnTimeSetListener" for the TimePickerDialog.
-     *
-     * @param listener "OnTimeSetListener" for the TimePickerDialog.
-     */
-    public void setOnTimeSetListener(TimePickerDialog.OnTimeSetListener listener) {
-        onTimeSetListener = listener;
     }
 }
