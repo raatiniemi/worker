@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
 
 import me.raatiniemi.worker.presentation.view.MvpView;
 
+import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 /**
@@ -73,7 +74,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @return False if a view is attached, otherwise true.
      */
     protected boolean isViewDetached() {
-        return null == getView();
+        return isNull(getView());
     }
 
     /**

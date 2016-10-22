@@ -27,6 +27,8 @@ import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.data.util.FileUtils;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 /**
  * Restoration strategy for storage device.
  */
@@ -58,7 +60,7 @@ public class StorageRestoreStrategy implements RestoreStrategy {
 
             // Check that we have backup to restore from.
             File directory = ExternalStorage.getLatestBackupDirectory();
-            if (null == directory) {
+            if (isNull(directory)) {
                 throw new FileNotFoundException("Unable to find backup from which to restore");
             }
 

@@ -26,6 +26,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
+import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class ProjectActivity extends BaseActivity {
@@ -55,7 +56,7 @@ public class ProjectActivity extends BaseActivity {
      * @return Timesheet fragment.
      */
     private TimesheetFragment getTimesheetFragment() {
-        if (null == timesheetFragment) {
+        if (isNull(timesheetFragment)) {
             timesheetFragment = new TimesheetFragment();
             timesheetFragment.setArguments(getIntent().getExtras());
         }
@@ -68,7 +69,7 @@ public class ProjectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
-        if (null == savedInstanceState) {
+        if (isNull(savedInstanceState)) {
             getFragmentManager().beginTransaction()
                     .replace(
                             R.id.fragment_container,

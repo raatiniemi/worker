@@ -23,6 +23,7 @@ import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
+import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 /**
@@ -72,7 +73,7 @@ public class Project extends DomainObject {
      * @throws InvalidProjectNameException If project name is null or empty.
      */
     private void setName(final String name) throws InvalidProjectNameException {
-        if (null == name || 0 == name.length()) {
+        if (isNull(name) || 0 == name.length()) {
             throw new InvalidProjectNameException();
         }
 
@@ -94,7 +95,7 @@ public class Project extends DomainObject {
      * @param time Time to add to the project.
      */
     public void addTime(final List<Time> time) {
-        if (null == time) {
+        if (isNull(time)) {
             throw new NullPointerException("Time is not allowed to be null");
         }
 
@@ -153,7 +154,7 @@ public class Project extends DomainObject {
     public Date getClockedInSince() {
         // Retrieve the last time, i.e. the active time session.
         Time time = getActiveTime();
-        if (null == time) {
+        if (isNull(time)) {
             return null;
         }
 

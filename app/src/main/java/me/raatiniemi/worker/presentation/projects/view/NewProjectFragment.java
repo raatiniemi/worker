@@ -44,6 +44,8 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
 import me.raatiniemi.worker.presentation.util.Keyboard;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 public class NewProjectFragment extends DialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";
 
@@ -91,7 +93,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     private void setup() {
         // Check that we actually have a listener available, otherwise we
         // should not attempt to create new projects.
-        if (null == onCreateProjectListener) {
+        if (isNull(onCreateProjectListener)) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -135,7 +137,7 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
     public void onShow(DialogInterface dialog) {
         // We might have dismissed the dialog, we have to make sure that the
         // dialog and activity are still available before we can continue.
-        if (null == dialog || null == getActivity()) {
+        if (isNull(dialog) || isNull(getActivity())) {
             Log.d(TAG, "No dialog/activity available, exiting...");
             return;
         }

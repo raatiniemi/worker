@@ -27,6 +27,7 @@ import java.util.Calendar;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.view.fragment.DateTimePickerFragment;
 
+import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class ClockActivityAtFragment extends DateTimePickerFragment
@@ -89,7 +90,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
 
     @Override
     public void onDateTimeSet(Calendar calendar) {
-        if (null == onClockActivityAtListener) {
+        if (isNull(onClockActivityAtListener)) {
             Log.e(TAG, "No OnClockActivityAtListener have been supplied");
             return;
         }

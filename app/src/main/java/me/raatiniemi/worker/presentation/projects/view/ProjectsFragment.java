@@ -46,6 +46,8 @@ import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
@@ -114,7 +116,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     @NonNull
     private ProjectsAdapter getAdapter() {
-        if (null == adapter) {
+        if (isNull(adapter)) {
             adapter = new ProjectsAdapter(getActivity(), this);
             adapter.setHintedImageButtonListener(
                     new HintedImageButtonListener(getActivity())

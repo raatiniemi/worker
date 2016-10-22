@@ -10,4 +10,14 @@ public class NullUtil {
     public static boolean nonNull(Object o) {
         return null != o;
     }
+
+    /**
+     * Check whether an object is null.
+     *
+     * @param o Object to check for null.
+     * @return True if object is null, otherwise false.
+     */
+    public static boolean isNull(Object o) {
+        return null == o;
+    }
 }

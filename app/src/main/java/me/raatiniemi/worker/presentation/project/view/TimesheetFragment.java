@@ -47,6 +47,7 @@ import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 
+import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
@@ -202,7 +203,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     @NonNull
     private TimesheetAdapter getAdapter() {
-        if (null == adapter) {
+        if (isNull(adapter)) {
             adapter = new TimesheetAdapter(this);
         }
 
@@ -280,14 +281,14 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     @Override
     public void onSelect() {
-        if (null == actionMode) {
+        if (isNull(actionMode)) {
             actionMode = getActivity().startActionMode(actionModeCallback);
         }
     }
 
     @Override
     public void onDeselect() {
-        if (null == actionMode) {
+        if (isNull(actionMode)) {
             return;
         }
 

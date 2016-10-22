@@ -30,6 +30,7 @@ import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
+import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class ProjectGetClockedInSinceTest {
@@ -85,7 +86,7 @@ public class ProjectGetClockedInSinceTest {
                 .build();
         project.addTime(Arrays.asList(times));
 
-        if (null == expected) {
+        if (isNull(expected)) {
             assertNull(message, project.getClockedInSince());
             return;
         }

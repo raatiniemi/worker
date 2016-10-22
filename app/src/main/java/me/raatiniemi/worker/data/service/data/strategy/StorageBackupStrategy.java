@@ -31,6 +31,8 @@ import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 /**
  * Backup strategy for storage device.
  */
@@ -69,7 +71,7 @@ public class StorageBackupStrategy implements BackupStrategy {
 
             // Check that the backup directory is available.
             File directory = ExternalStorage.getBackupDirectory();
-            if (null == directory) {
+            if (isNull(directory)) {
                 throw new FileNotFoundException("Directory for backup is not available");
             }
 

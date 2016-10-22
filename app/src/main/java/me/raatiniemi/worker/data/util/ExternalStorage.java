@@ -30,6 +30,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.Worker;
 
+import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 /**
@@ -91,7 +92,7 @@ public class ExternalStorage {
     @Nullable
     private static File getDirectory(@NonNull String name) {
         File directory = getDirectory();
-        if (null == directory) {
+        if (isNull(directory)) {
             // TODO: Throw exception, avoiding checks for null everywhere.
             Log.w(TAG, "Unable to retrieve the application directory");
             return null;

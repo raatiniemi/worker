@@ -28,6 +28,7 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class DateTimePickerFragment extends BaseFragment
@@ -192,7 +193,7 @@ public class DateTimePickerFragment extends BaseFragment
         calendar.set(Calendar.MINUTE, minute);
 
         // Check that we have been supplied with a listener.
-        if (null == onDateTimeSetListener) {
+        if (isNull(onDateTimeSetListener)) {
             Log.e(TAG, "No OnDateTimeSetListener have been supplied");
             return;
         }

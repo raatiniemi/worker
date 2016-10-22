@@ -37,6 +37,8 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 public class ProjectResolverRepository
         extends ContentResolverRepository<ProjectCursorMapper, ProjectContentValuesMapper>
         implements ProjectRepository {
@@ -66,7 +68,7 @@ public class ProjectResolverRepository
                 query.getSelectionArgs(),
                 null
         );
-        if (null == cursor) {
+        if (isNull(cursor)) {
             return projects;
         }
 
@@ -97,7 +99,7 @@ public class ProjectResolverRepository
                 null,
                 ProjectContract.ORDER_BY
         );
-        if (null == cursor) {
+        if (isNull(cursor)) {
             return projects;
         }
 
@@ -126,7 +128,7 @@ public class ProjectResolverRepository
                 null,
                 null
         );
-        if (null == cursor) {
+        if (isNull(cursor)) {
             return null;
         }
 

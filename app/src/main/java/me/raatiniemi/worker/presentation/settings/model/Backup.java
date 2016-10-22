@@ -23,6 +23,8 @@ import java.util.Date;
 
 import me.raatiniemi.worker.Worker;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 public class Backup {
     /**
      * Backup directory.
@@ -55,7 +57,7 @@ public class Backup {
      */
     @Nullable
     private Long getTimestamp() {
-        if (null == getBackup()) {
+        if (isNull(getBackup())) {
             return null;
         }
 
@@ -75,7 +77,7 @@ public class Backup {
     @Nullable
     public Date getDate() {
         Long timestamp = getTimestamp();
-        if (null == timestamp) {
+        if (isNull(timestamp)) {
             return null;
         }
 
