@@ -1,11 +1,8 @@
 package me.raatiniemi.worker.presentation.view.fragment;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -18,10 +15,9 @@ abstract public class BaseDialogFragment extends DialogFragment {
     private DialogInterface.OnCancelListener onCancelListener;
     private DialogInterface.OnDismissListener onDismissListener;
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         if (!isStateValid()) {
             dismissDialogWithInvalidState();
@@ -40,21 +36,6 @@ abstract public class BaseDialogFragment extends DialogFragment {
         ).show();
 
         dismiss();
-    }
-
-    /**
-     * TODO: Remove method call when `minSdkVersion` is +23.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            if (!isStateValid()) {
-                dismissDialogWithInvalidState();
-            }
-        }
     }
 
     void setOnCancelListener(@NonNull DialogInterface.OnCancelListener onCancelListener) {
