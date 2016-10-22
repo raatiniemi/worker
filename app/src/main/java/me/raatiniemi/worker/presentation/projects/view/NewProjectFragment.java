@@ -16,16 +16,10 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,10 +37,11 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
 import me.raatiniemi.worker.presentation.util.Keyboard;
+import me.raatiniemi.worker.presentation.view.fragment.BaseDialogFragment;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
-public class NewProjectFragment extends DialogFragment implements NewProjectView, DialogInterface.OnShowListener {
+public class NewProjectFragment extends BaseDialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     private static final String TAG = "NewProjectFragment";
 
     @BindView(R.id.fragment_new_project_name)
@@ -69,47 +64,19 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         return fragment;
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        setup();
-    }
-
-    /**
-     * TODO: Remove method call when `minSdkVersion` is +23.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            setup();
-        }
-    }
-
-    private void setup() {
-        // Check that we actually have a listener available, otherwise we
-        // should not attempt to create new projects.
+    protected boolean isStateValid() {
         if (isNull(onCreateProjectListener)) {
-            // The real reason for failure is to technical to display to the
-            // user, hence the unknown error message.
-            //
-            // And, the listener should always be available in the production
-            // version, i.e. this should just be seen as developer feedback.
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    R.string.error_message_unknown,
-                    Snackbar.LENGTH_SHORT
-            ).show();
-
             Log.w(TAG, "No OnCreateProjectListener have been supplied");
-            dismiss();
-
-            return;
+            return false;
         }
+
+        return true;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         ((Worker) getActivity().getApplication()).getProjectsComponent()
                 .inject(this);
