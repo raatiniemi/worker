@@ -16,13 +16,10 @@
 
 package me.raatiniemi.worker.presentation.view.fragment;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -73,7 +70,7 @@ public class DateTimePickerFragment extends BaseFragment
     /**
      * Dismiss the DateTimePickerFragment.
      * <p/>
-     * Triggers the onDetach-method for additional clean up.
+     * Triggers the onDestroy-method for additional clean up.
      */
     private void dismiss() {
         getFragmentManager().beginTransaction()
@@ -99,11 +96,10 @@ public class DateTimePickerFragment extends BaseFragment
         this.maxDate = maxDate;
     }
 
-    /**
-     * Setup the fragment, this method is primarily used as a single setup
-     * between API versions.
-     */
-    private void setup() {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         datePicker = DatePickerFragment.newInstance(this);
 
         // The date picker only needs to listen to the "onCancel"-event
@@ -125,31 +121,9 @@ public class DateTimePickerFragment extends BaseFragment
                 .commit();
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        setup();
-    }
-
-    /**
-     * TODO: Remove method call when `minSdkVersion` is +23.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // In API +23 the `setup` is called from the `onAttach(Context)`.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            setup();
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
 
         if (nonNull(datePicker)) {
             getFragmentManager().beginTransaction()
