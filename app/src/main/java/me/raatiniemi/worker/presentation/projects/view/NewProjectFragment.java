@@ -151,12 +151,6 @@ public class NewProjectFragment extends DialogFragment implements NewProjectView
         super.onDestroy();
 
         unbinder.unbind();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
         presenter.detachView();
     }
 
