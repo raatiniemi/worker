@@ -61,14 +61,17 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     }
 
     @Override
-    public void onDateTimeSet(Calendar calendar) {
+    protected boolean isStateValid() {
         if (isNull(onClockActivityAtListener)) {
-            Log.e(TAG, "No OnClockActivityAtListener have been supplied");
-            return;
+            Log.w(TAG, "No OnClockActivityAtListener have been supplied");
+            return false;
         }
 
-        // Send the project row position with the selected
-        // date and time to the listener.
+        return super.isStateValid();
+    }
+
+    @Override
+    public void onDateTimeSet(Calendar calendar) {
         onClockActivityAtListener.onClockActivityAt(calendar);
     }
 
