@@ -20,11 +20,15 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+
+import me.raatiniemi.worker.R;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
@@ -68,17 +72,6 @@ public class DateTimePickerFragment extends BaseFragment
     private TimePickerFragment timePicker;
 
     /**
-     * Dismiss the DateTimePickerFragment.
-     * <p/>
-     * Triggers the onDestroy-method for additional clean up.
-     */
-    private void dismiss() {
-        getFragmentManager().beginTransaction()
-                .remove(this)
-                .commit();
-    }
-
-    /**
      * Set the minimum date for the date picker.
      *
      * @param minDate Minimum date.
@@ -100,6 +93,11 @@ public class DateTimePickerFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (!isStateValid()) {
+            dismissDialogWithInvalidState();
+            return;
+        }
+
         datePicker = DatePickerFragment.newInstance(this);
 
         // The date picker only needs to listen to the "onCancel"-event
@@ -113,6 +111,37 @@ public class DateTimePickerFragment extends BaseFragment
         datePicker.setMinDate(minDate);
 
         showFragmentWithTag(datePicker, FRAGMENT_DATE_PICKER_TAG);
+    }
+
+    @CallSuper
+    protected boolean isStateValid() {
+        if (isNull(onDateTimeSetListener)) {
+            Log.w(TAG, "No OnDateTimeSetListener have been supplied");
+            return false;
+        }
+
+        return true;
+    }
+
+    private void dismissDialogWithInvalidState() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_unknown,
+                Snackbar.LENGTH_SHORT
+        ).show();
+
+        dismiss();
+    }
+
+    /**
+     * Dismiss the DateTimePickerFragment.
+     * <p/>
+     * Triggers the onDestroy-method for additional clean up.
+     */
+    private void dismiss() {
+        getFragmentManager().beginTransaction()
+                .remove(this)
+                .commit();
     }
 
     private void showFragmentWithTag(Fragment fragment, String tag) {
@@ -164,12 +193,6 @@ public class DateTimePickerFragment extends BaseFragment
         // Relay the selected hour and minute to the stored calendar.
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
-
-        // Check that we have been supplied with a listener.
-        if (isNull(onDateTimeSetListener)) {
-            Log.e(TAG, "No OnDateTimeSetListener have been supplied");
-            return;
-        }
 
         // Send the calendar to the listener.
         onDateTimeSetListener.onDateTimeSet(calendar);
