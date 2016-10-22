@@ -19,6 +19,7 @@ package me.raatiniemi.worker.presentation.view.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Build;
@@ -115,10 +116,13 @@ public class DateTimePickerFragment extends BaseFragment
         datePicker.setMaxDate(maxDate);
         datePicker.setMinDate(minDate);
 
-        datePicker.show(
-                getFragmentManager().beginTransaction(),
-                FRAGMENT_DATE_PICKER_TAG
-        );
+        showFragmentWithTag(datePicker, FRAGMENT_DATE_PICKER_TAG);
+    }
+
+    private void showFragmentWithTag(Fragment fragment, String tag) {
+        getFragmentManager().beginTransaction()
+                .add(fragment, tag)
+                .commit();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -178,10 +182,7 @@ public class DateTimePickerFragment extends BaseFragment
         // "onCancel"-event to the DialogFragment.
         timePicker.setOnDismissListener(dialogInterface -> dismiss());
 
-        timePicker.show(
-                getFragmentManager().beginTransaction(),
-                FRAGMENT_TIME_PICKER_TAG
-        );
+        showFragmentWithTag(timePicker, FRAGMENT_TIME_PICKER_TAG);
     }
 
     @Override
