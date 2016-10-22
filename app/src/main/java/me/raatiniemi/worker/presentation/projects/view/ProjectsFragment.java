@@ -346,8 +346,10 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     @Override
     public void onClockActivityAt(@NonNull final ProjectsModel project) {
-        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project.asProject());
-        fragment.setOnClockActivityAtListener(calendar -> getPresenter().clockActivityChange(project, calendar.getTime()));
+        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
+                project.asProject(),
+                calendar -> getPresenter().clockActivityChange(project, calendar.getTime())
+        );
 
         getFragmentManager().beginTransaction()
                 .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)

@@ -30,9 +30,6 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         implements DateTimePickerFragment.OnDateTimeSetListener {
     private static final String TAG = "ClockActivityAtFragment";
 
-    /**
-     * Listener for "OnClockActivityAtListener".
-     */
     private OnClockActivityAtListener onClockActivityAtListener;
 
     public ClockActivityAtFragment() {
@@ -42,11 +39,16 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     /**
      * Create a new instance for project clock in/out with date and time.
      *
-     * @param project Project used with the clock activity.
+     * @param project                   Project used with the clock activity.
+     * @param onClockActivityAtListener Listener for "OnClockActivityAtListener".
      * @return New instance of the clock activity at fragment.
      */
-    public static ClockActivityAtFragment newInstance(Project project) {
+    public static ClockActivityAtFragment newInstance(
+            Project project,
+            OnClockActivityAtListener onClockActivityAtListener
+    ) {
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
+        fragment.onClockActivityAtListener = onClockActivityAtListener;
 
         // If the project is active we have to set the minimum date for clocking out.
         if (nonNull(project) && nonNull(project.getClockedInSince())) {
@@ -68,15 +70,6 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         // Send the project row position with the selected
         // date and time to the listener.
         onClockActivityAtListener.onClockActivityAt(calendar);
-    }
-
-    /**
-     * Set the "OnClockActivityAtListener".
-     *
-     * @param onClockActivityAtListener Listener for "OnClockActivityAtListener".
-     */
-    public void setOnClockActivityAtListener(OnClockActivityAtListener onClockActivityAtListener) {
-        this.onClockActivityAtListener = onClockActivityAtListener;
     }
 
     /**
