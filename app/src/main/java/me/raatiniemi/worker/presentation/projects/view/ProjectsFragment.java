@@ -262,7 +262,10 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
             showCreateProjectSuccessMessage();
         });
-        newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
+
+        getFragmentManager().beginTransaction()
+                .add(newProject, FRAGMENT_NEW_PROJECT_TAG)
+                .commit();
     }
 
     @Override
