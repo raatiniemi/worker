@@ -1,0 +1,13 @@
+package me.raatiniemi.util;
+
+public class NullUtil {
+    /**
+     * Check whether an object is not null.
+     *
+     * @param o Object to check for not null.
+     * @return True if object is not null, otherwise false.
+     */
+    public static boolean nonNull(Object o) {
+        return null != o;
+    }
+}

@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 public class SelectionBuilder {
     private String table;
 
@@ -56,7 +58,7 @@ public class SelectionBuilder {
         // In case we are using multiple selections we have
         // to encapsulate each of the selections.
         this.selection.append("(").append(selection).append(")");
-        if (null != selectionArgs) {
+        if (nonNull(selectionArgs)) {
             Collections.addAll(this.selectionArgs, selectionArgs);
         }
         return this;

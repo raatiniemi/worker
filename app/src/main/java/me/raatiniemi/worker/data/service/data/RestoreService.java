@@ -31,6 +31,8 @@ import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.notification.RestoreNotification;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 public class RestoreService extends IntentService {
     private static final String TAG = "RestoreService";
 
@@ -77,7 +79,7 @@ public class RestoreService extends IntentService {
             //
             // The notification manager won't be available if a
             // ClassCastException have been thrown.
-            if (null != manager && null != notification) {
+            if (nonNull(manager) && nonNull(notification)) {
                 manager.notify(
                         Worker.NOTIFICATION_RESTORE_SERVICE_ID,
                         notification

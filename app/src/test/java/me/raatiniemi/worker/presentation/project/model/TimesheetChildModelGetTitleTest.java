@@ -30,6 +30,7 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
+import static me.raatiniemi.util.NullUtil.nonNull;
 
 @RunWith(Parameterized.class)
 public class TimesheetChildModelGetTitleTest {
@@ -77,7 +78,7 @@ public class TimesheetChildModelGetTitleTest {
         Time.Builder builder = new Time.Builder(1L)
                 .startInMilliseconds(start.getTimeInMillis());
 
-        if (null != stop) {
+        if (nonNull(stop)) {
             builder.stopInMilliseconds(stop.getTimeInMillis());
         }
 

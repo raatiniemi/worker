@@ -33,6 +33,7 @@ import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.Tables;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
@@ -53,7 +54,7 @@ public class WorkerDatabaseTest {
     @After
     public void tearDown() {
         // If needed close the in-memory database.
-        if (null != database && database.isOpen()) {
+        if (nonNull(database) && database.isOpen()) {
             database.close();
         }
         database = null;

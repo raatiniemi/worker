@@ -19,6 +19,8 @@ package me.raatiniemi.worker.presentation.view.activity;
 import me.raatiniemi.worker.presentation.presenter.MvpPresenter;
 import me.raatiniemi.worker.presentation.view.MvpView;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 /**
  * Base for the model-view-presenter activity.
  *
@@ -35,7 +37,7 @@ public abstract class MvpActivity<P extends MvpPresenter> extends BaseActivity i
         super.onDestroy();
 
         // If the presenter is still active, we have to detach it.
-        if (null != getPresenter()) {
+        if (nonNull(getPresenter())) {
             getPresenter().detachView();
         }
     }

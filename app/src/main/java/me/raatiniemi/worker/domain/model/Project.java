@@ -23,6 +23,8 @@ import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 /**
  * Represent a project.
  */
@@ -115,7 +117,7 @@ public class Project extends DomainObject {
 
         // Retrieve the interval for the active time.
         Time time = getActiveTime();
-        if (null != time) {
+        if (nonNull(time)) {
             elapsed = time.getInterval();
         }
 
@@ -165,7 +167,7 @@ public class Project extends DomainObject {
      * @return True if the project is active, otherwise false.
      */
     public boolean isActive() {
-        return null != getActiveTime();
+        return nonNull(getActiveTime());
     }
 
     @Override

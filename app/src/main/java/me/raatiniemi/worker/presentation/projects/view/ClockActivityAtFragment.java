@@ -27,6 +27,8 @@ import java.util.Calendar;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.view.fragment.DateTimePickerFragment;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 public class ClockActivityAtFragment extends DateTimePickerFragment
         implements DateTimePickerFragment.OnDateTimeSetListener {
     private static final String TAG = "ClockActivityAtFragment";
@@ -46,7 +48,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
 
         // If the project is active we have to set the minimum date for clocking out.
-        if (null != project && null != project.getClockedInSince()) {
+        if (nonNull(project) && nonNull(project.getClockedInSince())) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(project.getClockedInSince());
             fragment.setMinDate(calendar);

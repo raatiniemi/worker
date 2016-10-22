@@ -30,6 +30,8 @@ import java.util.List;
 
 import me.raatiniemi.worker.Worker;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 /**
  * Methods for working with the device external storage.
  */
@@ -130,7 +132,7 @@ public class ExternalStorage {
         File[] directories = {};
 
         File directory = getDirectory();
-        if (null != directory) {
+        if (nonNull(directory)) {
             directories = directory.listFiles(File::isDirectory);
         }
 
@@ -147,7 +149,7 @@ public class ExternalStorage {
         File[] directories = {};
 
         File directory = getDirectory();
-        if (null != directory) {
+        if (nonNull(directory)) {
             directories = directory.listFiles(file -> file.isDirectory() &&
                     file.getName().matches(Worker.STORAGE_BACKUP_DIRECTORY_PATTERN));
         }

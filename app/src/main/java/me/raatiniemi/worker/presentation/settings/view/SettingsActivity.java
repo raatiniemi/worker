@@ -53,6 +53,7 @@ import me.raatiniemi.worker.presentation.view.activity.MvpActivity;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
         implements SettingsView, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -633,11 +634,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             }
 
             String text = getString(R.string.activity_settings_backup_unable_to_find);
-            if (null != backup) {
+            if (nonNull(backup)) {
                 text = getString(R.string.activity_settings_backup_none_available);
 
                 Date date = backup.getDate();
-                if (null != date) {
+                if (nonNull(date)) {
                     text = getString(
                             R.string.activity_settings_backup_performed_at,
                             format.format(date)
@@ -662,11 +663,11 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             String text = getString(R.string.activity_settings_restore_unable_to_find);
             boolean enable = false;
-            if (null != backup) {
+            if (nonNull(backup)) {
                 text = getString(R.string.activity_settings_restore_none_available);
 
                 Date date = backup.getDate();
-                if (null != date) {
+                if (nonNull(date)) {
                     text = getString(
                             R.string.activity_settings_restore_from,
                             format.format(date)

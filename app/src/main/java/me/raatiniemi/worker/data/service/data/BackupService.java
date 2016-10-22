@@ -33,6 +33,8 @@ import me.raatiniemi.worker.domain.interactor.CreateBackup;
 import me.raatiniemi.worker.presentation.view.notification.BackupNotification;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 public class BackupService extends IntentService {
     private static final String TAG = "BackupService";
 
@@ -82,7 +84,7 @@ public class BackupService extends IntentService {
             //
             // The notification manager won't be available if a
             // ClassCastException have been thrown.
-            if (null != manager && null != notification) {
+            if (nonNull(manager) && nonNull(notification)) {
                 manager.notify(
                         Worker.NOTIFICATION_BACKUP_SERVICE_ID,
                         notification
