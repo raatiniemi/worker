@@ -32,6 +32,7 @@ import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
 import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class ProjectsActivity extends BaseActivity {
     /**
@@ -62,7 +63,7 @@ public class ProjectsActivity extends BaseActivity {
     private boolean shouldRestartApplication() {
         Intent intent = getIntent();
 
-        return !(isNull(intent) || isNull(intent.getAction()))
+        return nonNull(intent) && nonNull(intent.getAction())
                 && Worker.INTENT_ACTION_RESTART.equals(intent.getAction());
     }
 
