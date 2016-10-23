@@ -19,6 +19,7 @@ package me.raatiniemi.worker.presentation.view.fragment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -91,7 +92,11 @@ public class DatePickerFragment extends BaseDialogFragment {
      *
      * @param minDate Minimum date.
      */
-    public void setMinDate(Calendar minDate) {
+    public void setMinDate(@NonNull Calendar minDate) {
+        if (minDate.after(maxDate)) {
+            throw new IllegalArgumentException("Minimum date occurs after maximum date");
+        }
+
         this.minDate = minDate;
     }
 
@@ -100,7 +105,11 @@ public class DatePickerFragment extends BaseDialogFragment {
      *
      * @param maxDate Maximum date.
      */
-    public void setMaxDate(Calendar maxDate) {
+    public void setMaxDate(@NonNull Calendar maxDate) {
+        if (maxDate.before(minDate)) {
+            throw new IllegalArgumentException("Maximum date occurs before minimum date");
+        }
+
         this.maxDate = maxDate;
     }
 }
