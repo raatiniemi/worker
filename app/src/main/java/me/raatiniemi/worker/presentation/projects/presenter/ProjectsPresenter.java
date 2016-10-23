@@ -52,7 +52,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 /**
  * Presenter for the projects module, handles loading of projects.
@@ -227,11 +227,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      * Unsubscribe to the refresh of active projects.
      */
     public void stopRefreshingActiveProjects() {
-        if (nonNull(refreshProjects) && !refreshProjects.isUnsubscribed()) {
-            Log.d(TAG, "Unsubscribe to the refresh of active projects");
-            refreshProjects.unsubscribe();
-        }
-        refreshProjects = null;
+        unsubscribeIfNotNull(refreshProjects);
     }
 
     /**
