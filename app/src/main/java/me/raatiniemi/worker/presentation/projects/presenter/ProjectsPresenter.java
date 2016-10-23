@@ -39,10 +39,11 @@ import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
+import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
 import rx.Observable;
@@ -51,16 +52,18 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 /**
  * Presenter for the projects module, handles loading of projects.
  */
-public class ProjectsPresenter extends RxPresenter<ProjectsView> {
+public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     /**
      * Tag used when logging.
      */
     private static final String TAG = "ProjectsPresenter";
+
+    private Subscription refreshProjectsSubscription;
 
     private final EventBus eventBus;
 
@@ -83,11 +86,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * Use case for removing projects.
      */
     private final RemoveProject removeProject;
-
-    /**
-     * Interval iterator for refreshing active projects.
-     */
-    private Subscription refreshProjects;
 
     /**
      * Constructor.
@@ -195,7 +193,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
         stopRefreshingActiveProjects();
 
         Log.d(TAG, "Subscribe to the refresh of active projects");
-        refreshProjects = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
+        refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .map(aLong -> getPositionsForActiveProjects())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Integer>>() {
@@ -226,11 +224,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * Unsubscribe to the refresh of active projects.
      */
     public void stopRefreshingActiveProjects() {
-        if (nonNull(refreshProjects) && !refreshProjects.isUnsubscribed()) {
-            Log.d(TAG, "Unsubscribe to the refresh of active projects");
-            refreshProjects.unsubscribe();
-        }
-        refreshProjects = null;
+        unsubscribeIfNotNull(refreshProjectsSubscription);
     }
 
     /**
@@ -239,7 +233,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     public void refreshActiveProjects() {
         Log.d(TAG, "Refreshing active projects");
         Observable.defer(() -> Observable.just(getPositionsForActiveProjects()))
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<Integer>>() {
                     @Override
                     public void onNext(List<Integer> positions) {
@@ -268,10 +262,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * Retrieve the projects and push them to the view.
      */
     public void getProjects() {
-        // Before we setup the project subscription we have to cancel
-        // the previous one, if available.
-        unsubscribe();
-
         // Setup the subscription for retrieving projects.
         Observable
                 .defer(() -> {
@@ -292,7 +282,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
                     return items;
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<ProjectsModel>>() {
                     @Override
                     public void onNext(List<ProjectsModel> items) {
@@ -365,7 +355,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
                     return Observable.empty();
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onNext(Object o) {
@@ -420,7 +410,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
                     return new ProjectsModel(project, registeredTime);
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .doOnNext(this::postOngoingNotification)
                 .subscribe(new Subscriber<ProjectsModel>() {
                     @Override

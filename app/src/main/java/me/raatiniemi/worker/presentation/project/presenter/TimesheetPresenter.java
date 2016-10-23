@@ -34,20 +34,26 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
+import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 
-public class TimesheetPresenter extends RxPresenter<TimesheetView> {
+import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
+
+public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     /**
      * Tag used when logging.
      */
     private static final String TAG = "TimesheetPresenter";
+
+    private Subscription getTimesheetSubscription;
 
     private final EventBus eventBus;
 
@@ -108,15 +114,14 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
         super.detachView();
 
         eventBus.unregister(this);
+        unsubscribeIfNotNull(getTimesheetSubscription);
     }
 
     public void getTimesheet(final Long id, final int offset) {
-        // Before we setup the timesheet subscription we have to cancel
-        // the previous one, if available.
-        unsubscribe();
+        unsubscribeIfNotNull(getTimesheetSubscription);
 
         // Setup the subscription for retrieving timesheet.
-        subscription = Observable
+        getTimesheetSubscription = Observable
                 .defer(() -> {
                     boolean hideRegisteredTime = Settings.shouldHideRegisteredTime(getContext());
                     return Observable.just(
@@ -135,7 +140,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
                     }
                     return items;
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<TimesheetGroupModel>>() {
                     @Override
                     public void onNext(List<TimesheetGroupModel> items) {
@@ -197,7 +202,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
                     removeTime.execute(timeToRemove);
                     return items;
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
                     public void onNext(List<TimeInAdapterResult> results) {
@@ -242,7 +247,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
         // TODO: Refactor to use optimistic propagation.
         Observable.just(results)
                 .flatMap(this::registerTimeViaUseCase)
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
                     public void onNext(List<TimeInAdapterResult> results) {

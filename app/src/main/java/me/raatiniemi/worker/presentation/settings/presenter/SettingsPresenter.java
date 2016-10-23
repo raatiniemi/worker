@@ -28,20 +28,26 @@ import java.io.File;
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.presentation.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.SettingsView;
+import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 
-public class SettingsPresenter extends RxPresenter<SettingsView> {
+import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
+
+public class SettingsPresenter extends BasePresenter<SettingsView> {
     /**
      * Tag for logging.
      */
     private static final String TAG = "SettingsPresenter";
+
+    private Subscription getLatestBackupSubscription;
 
     private final EventBus eventBus;
 
@@ -68,18 +74,21 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
         super.detachView();
 
         eventBus.unregister(this);
+        unsubscribeIfNotNull(getLatestBackupSubscription);
     }
 
     /**
      * Retrieve the latest backup and update the view.
      */
     public void getLatestBackup() {
-        Observable
+        unsubscribeIfNotNull(getLatestBackupSubscription);
+
+        getLatestBackupSubscription = Observable
                 .defer(() -> {
                     File directory = ExternalStorage.getLatestBackupDirectory();
                     return Observable.just(new Backup(directory));
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<Backup>() {
                     @Override
                     public void onNext(Backup backup) {
