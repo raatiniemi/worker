@@ -187,9 +187,7 @@ public class DateTimePickerFragment extends BaseFragment
         this.onDateTimeSetListener = onDateTimeSetListener;
     }
 
-    /**
-     * Interface for listening to the selected date and time.
-     */
+    @FunctionalInterface
     public interface OnDateTimeSetListener {
         /**
          * Listen for the selected date and time.
