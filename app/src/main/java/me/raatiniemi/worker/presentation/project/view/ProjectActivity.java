@@ -57,8 +57,7 @@ public class ProjectActivity extends BaseActivity {
      */
     private TimesheetFragment getTimesheetFragment() {
         if (isNull(timesheetFragment)) {
-            timesheetFragment = new TimesheetFragment();
-            timesheetFragment.setArguments(getIntent().getExtras());
+            timesheetFragment = TimesheetFragment.newInstance(getIntent().getExtras());
         }
 
         return timesheetFragment;

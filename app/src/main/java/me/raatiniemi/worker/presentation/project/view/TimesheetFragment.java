@@ -125,6 +125,13 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
     private boolean loading = false;
 
+    public static TimesheetFragment newInstance(Bundle bundle) {
+        TimesheetFragment timesheetFragment = new TimesheetFragment();
+        timesheetFragment.setArguments(bundle);
+
+        return timesheetFragment;
+    }
+
     @Override
     public long getProjectId() {
         return getArguments().getLong(ProjectActivity.MESSAGE_PROJECT_ID, -1);
