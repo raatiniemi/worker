@@ -19,10 +19,7 @@ package me.raatiniemi.worker.presentation.presenter;
 import android.content.Context;
 
 import me.raatiniemi.worker.presentation.view.MvpView;
-import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
@@ -60,16 +57,5 @@ public abstract class RxPresenter<V extends MvpView> extends BasePresenter<V> {
      */
     protected void unsubscribe() {
         unsubscribeIfNotNull(subscription);
-    }
-
-    /**
-     * Apply the default schedulers for the observable.
-     *
-     * @param <T> Type used with the observable.
-     * @return Observable with applied schedulers.
-     */
-    protected <T> Observable.Transformer<T, T> applySchedulers() {
-        return observable -> observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -2,7 +2,10 @@ package me.raatiniemi.worker.presentation.util;
 
 import android.support.annotation.Nullable;
 
+import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static me.raatiniemi.util.NullUtil.nonNull;
 
@@ -11,5 +14,10 @@ public class RxUtil {
         if (nonNull(subscription) && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
+    }
+
+    public static <T> Observable.Transformer<T, T> applySchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

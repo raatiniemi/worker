@@ -26,6 +26,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
 import me.raatiniemi.worker.presentation.projects.view.NewProjectView;
+import me.raatiniemi.worker.presentation.util.RxUtil;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -67,7 +68,7 @@ public class NewProjectPresenter extends RxPresenter<NewProjectView> {
 
             Observable.just(project)
                     .flatMap(this::createProjectViaUseCase)
-                    .compose(applySchedulers())
+                    .compose(RxUtil.applySchedulers())
                     .subscribe(new Subscriber<Project>() {
                         @Override
                         public void onNext(Project project) {

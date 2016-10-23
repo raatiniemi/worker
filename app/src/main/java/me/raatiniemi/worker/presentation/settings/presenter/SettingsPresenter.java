@@ -33,6 +33,7 @@ import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.SettingsView;
+import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
@@ -79,7 +80,7 @@ public class SettingsPresenter extends RxPresenter<SettingsView> {
                     File directory = ExternalStorage.getLatestBackupDirectory();
                     return Observable.just(new Backup(directory));
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<Backup>() {
                     @Override
                     public void onNext(Backup backup) {

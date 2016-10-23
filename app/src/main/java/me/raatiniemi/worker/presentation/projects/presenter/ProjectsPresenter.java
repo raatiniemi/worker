@@ -43,6 +43,7 @@ import me.raatiniemi.worker.presentation.presenter.RxPresenter;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
+import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
 import rx.Observable;
@@ -239,7 +240,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
     public void refreshActiveProjects() {
         Log.d(TAG, "Refreshing active projects");
         Observable.defer(() -> Observable.just(getPositionsForActiveProjects()))
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<Integer>>() {
                     @Override
                     public void onNext(List<Integer> positions) {
@@ -292,7 +293,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
                     return items;
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<ProjectsModel>>() {
                     @Override
                     public void onNext(List<ProjectsModel> items) {
@@ -365,7 +366,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
                     return Observable.empty();
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<Object>() {
                     @Override
                     public void onNext(Object o) {
@@ -420,7 +421,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
 
                     return new ProjectsModel(project, registeredTime);
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .doOnNext(this::postOngoingNotification)
                 .subscribe(new Subscriber<ProjectsModel>() {
                     @Override

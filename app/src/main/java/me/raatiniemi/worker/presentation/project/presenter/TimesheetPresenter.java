@@ -39,6 +39,7 @@ import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
+import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
@@ -135,7 +136,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
                     }
                     return items;
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<TimesheetGroupModel>>() {
                     @Override
                     public void onNext(List<TimesheetGroupModel> items) {
@@ -197,7 +198,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
                     removeTime.execute(timeToRemove);
                     return items;
                 })
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
                     public void onNext(List<TimeInAdapterResult> results) {
@@ -242,7 +243,7 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
         // TODO: Refactor to use optimistic propagation.
         Observable.just(results)
                 .flatMap(this::registerTimeViaUseCase)
-                .compose(applySchedulers())
+                .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
                     public void onNext(List<TimeInAdapterResult> results) {
