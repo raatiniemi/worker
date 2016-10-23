@@ -54,7 +54,7 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
 
     private OnCreateProjectListener onCreateProjectListener;
 
-    public static NewProjectFragment newFragment(@NonNull OnCreateProjectListener onCreateProjectListener) {
+    public static NewProjectFragment newInstance(@NonNull OnCreateProjectListener onCreateProjectListener) {
         NewProjectFragment fragment = new NewProjectFragment();
         fragment.onCreateProjectListener = onCreateProjectListener;
 

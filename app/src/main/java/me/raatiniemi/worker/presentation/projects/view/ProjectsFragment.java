@@ -257,7 +257,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     @Override
     public void createNewProject() {
-        NewProjectFragment newProject = NewProjectFragment.newFragment(project -> {
+        NewProjectFragment newProject = NewProjectFragment.newInstance(project -> {
             addCreatedProject(project);
 
             showCreateProjectSuccessMessage();
