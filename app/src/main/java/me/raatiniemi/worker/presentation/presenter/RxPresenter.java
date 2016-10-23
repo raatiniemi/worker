@@ -19,9 +19,6 @@ package me.raatiniemi.worker.presentation.presenter;
 import android.content.Context;
 
 import me.raatiniemi.worker.presentation.view.MvpView;
-import rx.Subscription;
-
-import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 /**
  * Presenter with functionality for working with RxJava and observables.
@@ -30,32 +27,11 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull
  */
 public abstract class RxPresenter<V extends MvpView> extends BasePresenter<V> {
     /**
-     * Subscription for retrieving data for the presenter/view.
-     */
-    protected Subscription subscription;
-
-    /**
      * Constructor.
      *
      * @param context Context used with the presenter.
      */
     protected RxPresenter(Context context) {
         super(context);
-    }
-
-    @Override
-    public void detachView() {
-        super.detachView();
-
-        // Before we can detach the view, we have to make sure that the
-        // subscription have been unsubscribed.
-        unsubscribe();
-    }
-
-    /**
-     * Unsubscribe to the data retrieving subscription.
-     */
-    protected void unsubscribe() {
-        unsubscribeIfNotNull(subscription);
     }
 }

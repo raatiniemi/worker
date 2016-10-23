@@ -43,12 +43,17 @@ import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
+
+import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 public class TimesheetPresenter extends RxPresenter<TimesheetView> {
     /**
      * Tag used when logging.
      */
     private static final String TAG = "TimesheetPresenter";
+
+    private Subscription getTimesheetSubscription;
 
     private final EventBus eventBus;
 
@@ -109,15 +114,14 @@ public class TimesheetPresenter extends RxPresenter<TimesheetView> {
         super.detachView();
 
         eventBus.unregister(this);
+        unsubscribeIfNotNull(getTimesheetSubscription);
     }
 
     public void getTimesheet(final Long id, final int offset) {
-        // Before we setup the timesheet subscription we have to cancel
-        // the previous one, if available.
-        unsubscribe();
+        unsubscribeIfNotNull(getTimesheetSubscription);
 
         // Setup the subscription for retrieving timesheet.
-        subscription = Observable
+        getTimesheetSubscription = Observable
                 .defer(() -> {
                     boolean hideRegisteredTime = Settings.shouldHideRegisteredTime(getContext());
                     return Observable.just(
