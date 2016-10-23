@@ -269,10 +269,6 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * Retrieve the projects and push them to the view.
      */
     public void getProjects() {
-        // Before we setup the project subscription we have to cancel
-        // the previous one, if available.
-        unsubscribe();
-
         // Setup the subscription for retrieving projects.
         Observable
                 .defer(() -> {
