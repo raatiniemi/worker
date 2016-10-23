@@ -66,10 +66,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     private ProjectsAdapter adapter;
 
-    public ProjectsFragment() {
-        super();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_projects, container, false);
