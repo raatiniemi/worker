@@ -63,6 +63,8 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      */
     private static final String TAG = "ProjectsPresenter";
 
+    private Subscription refreshProjectsSubscription;
+
     private final EventBus eventBus;
 
     /**
@@ -84,11 +86,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      * Use case for removing projects.
      */
     private final RemoveProject removeProject;
-
-    /**
-     * Interval iterator for refreshing active projects.
-     */
-    private Subscription refreshProjects;
 
     /**
      * Constructor.
@@ -196,7 +193,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         stopRefreshingActiveProjects();
 
         Log.d(TAG, "Subscribe to the refresh of active projects");
-        refreshProjects = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
+        refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .map(aLong -> getPositionsForActiveProjects())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Integer>>() {
@@ -227,7 +224,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      * Unsubscribe to the refresh of active projects.
      */
     public void stopRefreshingActiveProjects() {
-        unsubscribeIfNotNull(refreshProjects);
+        unsubscribeIfNotNull(refreshProjectsSubscription);
     }
 
     /**
