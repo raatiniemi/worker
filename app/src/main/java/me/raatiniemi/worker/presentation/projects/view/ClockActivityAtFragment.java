@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -82,6 +83,6 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
          *
          * @param calendar Calendar with date and time to clock in or out.
          */
-        void onClockActivityAt(Calendar calendar);
+        void onClockActivityAt(@NonNull Calendar calendar);
     }
 }
