@@ -52,9 +52,6 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
 
     private Unbinder unbinder;
 
-    /**
-     * Callback handler for the "OnCreateProjectListener".
-     */
     private OnCreateProjectListener onCreateProjectListener;
 
     public static NewProjectFragment newFragment(@NonNull OnCreateProjectListener onCreateProjectListener) {

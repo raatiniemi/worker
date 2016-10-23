@@ -41,34 +41,14 @@ public class DateTimePickerFragment extends BaseFragment
 
     private static final String FRAGMENT_TIME_PICKER_TAG = "time picker";
 
-    /**
-     * Date and time set by the "DateTimePickerFragment".
-     */
     private final Calendar calendar = Calendar.getInstance();
 
-    /**
-     * Listener for the selected date and time.
-     */
     private OnDateTimeSetListener onDateTimeSetListener;
 
-    /**
-     * Minimum date available for the date picker.
-     */
     private Calendar minDate;
-
-    /**
-     * Maximum date available for the date picker.
-     */
     private Calendar maxDate;
 
-    /**
-     * Instance for the date picker.
-     */
     private DatePickerFragment datePicker;
-
-    /**
-     * Instance for the time picker.
-     */
     private TimePickerFragment timePicker;
 
     /**

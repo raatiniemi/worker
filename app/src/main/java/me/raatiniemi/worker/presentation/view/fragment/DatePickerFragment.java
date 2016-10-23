@@ -32,14 +32,7 @@ public class DatePickerFragment extends BaseDialogFragment {
 
     private DatePickerDialog.OnDateSetListener onDateSetListener;
 
-    /**
-     * Minimum date available for the date picker.
-     */
     private Calendar minDate;
-
-    /**
-     * Maximum date available for the date picker.
-     */
     private Calendar maxDate;
 
     public static DatePickerFragment newInstance(
