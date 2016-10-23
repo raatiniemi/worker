@@ -57,7 +57,11 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param minDate Minimum date.
      */
-    protected void setMinDate(Calendar minDate) {
+    protected void setMinDate(@NonNull Calendar minDate) {
+        if (minDate.after(maxDate)) {
+            throw new IllegalArgumentException("Minimum date occurs after maximum date");
+        }
+
         this.minDate = minDate;
     }
 
@@ -66,7 +70,11 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param maxDate Maximum date.
      */
-    protected void setMaxDate(Calendar maxDate) {
+    protected void setMaxDate(@NonNull Calendar maxDate) {
+        if (maxDate.before(minDate)) {
+            throw new IllegalArgumentException("Maximum date occurs before minimum date");
+        }
+
         this.maxDate = maxDate;
     }
 
