@@ -20,7 +20,7 @@
             android:layout_width="@dimen/expandable_group_item_letter_width"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/expandable_group_item_padding_left"
-            android:layout_marginRight="@dimen/expandable_group_item_padding_left"
+            android:layout_marginEnd="@dimen/expandable_group_item_padding_left"
             android:layout_marginBottom="@dimen/expandable_group_item_padding_left"
             android:contentDescription="@string/fragment.timesheet_group_item.selection_content_description"
             />
