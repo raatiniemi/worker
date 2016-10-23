@@ -75,9 +75,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         onClockActivityAtListener.onClockActivityAt(calendar);
     }
 
-    /**
-     * Public interface for the "OnClockActivityAtListener"
-     */
+    @FunctionalInterface
     public interface OnClockActivityAtListener {
         /**
          * Triggered after the date and time have been selected.
