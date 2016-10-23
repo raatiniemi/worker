@@ -16,12 +16,10 @@
 
 package me.raatiniemi.worker.presentation.view.activity;
 
-import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 
 /**
  * Base for the application activities.
  */
-@SuppressLint("Registered")
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 }
