@@ -30,6 +30,9 @@ import java.util.List;
 
 import me.raatiniemi.worker.Worker;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 /**
  * Methods for working with the device external storage.
  */
@@ -89,7 +92,7 @@ public class ExternalStorage {
     @Nullable
     private static File getDirectory(@NonNull String name) {
         File directory = getDirectory();
-        if (null == directory) {
+        if (isNull(directory)) {
             // TODO: Throw exception, avoiding checks for null everywhere.
             Log.w(TAG, "Unable to retrieve the application directory");
             return null;
@@ -130,7 +133,7 @@ public class ExternalStorage {
         File[] directories = {};
 
         File directory = getDirectory();
-        if (null != directory) {
+        if (nonNull(directory)) {
             directories = directory.listFiles(File::isDirectory);
         }
 
@@ -147,7 +150,7 @@ public class ExternalStorage {
         File[] directories = {};
 
         File directory = getDirectory();
-        if (null != directory) {
+        if (nonNull(directory)) {
             directories = directory.listFiles(file -> file.isDirectory() &&
                     file.getName().matches(Worker.STORAGE_BACKUP_DIRECTORY_PATTERN));
         }

@@ -32,6 +32,7 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
+import static me.raatiniemi.util.NullUtil.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -107,7 +108,7 @@ public class TimeCursorMapperTest {
 
         // Depending on whether the `stop` variable is `null` different
         // behaviour should be applied to the mock object.
-        boolean isNull = null == stop;
+        boolean isNull = isNull(stop);
         when(cursor.isNull(3)).thenReturn(isNull);
         if (!isNull) {
             when(cursor.getLong(3)).thenReturn(stop);

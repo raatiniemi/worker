@@ -36,6 +36,8 @@ import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.util.SelectionBuilder;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
 
@@ -107,9 +109,9 @@ public class WorkerProvider extends ContentProvider {
         // TODO: Add proper validation and additional controls.
         // TODO: Simplify the process of retrieving offset and limit.
         String limit = null;
-        if (null != uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT)) {
+        if (nonNull(uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT))) {
             limit = "";
-            if (null != uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET)) {
+            if (nonNull(uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET))) {
                 limit = uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET) + ",";
             }
             limit = limit + uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT);

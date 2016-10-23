@@ -24,6 +24,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 /**
  * Presenter with functionality for working with RxJava and observables.
  *
@@ -58,7 +60,7 @@ public abstract class RxPresenter<V extends MvpView> extends BasePresenter<V> {
      */
     protected void unsubscribe() {
         // If have to verify that there is an active subscription.
-        if (null != subscription && !subscription.isUnsubscribed()) {
+        if (nonNull(subscription) && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
         subscription = null;

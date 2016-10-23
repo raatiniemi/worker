@@ -53,6 +53,8 @@ import me.raatiniemi.worker.presentation.view.activity.MvpActivity;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
         implements SettingsView, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -124,7 +126,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        if (null == savedInstanceState) {
+        if (isNull(savedInstanceState)) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new SettingsFragment())
                     .commit();
@@ -150,7 +152,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         // Both of the permission requests require that the `DataFragment` is
         // available, no ned to go any further if the fragment is not available.
         DataFragment fragment = getDataFragment();
-        if (null == fragment) {
+        if (isNull(fragment)) {
             super.onRequestPermissionsResult(
                     requestCode,
                     permissions,
@@ -207,7 +209,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
     private void displayPreferenceScreenNotImplementedMessage() {
         View contentView = findViewById(android.R.id.content);
-        if (null == contentView) {
+        if (isNull(contentView)) {
             return;
         }
 
@@ -258,7 +260,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         try {
             fragment = (T) getFragmentManager().findFragmentByTag(tag);
-            if (null == fragment) {
+            if (isNull(fragment)) {
                 // Should only be an informational log message since
                 // the activity is working with multiple fragments
                 // and the user can navigate up or down before the
@@ -285,7 +287,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     @Override
     public void setLatestBackup(@Nullable Backup backup) {
         DataFragment fragment = getDataFragment();
-        if (null == fragment) {
+        if (isNull(fragment)) {
             Log.d(TAG, "DataFragment is not available");
             return;
         }
@@ -297,7 +299,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     @Override
     public void showChangeTimeSummaryStartingPointToWeekSuccessMessage() {
         View contentView = findViewById(android.R.id.content);
-        if (null == contentView) {
+        if (isNull(contentView)) {
             return;
         }
 
@@ -311,7 +313,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     @Override
     public void showChangeTimeSummaryStartingPointToMonthSuccessMessage() {
         View contentView = findViewById(android.R.id.content);
-        if (null == contentView) {
+        if (isNull(contentView)) {
             return;
         }
 
@@ -325,7 +327,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     @Override
     public void showChangeTimeSummaryStartingPointErrorMessage() {
         View contentView = findViewById(android.R.id.content);
-        if (null == contentView) {
+        if (isNull(contentView)) {
             return;
         }
 
@@ -627,17 +629,17 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
          */
         void setBackupSummary(@Nullable Backup backup) {
             Preference preference = findPreference(SETTINGS_DATA_BACKUP_KEY);
-            if (null == preference) {
+            if (isNull(preference)) {
                 Log.w(TAG, "Unable to find preference with key: " + SETTINGS_DATA_BACKUP_KEY);
                 return;
             }
 
             String text = getString(R.string.activity_settings_backup_unable_to_find);
-            if (null != backup) {
+            if (nonNull(backup)) {
                 text = getString(R.string.activity_settings_backup_none_available);
 
                 Date date = backup.getDate();
-                if (null != date) {
+                if (nonNull(date)) {
                     text = getString(
                             R.string.activity_settings_backup_performed_at,
                             format.format(date)
@@ -655,18 +657,18 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
          */
         void setRestoreSummary(@Nullable Backup backup) {
             Preference preference = findPreference(SETTINGS_DATA_RESTORE_KEY);
-            if (null == preference) {
+            if (isNull(preference)) {
                 Log.w(TAG, "Unable to find preference with key: " + SETTINGS_DATA_RESTORE_KEY);
                 return;
             }
 
             String text = getString(R.string.activity_settings_restore_unable_to_find);
             boolean enable = false;
-            if (null != backup) {
+            if (nonNull(backup)) {
                 text = getString(R.string.activity_settings_restore_none_available);
 
                 Date date = backup.getDate();
-                if (null != date) {
+                if (nonNull(date)) {
                     text = getString(
                             R.string.activity_settings_restore_from,
                             format.format(date)

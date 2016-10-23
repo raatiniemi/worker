@@ -39,6 +39,9 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.util.Settings;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 /**
  * Notification for pausing or clocking out an active project.
  */
@@ -96,7 +99,7 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private TimeRepository getTimeRepository() {
-        if (null == repository) {
+        if (isNull(repository)) {
             repository = new TimeResolverRepository(
                     getContext().getContentResolver(),
                     new TimeCursorMapper(),
@@ -113,7 +116,7 @@ public class PauseNotification extends OngoingNotification {
 
     private long includeActiveTime(long registeredTime) throws DomainException {
         Time activeTime = getActiveTimeForProject();
-        if (null != activeTime) {
+        if (nonNull(activeTime)) {
             registeredTime += activeTime.getInterval();
         }
 

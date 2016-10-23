@@ -26,6 +26,7 @@ import java.util.Collection;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class CriteriaEqualsHashCodeTest {
@@ -124,7 +125,7 @@ public class CriteriaEqualsHashCodeTest {
     }
 
     private void validateHashCodeWhenNotEqual() {
-        if (null == compareTo) {
+        if (isNull(compareTo)) {
             return;
         }
 

@@ -30,6 +30,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class ProjectEqualsHashCodeTest {
@@ -152,7 +153,7 @@ public class ProjectEqualsHashCodeTest {
     }
 
     private void validateHashCodeWhenNotEqual() {
-        if (null == compareTo) {
+        if (isNull(compareTo)) {
             return;
         }
 

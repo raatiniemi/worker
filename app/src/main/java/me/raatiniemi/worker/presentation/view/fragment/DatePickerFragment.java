@@ -32,6 +32,9 @@ import java.util.Calendar;
 
 import me.raatiniemi.worker.R;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 public class DatePickerFragment extends DialogFragment {
     private static final String TAG = "DatePickerFragment";
 
@@ -77,7 +80,7 @@ public class DatePickerFragment extends DialogFragment {
 
     private void setup() {
         // Check that we actually have a listener available.
-        if (null == onDateSetListener) {
+        if (isNull(onDateSetListener)) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -107,13 +110,13 @@ public class DatePickerFragment extends DialogFragment {
 
         // If a minimum date is available we have
         // to set it on the date picker.
-        if (null != minDate) {
+        if (nonNull(minDate)) {
             dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
         }
 
         // If a maximum date is available we have
         // to set it on the date picker.
-        if (null != maxDate) {
+        if (nonNull(maxDate)) {
             dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
         }
 
@@ -125,7 +128,7 @@ public class DatePickerFragment extends DialogFragment {
         super.onCancel(dialog);
 
         // Delegate the "onCancel" event to the listener, if available.
-        if (null != onCancelListener) {
+        if (nonNull(onCancelListener)) {
             onCancelListener.onCancel(dialog);
         }
     }
@@ -135,7 +138,7 @@ public class DatePickerFragment extends DialogFragment {
         super.onDismiss(dialog);
 
         // Delegate the "onDismiss" event to the listener, if available.
-        if (null != onDismissListener) {
+        if (nonNull(onDismissListener)) {
             onDismissListener.onDismiss(dialog);
         }
     }

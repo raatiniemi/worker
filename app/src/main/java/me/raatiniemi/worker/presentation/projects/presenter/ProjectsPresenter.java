@@ -51,6 +51,8 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 /**
  * Presenter for the projects module, handles loading of projects.
  */
@@ -224,7 +226,7 @@ public class ProjectsPresenter extends RxPresenter<ProjectsView> {
      * Unsubscribe to the refresh of active projects.
      */
     public void stopRefreshingActiveProjects() {
-        if (null != refreshProjects && !refreshProjects.isUnsubscribed()) {
+        if (nonNull(refreshProjects) && !refreshProjects.isUnsubscribed()) {
             Log.d(TAG, "Unsubscribe to the refresh of active projects");
             refreshProjects.unsubscribe();
         }

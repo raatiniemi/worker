@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 /**
  * Base adapter for working with the RecyclerView.
  *
@@ -280,7 +282,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         @Override
         public void onClick(@NonNull View view) {
             // Check that the OnItemClickListener have been supplied.
-            if (null == getOnItemClickListener()) {
+            if (isNull(getOnItemClickListener())) {
                 Log.e(TAG, "No OnItemClickListener have been supplied");
                 return;
             }

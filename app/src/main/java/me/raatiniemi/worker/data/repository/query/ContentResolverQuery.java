@@ -18,6 +18,8 @@ package me.raatiniemi.worker.data.repository.query;
 
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 public class ContentResolverQuery {
     private final Criteria criteria;
 
@@ -30,7 +32,7 @@ public class ContentResolverQuery {
     }
 
     public String getSelection() {
-        if (null == criteria) {
+        if (isNull(criteria)) {
             return null;
         }
 
@@ -38,7 +40,7 @@ public class ContentResolverQuery {
     }
 
     public String[] getSelectionArgs() {
-        if (null == criteria) {
+        if (isNull(criteria)) {
             return new String[]{};
         }
 

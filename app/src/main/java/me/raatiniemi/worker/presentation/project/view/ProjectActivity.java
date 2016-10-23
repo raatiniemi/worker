@@ -26,6 +26,9 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 public class ProjectActivity extends BaseActivity {
     static final String MESSAGE_PROJECT_ID = "project id";
 
@@ -53,7 +56,7 @@ public class ProjectActivity extends BaseActivity {
      * @return Timesheet fragment.
      */
     private TimesheetFragment getTimesheetFragment() {
-        if (null == timesheetFragment) {
+        if (isNull(timesheetFragment)) {
             timesheetFragment = new TimesheetFragment();
             timesheetFragment.setArguments(getIntent().getExtras());
         }
@@ -66,7 +69,7 @@ public class ProjectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
-        if (null == savedInstanceState) {
+        if (isNull(savedInstanceState)) {
             getFragmentManager().beginTransaction()
                     .replace(
                             R.id.fragment_container,
@@ -84,7 +87,7 @@ public class ProjectActivity extends BaseActivity {
         // Set the selected value for the option, otherwise the value will be set to default each
         // time the activity is created.
         MenuItem hideRegistered = menu.findItem(R.id.actions_project_hide_registered);
-        if (null != hideRegistered) {
+        if (nonNull(hideRegistered)) {
             hideRegistered.setChecked(Settings.shouldHideRegisteredTime(this));
         }
 

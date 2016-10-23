@@ -33,6 +33,7 @@ import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
+import static me.raatiniemi.util.NullUtil.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -114,7 +115,7 @@ public class ProjectsModelGetClockedInSinceTest extends ProjectsModelResourceTes
         Project project = new Project.Builder("Project name")
                 .build();
         ProjectsModel model = new ProjectsModel(project);
-        if (null == registeredTime) {
+        if (isNull(registeredTime)) {
             assertNull(message, model.getClockedInSince(getResources()));
             return;
         }

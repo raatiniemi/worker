@@ -24,6 +24,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 /**
  * Enable display of hint for images via long click.
  */
@@ -50,7 +52,7 @@ public class HintedImageButtonListener implements View.OnLongClickListener {
      */
     @Override
     public boolean onLongClick(@Nullable final View view) {
-        if (null == view) {
+        if (isNull(view)) {
             return false;
         }
 

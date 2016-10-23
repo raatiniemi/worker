@@ -22,6 +22,9 @@ import java.lang.ref.WeakReference;
 
 import me.raatiniemi.worker.presentation.view.MvpView;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 /**
  * Base presenter with basic functionality.
  *
@@ -62,7 +65,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @return Attached view if available, otherwise null.
      */
     protected V getView() {
-        return null != view ? view.get() : null;
+        return nonNull(view) ? view.get() : null;
     }
 
     /**
@@ -71,7 +74,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @return False if a view is attached, otherwise true.
      */
     protected boolean isViewDetached() {
-        return null == getView();
+        return isNull(getView());
     }
 
     /**
@@ -89,7 +92,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      */
     @Override
     public void detachView() {
-        if (null != view) {
+        if (nonNull(view)) {
             view.clear();
             view = null;
         }

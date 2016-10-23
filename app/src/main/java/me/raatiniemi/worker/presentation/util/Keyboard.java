@@ -22,6 +22,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 public class Keyboard {
     /**
      * Tag for logging.
@@ -46,7 +48,7 @@ public class Keyboard {
     private static InputMethodManager getInputMethodManager(@NonNull Context context) {
         // If we don't have the input method manager available,
         // we have to retrieve it from the context.
-        if (null == inputMethodManager) {
+        if (isNull(inputMethodManager)) {
             try {
                 inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             } catch (ClassCastException e) {
@@ -65,7 +67,7 @@ public class Keyboard {
     public static void show(@NonNull Context context) {
         // Check that we have the input method manager available.
         InputMethodManager manager = getInputMethodManager(context);
-        if (null == manager) {
+        if (isNull(manager)) {
             Log.w(TAG, "Unable to retrieve the InputMethodManager");
             return;
         }

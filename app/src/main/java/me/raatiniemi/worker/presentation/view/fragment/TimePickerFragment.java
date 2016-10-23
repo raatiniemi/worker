@@ -32,6 +32,9 @@ import android.util.Log;
 import java.util.Calendar;
 
 import me.raatiniemi.worker.R;
+import static me.raatiniemi.util.NullUtil.isNull;
+
+import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class TimePickerFragment extends DialogFragment {
     private static final String TAG = "TimePickerFragment";
@@ -68,7 +71,7 @@ public class TimePickerFragment extends DialogFragment {
 
     private void setup() {
         // Check that we actually have a listener available.
-        if (null == onTimeSetListener) {
+        if (isNull(onTimeSetListener)) {
             // The real reason for failure is to technical to display to the
             // user, hence the unknown error message.
             //
@@ -102,7 +105,7 @@ public class TimePickerFragment extends DialogFragment {
         super.onCancel(dialog);
 
         // Delegate the "onCancel" event to the listener, if available.
-        if (null != onCancelListener) {
+        if (nonNull(onCancelListener)) {
             onCancelListener.onCancel(dialog);
         }
     }
@@ -112,7 +115,7 @@ public class TimePickerFragment extends DialogFragment {
         super.onDismiss(dialog);
 
         // Delegate the "onDismiss" event to the listener, if available.
-        if (null != onDismissListener) {
+        if (nonNull(onDismissListener)) {
             onDismissListener.onDismiss(dialog);
         }
     }

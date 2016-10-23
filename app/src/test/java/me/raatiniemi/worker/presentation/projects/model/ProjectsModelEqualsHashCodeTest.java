@@ -29,6 +29,7 @@ import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class ProjectsModelEqualsHashCodeTest {
@@ -121,7 +122,7 @@ public class ProjectsModelEqualsHashCodeTest {
     }
 
     private void validateHashCodeWhenNotEqual() {
-        if (null == compareTo) {
+        if (isNull(compareTo)) {
             return;
         }
 

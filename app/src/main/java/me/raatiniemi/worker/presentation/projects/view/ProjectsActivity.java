@@ -31,6 +31,8 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 public class ProjectsActivity extends BaseActivity {
     /**
      * Tag for the project list fragment.
@@ -48,7 +50,7 @@ public class ProjectsActivity extends BaseActivity {
             restart();
         }
 
-        if (null == savedInstanceState) {
+        if (isNull(savedInstanceState)) {
             ProjectsFragment fragment = new ProjectsFragment();
 
             getFragmentManager().beginTransaction()
@@ -60,7 +62,7 @@ public class ProjectsActivity extends BaseActivity {
     private boolean shouldRestartApplication() {
         Intent intent = getIntent();
 
-        return !(null == intent || null == intent.getAction())
+        return !(isNull(intent) || isNull(intent.getAction()))
                 && Worker.INTENT_ACTION_RESTART.equals(intent.getAction());
     }
 

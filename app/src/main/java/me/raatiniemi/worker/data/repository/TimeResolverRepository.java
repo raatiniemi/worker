@@ -47,6 +47,8 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
         implements TimeRepository {
@@ -76,7 +78,7 @@ public class TimeResolverRepository
                 query.getSelectionArgs(),
                 null
         );
-        if (null == cursor) {
+        if (isNull(cursor)) {
             return time;
         }
 
@@ -105,7 +107,7 @@ public class TimeResolverRepository
                 null,
                 null
         );
-        if (null == cursor) {
+        if (isNull(cursor)) {
             return null;
         }
 
@@ -234,7 +236,7 @@ public class TimeResolverRepository
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
                 ProjectContract.ORDER_BY_TIME
         );
-        if (null == cursor) {
+        if (isNull(cursor)) {
             return result;
         }
 
@@ -277,7 +279,7 @@ public class TimeResolverRepository
                 query.getSelectionArgs(),
                 ProjectContract.ORDER_BY_TIMESHEET
         );
-        if (null == cursor) {
+        if (isNull(cursor)) {
             return result;
         }
 
@@ -324,7 +326,7 @@ public class TimeResolverRepository
                 null,
                 null
         );
-        if (null == cursor) {
+        if (isNull(cursor)) {
             return null;
         }
 
