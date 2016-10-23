@@ -39,7 +39,7 @@ import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
@@ -57,7 +57,7 @@ import static me.raatiniemi.util.NullUtil.nonNull;
 /**
  * Presenter for the projects module, handles loading of projects.
  */
-public class ProjectsPresenter extends RxPresenter<ProjectsView> {
+public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     /**
      * Tag used when logging.
      */

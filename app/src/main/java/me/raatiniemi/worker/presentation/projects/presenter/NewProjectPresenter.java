@@ -23,7 +23,7 @@ import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
 import me.raatiniemi.worker.presentation.projects.view.NewProjectView;
 import me.raatiniemi.worker.presentation.util.RxUtil;
@@ -33,7 +33,7 @@ import rx.Subscriber;
 /**
  * Presenter for the {@link NewProjectFragment}.
  */
-public class NewProjectPresenter extends RxPresenter<NewProjectView> {
+public class NewProjectPresenter extends BasePresenter<NewProjectView> {
     private static final String TAG = "NewProjectPresenter";
 
     /**

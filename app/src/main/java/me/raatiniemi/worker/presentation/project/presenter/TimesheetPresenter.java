@@ -34,7 +34,7 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildModel;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
@@ -47,7 +47,7 @@ import rx.Subscription;
 
 import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
-public class TimesheetPresenter extends RxPresenter<TimesheetView> {
+public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     /**
      * Tag used when logging.
      */

@@ -28,7 +28,7 @@ import java.io.File;
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.presentation.presenter.RxPresenter;
+import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
@@ -38,7 +38,7 @@ import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
 
-public class SettingsPresenter extends RxPresenter<SettingsView> {
+public class SettingsPresenter extends BasePresenter<SettingsView> {
     /**
      * Tag for logging.
      */

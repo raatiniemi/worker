@@ -46,7 +46,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      *
      * @param context Context used with the presenter.
      */
-    BasePresenter(Context context) {
+    protected BasePresenter(Context context) {
         this.context = context;
     }
 
