@@ -16,17 +16,20 @@
 
 package me.raatiniemi.worker.presentation.view.fragment;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+
+import me.raatiniemi.worker.R;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
@@ -39,53 +42,26 @@ public class DateTimePickerFragment extends BaseFragment
 
     private static final String FRAGMENT_TIME_PICKER_TAG = "time picker";
 
-    /**
-     * Date and time set by the "DateTimePickerFragment".
-     */
     private final Calendar calendar = Calendar.getInstance();
 
-    /**
-     * Listener for the selected date and time.
-     */
     private OnDateTimeSetListener onDateTimeSetListener;
 
-    /**
-     * Minimum date available for the date picker.
-     */
     private Calendar minDate;
-
-    /**
-     * Maximum date available for the date picker.
-     */
     private Calendar maxDate;
 
-    /**
-     * Instance for the date picker.
-     */
     private DatePickerFragment datePicker;
-
-    /**
-     * Instance for the time picker.
-     */
     private TimePickerFragment timePicker;
-
-    /**
-     * Dismiss the DateTimePickerFragment.
-     * <p/>
-     * Triggers the onDetach-method for additional clean up.
-     */
-    private void dismiss() {
-        getFragmentManager().beginTransaction()
-                .remove(this)
-                .commit();
-    }
 
     /**
      * Set the minimum date for the date picker.
      *
      * @param minDate Minimum date.
      */
-    protected void setMinDate(Calendar minDate) {
+    protected void setMinDate(@NonNull Calendar minDate) {
+        if (minDate.after(maxDate)) {
+            throw new IllegalArgumentException("Minimum date occurs after maximum date");
+        }
+
         this.minDate = minDate;
     }
 
@@ -94,17 +70,24 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param maxDate Maximum date.
      */
-    protected void setMaxDate(Calendar maxDate) {
+    protected void setMaxDate(@NonNull Calendar maxDate) {
+        if (maxDate.before(minDate)) {
+            throw new IllegalArgumentException("Maximum date occurs before minimum date");
+        }
+
         this.maxDate = maxDate;
     }
 
-    /**
-     * Setup the fragment, this method is primarily used as a single setup
-     * between API versions.
-     */
-    private void setup() {
-        datePicker = new DatePickerFragment();
-        datePicker.setOnDateSetListener(this);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (!isStateValid()) {
+            dismissDialogWithInvalidState();
+            return;
+        }
+
+        datePicker = DatePickerFragment.newInstance(this);
 
         // The date picker only needs to listen to the "onCancel"-event
         // to initialize fragment clean up.
@@ -116,37 +99,49 @@ public class DateTimePickerFragment extends BaseFragment
         datePicker.setMaxDate(maxDate);
         datePicker.setMinDate(minDate);
 
-        datePicker.show(
-                getFragmentManager().beginTransaction(),
-                FRAGMENT_DATE_PICKER_TAG
-        );
+        showFragmentWithTag(datePicker, FRAGMENT_DATE_PICKER_TAG);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    @CallSuper
+    protected boolean isStateValid() {
+        if (isNull(onDateTimeSetListener)) {
+            Log.w(TAG, "No OnDateTimeSetListener have been supplied");
+            return false;
+        }
 
-        setup();
+        return true;
+    }
+
+    private void dismissDialogWithInvalidState() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_unknown,
+                Snackbar.LENGTH_SHORT
+        ).show();
+
+        dismiss();
     }
 
     /**
-     * TODO: Remove method call when `minSdkVersion` is +23.
+     * Dismiss the DateTimePickerFragment.
+     * <p/>
+     * Triggers the onDestroy-method for additional clean up.
      */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    private void dismiss() {
+        getFragmentManager().beginTransaction()
+                .remove(this)
+                .commit();
+    }
 
-        // In API +23 the `setup` is called from the `onAttach(Context)`.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            setup();
-        }
+    private void showFragmentWithTag(Fragment fragment, String tag) {
+        getFragmentManager().beginTransaction()
+                .add(fragment, tag)
+                .commit();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
+        super.onDestroy();
 
         if (nonNull(datePicker)) {
             getFragmentManager().beginTransaction()
@@ -168,8 +163,7 @@ public class DateTimePickerFragment extends BaseFragment
         // Relay the selected year, month, and day to the stored calendar.
         calendar.set(year, month, day);
 
-        timePicker = new TimePickerFragment();
-        timePicker.setOnTimeSetListener(this);
+        timePicker = TimePickerFragment.newInstance(this);
 
         // The timer picker only needs to listen to the "onDismiss"-event since
         // it will run for both set time and cancel.
@@ -180,10 +174,7 @@ public class DateTimePickerFragment extends BaseFragment
         // "onCancel"-event to the DialogFragment.
         timePicker.setOnDismissListener(dialogInterface -> dismiss());
 
-        timePicker.show(
-                getFragmentManager().beginTransaction(),
-                FRAGMENT_TIME_PICKER_TAG
-        );
+        showFragmentWithTag(timePicker, FRAGMENT_TIME_PICKER_TAG);
     }
 
     @Override
@@ -191,12 +182,6 @@ public class DateTimePickerFragment extends BaseFragment
         // Relay the selected hour and minute to the stored calendar.
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
-
-        // Check that we have been supplied with a listener.
-        if (isNull(onDateTimeSetListener)) {
-            Log.e(TAG, "No OnDateTimeSetListener have been supplied");
-            return;
-        }
 
         // Send the calendar to the listener.
         onDateTimeSetListener.onDateTimeSet(calendar);
@@ -211,15 +196,13 @@ public class DateTimePickerFragment extends BaseFragment
         this.onDateTimeSetListener = onDateTimeSetListener;
     }
 
-    /**
-     * Interface for listening to the selected date and time.
-     */
+    @FunctionalInterface
     public interface OnDateTimeSetListener {
         /**
          * Listen for the selected date and time.
          *
          * @param calendar Selected date and time.
          */
-        void onDateTimeSet(Calendar calendar);
+        void onDateTimeSet(@NonNull Calendar calendar);
     }
 }

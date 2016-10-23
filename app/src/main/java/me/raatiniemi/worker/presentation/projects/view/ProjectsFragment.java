@@ -253,12 +253,15 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     @Override
     public void createNewProject() {
-        NewProjectFragment newProject = NewProjectFragment.newFragment(project -> {
+        NewProjectFragment newProject = NewProjectFragment.newInstance(project -> {
             addCreatedProject(project);
 
             showCreateProjectSuccessMessage();
         });
-        newProject.show(getFragmentManager().beginTransaction(), FRAGMENT_NEW_PROJECT_TAG);
+
+        getFragmentManager().beginTransaction()
+                .add(newProject, FRAGMENT_NEW_PROJECT_TAG)
+                .commit();
     }
 
     @Override
@@ -339,8 +342,10 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
     @Override
     public void onClockActivityAt(@NonNull final ProjectsModel project) {
-        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(project.asProject());
-        fragment.setOnClockActivityAtListener(calendar -> getPresenter().clockActivityChange(project, calendar.getTime()));
+        ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
+                project.asProject(),
+                calendar -> getPresenter().clockActivityChange(project, calendar.getTime())
+        );
 
         getFragmentManager().beginTransaction()
                 .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)

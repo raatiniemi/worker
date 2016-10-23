@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
-import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -34,19 +31,25 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         implements DateTimePickerFragment.OnDateTimeSetListener {
     private static final String TAG = "ClockActivityAtFragment";
 
-    /**
-     * Listener for "OnClockActivityAtListener".
-     */
     private OnClockActivityAtListener onClockActivityAtListener;
+
+    public ClockActivityAtFragment() {
+        setOnDateTimeSetListener(this);
+    }
 
     /**
      * Create a new instance for project clock in/out with date and time.
      *
-     * @param project Project used with the clock activity.
+     * @param project                   Project used with the clock activity.
+     * @param onClockActivityAtListener Listener for "OnClockActivityAtListener".
      * @return New instance of the clock activity at fragment.
      */
-    public static ClockActivityAtFragment newInstance(Project project) {
+    public static ClockActivityAtFragment newInstance(
+            Project project,
+            OnClockActivityAtListener onClockActivityAtListener
+    ) {
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
+        fragment.onClockActivityAtListener = onClockActivityAtListener;
 
         // If the project is active we have to set the minimum date for clocking out.
         if (nonNull(project) && nonNull(project.getClockedInSince())) {
@@ -58,66 +61,28 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
         return fragment;
     }
 
-    /**
-     * Setup the fragment, this method is primarily used as a single setup
-     * between API versions.
-     */
-    private void setup() {
-        setOnDateTimeSetListener(this);
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        setup();
-    }
-
-    /**
-     * TODO: Remove method call when `minSdkVersion` is +23.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // In API +23 the `setup` is called from the `onAttach(Context)`.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            setup();
-        }
-    }
-
-    @Override
-    public void onDateTimeSet(Calendar calendar) {
+    protected boolean isStateValid() {
         if (isNull(onClockActivityAtListener)) {
-            Log.e(TAG, "No OnClockActivityAtListener have been supplied");
-            return;
+            Log.w(TAG, "No OnClockActivityAtListener have been supplied");
+            return false;
         }
 
-        // Send the project row position with the selected
-        // date and time to the listener.
+        return super.isStateValid();
+    }
+
+    @Override
+    public void onDateTimeSet(@NonNull Calendar calendar) {
         onClockActivityAtListener.onClockActivityAt(calendar);
     }
 
-    /**
-     * Set the "OnClockActivityAtListener".
-     *
-     * @param onClockActivityAtListener Listener for "OnClockActivityAtListener".
-     */
-    public void setOnClockActivityAtListener(OnClockActivityAtListener onClockActivityAtListener) {
-        this.onClockActivityAtListener = onClockActivityAtListener;
-    }
-
-    /**
-     * Public interface for the "OnClockActivityAtListener"
-     */
+    @FunctionalInterface
     public interface OnClockActivityAtListener {
         /**
          * Triggered after the date and time have been selected.
          *
          * @param calendar Calendar with date and time to clock in or out.
          */
-        void onClockActivityAt(Calendar calendar);
+        void onClockActivityAt(@NonNull Calendar calendar);
     }
 }

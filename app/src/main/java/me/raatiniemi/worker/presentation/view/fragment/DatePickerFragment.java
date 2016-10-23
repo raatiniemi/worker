@@ -16,85 +16,42 @@
 
 package me.raatiniemi.worker.presentation.view.fragment;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.R;
-
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
-public class DatePickerFragment extends DialogFragment {
+public class DatePickerFragment extends BaseDialogFragment {
     private static final String TAG = "DatePickerFragment";
 
-    /**
-     * Minimum date available for the date picker.
-     */
-    private Calendar minDate;
-
-    /**
-     * Maximum date available for the date picker.
-     */
-    private Calendar maxDate;
-
-    /**
-     * The "OnDateSetListener" for the DatePickerDialog.
-     */
     private DatePickerDialog.OnDateSetListener onDateSetListener;
 
-    private DialogInterface.OnCancelListener onCancelListener;
+    private Calendar minDate;
+    private Calendar maxDate;
 
-    private DialogInterface.OnDismissListener onDismissListener;
+    public static DatePickerFragment newInstance(
+            DatePickerDialog.OnDateSetListener onTimeSetListener
+    ) {
+        DatePickerFragment fragment = new DatePickerFragment();
+        fragment.onDateSetListener = onTimeSetListener;
 
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        setup();
+        return fragment;
     }
 
-    /**
-     * TODO: Remove method call when `minSdkVersion` is +23.
-     */
-    @SuppressWarnings("deprecation")
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            setup();
-        }
-    }
-
-    private void setup() {
-        // Check that we actually have a listener available.
+    protected boolean isStateValid() {
         if (isNull(onDateSetListener)) {
-            // The real reason for failure is to technical to display to the
-            // user, hence the unknown error message.
-            //
-            // And, the listener should always be available in the production
-            // version, i.e. this should just be seen as developer feedback.
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    R.string.error_message_unknown,
-                    Snackbar.LENGTH_SHORT
-            ).show();
-
             Log.w(TAG, "No OnDateSetListener have been supplied");
-            dismiss();
+            return false;
         }
+
+        return true;
     }
 
     @Override
@@ -123,32 +80,16 @@ public class DatePickerFragment extends DialogFragment {
         return dialog;
     }
 
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        super.onCancel(dialog);
-
-        // Delegate the "onCancel" event to the listener, if available.
-        if (nonNull(onCancelListener)) {
-            onCancelListener.onCancel(dialog);
-        }
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-
-        // Delegate the "onDismiss" event to the listener, if available.
-        if (nonNull(onDismissListener)) {
-            onDismissListener.onDismiss(dialog);
-        }
-    }
-
     /**
      * Set the minimum date for the date picker.
      *
      * @param minDate Minimum date.
      */
-    public void setMinDate(Calendar minDate) {
+    public void setMinDate(@NonNull Calendar minDate) {
+        if (minDate.after(maxDate)) {
+            throw new IllegalArgumentException("Minimum date occurs after maximum date");
+        }
+
         this.minDate = minDate;
     }
 
@@ -157,24 +98,11 @@ public class DatePickerFragment extends DialogFragment {
      *
      * @param maxDate Maximum date.
      */
-    public void setMaxDate(Calendar maxDate) {
+    public void setMaxDate(@NonNull Calendar maxDate) {
+        if (maxDate.before(minDate)) {
+            throw new IllegalArgumentException("Maximum date occurs before minimum date");
+        }
+
         this.maxDate = maxDate;
-    }
-
-    /**
-     * Set the "OnDateSetListener" for the DatePickerDialog.
-     *
-     * @param listener "OnDateSetListener" for the DatePickerDialog.
-     */
-    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
-        onDateSetListener = listener;
-    }
-
-    public void setOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
-        this.onCancelListener = onCancelListener;
-    }
-
-    public void setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
-        this.onDismissListener = onDismissListener;
     }
 }
