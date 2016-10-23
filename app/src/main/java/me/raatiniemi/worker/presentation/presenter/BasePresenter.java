@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.presenter;
 
 import android.content.Context;
+import android.support.annotation.CallSuper;
 
 import java.lang.ref.WeakReference;
 
@@ -82,6 +83,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      *
      * @param view View to attach to the presenter.
      */
+    @CallSuper
     @Override
     public void attachView(V view) {
         this.view = new WeakReference<>(view);
@@ -90,6 +92,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
     /**
      * Detach the view from the presenter.
      */
+    @CallSuper
     @Override
     public void detachView() {
         if (nonNull(view)) {
