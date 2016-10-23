@@ -72,7 +72,7 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     }
 
     @Override
-    public void onDateTimeSet(Calendar calendar) {
+    public void onDateTimeSet(@NonNull Calendar calendar) {
         onClockActivityAtListener.onClockActivityAt(calendar);
     }
 

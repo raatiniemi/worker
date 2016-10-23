@@ -21,6 +21,7 @@ import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.DatePicker;
@@ -194,6 +195,6 @@ public class DateTimePickerFragment extends BaseFragment
          *
          * @param calendar Selected date and time.
          */
-        void onDateTimeSet(Calendar calendar);
+        void onDateTimeSet(@NonNull Calendar calendar);
     }
 }
