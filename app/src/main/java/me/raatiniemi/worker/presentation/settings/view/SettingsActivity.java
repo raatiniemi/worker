@@ -191,7 +191,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 fragment = new DataFragment();
                 break;
             default:
-                Timber.w("Switch to preference screen '" + key + "' is not implemented");
+                Timber.w("Switch to preference screen '%s' is not implemented", key);
                 displayPreferenceScreenNotImplementedMessage();
                 return;
         }
@@ -260,7 +260,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 // the activity is working with multiple fragments
                 // and the user can navigate up or down before the
                 // background operations are finished.
-                Timber.i("Unable to find fragment with tag: " + tag);
+                Timber.i("Unable to find fragment with tag: %s", tag);
             }
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to cast preference fragment");
@@ -352,7 +352,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             if (preference instanceof PreferenceScreen) {
                 getSettingsActivity().switchPreferenceScreen(preference.getKey());
             } else {
-                Timber.d("Preference '" + preference.getTitle() + "' is not implemented");
+                Timber.d("Preference '%s' is not implemented", preference.getTitle());
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
                         R.string.error_message_preference_not_implemented,
@@ -625,7 +625,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         void setBackupSummary(@Nullable Backup backup) {
             Preference preference = findPreference(SETTINGS_DATA_BACKUP_KEY);
             if (isNull(preference)) {
-                Timber.w("Unable to find preference with key: " + SETTINGS_DATA_BACKUP_KEY);
+                Timber.w("Unable to find preference with key: %s", SETTINGS_DATA_BACKUP_KEY);
                 return;
             }
 
@@ -653,7 +653,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         void setRestoreSummary(@Nullable Backup backup) {
             Preference preference = findPreference(SETTINGS_DATA_RESTORE_KEY);
             if (isNull(preference)) {
-                Timber.w("Unable to find preference with key: " + SETTINGS_DATA_RESTORE_KEY);
+                Timber.w("Unable to find preference with key: %s", SETTINGS_DATA_RESTORE_KEY);
                 return;
             }
 

@@ -273,7 +273,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         }
 
         // Iterate and refresh every position.
-        Timber.d("Refreshing " + positions.size() + " projects");
+        Timber.d("Refreshing %d projects", positions.size());
         for (Integer position : positions) {
             getAdapter().notifyItemChanged(position);
         }

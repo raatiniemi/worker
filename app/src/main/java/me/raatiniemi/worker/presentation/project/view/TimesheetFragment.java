@@ -103,7 +103,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                     finish = true;
                     break;
                 default:
-                    Timber.w("Undefined action: " + item.getItemId());
+                    Timber.w("Undefined action: %d", item.getItemId());
                     break;
             }
 

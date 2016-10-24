@@ -150,7 +150,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                 continue;
             }
 
-            Timber.d("Queuing refresh of project: " + project.getTitle());
+            Timber.d("Queuing refresh of project: %s", project.getTitle());
             positions.add(projects.indexOf(project));
         }
         return positions;

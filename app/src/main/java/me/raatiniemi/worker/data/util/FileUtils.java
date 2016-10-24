@@ -43,7 +43,7 @@ public class FileUtils {
      * @throws IOException
      */
     public static long copy(@NonNull File from, @NonNull File to) throws IOException {
-        Timber.d("Copy file from " + from.getPath() + " to " + to.getParent());
+        Timber.d("Copy file from %s to %s", from.getPath(), to.getParent());
 
         try (
                 FileInputStream sourceStream = new FileInputStream(from);
@@ -67,7 +67,7 @@ public class FileUtils {
                 );
             }
 
-            Timber.d(bytes + " have been successfully copied");
+            Timber.d("%d have been successfully copied", bytes);
             return bytes;
         }
     }
