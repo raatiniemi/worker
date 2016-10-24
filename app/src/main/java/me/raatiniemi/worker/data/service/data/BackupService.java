@@ -21,7 +21,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,16 +31,15 @@ import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.domain.interactor.CreateBackup;
 import me.raatiniemi.worker.presentation.view.notification.BackupNotification;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class BackupService extends IntentService {
-    private static final String TAG = "BackupService";
-
     private EventBus eventBus;
 
     public BackupService() {
-        super(TAG);
+        super("BackupService");
 
         this.eventBus = EventBus.getDefault();
     }
@@ -67,10 +65,10 @@ public class BackupService extends IntentService {
             notification = BackupNotification.build(this);
         } catch (ClassCastException e) {
             // TODO: Post event for `BackupFailure`.
-            Log.w(TAG, "Unable to cast the NotificationManager", e);
+            Timber.w(e, "Unable to cast the NotificationManager");
         } catch (Exception e) {
             // TODO: Post event for `BackupFailure`.
-            Log.w(TAG, "Unable to backup", e);
+            Timber.w(e, "Unable to backup");
 
             // TODO: Display what was the cause of the backup failure.
             notification = ErrorNotification.build(

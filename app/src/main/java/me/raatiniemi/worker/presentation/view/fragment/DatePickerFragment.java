@@ -20,16 +20,15 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.Calendar;
+
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class DatePickerFragment extends BaseDialogFragment {
-    private static final String TAG = "DatePickerFragment";
-
     private DatePickerDialog.OnDateSetListener onDateSetListener;
 
     private Calendar minDate;
@@ -47,7 +46,7 @@ public class DatePickerFragment extends BaseDialogFragment {
     @Override
     protected boolean isStateValid() {
         if (isNull(onDateSetListener)) {
-            Log.w(TAG, "No OnDateSetListener have been supplied");
+            Timber.w("No OnDateSetListener have been supplied");
             return false;
         }
 

@@ -20,7 +20,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +37,11 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
 import me.raatiniemi.worker.presentation.util.Keyboard;
 import me.raatiniemi.worker.presentation.view.fragment.BaseDialogFragment;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
 public class NewProjectFragment extends BaseDialogFragment implements NewProjectView, DialogInterface.OnShowListener {
-    private static final String TAG = "NewProjectFragment";
-
     @BindView(R.id.fragment_new_project_name)
     EditText projectName;
 
@@ -64,7 +62,7 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
     @Override
     protected boolean isStateValid() {
         if (isNull(onCreateProjectListener)) {
-            Log.w(TAG, "No OnCreateProjectListener have been supplied");
+            Timber.w("No OnCreateProjectListener have been supplied");
             return false;
         }
 
@@ -102,7 +100,7 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
         // We might have dismissed the dialog, we have to make sure that the
         // dialog and activity are still available before we can continue.
         if (isNull(dialog) || isNull(getActivity())) {
-            Log.d(TAG, "No dialog/activity available, exiting...");
+            Timber.d("No dialog/activity available, exiting...");
             return;
         }
 

@@ -18,7 +18,6 @@ package me.raatiniemi.worker.data.service.ongoing;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.List;
 
@@ -26,12 +25,11 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
+import timber.log.Timber;
 
 public class ReloadNotificationService extends OngoingService {
-    private static final String TAG = "ReloadNotificationService";
-
     public ReloadNotificationService() {
-        super(TAG);
+        super("ReloadNotificationService");
     }
 
     public static void startServiceWithContext(Context context) {
@@ -59,7 +57,7 @@ public class ReloadNotificationService extends OngoingService {
                 }
             }
         } catch (DomainException e) {
-            Log.e("ReloadNotificationServ", "Unable to reload notifications", e);
+            Timber.e(e, "Unable to reload notifications");
         }
     }
 

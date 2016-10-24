@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.presentation.projects.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
@@ -29,13 +28,12 @@ import me.raatiniemi.worker.presentation.projects.view.NewProjectView;
 import me.raatiniemi.worker.presentation.util.RxUtil;
 import rx.Observable;
 import rx.Subscriber;
+import timber.log.Timber;
 
 /**
  * Presenter for the {@link NewProjectFragment}.
  */
 public class NewProjectPresenter extends BasePresenter<NewProjectView> {
-    private static final String TAG = "NewProjectPresenter";
-
     /**
      * Use case for creating new projects.
      */
@@ -72,12 +70,12 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
                     .subscribe(new Subscriber<Project>() {
                         @Override
                         public void onNext(Project project) {
-                            Log.d(TAG, "createNewProject onNext");
+                            Timber.d("createNewProject onNext");
 
                             // Check that we still have the view attached. Since we're working
                             // with a dialog, we always expect to have the view attached.
                             if (isViewDetached()) {
-                                Log.w(TAG, "View is not attached, failed to push project");
+                                Timber.w("View is not attached, failed to push project");
                                 return;
                             }
 
@@ -87,15 +85,15 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.d(TAG, "createNewProject onError");
+                            Timber.d("createNewProject onError");
 
                             // Log the error even if the view have been detached.
-                            Log.w(TAG, "Failed to create project", e);
+                            Timber.w(e, "Failed to create project");
 
                             // Check that we still have the view attached. Since we're working
                             // with a dialog, we always expect to have the view attached.
                             if (isViewDetached()) {
-                                Log.w(TAG, "View is not attached, failed to push error");
+                                Timber.w("View is not attached, failed to push error");
                                 return;
                             }
 
@@ -110,14 +108,14 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
 
                         @Override
                         public void onCompleted() {
-                            Log.d(TAG, "createNewProject onCompleted");
+                            Timber.d("createNewProject onCompleted");
                         }
                     });
         } catch (InvalidProjectNameException e) {
             // Check that we still have the view attached. Since we're working
             // with a dialog, we always expect to have the view attached.
             if (isViewDetached()) {
-                Log.w(TAG, "View is not attached, failed to push error", e);
+                Timber.w(e, "View is not attached, failed to push error");
                 return;
             }
 

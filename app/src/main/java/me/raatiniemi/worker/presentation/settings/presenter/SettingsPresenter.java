@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.presentation.settings.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,15 +37,11 @@ import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 public class SettingsPresenter extends BasePresenter<SettingsView> {
-    /**
-     * Tag for logging.
-     */
-    private static final String TAG = "SettingsPresenter";
-
     private Subscription getLatestBackupSubscription;
 
     private final EventBus eventBus;
@@ -92,11 +87,11 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
                 .subscribe(new Subscriber<Backup>() {
                     @Override
                     public void onNext(Backup backup) {
-                        Log.d(TAG, "getLatestBackup onNext");
+                        Timber.d("getLatestBackup onNext");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing the latest backup");
+                            Timber.d("View is not attached, skip pushing the latest backup");
                             return;
                         }
 
@@ -106,14 +101,14 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "getLatestBackup onError");
+                        Timber.d("getLatestBackup onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get latest backup", e);
+                        Timber.w(e, "Failed to get latest backup");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing the latest backup");
+                            Timber.d("View is not attached, skip pushing the latest backup");
                             return;
                         }
 
@@ -124,7 +119,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "getLatestBackup onCompleted");
+                        Timber.d("getLatestBackup onCompleted");
                     }
                 });
     }
@@ -134,7 +129,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     public void onEventMainThread(BackupSuccessfulEvent event) {
         // Check that we still have the view attached.
         if (isViewDetached()) {
-            Log.d(TAG, "View is not attached, skip pushing the latest backup");
+            Timber.d("View is not attached, skip pushing the latest backup");
             return;
         }
 
@@ -173,10 +168,10 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
             }
             getView().showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         } catch (InvalidStartingPointException e) {
-            Log.w(TAG, "Unable to set new starting point", e);
+            Timber.w(e, "Unable to set new starting point");
 
             if (isViewDetached()) {
-                Log.w(TAG, "View is not attached, failed to push error");
+                Timber.w("View is not attached, failed to push error");
                 return;
             }
             getView().showChangeTimeSummaryStartingPointErrorMessage();

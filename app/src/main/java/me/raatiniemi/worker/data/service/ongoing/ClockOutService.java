@@ -17,19 +17,17 @@
 package me.raatiniemi.worker.data.service.ongoing;
 
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
+import timber.log.Timber;
 
 public class ClockOutService extends OngoingService {
-    private static final String TAG = "ClockOutService";
-
     public ClockOutService() {
-        super(TAG);
+        super("ClockOutService");
     }
 
     @Override
@@ -43,7 +41,7 @@ public class ClockOutService extends OngoingService {
             dismissPauseNotification(projectId);
             updateUserInterface(projectId);
         } catch (Exception e) {
-            Log.w(TAG, "Unable to clock out project", e);
+            Timber.w(e, "Unable to clock out project");
 
             sendErrorNotification(projectId);
         }

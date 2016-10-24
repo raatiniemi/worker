@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.data.service.ongoing;
 
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.Date;
 
@@ -29,12 +28,11 @@ import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
+import timber.log.Timber;
 
 public class ResumeService extends OngoingService {
-    private static final String TAG = "ResumeService";
-
     public ResumeService() {
-        super(TAG);
+        super("ResumeService");
     }
 
     @Override
@@ -56,7 +54,7 @@ public class ResumeService extends OngoingService {
 
             dismissResumeNotification(projectId);
         } catch (Exception e) {
-            Log.w(TAG, "Unable to resume project", e);
+            Timber.w(e, "Unable to resume project");
 
             sendErrorNotification(projectId);
         }
@@ -67,7 +65,7 @@ public class ResumeService extends OngoingService {
             ClockIn clockIn = buildClockInUseCase();
             clockIn.execute(projectId, new Date());
         } catch (ActiveProjectException e) {
-            Log.e(TAG, "Resume service called with active project", e);
+            Timber.e(e, "Resume service called with active project");
         }
     }
 

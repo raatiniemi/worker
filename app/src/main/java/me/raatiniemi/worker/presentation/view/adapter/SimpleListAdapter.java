@@ -20,12 +20,13 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
@@ -38,11 +39,6 @@ import static me.raatiniemi.util.NullUtil.isNull;
 public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<V>
         implements ListAdapter<T> {
-    /**
-     * Tag for logging.
-     */
-    private static final String TAG = "SimpleListAdapter";
-
     /**
      * Context used with the adapter.
      */
@@ -283,7 +279,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         public void onClick(@NonNull View view) {
             // Check that the OnItemClickListener have been supplied.
             if (isNull(getOnItemClickListener())) {
-                Log.e(TAG, "No OnItemClickListener have been supplied");
+                Timber.e("No OnItemClickListener have been supplied");
                 return;
             }
 

@@ -24,7 +24,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +44,7 @@ import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
@@ -56,8 +56,6 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      * Tag for the new project fragment.
      */
     private static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
-
-    private static final String TAG = "ProjectsFragment";
 
     @Inject
     ProjectsPresenter presenter;
@@ -178,7 +176,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     public void updateProject(ProjectsModel project) {
         int position = getAdapter().findProject(project);
         if (RecyclerView.NO_POSITION == position) {
-            Log.e(TAG, "Unable to find position for project in the adapter");
+            Timber.e("Unable to find position for project in the adapter");
             return;
         }
 
@@ -270,12 +268,12 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         if (positions.isEmpty()) {
             // We should never reach this code since there are supposed to be
             // checks for positions before the refreshPositions-method is called.
-            Log.w(TAG, "No positions, skip refreshing projects");
+            Timber.w("No positions, skip refreshing projects");
             return;
         }
 
         // Iterate and refresh every position.
-        Log.d(TAG, "Refreshing " + positions.size() + " projects");
+        Timber.d("Refreshing %d projects", positions.size());
         for (Integer position : positions) {
             getAdapter().notifyItemChanged(position);
         }
@@ -295,7 +293,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         // Retrieve the position for the project from the RecyclerView.
         final int position = recyclerView.getChildAdapterPosition(view);
         if (RecyclerView.NO_POSITION == position) {
-            Log.w(TAG, "Unable to retrieve project position for onItemClick");
+            Timber.w("Unable to retrieve project position for onItemClick");
             return;
         }
 
@@ -310,7 +308,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
             );
             startActivity(intent);
         } catch (IndexOutOfBoundsException e) {
-            Log.w(TAG, "Unable to get project position", e);
+            Timber.w(e, "Unable to get project position");
             Snackbar.make(
                     getActivity().findViewById(android.R.id.content),
                     R.string.error_message_unable_to_find_project,

@@ -19,17 +19,13 @@ package me.raatiniemi.worker.presentation.util;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
 public class Keyboard {
-    /**
-     * Tag for logging.
-     */
-    private static final String TAG = "Keyboard";
-
     /**
      * Store the InputMethodManager.
      */
@@ -52,7 +48,7 @@ public class Keyboard {
             try {
                 inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to cast the Context.INPUT_METHOD_SERVICE to InputMethodManager", e);
+                Timber.w(e, "Unable to cast the Context.INPUT_METHOD_SERVICE to InputMethodManager");
             }
         }
 
@@ -68,7 +64,7 @@ public class Keyboard {
         // Check that we have the input method manager available.
         InputMethodManager manager = getInputMethodManager(context);
         if (isNull(manager)) {
-            Log.w(TAG, "Unable to retrieve the InputMethodManager");
+            Timber.w("Unable to retrieve the InputMethodManager");
             return;
         }
 
