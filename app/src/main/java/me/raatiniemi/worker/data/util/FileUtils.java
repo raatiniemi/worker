@@ -67,7 +67,7 @@ public class FileUtils {
                 );
             }
 
-            Timber.d("%d have been successfully copied", bytes);
+            Timber.d("%d bytes have been successfully copied", bytes);
             return bytes;
         }
     }
