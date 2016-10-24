@@ -31,6 +31,8 @@ import me.raatiniemi.worker.presentation.projects.ProjectsModule;
 import me.raatiniemi.worker.presentation.settings.DaggerSettingsComponent;
 import me.raatiniemi.worker.presentation.settings.SettingsComponent;
 import me.raatiniemi.worker.presentation.settings.SettingsModule;
+import timber.log.Timber;
+import timber.log.Timber.DebugTree;
 
 /**
  * Stores application constants.
@@ -95,6 +97,10 @@ public class Worker extends Application {
         if (!isUnitTesting()) {
             LeakCanary.install(this);
             ReloadNotificationService.startServiceWithContext(this);
+        }
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new DebugTree());
         }
     }
 
