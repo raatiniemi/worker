@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.presentation.project.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,15 +43,11 @@ import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
+import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 public class TimesheetPresenter extends BasePresenter<TimesheetView> {
-    /**
-     * Tag used when logging.
-     */
-    private static final String TAG = "TimesheetPresenter";
-
     private Subscription getTimesheetSubscription;
 
     private final EventBus eventBus;
@@ -144,11 +139,11 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                 .subscribe(new Subscriber<List<TimesheetGroupModel>>() {
                     @Override
                     public void onNext(List<TimesheetGroupModel> items) {
-                        Log.d(TAG, "getTimesheet onNext");
+                        Timber.d("getTimesheet onNext");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing item");
+                            Timber.d("View is not attached, skip pushing item");
                             return;
                         }
 
@@ -158,14 +153,14 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "getTimesheet onError");
+                        Timber.d("getTimesheet onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get timesheet", e);
+                        Timber.w(e, "Failed to get timesheet");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing error");
+                            Timber.d("View is not attached, skip pushing error");
                             return;
                         }
 
@@ -174,11 +169,11 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "getTimesheet onCompleted");
+                        Timber.d("getTimesheet onCompleted");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing finish");
+                            Timber.d("View is not attached, skip pushing finish");
                             return;
                         }
 
@@ -206,11 +201,11 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
                     public void onNext(List<TimeInAdapterResult> results) {
-                        Log.d(TAG, "remove onNext");
+                        Timber.d("remove onNext");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing time deletion");
+                            Timber.d("View is not attached, skip pushing time deletion");
                             return;
                         }
 
@@ -220,14 +215,14 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "remove onError");
+                        Timber.d("remove onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to remove time", e);
+                        Timber.w(e, "Failed to remove time");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing error");
+                            Timber.d("View is not attached, skip pushing error");
                             return;
                         }
 
@@ -236,7 +231,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "remove onCompleted");
+                        Timber.d("remove onCompleted");
                     }
                 });
     }
@@ -251,11 +246,11 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                 .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
                     @Override
                     public void onNext(List<TimeInAdapterResult> results) {
-                        Log.d(TAG, "register onNext");
+                        Timber.d("register onNext");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing time update");
+                            Timber.d("View is not attached, skip pushing time update");
                             return;
                         }
 
@@ -273,14 +268,14 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "register onError");
+                        Timber.d("register onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to mark time as registered", e);
+                        Timber.w(e, "Failed to mark time as registered");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing error");
+                            Timber.d("View is not attached, skip pushing error");
                             return;
                         }
 
@@ -289,7 +284,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "register onCompleted");
+                        Timber.d("register onCompleted");
                     }
                 });
     }
@@ -325,12 +320,12 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OngoingNotificationActionEvent event) {
         if (isViewDetached()) {
-            Log.d(TAG, "View is not attached, skip reloading timesheet");
+            Timber.d("View is not attached, skip reloading timesheet");
             return;
         }
 
         if (event.getProjectId() != getView().getProjectId()) {
-            Log.d(TAG, "No need to refresh, event is related to another project");
+            Timber.d("No need to refresh, event is related to another project");
             return;
         }
 

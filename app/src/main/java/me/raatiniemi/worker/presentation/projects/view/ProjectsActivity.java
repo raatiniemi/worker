@@ -21,7 +21,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +29,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
@@ -39,8 +39,6 @@ public class ProjectsActivity extends BaseActivity {
      * Tag for the project list fragment.
      */
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
-
-    private static final String TAG = "ProjectsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +101,7 @@ public class ProjectsActivity extends BaseActivity {
         } catch (ClassCastException e) {
             // Something has gone wrong with the fragment manager,
             // just print the exception and continue.
-            Log.e(TAG, "Unable to cast projects fragment", e);
+            Timber.e(e, "Unable to cast projects fragment");
         }
     }
 
@@ -134,7 +132,7 @@ public class ProjectsActivity extends BaseActivity {
 
             manager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
         } catch (ClassCastException e) {
-            Log.w(TAG, "Unable to cast the AlarmManager", e);
+            Timber.w(e, "Unable to cast the AlarmManager");
         }
 
         finish();

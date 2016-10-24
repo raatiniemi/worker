@@ -19,7 +19,6 @@ package me.raatiniemi.worker.data.util;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.Worker;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
@@ -37,11 +37,6 @@ import static me.raatiniemi.util.NullUtil.nonNull;
  * Methods for working with the device external storage.
  */
 public class ExternalStorage {
-    /**
-     * Tag for logging.
-     */
-    private static final String TAG = "ExternalStorage";
-
     private ExternalStorage() {
     }
 
@@ -76,7 +71,7 @@ public class ExternalStorage {
         File directory = new File(Environment.getExternalStorageDirectory(), Worker.PACKAGE);
         if (!directory.exists() && !directory.mkdir()) {
             // TODO: Throw exception, avoiding checks for null everywhere.
-            Log.w(TAG, "Unable to create non existing directory");
+            Timber.w("Unable to create non existing directory");
             return null;
         }
         return directory;
@@ -94,7 +89,7 @@ public class ExternalStorage {
         File directory = getDirectory();
         if (isNull(directory)) {
             // TODO: Throw exception, avoiding checks for null everywhere.
-            Log.w(TAG, "Unable to retrieve the application directory");
+            Timber.w("Unable to retrieve the application directory");
             return null;
         }
 
@@ -102,7 +97,7 @@ public class ExternalStorage {
         directory = new File(directory, name);
         if (!directory.exists() && !directory.mkdir()) {
             // TODO: Throw exception, avoiding checks for null everywhere.
-            Log.w(TAG, "Unable to create directory");
+            Timber.w("Unable to create directory");
             return null;
         }
         return directory;

@@ -18,7 +18,6 @@ package me.raatiniemi.worker.presentation.projects.presenter;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,6 +50,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
@@ -58,11 +58,6 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull
  * Presenter for the projects module, handles loading of projects.
  */
 public class ProjectsPresenter extends BasePresenter<ProjectsView> {
-    /**
-     * Tag used when logging.
-     */
-    private static final String TAG = "ProjectsPresenter";
-
     private Subscription refreshProjectsSubscription;
 
     private final EventBus eventBus;
@@ -144,7 +139,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
         // Check that we still have the view attached.
         if (isViewDetached()) {
-            Log.d(TAG, "View is not attached, skip checking active projects");
+            Timber.d("View is not attached, skip checking active projects");
             return positions;
         }
 
@@ -155,7 +150,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                 continue;
             }
 
-            Log.d(TAG, "Queuing refresh of project: " + project.getTitle());
+            Timber.d("Queuing refresh of project: " + project.getTitle());
             positions.add(projects.indexOf(project));
         }
         return positions;
@@ -169,18 +164,18 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private void refreshActiveProjects(List<Integer> positions) {
         // Check that we have found active projects to refresh.
         if (positions.isEmpty()) {
-            Log.d(TAG, "No projects are active, nothing to refresh");
+            Timber.d("No projects are active, nothing to refresh");
             return;
         }
 
         // Check that we still have the view attached.
         if (isViewDetached()) {
-            Log.d(TAG, "View is not attached, skip refreshing active projects");
+            Timber.d("View is not attached, skip refreshing active projects");
             return;
         }
 
         // Refresh the active projects that have been found.
-        Log.d(TAG, "Refreshing active projects");
+        Timber.d("Refreshing active projects");
         getView().refreshPositions(positions);
     }
 
@@ -192,14 +187,14 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         // we have to unsubscribe to the existing one, if one is available.
         stopRefreshingActiveProjects();
 
-        Log.d(TAG, "Subscribe to the refresh of active projects");
+        Timber.d("Subscribe to the refresh of active projects");
         refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .map(aLong -> getPositionsForActiveProjects())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Integer>>() {
                     @Override
                     public void onNext(List<Integer> positions) {
-                        Log.d(TAG, "beginRefreshingActiveProjects onNext");
+                        Timber.d("beginRefreshingActiveProjects onNext");
 
                         // Push the data to the view.
                         refreshActiveProjects(positions);
@@ -207,15 +202,15 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "beginRefreshingActiveProjects onError");
+                        Timber.d("beginRefreshingActiveProjects onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get positions", e);
+                        Timber.w(e, "Failed to get positions");
                     }
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "beginRefreshingActiveProjects onCompleted");
+                        Timber.d("beginRefreshingActiveProjects onCompleted");
                     }
                 });
     }
@@ -231,13 +226,13 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      * Refresh active projects.
      */
     public void refreshActiveProjects() {
-        Log.d(TAG, "Refreshing active projects");
+        Timber.d("Refreshing active projects");
         Observable.defer(() -> Observable.just(getPositionsForActiveProjects()))
                 .compose(RxUtil.applySchedulers())
                 .subscribe(new Subscriber<List<Integer>>() {
                     @Override
                     public void onNext(List<Integer> positions) {
-                        Log.d(TAG, "refreshActiveProjects onNext");
+                        Timber.d("refreshActiveProjects onNext");
 
                         // Push the data to the view.
                         refreshActiveProjects(positions);
@@ -245,15 +240,15 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "refreshActiveProjects onError");
+                        Timber.d("refreshActiveProjects onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get positions", e);
+                        Timber.w(e, "Failed to get positions");
                     }
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "refreshActiveProjects onCompleted");
+                        Timber.d("refreshActiveProjects onCompleted");
                     }
                 });
     }
@@ -286,11 +281,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                 .subscribe(new Subscriber<List<ProjectsModel>>() {
                     @Override
                     public void onNext(List<ProjectsModel> items) {
-                        Log.d(TAG, "getProjects onNext");
+                        Timber.d("getProjects onNext");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing projects");
+                            Timber.d("View is not attached, skip pushing projects");
                             return;
                         }
 
@@ -299,14 +294,14 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "getProjects onError");
+                        Timber.d("getProjects onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to get projects", e);
+                        Timber.w(e, "Failed to get projects");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing error");
+                            Timber.d("View is not attached, skip pushing error");
                             return;
                         }
 
@@ -315,7 +310,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "getProjects onCompleted");
+                        Timber.d("getProjects onCompleted");
                     }
                 });
     }
@@ -326,7 +321,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
             return getProjectTimeSince.execute(project, startingPointForTimeSummary);
         } catch (DomainException e) {
-            Log.w(TAG, "Unable to get registered time for project", e);
+            Timber.w(e, "Unable to get registered time for project");
         }
 
         return Collections.emptyList();
@@ -360,20 +355,20 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                     @Override
                     public void onNext(Object o) {
                         // Nothing to do, everything have been done...
-                        Log.d(TAG, "deleteProject onNext");
+                        Timber.d("deleteProject onNext");
                     }
 
                     @Override
                     public void onError(final Throwable e) {
-                        Log.d(TAG, "deleteProject onError");
+                        Timber.d("deleteProject onError");
 
                         // Even if the view have been detached we'd want the
                         // error messaged logged.
-                        Log.w(TAG, "Failed to delete project", e);
+                        Timber.w(e, "Failed to delete project");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing error");
+                            Timber.d("View is not attached, skip pushing error");
                             return;
                         }
 
@@ -383,11 +378,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "deleteProject onCompleted");
+                        Timber.d("deleteProject onCompleted");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing successful deletion");
+                            Timber.d("View is not attached, skip pushing successful deletion");
                             return;
                         }
 
@@ -415,11 +410,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                 .subscribe(new Subscriber<ProjectsModel>() {
                     @Override
                     public void onNext(ProjectsModel project) {
-                        Log.d(TAG, "clockActivityChange onNext");
+                        Timber.d("clockActivityChange onNext");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip updating project");
+                            Timber.d("View is not attached, skip updating project");
                             return;
                         }
 
@@ -429,14 +424,14 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "clockActivityChange onError");
+                        Timber.d("clockActivityChange onError");
 
                         // Log the error even if the view have been detached.
-                        Log.w(TAG, "Failed to change clock activity", e);
+                        Timber.w(e, "Failed to change clock activity");
 
                         // Check that we still have the view attached.
                         if (isViewDetached()) {
-                            Log.d(TAG, "View is not attached, skip pushing error");
+                            Timber.d("View is not attached, skip pushing error");
                             return;
                         }
 
@@ -449,7 +444,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "clockActivityChange onCompleted");
+                        Timber.d("clockActivityChange onCompleted");
                     }
                 });
     }
@@ -489,7 +484,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
         if (isViewDetached()) {
-            Log.d(TAG, "View is not attached, skip reloading projects");
+            Timber.d("View is not attached, skip reloading projects");
             return;
         }
 
@@ -499,7 +494,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OngoingNotificationActionEvent event) {
         if (isViewDetached()) {
-            Log.d(TAG, "View is not attached, skip reloading projects");
+            Timber.d("View is not attached, skip reloading projects");
             return;
         }
 

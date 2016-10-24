@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.data.util;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,15 +24,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+import timber.log.Timber;
+
 /**
  * Utilities for working with files.
  */
 public class FileUtils {
-    /**
-     * Tag for logging.
-     */
-    private static final String TAG = "FileUtils";
-
     private FileUtils() {
     }
 
@@ -47,7 +43,7 @@ public class FileUtils {
      * @throws IOException
      */
     public static long copy(@NonNull File from, @NonNull File to) throws IOException {
-        Log.d(TAG, "Copy file from " + from.getPath() + " to " + to.getParent());
+        Timber.d("Copy file from " + from.getPath() + " to " + to.getParent());
 
         try (
                 FileInputStream sourceStream = new FileInputStream(from);
@@ -71,7 +67,7 @@ public class FileUtils {
                 );
             }
 
-            Log.d(TAG, bytes + " have been successfully copied");
+            Timber.d(bytes + " have been successfully copied");
             return bytes;
         }
     }

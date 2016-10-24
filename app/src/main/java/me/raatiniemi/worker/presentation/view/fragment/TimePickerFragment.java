@@ -20,15 +20,14 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 import java.util.Calendar;
+
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
 public class TimePickerFragment extends BaseDialogFragment {
-    private static final String TAG = "TimePickerFragment";
-
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;
 
     public static TimePickerFragment newInstance(
@@ -43,7 +42,7 @@ public class TimePickerFragment extends BaseDialogFragment {
     @Override
     protected boolean isStateValid() {
         if (isNull(onTimeSetListener)) {
-            Log.w(TAG, "No OnTimeSetListener have been supplied");
+            Timber.w("No OnTimeSetListener have been supplied");
             return false;
         }
 

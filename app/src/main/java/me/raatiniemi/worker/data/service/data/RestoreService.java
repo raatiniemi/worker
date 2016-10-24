@@ -21,7 +21,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
@@ -30,14 +29,13 @@ import me.raatiniemi.worker.domain.interactor.RestoreBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.notification.RestoreNotification;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class RestoreService extends IntentService {
-    private static final String TAG = "RestoreService";
-
     public RestoreService() {
-        super(TAG);
+        super("RestoreService");
     }
 
     public static void startRestore(Context context) {
@@ -62,10 +60,10 @@ public class RestoreService extends IntentService {
             // TODO: Post event for `RestoreSuccessful`.
         } catch (ClassCastException e) {
             // TODO: Post event for `RestoreFailure`.
-            Log.w(TAG, "Unable to cast the NotificationManager", e);
+            Timber.w(e, "Unable to cast the NotificationManager");
         } catch (Exception e) {
             // TODO: Post event for `RestoreFailure`.
-            Log.w(TAG, "Unable to restore backup: ", e);
+            Timber.w(e, "Unable to restore backup: ");
 
             // TODO: Display what was the cause of the restore failure.
             notification = ErrorNotification.build(

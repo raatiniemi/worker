@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.data.service.ongoing;
 
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.Date;
 
@@ -29,12 +28,11 @@ import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.notification.ResumeNotification;
+import timber.log.Timber;
 
 public class PauseService extends OngoingService {
-    private static final String TAG = "PauseService";
-
     public PauseService() {
-        super(TAG);
+        super("PauseService");
     }
 
     @Override
@@ -56,7 +54,7 @@ public class PauseService extends OngoingService {
 
             dismissPauseNotification(projectId);
         } catch (Exception e) {
-            Log.w(TAG, "Unable to pause project", e);
+            Timber.w(e, "Unable to pause project");
 
             sendErrorNotification(projectId);
         }
@@ -67,7 +65,7 @@ public class PauseService extends OngoingService {
             ClockOut clockOut = buildClockOutUseCase();
             clockOut.execute(projectId, new Date());
         } catch (InactiveProjectException e) {
-            Log.e(TAG, "Pause service called with inactive project", e);
+            Timber.e(e, "Pause service called with inactive project");
         }
     }
 

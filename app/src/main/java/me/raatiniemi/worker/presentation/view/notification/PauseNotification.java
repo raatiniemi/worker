@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -38,6 +37,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.util.Settings;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
@@ -46,7 +46,6 @@ import static me.raatiniemi.util.NullUtil.nonNull;
  * Notification for pausing or clocking out an active project.
  */
 public class PauseNotification extends OngoingNotification {
-    private static final String TAG = "PauseNotification";
     private static final int SMALL_ICON = R.drawable.ic_pause_notification;
 
     private static final int PAUSE_ICON = 0;
@@ -83,7 +82,7 @@ public class PauseNotification extends OngoingNotification {
 
             this.registeredTime = includeActiveTime(registeredTime);
         } catch (DomainException e) {
-            Log.w(TAG, "Unable to populate registered time", e);
+            Timber.w(e, "Unable to populate registered time");
             useChronometer = false;
         }
     }

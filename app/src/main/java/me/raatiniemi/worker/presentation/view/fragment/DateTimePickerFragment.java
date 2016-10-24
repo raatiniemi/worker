@@ -23,21 +23,19 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
 import me.raatiniemi.worker.R;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class DateTimePickerFragment extends BaseFragment
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-    private static final String TAG = "DateTimePickerFragment";
-
     private static final String FRAGMENT_DATE_PICKER_TAG = "date picker";
 
     private static final String FRAGMENT_TIME_PICKER_TAG = "time picker";
@@ -105,7 +103,7 @@ public class DateTimePickerFragment extends BaseFragment
     @CallSuper
     protected boolean isStateValid() {
         if (isNull(onDateTimeSetListener)) {
-            Log.w(TAG, "No OnDateTimeSetListener have been supplied");
+            Timber.w("No OnDateTimeSetListener have been supplied");
             return false;
         }
 

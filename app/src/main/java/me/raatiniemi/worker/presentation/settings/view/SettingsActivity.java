@@ -31,7 +31,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -50,6 +49,7 @@ import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.activity.MvpActivity;
+import timber.log.Timber;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -58,11 +58,6 @@ import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
         implements SettingsView, ActivityCompat.OnRequestPermissionsResultCallback {
-    /**
-     * Tag for logging.
-     */
-    private static final String TAG = "SettingsActivity";
-
     /**
      * Key for the project preference.
      */
@@ -196,7 +191,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 fragment = new DataFragment();
                 break;
             default:
-                Log.w(TAG, "Switch to preference screen '" + key + "' is not implemented");
+                Timber.w("Switch to preference screen '" + key + "' is not implemented");
                 displayPreferenceScreenNotImplementedMessage();
                 return;
         }
@@ -265,10 +260,10 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 // the activity is working with multiple fragments
                 // and the user can navigate up or down before the
                 // background operations are finished.
-                Log.i(TAG, "Unable to find fragment with tag: " + tag);
+                Timber.i("Unable to find fragment with tag: " + tag);
             }
         } catch (ClassCastException e) {
-            Log.w(TAG, "Unable to cast preference fragment", e);
+            Timber.w(e, "Unable to cast preference fragment");
         }
 
         return fragment;
@@ -288,7 +283,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     public void setLatestBackup(@Nullable Backup backup) {
         DataFragment fragment = getDataFragment();
         if (isNull(fragment)) {
-            Log.d(TAG, "DataFragment is not available");
+            Timber.d("DataFragment is not available");
             return;
         }
 
@@ -357,7 +352,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             if (preference instanceof PreferenceScreen) {
                 getSettingsActivity().switchPreferenceScreen(preference.getKey());
             } else {
-                Log.d(TAG, "Preference '" + preference.getTitle() + "' is not implemented");
+                Timber.d("Preference '" + preference.getTitle() + "' is not implemented");
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
                         R.string.error_message_preference_not_implemented,
@@ -403,7 +398,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                         (CheckBoxPreference) findPreference(SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY);
                 confirmClockOut.setChecked(Settings.shouldConfirmClockOut(getActivity()));
             } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to get value for 'confirm_clock_out'", e);
+                Timber.w(e, "Unable to get value for 'confirm_clock_out'");
             }
 
             try {
@@ -413,7 +408,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 timeSummary.setValue(String.valueOf(startingPointForTimeSummary));
                 timeSummary.setOnPreferenceChangeListener(this);
             } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to set listener for 'time_summary'", e);
+                Timber.w(e, "Unable to set listener for 'time_summary'");
             }
 
             try {
@@ -421,7 +416,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                         (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY);
                 ongoingNotification.setChecked(Settings.isOngoingNotificationEnabled(getActivity()));
             } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to get value for 'ongoing_notification'", e);
+                Timber.w(e, "Unable to get value for 'ongoing_notification'");
             }
 
             try {
@@ -429,7 +424,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                         (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY);
                 ongoingNotificationChronometer.setChecked(Settings.isOngoingNotificationChronometerEnabled(getActivity()));
             } catch (ClassCastException e) {
-                Log.w(TAG, "Unable to get value for 'ongoing_notification_chronometer'", e);
+                Timber.w(e, "Unable to get value for 'ongoing_notification_chronometer'");
             }
         }
 
@@ -442,7 +437,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     Settings.setConfirmClockOut(getActivity(), checked);
                     return true;
                 } catch (ClassCastException e) {
-                    Log.w(TAG, "Unable to set value for 'confirm_clock_out'", e);
+                    Timber.w(e, "Unable to set value for 'confirm_clock_out'");
                 }
             }
 
@@ -462,7 +457,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     Settings.disableOngoingNotification(getActivity());
                     return true;
                 } catch (ClassCastException e) {
-                    Log.w(TAG, "Unable to set value for 'ongoing_notification'", e);
+                    Timber.w(e, "Unable to set value for 'ongoing_notification'");
                 }
             }
             if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY.equals(preference.getKey())) {
@@ -477,7 +472,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     Settings.disableOngoingNotificationChronometer(getActivity());
                     return true;
                 } catch (ClassCastException e) {
-                    Log.w(TAG, "Unable to set value for 'ongoing_notification_chronometer'", e);
+                    Timber.w(e, "Unable to set value for 'ongoing_notification_chronometer'");
                 }
             }
             return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -547,7 +542,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             // We should only attempt to backup if permission to write
             // to the external storage have been granted.
             if (PermissionUtil.havePermission(getActivity(), WRITE_EXTERNAL_STORAGE)) {
-                Log.d(TAG, "Permission for writing to external storage is granted");
+                Timber.d("Permission for writing to external storage is granted");
                 Snackbar.make(
                         getActivity().findViewById(android.R.id.content),
                         R.string.message_backing_up_data,
@@ -560,7 +555,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             // We have not been granted permission to write to the external storage. Display
             // the permission message and allow the user to initiate the permission request.
-            Log.d(TAG, "Permission for writing to external storage is not granted");
+            Timber.d("Permission for writing to external storage is not granted");
             Snackbar.make(
                     getActivity().findViewById(android.R.id.content),
                     R.string.message_permission_write_backup,
@@ -600,7 +595,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
             // to read the external storage have been granted.
             if (PermissionUtil.havePermission(getActivity(), READ_EXTERNAL_STORAGE)) {
                 // Tell the SettingsActivity to fetch the latest backup.
-                Log.d(TAG, "Permission for reading external storage is granted");
+                Timber.d("Permission for reading external storage is granted");
                 getSettingsActivity().getPresenter()
                         .getLatestBackup();
 
@@ -610,7 +605,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
             // We have not been granted permission to read the external storage. Display the
             // permission message and allow the user to initiate the permission request.
-            Log.d(TAG, "Permission for reading external storage is not granted");
+            Timber.d("Permission for reading external storage is not granted");
             Snackbar.make(
                     getActivity().findViewById(android.R.id.content),
                     R.string.message_permission_read_backup,
@@ -630,7 +625,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         void setBackupSummary(@Nullable Backup backup) {
             Preference preference = findPreference(SETTINGS_DATA_BACKUP_KEY);
             if (isNull(preference)) {
-                Log.w(TAG, "Unable to find preference with key: " + SETTINGS_DATA_BACKUP_KEY);
+                Timber.w("Unable to find preference with key: " + SETTINGS_DATA_BACKUP_KEY);
                 return;
             }
 
@@ -658,7 +653,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         void setRestoreSummary(@Nullable Backup backup) {
             Preference preference = findPreference(SETTINGS_DATA_RESTORE_KEY);
             if (isNull(preference)) {
-                Log.w(TAG, "Unable to find preference with key: " + SETTINGS_DATA_RESTORE_KEY);
+                Timber.w("Unable to find preference with key: " + SETTINGS_DATA_RESTORE_KEY);
                 return;
             }
 

@@ -23,7 +23,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,14 +45,13 @@ import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         implements SelectionListener, TimesheetView {
-    private static final String TAG = "TimesheetFragment";
-
     @Inject
     TimesheetPresenter presenter;
 
@@ -105,7 +103,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                     finish = true;
                     break;
                 default:
-                    Log.w(TAG, "Undefined action: " + item.getItemId());
+                    Timber.w("Undefined action: " + item.getItemId());
                     break;
             }
 
