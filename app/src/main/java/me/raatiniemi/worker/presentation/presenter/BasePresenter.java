@@ -19,6 +19,7 @@ package me.raatiniemi.worker.presentation.presenter;
 import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 
 import java.lang.ref.WeakReference;
@@ -68,17 +69,8 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      *
      * @return Attached view if available, otherwise null.
      */
-    protected V getView() {
+    private V getView() {
         return nonNull(view) ? view.get() : null;
-    }
-
-    /**
-     * Check whether the presenter have an attached view.
-     *
-     * @return False if a view is attached, otherwise true.
-     */
-    protected boolean isViewDetached() {
-        return isNull(getView());
     }
 
     /**
@@ -95,6 +87,24 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
         }
 
         viewAction.perform(view);
+    }
+
+    /**
+     * Performs the action with the view, and return the result.
+     *
+     * @param viewFunction Action to fetch the data from view.
+     * @param <T> Type of the data to return.
+     * @return Data fetched from the view.
+     */
+    @UiThread @Nullable
+    protected <T> T getFromView(@NonNull ViewFunction<V, T> viewFunction) {
+        V view = getView();
+        if (isNull(view)) {
+            Timber.d("View is not attached");
+            return null;
+        }
+
+        return viewFunction.get(view);
     }
 
     /**

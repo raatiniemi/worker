@@ -52,6 +52,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
+import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 /**
@@ -135,25 +136,27 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      * @return Positions for the active projects.
      */
     private List<Integer> getPositionsForActiveProjects() {
-        List<Integer> positions = new ArrayList<>();
+        List<Integer> activePositions = getFromView(view -> {
+            List<Integer> positions = new ArrayList<>();
 
-        // Check that we still have the view attached.
-        if (isViewDetached()) {
-            Timber.d("View is not attached, skip checking active projects");
-            return positions;
-        }
+            List<ProjectsModel> projects = view.getProjects();
+            for (ProjectsModel project : projects) {
+                if (!project.isActive()) {
+                    continue;
+                }
 
-        // Iterate the projects and collect the index of active projects.
-        List<ProjectsModel> projects = getView().getProjects();
-        for (ProjectsModel project : projects) {
-            if (!project.isActive()) {
-                continue;
+                Timber.d("Queuing refresh of project: %s", project.getTitle());
+                positions.add(projects.indexOf(project));
             }
 
-            Timber.d("Queuing refresh of project: %s", project.getTitle());
-            positions.add(projects.indexOf(project));
+            return positions;
+
+        });
+        if (isNull(activePositions)) {
+            return Collections.emptyList();
         }
-        return positions;
+
+        return activePositions;
     }
 
     /**
@@ -319,7 +322,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     public void deleteProject(final ProjectsModel project) {
         // Before removing the project we need its current index, it's
         // needed to handle the restoration if deletion fails.
-        final int index = getView().getProjects().indexOf(project);
+        final Integer index = getFromView(view -> view.getProjects().indexOf(project));
+        if (isNull(index)) {
+            Timber.w("Unable to get position from view");
+            return;
+        }
 
         performWithView(view -> {
             // Remove project from the view before executing the use case,
