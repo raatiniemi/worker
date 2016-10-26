@@ -141,14 +141,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     public void onNext(List<TimesheetGroupModel> items) {
                         Timber.d("getTimesheet onNext");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing item");
-                            return;
-                        }
-
-                        // Push the data to the view.
-                        getView().add(items);
+                        performWithView(view -> view.add(items));
                     }
 
                     @Override
@@ -158,27 +151,14 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                         // Log the error even if the view have been detached.
                         Timber.w(e, "Failed to get timesheet");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing error");
-                            return;
-                        }
-
-                        getView().showGetTimesheetErrorMessage();
+                        performWithView(TimesheetView::showGetTimesheetErrorMessage);
                     }
 
                     @Override
                     public void onCompleted() {
                         Timber.d("getTimesheet onCompleted");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing finish");
-                            return;
-                        }
-
-                        // Available data have been pushed.
-                        getView().finishLoading();
+                        performWithView(TimesheetView::finishLoading);
                     }
                 });
     }
@@ -203,14 +183,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     public void onNext(List<TimeInAdapterResult> results) {
                         Timber.d("remove onNext");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing time deletion");
-                            return;
-                        }
-
-                        // Attempt to remove the result from view.
-                        getView().remove(results);
+                        performWithView(view -> view.remove(results));
                     }
 
                     @Override
@@ -220,13 +193,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                         // Log the error even if the view have been detached.
                         Timber.w(e, "Failed to remove time");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing error");
-                            return;
-                        }
-
-                        getView().showDeleteErrorMessage(numberOfItems);
+                        performWithView(view -> view.showDeleteErrorMessage(numberOfItems));
                     }
 
                     @Override
@@ -248,22 +215,14 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     public void onNext(List<TimeInAdapterResult> results) {
                         Timber.d("register onNext");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing time update");
-                            return;
-                        }
+                        performWithView(view -> {
+                            if (Settings.shouldHideRegisteredTime(getContext())) {
+                                view.remove(results);
+                                return;
+                            }
 
-                        // If we should hide registered time, we should remove
-                        // the item rather than updating it.
-                        if (Settings.shouldHideRegisteredTime(getContext())) {
-                            getView().remove(results);
-                            return;
-                        }
-
-                        // Update the time item within the adapter result and send
-                        // it to the view for update.
-                        getView().update(results);
+                            view.update(results);
+                        });
                     }
 
                     @Override
@@ -273,13 +232,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                         // Log the error even if the view have been detached.
                         Timber.w(e, "Failed to mark time as registered");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing error");
-                            return;
-                        }
-
-                        getView().showRegisterErrorMessage(numberOfItems);
+                        performWithView(view -> view.showRegisterErrorMessage(numberOfItems));
                     }
 
                     @Override
@@ -319,16 +272,13 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OngoingNotificationActionEvent event) {
-        if (isViewDetached()) {
-            Timber.d("View is not attached, skip reloading timesheet");
-            return;
-        }
+        performWithView(view -> {
+            if (event.getProjectId() != view.getProjectId()) {
+                Timber.d("No need to refresh, event is related to another project");
+                return;
+            }
 
-        if (event.getProjectId() != getView().getProjectId()) {
-            Timber.d("No need to refresh, event is related to another project");
-            return;
-        }
-
-        getView().refresh();
+            view.refresh();
+        });
     }
 }

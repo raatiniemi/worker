@@ -89,14 +89,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
                     public void onNext(Backup backup) {
                         Timber.d("getLatestBackup onNext");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing the latest backup");
-                            return;
-                        }
-
-                        // Push the data to the view.
-                        getView().setLatestBackup(backup);
+                        performWithView(view -> view.setLatestBackup(backup));
                     }
 
                     @Override
@@ -106,15 +99,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
                         // Log the error even if the view have been detached.
                         Timber.w(e, "Failed to get latest backup");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing the latest backup");
-                            return;
-                        }
-
-                        // Push null as the latest backup to indicate
-                        // that an error has occurred.
-                        getView().setLatestBackup(null);
+                        performWithView(view -> view.setLatestBackup(null));
                     }
 
                     @Override
@@ -127,14 +112,7 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(BackupSuccessfulEvent event) {
-        // Check that we still have the view attached.
-        if (isViewDetached()) {
-            Timber.d("View is not attached, skip pushing the latest backup");
-            return;
-        }
-
-        // Push the latest backup to the view for update.
-        getView().setLatestBackup(event.getBackup());
+        performWithView(view -> view.setLatestBackup(event.getBackup()));
     }
 
     public void changeTimeSummaryStartingPoint(int newStartingPoint) {
@@ -159,22 +137,18 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
 
             eventBus.post(new TimeSummaryStartingPointChangeEvent());
 
-            if (isViewDetached()) {
-                return;
-            }
-            if (GetProjectTimeSince.WEEK == newStartingPoint) {
-                getView().showChangeTimeSummaryStartingPointToWeekSuccessMessage();
-                return;
-            }
-            getView().showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+            performWithView(view -> {
+                if (GetProjectTimeSince.WEEK == newStartingPoint) {
+                    view.showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+                    return;
+                }
+
+                view.showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+            });
         } catch (InvalidStartingPointException e) {
             Timber.w(e, "Unable to set new starting point");
 
-            if (isViewDetached()) {
-                Timber.w("View is not attached, failed to push error");
-                return;
-            }
-            getView().showChangeTimeSummaryStartingPointErrorMessage();
+            performWithView(SettingsView::showChangeTimeSummaryStartingPointErrorMessage);
         }
     }
 }

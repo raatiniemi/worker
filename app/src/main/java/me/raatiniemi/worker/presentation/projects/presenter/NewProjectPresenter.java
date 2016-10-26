@@ -72,15 +72,7 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
                         public void onNext(Project project) {
                             Timber.d("createNewProject onNext");
 
-                            // Check that we still have the view attached. Since we're working
-                            // with a dialog, we always expect to have the view attached.
-                            if (isViewDetached()) {
-                                Timber.w("View is not attached, failed to push project");
-                                return;
-                            }
-
-                            // Push the project to the view.
-                            getView().createProjectSuccessful(project);
+                            performWithView(view -> view.createProjectSuccessful(project));
                         }
 
                         @Override
@@ -90,20 +82,14 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
                             // Log the error even if the view have been detached.
                             Timber.w(e, "Failed to create project");
 
-                            // Check that we still have the view attached. Since we're working
-                            // with a dialog, we always expect to have the view attached.
-                            if (isViewDetached()) {
-                                Timber.w("View is not attached, failed to push error");
-                                return;
-                            }
+                            performWithView(view -> {
+                                if (e instanceof ProjectAlreadyExistsException) {
+                                    view.showDuplicateNameError();
+                                    return;
+                                }
 
-                            // Show the proper error message based on the exception.
-                            if (e instanceof ProjectAlreadyExistsException) {
-                                getView().showDuplicateNameError();
-                                return;
-                            }
-
-                            getView().showUnknownError();
+                                view.showUnknownError();
+                            });
                         }
 
                         @Override
@@ -112,14 +98,7 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
                         }
                     });
         } catch (InvalidProjectNameException e) {
-            // Check that we still have the view attached. Since we're working
-            // with a dialog, we always expect to have the view attached.
-            if (isViewDetached()) {
-                Timber.w(e, "View is not attached, failed to push error");
-                return;
-            }
-
-            getView().showInvalidNameError();
+            performWithView(NewProjectView::showInvalidNameError);
         }
     }
 

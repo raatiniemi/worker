@@ -168,15 +168,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
             return;
         }
 
-        // Check that we still have the view attached.
-        if (isViewDetached()) {
-            Timber.d("View is not attached, skip refreshing active projects");
-            return;
-        }
+        performWithView(view -> {
+            Timber.d("Refreshing active projects");
 
-        // Refresh the active projects that have been found.
-        Timber.d("Refreshing active projects");
-        getView().refreshPositions(positions);
+            view.refreshPositions(positions);
+        });
     }
 
     /**
@@ -283,13 +279,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                     public void onNext(List<ProjectsModel> items) {
                         Timber.d("getProjects onNext");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing projects");
-                            return;
-                        }
-
-                        getView().addProjects(items);
+                        performWithView(view -> view.addProjects(items));
                     }
 
                     @Override
@@ -299,13 +289,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                         // Log the error even if the view have been detached.
                         Timber.w(e, "Failed to get projects");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing error");
-                            return;
-                        }
-
-                        getView().showGetProjectsErrorMessage();
+                        performWithView(ProjectsView::showGetProjectsErrorMessage);
                     }
 
                     @Override
@@ -337,12 +321,14 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         // needed to handle the restoration if deletion fails.
         final int index = getView().getProjects().indexOf(project);
 
-        // Remove project from the view before executing the use case,
-        // i.e. optimistic propagation, to simulate better latency.
-        //
-        // If the deletion fails the project will be added back to the
-        // view again, at the previous location.
-        getView().deleteProjectAtPosition(index);
+        performWithView(view -> {
+            // Remove project from the view before executing the use case,
+            // i.e. optimistic propagation, to simulate better latency.
+            //
+            // If the deletion fails the project will be added back to the
+            // view again, at the previous location.
+            view.deleteProjectAtPosition(index);
+        });
 
         Observable.just(project)
                 .flatMap(projectsModel -> {
@@ -366,27 +352,17 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                         // error messaged logged.
                         Timber.w(e, "Failed to delete project");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing error");
-                            return;
-                        }
-
-                        getView().restoreProjectAtPreviousPosition(index, project);
-                        getView().showDeleteProjectErrorMessage();
+                        performWithView(view -> {
+                            view.restoreProjectAtPreviousPosition(index, project);
+                            view.showDeleteProjectErrorMessage();
+                        });
                     }
 
                     @Override
                     public void onCompleted() {
                         Timber.d("deleteProject onCompleted");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing successful deletion");
-                            return;
-                        }
-
-                        getView().showDeleteProjectSuccessMessage();
+                        performWithView(ProjectsView::showDeleteProjectSuccessMessage);
                     }
                 });
     }
@@ -412,14 +388,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                     public void onNext(ProjectsModel project) {
                         Timber.d("clockActivityChange onNext");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip updating project");
-                            return;
-                        }
-
-                        // Update the project.
-                        getView().updateProject(project);
+                        performWithView(view -> view.updateProject(project));
                     }
 
                     @Override
@@ -429,17 +398,14 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                         // Log the error even if the view have been detached.
                         Timber.w(e, "Failed to change clock activity");
 
-                        // Check that we still have the view attached.
-                        if (isViewDetached()) {
-                            Timber.d("View is not attached, skip pushing error");
-                            return;
-                        }
+                        performWithView(view -> {
+                            if (projectsModel.isActive()) {
+                                view.showClockOutErrorMessage();
+                                return;
+                            }
 
-                        if (projectsModel.isActive()) {
-                            getView().showClockOutErrorMessage();
-                            return;
-                        }
-                        getView().showClockInErrorMessage();
+                            view.showClockInErrorMessage();
+                        });
                     }
 
                     @Override
@@ -483,21 +449,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
-        if (isViewDetached()) {
-            Timber.d("View is not attached, skip reloading projects");
-            return;
-        }
-
-        getView().reloadProjects();
+        performWithView(ProjectsView::reloadProjects);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OngoingNotificationActionEvent event) {
-        if (isViewDetached()) {
-            Timber.d("View is not attached, skip reloading projects");
-            return;
-        }
-
-        getView().reloadProjects();
+        performWithView(ProjectsView::reloadProjects);
     }
 }

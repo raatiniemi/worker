@@ -18,10 +18,13 @@ package me.raatiniemi.worker.presentation.presenter;
 
 import android.content.Context;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 
 import java.lang.ref.WeakReference;
 
 import me.raatiniemi.worker.presentation.view.MvpView;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
@@ -76,6 +79,22 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      */
     protected boolean isViewDetached() {
         return isNull(getView());
+    }
+
+    /**
+     * Perform an action with the view.
+     *
+     * @param viewAction Action to perform with the view.
+     */
+    @UiThread
+    protected void performWithView(@NonNull ViewAction<V> viewAction) {
+        V view = getView();
+        if (isNull(view)) {
+            Timber.d("View is not attached");
+            return;
+        }
+
+        viewAction.perform(view);
     }
 
     /**
