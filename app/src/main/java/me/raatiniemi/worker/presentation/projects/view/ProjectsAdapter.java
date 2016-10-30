@@ -23,13 +23,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import java.util.Collections;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
@@ -39,7 +35,7 @@ import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 /**
  * Adapter for listing available projects.
  */
-class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.ProjectsItemViewHolder> {
+class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewHolder> {
     /**
      * Listener for project actions.
      */
@@ -131,32 +127,6 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.P
      */
     void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
         this.hintedImageButtonListener = hintedImageButtonListener;
-    }
-
-    class ProjectsItemViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.fragment_projects_item_name)
-        TextView name;
-
-        @BindView(R.id.fragment_projects_item_time)
-        TextView time;
-
-        @BindView(R.id.fragment_projects_item_action_clock_activity_toggle)
-        ImageButton clockActivityToggle;
-
-        @BindView(R.id.fragment_projects_item_action_clock_activity_at)
-        ImageButton clockActivityAt;
-
-        @BindView(R.id.fragment_projects_item_action_delete)
-        ImageButton delete;
-
-        @BindView(R.id.fragment_projects_item_clocked_in_since)
-        TextView clockedInSince;
-
-        private ProjectsItemViewHolder(View view) {
-            super(view);
-
-            ButterKnife.bind(this, view);
-        }
     }
 
     /**
