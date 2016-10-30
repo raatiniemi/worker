@@ -39,7 +39,7 @@ import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 /**
  * Adapter for listing available projects.
  */
-class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.ItemViewHolder> {
+class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.ProjectsItemViewHolder> {
     /**
      * Listener for project actions.
      */
@@ -73,15 +73,15 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.I
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ProjectsItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
-        return new ItemViewHolder(view);
+        return new ProjectsItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder vh, int index) {
+    public void onBindViewHolder(final ProjectsItemViewHolder vh, int index) {
         final ProjectsModel item = get(index);
 
         vh.name.setText(item.getTitle());
@@ -133,7 +133,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.I
         this.hintedImageButtonListener = hintedImageButtonListener;
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ProjectsItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.fragment_projects_item_name)
         TextView name;
 
@@ -152,7 +152,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.I
         @BindView(R.id.fragment_projects_item_clocked_in_since)
         TextView clockedInSince;
 
-        private ItemViewHolder(View view) {
+        private ProjectsItemViewHolder(View view) {
             super(view);
 
             ButterKnife.bind(this, view);
