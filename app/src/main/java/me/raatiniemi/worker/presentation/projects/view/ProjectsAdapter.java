@@ -32,7 +32,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
-import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
@@ -84,7 +83,6 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.I
     @Override
     public void onBindViewHolder(final ItemViewHolder vh, int index) {
         final ProjectsModel item = get(index);
-        final Project project = item.asProject();
 
         vh.name.setText(item.getTitle());
         vh.time.setText(item.getTimeSummary());
@@ -99,7 +97,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsAdapter.I
         );
         vh.clockActivityToggle.setOnClickListener(view -> onProjectActionListener.onClockActivityToggle(item));
         vh.clockActivityToggle.setOnLongClickListener(hintedImageButtonListener);
-        vh.clockActivityToggle.setActivated(project.isActive());
+        vh.clockActivityToggle.setActivated(item.isActive());
 
         vh.clockActivityAt.setContentDescription(
                 item.getHelpTextForClockActivityAt(resources)
