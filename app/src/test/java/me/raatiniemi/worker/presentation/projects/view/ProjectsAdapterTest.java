@@ -42,7 +42,7 @@ public class ProjectsAdapterTest {
     @Before
     public void setUp() {
         Context context = mock(Context.class);
-        ProjectsAdapter.OnProjectActionListener listener = mock(ProjectsAdapter.OnProjectActionListener.class);
+        OnProjectActionListener listener = mock(OnProjectActionListener.class);
 
         adapter = new ProjectsAdapter(context, listener);
     }

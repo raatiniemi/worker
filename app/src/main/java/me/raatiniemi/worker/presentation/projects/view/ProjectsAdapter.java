@@ -18,7 +18,6 @@ package me.raatiniemi.worker.presentation.projects.view;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,31 +126,5 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewH
      */
     void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
         this.hintedImageButtonListener = hintedImageButtonListener;
-    }
-
-    /**
-     * Interface for project actions.
-     */
-    interface OnProjectActionListener {
-        /**
-         * Toggle the clock activity change.
-         *
-         * @param project Project to change the clock activity.
-         */
-        void onClockActivityToggle(@NonNull ProjectsModel project);
-
-        /**
-         * Toggle the clock activity change, with date and time.
-         *
-         * @param project Project to change the clock activity.
-         */
-        void onClockActivityAt(@NonNull ProjectsModel project);
-
-        /**
-         * Handle project delete action from user.
-         *
-         * @param project Project to delete.
-         */
-        void onDelete(@NonNull ProjectsModel project);
     }
 }

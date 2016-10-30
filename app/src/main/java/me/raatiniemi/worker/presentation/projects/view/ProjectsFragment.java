@@ -49,7 +49,7 @@ import timber.log.Timber;
 import static me.raatiniemi.util.NullUtil.isNull;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
-        implements ProjectsAdapter.OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
+        implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
     /**
