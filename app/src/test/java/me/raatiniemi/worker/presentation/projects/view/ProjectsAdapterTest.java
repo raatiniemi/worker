@@ -30,6 +30,7 @@ import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -44,7 +45,7 @@ public class ProjectsAdapterTest {
         Context context = mock(Context.class);
         OnProjectActionListener listener = mock(OnProjectActionListener.class);
 
-        adapter = new ProjectsAdapter(context, listener);
+        adapter = new ProjectsAdapter(context, listener, mock(HintedImageButtonListener.class));
     }
 
     @Test

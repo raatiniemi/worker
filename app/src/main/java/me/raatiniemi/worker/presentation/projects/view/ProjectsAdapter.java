@@ -44,21 +44,24 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewH
     /**
      * Listener for hinting images.
      */
-    private HintedImageButtonListener hintedImageButtonListener;
+    private final HintedImageButtonListener hintedImageButtonListener;
 
     /**
      * Construct the ProjectsAdapter.
      *
-     * @param context                 Context to use.
-     * @param onProjectActionListener Listener for project actions.
+     * @param context                   Context to use.
+     * @param onProjectActionListener   Listener for project actions.
+     * @param hintedImageButtonListener Listener for hinting images.
      */
     ProjectsAdapter(
             Context context,
-            OnProjectActionListener onProjectActionListener
+            OnProjectActionListener onProjectActionListener,
+            HintedImageButtonListener hintedImageButtonListener
     ) {
         super(context);
 
         this.onProjectActionListener = onProjectActionListener;
+        this.hintedImageButtonListener = hintedImageButtonListener;
         resources = getContext().getResources();
     }
 
@@ -117,14 +120,5 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewH
         }
 
         return position;
-    }
-
-    /**
-     * Set the listener for hinting images.
-     *
-     * @param hintedImageButtonListener Listener for hinting images.
-     */
-    void setHintedImageButtonListener(HintedImageButtonListener hintedImageButtonListener) {
-        this.hintedImageButtonListener = hintedImageButtonListener;
     }
 }

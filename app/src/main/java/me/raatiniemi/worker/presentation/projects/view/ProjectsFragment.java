@@ -111,10 +111,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @NonNull
     private ProjectsAdapter getAdapter() {
         if (isNull(adapter)) {
-            adapter = new ProjectsAdapter(getActivity(), this);
-            adapter.setHintedImageButtonListener(
-                    new HintedImageButtonListener(getActivity())
-            );
+            adapter = new ProjectsAdapter(getActivity(), this, new HintedImageButtonListener(getActivity()));
             adapter.setOnItemClickListener(this);
         }
 
