@@ -29,6 +29,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
  * @param <T> Type reference for the domain entity.
  * @param <F> Type reference for the transformation source.
  */
+@FunctionalInterface
 public interface EntityMapper<T, F> {
     /**
      * Perform the transformation.
