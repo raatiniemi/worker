@@ -29,7 +29,7 @@ import org.robolectric.annotation.Config;
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 
 import static junit.framework.Assert.assertEquals;
@@ -50,43 +50,43 @@ public class ProjectsAdapterTest {
 
     @Test
     public void findProject_withoutAvailableProject() throws InvalidProjectNameException {
-        adapter.add(buildProjectsModel(1L, "Project #1"));
+        adapter.add(buildProjectsItem(1L, "Project #1"));
 
-        int position = adapter.findProject(buildProjectsModel(2L, "Project #2"));
+        int position = adapter.findProject(buildProjectsItem(2L, "Project #2"));
 
         assertEquals(RecyclerView.NO_POSITION, position);
     }
 
     @Test
     public void findProject_withProject() throws InvalidProjectNameException {
-        adapter.add(buildProjectsModel(1L, "Project #1"));
+        adapter.add(buildProjectsItem(1L, "Project #1"));
 
-        int position = adapter.findProject(buildProjectsModel(1L, "Project #1"));
+        int position = adapter.findProject(buildProjectsItem(1L, "Project #1"));
 
         assertEquals(0, position);
     }
 
     @Test
     public void findProject_withProjects() throws InvalidProjectNameException {
-        adapter.add(buildProjectsModel(1L, "Project #1"));
-        adapter.add(buildProjectsModel(2L, "Project #2"));
-        adapter.add(buildProjectsModel(3L, "Project #3"));
-        adapter.add(buildProjectsModel(4L, "Project #4"));
-        adapter.add(buildProjectsModel(5L, "Project #5"));
-        adapter.add(buildProjectsModel(6L, "Project #6"));
+        adapter.add(buildProjectsItem(1L, "Project #1"));
+        adapter.add(buildProjectsItem(2L, "Project #2"));
+        adapter.add(buildProjectsItem(3L, "Project #3"));
+        adapter.add(buildProjectsItem(4L, "Project #4"));
+        adapter.add(buildProjectsItem(5L, "Project #5"));
+        adapter.add(buildProjectsItem(6L, "Project #6"));
 
-        int position = adapter.findProject(buildProjectsModel(4L, "Project #4"));
+        int position = adapter.findProject(buildProjectsItem(4L, "Project #4"));
 
         assertEquals(3, position);
     }
 
-    private ProjectsModel buildProjectsModel(long projectId, String projectName)
+    private ProjectsItem buildProjectsItem(long projectId, String projectName)
             throws InvalidProjectNameException {
 
         Project project = new Project.Builder(projectName)
                 .id(projectId)
                 .build();
 
-        return new ProjectsModel(project);
+        return new ProjectsItem(project);
     }
 }

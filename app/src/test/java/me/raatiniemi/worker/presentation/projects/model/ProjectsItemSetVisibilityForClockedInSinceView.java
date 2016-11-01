@@ -36,11 +36,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelSetVisibilityForClockedInSinceView {
+public class ProjectsItemSetVisibilityForClockedInSinceView {
     private int expectedViewVisibility;
     private Project project;
 
-    public ProjectsModelSetVisibilityForClockedInSinceView(
+    public ProjectsItemSetVisibilityForClockedInSinceView(
             int expectedViewVisibility,
             Project project
     ) {
@@ -73,10 +73,10 @@ public class ProjectsModelSetVisibilityForClockedInSinceView {
 
     @Test
     public void getClockedInSince() throws InvalidProjectNameException {
-        ProjectsModel model = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
         TextView textView = mock(TextView.class);
 
-        model.setVisibilityForClockedInSinceView(textView);
+        projectsItem.setVisibilityForClockedInSinceView(textView);
 
         verify(textView, times(1)).setVisibility(expectedViewVisibility);
     }

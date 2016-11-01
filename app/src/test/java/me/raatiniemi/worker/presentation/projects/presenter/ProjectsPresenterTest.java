@@ -49,7 +49,7 @@ import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 
@@ -124,9 +124,9 @@ public class ProjectsPresenterTest {
     public void beginRefreshingActiveProjects() throws DomainException {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
-        List<ProjectsModel> projects = new ArrayList<>();
-        projects.add(new ProjectsModel(new Project.Builder("Name").build()));
-        projects.add(new ProjectsModel(activeProject));
+        List<ProjectsItem> projects = new ArrayList<>();
+        projects.add(new ProjectsItem(new Project.Builder("Name").build()));
+        projects.add(new ProjectsItem(activeProject));
         when(view.getProjects()).thenReturn(projects);
         presenter.attachView(view);
 
@@ -143,9 +143,9 @@ public class ProjectsPresenterTest {
     public void refreshActiveProjects() throws DomainException {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
-        List<ProjectsModel> projects = new ArrayList<>();
-        projects.add(new ProjectsModel(new Project.Builder("Name").build()));
-        projects.add(new ProjectsModel(activeProject));
+        List<ProjectsItem> projects = new ArrayList<>();
+        projects.add(new ProjectsItem(new Project.Builder("Name").build()));
+        projects.add(new ProjectsItem(activeProject));
         when(view.getProjects()).thenReturn(projects);
         presenter.attachView(view);
 
@@ -160,9 +160,9 @@ public class ProjectsPresenterTest {
     public void refreshActiveProjects_withoutAttachedView() throws DomainException {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
-        List<ProjectsModel> projects = new ArrayList<>();
-        projects.add(new ProjectsModel(new Project.Builder("Name").build()));
-        projects.add(new ProjectsModel(activeProject));
+        List<ProjectsItem> projects = new ArrayList<>();
+        projects.add(new ProjectsItem(new Project.Builder("Name").build()));
+        projects.add(new ProjectsItem(activeProject));
         when(view.getProjects()).thenReturn(projects);
 
         presenter.refreshActiveProjects();
@@ -185,7 +185,7 @@ public class ProjectsPresenterTest {
         presenter.getProjects();
 
         verify(getProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(view).addProjects(anyListOf(ProjectsModel.class));
+        verify(view).addProjects(anyListOf(ProjectsItem.class));
     }
 
     @Test
@@ -203,7 +203,7 @@ public class ProjectsPresenterTest {
         presenter.getProjects();
 
         verify(getProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(view).addProjects(anyListOf(ProjectsModel.class));
+        verify(view).addProjects(anyListOf(ProjectsItem.class));
     }
 
     @Test
@@ -213,7 +213,7 @@ public class ProjectsPresenterTest {
 
         presenter.getProjects();
 
-        verify(view, never()).addProjects(anyListOf(ProjectsModel.class));
+        verify(view, never()).addProjects(anyListOf(ProjectsItem.class));
     }
 
     @Test
@@ -240,13 +240,13 @@ public class ProjectsPresenterTest {
     public void deleteProject() throws DomainException {
         Project project = new Project.Builder("Name")
                 .build();
-        ProjectsModel projectsModel = new ProjectsModel(project);
-        List<ProjectsModel> projects = new ArrayList<>();
-        projects.add(new ProjectsModel(project));
+        ProjectsItem projectsItem = new ProjectsItem(project);
+        List<ProjectsItem> projects = new ArrayList<>();
+        projects.add(new ProjectsItem(project));
         when(view.getProjects()).thenReturn(projects);
         presenter.attachView(view);
 
-        presenter.deleteProject(projectsModel);
+        presenter.deleteProject(projectsItem);
 
         verify(view).deleteProjectAtPosition(0);
         verify(view).showDeleteProjectSuccessMessage();
@@ -256,17 +256,17 @@ public class ProjectsPresenterTest {
     public void deleteProject_withError() throws DomainException {
         Project project = new Project.Builder("Name")
                 .build();
-        ProjectsModel projectsModel = new ProjectsModel(project);
-        List<ProjectsModel> projects = new ArrayList<>();
-        projects.add(new ProjectsModel(project));
+        ProjectsItem projectsItem = new ProjectsItem(project);
+        List<ProjectsItem> projects = new ArrayList<>();
+        projects.add(new ProjectsItem(project));
         when(view.getProjects()).thenReturn(projects);
         doThrow(new RuntimeException()).when(removeProject).execute(project);
         presenter.attachView(view);
 
-        presenter.deleteProject(projectsModel);
+        presenter.deleteProject(projectsItem);
 
         verify(view).deleteProjectAtPosition(0);
-        verify(view).restoreProjectAtPreviousPosition(0, projectsModel);
+        verify(view).restoreProjectAtPreviousPosition(0, projectsItem);
         verify(view).showDeleteProjectErrorMessage();
     }
 
@@ -275,14 +275,14 @@ public class ProjectsPresenterTest {
         Project project = new Project.Builder("Name")
                 .id(1L)
                 .build();
-        ProjectsModel projectsModel = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(anyListOf(Time.class));
         presenter.attachView(view);
 
-        presenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsItem, new Date());
 
         verify(notificationManager)
                 .cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
@@ -292,7 +292,7 @@ public class ProjectsPresenterTest {
                 isA(Notification.class)
         );
         verify(getProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(view).updateProject(projectsModel);
+        verify(view).updateProject(projectsItem);
     }
 
     @Test
@@ -300,26 +300,26 @@ public class ProjectsPresenterTest {
         Project project = new Project.Builder("Name")
                 .id(1L)
                 .build();
-        ProjectsModel projectsModel = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
 
-        presenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsItem, new Date());
 
         verify(notificationManager).cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
-        verify(view, never()).updateProject(projectsModel);
+        verify(view, never()).updateProject(projectsItem);
     }
 
     @Test
     public void clockActivityChange_withClockInError() throws DomainException {
         Project project = new Project.Builder("Name")
                 .build();
-        ProjectsModel projectsModel = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
         presenter.attachView(view);
 
-        presenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsItem, new Date());
 
         verify(view, never()).showClockOutErrorMessage();
         verify(view).showClockInErrorMessage();
@@ -329,12 +329,12 @@ public class ProjectsPresenterTest {
     public void clockActivityChange_withClockOutError() throws DomainException {
         Project project = mock(Project.class);
         when(project.isActive()).thenReturn(true);
-        ProjectsModel projectsModel = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
         presenter.attachView(view);
 
-        presenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsItem, new Date());
 
         verify(view).showClockOutErrorMessage();
         verify(view, never()).showClockInErrorMessage();
@@ -344,11 +344,11 @@ public class ProjectsPresenterTest {
     public void clockActivityChange_withErrorAndWithoutAttachedView() throws DomainException {
         Project project = mock(Project.class);
         when(project.isActive()).thenReturn(true);
-        ProjectsModel projectsModel = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
 
-        presenter.clockActivityChange(projectsModel, new Date());
+        presenter.clockActivityChange(projectsItem, new Date());
 
         verify(view, never()).showClockOutErrorMessage();
         verify(view, never()).showClockInErrorMessage();

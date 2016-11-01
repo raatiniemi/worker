@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.view.MvpView;
 
 /**
@@ -33,7 +33,7 @@ public interface ProjectsView extends MvpView {
      *
      * @return Projects from the view.
      */
-    List<ProjectsModel> getProjects();
+    List<ProjectsItem> getProjects();
 
     /**
      * Show message for failed project retrieval.
@@ -45,7 +45,7 @@ public interface ProjectsView extends MvpView {
      *
      * @param projects List of projects to add.
      */
-    void addProjects(List<ProjectsModel> projects);
+    void addProjects(List<ProjectsItem> projects);
 
     /**
      * Add a created project to the view.
@@ -64,7 +64,7 @@ public interface ProjectsView extends MvpView {
      *
      * @param project Project to update in the list.
      */
-    void updateProject(ProjectsModel project);
+    void updateProject(ProjectsItem project);
 
     /**
      * Show message for failed clock in action.
@@ -91,7 +91,7 @@ public interface ProjectsView extends MvpView {
      */
     void restoreProjectAtPreviousPosition(
             int previousPosition,
-            ProjectsModel project
+            ProjectsItem project
     );
 
     /**

@@ -23,7 +23,7 @@ import me.raatiniemi.worker.R;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-abstract class ProjectsModelResourceTest {
+abstract class ProjectsItemResourceTest {
     Resources getResources() {
         Resources resources = mock(Resources.class);
         when(resources.getString(R.string.fragment_projects_item_clock_in)).thenReturn("Clock in now");

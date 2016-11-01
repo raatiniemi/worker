@@ -31,11 +31,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelGetHelpTextForClockActivityToggleTest extends ProjectsModelResourceTest {
+public class ProjectsItemGetHelpTextForClockActivityToggleTest extends ProjectsItemResourceTest {
     private String expected;
     private Project project;
 
-    public ProjectsModelGetHelpTextForClockActivityToggleTest(
+    public ProjectsItemGetHelpTextForClockActivityToggleTest(
             String expected,
             Project project
     ) {
@@ -68,8 +68,8 @@ public class ProjectsModelGetHelpTextForClockActivityToggleTest extends Projects
 
     @Test
     public void getHelpTextForClockActivityToggle() {
-        ProjectsModel model = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
 
-        assertEquals(expected, model.getHelpTextForClockActivityToggle(getResources()));
+        assertEquals(expected, projectsItem.getHelpTextForClockActivityToggle(getResources()));
     }
 }

@@ -30,7 +30,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.HoursMinutesIntervalFormat;
 
-public class ProjectsModel {
+public class ProjectsItem {
     private static final DateIntervalFormat intervalFormat;
 
     static {
@@ -41,13 +41,13 @@ public class ProjectsModel {
     private final Project project;
     private long timeSummary = 0;
 
-    public ProjectsModel(Project project, List<Time> registeredTime) {
+    public ProjectsItem(Project project, List<Time> registeredTime) {
         this.project = project;
 
         calculateTimeSummaryFromRegisteredTime(registeredTime);
     }
 
-    public ProjectsModel(Project project) {
+    public ProjectsItem(Project project) {
         this(project, project.getTime());
     }
 
@@ -139,11 +139,11 @@ public class ProjectsModel {
             return true;
         }
 
-        if (!(o instanceof ProjectsModel)) {
+        if (!(o instanceof ProjectsItem)) {
             return false;
         }
 
-        ProjectsModel that = (ProjectsModel) o;
+        ProjectsItem that = (ProjectsItem) o;
         return project.equals(that.project);
 
     }

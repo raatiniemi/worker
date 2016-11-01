@@ -18,7 +18,7 @@ package me.raatiniemi.worker.presentation.projects.view;
 
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 
 /**
  * Interface for project actions.
@@ -29,19 +29,19 @@ interface OnProjectActionListener {
      *
      * @param project Project to change the clock activity.
      */
-    void onClockActivityToggle(@NonNull ProjectsModel project);
+    void onClockActivityToggle(@NonNull ProjectsItem project);
 
     /**
      * Toggle the clock activity change, with date and time.
      *
      * @param project Project to change the clock activity.
      */
-    void onClockActivityAt(@NonNull ProjectsModel project);
+    void onClockActivityAt(@NonNull ProjectsItem project);
 
     /**
      * Handle project delete action from user.
      *
      * @param project Project to delete.
      */
-    void onDelete(@NonNull ProjectsModel project);
+    void onDelete(@NonNull ProjectsItem project);
 }

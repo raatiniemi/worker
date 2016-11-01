@@ -26,16 +26,19 @@ import java.util.Collection;
 
 import me.raatiniemi.worker.domain.model.Project;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelIsActiveTest {
-    private boolean expected;
+public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemResourceTest {
+    private String expected;
     private Project project;
 
-    public ProjectsModelIsActiveTest(boolean expected, Project project) {
+    public ProjectsItemGetHelpTextForClockActivityAtTest(
+            String expected,
+            Project project
+    ) {
         this.expected = expected;
         this.project = project;
     }
@@ -45,11 +48,11 @@ public class ProjectsModelIsActiveTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                Boolean.FALSE,
+                                "Clock in at given date and time",
                                 mockProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
-                                Boolean.TRUE,
+                                "Clock out at given date and time",
                                 mockProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
@@ -64,9 +67,9 @@ public class ProjectsModelIsActiveTest {
     }
 
     @Test
-    public void isActive() {
-        ProjectsModel model = new ProjectsModel(project);
+    public void getHelpTextForClockActivityAt() {
+        ProjectsItem projectsItem = new ProjectsItem(project);
 
-        assertTrue(expected == model.isActive());
+        assertEquals(expected, projectsItem.getHelpTextForClockActivityAt(getResources()));
     }
 }
