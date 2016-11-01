@@ -49,16 +49,16 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewH
     /**
      * Construct the ProjectsAdapter.
      *
-     * @param context               Context to use.
-     * @param projectActionListener Listener for project actions.
+     * @param context                 Context to use.
+     * @param onProjectActionListener Listener for project actions.
      */
     ProjectsAdapter(
             Context context,
-            OnProjectActionListener projectActionListener
+            OnProjectActionListener onProjectActionListener
     ) {
         super(context);
 
-        onProjectActionListener = projectActionListener;
+        this.onProjectActionListener = onProjectActionListener;
         resources = getContext().getResources();
     }
 
