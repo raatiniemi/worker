@@ -31,16 +31,16 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupModelGetTimeSummaryWithDifferenceTest {
+public class TimesheetGroupItemGetTimeSummaryWithDifferenceTest {
     private String expected;
-    private TimesheetChildModel[] children;
+    private TimesheetChildItem[] childItems;
 
-    public TimesheetGroupModelGetTimeSummaryWithDifferenceTest(
+    public TimesheetGroupItemGetTimeSummaryWithDifferenceTest(
             String expected,
-            TimesheetChildModel... children
+            TimesheetChildItem... childItems
     ) {
         this.expected = expected;
-        this.children = children;
+        this.childItems = childItems;
     }
 
     @Parameters
@@ -50,64 +50,64 @@ public class TimesheetGroupModelGetTimeSummaryWithDifferenceTest {
                 new Object[][]{
                         {
                                 "1.00 (-7.00)",
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(3600000)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(3600000)
                                 }
                         },
                         {
                                 "8.00",
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(28800000)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(28800000)
                                 }
                         },
                         {
                                 "9.00 (+1.00)",
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(32400000)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(32400000)
                                 }
                         },
                         {
                                 "9.12 (+1.12)",
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(14380327),
-                                        buildTimesheetChildModel(18407820)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(14380327),
+                                        buildTimesheetChildItem(18407820)
                                 }
                         },
                         {
                                 "8.76 (+0.76)",
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(13956031),
-                                        buildTimesheetChildModel(17594386)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(13956031),
+                                        buildTimesheetChildItem(17594386)
                                 }
                         },
                         {
                                 "7.86 (-0.14)",
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(11661632),
-                                        buildTimesheetChildModel(16707601)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(11661632),
+                                        buildTimesheetChildItem(16707601)
                                 }
                         }
                 }
         );
     }
 
-    private static TimesheetChildModel buildTimesheetChildModel(long interval)
+    private static TimesheetChildItem buildTimesheetChildItem(long interval)
             throws ClockOutBeforeClockInException {
         Time time = new Time.Builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(interval)
                 .build();
 
-        return new TimesheetChildModel(time);
+        return new TimesheetChildItem(time);
     }
 
     @Test
     public void getTimeSummaryWithDifference() {
-        TimesheetGroupModel item = new TimesheetGroupModel(new Date());
-        for (TimesheetChildModel child : children) {
-            item.add(child);
+        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
+        for (TimesheetChildItem childItem : childItems) {
+            groupItem.add(childItem);
         }
 
-        assertEquals(expected, item.getTimeSummaryWithDifference());
+        assertEquals(expected, groupItem.getTimeSummaryWithDifference());
     }
 }

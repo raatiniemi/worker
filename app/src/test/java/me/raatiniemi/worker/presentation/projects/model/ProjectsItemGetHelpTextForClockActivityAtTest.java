@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project.model;
+package me.raatiniemi.worker.presentation.projects.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,20 +22,25 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
+
+import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupModelGetTitleTest {
+public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemResourceTest {
     private String expected;
-    private Calendar calendar;
+    private Project project;
 
-    public TimesheetGroupModelGetTitleTest(String expected, Calendar calendar) {
+    public ProjectsItemGetHelpTextForClockActivityAtTest(
+            String expected,
+            Project project
+    ) {
         this.expected = expected;
-        this.calendar = calendar;
+        this.project = project;
     }
 
     @Parameters
@@ -43,17 +48,28 @@ public class TimesheetGroupModelGetTitleTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Sun (Feb 28)",
-                                new GregorianCalendar(2016, 1, 28)
+                                "Clock in at given date and time",
+                                mockProjectWithActiveIndicator(Boolean.FALSE)
+                        },
+                        {
+                                "Clock out at given date and time",
+                                mockProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
         );
     }
 
-    @Test
-    public void getTitle() {
-        TimesheetGroupModel item = new TimesheetGroupModel(calendar.getTime());
+    private static Project mockProjectWithActiveIndicator(boolean isProjectActive) {
+        Project project = mock(Project.class);
+        when(project.isActive()).thenReturn(isProjectActive);
 
-        assertEquals(expected, item.getTitle());
+        return project;
+    }
+
+    @Test
+    public void getHelpTextForClockActivityAt() {
+        ProjectsItem projectsItem = new ProjectsItem(project);
+
+        assertEquals(expected, projectsItem.getHelpTextForClockActivityAt(getResources()));
     }
 }

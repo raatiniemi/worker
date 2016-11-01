@@ -32,37 +32,37 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupModelBuildItemResultsTest {
+public class TimesheetGroupItemBuildItemResultsTest {
     private String message;
     private List<TimeInAdapterResult> expected;
     private int groupIndex;
-    private TimesheetGroupModel timesheetGroupModel;
+    private TimesheetGroupItem groupItem;
 
-    public TimesheetGroupModelBuildItemResultsTest(
+    public TimesheetGroupItemBuildItemResultsTest(
             String message,
             TimeInAdapterResult[] expected,
             int groupIndex,
-            TimesheetGroupModel timesheetGroupModel
+            TimesheetGroupItem groupItem
     ) {
         this.message = message;
         this.expected = Arrays.asList(expected);
         this.groupIndex = groupIndex;
-        this.timesheetGroupModel = timesheetGroupModel;
+        this.groupItem = groupItem;
     }
 
-    private static TimesheetGroupModel buildTimesheetGroupWithNumberOfChildModelItems(
-            int numberOfChildModelItems
+    private static TimesheetGroupItem buildTimesheetGroupWithNumberOfChildItems(
+            int numberOfChildItems
     ) throws ClockOutBeforeClockInException {
-        TimesheetGroupModel groupModel = new TimesheetGroupModel(new Date());
-        if (0 == numberOfChildModelItems) {
-            return groupModel;
+        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
+        if (0 == numberOfChildItems) {
+            return groupItem;
         }
 
-        for (int i = 0; i < numberOfChildModelItems; i++) {
-            groupModel.add(new TimesheetChildModel(buildTime()));
+        for (int i = 0; i < numberOfChildItems; i++) {
+            groupItem.add(new TimesheetChildItem(buildTime()));
         }
 
-        return groupModel;
+        return groupItem;
     }
 
     private static Time buildTime() throws ClockOutBeforeClockInException {
@@ -80,7 +80,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
                                 new TimeInAdapterResult[]{
                                 },
                                 0,
-                                buildTimesheetGroupWithNumberOfChildModelItems(0)
+                                buildTimesheetGroupWithNumberOfChildItems(0)
                         },
                         {
                                 "With one item",
@@ -88,7 +88,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
                                         TimeInAdapterResult.build(1, 0, buildTime())
                                 },
                                 1,
-                                buildTimesheetGroupWithNumberOfChildModelItems(1)
+                                buildTimesheetGroupWithNumberOfChildItems(1)
                         },
                         {
                                 "With multiple items",
@@ -101,7 +101,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
                                         TimeInAdapterResult.build(2, 5, buildTime()),
                                 },
                                 2,
-                                buildTimesheetGroupWithNumberOfChildModelItems(6)
+                                buildTimesheetGroupWithNumberOfChildItems(6)
                         }
                 }
         );
@@ -110,7 +110,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
     @Test
     public void buildItemResultsWithGroupIndex() {
         List<TimeInAdapterResult> actual =
-                timesheetGroupModel.buildItemResultsWithGroupIndex(groupIndex);
+                groupItem.buildItemResultsWithGroupIndex(groupIndex);
 
         assertEquals(message, expected, actual);
     }

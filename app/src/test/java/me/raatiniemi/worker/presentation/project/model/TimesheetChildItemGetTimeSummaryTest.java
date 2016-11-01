@@ -22,28 +22,19 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
-import static me.raatiniemi.util.NullUtil.nonNull;
 
 @RunWith(Parameterized.class)
-public class TimesheetChildModelGetTitleTest {
-    private String message;
+public class TimesheetChildItemGetTimeSummaryTest {
     private String expected;
     private Time time;
 
-    public TimesheetChildModelGetTitleTest(
-            String message,
-            String expected,
-            Time time
-    ) {
-        this.message = message;
+    public TimesheetChildItemGetTimeSummaryTest(String expected, Time time) {
         this.expected = expected;
         this.time = time;
     }
@@ -54,41 +45,25 @@ public class TimesheetChildModelGetTitleTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "active time",
-                                "08:00",
-                                buildTime(
-                                        new GregorianCalendar(2016, 1, 28, 8, 0),
-                                        null
-                                )
+                                "1.00",
+                                new Time.Builder(1L)
+                                        .stopInMilliseconds(3600000)
+                                        .build()
                         },
                         {
-                                "inactive time",
-                                "08:00 - 11:30",
-                                buildTime(
-                                        new GregorianCalendar(2016, 1, 28, 8, 0),
-                                        new GregorianCalendar(2016, 1, 28, 11, 30)
-                                )
+                                "9.00",
+                                new Time.Builder(1L)
+                                        .stopInMilliseconds(32400000)
+                                        .build()
                         }
                 }
         );
     }
 
-    private static Time buildTime(Calendar start, Calendar stop)
-            throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(1L)
-                .startInMilliseconds(start.getTimeInMillis());
-
-        if (nonNull(stop)) {
-            builder.stopInMilliseconds(stop.getTimeInMillis());
-        }
-
-        return builder.build();
-    }
-
     @Test
-    public void getTitle() {
-        TimesheetChildModel item = new TimesheetChildModel(time);
+    public void getTimeSummary() {
+        TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertEquals(message, expected, item.getTitle());
+        assertEquals(expected, childItem.getTimeSummary());
     }
 }

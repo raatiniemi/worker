@@ -16,9 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.model;
 
-import android.view.View;
-import android.widget.TextView;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -27,24 +24,19 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
+import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelSetVisibilityForClockedInSinceView {
-    private int expectedViewVisibility;
+public class ProjectsItemIsActiveTest {
+    private boolean expected;
     private Project project;
 
-    public ProjectsModelSetVisibilityForClockedInSinceView(
-            int expectedViewVisibility,
-            Project project
-    ) {
-        this.expectedViewVisibility = expectedViewVisibility;
+    public ProjectsItemIsActiveTest(boolean expected, Project project) {
+        this.expected = expected;
         this.project = project;
     }
 
@@ -53,11 +45,11 @@ public class ProjectsModelSetVisibilityForClockedInSinceView {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                View.GONE,
+                                Boolean.FALSE,
                                 mockProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
-                                View.VISIBLE,
+                                Boolean.TRUE,
                                 mockProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
@@ -72,12 +64,9 @@ public class ProjectsModelSetVisibilityForClockedInSinceView {
     }
 
     @Test
-    public void getClockedInSince() throws InvalidProjectNameException {
-        ProjectsModel model = new ProjectsModel(project);
-        TextView textView = mock(TextView.class);
+    public void isActive() {
+        ProjectsItem projectsItem = new ProjectsItem(project);
 
-        model.setVisibilityForClockedInSinceView(textView);
-
-        verify(textView, times(1)).setVisibility(expectedViewVisibility);
+        assertTrue(expected == projectsItem.isActive());
     }
 }

@@ -10,8 +10,8 @@ import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public class TimesheetGroupModel
-        extends ExpandableItem<Date, TimesheetChildModel> {
+public class TimesheetGroupItem
+        extends ExpandableItem<Date, TimesheetChildItem> {
     private static final DateIntervalFormat intervalFormat;
 
     static {
@@ -20,7 +20,7 @@ public class TimesheetGroupModel
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.getDefault());
 
-    public TimesheetGroupModel(Date group) {
+    public TimesheetGroupItem(Date group) {
         super(group);
     }
 
@@ -68,8 +68,8 @@ public class TimesheetGroupModel
     public boolean isRegistered() {
         boolean registered = true;
 
-        for (TimesheetChildModel child : getItems()) {
-            if (!child.isRegistered()) {
+        for (TimesheetChildItem childItem : getItems()) {
+            if (!childItem.isRegistered()) {
                 registered = false;
                 break;
             }
@@ -96,9 +96,9 @@ public class TimesheetGroupModel
     private float calculateTimeIntervalSummary() {
         float interval = 0;
 
-        for (TimesheetChildModel child : getItems()) {
+        for (TimesheetChildItem childItem : getItems()) {
             interval += calculateFractionFromMilliseconds(
-                    child.calculateIntervalInMilliseconds()
+                    childItem.calculateIntervalInMilliseconds()
             );
         }
 
@@ -110,12 +110,12 @@ public class TimesheetGroupModel
 
         int childIndex = 0;
 
-        for (TimesheetChildModel childModel : getItems()) {
+        for (TimesheetChildItem childItem : getItems()) {
             results.add(
                     TimeInAdapterResult.build(
                             groupIndex,
                             childIndex,
-                            childModel.asTime()
+                            childItem.asTime()
                     )
             );
 

@@ -23,24 +23,26 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupModelIsRegisteredTest {
+public class TimesheetChildItemIsRegisteredTest {
+    private String message;
     private boolean expected;
-    private TimesheetChildModel[] children;
+    private Time time;
 
-    public TimesheetGroupModelIsRegisteredTest(
+    public TimesheetChildItemIsRegisteredTest(
+            String message,
             boolean expected,
-            TimesheetChildModel... children
+            Time time
     ) {
+        this.message = message;
         this.expected = expected;
-        this.children = children;
+        this.time = time;
     }
 
     @Parameters
@@ -49,36 +51,20 @@ public class TimesheetGroupModelIsRegisteredTest {
         return Arrays.asList(
                 new Object[][]{
                         {
+                                "is registered",
                                 Boolean.TRUE,
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(true)
-                                }
+                                buildTime(true)
                         },
                         {
+                                "is not registered",
                                 Boolean.FALSE,
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(false)
-                                }
-                        },
-                        {
-                                Boolean.FALSE,
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(false),
-                                        buildTimesheetChildModel(true)
-                                }
-                        },
-                        {
-                                Boolean.TRUE,
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(true),
-                                        buildTimesheetChildModel(true)
-                                }
+                                buildTime(false)
                         }
                 }
         );
     }
 
-    private static TimesheetChildModel buildTimesheetChildModel(boolean registered)
+    private static Time buildTime(boolean registered)
             throws ClockOutBeforeClockInException {
         Time.Builder builder = new Time.Builder(1L);
 
@@ -86,17 +72,13 @@ public class TimesheetGroupModelIsRegisteredTest {
             builder.register();
         }
 
-        Time time = builder.build();
-        return new TimesheetChildModel(time);
+        return builder.build();
     }
 
     @Test
     public void isRegistered() {
-        TimesheetGroupModel item = new TimesheetGroupModel(new Date());
-        for (TimesheetChildModel child : children) {
-            item.add(child);
-        }
+        TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertEquals(expected, item.isRegistered());
+        assertTrue(message, expected == childItem.isRegistered());
     }
 }

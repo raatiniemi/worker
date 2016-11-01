@@ -41,7 +41,7 @@ import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
@@ -216,8 +216,8 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     }
 
     @Override
-    public void add(@NonNull List<TimesheetGroupModel> items) {
-        getAdapter().add(items);
+    public void add(@NonNull List<TimesheetGroupItem> groupItems) {
+        getAdapter().add(groupItems);
     }
 
     @Override

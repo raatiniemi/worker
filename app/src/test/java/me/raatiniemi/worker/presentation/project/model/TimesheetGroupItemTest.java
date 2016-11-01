@@ -9,12 +9,12 @@ import java.util.Date;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
-public class TimesheetGroupModelTest {
+public class TimesheetGroupItemTest {
     @Test
     public void getId() {
         Date date = new Date();
-        TimesheetGroupModel groupModel = new TimesheetGroupModel(date);
+        TimesheetGroupItem groupItem = new TimesheetGroupItem(date);
 
-        assertEquals(date.getTime(), groupModel.getId());
+        assertEquals(date.getTime(), groupItem.getId());
     }
 }

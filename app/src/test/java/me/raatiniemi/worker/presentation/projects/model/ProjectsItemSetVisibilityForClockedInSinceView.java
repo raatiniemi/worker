@@ -16,6 +16,9 @@
 
 package me.raatiniemi.worker.presentation.projects.model;
 
+import android.view.View;
+import android.widget.TextView;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -24,22 +27,24 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
-import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelGetHelpTextForClockActivityToggleTest extends ProjectsModelResourceTest {
-    private String expected;
+public class ProjectsItemSetVisibilityForClockedInSinceView {
+    private int expectedViewVisibility;
     private Project project;
 
-    public ProjectsModelGetHelpTextForClockActivityToggleTest(
-            String expected,
+    public ProjectsItemSetVisibilityForClockedInSinceView(
+            int expectedViewVisibility,
             Project project
     ) {
-        this.expected = expected;
+        this.expectedViewVisibility = expectedViewVisibility;
         this.project = project;
     }
 
@@ -48,11 +53,11 @@ public class ProjectsModelGetHelpTextForClockActivityToggleTest extends Projects
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Clock in now",
+                                View.GONE,
                                 mockProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
-                                "Clock out now",
+                                View.VISIBLE,
                                 mockProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
@@ -67,9 +72,12 @@ public class ProjectsModelGetHelpTextForClockActivityToggleTest extends Projects
     }
 
     @Test
-    public void getHelpTextForClockActivityToggle() {
-        ProjectsModel model = new ProjectsModel(project);
+    public void getClockedInSince() throws InvalidProjectNameException {
+        ProjectsItem projectsItem = new ProjectsItem(project);
+        TextView textView = mock(TextView.class);
 
-        assertEquals(expected, model.getHelpTextForClockActivityToggle(getResources()));
+        projectsItem.setVisibilityForClockedInSinceView(textView);
+
+        verify(textView, times(1)).setVisibility(expectedViewVisibility);
     }
 }

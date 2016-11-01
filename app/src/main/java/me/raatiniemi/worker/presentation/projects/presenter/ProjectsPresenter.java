@@ -39,7 +39,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
-import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.RxUtil;
@@ -139,8 +139,8 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         List<Integer> activePositions = getFromView(view -> {
             List<Integer> positions = new ArrayList<>();
 
-            List<ProjectsModel> projects = view.getProjects();
-            for (ProjectsModel project : projects) {
+            List<ProjectsItem> projects = view.getProjects();
+            for (ProjectsItem project : projects) {
                 if (!project.isActive()) {
                     continue;
                 }
@@ -266,20 +266,20 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                     }
                 })
                 .map(projects -> {
-                    List<ProjectsModel> items = new ArrayList<>();
+                    List<ProjectsItem> items = new ArrayList<>();
 
                     for (Project project : projects) {
                         List<Time> registeredTime = getRegisteredTime(project);
 
-                        items.add(new ProjectsModel(project, registeredTime));
+                        items.add(new ProjectsItem(project, registeredTime));
                     }
 
                     return items;
                 })
                 .compose(RxUtil.applySchedulers())
-                .subscribe(new Subscriber<List<ProjectsModel>>() {
+                .subscribe(new Subscriber<List<ProjectsItem>>() {
                     @Override
-                    public void onNext(List<ProjectsModel> items) {
+                    public void onNext(List<ProjectsItem> items) {
                         Timber.d("getProjects onNext");
 
                         performWithView(view -> view.addProjects(items));
@@ -319,7 +319,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      *
      * @param project Project to be deleted.
      */
-    public void deleteProject(final ProjectsModel project) {
+    public void deleteProject(final ProjectsItem project) {
         // Before removing the project we need its current index, it's
         // needed to handle the restoration if deletion fails.
         final Integer index = getFromView(view -> view.getProjects().indexOf(project));
@@ -338,8 +338,8 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         });
 
         Observable.just(project)
-                .flatMap(projectsModel -> {
-                    removeProject.execute(projectsModel.asProject());
+                .flatMap(projectsItem -> {
+                    removeProject.execute(projectsItem.asProject());
 
                     return Observable.empty();
                 })
@@ -377,22 +377,22 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     /**
      * Change the clock activity status for project, i.e. clock in/out.
      *
-     * @param projectsModel Project to change clock activity status.
-     * @param date          Date and time to use for the clock activity change.
+     * @param projectsItem Project to change clock activity status.
+     * @param date         Date and time to use for the clock activity change.
      */
-    public void clockActivityChange(final ProjectsModel projectsModel, final Date date) {
-        Observable.just(projectsModel.asProject())
+    public void clockActivityChange(final ProjectsItem projectsItem, final Date date) {
+        Observable.just(projectsItem.asProject())
                 .flatMap(project -> clockActivityChangeViaUseCase(project, date))
                 .map(project -> {
                     List<Time> registeredTime = getRegisteredTime(project);
 
-                    return new ProjectsModel(project, registeredTime);
+                    return new ProjectsItem(project, registeredTime);
                 })
                 .compose(RxUtil.applySchedulers())
                 .doOnNext(this::postOngoingNotification)
-                .subscribe(new Subscriber<ProjectsModel>() {
+                .subscribe(new Subscriber<ProjectsItem>() {
                     @Override
-                    public void onNext(ProjectsModel project) {
+                    public void onNext(ProjectsItem project) {
                         Timber.d("clockActivityChange onNext");
 
                         performWithView(view -> view.updateProject(project));
@@ -406,7 +406,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                         Timber.w(e, "Failed to change clock activity");
 
                         performWithView(view -> {
-                            if (projectsModel.isActive()) {
+                            if (projectsItem.isActive()) {
                                 view.showClockOutErrorMessage();
                                 return;
                             }
@@ -430,8 +430,8 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         }
     }
 
-    private void postOngoingNotification(ProjectsModel projectsModel) {
-        Project project = projectsModel.asProject();
+    private void postOngoingNotification(ProjectsItem projectsItem) {
+        Project project = projectsItem.asProject();
 
         NotificationManager manager = (NotificationManager) getContext()
                 .getSystemService(Context.NOTIFICATION_SERVICE);

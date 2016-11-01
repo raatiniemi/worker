@@ -32,21 +32,21 @@ import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelEqualsHashCodeTest {
+public class ProjectsItemEqualsHashCodeTest {
     private String message;
     private Boolean expected;
-    private ProjectsModel projectsModel;
+    private ProjectsItem projectsItem;
     private Object compareTo;
 
-    public ProjectsModelEqualsHashCodeTest(
+    public ProjectsItemEqualsHashCodeTest(
             String message,
             Boolean expected,
-            ProjectsModel projectsModel,
+            ProjectsItem projectsItem,
             Object compareTo
     ) {
         this.message = message;
         this.expected = expected;
-        this.projectsModel = projectsModel;
+        this.projectsItem = projectsItem;
         this.compareTo = compareTo;
     }
 
@@ -56,32 +56,32 @@ public class ProjectsModelEqualsHashCodeTest {
         Project project = new Project.Builder("Name")
                 .id(1L)
                 .build();
-        ProjectsModel projectsModel = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "With same instance",
                                 Boolean.TRUE,
-                                projectsModel,
-                                projectsModel
+                                projectsItem,
+                                projectsItem
                         },
                         {
                                 "With null",
                                 Boolean.FALSE,
-                                projectsModel,
+                                projectsItem,
                                 null
                         },
                         {
                                 "With incompatible object",
                                 Boolean.FALSE,
-                                projectsModel,
+                                projectsItem,
                                 ""
                         },
                         {
                                 "With different project",
                                 Boolean.FALSE,
-                                projectsModel,
-                                new ProjectsModel(
+                                projectsItem,
+                                new ProjectsItem(
                                         new Project.Builder("Project name")
                                                 .id(2L)
                                                 .build()
@@ -106,17 +106,17 @@ public class ProjectsModelEqualsHashCodeTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, projectsModel.equals(compareTo));
+        assertTrue(message, projectsItem.equals(compareTo));
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, projectsModel.hashCode() == compareTo.hashCode());
+        assertTrue(message, projectsItem.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, projectsModel.equals(compareTo));
+        assertFalse(message, projectsItem.equals(compareTo));
 
         validateHashCodeWhenNotEqual();
     }
@@ -126,6 +126,6 @@ public class ProjectsModelEqualsHashCodeTest {
             return;
         }
 
-        assertFalse(message, projectsModel.hashCode() == compareTo.hashCode());
+        assertFalse(message, projectsItem.hashCode() == compareTo.hashCode());
     }
 }

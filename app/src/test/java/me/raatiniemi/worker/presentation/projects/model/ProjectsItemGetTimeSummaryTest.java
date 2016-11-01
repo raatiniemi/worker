@@ -32,11 +32,11 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelGetTimeSummaryTest {
+public class ProjectsItemGetTimeSummaryTest {
     private String expected;
     private Time[] registeredTime;
 
-    public ProjectsModelGetTimeSummaryTest(String expected, Time... registeredTime) {
+    public ProjectsItemGetTimeSummaryTest(String expected, Time... registeredTime) {
         this.expected = expected;
         this.registeredTime = registeredTime;
     }
@@ -81,8 +81,8 @@ public class ProjectsModelGetTimeSummaryTest {
         Project project = new Project.Builder("Project name")
                 .build();
         project.addTime(Arrays.asList(registeredTime));
-        ProjectsModel model = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
 
-        assertEquals(expected, model.getTimeSummary());
+        assertEquals(expected, projectsItem.getTimeSummary());
     }
 }

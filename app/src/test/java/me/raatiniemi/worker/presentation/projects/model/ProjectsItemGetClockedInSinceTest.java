@@ -38,12 +38,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelGetClockedInSinceTest extends ProjectsModelResourceTest {
+public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest {
     private String message;
     private String expected;
     private Time[] registeredTime;
 
-    public ProjectsModelGetClockedInSinceTest(
+    public ProjectsItemGetClockedInSinceTest(
             String message,
             String expected,
             Time... registeredTime
@@ -114,13 +114,13 @@ public class ProjectsModelGetClockedInSinceTest extends ProjectsModelResourceTes
     public void getClockedInSince() throws InvalidProjectNameException {
         Project project = new Project.Builder("Project name")
                 .build();
-        ProjectsModel model = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
         if (isNull(registeredTime)) {
-            assertNull(message, model.getClockedInSince(getResources()));
+            assertNull(message, projectsItem.getClockedInSince(getResources()));
             return;
         }
         project.addTime(Arrays.asList(registeredTime));
 
-        assertEquals(expected, model.getClockedInSince(getResources()));
+        assertEquals(expected, projectsItem.getClockedInSince(getResources()));
     }
 }

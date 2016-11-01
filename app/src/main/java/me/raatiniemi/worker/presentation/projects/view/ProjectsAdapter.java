@@ -27,14 +27,14 @@ import java.util.Collections;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.comparator.ProjectComparator;
-import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 
 /**
  * Adapter for listing available projects.
  */
-class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewHolder> {
+class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHolder> {
     private final OnProjectActionListener onProjectActionListener;
     private final HintedImageButtonListener hintedImageButtonListener;
 
@@ -75,7 +75,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewH
 
     @Override
     public void onBindViewHolder(final ProjectsItemViewHolder vh, int index) {
-        final ProjectsModel item = get(index);
+        final ProjectsItem item = get(index);
 
         vh.name.setText(item.getTitle());
         vh.time.setText(item.getTimeSummary());
@@ -102,7 +102,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewH
         vh.delete.setOnLongClickListener(hintedImageButtonListener);
     }
 
-    int findProject(final ProjectsModel project) {
+    int findProject(final ProjectsItem project) {
         // TODO: Clean up the comparator.
         final ProjectComparator comparator = new ProjectComparator();
         int position = Collections.binarySearch(

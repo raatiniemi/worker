@@ -27,22 +27,22 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
-public class ProjectsModelTest {
+public class ProjectsItemTest {
     @Test
     public void asProject() throws InvalidProjectNameException {
         Project project = new Project.Builder("Project name")
                 .build();
-        ProjectsModel model = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
 
-        assertTrue(project == model.asProject());
+        assertTrue(project == projectsItem.asProject());
     }
 
     @Test
     public void getTitle() throws InvalidProjectNameException {
         Project project = new Project.Builder("Project name")
                 .build();
-        ProjectsModel model = new ProjectsModel(project);
+        ProjectsItem projectsItem = new ProjectsItem(project);
 
-        assertEquals("Project name", model.getTitle());
+        assertEquals("Project name", projectsItem.getTitle());
     }
 }

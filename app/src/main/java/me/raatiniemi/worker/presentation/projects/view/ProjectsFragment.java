@@ -38,7 +38,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
-import me.raatiniemi.worker.presentation.projects.model.ProjectsModel;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.Settings;
@@ -122,7 +122,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      * @inheritDoc
      */
     @Override
-    public List<ProjectsModel> getProjects() {
+    public List<ProjectsItem> getProjects() {
         return getAdapter().getItems();
     }
 
@@ -142,7 +142,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      * @inheritDoc
      */
     @Override
-    public void addProjects(List<ProjectsModel> projects) {
+    public void addProjects(List<ProjectsItem> projects) {
         getAdapter().add(projects);
     }
 
@@ -151,7 +151,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      */
     @Override
     public void addCreatedProject(@NonNull Project project) {
-        ProjectsModel item = new ProjectsModel(project);
+        ProjectsItem item = new ProjectsItem(project);
         int position = getAdapter().add(item);
 
         recyclerView.scrollToPosition(position);
@@ -170,7 +170,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void updateProject(ProjectsModel project) {
+    public void updateProject(ProjectsItem project) {
         int position = getAdapter().findProject(project);
         if (RecyclerView.NO_POSITION == position) {
             Timber.e("Unable to find position for project in the adapter");
@@ -218,7 +218,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @Override
     public void restoreProjectAtPreviousPosition(
             int previousPosition,
-            ProjectsModel project
+            ProjectsItem project
     ) {
         getAdapter().add(previousPosition, project);
 
@@ -296,7 +296,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
         try {
             // Retrieve the project from the retrieved position.
-            final ProjectsModel item = getAdapter().get(position);
+            final ProjectsItem item = getAdapter().get(position);
             final Project project = item.asProject();
 
             Intent intent = ProjectActivity.newIntent(
@@ -315,7 +315,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onClockActivityToggle(@NonNull final ProjectsModel project) {
+    public void onClockActivityToggle(@NonNull final ProjectsItem project) {
         if (project.isActive()) {
             // Check if clock out require confirmation.
             if (!Settings.shouldConfirmClockOut(getActivity())) {
@@ -336,7 +336,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onClockActivityAt(@NonNull final ProjectsModel project) {
+    public void onClockActivityAt(@NonNull final ProjectsItem project) {
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
                 project.asProject(),
                 calendar -> getPresenter().clockActivityChange(project, calendar.getTime())
@@ -348,7 +348,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     }
 
     @Override
-    public void onDelete(@NonNull final ProjectsModel project) {
+    public void onDelete(@NonNull final ProjectsItem project) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)

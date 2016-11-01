@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.projects.model;
+package me.raatiniemi.worker.presentation.project.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,25 +22,20 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
-
-import me.raatiniemi.worker.domain.model.Project;
+import java.util.GregorianCalendar;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class ProjectsModelGetHelpTextForClockActivityAtTest extends ProjectsModelResourceTest {
+public class TimesheetGroupItemGetTitleTest {
     private String expected;
-    private Project project;
+    private Calendar calendar;
 
-    public ProjectsModelGetHelpTextForClockActivityAtTest(
-            String expected,
-            Project project
-    ) {
+    public TimesheetGroupItemGetTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
-        this.project = project;
+        this.calendar = calendar;
     }
 
     @Parameters
@@ -48,28 +43,17 @@ public class ProjectsModelGetHelpTextForClockActivityAtTest extends ProjectsMode
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Clock in at given date and time",
-                                mockProjectWithActiveIndicator(Boolean.FALSE)
-                        },
-                        {
-                                "Clock out at given date and time",
-                                mockProjectWithActiveIndicator(Boolean.TRUE)
+                                "Sun (Feb 28)",
+                                new GregorianCalendar(2016, 1, 28)
                         }
                 }
         );
     }
 
-    private static Project mockProjectWithActiveIndicator(boolean isProjectActive) {
-        Project project = mock(Project.class);
-        when(project.isActive()).thenReturn(isProjectActive);
-
-        return project;
-    }
-
     @Test
-    public void getHelpTextForClockActivityAt() {
-        ProjectsModel model = new ProjectsModel(project);
+    public void getTitle() {
+        TimesheetGroupItem groupItem = new TimesheetGroupItem(calendar.getTime());
 
-        assertEquals(expected, model.getHelpTextForClockActivityAt(getResources()));
+        assertEquals(expected, groupItem.getTitle());
     }
 }
