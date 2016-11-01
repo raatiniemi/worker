@@ -35,16 +35,10 @@ import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
  * Adapter for listing available projects.
  */
 class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewHolder> {
-    /**
-     * Listener for project actions.
-     */
     private final OnProjectActionListener onProjectActionListener;
-    private final Resources resources;
-
-    /**
-     * Listener for hinting images.
-     */
     private final HintedImageButtonListener hintedImageButtonListener;
+
+    private final Resources resources;
 
     /**
      * Construct the ProjectsAdapter.
@@ -62,6 +56,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsModel, ProjectsItemViewH
 
         this.onProjectActionListener = onProjectActionListener;
         this.hintedImageButtonListener = hintedImageButtonListener;
+
         resources = getContext().getResources();
     }
 
