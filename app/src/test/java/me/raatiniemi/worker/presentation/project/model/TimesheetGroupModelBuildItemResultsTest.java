@@ -50,16 +50,16 @@ public class TimesheetGroupModelBuildItemResultsTest {
         this.timesheetGroupModel = timesheetGroupModel;
     }
 
-    private static TimesheetGroupModel buildTimesheetGroupWithNumberOfChildModelItems(
-            int numberOfChildModelItems
+    private static TimesheetGroupModel buildTimesheetGroupWithNumberOfChildItems(
+            int numberOfChildItems
     ) throws ClockOutBeforeClockInException {
         TimesheetGroupModel groupModel = new TimesheetGroupModel(new Date());
-        if (0 == numberOfChildModelItems) {
+        if (0 == numberOfChildItems) {
             return groupModel;
         }
 
-        for (int i = 0; i < numberOfChildModelItems; i++) {
-            groupModel.add(new TimesheetChildModel(buildTime()));
+        for (int i = 0; i < numberOfChildItems; i++) {
+            groupModel.add(new TimesheetChildItem(buildTime()));
         }
 
         return groupModel;
@@ -80,7 +80,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
                                 new TimeInAdapterResult[]{
                                 },
                                 0,
-                                buildTimesheetGroupWithNumberOfChildModelItems(0)
+                                buildTimesheetGroupWithNumberOfChildItems(0)
                         },
                         {
                                 "With one item",
@@ -88,7 +88,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
                                         TimeInAdapterResult.build(1, 0, buildTime())
                                 },
                                 1,
-                                buildTimesheetGroupWithNumberOfChildModelItems(1)
+                                buildTimesheetGroupWithNumberOfChildItems(1)
                         },
                         {
                                 "With multiple items",
@@ -101,7 +101,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
                                         TimeInAdapterResult.build(2, 5, buildTime()),
                                 },
                                 2,
-                                buildTimesheetGroupWithNumberOfChildModelItems(6)
+                                buildTimesheetGroupWithNumberOfChildItems(6)
                         }
                 }
         );

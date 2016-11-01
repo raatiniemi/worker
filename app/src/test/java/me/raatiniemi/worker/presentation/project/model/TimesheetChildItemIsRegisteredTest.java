@@ -22,25 +22,22 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
-import static junit.framework.Assert.assertEquals;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class TimesheetChildModelGetTitleTest {
+public class TimesheetChildItemIsRegisteredTest {
     private String message;
-    private String expected;
+    private boolean expected;
     private Time time;
 
-    public TimesheetChildModelGetTitleTest(
+    public TimesheetChildItemIsRegisteredTest(
             String message,
-            String expected,
+            boolean expected,
             Time time
     ) {
         this.message = message;
@@ -54,41 +51,34 @@ public class TimesheetChildModelGetTitleTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "active time",
-                                "08:00",
-                                buildTime(
-                                        new GregorianCalendar(2016, 1, 28, 8, 0),
-                                        null
-                                )
+                                "is registered",
+                                Boolean.TRUE,
+                                buildTime(true)
                         },
                         {
-                                "inactive time",
-                                "08:00 - 11:30",
-                                buildTime(
-                                        new GregorianCalendar(2016, 1, 28, 8, 0),
-                                        new GregorianCalendar(2016, 1, 28, 11, 30)
-                                )
+                                "is not registered",
+                                Boolean.FALSE,
+                                buildTime(false)
                         }
                 }
         );
     }
 
-    private static Time buildTime(Calendar start, Calendar stop)
+    private static Time buildTime(boolean registered)
             throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(1L)
-                .startInMilliseconds(start.getTimeInMillis());
+        Time.Builder builder = new Time.Builder(1L);
 
-        if (nonNull(stop)) {
-            builder.stopInMilliseconds(stop.getTimeInMillis());
+        if (registered) {
+            builder.register();
         }
 
         return builder.build();
     }
 
     @Test
-    public void getTitle() {
-        TimesheetChildModel item = new TimesheetChildModel(time);
+    public void isRegistered() {
+        TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertEquals(message, expected, item.getTitle());
+        assertTrue(message, expected == childItem.isRegistered());
     }
 }

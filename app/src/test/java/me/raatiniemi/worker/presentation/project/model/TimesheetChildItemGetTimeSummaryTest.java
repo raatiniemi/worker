@@ -30,11 +30,11 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetChildModelGetTimeSummaryTest {
+public class TimesheetChildItemGetTimeSummaryTest {
     private String expected;
     private Time time;
 
-    public TimesheetChildModelGetTimeSummaryTest(String expected, Time time) {
+    public TimesheetChildItemGetTimeSummaryTest(String expected, Time time) {
         this.expected = expected;
         this.time = time;
     }
@@ -62,8 +62,8 @@ public class TimesheetChildModelGetTimeSummaryTest {
 
     @Test
     public void getTimeSummary() {
-        TimesheetChildModel item = new TimesheetChildModel(time);
+        TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertEquals(expected, item.getTimeSummary());
+        assertEquals(expected, childItem.getTimeSummary());
     }
 }

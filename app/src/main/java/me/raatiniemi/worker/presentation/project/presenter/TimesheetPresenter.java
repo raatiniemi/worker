@@ -35,7 +35,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetChildModel;
+import me.raatiniemi.worker.presentation.project.model.TimesheetChildItem;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.RxUtil;
@@ -128,7 +128,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     for (Map.Entry<Date, List<Time>> date : result.entrySet()) {
                         TimesheetGroupModel item = new TimesheetGroupModel(date.getKey());
                         for (Time time : date.getValue()) {
-                            item.add(new TimesheetChildModel(time));
+                            item.add(new TimesheetChildItem(time));
                         }
 
                         items.add(item);

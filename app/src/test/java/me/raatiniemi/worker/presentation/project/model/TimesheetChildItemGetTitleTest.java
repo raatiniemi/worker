@@ -22,22 +22,25 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
+import static me.raatiniemi.util.NullUtil.nonNull;
 
 @RunWith(Parameterized.class)
-public class TimesheetChildModelIsRegisteredTest {
+public class TimesheetChildItemGetTitleTest {
     private String message;
-    private boolean expected;
+    private String expected;
     private Time time;
 
-    public TimesheetChildModelIsRegisteredTest(
+    public TimesheetChildItemGetTitleTest(
             String message,
-            boolean expected,
+            String expected,
             Time time
     ) {
         this.message = message;
@@ -51,34 +54,41 @@ public class TimesheetChildModelIsRegisteredTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "is registered",
-                                Boolean.TRUE,
-                                buildTime(true)
+                                "active time",
+                                "08:00",
+                                buildTime(
+                                        new GregorianCalendar(2016, 1, 28, 8, 0),
+                                        null
+                                )
                         },
                         {
-                                "is not registered",
-                                Boolean.FALSE,
-                                buildTime(false)
+                                "inactive time",
+                                "08:00 - 11:30",
+                                buildTime(
+                                        new GregorianCalendar(2016, 1, 28, 8, 0),
+                                        new GregorianCalendar(2016, 1, 28, 11, 30)
+                                )
                         }
                 }
         );
     }
 
-    private static Time buildTime(boolean registered)
+    private static Time buildTime(Calendar start, Calendar stop)
             throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(1L);
+        Time.Builder builder = new Time.Builder(1L)
+                .startInMilliseconds(start.getTimeInMillis());
 
-        if (registered) {
-            builder.register();
+        if (nonNull(stop)) {
+            builder.stopInMilliseconds(stop.getTimeInMillis());
         }
 
         return builder.build();
     }
 
     @Test
-    public void isRegistered() {
-        TimesheetChildModel item = new TimesheetChildModel(time);
+    public void getTitle() {
+        TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertTrue(message, expected == item.isRegistered());
+        assertEquals(message, expected, childItem.getTitle());
     }
 }

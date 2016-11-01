@@ -26,7 +26,7 @@ import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public class TimesheetChildModel {
+public class TimesheetChildItem {
     private static final String TIME_SEPARATOR = " - ";
     private static final DateIntervalFormat intervalFormat;
 
@@ -37,7 +37,7 @@ public class TimesheetChildModel {
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private final Time time;
 
-    public TimesheetChildModel(Time time) {
+    public TimesheetChildItem(Time time) {
         this.time = time;
     }
 

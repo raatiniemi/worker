@@ -33,14 +33,14 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class TimesheetGroupModelIsRegisteredTest {
     private boolean expected;
-    private TimesheetChildModel[] children;
+    private TimesheetChildItem[] childItems;
 
     public TimesheetGroupModelIsRegisteredTest(
             boolean expected,
-            TimesheetChildModel... children
+            TimesheetChildItem... childItems
     ) {
         this.expected = expected;
-        this.children = children;
+        this.childItems = childItems;
     }
 
     @Parameters
@@ -50,35 +50,35 @@ public class TimesheetGroupModelIsRegisteredTest {
                 new Object[][]{
                         {
                                 Boolean.TRUE,
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(true)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(true)
                                 }
                         },
                         {
                                 Boolean.FALSE,
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(false)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(false)
                                 }
                         },
                         {
                                 Boolean.FALSE,
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(false),
-                                        buildTimesheetChildModel(true)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(false),
+                                        buildTimesheetChildItem(true)
                                 }
                         },
                         {
                                 Boolean.TRUE,
-                                new TimesheetChildModel[]{
-                                        buildTimesheetChildModel(true),
-                                        buildTimesheetChildModel(true)
+                                new TimesheetChildItem[]{
+                                        buildTimesheetChildItem(true),
+                                        buildTimesheetChildItem(true)
                                 }
                         }
                 }
         );
     }
 
-    private static TimesheetChildModel buildTimesheetChildModel(boolean registered)
+    private static TimesheetChildItem buildTimesheetChildItem(boolean registered)
             throws ClockOutBeforeClockInException {
         Time.Builder builder = new Time.Builder(1L);
 
@@ -87,14 +87,14 @@ public class TimesheetGroupModelIsRegisteredTest {
         }
 
         Time time = builder.build();
-        return new TimesheetChildModel(time);
+        return new TimesheetChildItem(time);
     }
 
     @Test
     public void isRegistered() {
         TimesheetGroupModel item = new TimesheetGroupModel(new Date());
-        for (TimesheetChildModel child : children) {
-            item.add(child);
+        for (TimesheetChildItem childItem : childItems) {
+            item.add(childItem);
         }
 
         assertEquals(expected, item.isRegistered());

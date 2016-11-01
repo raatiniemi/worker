@@ -26,13 +26,13 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
-public class TimesheetChildModelTest {
+public class TimesheetChildItemTest {
     @Test
     public void asTime() throws ClockOutBeforeClockInException {
         Time time = new Time.Builder(1L).build();
-        TimesheetChildModel model = new TimesheetChildModel(time);
+        TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertTrue(time == model.asTime());
+        assertTrue(time == childItem.asTime());
     }
 
     @Test
@@ -40,8 +40,8 @@ public class TimesheetChildModelTest {
         Time time = new Time.Builder(1L)
                 .id(2L)
                 .build();
-        TimesheetChildModel model = new TimesheetChildModel(time);
+        TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertTrue(time.getId() == model.getId());
+        assertTrue(time.getId() == childItem.getId());
     }
 }
