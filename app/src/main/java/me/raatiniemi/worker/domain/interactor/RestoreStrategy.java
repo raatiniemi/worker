@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.interactor;
 /**
  * Interface for different backup restoration strategies.
  */
+@FunctionalInterface
 public interface RestoreStrategy {
     /**
      * Run the backup restoration process.

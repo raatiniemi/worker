@@ -27,6 +27,7 @@ package me.raatiniemi.worker.domain.mapper;
  * @param <T> Type reference for the transformation destination.
  * @param <F> Type reference for the domain entity.
  */
+@FunctionalInterface
 public interface DataMapper<T, F> {
     /**
      * Perform the transformation.

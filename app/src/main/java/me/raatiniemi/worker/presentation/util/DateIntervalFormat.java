@@ -19,6 +19,7 @@ package me.raatiniemi.worker.presentation.util;
 /**
  * Interface for different date interval formatter implementations.
  */
+@FunctionalInterface
 public interface DateIntervalFormat {
     /**
      * Format an interval in milliseconds.

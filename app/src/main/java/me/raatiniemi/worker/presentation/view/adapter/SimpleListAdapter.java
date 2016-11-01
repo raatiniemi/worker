@@ -257,6 +257,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * Click listener interface for list items.
      */
+    @FunctionalInterface
     public interface OnItemClickListener {
         /**
          * Handles list item click events.

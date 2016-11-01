@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.interactor;
 /**
  * Interface for different backup strategies.
  */
+@FunctionalInterface
 public interface BackupStrategy {
     /**
      * Run the backup process.
