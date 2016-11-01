@@ -31,11 +31,11 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupModelIsRegisteredTest {
+public class TimesheetGroupItemIsRegisteredTest {
     private boolean expected;
     private TimesheetChildItem[] childItems;
 
-    public TimesheetGroupModelIsRegisteredTest(
+    public TimesheetGroupItemIsRegisteredTest(
             boolean expected,
             TimesheetChildItem... childItems
     ) {
@@ -92,11 +92,11 @@ public class TimesheetGroupModelIsRegisteredTest {
 
     @Test
     public void isRegistered() {
-        TimesheetGroupModel item = new TimesheetGroupModel(new Date());
+        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
         for (TimesheetChildItem childItem : childItems) {
-            item.add(childItem);
+            groupItem.add(childItem);
         }
 
-        assertEquals(expected, item.isRegistered());
+        assertEquals(expected, groupItem.isRegistered());
     }
 }

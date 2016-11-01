@@ -36,7 +36,7 @@ import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildItem;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
@@ -124,24 +124,24 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     );
                 })
                 .map(result -> {
-                    List<TimesheetGroupModel> items = new ArrayList<>();
+                    List<TimesheetGroupItem> groupItems = new ArrayList<>();
                     for (Map.Entry<Date, List<Time>> date : result.entrySet()) {
-                        TimesheetGroupModel item = new TimesheetGroupModel(date.getKey());
+                        TimesheetGroupItem groupItem = new TimesheetGroupItem(date.getKey());
                         for (Time time : date.getValue()) {
-                            item.add(new TimesheetChildItem(time));
+                            groupItem.add(new TimesheetChildItem(time));
                         }
 
-                        items.add(item);
+                        groupItems.add(groupItem);
                     }
-                    return items;
+                    return groupItems;
                 })
                 .compose(RxUtil.applySchedulers())
-                .subscribe(new Subscriber<List<TimesheetGroupModel>>() {
+                .subscribe(new Subscriber<List<TimesheetGroupItem>>() {
                     @Override
-                    public void onNext(List<TimesheetGroupModel> items) {
+                    public void onNext(List<TimesheetGroupItem> groupItems) {
                         Timber.d("getTimesheet onNext");
 
-                        performWithView(view -> view.add(items));
+                        performWithView(view -> view.add(groupItems));
                     }
 
                     @Override

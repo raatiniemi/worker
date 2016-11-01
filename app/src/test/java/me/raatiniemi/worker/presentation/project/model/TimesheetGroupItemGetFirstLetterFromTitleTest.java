@@ -29,11 +29,11 @@ import java.util.GregorianCalendar;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupModelGetTitleTest {
+public class TimesheetGroupItemGetFirstLetterFromTitleTest {
     private String expected;
     private Calendar calendar;
 
-    public TimesheetGroupModelGetTitleTest(String expected, Calendar calendar) {
+    public TimesheetGroupItemGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
         this.calendar = calendar;
     }
@@ -43,17 +43,41 @@ public class TimesheetGroupModelGetTitleTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Sun (Feb 28)",
-                                new GregorianCalendar(2016, 1, 28)
+                                "F",
+                                new GregorianCalendar(2016, 6, 1)
+                        },
+                        {
+                                "S",
+                                new GregorianCalendar(2016, 6, 2)
+                        },
+                        {
+                                "S",
+                                new GregorianCalendar(2016, 6, 3)
+                        },
+                        {
+                                "M",
+                                new GregorianCalendar(2016, 6, 4)
+                        },
+                        {
+                                "T",
+                                new GregorianCalendar(2016, 6, 5)
+                        },
+                        {
+                                "W",
+                                new GregorianCalendar(2016, 6, 6)
+                        },
+                        {
+                                "T",
+                                new GregorianCalendar(2016, 6, 7)
                         }
                 }
         );
     }
 
     @Test
-    public void getTitle() {
-        TimesheetGroupModel item = new TimesheetGroupModel(calendar.getTime());
+    public void getFirstLetterFromTitle() {
+        TimesheetGroupItem groupItem = new TimesheetGroupItem(calendar.getTime());
 
-        assertEquals(expected, item.getTitle());
+        assertEquals(expected, groupItem.getFirstLetterFromTitle());
     }
 }

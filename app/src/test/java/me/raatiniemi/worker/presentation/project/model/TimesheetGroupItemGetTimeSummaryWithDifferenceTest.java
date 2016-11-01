@@ -31,11 +31,11 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupModelGetTimeSummaryWithDifferenceTest {
+public class TimesheetGroupItemGetTimeSummaryWithDifferenceTest {
     private String expected;
     private TimesheetChildItem[] childItems;
 
-    public TimesheetGroupModelGetTimeSummaryWithDifferenceTest(
+    public TimesheetGroupItemGetTimeSummaryWithDifferenceTest(
             String expected,
             TimesheetChildItem... childItems
     ) {
@@ -103,11 +103,11 @@ public class TimesheetGroupModelGetTimeSummaryWithDifferenceTest {
 
     @Test
     public void getTimeSummaryWithDifference() {
-        TimesheetGroupModel item = new TimesheetGroupModel(new Date());
+        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
         for (TimesheetChildItem childItem : childItems) {
-            item.add(childItem);
+            groupItem.add(childItem);
         }
 
-        assertEquals(expected, item.getTimeSummaryWithDifference());
+        assertEquals(expected, groupItem.getTimeSummaryWithDifference());
     }
 }

@@ -32,37 +32,37 @@ import me.raatiniemi.worker.domain.model.Time;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupModelBuildItemResultsTest {
+public class TimesheetGroupItemBuildItemResultsTest {
     private String message;
     private List<TimeInAdapterResult> expected;
     private int groupIndex;
-    private TimesheetGroupModel timesheetGroupModel;
+    private TimesheetGroupItem groupItem;
 
-    public TimesheetGroupModelBuildItemResultsTest(
+    public TimesheetGroupItemBuildItemResultsTest(
             String message,
             TimeInAdapterResult[] expected,
             int groupIndex,
-            TimesheetGroupModel timesheetGroupModel
+            TimesheetGroupItem groupItem
     ) {
         this.message = message;
         this.expected = Arrays.asList(expected);
         this.groupIndex = groupIndex;
-        this.timesheetGroupModel = timesheetGroupModel;
+        this.groupItem = groupItem;
     }
 
-    private static TimesheetGroupModel buildTimesheetGroupWithNumberOfChildItems(
+    private static TimesheetGroupItem buildTimesheetGroupWithNumberOfChildItems(
             int numberOfChildItems
     ) throws ClockOutBeforeClockInException {
-        TimesheetGroupModel groupModel = new TimesheetGroupModel(new Date());
+        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
         if (0 == numberOfChildItems) {
-            return groupModel;
+            return groupItem;
         }
 
         for (int i = 0; i < numberOfChildItems; i++) {
-            groupModel.add(new TimesheetChildItem(buildTime()));
+            groupItem.add(new TimesheetChildItem(buildTime()));
         }
 
-        return groupModel;
+        return groupItem;
     }
 
     private static Time buildTime() throws ClockOutBeforeClockInException {
@@ -110,7 +110,7 @@ public class TimesheetGroupModelBuildItemResultsTest {
     @Test
     public void buildItemResultsWithGroupIndex() {
         List<TimeInAdapterResult> actual =
-                timesheetGroupModel.buildItemResultsWithGroupIndex(groupIndex);
+                groupItem.buildItemResultsWithGroupIndex(groupIndex);
 
         assertEquals(message, expected, actual);
     }

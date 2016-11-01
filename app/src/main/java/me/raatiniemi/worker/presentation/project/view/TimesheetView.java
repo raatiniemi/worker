@@ -19,13 +19,13 @@ package me.raatiniemi.worker.presentation.project.view;
 import java.util.List;
 
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.view.MvpView;
 
 public interface TimesheetView extends MvpView {
     long getProjectId();
 
-    void add(List<TimesheetGroupModel> items);
+    void add(List<TimesheetGroupItem> groupItems);
 
     void update(List<TimeInAdapterResult> results);
 

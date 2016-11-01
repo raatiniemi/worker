@@ -10,7 +10,7 @@ import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public class TimesheetGroupModel
+public class TimesheetGroupItem
         extends ExpandableItem<Date, TimesheetChildItem> {
     private static final DateIntervalFormat intervalFormat;
 
@@ -20,7 +20,7 @@ public class TimesheetGroupModel
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.getDefault());
 
-    public TimesheetGroupModel(Date group) {
+    public TimesheetGroupItem(Date group) {
         super(group);
     }
 

@@ -35,7 +35,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildItem;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroupModel;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.util.SelectionManagerAdapterDecorator;
 import me.raatiniemi.worker.presentation.view.adapter.ExpandableListAdapter;
@@ -44,7 +44,7 @@ import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 class TimesheetAdapter extends ExpandableListAdapter<
         Date,
         TimesheetChildItem,
-        TimesheetGroupModel,
+        TimesheetGroupItem,
         TimesheetAdapter.GroupItemViewHolder,
         TimesheetAdapter.ChildItemViewHolder
         > {
@@ -85,16 +85,16 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindGroupViewHolder(GroupItemViewHolder vh, int group, int viewType) {
-        TimesheetGroupModel item = get(group);
+        TimesheetGroupItem groupItem = get(group);
 
-        vh.title.setText(item.getTitle());
-        vh.summarize.setText(item.getTimeSummaryWithDifference());
+        vh.title.setText(groupItem.getTitle());
+        vh.summarize.setText(groupItem.getTimeSummaryWithDifference());
 
         vh.letter.setImageDrawable(
-                LetterDrawable.build(item.getFirstLetterFromTitle())
+                LetterDrawable.build(groupItem.getFirstLetterFromTitle())
         );
 
-        final List<TimeInAdapterResult> results = item.buildItemResultsWithGroupIndex(group);
+        final List<TimeInAdapterResult> results = groupItem.buildItemResultsWithGroupIndex(group);
 
         vh.letter.setOnLongClickListener(view -> {
             if (selectionManager.isSelectionActivated()) {
@@ -123,7 +123,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         // it. The selected background color should take precedence.
         vh.itemView.setActivated(false);
         if (!vh.itemView.isSelected()) {
-            vh.itemView.setActivated(item.isRegistered());
+            vh.itemView.setActivated(groupItem.isRegistered());
         }
     }
 
@@ -185,8 +185,8 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getGroupId(int group) {
-        TimesheetGroupModel groupModel = get(group);
-        return groupModel.getId();
+        TimesheetGroupItem groupItem = get(group);
+        return groupItem.getId();
     }
 
     @Override
