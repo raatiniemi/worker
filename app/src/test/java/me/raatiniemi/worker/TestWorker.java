@@ -16,6 +16,9 @@
 
 package me.raatiniemi.worker;
 
+import android.annotation.SuppressLint;
+
+@SuppressLint("Registered")
 @SuppressWarnings("unused")
 public class TestWorker extends Worker {
     @Override
