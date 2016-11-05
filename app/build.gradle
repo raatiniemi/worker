@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 
-def androidSupportVersion = '24.2.1'
+def androidSupportVersion = '25.0.0'
 def timberVersion = '4.3.1'
 def daggerVersion = '2.7';
 def butterKnifeVersion = '8.4.0'
@@ -31,13 +31,13 @@ Closure<String> getVersionNameFromTag = {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "me.raatiniemi.worker"
         minSdkVersion 21
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode getVersionCodeFromNumberOfTags()
         versionName getVersionNameFromTag()
 
