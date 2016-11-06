@@ -93,10 +93,11 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * Performs the action with the view, and return the result.
      *
      * @param viewFunction Action to fetch the data from view.
-     * @param <T> Type of the data to return.
+     * @param <T>          Type of the data to return.
      * @return Data fetched from the view.
      */
-    @UiThread @Nullable
+    @UiThread
+    @Nullable
     protected <T> T getFromView(@NonNull ViewFunction<V, T> viewFunction) {
         V view = getView();
         if (isNull(view)) {

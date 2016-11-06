@@ -46,8 +46,8 @@ public class GetTimesheet {
     /**
      * Get segment from project timesheet.
      *
-     * @param projectId Id for project.
-     * @param offset Offset for segment.
+     * @param projectId          Id for project.
+     * @param offset             Offset for segment.
      * @param hideRegisteredTime Should registered time be hidden.
      * @return Segment of project timesheet.
      */
