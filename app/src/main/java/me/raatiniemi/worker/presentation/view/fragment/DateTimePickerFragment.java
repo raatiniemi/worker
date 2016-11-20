@@ -22,6 +22,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -44,7 +45,9 @@ public class DateTimePickerFragment extends BaseFragment
 
     private OnDateTimeSetListener onDateTimeSetListener;
 
+    @Nullable
     private Calendar minDate;
+    @Nullable
     private Calendar maxDate;
 
     private DatePickerFragment datePicker;
@@ -93,9 +96,13 @@ public class DateTimePickerFragment extends BaseFragment
         // The "onDismiss"-event will run for both set date and cancel.
         datePicker.setOnCancelListener(dialogInterface -> dismiss());
 
-        // Set the min/max date for the picker.
-        datePicker.setMaxDate(maxDate);
-        datePicker.setMinDate(minDate);
+        if (nonNull(maxDate)) {
+            datePicker.setMaxDate(maxDate);
+        }
+
+        if (nonNull(minDate)) {
+            datePicker.setMinDate(minDate);
+        }
 
         showFragmentWithTag(datePicker, FRAGMENT_DATE_PICKER_TAG);
     }
