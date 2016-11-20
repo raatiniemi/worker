@@ -4,6 +4,7 @@ apply plugin: 'org.sonarqube'
 
 def androidSupportVersion = '25.0.0'
 def timberVersion = '4.3.1'
+def rxRelayVersion = '1.2.0'
 def daggerVersion = '2.7';
 def butterKnifeVersion = '8.4.0'
 def advancedrecyclerviewVersion = "0.9.1"
@@ -156,6 +157,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${androidSupportVersion}"
     compile "com.android.support:support-annotations:${androidSupportVersion}"
     compile "com.jakewharton.timber:timber:${timberVersion}"
+    compile "com.jakewharton.rxrelay:rxrelay:${rxRelayVersion}"
     compile "com.google.dagger:dagger:${daggerVersion}"
     compile "com.jakewharton:butterknife:${butterKnifeVersion}"
     compile "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${advancedrecyclerviewVersion}"
