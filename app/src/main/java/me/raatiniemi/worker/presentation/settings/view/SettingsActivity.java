@@ -21,9 +21,6 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -137,7 +134,7 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      *
      * @param key Key for the new preference screen.
      */
-    private void switchPreferenceScreen(String key) {
+    void switchPreferenceScreen(String key) {
         Fragment fragment;
         switch (key) {
             case SETTINGS_PROJECT_KEY:
@@ -288,42 +285,4 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 Snackbar.LENGTH_LONG
         ).show();
     }
-
-    public abstract static class BasePreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onResume() {
-            super.onResume();
-
-            // Set the title for the preference fragment.
-            getActivity().setTitle(getTitle());
-        }
-
-        SettingsActivity getSettingsActivity() {
-            return (SettingsActivity) getActivity();
-        }
-
-        @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-            super.onPreferenceTreeClick(preferenceScreen, preference);
-            if (preference instanceof PreferenceScreen) {
-                getSettingsActivity().switchPreferenceScreen(preference.getKey());
-            } else {
-                Timber.d("Preference '%s' is not implemented", preference.getTitle());
-                Snackbar.make(
-                        getActivity().findViewById(android.R.id.content),
-                        R.string.error_message_preference_not_implemented,
-                        Snackbar.LENGTH_SHORT
-                ).show();
-            }
-            return false;
-        }
-
-        /**
-         * Get the resource id for the preference fragment title.
-         *
-         * @return Resource id for the preference fragment title.
-         */
-        public abstract int getTitle();
-    }
-
 }

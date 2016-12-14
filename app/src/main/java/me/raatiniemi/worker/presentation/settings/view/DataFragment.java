@@ -41,7 +41,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
-public class DataFragment extends SettingsActivity.BasePreferenceFragment {
+public class DataFragment extends BasePreferenceFragment {
     /**
      * Key for the data backup preference.
      */

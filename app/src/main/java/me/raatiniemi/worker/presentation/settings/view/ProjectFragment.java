@@ -27,7 +27,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.util.Settings;
 import timber.log.Timber;
 
-public class ProjectFragment extends SettingsActivity.BasePreferenceFragment
+public class ProjectFragment extends BasePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     /**
      * Key for confirm clock out preference.

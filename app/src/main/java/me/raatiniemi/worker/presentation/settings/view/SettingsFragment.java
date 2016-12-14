@@ -20,7 +20,7 @@ import android.os.Bundle;
 
 import me.raatiniemi.worker.R;
 
-public class SettingsFragment extends SettingsActivity.BasePreferenceFragment {
+public class SettingsFragment extends BasePreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
