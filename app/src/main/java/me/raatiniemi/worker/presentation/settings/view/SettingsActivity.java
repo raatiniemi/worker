@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.settings.view;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -32,26 +31,17 @@ import android.support.v4.app.ActivityCompat;
 import android.view.MenuItem;
 import android.view.View;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.data.service.data.BackupService;
-import me.raatiniemi.worker.data.service.data.RestoreService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import me.raatiniemi.worker.presentation.view.activity.MvpActivity;
 import timber.log.Timber;
 
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class SettingsActivity extends MvpActivity<SettingsPresenter>
         implements SettingsView, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -66,24 +56,14 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     private static final String SETTINGS_DATA_KEY = "settings_data";
 
     /**
-     * Key for the data backup preference.
-     */
-    private static final String SETTINGS_DATA_BACKUP_KEY = "settings_data_backup";
-
-    /**
-     * Key for the data restore preference.
-     */
-    private static final String SETTINGS_DATA_RESTORE_KEY = "settings_data_restore";
-
-    /**
      * Code for requesting permission for reading external storage.
      */
-    private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
+    static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     /**
      * Code for requesting permission for writing to external storage.
      */
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+    static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     @Inject
     SettingsPresenter presenter;
@@ -357,184 +337,6 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         @Override
         public int getTitle() {
             return R.string.activity_settings_title;
-        }
-    }
-
-    public static class DataFragment extends BasePreferenceFragment {
-        private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            addPreferencesFromResource(R.xml.settings_data);
-
-            // Check for the latest backup.
-            checkLatestBackup();
-        }
-
-        @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-            // Check if we support the user action, if not, send it to the
-            // parent which will handle it.
-            switch (preference.getKey()) {
-                case SETTINGS_DATA_BACKUP_KEY:
-                    runBackup();
-                    break;
-                case SETTINGS_DATA_RESTORE_KEY:
-                    runRestore();
-                    break;
-                default:
-                    return super.onPreferenceTreeClick(preferenceScreen, preference);
-            }
-
-            return false;
-        }
-
-        @Override
-        public int getTitle() {
-            return R.string.activity_settings_data;
-        }
-
-        /**
-         * Initiate the backup action.
-         */
-        private void runBackup() {
-            // We should only attempt to backup if permission to write
-            // to the external storage have been granted.
-            if (PermissionUtil.havePermission(getActivity(), WRITE_EXTERNAL_STORAGE)) {
-                Timber.d("Permission for writing to external storage is granted");
-                Snackbar.make(
-                        getActivity().findViewById(android.R.id.content),
-                        R.string.message_backing_up_data,
-                        Snackbar.LENGTH_SHORT
-                ).show();
-
-                BackupService.startBackup(getActivity());
-                return;
-            }
-
-            // We have not been granted permission to write to the external storage. Display
-            // the permission message and allow the user to initiate the permission request.
-            Timber.d("Permission for writing to external storage is not granted");
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    R.string.message_permission_write_backup,
-                    Snackbar.LENGTH_INDEFINITE
-            ).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(
-                    getActivity(),
-                    new String[]{WRITE_EXTERNAL_STORAGE},
-                    REQUEST_WRITE_EXTERNAL_STORAGE
-            )).show();
-        }
-
-        /**
-         * Initiate the restore action.
-         */
-        private void runRestore() {
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.activity_settings_restore_confirm_title)
-                    .setMessage(R.string.activity_settings_restore_confirm_message)
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        Snackbar.make(
-                                getActivity().findViewById(android.R.id.content),
-                                R.string.message_restoring_data,
-                                Snackbar.LENGTH_SHORT
-                        ).show();
-
-                        RestoreService.startRestore(getActivity());
-                    })
-                    .setNegativeButton(android.R.string.no, null)
-                    .show();
-        }
-
-        /**
-         * Get the latest backup, if permission have been granted.
-         */
-        private void checkLatestBackup() {
-            // We should only attempt to check the latest backup if permission
-            // to read the external storage have been granted.
-            if (PermissionUtil.havePermission(getActivity(), READ_EXTERNAL_STORAGE)) {
-                // Tell the SettingsActivity to fetch the latest backup.
-                Timber.d("Permission for reading external storage is granted");
-                getSettingsActivity().getPresenter()
-                        .getLatestBackup();
-
-                // No need to go any further.
-                return;
-            }
-
-            // We have not been granted permission to read the external storage. Display the
-            // permission message and allow the user to initiate the permission request.
-            Timber.d("Permission for reading external storage is not granted");
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    R.string.message_permission_read_backup,
-                    Snackbar.LENGTH_INDEFINITE
-            ).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(
-                    getActivity(),
-                    new String[]{READ_EXTERNAL_STORAGE},
-                    REQUEST_READ_EXTERNAL_STORAGE
-            )).show();
-        }
-
-        /**
-         * Set the backup summary based on the latest backup.
-         *
-         * @param backup Latest available backup.
-         */
-        void setBackupSummary(@Nullable Backup backup) {
-            Preference preference = findPreference(SETTINGS_DATA_BACKUP_KEY);
-            if (isNull(preference)) {
-                Timber.w("Unable to find preference with key: %s", SETTINGS_DATA_BACKUP_KEY);
-                return;
-            }
-
-            String text = getString(R.string.activity_settings_backup_unable_to_find);
-            if (nonNull(backup)) {
-                text = getString(R.string.activity_settings_backup_none_available);
-
-                Date date = backup.getDate();
-                if (nonNull(date)) {
-                    text = getString(
-                            R.string.activity_settings_backup_performed_at,
-                            format.format(date)
-                    );
-                }
-            }
-
-            preference.setSummary(text);
-        }
-
-        /**
-         * Set the restore summary based on the latest backup.
-         *
-         * @param backup Latest available backup.
-         */
-        void setRestoreSummary(@Nullable Backup backup) {
-            Preference preference = findPreference(SETTINGS_DATA_RESTORE_KEY);
-            if (isNull(preference)) {
-                Timber.w("Unable to find preference with key: %s", SETTINGS_DATA_RESTORE_KEY);
-                return;
-            }
-
-            String text = getString(R.string.activity_settings_restore_unable_to_find);
-            boolean enable = false;
-            if (nonNull(backup)) {
-                text = getString(R.string.activity_settings_restore_none_available);
-
-                Date date = backup.getDate();
-                if (nonNull(date)) {
-                    text = getString(
-                            R.string.activity_settings_restore_from,
-                            format.format(date)
-                    );
-                    enable = true;
-                }
-            }
-
-            preference.setSummary(text);
-            preference.setEnabled(enable);
         }
     }
 }
