@@ -326,17 +326,4 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
         public abstract int getTitle();
     }
 
-    public static class SettingsFragment extends BasePreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            addPreferencesFromResource(R.xml.settings);
-        }
-
-        @Override
-        public int getTitle() {
-            return R.string.activity_settings_title;
-        }
-    }
 }
