@@ -78,51 +78,51 @@ public class ProjectFragment extends BasePreferenceFragment
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-        if (CONFIRM_CLOCK_OUT_KEY.equals(preference.getKey())) {
-            try {
-                // Set the clock out confirmation preference.
-                boolean checked = ((CheckBoxPreference) preference).isChecked();
-                Settings.setConfirmClockOut(getActivity(), checked);
-                return true;
-            } catch (ClassCastException e) {
-                Timber.w(e, "Unable to set value for 'confirm_clock_out'");
-            }
-        }
-
-        if (TIME_SUMMARY_KEY.equals(preference.getKey())) {
-            return true;
-        }
-
-        if (ONGOING_NOTIFICATION_ENABLE_KEY.equals(preference.getKey())) {
-            try {
-                // Set the clock out confirmation preference.
-                boolean checked = ((CheckBoxPreference) preference).isChecked();
-                if (checked) {
-                    Settings.enableOngoingNotification(getActivity());
+        switch (preference.getKey()) {
+            case CONFIRM_CLOCK_OUT_KEY:
+                try {
+                    // Set the clock out confirmation preference.
+                    boolean checked = ((CheckBoxPreference) preference).isChecked();
+                    Settings.setConfirmClockOut(getActivity(), checked);
                     return true;
+                } catch (ClassCastException e) {
+                    Timber.w(e, "Unable to set value for 'confirm_clock_out'");
                 }
-
-                Settings.disableOngoingNotification(getActivity());
+                break;
+            case TIME_SUMMARY_KEY:
                 return true;
-            } catch (ClassCastException e) {
-                Timber.w(e, "Unable to set value for 'ongoing_notification'");
-            }
-        }
-        if (ONGOING_NOTIFICATION_CHRONOMETER_KEY.equals(preference.getKey())) {
-            try {
-                // Set the clock out confirmation preference.
-                boolean checked = ((CheckBoxPreference) preference).isChecked();
-                if (checked) {
-                    Settings.enableOngoingNotificationChronometer(getActivity());
+            case ONGOING_NOTIFICATION_ENABLE_KEY:
+                try {
+                    // Set the clock out confirmation preference.
+                    boolean checked = ((CheckBoxPreference) preference).isChecked();
+                    if (checked) {
+                        Settings.enableOngoingNotification(getActivity());
+                        return true;
+                    }
+
+                    Settings.disableOngoingNotification(getActivity());
                     return true;
+                } catch (ClassCastException e) {
+                    Timber.w(e, "Unable to set value for 'ongoing_notification'");
                 }
+                break;
+            case ONGOING_NOTIFICATION_CHRONOMETER_KEY:
+                try {
+                    // Set the clock out confirmation preference.
+                    boolean checked = ((CheckBoxPreference) preference).isChecked();
+                    if (checked) {
+                        Settings.enableOngoingNotificationChronometer(getActivity());
+                        return true;
+                    }
 
-                Settings.disableOngoingNotificationChronometer(getActivity());
-                return true;
-            } catch (ClassCastException e) {
-                Timber.w(e, "Unable to set value for 'ongoing_notification_chronometer'");
-            }
+                    Settings.disableOngoingNotificationChronometer(getActivity());
+                    return true;
+                } catch (ClassCastException e) {
+                    Timber.w(e, "Unable to set value for 'ongoing_notification_chronometer'");
+                }
+                break;
         }
+
         return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
