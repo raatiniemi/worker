@@ -29,26 +29,10 @@ import timber.log.Timber;
 
 public class ProjectFragment extends BasePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
-    /**
-     * Key for confirm clock out preference.
-     */
-    private static final String SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out";
-
-    /**
-     * Key for time summary preference.
-     */
-    private static final String SETTINGS_PROJECT_TIME_SUMMARY_KEY = "settings_project_time_summary";
-
-    /**
-     * Key for ongoing notification preference.
-     */
-    private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
-
-    /**
-     * Key for the ongoing notification chronometer preference.
-     */
-    private static final String SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY
-            = "settings_project_ongoing_notification_chronometer";
+    private static final String CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out";
+    private static final String TIME_SUMMARY_KEY = "settings_project_time_summary";
+    private static final String ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
+    private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +43,7 @@ public class ProjectFragment extends BasePreferenceFragment
         try {
             // Set the preference value for the clock out confirmation.
             CheckBoxPreference confirmClockOut =
-                    (CheckBoxPreference) findPreference(SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY);
+                    (CheckBoxPreference) findPreference(CONFIRM_CLOCK_OUT_KEY);
             confirmClockOut.setChecked(Settings.shouldConfirmClockOut(getActivity()));
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to get value for 'confirm_clock_out'");
@@ -68,7 +52,7 @@ public class ProjectFragment extends BasePreferenceFragment
         try {
             int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getActivity());
 
-            ListPreference timeSummary = (ListPreference) findPreference(SETTINGS_PROJECT_TIME_SUMMARY_KEY);
+            ListPreference timeSummary = (ListPreference) findPreference(TIME_SUMMARY_KEY);
             timeSummary.setValue(String.valueOf(startingPointForTimeSummary));
             timeSummary.setOnPreferenceChangeListener(this);
         } catch (ClassCastException e) {
@@ -77,7 +61,7 @@ public class ProjectFragment extends BasePreferenceFragment
 
         try {
             CheckBoxPreference ongoingNotification =
-                    (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY);
+                    (CheckBoxPreference) findPreference(ONGOING_NOTIFICATION_ENABLE_KEY);
             ongoingNotification.setChecked(Settings.isOngoingNotificationEnabled(getActivity()));
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to get value for 'ongoing_notification'");
@@ -85,7 +69,7 @@ public class ProjectFragment extends BasePreferenceFragment
 
         try {
             CheckBoxPreference ongoingNotificationChronometer =
-                    (CheckBoxPreference) findPreference(SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY);
+                    (CheckBoxPreference) findPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY);
             ongoingNotificationChronometer.setChecked(Settings.isOngoingNotificationChronometerEnabled(getActivity()));
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to get value for 'ongoing_notification_chronometer'");
@@ -94,7 +78,7 @@ public class ProjectFragment extends BasePreferenceFragment
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
-        if (SETTINGS_PROJECT_CONFIRM_CLOCK_OUT_KEY.equals(preference.getKey())) {
+        if (CONFIRM_CLOCK_OUT_KEY.equals(preference.getKey())) {
             try {
                 // Set the clock out confirmation preference.
                 boolean checked = ((CheckBoxPreference) preference).isChecked();
@@ -105,11 +89,11 @@ public class ProjectFragment extends BasePreferenceFragment
             }
         }
 
-        if (SETTINGS_PROJECT_TIME_SUMMARY_KEY.equals(preference.getKey())) {
+        if (TIME_SUMMARY_KEY.equals(preference.getKey())) {
             return true;
         }
 
-        if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_ENABLE_KEY.equals(preference.getKey())) {
+        if (ONGOING_NOTIFICATION_ENABLE_KEY.equals(preference.getKey())) {
             try {
                 // Set the clock out confirmation preference.
                 boolean checked = ((CheckBoxPreference) preference).isChecked();
@@ -124,7 +108,7 @@ public class ProjectFragment extends BasePreferenceFragment
                 Timber.w(e, "Unable to set value for 'ongoing_notification'");
             }
         }
-        if (SETTINGS_PROJECT_ONGOING_NOTIFICATION_CHRONOMETER_KEY.equals(preference.getKey())) {
+        if (ONGOING_NOTIFICATION_CHRONOMETER_KEY.equals(preference.getKey())) {
             try {
                 // Set the clock out confirmation preference.
                 boolean checked = ((CheckBoxPreference) preference).isChecked();
@@ -149,7 +133,7 @@ public class ProjectFragment extends BasePreferenceFragment
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (SETTINGS_PROJECT_TIME_SUMMARY_KEY.equals(preference.getKey())) {
+        if (TIME_SUMMARY_KEY.equals(preference.getKey())) {
             changeTimeSummaryStartingPoint(newValue);
             return true;
         }
