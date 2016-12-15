@@ -14,19 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.settings;
+package me.raatiniemi.worker.presentation.settings.view;
 
-import javax.inject.Singleton;
+import me.raatiniemi.worker.presentation.view.MvpView;
 
-import dagger.Component;
-import me.raatiniemi.worker.presentation.AndroidModule;
-import me.raatiniemi.worker.presentation.settings.view.ProjectFragment;
-import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
+public interface ProjectView extends MvpView {
+    /**
+     * Show message for successful time summary starting point change to week.
+     */
+    void showChangeTimeSummaryStartingPointToWeekSuccessMessage();
 
-@Singleton
-@Component(modules = {AndroidModule.class, SettingsModule.class})
-public interface SettingsComponent {
-    void inject(SettingsActivity settingsActivity);
+    /**
+     * Show message for successful time summary starting point change to month.
+     */
+    void showChangeTimeSummaryStartingPointToMonthSuccessMessage();
 
-    void inject(ProjectFragment projectFragment);
+    /**
+     * Show message for failed time summary starting point change.
+     */
+    void showChangeTimeSummaryStartingPointErrorMessage();
 }

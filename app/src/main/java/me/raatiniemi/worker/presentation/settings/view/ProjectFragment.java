@@ -22,21 +22,38 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+
+import javax.inject.Inject;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.Settings;
 import timber.log.Timber;
 
+import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
+
 public class ProjectFragment extends BasePreferenceFragment
-        implements Preference.OnPreferenceChangeListener {
+        implements ProjectView, Preference.OnPreferenceChangeListener {
     private static final String CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out";
     private static final String TIME_SUMMARY_KEY = "settings_project_time_summary";
     private static final String ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
     private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
 
+    @Inject
+    ProjectPresenter presenter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Worker application = (Worker) getActivity().getApplication();
+        application.getSettingsComponent().inject(this);
+
+        presenter.attachView(this);
 
         addPreferencesFromResource(R.xml.settings_project);
 
@@ -73,6 +90,15 @@ public class ProjectFragment extends BasePreferenceFragment
             ongoingNotificationChronometer.setChecked(Settings.isOngoingNotificationChronometerEnabled(getActivity()));
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to get value for 'ongoing_notification_chronometer'");
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (nonNull(presenter)) {
+            presenter.detachView();
         }
     }
 
@@ -142,7 +168,48 @@ public class ProjectFragment extends BasePreferenceFragment
 
     private void changeTimeSummaryStartingPoint(Object newStartingPoint) {
         int startingPoint = Integer.parseInt((String) newStartingPoint);
-        getSettingsActivity().getPresenter()
-                .changeTimeSummaryStartingPoint(startingPoint);
+        presenter.changeTimeSummaryStartingPoint(startingPoint);
+    }
+
+    @Override
+    public void showChangeTimeSummaryStartingPointToWeekSuccessMessage() {
+        View contentView = getActivity().findViewById(android.R.id.content);
+        if (isNull(contentView)) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.message_change_time_summary_starting_point_week,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
+    public void showChangeTimeSummaryStartingPointToMonthSuccessMessage() {
+        View contentView = getActivity().findViewById(android.R.id.content);
+        if (isNull(contentView)) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.message_change_time_summary_starting_point_month,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
+    public void showChangeTimeSummaryStartingPointErrorMessage() {
+        View contentView = getActivity().findViewById(android.R.id.content);
+        if (isNull(contentView)) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.error_message_change_time_summary_starting_point,
+                Snackbar.LENGTH_LONG
+        ).show();
     }
 }

@@ -23,10 +23,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.view.MenuItem;
-import android.view.View;
 
 import javax.inject.Inject;
 
@@ -203,47 +201,5 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
 
         fragment.setBackupSummary(backup);
         fragment.setRestoreSummary(backup);
-    }
-
-    @Override
-    public void showChangeTimeSummaryStartingPointToWeekSuccessMessage() {
-        View contentView = findViewById(android.R.id.content);
-        if (isNull(contentView)) {
-            return;
-        }
-
-        Snackbar.make(
-                contentView,
-                R.string.message_change_time_summary_starting_point_week,
-                Snackbar.LENGTH_LONG
-        ).show();
-    }
-
-    @Override
-    public void showChangeTimeSummaryStartingPointToMonthSuccessMessage() {
-        View contentView = findViewById(android.R.id.content);
-        if (isNull(contentView)) {
-            return;
-        }
-
-        Snackbar.make(
-                contentView,
-                R.string.message_change_time_summary_starting_point_month,
-                Snackbar.LENGTH_LONG
-        ).show();
-    }
-
-    @Override
-    public void showChangeTimeSummaryStartingPointErrorMessage() {
-        View contentView = findViewById(android.R.id.content);
-        if (isNull(contentView)) {
-            return;
-        }
-
-        Snackbar.make(
-                contentView,
-                R.string.error_message_change_time_summary_starting_point,
-                Snackbar.LENGTH_LONG
-        ).show();
     }
 }

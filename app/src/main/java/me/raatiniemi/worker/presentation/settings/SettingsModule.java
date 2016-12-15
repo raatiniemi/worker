@@ -24,6 +24,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 
 @Module
@@ -32,5 +33,11 @@ public class SettingsModule {
     @Singleton
     SettingsPresenter providesSettingsPresenter(Context context) {
         return new SettingsPresenter(context, EventBus.getDefault());
+    }
+
+    @Provides
+    @Singleton
+    ProjectPresenter providesProjectPresenter(Context context) {
+        return new ProjectPresenter(context, EventBus.getDefault());
     }
 }

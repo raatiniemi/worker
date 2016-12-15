@@ -25,15 +25,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 
 import me.raatiniemi.worker.data.util.ExternalStorage;
-import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
-import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.SettingsView;
 import me.raatiniemi.worker.presentation.util.RxUtil;
-import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -113,42 +109,5 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(BackupSuccessfulEvent event) {
         performWithView(view -> view.setLatestBackup(event.getBackup()));
-    }
-
-    public void changeTimeSummaryStartingPoint(int newStartingPoint) {
-        try {
-            int currentStartingPoint = Settings.getStartingPointForTimeSummary(getContext());
-            if (currentStartingPoint == newStartingPoint) {
-                return;
-            }
-
-            switch (newStartingPoint) {
-                case GetProjectTimeSince.WEEK:
-                    Settings.useWeekForTimeSummaryStartingPoint(getContext());
-                    break;
-                case GetProjectTimeSince.MONTH:
-                    Settings.useMonthForTimeSummaryStartingPoint(getContext());
-                    break;
-                default:
-                    throw new InvalidStartingPointException(
-                            "Starting point '" + newStartingPoint + "' is not valid"
-                    );
-            }
-
-            eventBus.post(new TimeSummaryStartingPointChangeEvent());
-
-            performWithView(view -> {
-                if (GetProjectTimeSince.WEEK == newStartingPoint) {
-                    view.showChangeTimeSummaryStartingPointToWeekSuccessMessage();
-                    return;
-                }
-
-                view.showChangeTimeSummaryStartingPointToMonthSuccessMessage();
-            });
-        } catch (InvalidStartingPointException e) {
-            Timber.w(e, "Unable to set new starting point");
-
-            performWithView(SettingsView::showChangeTimeSummaryStartingPointErrorMessage);
-        }
     }
 }

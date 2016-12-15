@@ -29,13 +29,10 @@ import org.robolectric.annotation.Config;
 import java.io.File;
 
 import me.raatiniemi.worker.BuildConfig;
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
-import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.SettingsView;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -43,9 +40,9 @@ import static org.mockito.Mockito.verify;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class SettingsPresenterTest {
-    private EventBus eventBus;
     private SettingsPresenter presenter;
     private SettingsView view;
+    private EventBus eventBus;
 
     @Before
     public void setUp() throws Exception {
@@ -88,55 +85,5 @@ public class SettingsPresenterTest {
         presenter.onEventMainThread(event);
 
         verify(view, never()).setLatestBackup(backup);
-    }
-
-    @Test
-    public void changeTimeSummaryStartingPoint_withWeek() {
-        presenter.attachView(view);
-
-        presenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.WEEK
-        );
-
-        verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(view).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
-    }
-
-    @Test
-    public void changeTimeSummaryStartingPoint_withPreviousValue() {
-        presenter.attachView(view);
-
-        presenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.MONTH
-        );
-
-        verify(eventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
-    }
-
-    @Test
-    public void changeTimeSummaryStartingPoint_withoutAttachedView() {
-        presenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.WEEK
-        );
-
-        verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
-        verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
-    }
-
-    @Test
-    public void changeTimeSummaryStartingPoint_invalidStartingPoint() {
-        presenter.attachView(view);
-
-        presenter.changeTimeSummaryStartingPoint(0);
-
-        verify(view).showChangeTimeSummaryStartingPointErrorMessage();
-    }
-
-    @Test
-    public void changeTimeSummaryStartingPoint_invalidStartingPointWithoutAttachedView() {
-        presenter.changeTimeSummaryStartingPoint(0);
-
-        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 }

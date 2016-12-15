@@ -31,19 +31,4 @@ public interface SettingsView extends MvpView {
      * @param backup Latest backup.
      */
     void setLatestBackup(@Nullable Backup backup);
-
-    /**
-     * Show message for successful time summary starting point change to week.
-     */
-    void showChangeTimeSummaryStartingPointToWeekSuccessMessage();
-
-    /**
-     * Show message for successful time summary starting point change to month.
-     */
-    void showChangeTimeSummaryStartingPointToMonthSuccessMessage();
-
-    /**
-     * Show message for failed time summary starting point change.
-     */
-    void showChangeTimeSummaryStartingPointErrorMessage();
 }
