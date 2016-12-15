@@ -21,9 +21,12 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.view.View;
 
 import me.raatiniemi.worker.R;
 import timber.log.Timber;
+
+import static me.raatiniemi.util.NullUtil.isNull;
 
 public abstract class BasePreferenceFragment extends PreferenceFragment {
     @Override
@@ -42,7 +45,7 @@ public abstract class BasePreferenceFragment extends PreferenceFragment {
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
         super.onPreferenceTreeClick(preferenceScreen, preference);
         if (preference instanceof PreferenceScreen) {
-            getSettingsActivity().switchPreferenceScreen(preference.getKey());
+            switchPreferenceScreen(preference.getKey());
         } else {
             Timber.d("Preference '%s' is not implemented", preference.getTitle());
             Snackbar.make(
@@ -52,6 +55,30 @@ public abstract class BasePreferenceFragment extends PreferenceFragment {
             ).show();
         }
         return false;
+    }
+
+    /**
+     * Switch the currently displayed preference screen.
+     *
+     * @param key Key for the new preference screen.
+     */
+    protected void switchPreferenceScreen(String key) {
+        Timber.w("Switch to preference screen '%s' is not implemented", key);
+
+        displayPreferenceScreenNotImplementedMessage();
+    }
+
+    private void displayPreferenceScreenNotImplementedMessage() {
+        View contentView = getActivity().findViewById(android.R.id.content);
+        if (isNull(contentView)) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.error_message_preference_screen_not_implemented,
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     /**

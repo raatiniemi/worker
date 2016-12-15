@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.presentation.settings.view;
 
+import android.app.Fragment;
 import android.os.Bundle;
 
 import me.raatiniemi.worker.R;
@@ -26,6 +27,27 @@ public class SettingsFragment extends BasePreferenceFragment {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.settings);
+    }
+
+    @Override
+    protected void switchPreferenceScreen(String key) {
+        Fragment fragment;
+        switch (key) {
+            case SettingsActivity.SETTINGS_PROJECT_KEY:
+                fragment = new ProjectFragment();
+                break;
+            case SettingsActivity.SETTINGS_DATA_KEY:
+                fragment = new DataFragment();
+                break;
+            default:
+                super.switchPreferenceScreen(key);
+                return;
+        }
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment, key)
+                .addToBackStack(key)
+                .commit();
     }
 
     @Override

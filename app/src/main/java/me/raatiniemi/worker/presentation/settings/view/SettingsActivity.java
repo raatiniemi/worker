@@ -45,12 +45,12 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     /**
      * Key for the project preference.
      */
-    private static final String SETTINGS_PROJECT_KEY = "settings_project";
+    static final String SETTINGS_PROJECT_KEY = "settings_project";
 
     /**
      * Key for the data preference.
      */
-    private static final String SETTINGS_DATA_KEY = "settings_data";
+    static final String SETTINGS_DATA_KEY = "settings_data";
 
     /**
      * Code for requesting permission for reading external storage.
@@ -127,45 +127,6 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 break;
         }
-    }
-
-    /**
-     * Switch the currently displayed preference screen.
-     *
-     * @param key Key for the new preference screen.
-     */
-    void switchPreferenceScreen(String key) {
-        Fragment fragment;
-        switch (key) {
-            case SETTINGS_PROJECT_KEY:
-                fragment = new ProjectFragment();
-                break;
-            case SETTINGS_DATA_KEY:
-                fragment = new DataFragment();
-                break;
-            default:
-                Timber.w("Switch to preference screen '%s' is not implemented", key);
-                displayPreferenceScreenNotImplementedMessage();
-                return;
-        }
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, key)
-                .addToBackStack(key)
-                .commit();
-    }
-
-    private void displayPreferenceScreenNotImplementedMessage() {
-        View contentView = findViewById(android.R.id.content);
-        if (isNull(contentView)) {
-            return;
-        }
-
-        Snackbar.make(
-                contentView,
-                R.string.error_message_preference_screen_not_implemented,
-                Snackbar.LENGTH_SHORT
-        ).show();
     }
 
     @Override
