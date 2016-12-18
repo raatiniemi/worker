@@ -148,7 +148,7 @@ public class DataFragment extends BasePreferenceFragment
     /**
      * Initiate the backup action.
      */
-    void runBackup() {
+    private void runBackup() {
         // We should only attempt to backup if permission to write
         // to the external storage have been granted.
         if (PermissionUtil.havePermission(getActivity(), WRITE_EXTERNAL_STORAGE)) {
@@ -180,7 +180,7 @@ public class DataFragment extends BasePreferenceFragment
     /**
      * Initiate the restore action.
      */
-    void runRestore() {
+    private void runRestore() {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.activity_settings_restore_confirm_title)
                 .setMessage(R.string.activity_settings_restore_confirm_message)
@@ -200,7 +200,7 @@ public class DataFragment extends BasePreferenceFragment
     /**
      * Get the latest backup, if permission have been granted.
      */
-    void checkLatestBackup() {
+    private void checkLatestBackup() {
         // We should only attempt to check the latest backup if permission
         // to read the external storage have been granted.
         if (PermissionUtil.havePermission(getActivity(), READ_EXTERNAL_STORAGE)) {
@@ -237,7 +237,7 @@ public class DataFragment extends BasePreferenceFragment
      *
      * @param backup Latest available backup.
      */
-    void setBackupSummary(@Nullable Backup backup) {
+    private void setBackupSummary(@Nullable Backup backup) {
         Preference preference = findPreference(SETTINGS_DATA_BACKUP_KEY);
         if (isNull(preference)) {
             Timber.w("Unable to find preference with key: %s", SETTINGS_DATA_BACKUP_KEY);
@@ -265,7 +265,7 @@ public class DataFragment extends BasePreferenceFragment
      *
      * @param backup Latest available backup.
      */
-    void setRestoreSummary(@Nullable Backup backup) {
+    private void setRestoreSummary(@Nullable Backup backup) {
         Preference preference = findPreference(SETTINGS_DATA_RESTORE_KEY);
         if (isNull(preference)) {
             Timber.w("Unable to find preference with key: %s", SETTINGS_DATA_RESTORE_KEY);
