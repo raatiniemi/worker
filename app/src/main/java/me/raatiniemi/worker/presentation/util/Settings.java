@@ -16,16 +16,14 @@
 
 package me.raatiniemi.worker.presentation.util;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 
 /**
  * Communicate with the shared preferences.
  */
-public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutPreferences, TimeSummaryPreferences {
+public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutPreferences, OngoingNotificationPreferences, TimeSummaryPreferences {
     /**
      * Preference key for hiding registered time.
      */
@@ -82,66 +80,42 @@ public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutP
                 .apply();
     }
 
-    /**
-     * Check if ongoing notification is enabled.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @return 'true' if ongoing notification is enabled, otherwise 'false'.
-     */
-    public static boolean isOngoingNotificationEnabled(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true);
+    @Override
+    public boolean isOngoingNotificationEnabled() {
+        return preferences.getBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true);
     }
 
-    /**
-     * Enable ongoing notification.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void enableOngoingNotification(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true).apply();
+    @Override
+    public void enableOngoingNotification() {
+        preferences.edit()
+                .putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true)
+                .apply();
     }
 
-    /**
-     * Disable ongoing notification.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void disableOngoingNotification(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, false).apply();
+    @Override
+    public void disableOngoingNotification() {
+        preferences.edit()
+                .putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, false)
+                .apply();
     }
 
-    /**
-     * Check if the ongoing notification chronometer is enabled.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @return 'true' if the ongoing notification chronometer is enabled, otherwise 'false'.
-     */
-    public static boolean isOngoingNotificationChronometerEnabled(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true);
+    @Override
+    public boolean isOngoingNotificationChronometerEnabled() {
+        return preferences.getBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true);
     }
 
-    /**
-     * Enable the ongoing notification chronometer.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void enableOngoingNotificationChronometer(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true).apply();
+    @Override
+    public void enableOngoingNotificationChronometer() {
+        preferences.edit()
+                .putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true)
+                .apply();
     }
 
-    /**
-     * Disable the ongoing notification chronometer.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void disableOngoingNotificationChronometer(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, false).apply();
+    @Override
+    public void disableOngoingNotificationChronometer() {
+        preferences.edit()
+                .putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, false)
+                .apply();
     }
 
     @Override

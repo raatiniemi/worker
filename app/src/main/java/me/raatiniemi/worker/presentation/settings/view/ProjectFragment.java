@@ -31,7 +31,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
-import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
@@ -47,6 +47,9 @@ public class ProjectFragment extends BasePreferenceFragment
 
     @Inject
     ConfirmClockOutPreferences confirmClockOutPreferences;
+
+    @Inject
+    OngoingNotificationPreferences ongoingNotificationPreferences;
 
     @Inject
     TimeSummaryPreferences timeSummaryPreferences;
@@ -87,7 +90,7 @@ public class ProjectFragment extends BasePreferenceFragment
         try {
             CheckBoxPreference ongoingNotification =
                     (CheckBoxPreference) findPreference(ONGOING_NOTIFICATION_ENABLE_KEY);
-            ongoingNotification.setChecked(Settings.isOngoingNotificationEnabled(getActivity()));
+            ongoingNotification.setChecked(ongoingNotificationPreferences.isOngoingNotificationEnabled());
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to get value for 'ongoing_notification'");
         }
@@ -95,7 +98,7 @@ public class ProjectFragment extends BasePreferenceFragment
         try {
             CheckBoxPreference ongoingNotificationChronometer =
                     (CheckBoxPreference) findPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY);
-            ongoingNotificationChronometer.setChecked(Settings.isOngoingNotificationChronometerEnabled(getActivity()));
+            ongoingNotificationChronometer.setChecked(ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled());
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to get value for 'ongoing_notification_chronometer'");
         }
@@ -130,11 +133,11 @@ public class ProjectFragment extends BasePreferenceFragment
                     // Set the clock out confirmation preference.
                     boolean checked = ((CheckBoxPreference) preference).isChecked();
                     if (checked) {
-                        Settings.enableOngoingNotification(getActivity());
+                        ongoingNotificationPreferences.enableOngoingNotification();
                         return true;
                     }
 
-                    Settings.disableOngoingNotification(getActivity());
+                    ongoingNotificationPreferences.disableOngoingNotification();
                     return true;
                 } catch (ClassCastException e) {
                     Timber.w(e, "Unable to set value for 'ongoing_notification'");
@@ -145,11 +148,11 @@ public class ProjectFragment extends BasePreferenceFragment
                     // Set the clock out confirmation preference.
                     boolean checked = ((CheckBoxPreference) preference).isChecked();
                     if (checked) {
-                        Settings.enableOngoingNotificationChronometer(getActivity());
+                        ongoingNotificationPreferences.enableOngoingNotificationChronometer();
                         return true;
                     }
 
-                    Settings.disableOngoingNotificationChronometer(getActivity());
+                    ongoingNotificationPreferences.disableOngoingNotificationChronometer();
                     return true;
                 } catch (ClassCastException e) {
                     Timber.w(e, "Unable to set value for 'ongoing_notification_chronometer'");

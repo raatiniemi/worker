@@ -42,8 +42,8 @@ import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
+import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.RxUtil;
-import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
 import rx.Observable;
@@ -63,6 +63,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private Subscription refreshProjectsSubscription;
 
     private final TimeSummaryPreferences timeSummaryPreferences;
+    private final OngoingNotificationPreferences ongoingNotificationPreferences;
 
     private final EventBus eventBus;
 
@@ -89,17 +90,19 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     /**
      * Constructor.
      *
-     * @param context                Context used with the presenter.
-     * @param timeSummaryPreferences Preferences for the time summary.
-     * @param eventBus               Event bus.
-     * @param getProjects            Use case for getting projects.
-     * @param getProjectTimeSince    Use case for getting registered project time.
-     * @param clockActivityChange    Use case for project clock in/out.
-     * @param removeProject          Use case for removing projects.
+     * @param context                        Context used with the presenter.
+     * @param timeSummaryPreferences         Preferences for the time summary.
+     * @param ongoingNotificationPreferences Preferences for ongoing notification.
+     * @param eventBus                       Event bus.
+     * @param getProjects                    Use case for getting projects.
+     * @param getProjectTimeSince            Use case for getting registered project time.
+     * @param clockActivityChange            Use case for project clock in/out.
+     * @param removeProject                  Use case for removing projects.
      */
     public ProjectsPresenter(
             Context context,
             TimeSummaryPreferences timeSummaryPreferences,
+            OngoingNotificationPreferences ongoingNotificationPreferences,
             EventBus eventBus,
             GetProjects getProjects,
             GetProjectTimeSince getProjectTimeSince,
@@ -109,6 +112,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         super(context);
 
         this.timeSummaryPreferences = timeSummaryPreferences;
+        this.ongoingNotificationPreferences = ongoingNotificationPreferences;
         this.eventBus = eventBus;
         this.getProjects = getProjects;
         this.getProjectTimeSince = getProjectTimeSince;
@@ -447,7 +451,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                 Worker.NOTIFICATION_ON_GOING_ID
         );
 
-        if (!Settings.isOngoingNotificationEnabled(getContext())) {
+        if (!ongoingNotificationPreferences.isOngoingNotificationEnabled()) {
             return;
         }
 
@@ -455,7 +459,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
             manager.notify(
                     String.valueOf(project.getId()),
                     Worker.NOTIFICATION_ON_GOING_ID,
-                    PauseNotification.build(getContext(), project)
+                    PauseNotification.build(
+                            getContext(),
+                            project,
+                            ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled()
+                    )
             );
         }
     }

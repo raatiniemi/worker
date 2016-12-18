@@ -22,6 +22,8 @@ import android.preference.PreferenceManager;
 
 import com.squareup.leakcanary.LeakCanary;
 
+import me.raatiniemi.worker.data.service.ongoing.DaggerOngoingServiceComponent;
+import me.raatiniemi.worker.data.service.ongoing.OngoingServiceComponent;
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
 import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
@@ -75,6 +77,7 @@ public class Worker extends Application {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
+    private OngoingServiceComponent ongoingServiceComponent;
     private ProjectComponent projectComponent;
     private ProjectsComponent projectsComponent;
     private SettingsComponent settingsComponent;
@@ -86,6 +89,9 @@ public class Worker extends Application {
         AndroidModule androidModule = new AndroidModule(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceModule preferenceModule = new PreferenceModule(preferences);
+        ongoingServiceComponent = DaggerOngoingServiceComponent.builder()
+                .preferenceModule(preferenceModule)
+                .build();
         projectComponent = DaggerProjectComponent.builder()
                 .androidModule(androidModule)
                 .preferenceModule(preferenceModule)
@@ -110,6 +116,10 @@ public class Worker extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    public OngoingServiceComponent getOngoingServiceComponent() {
+        return ongoingServiceComponent;
     }
 
     public ProjectComponent getProjectComponent() {

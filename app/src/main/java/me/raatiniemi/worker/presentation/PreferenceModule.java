@@ -24,6 +24,7 @@ import dagger.Module;
 import dagger.Provides;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
+import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
@@ -44,6 +45,12 @@ public class PreferenceModule {
     @Provides
     @Singleton
     ConfirmClockOutPreferences providesConfirmClockOutPreferences() {
+        return settings;
+    }
+
+    @Provides
+    @Singleton
+    OngoingNotificationPreferences providesOngoingNotificationPreferences() {
         return settings;
     }
 
