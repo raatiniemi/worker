@@ -22,6 +22,16 @@ import android.os.Bundle;
 import me.raatiniemi.worker.R;
 
 public class SettingsFragment extends BasePreferenceFragment {
+    /**
+     * Key for the project preference.
+     */
+    private static final String SETTINGS_PROJECT_KEY = "settings_project";
+
+    /**
+     * Key for the data preference.
+     */
+    private static final String SETTINGS_DATA_KEY = "settings_data";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +43,10 @@ public class SettingsFragment extends BasePreferenceFragment {
     protected void switchPreferenceScreen(String key) {
         Fragment fragment;
         switch (key) {
-            case SettingsActivity.SETTINGS_PROJECT_KEY:
+            case SETTINGS_PROJECT_KEY:
                 fragment = new ProjectFragment();
                 break;
-            case SettingsActivity.SETTINGS_DATA_KEY:
+            case SETTINGS_DATA_KEY:
                 fragment = new DataFragment();
                 break;
             default:

@@ -29,16 +29,6 @@ import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 import static me.raatiniemi.util.NullUtil.isNull;
 
 public class SettingsActivity extends BaseActivity {
-    /**
-     * Key for the project preference.
-     */
-    static final String SETTINGS_PROJECT_KEY = "settings_project";
-
-    /**
-     * Key for the data preference.
-     */
-    static final String SETTINGS_DATA_KEY = "settings_data";
-
     public static Intent newIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
     }
