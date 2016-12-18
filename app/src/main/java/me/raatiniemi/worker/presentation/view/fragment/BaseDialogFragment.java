@@ -11,7 +11,7 @@ import me.raatiniemi.worker.R;
 
 import static me.raatiniemi.util.NullUtil.nonNull;
 
-abstract public class BaseDialogFragment extends DialogFragment {
+public abstract class BaseDialogFragment extends DialogFragment {
     private DialogInterface.OnCancelListener onCancelListener;
     private DialogInterface.OnDismissListener onDismissListener;
 
