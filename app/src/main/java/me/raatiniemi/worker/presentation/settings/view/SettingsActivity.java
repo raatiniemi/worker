@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.presentation.settings.view;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,16 +57,18 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        FragmentManager fragmentManager = getFragmentManager();
-
-        // Depending on which fragment is contained within the
-        // container, the back button will behave differently.
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        Class<SettingsFragment> settings = SettingsFragment.class;
-        if (!settings.equals(fragment.getClass())) {
-            fragmentManager.popBackStack();
-        } else {
-            super.onBackPressed();
+        if (shouldPopBackStack()) {
+            getFragmentManager().popBackStack();
+            return;
         }
+
+        super.onBackPressed();
+    }
+
+    private boolean shouldPopBackStack() {
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragment_container);
+
+        Class<SettingsFragment> settings = SettingsFragment.class;
+        return !settings.equals(fragment.getClass());
     }
 }
