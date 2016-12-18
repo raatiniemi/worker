@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.presentation.projects.model;
 
 public class ClockActivityAtEvent extends ProjectActionEvent {
-    public static ClockActivityAtEvent withProjectsItem(ProjectsItem projectsItem) {
-        return new ClockActivityAtEvent(projectsItem);
-    }
-
     private ClockActivityAtEvent(ProjectsItem projectsItem) {
         super(projectsItem);
+    }
+
+    public static ClockActivityAtEvent withProjectsItem(ProjectsItem projectsItem) {
+        return new ClockActivityAtEvent(projectsItem);
     }
 }
