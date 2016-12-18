@@ -1,6 +1,9 @@
 package me.raatiniemi.util;
 
-public class NullUtil {
+final public class NullUtil {
+    private NullUtil() {
+    }
+
     /**
      * Check whether an object is not null.
      *
