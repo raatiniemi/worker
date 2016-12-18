@@ -26,16 +26,9 @@ import dagger.Module;
 import dagger.Provides;
 import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
-import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 
 @Module
 public class SettingsModule {
-    @Provides
-    @Singleton
-    SettingsPresenter providesSettingsPresenter(Context context) {
-        return new SettingsPresenter(context);
-    }
-
     @Provides
     @Singleton
     ProjectPresenter providesProjectPresenter(Context context) {

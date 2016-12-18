@@ -26,19 +26,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.view.MenuItem;
 
-import javax.inject.Inject;
-
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
-import me.raatiniemi.worker.presentation.view.activity.MvpActivity;
+import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
-public class SettingsActivity extends MvpActivity<SettingsPresenter>
-        implements SettingsView, ActivityCompat.OnRequestPermissionsResultCallback {
+public class SettingsActivity extends BaseActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     /**
      * Key for the project preference.
      */
@@ -59,9 +54,6 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
      */
     static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
-    @Inject
-    SettingsPresenter presenter;
-
     public static Intent newIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
     }
@@ -76,16 +68,6 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
                     .replace(R.id.fragment_container, new SettingsFragment())
                     .commit();
         }
-
-        ((Worker) getApplication()).getSettingsComponent()
-                .inject(this);
-
-        getPresenter().attachView(this);
-    }
-
-    @Override
-    protected SettingsPresenter getPresenter() {
-        return presenter;
     }
 
     @Override
