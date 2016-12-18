@@ -14,19 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.settings;
+package me.raatiniemi.worker.presentation.settings.view;
 
-import javax.inject.Singleton;
+import android.support.annotation.Nullable;
 
-import dagger.Component;
-import me.raatiniemi.worker.presentation.AndroidModule;
-import me.raatiniemi.worker.presentation.settings.view.DataFragment;
-import me.raatiniemi.worker.presentation.settings.view.ProjectFragment;
+import me.raatiniemi.worker.presentation.settings.model.Backup;
+import me.raatiniemi.worker.presentation.view.MvpView;
 
-@Singleton
-@Component(modules = {AndroidModule.class, SettingsModule.class})
-public interface SettingsComponent {
-    void inject(ProjectFragment projectFragment);
-
-    void inject(DataFragment dataFragment);
+public interface DataView extends MvpView {
+    /**
+     * Update the view with the latest backup.
+     *
+     * @param backup Latest backup.
+     */
+    void setLatestBackup(@Nullable Backup backup);
 }

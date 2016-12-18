@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Worker Project
+ * Copyright (C) 2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,15 +25,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 
 import me.raatiniemi.worker.data.util.ExternalStorage;
-import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
-import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.presentation.settings.view.SettingsView;
+import me.raatiniemi.worker.presentation.settings.view.DataView;
 import me.raatiniemi.worker.presentation.util.RxUtil;
-import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -41,24 +37,19 @@ import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
-public class SettingsPresenter extends BasePresenter<SettingsView> {
+public class DataPresenter extends BasePresenter<DataView> {
     private Subscription getLatestBackupSubscription;
 
     private final EventBus eventBus;
 
-    /**
-     * Constructor.
-     *
-     * @param context Context used with the presenter.
-     */
-    public SettingsPresenter(Context context, EventBus eventBus) {
+    public DataPresenter(Context context, EventBus eventBus) {
         super(context);
 
         this.eventBus = eventBus;
     }
 
     @Override
-    public void attachView(SettingsView view) {
+    public void attachView(DataView view) {
         super.attachView(view);
 
         eventBus.register(this);
@@ -113,42 +104,5 @@ public class SettingsPresenter extends BasePresenter<SettingsView> {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(BackupSuccessfulEvent event) {
         performWithView(view -> view.setLatestBackup(event.getBackup()));
-    }
-
-    public void changeTimeSummaryStartingPoint(int newStartingPoint) {
-        try {
-            int currentStartingPoint = Settings.getStartingPointForTimeSummary(getContext());
-            if (currentStartingPoint == newStartingPoint) {
-                return;
-            }
-
-            switch (newStartingPoint) {
-                case GetProjectTimeSince.WEEK:
-                    Settings.useWeekForTimeSummaryStartingPoint(getContext());
-                    break;
-                case GetProjectTimeSince.MONTH:
-                    Settings.useMonthForTimeSummaryStartingPoint(getContext());
-                    break;
-                default:
-                    throw new InvalidStartingPointException(
-                            "Starting point '" + newStartingPoint + "' is not valid"
-                    );
-            }
-
-            eventBus.post(new TimeSummaryStartingPointChangeEvent());
-
-            performWithView(view -> {
-                if (GetProjectTimeSince.WEEK == newStartingPoint) {
-                    view.showChangeTimeSummaryStartingPointToWeekSuccessMessage();
-                    return;
-                }
-
-                view.showChangeTimeSummaryStartingPointToMonthSuccessMessage();
-            });
-        } catch (InvalidStartingPointException e) {
-            Timber.w(e, "Unable to set new starting point");
-
-            performWithView(SettingsView::showChangeTimeSummaryStartingPointErrorMessage);
-        }
     }
 }

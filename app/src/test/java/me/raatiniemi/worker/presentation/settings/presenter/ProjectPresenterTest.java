@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Worker Project
+ * Copyright (C) 2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.io.File;
-
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.presentation.settings.model.Backup;
-import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.presentation.settings.view.SettingsView;
+import me.raatiniemi.worker.presentation.settings.view.ProjectView;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -42,52 +38,17 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class SettingsPresenterTest {
+public class ProjectPresenterTest {
     private EventBus eventBus;
-    private SettingsPresenter presenter;
-    private SettingsView view;
+    private ProjectPresenter presenter;
+    private ProjectView view;
 
     @Before
     public void setUp() throws Exception {
         Context context = mock(Context.class);
         eventBus = mock(EventBus.class);
-        presenter = new SettingsPresenter(context, eventBus);
-        view = mock(SettingsView.class);
-    }
-
-    @Test
-    public void attachView_registerEventBus() {
-        presenter.attachView(view);
-
-        verify(eventBus).register(presenter);
-    }
-
-    @Test
-    public void detachView_unregisterEventBus() {
-        presenter.detachView();
-
-        verify(eventBus).unregister(presenter);
-    }
-
-    @Test
-    public void onEventMainThread_successfulBackupEvent() {
-        Backup backup = new Backup(new File("backup-file"));
-        BackupSuccessfulEvent event = new BackupSuccessfulEvent(backup);
-        presenter.attachView(view);
-
-        presenter.onEventMainThread(event);
-
-        verify(view).setLatestBackup(backup);
-    }
-
-    @Test
-    public void onEventMainThread_successfulBackupEventWithoutView() {
-        Backup backup = new Backup(new File("backup-file"));
-        BackupSuccessfulEvent event = new BackupSuccessfulEvent(backup);
-
-        presenter.onEventMainThread(event);
-
-        verify(view, never()).setLatestBackup(backup);
+        presenter = new ProjectPresenter(context, eventBus);
+        view = mock(ProjectView.class);
     }
 
     @Test
