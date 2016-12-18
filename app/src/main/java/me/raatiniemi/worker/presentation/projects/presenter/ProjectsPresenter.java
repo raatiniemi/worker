@@ -44,6 +44,7 @@ import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
 import rx.Observable;
 import rx.Subscriber;
@@ -60,6 +61,8 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull
  */
 public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private Subscription refreshProjectsSubscription;
+
+    private final TimeSummaryPreferences timeSummaryPreferences;
 
     private final EventBus eventBus;
 
@@ -86,15 +89,17 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     /**
      * Constructor.
      *
-     * @param context             Context used with the presenter.
-     * @param eventBus            Event bus.
-     * @param getProjects         Use case for getting projects.
-     * @param getProjectTimeSince Use case for getting registered project time.
-     * @param clockActivityChange Use case for project clock in/out.
-     * @param removeProject       Use case for removing projects.
+     * @param context                Context used with the presenter.
+     * @param timeSummaryPreferences Preferences for the time summary.
+     * @param eventBus               Event bus.
+     * @param getProjects            Use case for getting projects.
+     * @param getProjectTimeSince    Use case for getting registered project time.
+     * @param clockActivityChange    Use case for project clock in/out.
+     * @param removeProject          Use case for removing projects.
      */
     public ProjectsPresenter(
             Context context,
+            TimeSummaryPreferences timeSummaryPreferences,
             EventBus eventBus,
             GetProjects getProjects,
             GetProjectTimeSince getProjectTimeSince,
@@ -103,6 +108,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     ) {
         super(context);
 
+        this.timeSummaryPreferences = timeSummaryPreferences;
         this.eventBus = eventBus;
         this.getProjects = getProjects;
         this.getProjectTimeSince = getProjectTimeSince;
@@ -304,7 +310,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
     private List<Time> getRegisteredTime(Project project) {
         try {
-            int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getContext());
+            int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
 
             return getProjectTimeSince.execute(project, startingPointForTimeSummary);
         } catch (DomainException e) {

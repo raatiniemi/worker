@@ -14,20 +14,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.projects;
+package me.raatiniemi.worker.presentation;
+
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
-import dagger.Component;
-import me.raatiniemi.worker.presentation.AndroidModule;
-import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
-import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
+import dagger.Module;
+import dagger.Provides;
+import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
-@Singleton
-@Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectsModule.class})
-public interface ProjectsComponent {
-    void inject(ProjectsFragment projectsView);
+@Module
+public class PreferenceModule {
+    private final Settings settings;
 
-    void inject(NewProjectFragment newProjectView);
+    public PreferenceModule(SharedPreferences preferences) {
+        settings = new Settings(preferences);
+    }
+
+    @Provides
+    @Singleton
+    TimeSummaryPreferences providesTimeSummaryPreferences() {
+        return settings;
+    }
 }

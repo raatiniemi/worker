@@ -31,6 +31,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
@@ -42,6 +43,9 @@ public class ProjectFragment extends BasePreferenceFragment
     private static final String TIME_SUMMARY_KEY = "settings_project_time_summary";
     private static final String ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
     private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
+
+    @Inject
+    TimeSummaryPreferences timeSummaryPreferences;
 
     @Inject
     ProjectPresenter presenter;
@@ -67,7 +71,7 @@ public class ProjectFragment extends BasePreferenceFragment
         }
 
         try {
-            int startingPointForTimeSummary = Settings.getStartingPointForTimeSummary(getActivity());
+            int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
 
             ListPreference timeSummary = (ListPreference) findPreference(TIME_SUMMARY_KEY);
             timeSummary.setValue(String.valueOf(startingPointForTimeSummary));

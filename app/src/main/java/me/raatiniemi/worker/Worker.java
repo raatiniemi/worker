@@ -17,11 +17,14 @@
 package me.raatiniemi.worker;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.squareup.leakcanary.LeakCanary;
 
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
 import me.raatiniemi.worker.presentation.AndroidModule;
+import me.raatiniemi.worker.presentation.PreferenceModule;
 import me.raatiniemi.worker.presentation.project.DaggerProjectComponent;
 import me.raatiniemi.worker.presentation.project.ProjectComponent;
 import me.raatiniemi.worker.presentation.project.ProjectModule;
@@ -81,6 +84,8 @@ public class Worker extends Application {
         super.onCreate();
 
         AndroidModule androidModule = new AndroidModule(this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        PreferenceModule preferenceModule = new PreferenceModule(preferences);
         projectComponent = DaggerProjectComponent.builder()
                 .androidModule(androidModule)
                 .projectModule(new ProjectModule())
@@ -88,9 +93,11 @@ public class Worker extends Application {
         projectsComponent = DaggerProjectsComponent.builder()
                 .androidModule(androidModule)
                 .projectsModule(new ProjectsModule())
+                .preferenceModule(preferenceModule)
                 .build();
         settingsComponent = DaggerSettingsComponent.builder()
                 .androidModule(androidModule)
+                .preferenceModule(preferenceModule)
                 .settingsModule(new SettingsModule())
                 .build();
 

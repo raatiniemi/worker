@@ -20,11 +20,12 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import me.raatiniemi.worker.presentation.AndroidModule;
+import me.raatiniemi.worker.presentation.PreferenceModule;
 import me.raatiniemi.worker.presentation.settings.view.DataFragment;
 import me.raatiniemi.worker.presentation.settings.view.ProjectFragment;
 
 @Singleton
-@Component(modules = {AndroidModule.class, SettingsModule.class})
+@Component(modules = {AndroidModule.class, PreferenceModule.class, SettingsModule.class})
 public interface SettingsComponent {
     void inject(ProjectFragment projectFragment);
 

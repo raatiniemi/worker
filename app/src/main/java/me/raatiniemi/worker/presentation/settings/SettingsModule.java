@@ -26,13 +26,14 @@ import dagger.Module;
 import dagger.Provides;
 import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 @Module
 public class SettingsModule {
     @Provides
     @Singleton
-    ProjectPresenter providesProjectPresenter(Context context) {
-        return new ProjectPresenter(context, EventBus.getDefault());
+    ProjectPresenter providesProjectPresenter(Context context, TimeSummaryPreferences preferences) {
+        return new ProjectPresenter(context, preferences, EventBus.getDefault());
     }
 
     @Provides

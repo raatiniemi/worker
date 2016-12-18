@@ -25,7 +25,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 /**
  * Communicate with the shared preferences.
  */
-public class Settings {
+public class Settings implements TimeSummaryPreferences {
     /**
      * Preference key for hiding registered time.
      */
@@ -52,7 +52,10 @@ public class Settings {
      */
     private static final String PREF_TIME_SUMMARY = "pref_time_summary";
 
-    private Settings() {
+    private final SharedPreferences preferences;
+
+    public Settings(SharedPreferences preferences) {
+        this.preferences = preferences;
     }
 
     /**
@@ -161,34 +164,22 @@ public class Settings {
         sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, false).apply();
     }
 
-    /**
-     * Get the time summary starting point, default value is {@link GetProjectTimeSince#MONTH}.
-     *
-     * @param context Context to be used to read from the {@link android.content.SharedPreferences}.
-     * @return Time summary starting point, e.g. {@link GetProjectTimeSince#WEEK} or {@link GetProjectTimeSince#MONTH}.
-     */
-    public static int getStartingPointForTimeSummary(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH);
+    @Override
+    public int getStartingPointForTimeSummary() {
+        return preferences.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH);
     }
 
-    /**
-     * Use week for time summary starting point, i.e. {@link GetProjectTimeSince#WEEK}.
-     *
-     * @param context Context to be used to edit the {@link SharedPreferences}.
-     */
-    public static void useWeekForTimeSummaryStartingPoint(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.WEEK).apply();
+    @Override
+    public void useWeekForTimeSummaryStartingPoint() {
+        preferences.edit()
+                .putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.WEEK)
+                .apply();
     }
 
-    /**
-     * Use month for time summary starting point, i.e. {@link GetProjectTimeSince#MONTH}.
-     *
-     * @param context Context to be used to edit the {@link SharedPreferences}.
-     */
-    public static void useMonthForTimeSummaryStartingPoint(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH).apply();
+    @Override
+    public void useMonthForTimeSummaryStartingPoint() {
+        preferences.edit()
+                .putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH)
+                .apply();
     }
 }
