@@ -328,14 +328,14 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
             return;
         }
 
-        performWithView(view -> {
+        performWithView(view ->
             // Remove project from the view before executing the use case,
             // i.e. optimistic propagation, to simulate better latency.
             //
             // If the deletion fails the project will be added back to the
             // view again, at the previous location.
-            view.deleteProjectAtPosition(index);
-        });
+            view.deleteProjectAtPosition(index)
+        );
 
         Observable.just(project)
                 .flatMap(projectsItem -> {
