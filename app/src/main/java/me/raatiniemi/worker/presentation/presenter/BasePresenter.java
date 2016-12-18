@@ -44,7 +44,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
     /**
      * Weak reference for the view attached to the presenter.
      */
-    private WeakReference<V> view;
+    private WeakReference<V> viewReference;
 
     /**
      * Constructor.
@@ -70,7 +70,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
      * @return Attached view if available, otherwise null.
      */
     private V getView() {
-        return nonNull(view) ? view.get() : null;
+        return nonNull(viewReference) ? viewReference.get() : null;
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
     @CallSuper
     @Override
     public void attachView(V view) {
-        this.view = new WeakReference<>(view);
+        this.viewReference = new WeakReference<>(view);
     }
 
     /**
@@ -125,9 +125,9 @@ public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V
     @CallSuper
     @Override
     public void detachView() {
-        if (nonNull(view)) {
-            view.clear();
-            view = null;
+        if (nonNull(viewReference)) {
+            viewReference.clear();
+            viewReference = null;
         }
     }
 }
