@@ -31,7 +31,7 @@ import java.io.File;
 import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
-import me.raatiniemi.worker.presentation.settings.view.SettingsView;
+import me.raatiniemi.worker.presentation.settings.view.DataView;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -39,17 +39,17 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class SettingsPresenterTest {
-    private SettingsPresenter presenter;
-    private SettingsView view;
+public class DataPresenterTest {
+    private DataPresenter presenter;
+    private DataView view;
     private EventBus eventBus;
 
     @Before
     public void setUp() throws Exception {
         Context context = mock(Context.class);
         eventBus = mock(EventBus.class);
-        presenter = new SettingsPresenter(context, eventBus);
-        view = mock(SettingsView.class);
+        presenter = new DataPresenter(context, eventBus);
+        view = mock(DataView.class);
     }
 
     @Test

@@ -20,6 +20,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import me.raatiniemi.worker.presentation.AndroidModule;
+import me.raatiniemi.worker.presentation.settings.view.DataFragment;
 import me.raatiniemi.worker.presentation.settings.view.ProjectFragment;
 import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
 
@@ -29,4 +30,6 @@ public interface SettingsComponent {
     void inject(SettingsActivity settingsActivity);
 
     void inject(ProjectFragment projectFragment);
+
+    void inject(DataFragment dataFragment);
 }

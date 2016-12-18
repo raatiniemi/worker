@@ -29,10 +29,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.service.data.BackupService;
 import me.raatiniemi.worker.data.service.data.RestoreService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
+import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import timber.log.Timber;
 
@@ -41,7 +45,7 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
-public class DataFragment extends BasePreferenceFragment {
+public class DataFragment extends BasePreferenceFragment implements DataView {
     /**
      * Key for the data backup preference.
      */
@@ -54,14 +58,31 @@ public class DataFragment extends BasePreferenceFragment {
 
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
+    @Inject
+    DataPresenter presenter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ((Worker) getActivity().getApplication()).getSettingsComponent()
+                .inject(this);
+
+        presenter.attachView(this);
 
         addPreferencesFromResource(R.xml.settings_data);
 
         // Check for the latest backup.
         checkLatestBackup();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (nonNull(presenter)) {
+            presenter.detachView();
+        }
     }
 
     @Override
@@ -148,8 +169,7 @@ public class DataFragment extends BasePreferenceFragment {
         if (PermissionUtil.havePermission(getActivity(), READ_EXTERNAL_STORAGE)) {
             // Tell the SettingsActivity to fetch the latest backup.
             Timber.d("Permission for reading external storage is granted");
-            getSettingsActivity().getPresenter()
-                    .getLatestBackup();
+            presenter.getLatestBackup();
 
             // No need to go any further.
             return;
@@ -167,6 +187,12 @@ public class DataFragment extends BasePreferenceFragment {
                 new String[]{READ_EXTERNAL_STORAGE},
                 SettingsActivity.REQUEST_READ_EXTERNAL_STORAGE
         )).show();
+    }
+
+    @Override
+    public void setLatestBackup(@Nullable Backup backup) {
+        setBackupSummary(backup);
+        setRestoreSummary(backup);
     }
 
     /**

@@ -30,7 +30,6 @@ import javax.inject.Inject;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.SettingsPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import me.raatiniemi.worker.presentation.view.activity.MvpActivity;
@@ -189,17 +188,5 @@ public class SettingsActivity extends MvpActivity<SettingsPresenter>
     @Nullable
     private DataFragment getDataFragment() {
         return getPreferenceFragment(SETTINGS_DATA_KEY);
-    }
-
-    @Override
-    public void setLatestBackup(@Nullable Backup backup) {
-        DataFragment fragment = getDataFragment();
-        if (isNull(fragment)) {
-            Timber.d("DataFragment is not available");
-            return;
-        }
-
-        fragment.setBackupSummary(backup);
-        fragment.setRestoreSummary(backup);
     }
 }

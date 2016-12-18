@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Worker Project
+ * Copyright (C) 2016 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,10 +16,16 @@
 
 package me.raatiniemi.worker.presentation.settings.view;
 
+import android.support.annotation.Nullable;
+
+import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.view.MvpView;
 
-/**
- * Methods related to handling of the settings view.
- */
-public interface SettingsView extends MvpView {
+public interface DataView extends MvpView {
+    /**
+     * Update the view with the latest backup.
+     *
+     * @param backup Latest backup.
+     */
+    void setLatestBackup(@Nullable Backup backup);
 }
