@@ -88,6 +88,7 @@ public class Worker extends Application {
         PreferenceModule preferenceModule = new PreferenceModule(preferences);
         projectComponent = DaggerProjectComponent.builder()
                 .androidModule(androidModule)
+                .preferenceModule(preferenceModule)
                 .projectModule(new ProjectModule())
                 .build();
         projectsComponent = DaggerProjectsComponent.builder()

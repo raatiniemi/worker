@@ -32,12 +32,16 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
+import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 
 @Module
 public class ProjectModule {
     @Provides
     @Singleton
-    TimesheetPresenter providesTimesheetPresenter(Context context) {
+    TimesheetPresenter providesTimesheetPresenter(
+            Context context,
+            HideRegisteredTimePreferences hideRegisteredTimePreferences
+    ) {
         TimeRepository timeRepository = new TimeResolverRepository(
                 context.getContentResolver(),
                 new TimeCursorMapper(),
@@ -46,6 +50,7 @@ public class ProjectModule {
 
         return new TimesheetPresenter(
                 context,
+                hideRegisteredTimePreferences,
                 EventBus.getDefault(),
                 new GetTimesheet(timeRepository),
                 new MarkRegisteredTime(timeRepository),

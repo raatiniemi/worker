@@ -25,7 +25,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 /**
  * Communicate with the shared preferences.
  */
-public class Settings implements TimeSummaryPreferences {
+public class Settings implements HideRegisteredTimePreferences, TimeSummaryPreferences {
     /**
      * Preference key for hiding registered time.
      */
@@ -58,26 +58,16 @@ public class Settings implements TimeSummaryPreferences {
         this.preferences = preferences;
     }
 
-    /**
-     * Check if the registered time should be hidden.
-     *
-     * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
-     * @return 'true' if registered time should be hidden, otherwise 'false'.
-     */
-    public static boolean shouldHideRegisteredTime(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_HIDE_REGISTERED_TIME, false);
+    @Override
+    public boolean shouldHideRegisteredTime() {
+        return preferences.getBoolean(PREF_HIDE_REGISTERED_TIME, false);
     }
 
-    /**
-     * Set the preference indicating whether the registered time should be hidden.
-     *
-     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param newValue 'true' if registered should be hidden, otherwise 'false'.
-     */
-    public static void setHideRegisteredTime(final Context context, boolean newValue) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_HIDE_REGISTERED_TIME, newValue).apply();
+    @Override
+    public void setHideRegisteredTime(boolean newValue) {
+        preferences.edit()
+                .putBoolean(PREF_HIDE_REGISTERED_TIME, newValue)
+                .apply();
     }
 
     /**

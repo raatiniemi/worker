@@ -22,6 +22,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
@@ -31,6 +32,12 @@ public class PreferenceModule {
 
     public PreferenceModule(SharedPreferences preferences) {
         settings = new Settings(preferences);
+    }
+
+    @Provides
+    @Singleton
+    HideRegisteredTimePreferences providesHideRegisteredTimePreferences() {
+        return settings;
     }
 
     @Provides
