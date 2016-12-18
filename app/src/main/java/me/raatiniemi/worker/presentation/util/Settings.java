@@ -25,7 +25,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 /**
  * Communicate with the shared preferences.
  */
-public class Settings implements HideRegisteredTimePreferences, TimeSummaryPreferences {
+public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutPreferences, TimeSummaryPreferences {
     /**
      * Preference key for hiding registered time.
      */
@@ -70,26 +70,16 @@ public class Settings implements HideRegisteredTimePreferences, TimeSummaryPrefe
                 .apply();
     }
 
-    /**
-     * Check if clock out require confirmation.
-     *
-     * @param context Context to be used to look up the {@link android.content.SharedPreferences}.
-     * @return 'true' if clock out require confirmation, otherwise 'false'.
-     */
-    public static boolean shouldConfirmClockOut(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_CONFIRM_CLOCK_OUT, true);
+    @Override
+    public boolean shouldConfirmClockOut() {
+        return preferences.getBoolean(PREF_CONFIRM_CLOCK_OUT, true);
     }
 
-    /**
-     * Set the preference for clock out confirmation.
-     *
-     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param newValue 'true' if clock out requires confirmation, otherwise 'false'.
-     */
-    public static void setConfirmClockOut(final Context context, boolean newValue) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_CONFIRM_CLOCK_OUT, newValue).apply();
+    @Override
+    public void setConfirmClockOut(boolean newValue) {
+        preferences.edit()
+                .putBoolean(PREF_CONFIRM_CLOCK_OUT, newValue)
+                .apply();
     }
 
     /**

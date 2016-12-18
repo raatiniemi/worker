@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
+import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
@@ -43,6 +44,9 @@ public class ProjectFragment extends BasePreferenceFragment
     private static final String TIME_SUMMARY_KEY = "settings_project_time_summary";
     private static final String ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
     private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
+
+    @Inject
+    ConfirmClockOutPreferences confirmClockOutPreferences;
 
     @Inject
     TimeSummaryPreferences timeSummaryPreferences;
@@ -65,7 +69,7 @@ public class ProjectFragment extends BasePreferenceFragment
             // Set the preference value for the clock out confirmation.
             CheckBoxPreference confirmClockOut =
                     (CheckBoxPreference) findPreference(CONFIRM_CLOCK_OUT_KEY);
-            confirmClockOut.setChecked(Settings.shouldConfirmClockOut(getActivity()));
+            confirmClockOut.setChecked(confirmClockOutPreferences.shouldConfirmClockOut());
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to get value for 'confirm_clock_out'");
         }
@@ -113,7 +117,7 @@ public class ProjectFragment extends BasePreferenceFragment
                 try {
                     // Set the clock out confirmation preference.
                     boolean checked = ((CheckBoxPreference) preference).isChecked();
-                    Settings.setConfirmClockOut(getActivity(), checked);
+                    confirmClockOutPreferences.setConfirmClockOut(checked);
                     return true;
                 } catch (ClassCastException e) {
                     Timber.w(e, "Unable to set value for 'confirm_clock_out'");

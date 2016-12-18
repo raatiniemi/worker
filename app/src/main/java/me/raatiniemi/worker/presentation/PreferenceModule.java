@@ -22,6 +22,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
@@ -37,6 +38,12 @@ public class PreferenceModule {
     @Provides
     @Singleton
     HideRegisteredTimePreferences providesHideRegisteredTimePreferences() {
+        return settings;
+    }
+
+    @Provides
+    @Singleton
+    ConfirmClockOutPreferences providesConfirmClockOutPreferences() {
         return settings;
     }
 

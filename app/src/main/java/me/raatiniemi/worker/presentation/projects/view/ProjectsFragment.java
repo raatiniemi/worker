@@ -40,8 +40,8 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
-import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 import timber.log.Timber;
@@ -56,6 +56,9 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
      * Tag for the new project fragment.
      */
     private static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
+
+    @Inject
+    ConfirmClockOutPreferences confirmClockOutPreferences;
 
     @Inject
     ProjectsPresenter presenter;
@@ -318,7 +321,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     public void onClockActivityToggle(@NonNull final ProjectsItem project) {
         if (project.isActive()) {
             // Check if clock out require confirmation.
-            if (!Settings.shouldConfirmClockOut(getActivity())) {
+            if (!confirmClockOutPreferences.shouldConfirmClockOut()) {
                 getPresenter().clockActivityChange(project, new Date());
                 return;
             }
