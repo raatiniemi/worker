@@ -21,19 +21,14 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.util.PermissionUtil;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
-import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
-public class SettingsActivity extends BaseActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class SettingsActivity extends BaseActivity {
     /**
      * Key for the project preference.
      */
@@ -43,16 +38,6 @@ public class SettingsActivity extends BaseActivity implements ActivityCompat.OnR
      * Key for the data preference.
      */
     static final String SETTINGS_DATA_KEY = "settings_data";
-
-    /**
-     * Code for requesting permission for reading external storage.
-     */
-    static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
-
-    /**
-     * Code for requesting permission for writing to external storage.
-     */
-    static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
@@ -67,44 +52,6 @@ public class SettingsActivity extends BaseActivity implements ActivityCompat.OnR
             getFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new SettingsFragment())
                     .commit();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults
-    ) {
-        // Both of the permission requests require that the `DataFragment` is
-        // available, no ned to go any further if the fragment is not available.
-        DataFragment fragment = getDataFragment();
-        if (isNull(fragment)) {
-            super.onRequestPermissionsResult(
-                    requestCode,
-                    permissions,
-                    grantResults
-            );
-            return;
-        }
-
-        switch (requestCode) {
-            case REQUEST_READ_EXTERNAL_STORAGE:
-                // Whether we've been granted read permission or not, a call to
-                // the `checkLatestBackup` will handle both scenarios.
-                fragment.checkLatestBackup();
-                break;
-            case REQUEST_WRITE_EXTERNAL_STORAGE:
-                // Only if we've been granted write permission should we backup.
-                // We should not display the permission message again unless the
-                // user attempt to backup.
-                if (PermissionUtil.verifyPermissions(grantResults)) {
-                    fragment.runBackup();
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-                break;
         }
     }
 
@@ -132,43 +79,5 @@ public class SettingsActivity extends BaseActivity implements ActivityCompat.OnR
         } else {
             super.onBackPressed();
         }
-    }
-
-    /**
-     * Get preference fragment by tag.
-     *
-     * @param tag Tag for the fragment.
-     * @param <T> Type of the fragment.
-     * @return Preference fragment, or null if unable to retrieve fragment.
-     */
-    @Nullable
-    @SuppressWarnings("unchecked")
-    private <T extends BasePreferenceFragment> T getPreferenceFragment(String tag) {
-        T fragment = null;
-
-        try {
-            fragment = (T) getFragmentManager().findFragmentByTag(tag);
-            if (isNull(fragment)) {
-                // Should only be an informational log message since
-                // the activity is working with multiple fragments
-                // and the user can navigate up or down before the
-                // background operations are finished.
-                Timber.i("Unable to find fragment with tag: %s", tag);
-            }
-        } catch (ClassCastException e) {
-            Timber.w(e, "Unable to cast preference fragment");
-        }
-
-        return fragment;
-    }
-
-    /**
-     * Get the data fragment.
-     *
-     * @return Data fragment, or null if unable to get fragment.
-     */
-    @Nullable
-    private DataFragment getDataFragment() {
-        return getPreferenceFragment(SETTINGS_DATA_KEY);
     }
 }

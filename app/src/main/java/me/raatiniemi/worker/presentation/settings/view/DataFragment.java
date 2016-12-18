@@ -45,7 +45,8 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
-public class DataFragment extends BasePreferenceFragment implements DataView {
+public class DataFragment extends BasePreferenceFragment
+        implements DataView, ActivityCompat.OnRequestPermissionsResultCallback {
     /**
      * Key for the data backup preference.
      */
@@ -55,6 +56,16 @@ public class DataFragment extends BasePreferenceFragment implements DataView {
      * Key for the data restore preference.
      */
     private static final String SETTINGS_DATA_RESTORE_KEY = "settings_data_restore";
+
+    /**
+     * Code for requesting permission for reading external storage.
+     */
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
+
+    /**
+     * Code for requesting permission for writing to external storage.
+     */
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
@@ -82,6 +93,32 @@ public class DataFragment extends BasePreferenceFragment implements DataView {
 
         if (nonNull(presenter)) {
             presenter.detachView();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ) {
+        switch (requestCode) {
+            case REQUEST_READ_EXTERNAL_STORAGE:
+                // Whether we've been granted read permission or not, a call to
+                // the `checkLatestBackup` will handle both scenarios.
+                checkLatestBackup();
+                break;
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                // Only if we've been granted write permission should we backup.
+                // We should not display the permission message again unless the
+                // user attempt to backup.
+                if (PermissionUtil.verifyPermissions(grantResults)) {
+                    runBackup();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                break;
         }
     }
 
@@ -136,7 +173,7 @@ public class DataFragment extends BasePreferenceFragment implements DataView {
         ).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(
                 getActivity(),
                 new String[]{WRITE_EXTERNAL_STORAGE},
-                SettingsActivity.REQUEST_WRITE_EXTERNAL_STORAGE
+                REQUEST_WRITE_EXTERNAL_STORAGE
         )).show();
     }
 
@@ -185,7 +222,7 @@ public class DataFragment extends BasePreferenceFragment implements DataView {
         ).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(
                 getActivity(),
                 new String[]{READ_EXTERNAL_STORAGE},
-                SettingsActivity.REQUEST_READ_EXTERNAL_STORAGE
+                REQUEST_READ_EXTERNAL_STORAGE
         )).show();
     }
 
