@@ -37,10 +37,6 @@ public abstract class BasePreferenceFragment extends PreferenceFragment {
         getActivity().setTitle(getTitle());
     }
 
-    SettingsActivity getSettingsActivity() {
-        return (SettingsActivity) getActivity();
-    }
-
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
         super.onPreferenceTreeClick(preferenceScreen, preference);
