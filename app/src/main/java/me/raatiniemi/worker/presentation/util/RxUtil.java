@@ -9,7 +9,7 @@ import rx.schedulers.Schedulers;
 
 import static me.raatiniemi.util.NullUtil.nonNull;
 
-public class RxUtil {
+final public class RxUtil {
     private RxUtil() {
     }
 
