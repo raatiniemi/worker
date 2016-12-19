@@ -16,16 +16,14 @@
 
 package me.raatiniemi.worker.presentation.util;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 
 /**
  * Communicate with the shared preferences.
  */
-public class Settings {
+public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutPreferences, OngoingNotificationPreferences, TimeSummaryPreferences {
     /**
      * Preference key for hiding registered time.
      */
@@ -52,143 +50,90 @@ public class Settings {
      */
     private static final String PREF_TIME_SUMMARY = "pref_time_summary";
 
-    private Settings() {
+    private final SharedPreferences preferences;
+
+    public Settings(SharedPreferences preferences) {
+        this.preferences = preferences;
     }
 
-    /**
-     * Check if the registered time should be hidden.
-     *
-     * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
-     * @return 'true' if registered time should be hidden, otherwise 'false'.
-     */
-    public static boolean shouldHideRegisteredTime(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_HIDE_REGISTERED_TIME, false);
+    @Override
+    public boolean shouldHideRegisteredTime() {
+        return preferences.getBoolean(PREF_HIDE_REGISTERED_TIME, false);
     }
 
-    /**
-     * Set the preference indicating whether the registered time should be hidden.
-     *
-     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param newValue 'true' if registered should be hidden, otherwise 'false'.
-     */
-    public static void setHideRegisteredTime(final Context context, boolean newValue) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_HIDE_REGISTERED_TIME, newValue).apply();
+    @Override
+    public void setHideRegisteredTime(boolean newValue) {
+        preferences.edit()
+                .putBoolean(PREF_HIDE_REGISTERED_TIME, newValue)
+                .apply();
     }
 
-    /**
-     * Check if clock out require confirmation.
-     *
-     * @param context Context to be used to look up the {@link android.content.SharedPreferences}.
-     * @return 'true' if clock out require confirmation, otherwise 'false'.
-     */
-    public static boolean shouldConfirmClockOut(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_CONFIRM_CLOCK_OUT, true);
+    @Override
+    public boolean shouldConfirmClockOut() {
+        return preferences.getBoolean(PREF_CONFIRM_CLOCK_OUT, true);
     }
 
-    /**
-     * Set the preference for clock out confirmation.
-     *
-     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param newValue 'true' if clock out requires confirmation, otherwise 'false'.
-     */
-    public static void setConfirmClockOut(final Context context, boolean newValue) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_CONFIRM_CLOCK_OUT, newValue).apply();
+    @Override
+    public void setConfirmClockOut(boolean newValue) {
+        preferences.edit()
+                .putBoolean(PREF_CONFIRM_CLOCK_OUT, newValue)
+                .apply();
     }
 
-    /**
-     * Check if ongoing notification is enabled.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @return 'true' if ongoing notification is enabled, otherwise 'false'.
-     */
-    public static boolean isOngoingNotificationEnabled(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true);
+    @Override
+    public boolean isOngoingNotificationEnabled() {
+        return preferences.getBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true);
     }
 
-    /**
-     * Enable ongoing notification.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void enableOngoingNotification(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true).apply();
+    @Override
+    public void enableOngoingNotification() {
+        preferences.edit()
+                .putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true)
+                .apply();
     }
 
-    /**
-     * Disable ongoing notification.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void disableOngoingNotification(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, false).apply();
+    @Override
+    public void disableOngoingNotification() {
+        preferences.edit()
+                .putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, false)
+                .apply();
     }
 
-    /**
-     * Check if the ongoing notification chronometer is enabled.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @return 'true' if the ongoing notification chronometer is enabled, otherwise 'false'.
-     */
-    public static boolean isOngoingNotificationChronometerEnabled(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true);
+    @Override
+    public boolean isOngoingNotificationChronometerEnabled() {
+        return preferences.getBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true);
     }
 
-    /**
-     * Enable the ongoing notification chronometer.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void enableOngoingNotificationChronometer(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true).apply();
+    @Override
+    public void enableOngoingNotificationChronometer() {
+        preferences.edit()
+                .putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true)
+                .apply();
     }
 
-    /**
-     * Disable the ongoing notification chronometer.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void disableOngoingNotificationChronometer(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, false).apply();
+    @Override
+    public void disableOngoingNotificationChronometer() {
+        preferences.edit()
+                .putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, false)
+                .apply();
     }
 
-    /**
-     * Get the time summary starting point, default value is {@link GetProjectTimeSince#MONTH}.
-     *
-     * @param context Context to be used to read from the {@link android.content.SharedPreferences}.
-     * @return Time summary starting point, e.g. {@link GetProjectTimeSince#WEEK} or {@link GetProjectTimeSince#MONTH}.
-     */
-    public static int getStartingPointForTimeSummary(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH);
+    @Override
+    public int getStartingPointForTimeSummary() {
+        return preferences.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH);
     }
 
-    /**
-     * Use week for time summary starting point, i.e. {@link GetProjectTimeSince#WEEK}.
-     *
-     * @param context Context to be used to edit the {@link SharedPreferences}.
-     */
-    public static void useWeekForTimeSummaryStartingPoint(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.WEEK).apply();
+    @Override
+    public void useWeekForTimeSummaryStartingPoint() {
+        preferences.edit()
+                .putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.WEEK)
+                .apply();
     }
 
-    /**
-     * Use month for time summary starting point, i.e. {@link GetProjectTimeSince#MONTH}.
-     *
-     * @param context Context to be used to edit the {@link SharedPreferences}.
-     */
-    public static void useMonthForTimeSummaryStartingPoint(Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH).apply();
+    @Override
+    public void useMonthForTimeSummaryStartingPoint() {
+        preferences.edit()
+                .putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH)
+                .apply();
     }
 }

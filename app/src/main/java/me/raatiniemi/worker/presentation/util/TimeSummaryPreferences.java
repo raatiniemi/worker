@@ -14,20 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project;
+package me.raatiniemi.worker.presentation.util;
 
-import javax.inject.Singleton;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 
-import dagger.Component;
-import me.raatiniemi.worker.presentation.AndroidModule;
-import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
-import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
+public interface TimeSummaryPreferences {
+    /**
+     * Get the time summary starting point, default value is {@link GetProjectTimeSince#MONTH}.
+     */
+    int getStartingPointForTimeSummary();
 
-@Singleton
-@Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectModule.class})
-public interface ProjectComponent {
-    void inject(ProjectActivity projectActivity);
+    /**
+     * Use week for time summary starting point, i.e. {@link GetProjectTimeSince#WEEK}.
+     */
+    void useWeekForTimeSummaryStartingPoint();
 
-    void inject(TimesheetFragment timesheetFragment);
+    /**
+     * Use month for time summary starting point, i.e. {@link GetProjectTimeSince#MONTH}.
+     */
+    void useMonthForTimeSummaryStartingPoint();
 }

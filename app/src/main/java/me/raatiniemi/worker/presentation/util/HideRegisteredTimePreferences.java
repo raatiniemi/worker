@@ -14,20 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project;
+package me.raatiniemi.worker.presentation.util;
 
-import javax.inject.Singleton;
+public interface HideRegisteredTimePreferences {
+    /**
+     * Check if the registered time should be hidden.
+     *
+     * @return 'true' if registered time should be hidden, otherwise 'false'.
+     */
+    boolean shouldHideRegisteredTime();
 
-import dagger.Component;
-import me.raatiniemi.worker.presentation.AndroidModule;
-import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
-import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
-
-@Singleton
-@Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectModule.class})
-public interface ProjectComponent {
-    void inject(ProjectActivity projectActivity);
-
-    void inject(TimesheetFragment timesheetFragment);
+    /**
+     * Set the preference indicating whether the registered time should be hidden.
+     *
+     * @param newValue 'true' if registered should be hidden, otherwise 'false'.
+     */
+    void setHideRegisteredTime(boolean newValue);
 }

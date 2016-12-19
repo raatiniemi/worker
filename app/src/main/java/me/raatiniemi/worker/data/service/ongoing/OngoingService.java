@@ -24,6 +24,8 @@ import android.content.Intent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import javax.inject.Inject;
+
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
@@ -35,11 +37,22 @@ import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 
 abstract class OngoingService extends IntentService {
+    @Inject
+    OngoingNotificationPreferences ongoingNotificationPreferences;
+
     OngoingService(String name) {
         super(name);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        ((Worker) getApplication()).getOngoingServiceComponent()
+                .inject(this);
     }
 
     private static String buildNotificationTag(long projectId) {
@@ -94,7 +107,11 @@ abstract class OngoingService extends IntentService {
     }
 
     boolean isOngoingNotificationEnabled() {
-        return Settings.isOngoingNotificationEnabled(this);
+        return ongoingNotificationPreferences.isOngoingNotificationEnabled();
+    }
+
+    boolean isOngoingNotificationChronometerEnabled() {
+        return ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled();
     }
 
     void updateUserInterface(long projectId) {

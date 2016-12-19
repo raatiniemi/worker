@@ -36,7 +36,6 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.util.Settings;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
@@ -56,17 +55,17 @@ public class PauseNotification extends OngoingNotification {
     private long registeredTime;
     private TimeResolverRepository repository;
 
-    private PauseNotification(Context context, Project project) {
+    private PauseNotification(Context context, Project project, boolean useChronometer) {
         super(context, project);
 
-        useChronometer = Settings.isOngoingNotificationChronometerEnabled(getContext());
-        if (useChronometer) {
+        this.useChronometer = useChronometer;
+        if (this.useChronometer) {
             populateRegisteredTime();
         }
     }
 
-    public static Notification build(Context context, Project project) {
-        PauseNotification notification = new PauseNotification(context, project);
+    public static Notification build(Context context, Project project, boolean useChronometer) {
+        PauseNotification notification = new PauseNotification(context, project, useChronometer);
         return notification.build();
     }
 

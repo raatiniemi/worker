@@ -14,20 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project;
+package me.raatiniemi.worker.data.service.ongoing;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
-import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
 
 @Singleton
-@Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectModule.class})
-public interface ProjectComponent {
-    void inject(ProjectActivity projectActivity);
-
-    void inject(TimesheetFragment timesheetFragment);
+@Component(modules = PreferenceModule.class)
+public interface OngoingServiceComponent {
+    void inject(OngoingService ongoingService);
 }

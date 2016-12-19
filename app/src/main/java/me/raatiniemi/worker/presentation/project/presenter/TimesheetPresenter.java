@@ -38,8 +38,8 @@ import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildItem;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
+import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.RxUtil;
-import me.raatiniemi.worker.presentation.util.Settings;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -50,6 +50,7 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull
 public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     private Subscription getTimesheetSubscription;
 
+    private final HideRegisteredTimePreferences hideRegisteredTimePreferences;
     private final EventBus eventBus;
 
     /**
@@ -70,14 +71,16 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     /**
      * Constructor.
      *
-     * @param context            Context used with the presenter.
-     * @param eventBus           Event bus.
-     * @param getTimesheet       Use case for getting project timesheet.
-     * @param markRegisteredTime Use case for marking time as registered.
-     * @param removeTime         Use case for removing time.
+     * @param context                       Context used with the presenter.
+     * @param hideRegisteredTimePreferences Preferences for hide registered time.
+     * @param eventBus                      Event bus.
+     * @param getTimesheet                  Use case for getting project timesheet.
+     * @param markRegisteredTime            Use case for marking time as registered.
+     * @param removeTime                    Use case for removing time.
      */
     public TimesheetPresenter(
             Context context,
+            HideRegisteredTimePreferences hideRegisteredTimePreferences,
             EventBus eventBus,
             GetTimesheet getTimesheet,
             MarkRegisteredTime markRegisteredTime,
@@ -85,6 +88,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     ) {
         super(context);
 
+        this.hideRegisteredTimePreferences = hideRegisteredTimePreferences;
         this.eventBus = eventBus;
         this.getTimesheet = getTimesheet;
         this.markRegisteredTime = markRegisteredTime;
@@ -118,7 +122,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         // Setup the subscription for retrieving timesheet.
         getTimesheetSubscription = Observable
                 .defer(() -> {
-                    boolean hideRegisteredTime = Settings.shouldHideRegisteredTime(getContext());
+                    boolean hideRegisteredTime = hideRegisteredTimePreferences.shouldHideRegisteredTime();
                     return Observable.just(
                             getTimesheet.execute(id, offset, hideRegisteredTime)
                     );
@@ -216,7 +220,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                         Timber.d("register onNext");
 
                         performWithView(view -> {
-                            if (Settings.shouldHideRegisteredTime(getContext())) {
+                            if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
                                 view.remove(results);
                                 return;
                             }

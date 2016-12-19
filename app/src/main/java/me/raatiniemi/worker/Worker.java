@@ -17,11 +17,16 @@
 package me.raatiniemi.worker;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.squareup.leakcanary.LeakCanary;
 
+import me.raatiniemi.worker.data.service.ongoing.DaggerOngoingServiceComponent;
+import me.raatiniemi.worker.data.service.ongoing.OngoingServiceComponent;
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
 import me.raatiniemi.worker.presentation.AndroidModule;
+import me.raatiniemi.worker.presentation.PreferenceModule;
 import me.raatiniemi.worker.presentation.project.DaggerProjectComponent;
 import me.raatiniemi.worker.presentation.project.ProjectComponent;
 import me.raatiniemi.worker.presentation.project.ProjectModule;
@@ -72,6 +77,7 @@ public class Worker extends Application {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
+    private OngoingServiceComponent ongoingServiceComponent;
     private ProjectComponent projectComponent;
     private ProjectsComponent projectsComponent;
     private SettingsComponent settingsComponent;
@@ -81,16 +87,24 @@ public class Worker extends Application {
         super.onCreate();
 
         AndroidModule androidModule = new AndroidModule(this);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        PreferenceModule preferenceModule = new PreferenceModule(preferences);
+        ongoingServiceComponent = DaggerOngoingServiceComponent.builder()
+                .preferenceModule(preferenceModule)
+                .build();
         projectComponent = DaggerProjectComponent.builder()
                 .androidModule(androidModule)
+                .preferenceModule(preferenceModule)
                 .projectModule(new ProjectModule())
                 .build();
         projectsComponent = DaggerProjectsComponent.builder()
                 .androidModule(androidModule)
                 .projectsModule(new ProjectsModule())
+                .preferenceModule(preferenceModule)
                 .build();
         settingsComponent = DaggerSettingsComponent.builder()
                 .androidModule(androidModule)
+                .preferenceModule(preferenceModule)
                 .settingsModule(new SettingsModule())
                 .build();
 
@@ -102,6 +116,10 @@ public class Worker extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    public OngoingServiceComponent getOngoingServiceComponent() {
+        return ongoingServiceComponent;
     }
 
     public ProjectComponent getProjectComponent() {

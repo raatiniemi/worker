@@ -27,7 +27,6 @@ import java.util.Date;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.service.ongoing.ResumeService;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.util.Settings;
 
 /**
  * Notification for resuming an inactive project.
@@ -39,14 +38,14 @@ public class ResumeNotification extends OngoingNotification {
 
     private boolean useChronometer;
 
-    private ResumeNotification(Context context, Project project) {
+    private ResumeNotification(Context context, Project project, boolean useChronometer) {
         super(context, project);
 
-        useChronometer = Settings.isOngoingNotificationChronometerEnabled(getContext());
+        this.useChronometer = useChronometer;
     }
 
-    public static Notification build(Context context, Project project) {
-        ResumeNotification notification = new ResumeNotification(context, project);
+    public static Notification build(Context context, Project project, boolean useChronometer) {
+        ResumeNotification notification = new ResumeNotification(context, project, useChronometer);
         return notification.build();
     }
 

@@ -14,20 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project;
+package me.raatiniemi.worker.presentation.util;
 
-import javax.inject.Singleton;
+public interface ConfirmClockOutPreferences {
+    /**
+     * Check if clock out require confirmation.
+     *
+     * @return 'true' if clock out require confirmation, otherwise 'false'.
+     */
+    boolean shouldConfirmClockOut();
 
-import dagger.Component;
-import me.raatiniemi.worker.presentation.AndroidModule;
-import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
-import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
-
-@Singleton
-@Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectModule.class})
-public interface ProjectComponent {
-    void inject(ProjectActivity projectActivity);
-
-    void inject(TimesheetFragment timesheetFragment);
+    /**
+     * Set the preference for clock out confirmation.
+     *
+     * @param newValue 'true' if clock out requires confirmation, otherwise 'false'.
+     */
+    void setConfirmClockOut(boolean newValue);
 }

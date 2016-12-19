@@ -80,7 +80,7 @@ public class PauseService extends OngoingService {
     private void sendResumeNotification(Project project) {
         sendNotification(
                 project.getId(),
-                ResumeNotification.build(this, project)
+                ResumeNotification.build(this, project, isOngoingNotificationChronometerEnabled())
         );
     }
 

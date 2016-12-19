@@ -30,11 +30,13 @@ import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.ProjectView;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
@@ -46,8 +48,11 @@ public class ProjectPresenterTest {
     @Before
     public void setUp() throws Exception {
         Context context = mock(Context.class);
+        TimeSummaryPreferences preferences = mock(TimeSummaryPreferences.class);
+        when(preferences.getStartingPointForTimeSummary())
+                .thenReturn(GetProjectTimeSince.MONTH);
         eventBus = mock(EventBus.class);
-        presenter = new ProjectPresenter(context, eventBus);
+        presenter = new ProjectPresenter(context, preferences, eventBus);
         view = mock(ProjectView.class);
     }
 

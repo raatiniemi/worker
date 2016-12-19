@@ -25,31 +25,33 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.ProjectView;
-import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
 public class ProjectPresenter extends BasePresenter<ProjectView> {
+    private final TimeSummaryPreferences preferences;
     private final EventBus eventBus;
 
-    public ProjectPresenter(Context context, EventBus eventBus) {
+    public ProjectPresenter(Context context, TimeSummaryPreferences preferences, EventBus eventBus) {
         super(context);
 
+        this.preferences = preferences;
         this.eventBus = eventBus;
     }
 
     public void changeTimeSummaryStartingPoint(int newStartingPoint) {
         try {
-            int currentStartingPoint = Settings.getStartingPointForTimeSummary(getContext());
+            int currentStartingPoint = preferences.getStartingPointForTimeSummary();
             if (currentStartingPoint == newStartingPoint) {
                 return;
             }
 
             switch (newStartingPoint) {
                 case GetProjectTimeSince.WEEK:
-                    Settings.useWeekForTimeSummaryStartingPoint(getContext());
+                    preferences.useWeekForTimeSummaryStartingPoint();
                     break;
                 case GetProjectTimeSince.MONTH:
-                    Settings.useMonthForTimeSummaryStartingPoint(getContext());
+                    preferences.useMonthForTimeSummaryStartingPoint();
                     break;
                 default:
                     throw new InvalidStartingPointException(

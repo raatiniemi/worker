@@ -52,6 +52,8 @@ import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
+import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -82,6 +84,8 @@ public class ProjectsPresenterTest {
 
     @Before
     public void setUp() {
+        TimeSummaryPreferences timeSummaryPreferences = mock(TimeSummaryPreferences.class);
+        OngoingNotificationPreferences ongoingNotificationPreferences = mock(OngoingNotificationPreferences.class);
         eventBus = mock(EventBus.class);
         getProjects = mock(GetProjects.class);
         getProjectTimeSince = mock(GetProjectTimeSince.class);
@@ -89,6 +93,8 @@ public class ProjectsPresenterTest {
         removeProject = mock(RemoveProject.class);
         presenter = new ProjectsPresenter(
                 context,
+                timeSummaryPreferences,
+                ongoingNotificationPreferences,
                 eventBus,
                 getProjects,
                 getProjectTimeSince,
