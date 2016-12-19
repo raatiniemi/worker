@@ -98,6 +98,7 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
                         }
                     });
         } catch (InvalidProjectNameException e) {
+            Timber.d(e, "Invalid name for project");
             performWithView(NewProjectView::showInvalidNameError);
         }
     }
