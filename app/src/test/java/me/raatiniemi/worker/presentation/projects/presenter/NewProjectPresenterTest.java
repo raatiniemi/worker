@@ -16,22 +16,18 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import android.os.Build;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.RxSchedulerRule;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
+import me.raatiniemi.worker.presentation.projects.view.NewProjectView;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -39,21 +35,20 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+@RunWith(JUnit4.class)
 public class NewProjectPresenterTest {
     @Rule
     public final RxSchedulerRule rxSchedulersRule = new RxSchedulerRule();
 
     private CreateProject createProject;
     private NewProjectPresenter presenter;
-    private NewProjectFragment view;
+    private NewProjectView view;
 
     @Before
     public void setUp() {
         createProject = mock(CreateProject.class);
         presenter = new NewProjectPresenter(createProject);
-        view = mock(NewProjectFragment.class);
+        view = mock(NewProjectView.class);
     }
 
     @Test
