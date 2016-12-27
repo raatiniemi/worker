@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.settings.presenter;
 
-import android.content.Context;
 import android.os.Build;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,9 +45,8 @@ public class DataPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        Context context = mock(Context.class);
         eventBus = mock(EventBus.class);
-        presenter = new DataPresenter(context, eventBus);
+        presenter = new DataPresenter(eventBus);
         view = mock(DataView.class);
     }
 

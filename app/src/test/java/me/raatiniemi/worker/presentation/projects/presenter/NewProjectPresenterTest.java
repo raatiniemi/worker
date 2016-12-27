@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import android.content.Context;
 import android.os.Build;
 
 import org.junit.Before;
@@ -53,10 +52,7 @@ public class NewProjectPresenterTest {
     @Before
     public void setUp() {
         createProject = mock(CreateProject.class);
-        presenter = new NewProjectPresenter(
-                mock(Context.class),
-                createProject
-        );
+        presenter = new NewProjectPresenter(createProject);
         view = mock(NewProjectFragment.class);
     }
 

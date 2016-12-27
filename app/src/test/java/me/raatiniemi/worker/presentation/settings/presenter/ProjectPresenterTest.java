@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.settings.presenter;
 
-import android.content.Context;
 import android.os.Build;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,12 +46,11 @@ public class ProjectPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        Context context = mock(Context.class);
         TimeSummaryPreferences preferences = mock(TimeSummaryPreferences.class);
         when(preferences.getStartingPointForTimeSummary())
                 .thenReturn(GetProjectTimeSince.MONTH);
         eventBus = mock(EventBus.class);
-        presenter = new ProjectPresenter(context, preferences, eventBus);
+        presenter = new ProjectPresenter(preferences, eventBus);
         view = mock(ProjectView.class);
     }
 

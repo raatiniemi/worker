@@ -49,7 +49,6 @@ public class ProjectModule {
         );
 
         return new TimesheetPresenter(
-                context,
                 hideRegisteredTimePreferences,
                 EventBus.getDefault(),
                 new GetTimesheet(timeRepository),

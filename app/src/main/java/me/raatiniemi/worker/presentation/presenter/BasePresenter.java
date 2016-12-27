@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.presenter;
 
-import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,32 +36,9 @@ import static me.raatiniemi.util.NullUtil.nonNull;
  */
 public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     /**
-     * Context used with the presenter.
-     */
-    private final Context context;
-
-    /**
      * Weak reference for the view attached to the presenter.
      */
     private WeakReference<V> viewReference;
-
-    /**
-     * Constructor.
-     *
-     * @param context Context used with the presenter.
-     */
-    protected BasePresenter(Context context) {
-        this.context = context;
-    }
-
-    /**
-     * Get the context.
-     *
-     * @return Context used with the presenter.
-     */
-    protected Context getContext() {
-        return context;
-    }
 
     /**
      * Retrieve the view attached to the presenter.

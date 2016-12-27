@@ -33,12 +33,12 @@ public class SettingsModule {
     @Provides
     @Singleton
     ProjectPresenter providesProjectPresenter(Context context, TimeSummaryPreferences preferences) {
-        return new ProjectPresenter(context, preferences, EventBus.getDefault());
+        return new ProjectPresenter(preferences, EventBus.getDefault());
     }
 
     @Provides
     @Singleton
     DataPresenter providesDataPresenter(Context context) {
-        return new DataPresenter(context, EventBus.getDefault());
+        return new DataPresenter(EventBus.getDefault());
     }
 }
