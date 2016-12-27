@@ -16,18 +16,14 @@
 
 package me.raatiniemi.worker.presentation.settings.presenter;
 
-import android.os.Build;
-
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runners.JUnit4;
 
 import java.io.File;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.model.BackupSuccessfulEvent;
 import me.raatiniemi.worker.presentation.settings.view.DataView;
@@ -36,8 +32,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+@RunWith(JUnit4.class)
 public class DataPresenterTest {
     private DataPresenter presenter;
     private DataView view;
