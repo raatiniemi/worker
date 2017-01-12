@@ -18,7 +18,7 @@ public class TimesheetGroupItem
         intervalFormat = new FractionIntervalFormat();
     }
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.getDefault());
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag("en_US"));
 
     public TimesheetGroupItem(Date group) {
         super(group);
@@ -36,6 +36,7 @@ public class TimesheetGroupItem
 
     private static String getFormattedTimeDifference(float difference) {
         return String.format(
+                Locale.forLanguageTag("en_US"),
                 getTimeDifferenceFormat(difference),
                 difference
         );
@@ -87,7 +88,7 @@ public class TimesheetGroupItem
 
     private String getTimeSummary() {
         return String.format(
-                Locale.getDefault(),
+                Locale.forLanguageTag("en_US"),
                 "%.2f",
                 calculateTimeIntervalSummary()
         );

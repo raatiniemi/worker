@@ -67,7 +67,7 @@ public class DataFragment extends BasePreferenceFragment
      */
     private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
-    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.forLanguageTag("en_US"));
 
     @Inject
     DataPresenter presenter;

@@ -36,7 +36,7 @@ public class FractionIntervalFormat implements DateIntervalFormat {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
         return String.format(
-                Locale.getDefault(),
+                Locale.forLanguageTag("en_US"),
                 FRACTION_FORMAT,
                 calculateHoursWithFraction(calculatedTime)
         );

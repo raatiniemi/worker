@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.presentation.util;
 
+import java.util.Locale;
+
 import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.util.CalculateTime;
 
@@ -34,6 +36,7 @@ public class HoursMinutesIntervalFormat implements DateIntervalFormat {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
         return String.format(
+                Locale.forLanguageTag("en_US"),
                 getFormatTemplate(calculatedTime),
                 calculatedTime.getHours(),
                 calculatedTime.getMinutes()
