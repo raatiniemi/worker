@@ -37,7 +37,7 @@ public class ProjectsItem {
         intervalFormat = new HoursMinutesIntervalFormat();
     }
 
-    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Project project;
     private long timeSummary = 0;
 
@@ -107,6 +107,7 @@ public class ProjectsItem {
         }
 
         return String.format(
+                Locale.forLanguageTag("en_US"),
                 getClockedInSinceFormatTemplate(resources),
                 getFormattedClockedInSince(),
                 getFormattedElapsedTime()

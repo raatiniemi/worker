@@ -34,7 +34,7 @@ public class TimesheetChildItem {
         intervalFormat = new FractionIntervalFormat();
     }
 
-    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Time time;
 
     public TimesheetChildItem(Time time) {
