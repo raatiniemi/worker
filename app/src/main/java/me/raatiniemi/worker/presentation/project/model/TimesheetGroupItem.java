@@ -87,7 +87,7 @@ public class TimesheetGroupItem
 
     private String getTimeSummary() {
         return String.format(
-                Locale.getDefault(),
+                Locale.forLanguageTag("en_US"),
                 "%.2f",
                 calculateTimeIntervalSummary()
         );
