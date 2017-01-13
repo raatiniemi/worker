@@ -59,7 +59,7 @@ abstract class BasePreferenceFragment extends PreferenceFragment {
      *
      * @param key Key for the new preference screen.
      */
-    protected void switchPreferenceScreen(String key) {
+    void switchPreferenceScreen(String key) {
         Timber.w("Switch to preference screen '%s' is not implemented", key);
 
         displayPreferenceScreenNotImplementedMessage();
@@ -84,5 +84,5 @@ abstract class BasePreferenceFragment extends PreferenceFragment {
      * @return Resource id for the preference fragment title.
      */
     @StringRes
-    public abstract int getTitle();
+    protected abstract int getTitle();
 }
