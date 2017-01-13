@@ -25,13 +25,33 @@ import org.junit.runners.JUnit4;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class PreferenceUtilTest {
     private boolean checked;
     private PreferenceUtil.ReadCheckBoxPreference toggle = isChecked -> this.checked = isChecked;
+
+    @Test
+    public void populateCheckBoxPreference_withCheckedValue() {
+        CheckBoxPreference preference = mock(CheckBoxPreference.class);
+
+        PreferenceUtil.populateCheckBoxPreference(preference, true);
+
+        verify(preference).setChecked(eq(true));
+    }
+
+    @Test
+    public void populateCheckBoxPreference_withUncheckedValue() {
+        CheckBoxPreference preference = mock(CheckBoxPreference.class);
+
+        PreferenceUtil.populateCheckBoxPreference(preference, false);
+
+        verify(preference).setChecked(eq(false));
+    }
 
     @Test
     public void readCheckBoxPreference_withInvalidPreferenceType() {

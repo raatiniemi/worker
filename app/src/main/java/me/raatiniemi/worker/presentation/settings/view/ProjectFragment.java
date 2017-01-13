@@ -69,14 +69,8 @@ public class ProjectFragment extends BasePreferenceFragment
 
         addPreferencesFromResource(R.xml.settings_project);
 
-        try {
-            // Set the preference value for the clock out confirmation.
-            CheckBoxPreference confirmClockOut =
-                    (CheckBoxPreference) findPreference(CONFIRM_CLOCK_OUT_KEY);
-            confirmClockOut.setChecked(confirmClockOutPreferences.shouldConfirmClockOut());
-        } catch (ClassCastException e) {
-            Timber.w(e, "Unable to get value for 'confirm_clock_out'");
-        }
+        populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY,
+                confirmClockOutPreferences.shouldConfirmClockOut());
 
         try {
             int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
@@ -88,21 +82,24 @@ public class ProjectFragment extends BasePreferenceFragment
             Timber.w(e, "Unable to set listener for 'time_summary'");
         }
 
-        try {
-            CheckBoxPreference ongoingNotification =
-                    (CheckBoxPreference) findPreference(ONGOING_NOTIFICATION_ENABLE_KEY);
-            ongoingNotification.setChecked(ongoingNotificationPreferences.isOngoingNotificationEnabled());
-        } catch (ClassCastException e) {
-            Timber.w(e, "Unable to get value for 'ongoing_notification'");
+        populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY,
+                ongoingNotificationPreferences.isOngoingNotificationEnabled());
+
+        populateCheckBoxPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY,
+                ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled());
+    }
+
+    private void populateCheckBoxPreference(
+            @NonNull String preferenceKey,
+            boolean shouldCheck
+    ) {
+        Preference preference = findPreference(preferenceKey);
+        if (isNull(preference)) {
+            Timber.w("Unable to find preference with key: %s", preferenceKey);
+            return;
         }
 
-        try {
-            CheckBoxPreference ongoingNotificationChronometer =
-                    (CheckBoxPreference) findPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY);
-            ongoingNotificationChronometer.setChecked(ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled());
-        } catch (ClassCastException e) {
-            Timber.w(e, "Unable to get value for 'ongoing_notification_chronometer'");
-        }
+        PreferenceUtil.populateCheckBoxPreference(preference, shouldCheck);
     }
 
     @Override
