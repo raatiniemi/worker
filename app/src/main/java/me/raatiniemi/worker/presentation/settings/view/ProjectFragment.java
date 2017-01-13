@@ -32,6 +32,7 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
+import me.raatiniemi.worker.presentation.util.PreferenceUtil;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
@@ -117,50 +118,46 @@ public class ProjectFragment extends BasePreferenceFragment
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, @NonNull Preference preference) {
         switch (preference.getKey()) {
             case CONFIRM_CLOCK_OUT_KEY:
-                try {
-                    // Set the clock out confirmation preference.
-                    boolean checked = ((CheckBoxPreference) preference).isChecked();
-                    confirmClockOutPreferences.setConfirmClockOut(checked);
-                    return true;
-                } catch (ClassCastException e) {
-                    Timber.w(e, "Unable to set value for 'confirm_clock_out'");
-                }
-                break;
+                toggleConfirmClockOut(preference);
+                return true;
             case TIME_SUMMARY_KEY:
                 return true;
             case ONGOING_NOTIFICATION_ENABLE_KEY:
-                try {
-                    // Set the clock out confirmation preference.
-                    boolean checked = ((CheckBoxPreference) preference).isChecked();
-                    if (checked) {
-                        ongoingNotificationPreferences.enableOngoingNotification();
-                        return true;
-                    }
-
-                    ongoingNotificationPreferences.disableOngoingNotification();
-                    return true;
-                } catch (ClassCastException e) {
-                    Timber.w(e, "Unable to set value for 'ongoing_notification'");
-                }
-                break;
+                toggleOngoingNotification(preference);
+                return true;
             case ONGOING_NOTIFICATION_CHRONOMETER_KEY:
-                try {
-                    // Set the clock out confirmation preference.
-                    boolean checked = ((CheckBoxPreference) preference).isChecked();
-                    if (checked) {
-                        ongoingNotificationPreferences.enableOngoingNotificationChronometer();
-                        return true;
-                    }
-
-                    ongoingNotificationPreferences.disableOngoingNotificationChronometer();
-                    return true;
-                } catch (ClassCastException e) {
-                    Timber.w(e, "Unable to set value for 'ongoing_notification_chronometer'");
-                }
-                break;
+                toggleOngoingNotificationChronometer(preference);
+                return true;
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
+
+    private void toggleConfirmClockOut(@NonNull Preference preference) {
+        PreferenceUtil.readCheckBoxPreference(preference,
+                confirmClockOutPreferences::setConfirmClockOut);
+    }
+
+    private void toggleOngoingNotification(@NonNull Preference preference) {
+        PreferenceUtil.readCheckBoxPreference(preference, isChecked -> {
+            if (isChecked) {
+                ongoingNotificationPreferences.enableOngoingNotification();
+                return;
+            }
+
+            ongoingNotificationPreferences.disableOngoingNotification();
+        });
+    }
+
+    private void toggleOngoingNotificationChronometer(@NonNull Preference preference) {
+        PreferenceUtil.readCheckBoxPreference(preference, isChecked -> {
+            if (isChecked) {
+                ongoingNotificationPreferences.enableOngoingNotificationChronometer();
+                return;
+            }
+
+            ongoingNotificationPreferences.disableOngoingNotificationChronometer();
+        });
     }
 
     @Override
