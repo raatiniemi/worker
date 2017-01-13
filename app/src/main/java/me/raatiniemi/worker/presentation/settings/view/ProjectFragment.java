@@ -128,9 +128,9 @@ public class ProjectFragment extends BasePreferenceFragment
             case ONGOING_NOTIFICATION_CHRONOMETER_KEY:
                 toggleOngoingNotificationChronometer(preference);
                 return true;
+            default:
+                return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
-
-        return super.onPreferenceTreeClick(preferenceScreen, preference);
     }
 
     private void toggleConfirmClockOut(@NonNull Preference preference) {
