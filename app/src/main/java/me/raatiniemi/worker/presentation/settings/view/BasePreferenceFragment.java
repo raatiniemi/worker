@@ -20,6 +20,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
@@ -82,5 +83,6 @@ abstract class BasePreferenceFragment extends PreferenceFragment {
      *
      * @return Resource id for the preference fragment title.
      */
+    @StringRes
     public abstract int getTitle();
 }
