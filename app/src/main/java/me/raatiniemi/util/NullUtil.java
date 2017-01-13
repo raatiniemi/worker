@@ -1,6 +1,6 @@
 package me.raatiniemi.util;
 
-final public class NullUtil {
+public final class NullUtil {
     private NullUtil() {
     }
 
