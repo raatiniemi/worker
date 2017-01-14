@@ -133,7 +133,7 @@ sonarqube {
 
         properties["sonar.java.coveragePlugin"] = "jacoco"
         properties["sonar.jacoco.reportPaths"] = "$buildDir/jacoco/testReleaseUnitTest.exec"
-        properties["sonar.junit.reportsPath"] = "${buildDir}/test-results/release"
+        properties["sonar.junit.reportsPath"] = "$buildDir/test-results/testReleaseUnitTest/release"
     }
 }
 
