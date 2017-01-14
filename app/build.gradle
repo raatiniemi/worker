@@ -18,13 +18,13 @@ Closure<String> getVersionNameFromTag = {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         applicationId "me.raatiniemi.worker"
-        minSdkVersion 21
-        targetSdkVersion 25
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
         versionCode getVersionCodeFromNumberOfTags()
         versionName getVersionNameFromTag()
 
