@@ -55,8 +55,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility sourceCompatibilityVersion
+        targetCompatibility targetCompatibilityVersion
     }
 
     sourceSets {
@@ -106,8 +106,8 @@ sonarqube {
         properties['sonar.sourceEncoding'] = 'UTF-8'
         properties['sonar.scm.provider'] = 'git'
 
-        properties['sonar.java.source'] = "${android.compileOptions.sourceCompatibility}"
-        properties['sonar.java.target'] = "${android.compileOptions.targetCompatibility}"
+        properties['sonar.java.source'] = sourceCompatibilityVersion
+        properties['sonar.java.target'] = targetCompatibilityVersion
 
         properties['sonar.sources'] = combineSourceSetDirectories android.sourceSets.main
         properties['sonar.tests'] = 'src/test/java'

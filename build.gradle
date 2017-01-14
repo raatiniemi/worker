@@ -27,3 +27,8 @@ allprojects {
         options.incremental = true
     }
 }
+
+ext {
+    sourceCompatibilityVersion = JavaVersion.VERSION_1_8
+    targetCompatibilityVersion = JavaVersion.VERSION_1_8
+}
