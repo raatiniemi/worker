@@ -28,12 +28,12 @@ android {
         versionCode getVersionCodeFromNumberOfTags()
         versionName getVersionNameFromTag()
 
-        jackOptions {
-            enabled true
-            additionalParameters("jack.incremental" : "true")
-        }
-
         resConfigs "en"
+
+        jackOptions {
+            additionalParameters("jack.incremental" : "true")
+            enabled true
+        }
     }
     buildTypes {
         release {
