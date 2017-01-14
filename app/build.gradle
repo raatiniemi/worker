@@ -2,21 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 
-Closure<Integer> getVersionCodeFromNumberOfTags = {
-    def tags = 'git tag'.execute()
-            .getText()
-            .readLines()
-
-    return tags.size()
-}
-
-Closure<String> getVersionNameFromTag = {
-    def tag = 'git describe --tags --abbrev=0'.execute()
-            .getText()
-
-    return tag.toString().trim()
-}
-
 android {
     compileSdkVersion androidCompileSdkVersion
     buildToolsVersion androidBuildToolsVersion
@@ -25,8 +10,8 @@ android {
         applicationId "me.raatiniemi.worker"
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
-        versionCode getVersionCodeFromNumberOfTags()
-        versionName getVersionNameFromTag()
+        versionName projectVersion
+        versionCode projectVersionCode
 
         resConfigs "en"
 
@@ -87,7 +72,7 @@ sonarqube {
 
         properties['sonar.projectKey'] = 'worker:android'
         properties['sonar.projectName'] = 'worker'
-        properties['sonar.projectVersion'] = "${android.defaultConfig.versionName}"
+        properties['sonar.projectVersion'] = projectVersion
 
         properties['sonar.sourceEncoding'] = 'UTF-8'
         properties['sonar.scm.provider'] = 'git'
