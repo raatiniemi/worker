@@ -119,8 +119,6 @@ sonarqube {
         properties["sonar.sourceEncoding"] = "UTF-8"
         // noinspection GroovyAssignabilityCheck
         properties["sonar.sources"] = combineSourceSetDirectories android.sourceSets.main
-        properties["sonar.binaries"] = binaries
-        properties["sonar.libraries"] = libraries
         properties["sonar.java.binaries"] = binaries
         properties["sonar.java.libraries"] = libraries
 
