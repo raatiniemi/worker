@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,21 +49,19 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
     /**
      * Construct the ProjectsAdapter.
      *
-     * @param context                   Context to use.
+     * @param resources                 Resources available.
      * @param onProjectActionListener   Listener for project actions.
      * @param hintedImageButtonListener Listener for hinting images.
      */
     ProjectsAdapter(
-            Context context,
+            Resources resources,
             OnProjectActionListener onProjectActionListener,
             HintedImageButtonListener hintedImageButtonListener
     ) {
-        super(context);
-
         this.onProjectActionListener = onProjectActionListener;
         this.hintedImageButtonListener = hintedImageButtonListener;
 
-        resources = getContext().getResources();
+        this.resources = resources;
         rxBus.toObservable()
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .subscribe(this::propagateActionWithEvent);

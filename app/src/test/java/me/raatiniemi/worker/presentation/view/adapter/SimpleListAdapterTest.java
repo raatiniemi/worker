@@ -173,7 +173,7 @@ public class SimpleListAdapterTest {
 
     private class Adapter<T> extends SimpleListAdapter<T, ViewHolder> {
         public Adapter(@NonNull Context context) {
-            super(context);
+            super();
         }
 
         @Override

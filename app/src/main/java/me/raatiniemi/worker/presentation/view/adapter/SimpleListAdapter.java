@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.view.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -40,11 +39,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<V>
         implements ListAdapter<T> {
     /**
-     * Context used with the adapter.
-     */
-    private final Context context;
-
-    /**
      * On click listener for views.
      */
     private final OnClickListener onClickListener = new OnClickListener();
@@ -58,25 +52,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * On click listener for items.
      */
     private OnItemClickListener onItemClickListener;
-
-    /**
-     * Constructor.
-     *
-     * @param context Context used with the adapter.
-     */
-    public SimpleListAdapter(@NonNull Context context) {
-        this.context = context;
-    }
-
-    /**
-     * Get the adapter context.
-     *
-     * @return Adapter context.
-     */
-    @NonNull
-    protected Context getContext() {
-        return context;
-    }
 
     /**
      * Get the number of items within the adapter.

@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 
@@ -42,10 +42,10 @@ public class ProjectsAdapterTest {
 
     @Before
     public void setUp() {
-        Context context = mock(Context.class);
+        Resources resources = mock(Resources.class);
         OnProjectActionListener listener = mock(OnProjectActionListener.class);
 
-        adapter = new ProjectsAdapter(context, listener, mock(HintedImageButtonListener.class));
+        adapter = new ProjectsAdapter(resources, listener, mock(HintedImageButtonListener.class));
     }
 
     @Test
