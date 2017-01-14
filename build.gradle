@@ -31,4 +31,43 @@ allprojects {
 ext {
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
+
+    androidSupportVersion = '25.1.0'
+    daggerVersion = '2.7'
+    butterKnifeVersion = '8.4.0'
+    leakCanaryVersion = '1.4'
+
+    deps = [
+            jsr250                    : 'javax.annotation:jsr250-api:1.0',
+
+            // android support library
+            androidSupportAppcompat   : "com.android.support:appcompat-v7:$androidSupportVersion",
+            androidSupportCardview    : "com.android.support:cardview-v7:$androidSupportVersion",
+            androidSupportDesign      : "com.android.support:design:$androidSupportVersion",
+            androidSupportRecyclerview: "com.android.support:recyclerview-v7:$androidSupportVersion",
+            androidSupportAnnotations : "com.android.support:support-annotations:$androidSupportVersion",
+
+            rxandroid                 : 'io.reactivex:rxandroid:1.2.0',
+            rxrelay                   : 'com.jakewharton.rxrelay:rxrelay:1.2.0',
+            timber                    : 'com.jakewharton.timber:timber:4.3.1',
+            eventbus                  : 'org.greenrobot:eventbus:3.0.0',
+            advrecyclerview           : 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.1',
+
+            // dagger
+            dagger                    : "com.google.dagger:dagger:$daggerVersion",
+            daggerCompiler            : "com.google.dagger:dagger-compiler:$daggerVersion",
+
+            // butter knife
+            butterKnife               : "com.jakewharton:butterknife:$butterKnifeVersion",
+            butterKnifeCompiler       : "com.jakewharton:butterknife-compiler:$butterKnifeVersion",
+
+            // leakcanary
+            leakCanary                : "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
+            leakCanaryNoOp            : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
+
+            // test
+            junit                     : 'junit:junit:4.12',
+            mockitoCore               : 'org.mockito:mockito-core:1.10.19',
+            robolectric               : 'org.robolectric:robolectric:3.0'
+    ]
 }

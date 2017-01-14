@@ -2,20 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 
-def androidSupportVersion = '25.1.0'
-def timberVersion = '4.3.1'
-def rxRelayVersion = '1.2.0'
-def daggerVersion = '2.7';
-def butterKnifeVersion = '8.4.0'
-def advancedrecyclerviewVersion = "0.9.1"
-def eventbusVersion = "3.0.0"
-def rxandroidVersion = '1.2.0'
-def leakCanaryVersion = '1.4'
-
-def junitVersion = "4.12"
-def mockitoVersion = "1.10.19"
-def robolectricVersion = "3.0"
-
 Closure<Integer> getVersionCodeFromNumberOfTags = {
     def tags = 'git tag'.execute()
             .getText()
@@ -129,29 +115,29 @@ jacoco {
 }
 
 dependencies {
-    provided 'javax.annotation:jsr250-api:1.0'
+    provided deps.jsr250
 
-    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    annotationProcessor deps.daggerCompiler
+    annotationProcessor deps.butterKnifeCompiler
 
-    debugCompile "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}"
+    debugCompile deps.leakCanary
 
-    compile "com.android.support:appcompat-v7:${androidSupportVersion}"
-    compile "com.android.support:cardview-v7:${androidSupportVersion}"
-    compile "com.android.support:design:${androidSupportVersion}"
-    compile "com.android.support:recyclerview-v7:${androidSupportVersion}"
-    compile "com.android.support:support-annotations:${androidSupportVersion}"
-    compile "com.jakewharton.timber:timber:${timberVersion}"
-    compile "com.jakewharton.rxrelay:rxrelay:${rxRelayVersion}"
-    compile "com.google.dagger:dagger:${daggerVersion}"
-    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
-    compile "com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:${advancedrecyclerviewVersion}"
-    compile "io.reactivex:rxandroid:${rxandroidVersion}"
-    compile "org.greenrobot:eventbus:${eventbusVersion}"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}"
+    compile deps.androidSupportAppcompat
+    compile deps.androidSupportCardview
+    compile deps.androidSupportDesign
+    compile deps.androidSupportRecyclerview
+    compile deps.androidSupportAnnotations
+    compile deps.rxandroid
+    compile deps.rxrelay
+    compile deps.timber
+    compile deps.eventbus
+    compile deps.advrecyclerview
+    compile deps.dagger
+    compile deps.butterKnife
+    releaseCompile deps.leakCanaryNoOp
 
-    testCompile "junit:junit:${junitVersion}"
-    testCompile "org.mockito:mockito-core:${mockitoVersion}"
-    testCompile "org.robolectric:robolectric:${robolectricVersion}"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}"
+    testCompile deps.junit
+    testCompile deps.mockitoCore
+    testCompile deps.robolectric
+    testCompile deps.leakCanaryNoOp
 }
