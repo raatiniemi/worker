@@ -99,7 +99,7 @@ Closure<String> combineSourceSetDirectories = { sourceSet ->
     return (sourceSet.java.srcDirs + sourceSet.res.srcDirs).join(',')
 }
 
-tasks.sonarqube.dependsOn 'testReleaseUnitTest'
+tasks.sonarqube.dependsOn 'test'
 
 sonarqube {
     // noinspection GroovyAssignabilityCheck
