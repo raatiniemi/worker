@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.settings.presenter;
 
-import android.content.Context;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -42,9 +40,7 @@ public class DataPresenter extends BasePresenter<DataView> {
 
     private final EventBus eventBus;
 
-    public DataPresenter(Context context, EventBus eventBus) {
-        super(context);
-
+    public DataPresenter(EventBus eventBus) {
         this.eventBus = eventBus;
     }
 

@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import android.content.Context;
-
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
@@ -42,15 +40,9 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
     /**
      * Constructor.
      *
-     * @param context       Context used with the presenter.
      * @param createProject Use case for creating projects.
      */
-    public NewProjectPresenter(
-            final Context context,
-            final CreateProject createProject
-    ) {
-        super(context);
-
+    public NewProjectPresenter(final CreateProject createProject) {
         this.createProject = createProject;
     }
 

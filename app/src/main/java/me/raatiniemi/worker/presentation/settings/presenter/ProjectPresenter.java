@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.settings.presenter;
 
-import android.content.Context;
-
 import org.greenrobot.eventbus.EventBus;
 
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
@@ -32,9 +30,7 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
     private final TimeSummaryPreferences preferences;
     private final EventBus eventBus;
 
-    public ProjectPresenter(Context context, TimeSummaryPreferences preferences, EventBus eventBus) {
-        super(context);
-
+    public ProjectPresenter(TimeSummaryPreferences preferences, EventBus eventBus) {
         this.preferences = preferences;
         this.eventBus = eventBus;
     }

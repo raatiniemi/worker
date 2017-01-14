@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.project.presenter;
 
-import android.content.Context;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -71,7 +69,6 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     /**
      * Constructor.
      *
-     * @param context                       Context used with the presenter.
      * @param hideRegisteredTimePreferences Preferences for hide registered time.
      * @param eventBus                      Event bus.
      * @param getTimesheet                  Use case for getting project timesheet.
@@ -79,15 +76,12 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
      * @param removeTime                    Use case for removing time.
      */
     public TimesheetPresenter(
-            Context context,
             HideRegisteredTimePreferences hideRegisteredTimePreferences,
             EventBus eventBus,
             GetTimesheet getTimesheet,
             MarkRegisteredTime markRegisteredTime,
             RemoveTime removeTime
     ) {
-        super(context);
-
         this.hideRegisteredTimePreferences = hideRegisteredTimePreferences;
         this.eventBus = eventBus;
         this.getTimesheet = getTimesheet;

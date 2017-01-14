@@ -92,7 +92,6 @@ public class ProjectsModule {
         );
 
         return new NewProjectPresenter(
-                context,
                 new CreateProject(projectRepository)
         );
     }

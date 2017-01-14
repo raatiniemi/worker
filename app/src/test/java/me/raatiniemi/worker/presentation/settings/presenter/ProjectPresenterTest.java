@@ -16,17 +16,12 @@
 
 package me.raatiniemi.worker.presentation.settings.presenter;
 
-import android.content.Context;
-import android.os.Build;
-
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.ProjectView;
@@ -38,8 +33,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+@RunWith(JUnit4.class)
 public class ProjectPresenterTest {
     private EventBus eventBus;
     private ProjectPresenter presenter;
@@ -47,12 +41,11 @@ public class ProjectPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        Context context = mock(Context.class);
         TimeSummaryPreferences preferences = mock(TimeSummaryPreferences.class);
         when(preferences.getStartingPointForTimeSummary())
                 .thenReturn(GetProjectTimeSince.MONTH);
         eventBus = mock(EventBus.class);
-        presenter = new ProjectPresenter(context, preferences, eventBus);
+        presenter = new ProjectPresenter(preferences, eventBus);
         view = mock(ProjectView.class);
     }
 

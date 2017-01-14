@@ -62,6 +62,7 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull
 public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private Subscription refreshProjectsSubscription;
 
+    private final Context context;
     private final TimeSummaryPreferences timeSummaryPreferences;
     private final OngoingNotificationPreferences ongoingNotificationPreferences;
 
@@ -109,8 +110,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
             ClockActivityChange clockActivityChange,
             RemoveProject removeProject
     ) {
-        super(context);
-
+        this.context = context;
         this.timeSummaryPreferences = timeSummaryPreferences;
         this.ongoingNotificationPreferences = ongoingNotificationPreferences;
         this.eventBus = eventBus;
@@ -443,7 +443,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private void postOngoingNotification(ProjectsItem projectsItem) {
         Project project = projectsItem.asProject();
 
-        NotificationManager manager = (NotificationManager) getContext()
+        NotificationManager manager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
         manager.cancel(
@@ -460,7 +460,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                     String.valueOf(project.getId()),
                     Worker.NOTIFICATION_ON_GOING_ID,
                     PauseNotification.build(
-                            getContext(),
+                            context,
                             project,
                             ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled()
                     )
