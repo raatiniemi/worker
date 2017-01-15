@@ -8,7 +8,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.google.guava:guava:19.0'
+        classpath 'com.google.guava:guava:20.0'
         classpath 'com.android.tools.build:gradle:2.2.3'
 
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1'
@@ -57,7 +57,7 @@ ext {
     androidTargetSdkVersion = androidCompileSdkVersion
 
     androidSupportVersion = '25.1.0'
-    daggerVersion = '2.7'
+    daggerVersion = '2.8'
     butterKnifeVersion = '8.4.0'
     leakCanaryVersion = '1.5'
 
