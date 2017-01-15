@@ -8,7 +8,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.google.guava:guava:19.0'
+        classpath 'com.google.guava:guava:20.0'
         classpath 'com.android.tools.build:gradle:2.2.3'
 
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1'
@@ -57,9 +57,9 @@ ext {
     androidTargetSdkVersion = androidCompileSdkVersion
 
     androidSupportVersion = '25.1.0'
-    daggerVersion = '2.7'
+    daggerVersion = '2.8'
     butterKnifeVersion = '8.4.0'
-    leakCanaryVersion = '1.4'
+    leakCanaryVersion = '1.5'
 
     deps = [
             jsr250                    : 'javax.annotation:jsr250-api:1.0',
@@ -73,9 +73,9 @@ ext {
 
             rxandroid                 : 'io.reactivex:rxandroid:1.2.0',
             rxrelay                   : 'com.jakewharton.rxrelay:rxrelay:1.2.0',
-            timber                    : 'com.jakewharton.timber:timber:4.3.1',
+            timber                    : 'com.jakewharton.timber:timber:4.5.0',
             eventbus                  : 'org.greenrobot:eventbus:3.0.0',
-            advrecyclerview           : 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.1',
+            advrecyclerview           : 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.2',
 
             // dagger
             dagger                    : "com.google.dagger:dagger:$daggerVersion",
@@ -91,7 +91,7 @@ ext {
 
             // test
             junit                     : 'junit:junit:4.12',
-            mockitoCore               : 'org.mockito:mockito-core:1.10.19',
+            mockitoCore               : 'org.mockito:mockito-core:2.6.2',
             robolectric               : 'org.robolectric:robolectric:3.0'
     ]
 }

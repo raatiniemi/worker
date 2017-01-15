@@ -24,6 +24,7 @@ import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.RxSchedulerRule;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -43,6 +44,15 @@ public class NewProjectPresenterTest {
     private CreateProject createProject;
     private NewProjectPresenter presenter;
     private NewProjectView view;
+
+    private Project buildProject() {
+        try {
+            return new Project.Builder("Name").build();
+        } catch (InvalidProjectNameException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Before
     public void setUp() {
@@ -69,8 +79,10 @@ public class NewProjectPresenterTest {
 
     @Test
     public void createNewProject() throws DomainException {
-        presenter.attachView(view);
+        when(createProject.execute(any(Project.class)))
+                .thenReturn(buildProject());
 
+        presenter.attachView(view);
         presenter.createNewProject("Name");
 
         verify(view).createProjectSuccessful(any(Project.class));
