@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.settings;
 
-import android.content.Context;
-
 import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Singleton;
@@ -32,13 +30,13 @@ import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 public class SettingsModule {
     @Provides
     @Singleton
-    ProjectPresenter providesProjectPresenter(Context context, TimeSummaryPreferences preferences) {
+    ProjectPresenter providesProjectPresenter(TimeSummaryPreferences preferences) {
         return new ProjectPresenter(preferences, EventBus.getDefault());
     }
 
     @Provides
     @Singleton
-    DataPresenter providesDataPresenter(Context context) {
+    DataPresenter providesDataPresenter() {
         return new DataPresenter(EventBus.getDefault());
     }
 }

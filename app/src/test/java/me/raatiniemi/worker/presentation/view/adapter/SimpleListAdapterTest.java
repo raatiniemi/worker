@@ -16,9 +16,7 @@
 
 package me.raatiniemi.worker.presentation.view.adapter;
 
-import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.ViewGroup;
 
@@ -34,23 +32,20 @@ import me.raatiniemi.worker.BuildConfig;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
-import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
 public class SimpleListAdapterTest {
     @Test
     public void getItemCount_withoutItems() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         assertEquals(0, adapter.getItemCount());
     }
 
     @Test
     public void getItemCount_withItems() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.add("Item");
         adapter.add("Item");
@@ -61,16 +56,14 @@ public class SimpleListAdapterTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void get_withoutItems() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.get(1);
     }
 
     @Test
     public void get_withItem() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.add("Item");
 
@@ -79,16 +72,14 @@ public class SimpleListAdapterTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void set_withoutItems() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.set(1, "Item");
     }
 
     @Test
     public void set_withItem() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.add("Item");
 
@@ -99,8 +90,7 @@ public class SimpleListAdapterTest {
 
     @Test
     public void add_item() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.add("Item");
 
@@ -109,8 +99,7 @@ public class SimpleListAdapterTest {
 
     @Test
     public void add_items() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         List<String> items = new ArrayList<>();
         items.add("Item");
@@ -122,16 +111,14 @@ public class SimpleListAdapterTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void remove_withoutItems() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.remove(1);
     }
 
     @Test
     public void remove_withItem() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.add("Item");
 
@@ -140,8 +127,7 @@ public class SimpleListAdapterTest {
 
     @Test
     public void clear() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         adapter.add("Item");
         adapter.add("Item");
@@ -153,16 +139,14 @@ public class SimpleListAdapterTest {
 
     @Test
     public void getOnItemClickListener_withoutListener() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         assertNull(adapter.getOnItemClickListener());
     }
 
     @Test
     public void getOnItemClickListener_withListener() {
-        Context context = mock(Context.class);
-        Adapter<String> adapter = new Adapter<>(context);
+        Adapter<String> adapter = new Adapter<>();
 
         SimpleListAdapter.OnItemClickListener listener = view -> {
         };
@@ -172,10 +156,6 @@ public class SimpleListAdapterTest {
     }
 
     private class Adapter<T> extends SimpleListAdapter<T, ViewHolder> {
-        public Adapter(@NonNull Context context) {
-            super();
-        }
-
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return null;
