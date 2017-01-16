@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.data.service.data.strategy.exception.RestoreException;
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.data.util.FileUtils;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
@@ -71,7 +72,7 @@ public class StorageRestoreStrategy implements RestoreStrategy {
             // Perform the file copy.
             FileUtils.copy(from, to);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RestoreException(e);
         }
     }
 }
