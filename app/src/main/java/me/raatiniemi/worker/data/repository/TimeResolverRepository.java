@@ -39,6 +39,7 @@ import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
+import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -172,7 +173,7 @@ public class TimeResolverRepository
         try {
             getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
         } catch (RemoteException | OperationApplicationException e) {
-            throw new RuntimeException(e);
+            throw new ContentResolverApplyBatchException(e);
         }
 
         List<Time> updatedTimes = new ArrayList<>();
@@ -210,7 +211,7 @@ public class TimeResolverRepository
         try {
             getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
         } catch (RemoteException | OperationApplicationException e) {
-            throw new RuntimeException(e);
+            throw new ContentResolverApplyBatchException(e);
         }
     }
 

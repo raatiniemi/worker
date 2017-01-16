@@ -31,6 +31,7 @@ import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
@@ -178,8 +179,7 @@ public class ProjectResolverRepository
             // within a single transactional operation.
             getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
         } catch (RemoteException | OperationApplicationException e) {
-            // TODO: Refactor to allow for `remove` to throw DomainException.
-            throw new RuntimeException(e);
+            throw new ContentResolverApplyBatchException(e);
         }
     }
 }
