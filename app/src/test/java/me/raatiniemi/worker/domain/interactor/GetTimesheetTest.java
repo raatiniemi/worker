@@ -25,9 +25,9 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -53,6 +53,6 @@ public class GetTimesheetTest {
         GetTimesheet getTimesheet = new GetTimesheet(timeRepository);
         getTimesheet.execute(1L, 0, false);
 
-        verify(timeRepository).getTimesheet(eq(1L), eq(0), isNull(Criteria.class));
+        verify(timeRepository).getTimesheet(eq(1L), eq(0), isNull());
     }
 }

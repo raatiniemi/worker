@@ -47,7 +47,6 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
@@ -55,9 +54,9 @@ import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPoint
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
@@ -173,7 +172,7 @@ public class ProjectsPresenterTest {
 
         presenter.refreshActiveProjects();
 
-        verify(view, never()).refreshPositions(anyListOf(Integer.class));
+        verify(view, never()).refreshPositions(anyList());
     }
 
     @Test
@@ -185,13 +184,13 @@ public class ProjectsPresenterTest {
         );
         when(getProjects.execute()).thenReturn(projects);
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
-                .thenReturn(anyListOf(Time.class));
+                .thenReturn(anyList());
         presenter.attachView(view);
 
         presenter.getProjects();
 
         verify(getProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(view).addProjects(anyListOf(ProjectsItem.class));
+        verify(view).addProjects(anyList());
     }
 
     @Test
@@ -209,7 +208,7 @@ public class ProjectsPresenterTest {
         presenter.getProjects();
 
         verify(getProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(view).addProjects(anyListOf(ProjectsItem.class));
+        verify(view).addProjects(anyList());
     }
 
     @Test
@@ -219,7 +218,7 @@ public class ProjectsPresenterTest {
 
         presenter.getProjects();
 
-        verify(view, never()).addProjects(anyListOf(ProjectsItem.class));
+        verify(view, never()).addProjects(anyList());
     }
 
     @Test
@@ -285,7 +284,7 @@ public class ProjectsPresenterTest {
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
-                .thenReturn(anyListOf(Time.class));
+                .thenReturn(anyList());
         presenter.attachView(view);
 
         presenter.clockActivityChange(projectsItem, new Date());
