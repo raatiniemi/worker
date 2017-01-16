@@ -51,7 +51,7 @@ ext {
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
     androidCompileSdkVersion = 25
-    androidBuildToolsVersion = '25.0.0'
+    androidBuildToolsVersion = '25.0.2'
 
     androidMinSdkVersion = 21
     androidTargetSdkVersion = androidCompileSdkVersion
