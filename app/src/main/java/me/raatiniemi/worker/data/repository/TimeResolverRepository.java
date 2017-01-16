@@ -46,6 +46,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
+import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 
@@ -296,7 +297,7 @@ public class TimeResolverRepository
                     try {
                         items.add(get(Long.parseLong(id)));
                     } catch (DomainException e) {
-                        // TODO: Handle exception properly.
+                        Timber.w(e, "Unable to fetch item for timesheet");
                     }
                 }
 
