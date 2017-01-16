@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.data.service.data.strategy.exception.BackupException;
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.data.util.FileUtils;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
@@ -86,7 +87,7 @@ public class StorageBackupStrategy implements BackupStrategy {
             Backup backup = new Backup(directory);
             eventBus.post(new BackupSuccessfulEvent(backup));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new BackupException(e);
         }
     }
 }
