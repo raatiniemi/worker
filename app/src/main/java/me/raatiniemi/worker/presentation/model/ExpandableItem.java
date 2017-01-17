@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.model;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,35 +23,10 @@ import java.util.List;
 /**
  * Base type for the combined group and child item.
  *
- * @param <G> Reference type for the group item.
  * @param <C> Reference type for the child item.
  */
-public class ExpandableItem<G, C> {
+public class ExpandableItem<C> {
     private final List<C> items = new ArrayList<>();
-
-    /**
-     * Group item.
-     */
-    private final G group;
-
-    /**
-     * Constructor, initialize with the group item.
-     *
-     * @param group Group item.
-     */
-    protected ExpandableItem(@NonNull G group) {
-        this.group = group;
-    }
-
-    /**
-     * Get the group item.
-     *
-     * @return Group item.
-     */
-    @NonNull
-    protected G getGroup() {
-        return group;
-    }
 
     public boolean add(C item) {
         return items.add(item);

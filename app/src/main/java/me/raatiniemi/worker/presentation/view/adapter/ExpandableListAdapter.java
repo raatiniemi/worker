@@ -29,16 +29,14 @@ import me.raatiniemi.worker.presentation.model.ExpandableItem;
 /**
  * Base adapter for working with the expandable RecyclerView.
  *
- * @param <G>  Reference type for the group item.
  * @param <C>  Reference type for the child item.
  * @param <T>  Reference type for the combined group/child item.
  * @param <V1> Reference type for the group item view holder.
  * @param <V2> Reference type for the child item view holder.
  */
 public abstract class ExpandableListAdapter<
-        G,
         C,
-        T extends ExpandableItem<G, C>,
+        T extends ExpandableItem<C>,
         V1 extends ViewHolder,
         V2 extends ViewHolder
         >

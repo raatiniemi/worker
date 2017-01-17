@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,7 +41,6 @@ import me.raatiniemi.worker.presentation.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
 class TimesheetAdapter extends ExpandableListAdapter<
-        Date,
         TimesheetChildItem,
         TimesheetGroupItem,
         TimesheetAdapter.GroupItemViewHolder,

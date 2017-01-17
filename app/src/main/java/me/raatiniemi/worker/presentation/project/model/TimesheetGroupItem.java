@@ -10,8 +10,7 @@ import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public class TimesheetGroupItem
-        extends ExpandableItem<Date, TimesheetChildItem> {
+public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     private static final DateIntervalFormat intervalFormat;
 
     static {
@@ -19,12 +18,12 @@ public class TimesheetGroupItem
     }
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag("en_US"));
+    private final Date date;
     private final long daysSinceUnixEpoch;
 
-    public TimesheetGroupItem(Date group) {
-        super(group);
-
-        daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(group);
+    public TimesheetGroupItem(Date date) {
+        this.date = date;
+        daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(date);
     }
 
     private static long calculateDaysSinceUnixEpoch(Date date) {
@@ -71,7 +70,7 @@ public class TimesheetGroupItem
     }
 
     public String getTitle() {
-        return dateFormat.format(getGroup());
+        return dateFormat.format(date);
     }
 
     public String getFirstLetterFromTitle() {
