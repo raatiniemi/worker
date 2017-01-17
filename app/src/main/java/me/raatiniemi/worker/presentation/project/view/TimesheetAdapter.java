@@ -70,7 +70,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
     @Override
     public GroupItemViewHolder onCreateGroupViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(viewType, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_timesheet_group_item, viewGroup, false);
 
         return new GroupItemViewHolder(view);
     }
@@ -78,7 +78,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
     @Override
     public ChildItemViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(viewType, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_timesheet_child_item, viewGroup, false);
 
         return new ChildItemViewHolder(view);
     }
@@ -175,12 +175,12 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public int getGroupItemViewType(int group) {
-        return R.layout.fragment_timesheet_group_item;
+        return 0;
     }
 
     @Override
     public int getChildItemViewType(int group, int child) {
-        return R.layout.fragment_timesheet_child_item;
+        return 0;
     }
 
     @Override

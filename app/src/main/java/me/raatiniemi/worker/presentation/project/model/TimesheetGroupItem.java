@@ -19,9 +19,21 @@ public class TimesheetGroupItem
     }
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag("en_US"));
+    private final long daysSinceUnixEpoch;
 
     public TimesheetGroupItem(Date group) {
         super(group);
+
+        daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(group);
+    }
+
+    private static long calculateDaysSinceUnixEpoch(Date date) {
+        long milliseconds = date.getTime();
+        long seconds = milliseconds / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+
+        return hours / 24;
     }
 
     private static float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
@@ -55,7 +67,7 @@ public class TimesheetGroupItem
     }
 
     public long getId() {
-        return getGroup().getTime();
+        return daysSinceUnixEpoch;
     }
 
     public String getTitle() {

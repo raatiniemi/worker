@@ -13,8 +13,10 @@ public class TimesheetGroupItemTest {
     @Test
     public void getId() {
         Date date = new Date();
+        long days = date.getTime() / 1000 / 60 / 60 / 24;
+
         TimesheetGroupItem groupItem = new TimesheetGroupItem(date);
 
-        assertEquals(date.getTime(), groupItem.getId());
+        assertEquals(days, groupItem.getId());
     }
 }
