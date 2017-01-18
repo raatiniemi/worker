@@ -17,6 +17,8 @@ android {
         versionCode projectVersionCode
 
         resConfigs "en"
+
+        testInstrumentationRunner 'me.raatiniemi.worker.AndroidTestRunner'
     }
     if (System.getenv("CI")) {
         signingConfigs {
