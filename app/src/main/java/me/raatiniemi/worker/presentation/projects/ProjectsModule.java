@@ -66,9 +66,7 @@ public class ProjectsModule {
         );
 
         return new ProjectsPresenter(
-                context,
                 timeSummaryPreferences,
-                ongoingNotificationPreferences,
                 EventBus.getDefault(),
                 new GetProjects(projectRepository, timeRepository),
                 new GetProjectTimeSince(timeRepository),

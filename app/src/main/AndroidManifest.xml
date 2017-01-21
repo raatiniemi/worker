@@ -84,6 +84,11 @@
             android:exported="false"
             />
 
+        <service
+            android:name=".data.service.ongoing.ProjectNotificationService"
+            android:exported="false"
+            />
+
     </application>
 
 </manifest>

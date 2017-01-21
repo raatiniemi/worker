@@ -16,30 +16,19 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.os.Build;
-
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
-import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowContextImpl;
+import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.RxSchedulerRule;
-import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
@@ -51,27 +40,23 @@ import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+@RunWith(JUnit4.class)
 public class ProjectsPresenterTest {
     @Rule
     public final RxSchedulerRule rxSchedulersRule = new RxSchedulerRule();
 
-    private Context context = RuntimeEnvironment.application.getBaseContext();
     private EventBus eventBus;
     private GetProjects getProjects;
     private GetProjectTimeSince getProjectTimeSince;
@@ -79,21 +64,17 @@ public class ProjectsPresenterTest {
     private RemoveProject removeProject;
     private ProjectsPresenter presenter;
     private ProjectsView view;
-    private NotificationManager notificationManager;
 
     @Before
     public void setUp() {
         TimeSummaryPreferences timeSummaryPreferences = mock(TimeSummaryPreferences.class);
-        OngoingNotificationPreferences ongoingNotificationPreferences = mock(OngoingNotificationPreferences.class);
         eventBus = mock(EventBus.class);
         getProjects = mock(GetProjects.class);
         getProjectTimeSince = mock(GetProjectTimeSince.class);
         clockActivityChange = mock(ClockActivityChange.class);
         removeProject = mock(RemoveProject.class);
         presenter = new ProjectsPresenter(
-                context,
                 timeSummaryPreferences,
-                ongoingNotificationPreferences,
                 eventBus,
                 getProjects,
                 getProjectTimeSince,
@@ -101,14 +82,6 @@ public class ProjectsPresenterTest {
                 removeProject
         );
         view = mock(ProjectsView.class);
-
-        setupNotificationManager();
-    }
-
-    private void setupNotificationManager() {
-        notificationManager = mock(NotificationManager.class);
-        ShadowContextImpl shadowContext = (ShadowContextImpl) Shadows.shadowOf(context);
-        shadowContext.setSystemService(Context.NOTIFICATION_SERVICE, notificationManager);
     }
 
     @Test
@@ -289,14 +262,8 @@ public class ProjectsPresenterTest {
 
         presenter.clockActivityChange(projectsItem, new Date());
 
-        verify(notificationManager)
-                .cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
-        verify(notificationManager, never()).notify(
-                eq("1"),
-                eq(Worker.NOTIFICATION_ON_GOING_ID),
-                isA(Notification.class)
-        );
         verify(getProjectTimeSince).execute(any(Project.class), anyInt());
+        verify(view).updateNotificationForProject(eq(projectsItem));
         verify(view).updateProject(projectsItem);
     }
 
@@ -311,7 +278,7 @@ public class ProjectsPresenterTest {
 
         presenter.clockActivityChange(projectsItem, new Date());
 
-        verify(notificationManager).cancel("1", Worker.NOTIFICATION_ON_GOING_ID);
+        verify(view, never()).updateNotificationForProject(any());
         verify(view, never()).updateProject(projectsItem);
     }
 
