@@ -5,10 +5,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/fragment_new_project_padding_vertical"
-    android:paddingStart="@dimen/fragment_new_project_padding_start"
-    android:paddingEnd="@dimen/fragment_new_project_padding_end"
-    android:paddingBottom="@dimen/fragment_new_project_padding_vertical"
+    android:paddingTop="@dimen/fragment_dialog_padding_vertical"
+    android:paddingBottom="@dimen/fragment_dialog_padding_vertical"
+    android:paddingStart="@dimen/fragment_dialog_padding_horizontal"
+    android:paddingEnd="@dimen/fragment_dialog_padding_horizontal"
     >
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textSize="@dimen/fragment_new_project_name_text_size"
+        android:textSize="@dimen/fragment_dialog_text_size"
         android:hint="@string/fragment.new_project.name_hint"
         android:backgroundTint="@color/accent"
         >

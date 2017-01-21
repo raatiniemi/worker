@@ -6,10 +6,9 @@
 
     <dimen name="projects_item_time_margin_start">20dp</dimen>
 
-    <dimen name="fragment_new_project_padding_start">25dp</dimen>
-    <dimen name="fragment_new_project_padding_end">25dp</dimen>
-    <dimen name="fragment_new_project_padding_vertical">20dp</dimen>
-    <dimen name="fragment_new_project_name_text_size">14sp</dimen>
+    <dimen name="fragment_dialog_padding_horizontal">25dp</dimen>
+    <dimen name="fragment_dialog_padding_vertical">20dp</dimen>
+    <dimen name="fragment_dialog_text_size">14sp</dimen>
 
     <dimen name="expandable_group_item_height">64dp</dimen>
     <dimen name="expandable_group_item_padding_left">12dp</dimen>
