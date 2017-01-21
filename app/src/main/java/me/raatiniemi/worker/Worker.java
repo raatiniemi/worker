@@ -103,7 +103,6 @@ public class Worker extends Application {
                 .preferenceModule(preferenceModule)
                 .build();
         settingsComponent = DaggerSettingsComponent.builder()
-                .androidModule(androidModule)
                 .preferenceModule(preferenceModule)
                 .settingsModule(new SettingsModule())
                 .build();
