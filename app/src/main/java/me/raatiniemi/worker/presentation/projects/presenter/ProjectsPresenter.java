@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import android.content.Context;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -58,7 +56,6 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull
 public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private Subscription refreshProjectsSubscription;
 
-    private final Context context;
     private final TimeSummaryPreferences timeSummaryPreferences;
 
     private final EventBus eventBus;
@@ -86,7 +83,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     /**
      * Constructor.
      *
-     * @param context                        Context used with the presenter.
      * @param timeSummaryPreferences         Preferences for the time summary.
      * @param eventBus                       Event bus.
      * @param getProjects                    Use case for getting projects.
@@ -95,7 +91,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      * @param removeProject                  Use case for removing projects.
      */
     public ProjectsPresenter(
-            Context context,
             TimeSummaryPreferences timeSummaryPreferences,
             EventBus eventBus,
             GetProjects getProjects,
@@ -103,7 +98,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
             ClockActivityChange clockActivityChange,
             RemoveProject removeProject
     ) {
-        this.context = context;
         this.timeSummaryPreferences = timeSummaryPreferences;
         this.eventBus = eventBus;
         this.getProjects = getProjects;

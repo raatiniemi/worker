@@ -16,24 +16,18 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import android.content.Context;
-import android.os.Build;
-
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
+import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.RxSchedulerRule;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -58,13 +52,11 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
+@RunWith(JUnit4.class)
 public class ProjectsPresenterTest {
     @Rule
     public final RxSchedulerRule rxSchedulersRule = new RxSchedulerRule();
 
-    private Context context = RuntimeEnvironment.application.getBaseContext();
     private EventBus eventBus;
     private GetProjects getProjects;
     private GetProjectTimeSince getProjectTimeSince;
@@ -82,7 +74,6 @@ public class ProjectsPresenterTest {
         clockActivityChange = mock(ClockActivityChange.class);
         removeProject = mock(RemoveProject.class);
         presenter = new ProjectsPresenter(
-                context,
                 timeSummaryPreferences,
                 eventBus,
                 getProjects,
