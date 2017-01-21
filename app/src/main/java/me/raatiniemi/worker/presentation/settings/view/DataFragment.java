@@ -20,10 +20,13 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,6 +72,8 @@ public class DataFragment extends BasePreferenceFragment
 
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.forLanguageTag("en_US"));
 
+    private Snackbar snackbar;
+
     @Inject
     DataPresenter presenter;
 
@@ -90,6 +95,10 @@ public class DataFragment extends BasePreferenceFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
+        if (nonNull(snackbar)) {
+            snackbar.dismiss();
+        }
 
         if (nonNull(presenter)) {
             presenter.detachView();
@@ -166,15 +175,30 @@ public class DataFragment extends BasePreferenceFragment
         // We have not been granted permission to write to the external storage. Display
         // the permission message and allow the user to initiate the permission request.
         Timber.d("Permission for writing to external storage is not granted");
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
+        requestPermission(
                 R.string.message_permission_write_backup,
-                Snackbar.LENGTH_INDEFINITE
-        ).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(
-                getActivity(),
                 new String[]{WRITE_EXTERNAL_STORAGE},
                 REQUEST_WRITE_EXTERNAL_STORAGE
-        )).show();
+        );
+    }
+
+    private void requestPermission(
+            @StringRes int message,
+            String[] permissions,
+            @IntRange(from = 0) int requestCode
+    ) {
+        View contentView = getActivity().findViewById(android.R.id.content);
+
+        snackbar = Snackbar.make(contentView, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(
+                        android.R.string.ok,
+                        view -> ActivityCompat.requestPermissions(
+                                getActivity(),
+                                permissions,
+                                requestCode
+                        )
+                );
+        snackbar.show();
     }
 
     /**
@@ -215,15 +239,11 @@ public class DataFragment extends BasePreferenceFragment
         // We have not been granted permission to read the external storage. Display the
         // permission message and allow the user to initiate the permission request.
         Timber.d("Permission for reading external storage is not granted");
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
+        requestPermission(
                 R.string.message_permission_read_backup,
-                Snackbar.LENGTH_INDEFINITE
-        ).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(
-                getActivity(),
                 new String[]{READ_EXTERNAL_STORAGE},
                 REQUEST_READ_EXTERNAL_STORAGE
-        )).show();
+        );
     }
 
     @Override
