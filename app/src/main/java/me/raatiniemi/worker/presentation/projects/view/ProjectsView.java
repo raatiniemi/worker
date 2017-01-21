@@ -60,6 +60,13 @@ public interface ProjectsView extends MvpView {
     void showCreateProjectSuccessMessage();
 
     /**
+     * Update ongoing notification for project.
+     *
+     * @param project Project for which to update the notification.
+     */
+    void updateNotificationForProject(ProjectsItem project);
+
+    /**
      * Update project in the list.
      *
      * @param project Project to update in the list.

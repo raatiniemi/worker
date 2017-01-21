@@ -16,8 +16,10 @@
 
 package me.raatiniemi.worker.data.service.ongoing;
 
+import android.content.Context;
 import android.content.Intent;
 
+import me.raatiniemi.worker.data.WorkerContract;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.interactor.IsProjectActive;
 import me.raatiniemi.worker.domain.model.Project;
@@ -27,6 +29,12 @@ import timber.log.Timber;
 public class ProjectNotificationService extends OngoingService {
     public ProjectNotificationService() {
         super("ProjectNotificationService");
+    }
+
+    public static void startServiceWithContext(Context context, Project project) {
+        Intent intent = new Intent(context, ProjectNotificationService.class);
+        intent.setData(WorkerContract.ProjectContract.getItemUri(project.getId()));
+        context.startService(intent);
     }
 
     @Override

@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import android.app.NotificationManager;
 import android.content.Context;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
@@ -42,10 +40,8 @@ import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
-import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -64,7 +60,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
     private final Context context;
     private final TimeSummaryPreferences timeSummaryPreferences;
-    private final OngoingNotificationPreferences ongoingNotificationPreferences;
 
     private final EventBus eventBus;
 
@@ -93,7 +88,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      *
      * @param context                        Context used with the presenter.
      * @param timeSummaryPreferences         Preferences for the time summary.
-     * @param ongoingNotificationPreferences Preferences for ongoing notification.
      * @param eventBus                       Event bus.
      * @param getProjects                    Use case for getting projects.
      * @param getProjectTimeSince            Use case for getting registered project time.
@@ -103,7 +97,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     public ProjectsPresenter(
             Context context,
             TimeSummaryPreferences timeSummaryPreferences,
-            OngoingNotificationPreferences ongoingNotificationPreferences,
             EventBus eventBus,
             GetProjects getProjects,
             GetProjectTimeSince getProjectTimeSince,
@@ -112,7 +105,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     ) {
         this.context = context;
         this.timeSummaryPreferences = timeSummaryPreferences;
-        this.ongoingNotificationPreferences = ongoingNotificationPreferences;
         this.eventBus = eventBus;
         this.getProjects = getProjects;
         this.getProjectTimeSince = getProjectTimeSince;
@@ -399,13 +391,15 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                     return new ProjectsItem(project, registeredTime);
                 })
                 .compose(RxUtil.applySchedulers())
-                .doOnNext(this::postOngoingNotification)
                 .subscribe(new Subscriber<ProjectsItem>() {
                     @Override
                     public void onNext(ProjectsItem project) {
                         Timber.d("clockActivityChange onNext");
 
-                        performWithView(view -> view.updateProject(project));
+                        performWithView(view -> {
+                            view.updateNotificationForProject(project);
+                            view.updateProject(project);
+                        });
                     }
 
                     @Override
@@ -437,34 +431,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
             return Observable.just(clockActivityChange.execute(project, date));
         } catch (DomainException e) {
             return Observable.error(e);
-        }
-    }
-
-    private void postOngoingNotification(ProjectsItem projectsItem) {
-        Project project = projectsItem.asProject();
-
-        NotificationManager manager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        manager.cancel(
-                String.valueOf(project.getId()),
-                Worker.NOTIFICATION_ON_GOING_ID
-        );
-
-        if (!ongoingNotificationPreferences.isOngoingNotificationEnabled()) {
-            return;
-        }
-
-        if (project.isActive()) {
-            manager.notify(
-                    String.valueOf(project.getId()),
-                    Worker.NOTIFICATION_ON_GOING_ID,
-                    PauseNotification.build(
-                            context,
-                            project,
-                            ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled()
-                    )
-            );
         }
     }
 

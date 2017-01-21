@@ -36,6 +36,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
@@ -170,6 +171,14 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
                 R.string.message_project_created,
                 Snackbar.LENGTH_SHORT
         ).show();
+    }
+
+    @Override
+    public void updateNotificationForProject(ProjectsItem project) {
+        ProjectNotificationService.startServiceWithContext(
+                getActivity(),
+                project.asProject()
+        );
     }
 
     @Override
