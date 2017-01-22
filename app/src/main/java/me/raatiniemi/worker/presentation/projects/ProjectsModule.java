@@ -41,7 +41,6 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
-import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 @Module
@@ -50,8 +49,7 @@ public class ProjectsModule {
     @Singleton
     ProjectsPresenter providesProjectsPresenter(
             Context context,
-            TimeSummaryPreferences timeSummaryPreferences,
-            OngoingNotificationPreferences ongoingNotificationPreferences
+            TimeSummaryPreferences timeSummaryPreferences
     ) {
         ProjectRepository projectRepository = new ProjectResolverRepository(
                 context.getContentResolver(),
