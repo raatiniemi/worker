@@ -48,6 +48,7 @@ import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
@@ -199,6 +200,15 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
 
         getPresenter().attachView(this);
         getPresenter().getTimesheet(getProjectId(), 0);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (nonNull(getPresenter())) {
+            getPresenter().detachView();
+        }
     }
 
     @Override

@@ -48,6 +48,7 @@ import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
@@ -86,6 +87,15 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
 
         getPresenter().attachView(this);
         getPresenter().getProjects();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (nonNull(getPresenter())) {
+            getPresenter().detachView();
+        }
     }
 
     @Override

@@ -18,8 +18,6 @@ package me.raatiniemi.worker.presentation.view.fragment;
 
 import me.raatiniemi.worker.presentation.presenter.MvpPresenter;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
-
 /**
  * Base for the model-view-presenter fragment.
  *
@@ -27,17 +25,4 @@ import static me.raatiniemi.util.NullUtil.nonNull;
  */
 public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment {
     protected abstract P getPresenter();
-
-    /**
-     * Handles clean up when the fragment view is destroyed.
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        // If the presenter is still active, we have to detach it.
-        if (nonNull(getPresenter())) {
-            getPresenter().detachView();
-        }
-    }
 }
