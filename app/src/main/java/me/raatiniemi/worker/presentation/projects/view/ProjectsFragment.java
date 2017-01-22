@@ -85,22 +85,17 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         ((Worker) getActivity().getApplication()).getProjectsComponent()
                 .inject(this);
 
-        getPresenter().attachView(this);
-        getPresenter().getProjects();
+        presenter.attachView(this);
+        presenter.getProjects();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (nonNull(getPresenter())) {
-            getPresenter().detachView();
+        if (nonNull(presenter)) {
+            presenter.detachView();
         }
-    }
-
-    @Override
-    protected ProjectsPresenter getPresenter() {
-        return presenter;
     }
 
     @Override
@@ -108,10 +103,10 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         super.onResume();
 
         // Setup the subscription for refreshing active projects.
-        getPresenter().beginRefreshingActiveProjects();
+        presenter.beginRefreshingActiveProjects();
 
         // Initiate the refresh of active projects.
-        getPresenter().refreshActiveProjects();
+        presenter.refreshActiveProjects();
     }
 
     @Override
@@ -119,7 +114,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         super.onPause();
 
         // Unsubscribe to the refreshing of active projects.
-        getPresenter().stopRefreshingActiveProjects();
+        presenter.stopRefreshingActiveProjects();
     }
 
     @NonNull
@@ -304,7 +299,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @Override
     public void reloadProjects() {
         getAdapter().clear();
-        getPresenter().getProjects();
+        presenter.getProjects();
     }
 
     @Override
@@ -341,27 +336,27 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         if (project.isActive()) {
             // Check if clock out require confirmation.
             if (!confirmClockOutPreferences.shouldConfirmClockOut()) {
-                getPresenter().clockActivityChange(project, new Date());
+                presenter.clockActivityChange(project, new Date());
                 return;
             }
 
             new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.confirm_clock_out_title))
                     .setMessage(getString(R.string.confirm_clock_out_message))
-                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> getPresenter().clockActivityChange(project, new Date()))
+                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> presenter.clockActivityChange(project, new Date()))
                     .setNegativeButton(android.R.string.no, null)
                     .show();
             return;
         }
 
-        getPresenter().clockActivityChange(project, new Date());
+        presenter.clockActivityChange(project, new Date());
     }
 
     @Override
     public void onClockActivityAt(@NonNull final ProjectsItem project) {
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
                 project.asProject(),
-                calendar -> getPresenter().clockActivityChange(project, calendar.getTime())
+                calendar -> presenter.clockActivityChange(project, calendar.getTime())
         );
 
         getFragmentManager().beginTransaction()
@@ -374,7 +369,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> getPresenter().deleteProject(project))
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> presenter.deleteProject(project))
                 .setNegativeButton(android.R.string.no, null)
                 .show();
     }

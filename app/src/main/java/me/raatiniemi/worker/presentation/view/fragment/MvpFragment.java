@@ -24,5 +24,4 @@ import me.raatiniemi.worker.presentation.presenter.MvpPresenter;
  * @param <P> Presenter to use with the fragment.
  */
 public abstract class MvpFragment<P extends MvpPresenter> extends BaseFragment {
-    protected abstract P getPresenter();
 }
