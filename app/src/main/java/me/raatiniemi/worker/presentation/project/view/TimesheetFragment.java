@@ -44,14 +44,14 @@ import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
-import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
-public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
+public class TimesheetFragment extends BaseFragment
         implements SelectionListener, TimesheetView {
     @Inject
     TimesheetPresenter presenter;

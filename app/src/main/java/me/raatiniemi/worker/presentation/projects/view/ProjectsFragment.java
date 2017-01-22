@@ -44,13 +44,13 @@ import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
-public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
+public class ProjectsFragment extends BaseFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
