@@ -44,12 +44,13 @@ import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
-public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
+public class ProjectsFragment extends BaseFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
@@ -84,13 +85,15 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         ((Worker) getActivity().getApplication()).getProjectsComponent()
                 .inject(this);
 
-        getPresenter().attachView(this);
-        getPresenter().getProjects();
+        presenter.attachView(this);
+        presenter.getProjects();
     }
 
     @Override
-    protected ProjectsPresenter getPresenter() {
-        return presenter;
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        detachViewIfNotNull(presenter);
     }
 
     @Override
@@ -98,10 +101,10 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         super.onResume();
 
         // Setup the subscription for refreshing active projects.
-        getPresenter().beginRefreshingActiveProjects();
+        presenter.beginRefreshingActiveProjects();
 
         // Initiate the refresh of active projects.
-        getPresenter().refreshActiveProjects();
+        presenter.refreshActiveProjects();
     }
 
     @Override
@@ -109,7 +112,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         super.onPause();
 
         // Unsubscribe to the refreshing of active projects.
-        getPresenter().stopRefreshingActiveProjects();
+        presenter.stopRefreshingActiveProjects();
     }
 
     @NonNull
@@ -294,7 +297,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
     @Override
     public void reloadProjects() {
         getAdapter().clear();
-        getPresenter().getProjects();
+        presenter.getProjects();
     }
 
     @Override
@@ -331,27 +334,27 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         if (project.isActive()) {
             // Check if clock out require confirmation.
             if (!confirmClockOutPreferences.shouldConfirmClockOut()) {
-                getPresenter().clockActivityChange(project, new Date());
+                presenter.clockActivityChange(project, new Date());
                 return;
             }
 
             new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.confirm_clock_out_title))
                     .setMessage(getString(R.string.confirm_clock_out_message))
-                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> getPresenter().clockActivityChange(project, new Date()))
+                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> presenter.clockActivityChange(project, new Date()))
                     .setNegativeButton(android.R.string.no, null)
                     .show();
             return;
         }
 
-        getPresenter().clockActivityChange(project, new Date());
+        presenter.clockActivityChange(project, new Date());
     }
 
     @Override
     public void onClockActivityAt(@NonNull final ProjectsItem project) {
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
                 project.asProject(),
-                calendar -> getPresenter().clockActivityChange(project, calendar.getTime())
+                calendar -> presenter.clockActivityChange(project, calendar.getTime())
         );
 
         getFragmentManager().beginTransaction()
@@ -364,7 +367,7 @@ public class ProjectsFragment extends MvpFragment<ProjectsPresenter>
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> getPresenter().deleteProject(project))
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> presenter.deleteProject(project))
                 .setNegativeButton(android.R.string.no, null)
                 .show();
     }

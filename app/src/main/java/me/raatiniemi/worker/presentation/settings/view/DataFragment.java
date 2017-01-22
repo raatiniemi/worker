@@ -47,6 +47,7 @@ import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
 public class DataFragment extends BasePreferenceFragment
         implements DataView, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -100,9 +101,7 @@ public class DataFragment extends BasePreferenceFragment
             snackbar.dismiss();
         }
 
-        if (nonNull(presenter)) {
-            presenter.detachView();
-        }
+        detachViewIfNotNull(presenter);
     }
 
     @Override

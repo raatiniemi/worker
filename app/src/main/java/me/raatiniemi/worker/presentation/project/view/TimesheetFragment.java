@@ -44,13 +44,14 @@ import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
-import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
+import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
+import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
-public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
+public class TimesheetFragment extends BaseFragment
         implements SelectionListener, TimesheetView {
     @Inject
     TimesheetPresenter presenter;
@@ -86,7 +87,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                             .setTitle(R.string.confirm_delete_time_title)
                             .setMessage(R.string.confirm_delete_time_message)
                             .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                                getPresenter().remove(getAdapter().getSelectedItems());
+                                presenter.remove(getAdapter().getSelectedItems());
 
                                 // Since the item have been removed, we can finish the action.
                                 actionMode.finish();
@@ -99,7 +100,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                     finish = false;
                     break;
                 case R.id.actions_project_timesheet_register:
-                    getPresenter().register(getAdapter().getSelectedItems());
+                    presenter.register(getAdapter().getSelectedItems());
                     finish = true;
                     break;
                 default:
@@ -187,7 +188,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
                         int offset = getAdapter().getGroupCount();
 
                         // Retrieve additional timesheet items with offset.
-                        getPresenter().getTimesheet(getProjectId(), offset);
+                        presenter.getTimesheet(getProjectId(), offset);
                     }
                 }
             }
@@ -197,13 +198,15 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         ((Worker) getActivity().getApplication()).getProjectComponent()
                 .inject(this);
 
-        getPresenter().attachView(this);
-        getPresenter().getTimesheet(getProjectId(), 0);
+        presenter.attachView(this);
+        presenter.getTimesheet(getProjectId(), 0);
     }
 
     @Override
-    protected TimesheetPresenter getPresenter() {
-        return presenter;
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        detachViewIfNotNull(presenter);
     }
 
     @NonNull
@@ -281,7 +284,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     public void refresh() {
         // Clear the items from the list and start loading from the beginning...
         getAdapter().clear();
-        getPresenter().getTimesheet(getProjectId(), 0);
+        presenter.getTimesheet(getProjectId(), 0);
     }
 
     @Override

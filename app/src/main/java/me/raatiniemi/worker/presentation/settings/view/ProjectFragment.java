@@ -36,7 +36,7 @@ import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
 public class ProjectFragment extends BasePreferenceFragment
         implements ProjectView, Preference.OnPreferenceChangeListener {
@@ -105,9 +105,7 @@ public class ProjectFragment extends BasePreferenceFragment
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (nonNull(presenter)) {
-            presenter.detachView();
-        }
+        detachViewIfNotNull(presenter);
     }
 
     @Override
