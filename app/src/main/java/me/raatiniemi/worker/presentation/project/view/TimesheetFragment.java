@@ -48,8 +48,8 @@ import me.raatiniemi.worker.presentation.view.fragment.MvpFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
+import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
 public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
         implements SelectionListener, TimesheetView {
@@ -206,9 +206,7 @@ public class TimesheetFragment extends MvpFragment<TimesheetPresenter>
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (nonNull(presenter)) {
-            presenter.detachView();
-        }
+        detachViewIfNotNull(presenter);
     }
 
     @NonNull

@@ -40,6 +40,7 @@ import me.raatiniemi.worker.presentation.view.fragment.BaseDialogFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
 public class NewProjectFragment extends BaseDialogFragment implements NewProjectView, DialogInterface.OnShowListener {
     @BindView(R.id.fragment_new_project_name)
@@ -119,7 +120,7 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
     public void onDestroy() {
         super.onDestroy();
 
-        presenter.detachView();
+        detachViewIfNotNull(presenter);
     }
 
     @OnClick(R.id.fragment_new_project_create)
