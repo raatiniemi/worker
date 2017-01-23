@@ -20,8 +20,22 @@ android {
             enabled true
         }
     }
+    if (System.getenv("CI")) {
+        signingConfigs {
+            release {
+                storeFile file(System.getenv("KEYSTORE_PATH"))
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         release {
+            if (System.getenv("CI")) {
+                signingConfig signingConfigs.release
+            }
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
