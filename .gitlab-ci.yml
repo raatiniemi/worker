@@ -1,14 +1,29 @@
 image: raatiniemi/android-environment:latest
 
 stages:
-  - test
   - build
+  - test
   - deploy
+
+build:
+  stage: build
+  script:
+    - bin/build
+  artifacts:
+    paths:
+      - app/build/outputs/
+  tags:
+   - docker
 
 test:
   stage: test
   script:
     - bin/test
+  artifacts:
+    paths:
+      - app/build/outputs/
+  except:
+    - tags
   tags:
     - docker
 
@@ -16,22 +31,21 @@ sonar:
   stage: test
   script:
     - bin/sonar
+  artifacts:
+    paths:
+      - app/build/outputs/
   only:
     - tags
   tags:
     - docker
 
-build:
-  stage: build
-  script:
-    - bin/build
-  tags:
-   - docker
-
 deploy:
   stage: deploy
   script:
     - bin/deploy
+  artifacts:
+    paths:
+      - app/build/outputs/
   only:
     - tags
   tags:
