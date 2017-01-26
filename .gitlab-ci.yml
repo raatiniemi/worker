@@ -7,14 +7,14 @@ stages:
 test:
   stage: test
   script:
-    - ./bin/test
+    - bin/test
   tags:
     - docker
 
 sonar:
   stage: test
   script:
-    - ./bin/sonar
+    - bin/sonar
   only:
     - tags
   tags:
@@ -23,6 +23,6 @@ sonar:
 build:
   stage: build
   script:
-    - ./bin/build
+    - bin/build
   tags:
     - docker
