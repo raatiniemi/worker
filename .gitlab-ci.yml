@@ -3,6 +3,7 @@ image: raatiniemi/android-environment:latest
 stages:
   - test
   - build
+  - deploy
 
 test:
   stage: test
@@ -24,5 +25,14 @@ build:
   stage: build
   script:
     - bin/build
+  tags:
+   - docker
+
+deploy:
+  stage: deploy
+  script:
+    - bin/deploy
+  only:
+    - tags
   tags:
     - docker

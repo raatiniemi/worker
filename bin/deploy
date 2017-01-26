@@ -1,0 +1,6 @@
+#!/bin/bash
+GRADLE_RUNNER="$(dirname $0)/gradle";
+TASKS="clean publishApkRelease";
+
+$GRADLE_RUNNER $TASKS;
+exit $?;
