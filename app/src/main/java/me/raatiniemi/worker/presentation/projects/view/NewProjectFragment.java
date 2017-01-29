@@ -125,13 +125,17 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
 
     @OnClick(R.id.fragment_new_project_create)
     void createProject() {
-        String projectName = this.projectName.getText().toString();
-        presenter.createNewProject(projectName);
+        presenter.createNewProject();
     }
 
     @OnClick(R.id.fragment_new_project_cancel)
     void dismissDialog() {
         dismiss();
+    }
+
+    @Override
+    public String getProjectName() {
+        return this.projectName.getText().toString();
     }
 
     /**

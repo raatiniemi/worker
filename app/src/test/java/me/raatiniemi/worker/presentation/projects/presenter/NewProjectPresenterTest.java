@@ -63,45 +63,52 @@ public class NewProjectPresenterTest {
 
     @Test
     public void createNewProject_withInvalidName() {
+        when(view.getProjectName()).thenReturn("");
         presenter.attachView(view);
 
-        presenter.createNewProject("");
+        presenter.createNewProject();
 
         verify(view).showInvalidNameError();
     }
 
     @Test
     public void createNewProject_withInvalidNameWithoutAttachedView() {
-        presenter.createNewProject("");
+        when(view.getProjectName()).thenReturn("");
+
+        presenter.createNewProject();
 
         verify(view, never()).showInvalidNameError();
     }
 
     @Test
     public void createNewProject() throws DomainException {
+        when(view.getProjectName()).thenReturn("Name");
         when(createProject.execute(any(Project.class)))
                 .thenReturn(buildProject());
 
         presenter.attachView(view);
-        presenter.createNewProject("Name");
+        presenter.createNewProject();
 
         verify(view).createProjectSuccessful(any(Project.class));
     }
 
     @Test
     public void createNewProject_withoutAttachedView() throws DomainException {
-        presenter.createNewProject("Name");
+        when(view.getProjectName()).thenReturn("Name");
+
+        presenter.createNewProject();
 
         verify(view, never()).createProjectSuccessful(any(Project.class));
     }
 
     @Test
     public void createNewProject_withDuplicateName() throws DomainException {
+        when(view.getProjectName()).thenReturn("Name");
         when(createProject.execute(any(Project.class)))
                 .thenThrow(new ProjectAlreadyExistsException(""));
 
         presenter.attachView(view);
-        presenter.createNewProject("Name");
+        presenter.createNewProject();
 
         verify(view).showDuplicateNameError();
         verify(view, never()).showUnknownError();
@@ -109,11 +116,12 @@ public class NewProjectPresenterTest {
 
     @Test
     public void createNewProject_withUnknownError() throws DomainException {
+        when(view.getProjectName()).thenReturn("Name");
         when(createProject.execute(any(Project.class)))
                 .thenThrow(new RuntimeException());
 
         presenter.attachView(view);
-        presenter.createNewProject("Name");
+        presenter.createNewProject();
 
         verify(view, never()).showDuplicateNameError();
         verify(view).showUnknownError();
@@ -121,10 +129,11 @@ public class NewProjectPresenterTest {
 
     @Test
     public void createNewProject_withUnknownErrorAndWithoutAttachedView() throws DomainException {
+        when(view.getProjectName()).thenReturn("Name");
         when(createProject.execute(any(Project.class)))
                 .thenThrow(new RuntimeException());
 
-        presenter.createNewProject("Name");
+        presenter.createNewProject();
 
         verify(view, never()).showDuplicateNameError();
         verify(view, never()).showUnknownError();

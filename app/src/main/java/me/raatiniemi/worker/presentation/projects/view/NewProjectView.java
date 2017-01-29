@@ -24,6 +24,13 @@ import me.raatiniemi.worker.presentation.view.MvpView;
  */
 public interface NewProjectView extends MvpView {
     /**
+     * Get the project name from the view.
+     *
+     * @return Project name.
+     */
+    String getProjectName();
+
+    /**
      * Handle successful project creation.
      *
      * @param project Created project.

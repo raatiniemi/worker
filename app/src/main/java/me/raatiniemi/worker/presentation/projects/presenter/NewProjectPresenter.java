@@ -48,11 +48,10 @@ public class NewProjectPresenter extends BasePresenter<NewProjectView> {
 
     /**
      * Create new project.
-     *
-     * @param name Name of the project.
      */
-    public void createNewProject(final String name) {
+    public void createNewProject() {
         try {
+            String name = getFromView(NewProjectView::getProjectName);
             Project project = new Project.Builder(name)
                     .build();
 
