@@ -4,17 +4,17 @@
     >
 
     <PreferenceCategory
-        android:title="@string/activity.settings.preferences"
+        android:title="@string/activity_settings_preferences"
         >
 
         <PreferenceScreen
             android:key="settings_project"
-            android:title="@string/activity.settings.project"
+            android:title="@string/activity_settings_project"
             />
 
         <PreferenceScreen
             android:key="settings_data"
-            android:title="@string/activity.settings.data"
+            android:title="@string/activity_settings_data"
             />
 
     </PreferenceCategory>

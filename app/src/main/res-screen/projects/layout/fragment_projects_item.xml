@@ -73,7 +73,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
-                android:contentDescription="@string/fragment.projects_item.clock_in"
+                android:contentDescription="@string/fragment_projects_item_clock_in"
                 android:background="@drawable/projects_item_action_clock_activity_toggle_background"
                 android:src="@drawable/projects_item_action_clock_activity_toggle"
                 />
@@ -88,7 +88,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
-                android:contentDescription="@string/fragment.projects_item.clock_in_at"
+                android:contentDescription="@string/fragment_projects_item_clock_in_at"
                 android:background="@android:color/transparent"
                 android:src="@drawable/projects_item_action_clock_activity_at"
                 />
@@ -103,7 +103,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginEnd="4dp"
                 android:padding="8dp"
-                android:contentDescription="@string/fragment.projects_item.delete"
+                android:contentDescription="@string/fragment_projects_item_delete"
                 android:background="@android:color/transparent"
                 android:src="@drawable/projects_item_action_delete"
                 />

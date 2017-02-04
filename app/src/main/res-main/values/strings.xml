@@ -3,50 +3,50 @@
 
     <string name="name">Worker</string>
 
-    <string name="menu.title.actions">Actions</string>
+    <string name="menu_title_actions">Actions</string>
 
-    <string name="menu.actions.projects.create_new_project">Create new project</string>
-    <string name="menu.actions.projects.settings">Settings</string>
+    <string name="menu_actions_projects_create_new_project">Create new project</string>
+    <string name="menu_actions_projects_settings">Settings</string>
 
-    <string name="menu.actions.project.hide_registered">Hide registered</string>
+    <string name="menu_actions_project_hide_registered">Hide registered</string>
 
-    <string name="menu.actions.project_timesheet.register">Mark as registered</string>
-    <string name="menu.actions.project_timesheet.delete">Delete</string>
+    <string name="menu_actions_project_timesheet_register">Mark as registered</string>
+    <string name="menu_actions_project_timesheet_delete">Delete</string>
 
-    <string name="fragment.projects_item.clocked_in_since" formatted="false">Since %s (%s)</string>
-    <string name="fragment.projects_item.clock_in">Clock in now</string>
-    <string name="fragment.projects_item.clock_out">Clock out now</string>
-    <string name="fragment.projects_item.clock_in_at">Clock in at given date and time</string>
-    <string name="fragment.projects_item.clock_out_at">Clock out at given date and time</string>
-    <string name="fragment.projects_item.delete">Delete project</string>
+    <string name="fragment_projects_item_clocked_in_since" formatted="false">Since %s (%s)</string>
+    <string name="fragment_projects_item_clock_in">Clock in now</string>
+    <string name="fragment_projects_item_clock_in_at">Clock in at given date and time</string>
+    <string name="fragment_projects_item_clock_out">Clock out now</string>
+    <string name="fragment_projects_item_clock_out_at">Clock out at given date and time</string>
+    <string name="fragment_projects_item_delete">Delete project</string>
 
-    <string name="fragment.new_project.title">Create new project</string>
-    <string name="fragment.new_project.description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
-    <string name="fragment.new_project.name_hint">Project name&#8230;</string>
-    <string name="fragment.new_project.create">Create</string>
-    <string name="fragment.new_project.cancel">Cancel</string>
+    <string name="fragment_new_project_title">Create new project</string>
+    <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
+    <string name="fragment_new_project_name_hint">Project name&#8230;</string>
+    <string name="fragment_new_project_create">Create</string>
+    <string name="fragment_new_project_cancel">Cancel</string>
 
-    <string name="fragment.timesheet_group_item.selection_content_description">Select or deselect item group</string>
+    <string name="fragment_timesheet_group_item_selection_content_description">Select or deselect item group</string>
 
-    <string name="confirm.clock_out.title">You are about to clock out</string>
-    <string name="confirm.clock_out.message">Are you sure you\'d like to clock out?</string>
+    <string name="confirm_clock_out_title">You are about to clock out</string>
+    <string name="confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
 
-    <string name="confirm.delete_project.title">Delete project</string>
-    <string name="confirm.delete_project.message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
+    <string name="confirm_delete_project_title">Delete project</string>
+    <string name="confirm_delete_project_message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
 
-    <string name="confirm.delete_time.title">Delete time</string>
-    <string name="confirm.delete_time.message">Are you sure you want to delete the registered time?</string>
+    <string name="confirm_delete_time_title">Delete time</string>
+    <string name="confirm_delete_time_message">Are you sure you want to delete the registered time?</string>
 
-    <string name="error.message.get_projects">Failed to retrieve projects.</string>
+    <string name="error_message_get_projects">Failed to retrieve projects.</string>
 
-    <string name="message.project_created">New project have been created</string>
-    <string name="message.project_deleted">Project have been deleted</string>
-    <string name="error.message.project_deleted">Failed to delete project.</string>
+    <string name="message_project_created">New project have been created</string>
+    <string name="message_project_deleted">Project have been deleted</string>
+    <string name="error_message_project_deleted">Failed to delete project.</string>
 
-    <string name="error.message.clock_in">Failed to clock in project.</string>
-    <string name="error.message.clock_out">Failed to clock out project.</string>
+    <string name="error_message_clock_in">Failed to clock in project.</string>
+    <string name="error_message_clock_out">Failed to clock out project.</string>
 
-    <string name="error.message.get_timesheet">Failed to retrieve timesheet.</string>
+    <string name="error_message_get_timesheet">Failed to retrieve timesheet.</string>
 
     <plurals name="error_message_delete_timesheet">
         <item quantity="one">Failed to delete item.</item>
@@ -57,73 +57,73 @@
         <item quantity="other">Failed to update items.</item>
     </plurals>
 
-    <string name="message.permission.write_backup">Need permission to backup.</string>
-    <string name="message.permission.read_backup">Need permission to read backup.</string>
+    <string name="message_permission_write_backup">Need permission to backup.</string>
+    <string name="message_permission_read_backup">Need permission to read backup.</string>
 
-    <string name="message.backing_up_data">Backing up data…</string>
-    <string name="message.restoring_data">Restoring data…</string>
+    <string name="message_backing_up_data">Backing up data…</string>
+    <string name="message_restoring_data">Restoring data…</string>
 
-    <string name="activity.settings.title">Settings</string>
-    <string name="activity.settings.preferences">Preferences</string>
-    <string name="activity.settings.project">Project</string>
-    <string name="activity.settings.project.general">General</string>
-    <string name="activity.settings.project.confirm_clock_out">Confirm clock out</string>
-    <string name="activity.settings.project.time_summary.title">Time summary</string>
-    <string name="activity.settings.project.time_summary.summary">Starting point for the collection of registered time used for the time summary.</string>
-    <string name="activity.settings.project.time_summary.week">Week</string>
-    <string name="activity.settings.project.time_summary.month">Month</string>
-    <string name="activity.settings.project.ongoing_notification">Ongoing notification</string>
-    <string name="activity.settings.project.ongoing_notification.enable">Enable</string>
-    <string name="activity.settings.project.ongoing_notification.chronometer">Notification timer</string>
-    <string name="activity.settings.data">Data</string>
-    <string name="activity.settings.backup">Backup</string>
-    <string name="activity.settings.backup.unable_to_find">Unable to locate latest backup.</string>
-    <string name="activity.settings.backup.none_available">No backup have been performed.</string>
-    <string name="activity.settings.backup.performed_at" formatted="false">Last backup was performed at %s.</string>
-    <string name="activity.settings.restore">Restore</string>
-    <string name="activity.settings.restore.unable_to_find">Unable to restore, failed to locate backups.</string>
-    <string name="activity.settings.restore.none_available">Nothing to restore, no backup is available.</string>
-    <string name="activity.settings.restore.from" formatted="false">Restore backup from %s.\nAfter restore you have to restart the application.</string>
+    <string name="activity_settings_title">Settings</string>
+    <string name="activity_settings_preferences">Preferences</string>
+    <string name="activity_settings_project">Project</string>
+    <string name="activity_settings_project_general">General</string>
+    <string name="activity_settings_project_confirm_clock_out">Confirm clock out</string>
+    <string name="activity_settings_project_time_summary_title">Time summary</string>
+    <string name="activity_settings_project_time_summary_summary">Starting point for the collection of registered time used for the time summary.</string>
+    <string name="activity_settings_project_time_summary_week">Week</string>
+    <string name="activity_settings_project_time_summary_month">Month</string>
+    <string name="activity_settings_project_ongoing_notification">Ongoing notification</string>
+    <string name="activity_settings_project_ongoing_notification_enable">Enable</string>
+    <string name="activity_settings_project_ongoing_notification_chronometer">Notification timer</string>
+    <string name="activity_settings_data">Data</string>
+    <string name="activity_settings_backup">Backup</string>
+    <string name="activity_settings_backup_unable_to_find">Unable to locate latest backup.</string>
+    <string name="activity_settings_backup_none_available">No backup have been performed.</string>
+    <string name="activity_settings_backup_performed_at" formatted="false">Last backup was performed at %s.</string>
+    <string name="activity_settings_restore">Restore</string>
+    <string name="activity_settings_restore_unable_to_find">Unable to restore, failed to locate backups.</string>
+    <string name="activity_settings_restore_none_available">Nothing to restore, no backup is available.</string>
+    <string name="activity_settings_restore_from" formatted="false">Restore backup from %s.\nAfter restore you have to restart the application.</string>
 
-    <string name="notification.backup.title">Backup complete</string>
-    <string name="notification.backup.message">Backup to external storage was successful.</string>
+    <string name="notification_backup_title">Backup complete</string>
+    <string name="notification_backup_message">Backup to external storage was successful.</string>
 
-    <string name="notification.restore.title">Restore complete</string>
-    <string name="notification.restore.message">Press notification to restart application.</string>
+    <string name="notification_restore_title">Restore complete</string>
+    <string name="notification_restore_message">Press notification to restart application.</string>
 
-    <string name="activity.settings.restore.confirm.title">Restore data</string>
-    <string name="activity.settings.restore.confirm.message">Restoring data will override the current data and is not reversible.\n\nDo you which to continue?</string>
+    <string name="activity_settings_restore_confirm_title">Restore data</string>
+    <string name="activity_settings_restore_confirm_message">Restoring data will override the current data and is not reversible.\n\nDo you which to continue?</string>
 
-    <string name="notification.pause.action.pause">Pause</string>
-    <string name="notification.pause.action.clock_out">Clock out</string>
-    <string name="notification.pause.action.resume">Resume</string>
+    <string name="notification_pause_action_pause">Pause</string>
+    <string name="notification_pause_action_clock_out">Clock out</string>
+    <string name="notification_pause_action_resume">Resume</string>
 
-    <string name="error.message.unknown">An unknown error has occurred</string>
-    <string name="error.message.project_name_missing">You have to supply a name</string>
-    <string name="error.message.project_name_already_exists">Project name already exists</string>
+    <string name="error_message_unknown">An unknown error has occurred</string>
+    <string name="error_message_project_name_missing">You have to supply a name</string>
+    <string name="error_message_project_name_already_exists">Project name already exists</string>
 
-    <string name="error.message.unable_to_find_project">Unable to find project.</string>
+    <string name="error_message_unable_to_find_project">Unable to find project.</string>
 
-    <string name="error.message.preference_screen_not_implemented">Preference screen is not implemented.</string>
-    <string name="error.message.preference_not_implemented">Preference is not implemented.</string>
+    <string name="error_message_preference_screen_not_implemented">Preference screen is not implemented.</string>
+    <string name="error_message_preference_not_implemented">Preference is not implemented.</string>
 
-    <string name="message.change_time_summary_starting_point_week">Time summary will show current week</string>
-    <string name="message.change_time_summary_starting_point_month">Time summary will show current month</string>
-    <string name="error.message.change_time_summary_starting_point">Unable to change time summary starting point.</string>
+    <string name="message_change_time_summary_starting_point_week">Time summary will show current week</string>
+    <string name="message_change_time_summary_starting_point_month">Time summary will show current month</string>
+    <string name="error_message_change_time_summary_starting_point">Unable to change time summary starting point.</string>
 
-    <string name="error.notification.backup.title">Backup failed</string>
-    <string name="error.notification.backup.message">Backup to external storage failed.</string>
+    <string name="error_notification_backup_title">Backup failed</string>
+    <string name="error_notification_backup_message">Backup to external storage failed.</string>
 
-    <string name="error.notification.restore.title">Restore failed</string>
-    <string name="error.notification.restore.message">Data restore from backup failed.</string>
+    <string name="error_notification_restore_title">Restore failed</string>
+    <string name="error_notification_restore_message">Data restore from backup failed.</string>
 
-    <string name="error.notification.pause.title">Failed to pause project</string>
-    <string name="error.notification.pause.message">An internal error has occurred.</string>
+    <string name="error_notification_pause_title">Failed to pause project</string>
+    <string name="error_notification_pause_message">An internal error has occurred.</string>
 
-    <string name="error.notification.resume.title">Failed to resume project</string>
-    <string name="error.notification.resume.message">An internal error has occurred.</string>
+    <string name="error_notification_resume_title">Failed to resume project</string>
+    <string name="error_notification_resume_message">An internal error has occurred.</string>
 
-    <string name="error.notification.clock_out.title">Failed to clock out project</string>
-    <string name="error.notification.clock_out.message">An internal error has occurred.</string>
+    <string name="error_notification_clock_out_title">Failed to clock out project</string>
+    <string name="error_notification_clock_out_message">An internal error has occurred.</string>
 
 </resources>

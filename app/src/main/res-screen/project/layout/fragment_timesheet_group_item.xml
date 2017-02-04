@@ -22,7 +22,7 @@
             android:layout_marginTop="@dimen/expandable_group_item_padding_left"
             android:layout_marginEnd="@dimen/expandable_group_item_padding_left"
             android:layout_marginBottom="@dimen/expandable_group_item_padding_left"
-            android:contentDescription="@string/fragment.timesheet_group_item.selection_content_description"
+            android:contentDescription="@string/fragment_timesheet_group_item_selection_content_description"
             />
 
         <TextView
