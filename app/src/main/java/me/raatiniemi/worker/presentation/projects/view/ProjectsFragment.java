@@ -47,7 +47,6 @@ import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
 public class ProjectsFragment extends BaseFragment
@@ -78,9 +77,12 @@ public class ProjectsFragment extends BaseFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        adapter = new ProjectsAdapter(getResources(), this, new HintedImageButtonListener(getActivity()));
+        adapter.setOnItemClickListener(this);
+
         recyclerView = ButterKnife.findById(view, R.id.fragment_projects);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(getAdapter());
+        recyclerView.setAdapter(adapter);
 
         ((Worker) getActivity().getApplication()).getProjectsComponent()
                 .inject(this);
@@ -115,22 +117,12 @@ public class ProjectsFragment extends BaseFragment
         presenter.stopRefreshingActiveProjects();
     }
 
-    @NonNull
-    private ProjectsAdapter getAdapter() {
-        if (isNull(adapter)) {
-            adapter = new ProjectsAdapter(getResources(), this, new HintedImageButtonListener(getActivity()));
-            adapter.setOnItemClickListener(this);
-        }
-
-        return adapter;
-    }
-
     /**
      * @inheritDoc
      */
     @Override
     public List<ProjectsItem> getProjects() {
-        return getAdapter().getItems();
+        return adapter.getItems();
     }
 
     /**
@@ -150,7 +142,7 @@ public class ProjectsFragment extends BaseFragment
      */
     @Override
     public void addProjects(List<ProjectsItem> projects) {
-        getAdapter().add(projects);
+        adapter.add(projects);
     }
 
     /**
@@ -159,7 +151,7 @@ public class ProjectsFragment extends BaseFragment
     @Override
     public void addCreatedProject(@NonNull Project project) {
         ProjectsItem item = new ProjectsItem(project);
-        int position = getAdapter().add(item);
+        int position = adapter.add(item);
 
         recyclerView.scrollToPosition(position);
     }
@@ -186,13 +178,13 @@ public class ProjectsFragment extends BaseFragment
 
     @Override
     public void updateProject(ProjectsItem project) {
-        int position = getAdapter().findProject(project);
+        int position = adapter.findProject(project);
         if (RecyclerView.NO_POSITION == position) {
             Timber.e("Unable to find position for project in the adapter");
             return;
         }
 
-        getAdapter().set(position, project);
+        adapter.set(position, project);
     }
 
     /**
@@ -224,7 +216,7 @@ public class ProjectsFragment extends BaseFragment
      */
     @Override
     public void deleteProjectAtPosition(int position) {
-        getAdapter().remove(position);
+        adapter.remove(position);
     }
 
     /**
@@ -235,7 +227,7 @@ public class ProjectsFragment extends BaseFragment
             int previousPosition,
             ProjectsItem project
     ) {
-        getAdapter().add(previousPosition, project);
+        adapter.add(previousPosition, project);
 
         recyclerView.scrollToPosition(previousPosition);
     }
@@ -287,7 +279,7 @@ public class ProjectsFragment extends BaseFragment
         // Iterate and refresh every position.
         Timber.d("Refreshing %d projects", positions.size());
         for (Integer position : positions) {
-            getAdapter().notifyItemChanged(position);
+            adapter.notifyItemChanged(position);
         }
     }
 
@@ -296,7 +288,7 @@ public class ProjectsFragment extends BaseFragment
      */
     @Override
     public void reloadProjects() {
-        getAdapter().clear();
+        adapter.clear();
         presenter.getProjects();
     }
 
@@ -311,7 +303,7 @@ public class ProjectsFragment extends BaseFragment
 
         try {
             // Retrieve the project from the retrieved position.
-            final ProjectsItem item = getAdapter().get(position);
+            final ProjectsItem item = adapter.get(position);
             final Project project = item.asProject();
 
             Intent intent = ProjectActivity.newIntent(

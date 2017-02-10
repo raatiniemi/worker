@@ -87,7 +87,7 @@ public class TimesheetFragment extends BaseFragment
                             .setTitle(R.string.confirm_delete_time_title)
                             .setMessage(R.string.confirm_delete_time_message)
                             .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                                presenter.remove(getAdapter().getSelectedItems());
+                                presenter.remove(adapter.getSelectedItems());
 
                                 // Since the item have been removed, we can finish the action.
                                 actionMode.finish();
@@ -100,7 +100,7 @@ public class TimesheetFragment extends BaseFragment
                     finish = false;
                     break;
                 case R.id.actions_project_timesheet_register:
-                    presenter.register(getAdapter().getSelectedItems());
+                    presenter.register(adapter.getSelectedItems());
                     finish = true;
                     break;
                 default:
@@ -116,7 +116,7 @@ public class TimesheetFragment extends BaseFragment
 
         @Override
         public void onDestroyActionMode(ActionMode actionMode) {
-            getAdapter().deselectItems();
+            adapter.deselectItems();
 
             TimesheetFragment.this.actionMode = null;
         }
@@ -145,6 +145,7 @@ public class TimesheetFragment extends BaseFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        adapter = new TimesheetAdapter(this);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
@@ -153,7 +154,7 @@ public class TimesheetFragment extends BaseFragment
         RecyclerView recyclerView = ButterKnife.findById(view, R.id.fragment_timesheet);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
-        recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(getAdapter()));
+        recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(adapter));
         recyclerView.addItemDecoration(
                 new SimpleListDividerDecorator(
                         getResources().getDrawable(
@@ -185,7 +186,7 @@ public class TimesheetFragment extends BaseFragment
 
                         // Retrieve the total number of groups within the view, we need to
                         // exclude the children otherwise the offset will be wrong.
-                        int offset = getAdapter().getGroupCount();
+                        int offset = adapter.getGroupCount();
 
                         // Retrieve additional timesheet items with offset.
                         presenter.getTimesheet(getProjectId(), offset);
@@ -209,28 +210,19 @@ public class TimesheetFragment extends BaseFragment
         detachViewIfNotNull(presenter);
     }
 
-    @NonNull
-    private TimesheetAdapter getAdapter() {
-        if (isNull(adapter)) {
-            adapter = new TimesheetAdapter(this);
-        }
-
-        return adapter;
-    }
-
     @Override
     public void add(@NonNull List<TimesheetGroupItem> groupItems) {
-        getAdapter().add(groupItems);
+        adapter.add(groupItems);
     }
 
     @Override
     public void update(List<TimeInAdapterResult> results) {
-        getAdapter().set(results);
+        adapter.set(results);
     }
 
     @Override
     public void remove(List<TimeInAdapterResult> results) {
-        getAdapter().remove(results);
+        adapter.remove(results);
     }
 
     /**
@@ -283,7 +275,7 @@ public class TimesheetFragment extends BaseFragment
     @Override
     public void refresh() {
         // Clear the items from the list and start loading from the beginning...
-        getAdapter().clear();
+        adapter.clear();
         presenter.getTimesheet(getProjectId(), 0);
     }
 
@@ -300,7 +292,7 @@ public class TimesheetFragment extends BaseFragment
             return;
         }
 
-        if (getAdapter().haveSelectedItems()) {
+        if (adapter.haveSelectedItems()) {
             return;
         }
 
