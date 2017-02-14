@@ -59,8 +59,6 @@ public class ProjectResolverRepository
      */
     @Override
     public List<Project> matching(final Criteria criteria) throws InvalidProjectNameException {
-        final List<Project> projects = new ArrayList<>();
-
         ContentResolverQuery query = ContentResolverQuery.from(criteria);
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getStreamUri(),
@@ -69,6 +67,13 @@ public class ProjectResolverRepository
                 query.getSelectionArgs(),
                 null
         );
+
+        return fetch(cursor);
+    }
+
+    private List<Project> fetch(Cursor cursor) throws InvalidProjectNameException {
+        final List<Project> projects = new ArrayList<>();
+
         if (isNull(cursor)) {
             return projects;
         }
@@ -91,8 +96,6 @@ public class ProjectResolverRepository
      */
     @Override
     public List<Project> get() throws InvalidProjectNameException {
-        final List<Project> projects = new ArrayList<>();
-
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getStreamUri(),
                 ProjectContract.getColumns(),
@@ -100,21 +103,8 @@ public class ProjectResolverRepository
                 null,
                 ProjectContract.ORDER_BY
         );
-        if (isNull(cursor)) {
-            return projects;
-        }
 
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    projects.add(getCursorMapper().transform(cursor));
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return projects;
+        return fetch(cursor);
     }
 
     /**
