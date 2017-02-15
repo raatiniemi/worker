@@ -18,12 +18,11 @@ package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
@@ -39,7 +38,6 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,6 +47,14 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     private ContentResolver contentResolver;
     private ProjectResolverRepository repository;
 
+    private static Cursor buildCursorWithNumberOfItems(int numberOfItems) {
+        return CursorFactory.build(
+                ProjectContract.getColumns(),
+                numberOfItems,
+                number -> Arrays.asList(number, "Name")
+        );
+    }
+
     @Before
     public void setUp() {
         contentResolver = mock(ContentResolver.class);
@@ -57,28 +63,6 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 cursorMapper,
                 contentValuesMapper
         );
-    }
-
-    private Cursor buildCursorWithNumberOfItems(int numberOfItems) {
-        MatrixCursor cursor = buildCursor();
-
-        for (long i = 1; i <= numberOfItems; i++) {
-            cursor.addRow(buildCursorRow(i, "Name"));
-        }
-
-        return cursor;
-    }
-
-    private MatrixCursor buildCursor() {
-        return spy(new MatrixCursor(ProjectContract.getColumns()));
-    }
-
-    private List<Object> buildCursorRow(Long id, String name) {
-        List<Object> columns = new ArrayList<>();
-        columns.add(id);
-        columns.add(name);
-
-        return columns;
     }
 
     @Test
@@ -100,7 +84,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
     @Test
     public void findProjectByName_withEmptyCursor() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(0);
+        Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
@@ -155,7 +139,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
     @Test
     public void get_projectsWithEmptyCursor() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(0);
+        Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
@@ -229,7 +213,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
     @Test
     public void get_projectWithoutRow() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(0);
+        Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
                         ProjectContract.getItemUri(1),

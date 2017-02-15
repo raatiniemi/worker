@@ -18,12 +18,11 @@ package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
@@ -38,7 +37,6 @@ import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,6 +44,14 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
     private ContentResolver contentResolver;
     private TimeResolverRepository repository;
     private Project project;
+
+    private static Cursor buildCursorWithNumberOfItems(int numberOfItems) {
+        return CursorFactory.build(
+                TimeContract.getColumns(),
+                numberOfItems,
+                number -> Arrays.asList(number, 1L, 123456789L, 123456789L, 0L)
+        );
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -59,31 +65,6 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         project = Project.builder("Name")
                 .id(1L)
                 .build();
-    }
-
-    private Cursor buildCursorWithNumberOfItems(int numberOfItems) {
-        MatrixCursor cursor = buildCursor();
-
-        for (long i = 0; i < numberOfItems; i++) {
-            cursor.addRow(buildCursorRow());
-        }
-
-        return cursor;
-    }
-
-    private MatrixCursor buildCursor() {
-        return spy(new MatrixCursor(TimeContract.getColumns()));
-    }
-
-    private List<Object> buildCursorRow() {
-        List<Object> values = new ArrayList<>();
-        values.add(1L);
-        values.add(1L);
-        values.add(123456789L);
-        values.add(123456789L);
-        values.add(0L);
-
-        return values;
     }
 
     @Test
@@ -105,7 +86,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
 
     @Test
     public void findProjectTimeSinceStartingPointInMilliseconds_withEmptyCursor() throws DomainException {
-        Cursor cursor = buildCursorWithNumberOfItems(0);
+        Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
