@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -36,66 +35,86 @@ import static org.mockito.Mockito.when;
 public class CreateProjectViewModelTest {
     private CreateProject useCase;
     private CreateProjectViewModel vm;
-    private TestSubscriber<Project> test;
+    private TestSubscriber<String> invalidProjectNameError;
+    private TestSubscriber<String> duplicateNameError;
+    private TestSubscriber<String> createProjectError;
+    private TestSubscriber<Project> createProjectSuccess;
 
     @Before
     public void setUp() {
+        invalidProjectNameError = new TestSubscriber<>();
+        duplicateNameError = new TestSubscriber<>();
+        createProjectError = new TestSubscriber<>();
+        createProjectSuccess = new TestSubscriber<>();
+
         useCase = mock(CreateProject.class);
         vm = new CreateProjectViewModel(useCase);
-        test = new TestSubscriber<>();
     }
 
     @Test
     public void createProject_withNull() {
-        vm.output.onCreateProject().subscribe(test);
+        vm.error.invalidProjectNameError().subscribe(invalidProjectNameError);
 
         vm.input.projectName(null);
         vm.input.createProject();
 
-        test.assertError(InvalidProjectNameException.class);
+        invalidProjectNameError.assertValueCount(1);
+        duplicateNameError.assertNoValues();
+        createProjectError.assertNoValues();
+        createProjectSuccess.assertNotCompleted();
     }
 
     @Test
     public void createProject_withEmptyName() {
-        vm.output.onCreateProject().subscribe(test);
+        vm.error.invalidProjectNameError().subscribe(invalidProjectNameError);
 
         vm.input.projectName("");
         vm.input.createProject();
 
-        test.assertError(InvalidProjectNameException.class);
+        invalidProjectNameError.assertValueCount(1);
+        duplicateNameError.assertNoValues();
+        createProjectError.assertNoValues();
+        createProjectSuccess.assertNotCompleted();
     }
 
     @Test
     public void createProject_withDuplicateName() throws DomainException {
         when(useCase.execute(any(Project.class)))
                 .thenThrow(ProjectAlreadyExistsException.class);
-        vm.output.onCreateProject().subscribe(test);
+        vm.error.duplicateProjectNameError().subscribe(duplicateNameError);
 
         vm.input.projectName("Name");
         vm.input.createProject();
 
-        test.assertError(ProjectAlreadyExistsException.class);
+        invalidProjectNameError.assertNoValues();
+        duplicateNameError.assertValueCount(1);
+        createProjectError.assertNoValues();
+        createProjectSuccess.assertNotCompleted();
     }
 
     @Test
     public void createProject_withUnknownError() throws DomainException {
         when(useCase.execute(any(Project.class)))
                 .thenThrow(RuntimeException.class);
-        vm.output.onCreateProject().subscribe(test);
+        vm.error.createProjectError().subscribe(createProjectError);
 
         vm.input.projectName("Name");
         vm.input.createProject();
 
-        test.assertError(RuntimeException.class);
+        invalidProjectNameError.assertNoValues();
+        duplicateNameError.assertNoValues();
+        createProjectError.assertValueCount(1);
+        createProjectSuccess.assertNotCompleted();
     }
 
     @Test
     public void createProject_withValidName() {
-        vm.output.onCreateProject().subscribe(test);
+        vm.output.createProjectSuccess().subscribe(createProjectSuccess);
 
         vm.input.projectName("Name");
         vm.input.createProject();
 
-        test.assertValueCount(1);
+        createProjectSuccess.assertValueCount(1);
+        createProjectSuccess.assertNotCompleted();
     }
 }

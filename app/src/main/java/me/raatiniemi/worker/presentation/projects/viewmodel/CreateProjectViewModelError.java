@@ -16,9 +16,12 @@
 
 package me.raatiniemi.worker.presentation.projects.viewmodel;
 
-import me.raatiniemi.worker.domain.model.Project;
 import rx.Observable;
 
-interface CreateProjectViewModelOutput {
-    Observable<Project> createProjectSuccess();
+interface CreateProjectViewModelError {
+    Observable<String> invalidProjectNameError();
+
+    Observable<String> duplicateProjectNameError();
+
+    Observable<String> createProjectError();
 }

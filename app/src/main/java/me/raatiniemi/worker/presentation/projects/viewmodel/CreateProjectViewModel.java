@@ -16,18 +16,22 @@
 
 package me.raatiniemi.worker.presentation.projects.viewmodel;
 
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
+import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-final class CreateProjectViewModel implements CreateProjectViewModelInput, CreateProjectViewModelOutput {
+final class CreateProjectViewModel implements CreateProjectViewModelInput, CreateProjectViewModelOutput, CreateProjectViewModelError {
     final CreateProjectViewModelInput input = this;
     final CreateProjectViewModelOutput output = this;
+    final CreateProjectViewModelError error = this;
 
     private final PublishSubject<String> projectName = PublishSubject.create();
     private final PublishSubject<Void> createProject = PublishSubject.create();
-    private final PublishSubject<Project> onCreateProject = PublishSubject.create();
+    private final PublishSubject<Project> createProjectSuccess = PublishSubject.create();
+    private final PublishSubject<Throwable> createProjectError = PublishSubject.create();
 
     private final CreateProject useCase;
 
@@ -35,8 +39,10 @@ final class CreateProjectViewModel implements CreateProjectViewModelInput, Creat
         this.useCase = useCase;
 
         createProject.withLatestFrom(projectName, (__, name) -> name)
-                .flatMap(this::executeUseCase)
-                .subscribe(onCreateProject);
+                .switchMap(name -> executeUseCase(name)
+                        .compose(redirectErrorsToSubject())
+                        .compose(hideErrors()))
+                .subscribe(createProjectSuccess);
     }
 
     private Observable<Project> executeUseCase(String name) {
@@ -50,6 +56,19 @@ final class CreateProjectViewModel implements CreateProjectViewModelInput, Creat
         }
     }
 
+    private Observable.Transformer<Project, Project> redirectErrorsToSubject() {
+        return source -> source
+                .doOnError(createProjectError::onNext)
+                .onErrorResumeNext(Observable.empty());
+    }
+
+    private Observable.Transformer<Project, Project> hideErrors() {
+        return source -> source
+                .doOnError(e -> {
+                })
+                .onErrorResumeNext(Observable.empty());
+    }
+
     @Override
     public void projectName(String name) {
         projectName.onNext(name);
@@ -61,7 +80,40 @@ final class CreateProjectViewModel implements CreateProjectViewModelInput, Creat
     }
 
     @Override
-    public Observable<Project> onCreateProject() {
-        return onCreateProject.asObservable();
+    public Observable<Project> createProjectSuccess() {
+        return createProjectSuccess.asObservable();
+    }
+
+    @Override
+    public Observable<String> invalidProjectNameError() {
+        return createProjectError
+                .filter(this::isInvalidProjectNameError)
+                .map(Throwable::getMessage);
+    }
+
+    private boolean isInvalidProjectNameError(Throwable e) {
+        return e instanceof InvalidProjectNameException;
+    }
+
+    @Override
+    public Observable<String> duplicateProjectNameError() {
+        return createProjectError
+                .filter(this::isDuplicateProjectNameError)
+                .map(Throwable::getMessage);
+    }
+
+    private boolean isDuplicateProjectNameError(Throwable e) {
+        return e instanceof ProjectAlreadyExistsException;
+    }
+
+    @Override
+    public Observable<String> createProjectError() {
+        return createProjectError
+                .filter(this::isUnknownError)
+                .map(Throwable::getMessage);
+    }
+
+    private boolean isUnknownError(Throwable e) {
+        return !isInvalidProjectNameError(e) && !isDuplicateProjectNameError(e);
     }
 }
