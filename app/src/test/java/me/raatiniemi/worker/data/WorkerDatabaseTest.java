@@ -18,27 +18,21 @@ package me.raatiniemi.worker.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.provider.BaseColumns;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.WorkerContract.Tables;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.RobolectricTestCase;
 
 import static me.raatiniemi.util.NullUtil.nonNull;
 import static org.mockito.Mockito.mock;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class WorkerDatabaseTest {
+public class WorkerDatabaseTest extends RobolectricTestCase {
     private SQLiteDatabase database;
 
     @Before

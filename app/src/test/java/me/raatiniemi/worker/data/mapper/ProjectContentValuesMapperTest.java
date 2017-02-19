@@ -17,25 +17,19 @@
 package me.raatiniemi.worker.data.mapper;
 
 import android.content.ContentValues;
-import android.os.Build;
 import android.provider.BaseColumns;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class ProjectContentValuesMapperTest {
+public class ProjectContentValuesMapperTest extends RobolectricTestCase {
     private static ContentValues createContentValues(final String name) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ProjectColumns.NAME, name);

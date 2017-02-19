@@ -19,18 +19,13 @@ package me.raatiniemi.worker.data.repository;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.os.Build;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
@@ -40,6 +35,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -47,9 +43,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class TimeResolverRepositoryTest {
+public class TimeResolverRepositoryTest extends RobolectricTestCase {
     private ContentResolver contentResolver;
     private TimeResolverRepository repository;
     private Project project;

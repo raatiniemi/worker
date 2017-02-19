@@ -17,27 +17,21 @@
 package me.raatiniemi.worker.presentation.projects.view;
 
 import android.content.res.Resources;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class ProjectsAdapterTest {
+public class ProjectsAdapterTest extends RobolectricTestCase {
     private ProjectsAdapter adapter;
 
     @Before

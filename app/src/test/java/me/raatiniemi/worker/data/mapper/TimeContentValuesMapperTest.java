@@ -17,25 +17,19 @@
 package me.raatiniemi.worker.data.mapper;
 
 import android.content.ContentValues;
-import android.os.Build;
 import android.provider.BaseColumns;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
-import me.raatiniemi.worker.BuildConfig;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class TimeContentValuesMapperTest {
+public class TimeContentValuesMapperTest extends RobolectricTestCase {
     private static ContentValues createContentValues(
             final long projectId,
             final long start,

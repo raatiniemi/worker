@@ -16,26 +16,20 @@
 
 package me.raatiniemi.worker.presentation.view.adapter;
 
-import android.os.Build;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.ViewGroup;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class SimpleListAdapterTest {
+public class SimpleListAdapterTest extends RobolectricTestCase {
     @Test
     public void getItemCount_withoutItems() {
         Adapter<String> adapter = new Adapter<>();

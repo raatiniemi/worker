@@ -16,24 +16,18 @@
 
 package me.raatiniemi.worker.presentation.util;
 
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
-import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.RobolectricTestCase;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class SelectionManagerAdapterDecoratorTest {
+public class SelectionManagerAdapterDecoratorTest extends RobolectricTestCase {
     private RecyclerView.Adapter adapter;
     private SelectionListener selectionListener;
 

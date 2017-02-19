@@ -18,23 +18,17 @@ package me.raatiniemi.worker.presentation.util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
-import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class PermissionUtilTest {
+public class PermissionUtilTest extends RobolectricTestCase {
     private static final String PERMISSION = "Permission";
 
     @Test

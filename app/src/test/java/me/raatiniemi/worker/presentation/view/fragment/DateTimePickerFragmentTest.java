@@ -1,20 +1,13 @@
 package me.raatiniemi.worker.presentation.view.fragment;
 
-import android.os.Build;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.BuildConfig;
+import me.raatiniemi.worker.RobolectricTestCase;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class DateTimePickerFragmentTest {
+public class DateTimePickerFragmentTest extends RobolectricTestCase {
     private DateTimePickerFragment fragment;
     private Calendar today;
     private Calendar nextYear;
