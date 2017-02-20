@@ -19,6 +19,6 @@ package me.raatiniemi.worker.presentation.projects.viewmodel;
 import me.raatiniemi.worker.domain.model.Project;
 import rx.Observable;
 
-interface CreateProjectViewModelOutput {
+public interface CreateProjectViewModelOutput {
     Observable<Project> createProjectSuccess();
 }

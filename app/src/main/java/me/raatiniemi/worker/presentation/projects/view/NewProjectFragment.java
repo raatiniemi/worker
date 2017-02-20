@@ -30,24 +30,25 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
+import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.presentation.util.Keyboard;
 import me.raatiniemi.worker.presentation.view.fragment.BaseDialogFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 
-public class NewProjectFragment extends BaseDialogFragment implements NewProjectView, DialogInterface.OnShowListener {
+public class NewProjectFragment extends BaseDialogFragment implements DialogInterface.OnShowListener {
+    @Inject
+    CreateProjectViewModel viewModel;
+
     @BindView(R.id.fragment_new_project_name)
     EditText projectName;
-
-    @Inject
-    NewProjectPresenter presenter;
 
     private Unbinder unbinder;
 
@@ -77,7 +78,18 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
         ((Worker) getActivity().getApplication()).getProjectsComponent()
                 .inject(this);
 
-        presenter.attachView(this);
+        viewModel.output.createProjectSuccess()
+                .compose(applySchedulers())
+                .subscribe(this::success);
+
+        viewModel.error.invalidProjectNameError()
+                .subscribe(__ -> showInvalidNameError());
+
+        viewModel.error.duplicateProjectNameError()
+                .subscribe(__ -> showDuplicateNameError());
+
+        viewModel.error.createProjectError()
+                .subscribe(__ -> showUnknownError());
     }
 
     @Override
@@ -116,16 +128,14 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
         unbinder.unbind();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        detachViewIfNotNull(presenter);
+    @OnTextChanged(R.id.fragment_new_project_name)
+    void projectName(final CharSequence name) {
+        viewModel.input.projectName(name.toString());
     }
 
     @OnClick(R.id.fragment_new_project_create)
     void createProject() {
-        presenter.createNewProject();
+        viewModel.input.createProject();
     }
 
     @OnClick(R.id.fragment_new_project_cancel)
@@ -133,42 +143,21 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
         dismiss();
     }
 
-    @Override
-    public String getProjectName() {
-        return this.projectName.getText().toString();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void createProjectSuccessful(final Project project) {
+    private void success(Project project) {
         onCreateProjectListener.accept(project);
 
         dismiss();
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showInvalidNameError() {
+    private void showInvalidNameError() {
         projectName.setError(getString(R.string.error_message_project_name_missing));
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showDuplicateNameError() {
+    private void showDuplicateNameError() {
         projectName.setError(getString(R.string.error_message_project_name_already_exists));
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showUnknownError() {
+    private void showUnknownError() {
         projectName.setError(getString(R.string.error_message_unknown));
     }
 

@@ -23,10 +23,10 @@ import me.raatiniemi.worker.domain.model.Project;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-final class CreateProjectViewModel implements CreateProjectViewModelInput, CreateProjectViewModelOutput, CreateProjectViewModelError {
-    final CreateProjectViewModelInput input = this;
-    final CreateProjectViewModelOutput output = this;
-    final CreateProjectViewModelError error = this;
+public final class CreateProjectViewModel implements CreateProjectViewModelInput, CreateProjectViewModelOutput, CreateProjectViewModelError {
+    public final CreateProjectViewModelInput input = this;
+    public final CreateProjectViewModelOutput output = this;
+    public final CreateProjectViewModelError error = this;
 
     private final PublishSubject<String> projectName = PublishSubject.create();
     private final PublishSubject<Void> createProject = PublishSubject.create();
@@ -35,7 +35,7 @@ final class CreateProjectViewModel implements CreateProjectViewModelInput, Creat
 
     private final CreateProject useCase;
 
-    CreateProjectViewModel(CreateProject useCase) {
+    public CreateProjectViewModel(CreateProject useCase) {
         this.useCase = useCase;
 
         createProject.withLatestFrom(projectName, (__, name) -> name)

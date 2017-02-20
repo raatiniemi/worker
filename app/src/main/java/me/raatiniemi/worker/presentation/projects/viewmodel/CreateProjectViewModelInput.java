@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.presentation.projects.viewmodel;
 
-interface CreateProjectViewModelInput {
+public interface CreateProjectViewModelInput {
     void projectName(String name);
 
     void createProject();

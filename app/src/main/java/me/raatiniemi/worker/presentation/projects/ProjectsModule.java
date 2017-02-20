@@ -39,8 +39,8 @@ import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 @Module
@@ -79,15 +79,14 @@ public class ProjectsModule {
     }
 
     @Provides
-    @Singleton
-    NewProjectPresenter providesNewProjectPresenter(Context context) {
+    CreateProjectViewModel providesCreateProjectViewModel(Context context) {
         ProjectRepository projectRepository = new ProjectResolverRepository(
                 context.getContentResolver(),
                 new ProjectCursorMapper(),
                 new ProjectContentValuesMapper()
         );
 
-        return new NewProjectPresenter(
+        return new CreateProjectViewModel(
                 new CreateProject(projectRepository)
         );
     }

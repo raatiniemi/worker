@@ -18,7 +18,7 @@ package me.raatiniemi.worker.presentation.projects.viewmodel;
 
 import rx.Observable;
 
-interface CreateProjectViewModelError {
+public interface CreateProjectViewModelError {
     Observable<String> invalidProjectNameError();
 
     Observable<String> duplicateProjectNameError();
