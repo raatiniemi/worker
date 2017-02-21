@@ -5,7 +5,7 @@
 
     <string name="menu_title_actions">Actions</string>
 
-    <string name="menu_actions_projects_create_new_project">Create new project</string>
+    <string name="menu_actions_projects_create_project">Create project</string>
     <string name="menu_actions_projects_settings">Settings</string>
 
     <string name="menu_actions_project_hide_registered">Hide registered</string>
@@ -20,11 +20,11 @@
     <string name="fragment_projects_item_clock_out_at">Clock out at given date and time</string>
     <string name="fragment_projects_item_delete">Delete project</string>
 
-    <string name="fragment_new_project_title">Create new project</string>
-    <string name="fragment_new_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
-    <string name="fragment_new_project_name_hint">Project name&#8230;</string>
-    <string name="fragment_new_project_create">Create</string>
-    <string name="fragment_new_project_cancel">Cancel</string>
+    <string name="fragment_create_project_title">Create project</string>
+    <string name="fragment_create_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
+    <string name="fragment_create_project_name_hint">Project name&#8230;</string>
+    <string name="fragment_create_project_create">Create</string>
+    <string name="fragment_create_project_cancel">Cancel</string>
 
     <string name="fragment_timesheet_group_item_selection_content_description">Select or deselect item group</string>
 

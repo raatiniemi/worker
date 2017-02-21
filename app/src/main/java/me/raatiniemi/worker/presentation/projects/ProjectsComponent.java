@@ -21,7 +21,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.projects.view.NewProjectFragment;
+import me.raatiniemi.worker.presentation.projects.view.CreateProjectFragment;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 
 @Singleton
@@ -29,5 +29,5 @@ import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 public interface ProjectsComponent {
     void inject(ProjectsFragment projectsView);
 
-    void inject(NewProjectFragment newProjectView);
+    void inject(CreateProjectFragment createProjectFragment);
 }

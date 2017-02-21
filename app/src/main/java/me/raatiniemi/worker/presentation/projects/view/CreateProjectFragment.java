@@ -43,19 +43,19 @@ import timber.log.Timber;
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 
-public class NewProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
+public class CreateProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
     @Inject
     CreateProjectViewModel viewModel;
 
-    @BindView(R.id.fragment_new_project_name)
+    @BindView(R.id.fragment_create_project_name)
     EditText projectName;
 
     private Unbinder unbinder;
 
     private OnCreateProjectListener onCreateProjectListener;
 
-    public static NewProjectFragment newInstance(@NonNull OnCreateProjectListener onCreateProjectListener) {
-        NewProjectFragment fragment = new NewProjectFragment();
+    public static CreateProjectFragment newInstance(@NonNull OnCreateProjectListener onCreateProjectListener) {
+        CreateProjectFragment fragment = new CreateProjectFragment();
         fragment.onCreateProjectListener = onCreateProjectListener;
 
         return fragment;
@@ -98,7 +98,7 @@ public class NewProjectFragment extends RxDialogFragment implements DialogInterf
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_project, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         return view;
@@ -108,7 +108,7 @@ public class NewProjectFragment extends RxDialogFragment implements DialogInterf
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDialog().setTitle(R.string.fragment_new_project_title);
+        getDialog().setTitle(R.string.fragment_create_project_title);
         getDialog().setOnShowListener(this);
     }
 
@@ -132,17 +132,17 @@ public class NewProjectFragment extends RxDialogFragment implements DialogInterf
         unbinder.unbind();
     }
 
-    @OnTextChanged(R.id.fragment_new_project_name)
+    @OnTextChanged(R.id.fragment_create_project_name)
     void projectName(final CharSequence name) {
         viewModel.input.projectName(name.toString());
     }
 
-    @OnClick(R.id.fragment_new_project_create)
+    @OnClick(R.id.fragment_create_project_create)
     void createProject() {
         viewModel.input.createProject();
     }
 
-    @OnClick(R.id.fragment_new_project_cancel)
+    @OnClick(R.id.fragment_create_project_cancel)
     void dismissDialog() {
         dismiss();
     }

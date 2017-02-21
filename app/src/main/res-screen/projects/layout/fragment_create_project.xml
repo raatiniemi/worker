@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_new_project"
+    android:id="@+id/fragment_create_project"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,19 +12,19 @@
     >
 
     <TextView
-        android:id="@+id/fragment_new_project_description"
+        android:id="@+id/fragment_create_project_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_new_project_description"
+        android:text="@string/fragment_create_project_description"
         />
 
     <EditText
-        android:id="@+id/fragment_new_project_name"
+        android:id="@+id/fragment_create_project_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textSize="@dimen/fragment_dialog_text_size"
-        android:hint="@string/fragment_new_project_name_hint"
+        android:hint="@string/fragment_create_project_name_hint"
         android:backgroundTint="@color/accent"
         >
 
@@ -39,25 +39,25 @@
         >
 
         <TextView
-            android:id="@+id/fragment_new_project_cancel"
+            android:id="@+id/fragment_create_project_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
-            android:layout_toStartOf="@+id/fragment_new_project_create"
+            android:layout_toStartOf="@+id/fragment_create_project_create"
             android:padding="5dp"
-            android:text="@string/fragment_new_project_cancel"
+            android:text="@string/fragment_create_project_cancel"
             android:textColor="@color/accent"
             android:textStyle="bold"
             android:textAllCaps="true"
             />
 
         <TextView
-            android:id="@+id/fragment_new_project_create"
+            android:id="@+id/fragment_create_project_create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:padding="5dp"
-            android:text="@string/fragment_new_project_create"
+            android:text="@string/fragment_create_project_create"
             android:textColor="@color/accent"
             android:textStyle="bold"
             android:textAllCaps="true"
