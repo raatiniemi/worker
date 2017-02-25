@@ -46,7 +46,7 @@
             android:layout_toStartOf="@+id/fragment_create_project_submit"
             android:padding="5dp"
             android:text="@string/fragment_create_project_dismiss"
-            android:textColor="@color/accent"
+            android:textColor="@drawable/button_foreground"
             android:textStyle="bold"
             android:textAllCaps="true"
             />
@@ -58,7 +58,7 @@
             android:layout_alignParentEnd="true"
             android:padding="5dp"
             android:text="@string/fragment_create_project_submit"
-            android:textColor="@color/accent"
+            android:textColor="@drawable/button_foreground"
             android:textStyle="bold"
             android:textAllCaps="true"
             />

@@ -21,4 +21,6 @@ import rx.Observable;
 
 public interface CreateProjectViewModelOutput {
     Observable<Project> createProjectSuccess();
+
+    Observable<Boolean> isProjectNameValid();
 }

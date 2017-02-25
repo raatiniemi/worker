@@ -117,4 +117,31 @@ public class CreateProjectViewModelTest {
         createProjectSuccess.assertValueCount(1);
         createProjectSuccess.assertNotCompleted();
     }
+
+    @Test
+    public void isProjectNameValid_withNull() {
+        TestSubscriber<Boolean> isProjectNameValid = new TestSubscriber<>();
+        vm.output.isProjectNameValid().subscribe(isProjectNameValid);
+
+        vm.input.projectName(null);
+        isProjectNameValid.assertValues(Boolean.FALSE, Boolean.FALSE);
+    }
+
+    @Test
+    public void isProjectNameValid_withEmptyName() {
+        TestSubscriber<Boolean> isProjectNameValid = new TestSubscriber<>();
+        vm.output.isProjectNameValid().subscribe(isProjectNameValid);
+
+        vm.input.projectName("");
+        isProjectNameValid.assertValues(Boolean.FALSE, Boolean.FALSE);
+    }
+
+    @Test
+    public void isProjectNameValid_withValidName() {
+        TestSubscriber<Boolean> isProjectNameValid = new TestSubscriber<>();
+        vm.output.isProjectNameValid().subscribe(isProjectNameValid);
+
+        vm.input.projectName("Name");
+        isProjectNameValid.assertValues(Boolean.FALSE, Boolean.TRUE);
+    }
 }

@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -49,6 +50,9 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
 
     @BindView(R.id.fragment_create_project_name)
     EditText projectName;
+
+    @BindView(R.id.fragment_create_project_submit)
+    TextView projectSubmit;
 
     private Unbinder unbinder;
 
@@ -110,6 +114,10 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
 
         getDialog().setTitle(R.string.fragment_create_project_title);
         getDialog().setOnShowListener(this);
+
+        viewModel.output.isProjectNameValid()
+                .compose(bindToLifecycle())
+                .subscribe(projectSubmit::setEnabled);
     }
 
     @Override

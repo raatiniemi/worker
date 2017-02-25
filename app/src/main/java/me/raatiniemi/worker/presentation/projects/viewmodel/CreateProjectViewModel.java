@@ -21,7 +21,10 @@ import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
 import rx.Observable;
+import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
+
+import static me.raatiniemi.util.NullUtil.nonNull;
 
 public final class CreateProjectViewModel implements CreateProjectViewModelInput, CreateProjectViewModelOutput, CreateProjectViewModelError {
     public final CreateProjectViewModelInput input = this;
@@ -29,6 +32,7 @@ public final class CreateProjectViewModel implements CreateProjectViewModelInput
     public final CreateProjectViewModelError error = this;
 
     private final PublishSubject<String> projectName = PublishSubject.create();
+    private final BehaviorSubject<Boolean> isProjectNameValid = BehaviorSubject.create(Boolean.FALSE);
     private final PublishSubject<Void> createProject = PublishSubject.create();
     private final PublishSubject<Project> createProjectSuccess = PublishSubject.create();
     private final PublishSubject<Throwable> createProjectError = PublishSubject.create();
@@ -38,11 +42,18 @@ public final class CreateProjectViewModel implements CreateProjectViewModelInput
     public CreateProjectViewModel(CreateProject useCase) {
         this.useCase = useCase;
 
+        projectName.map(this::isNameValid)
+                .subscribe(isProjectNameValid);
+
         createProject.withLatestFrom(projectName, (__, name) -> name)
                 .switchMap(name -> executeUseCase(name)
                         .compose(redirectErrorsToSubject())
                         .compose(hideErrors()))
                 .subscribe(createProjectSuccess);
+    }
+
+    private boolean isNameValid(String name) {
+        return nonNull(name) && !name.isEmpty();
     }
 
     private Observable<Project> executeUseCase(String name) {
@@ -77,6 +88,11 @@ public final class CreateProjectViewModel implements CreateProjectViewModelInput
     @Override
     public void createProject() {
         createProject.onNext(null);
+    }
+
+    @Override
+    public Observable<Boolean> isProjectNameValid() {
+        return isProjectNameValid;
     }
 
     @Override
