@@ -142,7 +142,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
         viewModel.input.createProject();
     }
 
-    @OnClick(R.id.fragment_create_project_cancel)
+    @OnClick(R.id.fragment_create_project_dismiss)
     void dismissDialog() {
         dismiss();
     }

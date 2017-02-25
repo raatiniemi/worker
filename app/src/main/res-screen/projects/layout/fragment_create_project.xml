@@ -39,13 +39,13 @@
         >
 
         <TextView
-            android:id="@+id/fragment_create_project_cancel"
+            android:id="@+id/fragment_create_project_dismiss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
             android:layout_toStartOf="@+id/fragment_create_project_create"
             android:padding="5dp"
-            android:text="@string/fragment_create_project_cancel"
+            android:text="@string/fragment_create_project_dismiss"
             android:textColor="@color/accent"
             android:textStyle="bold"
             android:textAllCaps="true"
