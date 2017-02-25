@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
-            android:layout_toStartOf="@+id/fragment_create_project_create"
+            android:layout_toStartOf="@+id/fragment_create_project_submit"
             android:padding="5dp"
             android:text="@string/fragment_create_project_dismiss"
             android:textColor="@color/accent"
@@ -52,12 +52,12 @@
             />
 
         <TextView
-            android:id="@+id/fragment_create_project_create"
+            android:id="@+id/fragment_create_project_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:padding="5dp"
-            android:text="@string/fragment_create_project_create"
+            android:text="@string/fragment_create_project_submit"
             android:textColor="@color/accent"
             android:textStyle="bold"
             android:textAllCaps="true"

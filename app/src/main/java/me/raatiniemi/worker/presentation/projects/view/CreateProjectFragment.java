@@ -137,7 +137,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
         viewModel.input.projectName(name.toString());
     }
 
-    @OnClick(R.id.fragment_create_project_create)
+    @OnClick(R.id.fragment_create_project_submit)
     void createProject() {
         viewModel.input.createProject();
     }
