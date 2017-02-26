@@ -37,13 +37,13 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.presentation.util.Keyboard;
-import me.raatiniemi.worker.presentation.view.fragment.BaseDialogFragment;
+import me.raatiniemi.worker.presentation.view.fragment.RxDialogFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 
-public class NewProjectFragment extends BaseDialogFragment implements DialogInterface.OnShowListener {
+public class NewProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
     @Inject
     CreateProjectViewModel viewModel;
 
@@ -79,16 +79,20 @@ public class NewProjectFragment extends BaseDialogFragment implements DialogInte
                 .inject(this);
 
         viewModel.output.createProjectSuccess()
+                .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(this::success);
 
         viewModel.error.invalidProjectNameError()
+                .compose(bindToLifecycle())
                 .subscribe(__ -> showInvalidNameError());
 
         viewModel.error.duplicateProjectNameError()
+                .compose(bindToLifecycle())
                 .subscribe(__ -> showDuplicateNameError());
 
         viewModel.error.createProjectError()
+                .compose(bindToLifecycle())
                 .subscribe(__ -> showUnknownError());
     }
 

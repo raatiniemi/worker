@@ -135,6 +135,7 @@ dependencies {
     compile deps.androidSupportAnnotations
     compile deps.rxandroid
     compile deps.rxrelay
+    compile deps.rxlifecycle
     compile deps.timber
     compile deps.eventbus
     compile deps.advrecyclerview

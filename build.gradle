@@ -74,6 +74,7 @@ ext {
 
             rxandroid                 : 'io.reactivex:rxandroid:1.2.0',
             rxrelay                   : 'com.jakewharton.rxrelay:rxrelay:1.2.0',
+            rxlifecycle               : 'com.trello:rxlifecycle-android:1.0',
             timber                    : 'com.jakewharton.timber:timber:4.5.0',
             eventbus                  : 'org.greenrobot:eventbus:3.0.0',
             advrecyclerview           : 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.2',
