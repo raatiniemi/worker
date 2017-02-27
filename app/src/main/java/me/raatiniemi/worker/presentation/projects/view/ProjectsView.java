@@ -114,7 +114,7 @@ public interface ProjectsView extends MvpView {
     /**
      * Open the dialog for creating a new project.
      */
-    void createNewProject();
+    void openCreateProject();
 
     /**
      * Refresh view for projects within the adapter.

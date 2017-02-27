@@ -52,11 +52,7 @@ import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfN
 public class ProjectsFragment extends BaseFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
-
-    /**
-     * Tag for the new project fragment.
-     */
-    private static final String FRAGMENT_NEW_PROJECT_TAG = "new project";
+    private static final String FRAGMENT_CREATE_PROJECT_TAG = "create project";
 
     @Inject
     ConfirmClockOutPreferences confirmClockOutPreferences;
@@ -254,15 +250,15 @@ public class ProjectsFragment extends BaseFragment
     }
 
     @Override
-    public void createNewProject() {
-        NewProjectFragment newProject = NewProjectFragment.newInstance(project -> {
+    public void openCreateProject() {
+        CreateProjectFragment createProjectFragment = CreateProjectFragment.newInstance(project -> {
             addCreatedProject(project);
 
             showCreateProjectSuccessMessage();
         });
 
         getFragmentManager().beginTransaction()
-                .add(newProject, FRAGMENT_NEW_PROJECT_TAG)
+                .add(createProjectFragment, FRAGMENT_CREATE_PROJECT_TAG)
                 .commit();
     }
 

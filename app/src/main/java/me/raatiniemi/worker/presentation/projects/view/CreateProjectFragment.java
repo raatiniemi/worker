@@ -24,37 +24,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.projects.presenter.NewProjectPresenter;
+import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.presentation.util.Keyboard;
-import me.raatiniemi.worker.presentation.view.fragment.BaseDialogFragment;
+import me.raatiniemi.worker.presentation.view.fragment.RxDialogFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 
-public class NewProjectFragment extends BaseDialogFragment implements NewProjectView, DialogInterface.OnShowListener {
-    @BindView(R.id.fragment_new_project_name)
+public class CreateProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
+    @Inject
+    CreateProjectViewModel viewModel;
+
+    @BindView(R.id.fragment_create_project_name)
     EditText projectName;
 
-    @Inject
-    NewProjectPresenter presenter;
+    @BindView(R.id.fragment_create_project_submit)
+    TextView projectSubmit;
 
     private Unbinder unbinder;
 
     private OnCreateProjectListener onCreateProjectListener;
 
-    public static NewProjectFragment newInstance(@NonNull OnCreateProjectListener onCreateProjectListener) {
-        NewProjectFragment fragment = new NewProjectFragment();
+    public static CreateProjectFragment newInstance(@NonNull OnCreateProjectListener onCreateProjectListener) {
+        CreateProjectFragment fragment = new CreateProjectFragment();
         fragment.onCreateProjectListener = onCreateProjectListener;
 
         return fragment;
@@ -77,12 +82,27 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
         ((Worker) getActivity().getApplication()).getProjectsComponent()
                 .inject(this);
 
-        presenter.attachView(this);
+        viewModel.output.createProjectSuccess()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(this::success);
+
+        viewModel.error.invalidProjectNameError()
+                .compose(bindToLifecycle())
+                .subscribe(__ -> showInvalidNameError());
+
+        viewModel.error.duplicateProjectNameError()
+                .compose(bindToLifecycle())
+                .subscribe(__ -> showDuplicateNameError());
+
+        viewModel.error.createProjectError()
+                .compose(bindToLifecycle())
+                .subscribe(__ -> showUnknownError());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_project, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         return view;
@@ -92,8 +112,12 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getDialog().setTitle(R.string.fragment_new_project_title);
+        getDialog().setTitle(R.string.fragment_create_project_title);
         getDialog().setOnShowListener(this);
+
+        viewModel.output.isProjectNameValid()
+                .compose(bindToLifecycle())
+                .subscribe(projectSubmit::setEnabled);
     }
 
     @Override
@@ -116,59 +140,36 @@ public class NewProjectFragment extends BaseDialogFragment implements NewProject
         unbinder.unbind();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        detachViewIfNotNull(presenter);
+    @OnTextChanged(R.id.fragment_create_project_name)
+    void projectName(final CharSequence name) {
+        viewModel.input.projectName(name.toString());
     }
 
-    @OnClick(R.id.fragment_new_project_create)
+    @OnClick(R.id.fragment_create_project_submit)
     void createProject() {
-        presenter.createNewProject();
+        viewModel.input.createProject();
     }
 
-    @OnClick(R.id.fragment_new_project_cancel)
+    @OnClick(R.id.fragment_create_project_dismiss)
     void dismissDialog() {
         dismiss();
     }
 
-    @Override
-    public String getProjectName() {
-        return this.projectName.getText().toString();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void createProjectSuccessful(final Project project) {
+    private void success(Project project) {
         onCreateProjectListener.accept(project);
 
         dismiss();
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showInvalidNameError() {
+    private void showInvalidNameError() {
         projectName.setError(getString(R.string.error_message_project_name_missing));
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showDuplicateNameError() {
+    private void showDuplicateNameError() {
         projectName.setError(getString(R.string.error_message_project_name_already_exists));
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showUnknownError() {
+    private void showUnknownError() {
         projectName.setError(getString(R.string.error_message_unknown));
     }
 

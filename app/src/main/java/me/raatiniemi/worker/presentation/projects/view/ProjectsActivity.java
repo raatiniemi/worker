@@ -74,8 +74,8 @@ public class ProjectsActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (R.id.actions_main_create_new_project == menuItem.getItemId()) {
-            openCreateNewProject();
+        if (R.id.actions_main_create_project == menuItem.getItemId()) {
+            openCreateProject();
             return true;
         }
 
@@ -90,14 +90,14 @@ public class ProjectsActivity extends BaseActivity {
     /**
      * Open the fragment for creating a new project.
      */
-    private void openCreateNewProject() {
+    private void openCreateProject() {
         try {
             // Attempt to retrieve the projects fragment.
             ProjectsView fragment = (ProjectsView) getFragmentManager()
                     .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
 
             // Dispatch the create new project to the fragment.
-            fragment.createNewProject();
+            fragment.openCreateProject();
         } catch (ClassCastException e) {
             // Something has gone wrong with the fragment manager,
             // just print the exception and continue.

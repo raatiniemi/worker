@@ -4,8 +4,8 @@
     >
 
     <item
-        android:id="@+id/actions_main_create_new_project"
-        android:title="@string/menu_actions_projects_create_new_project"
+        android:id="@+id/actions_main_create_project"
+        android:title="@string/menu_actions_projects_create_project"
         android:icon="@android:drawable/ic_menu_add"
         />
 
