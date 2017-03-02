@@ -61,8 +61,9 @@ public class ProjectFragment extends BasePreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Worker application = (Worker) getActivity().getApplication();
-        application.getSettingsComponent().inject(this);
+        ((Worker) getActivity().getApplication())
+                .getSettingsComponent()
+                .inject(this);
 
         presenter.attachView(this);
 

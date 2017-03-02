@@ -82,7 +82,8 @@ public class DataFragment extends BasePreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((Worker) getActivity().getApplication()).getSettingsComponent()
+        ((Worker) getActivity().getApplication())
+                .getSettingsComponent()
                 .inject(this);
 
         presenter.attachView(this);

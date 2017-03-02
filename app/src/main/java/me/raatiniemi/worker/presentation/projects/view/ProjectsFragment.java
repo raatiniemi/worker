@@ -65,6 +65,15 @@ public class ProjectsFragment extends BaseFragment
     private ProjectsAdapter adapter;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ((Worker) getActivity().getApplication())
+                .getProjectsComponent()
+                .inject(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_projects, container, false);
     }
@@ -79,9 +88,6 @@ public class ProjectsFragment extends BaseFragment
         recyclerView = ButterKnife.findById(view, R.id.fragment_projects);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
-
-        ((Worker) getActivity().getApplication()).getProjectsComponent()
-                .inject(this);
 
         presenter.attachView(this);
         presenter.getProjects();

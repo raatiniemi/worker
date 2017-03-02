@@ -79,7 +79,8 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((Worker) getActivity().getApplication()).getProjectsComponent()
+        ((Worker) getActivity().getApplication())
+                .getProjectsComponent()
                 .inject(this);
 
         viewModel.output.createProjectSuccess()

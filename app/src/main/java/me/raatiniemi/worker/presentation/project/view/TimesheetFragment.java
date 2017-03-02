@@ -137,6 +137,15 @@ public class TimesheetFragment extends BaseFragment
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ((Worker) getActivity().getApplication())
+                .getProjectComponent()
+                .inject(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_timesheet, container, false);
     }
@@ -195,9 +204,6 @@ public class TimesheetFragment extends BaseFragment
             }
         });
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
-
-        ((Worker) getActivity().getApplication()).getProjectComponent()
-                .inject(this);
 
         presenter.attachView(this);
         presenter.getTimesheet(getProjectId(), 0);
