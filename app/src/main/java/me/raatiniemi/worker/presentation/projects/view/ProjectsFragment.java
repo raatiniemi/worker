@@ -88,13 +88,6 @@ public class ProjectsFragment extends BaseFragment
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        detachViewIfNotNull(presenter);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
 
@@ -111,6 +104,13 @@ public class ProjectsFragment extends BaseFragment
 
         // Unsubscribe to the refreshing of active projects.
         presenter.stopRefreshingActiveProjects();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        detachViewIfNotNull(presenter);
     }
 
     /**

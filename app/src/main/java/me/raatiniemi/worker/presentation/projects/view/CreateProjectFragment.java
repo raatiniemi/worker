@@ -121,6 +121,13 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        unbinder.unbind();
+    }
+
+    @Override
     public void onShow(DialogInterface dialog) {
         // We might have dismissed the dialog, we have to make sure that the
         // dialog and activity are still available before we can continue.
@@ -131,13 +138,6 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
 
         // Force the keyboard to show when the dialog is showing.
         Keyboard.show(getActivity());
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        unbinder.unbind();
     }
 
     @OnTextChanged(R.id.fragment_create_project_name)
