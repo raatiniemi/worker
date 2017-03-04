@@ -97,11 +97,6 @@ public interface ProjectsView extends MvpView {
     void showDeleteProjectErrorMessage();
 
     /**
-     * Open the dialog for creating a new project.
-     */
-    void openCreateProject();
-
-    /**
      * Refresh view for projects within the adapter.
      *
      * @param positions Positions for the project to refresh.

@@ -44,6 +44,7 @@ import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class ProjectsActivity extends BaseActivity {
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
+    private static final String FRAGMENT_CREATE_PROJECT_TAG = "create project";
 
     @Inject
     EventBus eventBus;
@@ -132,18 +133,11 @@ public class ProjectsActivity extends BaseActivity {
     }
 
     private void openCreateProject() {
-        try {
-            // Attempt to retrieve the projects fragment.
-            ProjectsView fragment = (ProjectsView) getFragmentManager()
-                    .findFragmentByTag(FRAGMENT_PROJECT_LIST_TAG);
+        CreateProjectFragment createProjectFragment = CreateProjectFragment.newInstance();
 
-            // Dispatch the create new project to the fragment.
-            fragment.openCreateProject();
-        } catch (ClassCastException e) {
-            // Something has gone wrong with the fragment manager,
-            // just print the exception and continue.
-            Timber.e(e, "Unable to cast projects fragment");
-        }
+        getFragmentManager().beginTransaction()
+                .add(createProjectFragment, FRAGMENT_CREATE_PROJECT_TAG)
+                .commit();
     }
 
     private void openSettings() {

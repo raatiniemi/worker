@@ -57,7 +57,6 @@ import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfN
 public class ProjectsFragment extends BaseFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
-    private static final String FRAGMENT_CREATE_PROJECT_TAG = "create project";
 
     @Inject
     EventBus eventBus;
@@ -260,15 +259,6 @@ public class ProjectsFragment extends BaseFragment
                 R.string.error_message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show();
-    }
-
-    @Override
-    public void openCreateProject() {
-        CreateProjectFragment createProjectFragment = CreateProjectFragment.newInstance();
-
-        getFragmentManager().beginTransaction()
-                .add(createProjectFragment, FRAGMENT_CREATE_PROJECT_TAG)
-                .commit();
     }
 
     @Override
