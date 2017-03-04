@@ -35,9 +35,6 @@ import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class ProjectsActivity extends BaseActivity {
-    /**
-     * Tag for the project list fragment.
-     */
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
 
     @Override
@@ -110,9 +107,6 @@ public class ProjectsActivity extends BaseActivity {
         return super.onOptionsItemSelected(menuItem);
     }
 
-    /**
-     * Open the fragment for creating a new project.
-     */
     private void openCreateProject() {
         try {
             // Attempt to retrieve the projects fragment.
@@ -128,9 +122,6 @@ public class ProjectsActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Open the settings.
-     */
     private void openSettings() {
         Intent intent = SettingsActivity.newIntent(this);
         startActivity(intent);
