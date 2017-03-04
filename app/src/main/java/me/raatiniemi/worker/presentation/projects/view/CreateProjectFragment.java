@@ -18,13 +18,14 @@ package me.raatiniemi.worker.presentation.projects.view;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -36,6 +37,7 @@ import butterknife.Unbinder;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.presentation.util.Keyboard;
 import me.raatiniemi.worker.presentation.view.fragment.RxDialogFragment;
@@ -45,6 +47,9 @@ import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 
 public class CreateProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
+    @Inject
+    EventBus eventBus;
+
     @Inject
     CreateProjectViewModel viewModel;
 
@@ -56,23 +61,8 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
 
     private Unbinder unbinder;
 
-    private OnCreateProjectListener onCreateProjectListener;
-
-    public static CreateProjectFragment newInstance(@NonNull OnCreateProjectListener onCreateProjectListener) {
-        CreateProjectFragment fragment = new CreateProjectFragment();
-        fragment.onCreateProjectListener = onCreateProjectListener;
-
-        return fragment;
-    }
-
-    @Override
-    protected boolean isStateValid() {
-        if (isNull(onCreateProjectListener)) {
-            Timber.w("No OnCreateProjectListener have been supplied");
-            return false;
-        }
-
-        return true;
+    public static CreateProjectFragment newInstance() {
+        return new CreateProjectFragment();
     }
 
     @Override
@@ -157,7 +147,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     }
 
     private void success(Project project) {
-        onCreateProjectListener.accept(project);
+        eventBus.post(new CreateProjectEvent(project));
 
         dismiss();
     }
@@ -172,10 +162,5 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
 
     private void showUnknownError() {
         projectName.setError(getString(R.string.error_message_unknown));
-    }
-
-    @FunctionalInterface
-    public interface OnCreateProjectListener {
-        void accept(Project project);
     }
 }

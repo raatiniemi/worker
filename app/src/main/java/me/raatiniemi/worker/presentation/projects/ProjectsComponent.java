@@ -22,11 +22,14 @@ import dagger.Component;
 import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
 import me.raatiniemi.worker.presentation.projects.view.CreateProjectFragment;
+import me.raatiniemi.worker.presentation.projects.view.ProjectsActivity;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 
 @Singleton
 @Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectsModule.class})
 public interface ProjectsComponent {
+    void inject(ProjectsActivity __);
+
     void inject(ProjectsFragment projectsView);
 
     void inject(CreateProjectFragment createProjectFragment);

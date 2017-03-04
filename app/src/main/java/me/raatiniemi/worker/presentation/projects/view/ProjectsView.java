@@ -16,11 +16,8 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
-import android.support.annotation.NonNull;
-
 import java.util.List;
 
-import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.view.MvpView;
 
@@ -46,18 +43,6 @@ public interface ProjectsView extends MvpView {
      * @param projects List of projects to add.
      */
     void addProjects(List<ProjectsItem> projects);
-
-    /**
-     * Add a created project to the view.
-     *
-     * @param project Created project.
-     */
-    void addCreatedProject(@NonNull Project project);
-
-    /**
-     * Show message for successful project creation.
-     */
-    void showCreateProjectSuccessMessage();
 
     /**
      * Update ongoing notification for project.
@@ -110,11 +95,6 @@ public interface ProjectsView extends MvpView {
      * Show message for failed project deletion.
      */
     void showDeleteProjectErrorMessage();
-
-    /**
-     * Open the dialog for creating a new project.
-     */
-    void openCreateProject();
 
     /**
      * Refresh view for projects within the adapter.

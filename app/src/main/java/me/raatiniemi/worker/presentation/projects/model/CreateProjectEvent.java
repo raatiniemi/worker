@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Worker Project
+ * Copyright (C) 2017 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,34 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation;
+package me.raatiniemi.worker.presentation.projects.model;
 
-import android.content.Context;
+import me.raatiniemi.worker.domain.model.Project;
 
-import org.greenrobot.eventbus.EventBus;
+public class CreateProjectEvent {
+    private Project project;
 
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
-
-@Module
-public class AndroidModule {
-    private Context context;
-
-    public AndroidModule(Context context) {
-        this.context = context;
+    public CreateProjectEvent(Project project) {
+        this.project = project;
     }
 
-    @Provides
-    @Singleton
-    Context providesContext() {
-        return context;
-    }
-
-    @Provides
-    @Singleton
-    EventBus providesEventBus() {
-        return EventBus.getDefault();
+    public Project getProject() {
+        return project;
     }
 }

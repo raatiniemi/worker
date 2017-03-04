@@ -28,6 +28,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +43,7 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
+import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
@@ -52,7 +57,9 @@ import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfN
 public class ProjectsFragment extends BaseFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
-    private static final String FRAGMENT_CREATE_PROJECT_TAG = "create project";
+
+    @Inject
+    EventBus eventBus;
 
     @Inject
     ConfirmClockOutPreferences confirmClockOutPreferences;
@@ -71,6 +78,8 @@ public class ProjectsFragment extends BaseFragment
         ((Worker) getActivity().getApplication())
                 .getProjectsComponent()
                 .inject(this);
+
+        eventBus.register(this);
     }
 
     @Override
@@ -119,6 +128,26 @@ public class ProjectsFragment extends BaseFragment
         detachViewIfNotNull(presenter);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        eventBus.unregister(this);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CreateProjectEvent event) {
+        addCreatedProject(event.getProject());
+    }
+
+    private void addCreatedProject(@NonNull Project project) {
+        ProjectsItem item = new ProjectsItem(project);
+        int position = adapter.add(item);
+
+        recyclerView.scrollToPosition(position);
+    }
+
     /**
      * @inheritDoc
      */
@@ -145,29 +174,6 @@ public class ProjectsFragment extends BaseFragment
     @Override
     public void addProjects(List<ProjectsItem> projects) {
         adapter.add(projects);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void addCreatedProject(@NonNull Project project) {
-        ProjectsItem item = new ProjectsItem(project);
-        int position = adapter.add(item);
-
-        recyclerView.scrollToPosition(position);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showCreateProjectSuccessMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.message_project_created,
-                Snackbar.LENGTH_SHORT
-        ).show();
     }
 
     @Override
@@ -253,19 +259,6 @@ public class ProjectsFragment extends BaseFragment
                 R.string.error_message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show();
-    }
-
-    @Override
-    public void openCreateProject() {
-        CreateProjectFragment createProjectFragment = CreateProjectFragment.newInstance(project -> {
-            addCreatedProject(project);
-
-            showCreateProjectSuccessMessage();
-        });
-
-        getFragmentManager().beginTransaction()
-                .add(createProjectFragment, FRAGMENT_CREATE_PROJECT_TAG)
-                .commit();
     }
 
     @Override
