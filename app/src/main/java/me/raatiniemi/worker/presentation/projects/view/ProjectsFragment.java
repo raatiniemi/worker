@@ -140,8 +140,6 @@ public class ProjectsFragment extends BaseFragment
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(CreateProjectEvent event) {
         addCreatedProject(event.getProject());
-
-        showCreateProjectSuccessMessage();
     }
 
     private void addCreatedProject(@NonNull Project project) {
@@ -149,14 +147,6 @@ public class ProjectsFragment extends BaseFragment
         int position = adapter.add(item);
 
         recyclerView.scrollToPosition(position);
-    }
-
-    private void showCreateProjectSuccessMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.message_project_created,
-                Snackbar.LENGTH_SHORT
-        ).show();
     }
 
     /**

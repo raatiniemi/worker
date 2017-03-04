@@ -21,12 +21,20 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import javax.inject.Inject;
+
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 import timber.log.Timber;
@@ -36,6 +44,9 @@ import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class ProjectsActivity extends BaseActivity {
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
+
+    @Inject
+    EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,12 @@ public class ProjectsActivity extends BaseActivity {
                     .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
                     .commit();
         }
+
+        ((Worker) getApplication())
+                .getProjectsComponent()
+                .inject(this);
+
+        eventBus.register(this);
     }
 
     private boolean shouldRestartApplication() {
@@ -83,6 +100,13 @@ public class ProjectsActivity extends BaseActivity {
 
         finish();
         System.exit(0);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        eventBus.unregister(this);
     }
 
     @Override
@@ -125,5 +149,15 @@ public class ProjectsActivity extends BaseActivity {
     private void openSettings() {
         Intent intent = SettingsActivity.newIntent(this);
         startActivity(intent);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(CreateProjectEvent event) {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                R.string.message_project_created,
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 }
