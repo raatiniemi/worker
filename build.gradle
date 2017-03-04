@@ -9,7 +9,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.guava:guava:20.0'
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
 
         classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
         classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1'
