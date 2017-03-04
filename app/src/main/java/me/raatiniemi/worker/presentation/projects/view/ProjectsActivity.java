@@ -65,6 +65,29 @@ public class ProjectsActivity extends BaseActivity {
                 && Worker.INTENT_ACTION_RESTART.equals(intent.getAction());
     }
 
+    private void restart() {
+        try {
+            // The AlarmManager will allow us to send the start intent after
+            // we have stopped the application, i.e. it will restart.
+            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Intent intent = new Intent(this, ProjectsActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT
+            );
+
+            manager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
+        } catch (ClassCastException e) {
+            Timber.w(e, "Unable to cast the AlarmManager");
+        }
+
+        finish();
+        System.exit(0);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -111,31 +134,5 @@ public class ProjectsActivity extends BaseActivity {
     private void openSettings() {
         Intent intent = SettingsActivity.newIntent(this);
         startActivity(intent);
-    }
-
-    /**
-     * Restart the application.
-     */
-    private void restart() {
-        try {
-            // The AlarmManager will allow us to send the start intent after
-            // we have stopped the application, i.e. it will restart.
-            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-            Intent intent = new Intent(this, ProjectsActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(
-                    this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT
-            );
-
-            manager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent);
-        } catch (ClassCastException e) {
-            Timber.w(e, "Unable to cast the AlarmManager");
-        }
-
-        finish();
-        System.exit(0);
     }
 }
