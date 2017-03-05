@@ -92,12 +92,12 @@ public class TimeInAdapterResultTest {
                         },
                         {
                                 "With different time object",
-                                Boolean.TRUE,
+                                Boolean.FALSE,
                                 timeInAdapterResult,
                                 TimeInAdapterResult.build(
                                         0,
                                         0,
-                                        Time.builder(0)
+                                        Time.builder(1L)
                                                 .build()
                                 )
                         }
