@@ -74,7 +74,7 @@ public class TimeCursorMapperTest {
             long stop,
             boolean registered
     ) throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(projectId)
+        Time.Builder builder = Time.builder(projectId)
                 .id(id)
                 .startInMilliseconds(start)
                 .stopInMilliseconds(stop);

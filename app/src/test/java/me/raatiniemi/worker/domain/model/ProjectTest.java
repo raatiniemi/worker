@@ -33,7 +33,7 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(JUnit4.class)
 public class ProjectTest {
     private static Project.Builder createProjectBuilder() {
-        return new Project.Builder("Project name");
+        return Project.builder("Project name");
     }
 
     @Test
@@ -60,14 +60,14 @@ public class ProjectTest {
     @Test(expected = InvalidProjectNameException.class)
     public void Project_withNullName()
             throws InvalidProjectNameException {
-        new Project.Builder(null)
+        Project.builder(null)
                 .build();
     }
 
     @Test(expected = InvalidProjectNameException.class)
     public void Project_withEmptyName()
             throws InvalidProjectNameException {
-        new Project.Builder("")
+        Project.builder("")
                 .build();
     }
 
@@ -89,11 +89,11 @@ public class ProjectTest {
 
         List<Time> times = new ArrayList<>();
         times.add(
-                new Time.Builder(project.getId())
+                Time.builder(project.getId())
                         .build()
         );
         times.add(
-                new Time.Builder(project.getId())
+                Time.builder(project.getId())
                         .build()
         );
         project.addTime(times);

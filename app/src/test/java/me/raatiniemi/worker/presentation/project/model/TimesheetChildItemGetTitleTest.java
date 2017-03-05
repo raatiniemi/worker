@@ -75,7 +75,7 @@ public class TimesheetChildItemGetTitleTest {
 
     private static Time buildTime(Calendar start, Calendar stop)
             throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(1L)
+        Time.Builder builder = Time.builder(1L)
                 .startInMilliseconds(start.getTimeInMillis());
 
         if (nonNull(stop)) {

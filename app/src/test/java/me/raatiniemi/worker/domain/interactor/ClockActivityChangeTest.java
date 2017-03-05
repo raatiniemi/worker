@@ -50,7 +50,7 @@ public class ClockActivityChangeTest {
     private ClockActivityChange clockActivityChange;
 
     private Project buildProject() throws InvalidProjectNameException {
-        return new Project.Builder("Project name")
+        return Project.builder("Project name")
                 .id(1L)
                 .build();
     }
@@ -94,7 +94,7 @@ public class ClockActivityChangeTest {
 
     @Test
     public void execute_clockOutProject() throws DomainException {
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .startInMilliseconds(1L)
                 .build();
         List<Time> registeredTime = new ArrayList<>();
@@ -114,7 +114,7 @@ public class ClockActivityChangeTest {
 
     @Test(expected = InactiveProjectException.class)
     public void execute_clockOutInactiveProject() throws DomainException {
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .startInMilliseconds(1L)
                 .build();
         List<Time> registeredTime = new ArrayList<>();

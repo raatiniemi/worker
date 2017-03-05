@@ -40,7 +40,7 @@ public class RemoveTimeTest {
 
     @Test
     public void execute() throws DomainException {
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .id(1L)
                 .build();
 

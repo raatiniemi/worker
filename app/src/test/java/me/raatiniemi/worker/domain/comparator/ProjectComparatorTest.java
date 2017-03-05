@@ -31,7 +31,7 @@ public class ProjectComparatorTest {
 
     private Project createProject(long id)
             throws InvalidProjectNameException {
-        return new Project.Builder("Project name")
+        return Project.builder("Project name")
                 .id(id)
                 .build();
     }

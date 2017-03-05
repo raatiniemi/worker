@@ -57,7 +57,7 @@ public class ProjectGetElapsedTest {
                                 "without active item",
                                 0L,
                                 new Time[]{
-                                        new Time.Builder(1L)
+                                        Time.builder(1L)
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 }
@@ -88,7 +88,7 @@ public class ProjectGetElapsedTest {
 
     @Test
     public void getElapsed() throws InvalidProjectNameException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .build();
         project.addTime(Arrays.asList(times));
 

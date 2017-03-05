@@ -83,7 +83,7 @@ public class ProjectsPresenterTest {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
         List<ProjectsItem> projects = new ArrayList<>();
-        projects.add(new ProjectsItem(new Project.Builder("Name").build()));
+        projects.add(new ProjectsItem(Project.builder("Name").build()));
         projects.add(new ProjectsItem(activeProject));
         when(view.getProjects()).thenReturn(projects);
         presenter.attachView(view);
@@ -102,7 +102,7 @@ public class ProjectsPresenterTest {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
         List<ProjectsItem> projects = new ArrayList<>();
-        projects.add(new ProjectsItem(new Project.Builder("Name").build()));
+        projects.add(new ProjectsItem(Project.builder("Name").build()));
         projects.add(new ProjectsItem(activeProject));
         when(view.getProjects()).thenReturn(projects);
         presenter.attachView(view);
@@ -119,7 +119,7 @@ public class ProjectsPresenterTest {
         Project activeProject = mock(Project.class);
         when(activeProject.isActive()).thenReturn(true);
         List<ProjectsItem> projects = new ArrayList<>();
-        projects.add(new ProjectsItem(new Project.Builder("Name").build()));
+        projects.add(new ProjectsItem(Project.builder("Name").build()));
         projects.add(new ProjectsItem(activeProject));
         when(view.getProjects()).thenReturn(projects);
 
@@ -132,7 +132,7 @@ public class ProjectsPresenterTest {
     public void getProjects() throws DomainException {
         List<Project> projects = new ArrayList<>();
         projects.add(
-                new Project.Builder("Name")
+                Project.builder("Name")
                         .build()
         );
         when(getProjects.execute()).thenReturn(projects);
@@ -150,7 +150,7 @@ public class ProjectsPresenterTest {
     public void getProjects_failureToGetRegisteredTime() throws DomainException {
         List<Project> projects = new ArrayList<>();
         projects.add(
-                new Project.Builder("Name")
+                Project.builder("Name")
                         .build()
         );
         when(getProjects.execute()).thenReturn(projects);
@@ -196,7 +196,7 @@ public class ProjectsPresenterTest {
 
     @Test
     public void deleteProject() throws DomainException {
-        Project project = new Project.Builder("Name")
+        Project project = Project.builder("Name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
         List<ProjectsItem> projects = new ArrayList<>();
@@ -212,7 +212,7 @@ public class ProjectsPresenterTest {
 
     @Test
     public void deleteProject_withError() throws DomainException {
-        Project project = new Project.Builder("Name")
+        Project project = Project.builder("Name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
         List<ProjectsItem> projects = new ArrayList<>();
@@ -230,7 +230,7 @@ public class ProjectsPresenterTest {
 
     @Test
     public void clockActivityChange_clockOut() throws DomainException {
-        Project project = new Project.Builder("Name")
+        Project project = Project.builder("Name")
                 .id(1L)
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
@@ -249,7 +249,7 @@ public class ProjectsPresenterTest {
 
     @Test
     public void clockActivityChange_withoutAttachedView() throws DomainException {
-        Project project = new Project.Builder("Name")
+        Project project = Project.builder("Name")
                 .id(1L)
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
@@ -264,7 +264,7 @@ public class ProjectsPresenterTest {
 
     @Test
     public void clockActivityChange_withClockInError() throws DomainException {
-        Project project = new Project.Builder("Name")
+        Project project = Project.builder("Name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
         when(clockActivityChange.execute(eq(project), any(Date.class)))

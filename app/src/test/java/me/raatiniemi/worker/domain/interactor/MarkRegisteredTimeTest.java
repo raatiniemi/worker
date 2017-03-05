@@ -39,12 +39,12 @@ public class MarkRegisteredTimeTest {
     private TimeRepository timeRepository;
 
     private static Time buildTime() throws ClockOutBeforeClockInException {
-        return new Time.Builder(1L)
+        return Time.builder(1L)
                 .build();
     }
 
     private static Time buildRegisteredTime() throws ClockOutBeforeClockInException {
-        return new Time.Builder(1L)
+        return Time.builder(1L)
                 .register()
                 .build();
     }
@@ -56,7 +56,7 @@ public class MarkRegisteredTimeTest {
 
     @Test
     public void execute_unmarkRegistered() throws DomainException {
-        Time markedTime = new Time.Builder(1L)
+        Time markedTime = Time.builder(1L)
                 .register()
                 .build();
 
@@ -69,7 +69,7 @@ public class MarkRegisteredTimeTest {
 
     @Test
     public void execute_markRegistered() throws DomainException {
-        Time unmarkedTime = new Time.Builder(1L)
+        Time unmarkedTime = Time.builder(1L)
                 .build();
 
         MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);

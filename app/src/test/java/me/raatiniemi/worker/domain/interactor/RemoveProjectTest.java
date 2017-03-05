@@ -40,7 +40,7 @@ public class RemoveProjectTest {
 
     @Test
     public void execute() throws DomainException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .id(1L)
                 .build();
 

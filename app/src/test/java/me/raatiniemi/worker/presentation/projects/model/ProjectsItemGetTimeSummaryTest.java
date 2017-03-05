@@ -71,14 +71,14 @@ public class ProjectsItemGetTimeSummaryTest {
 
     private static Time createTimeForGetTimeSummaryTest(long intervalInSeconds)
             throws ClockOutBeforeClockInException {
-        return new Time.Builder(1L)
+        return Time.builder(1L)
                 .stopInMilliseconds(intervalInSeconds * 1000)
                 .build();
     }
 
     @Test
     public void getTimeSummary() throws InvalidProjectNameException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .build();
         project.addTime(Arrays.asList(registeredTime));
         ProjectsItem projectsItem = new ProjectsItem(project);

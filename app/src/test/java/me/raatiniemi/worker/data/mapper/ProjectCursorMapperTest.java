@@ -64,7 +64,7 @@ public class ProjectCursorMapperTest {
 
     private static Project createProject(long id, String name)
             throws InvalidProjectNameException {
-        return new Project.Builder(name)
+        return Project.builder(name)
                 .id(id)
                 .build();
     }

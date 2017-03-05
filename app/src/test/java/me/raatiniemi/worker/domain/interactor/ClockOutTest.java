@@ -55,7 +55,7 @@ public class ClockOutTest {
     public void execute() throws DomainException {
         when(timeRepository.getActiveTimeForProject(1L))
                 .thenReturn(
-                        new Time.Builder(1L)
+                        Time.builder(1L)
                                 .build()
                 );
 

@@ -75,7 +75,7 @@ public class GetProjectTimeSinceTest {
     public void setUp() throws Exception {
         timeRepository = mock(TimeRepository.class);
         getProjectTimeSince = new GetProjectTimeSince(timeRepository);
-        project = new Project.Builder("Name")
+        project = Project.builder("Name")
                 .id(1L)
                 .build();
     }

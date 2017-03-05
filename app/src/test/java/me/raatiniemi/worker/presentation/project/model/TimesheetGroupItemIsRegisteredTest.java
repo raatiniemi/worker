@@ -80,7 +80,7 @@ public class TimesheetGroupItemIsRegisteredTest {
 
     private static TimesheetChildItem buildTimesheetChildItem(boolean registered)
             throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(1L);
+        Time.Builder builder = Time.builder(1L);
 
         if (registered) {
             builder.register();

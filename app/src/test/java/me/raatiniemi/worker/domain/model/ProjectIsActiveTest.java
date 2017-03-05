@@ -59,7 +59,7 @@ public class ProjectIsActiveTest {
                                 "Without active item",
                                 Boolean.FALSE,
                                 new Time[]{
-                                        new Time.Builder(1L)
+                                        Time.builder(1L)
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 }
@@ -68,7 +68,7 @@ public class ProjectIsActiveTest {
                                 "With active item",
                                 Boolean.TRUE,
                                 new Time[]{
-                                        new Time.Builder(1L)
+                                        Time.builder(1L)
                                                 .startInMilliseconds(50000L)
                                                 .build()
                                 }
@@ -79,7 +79,7 @@ public class ProjectIsActiveTest {
 
     @Test
     public void isActive() throws InvalidProjectNameException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .build();
         project.addTime(Arrays.asList(times));
 

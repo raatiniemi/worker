@@ -57,7 +57,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
                 new TimeContentValuesMapper()
         );
 
-        project = new Project.Builder("Name")
+        project = Project.builder("Name")
                 .id(1L)
                 .build();
     }

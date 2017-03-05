@@ -79,7 +79,7 @@ public class PauseServiceTest extends RobolectricTestCase {
 
     private Project buildProject(long projectId)
             throws InvalidProjectNameException {
-        return new Project.Builder("Project name")
+        return Project.builder("Project name")
                 .id(projectId)
                 .build();
     }

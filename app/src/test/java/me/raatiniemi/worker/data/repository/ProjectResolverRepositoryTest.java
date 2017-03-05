@@ -290,7 +290,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
     @Test
     public void add() throws InvalidProjectNameException {
-        Project project = new Project.Builder("Name")
+        Project project = Project.builder("Name")
                 .build();
         Cursor cursor = buildCursorWithNumberOfItems(1);
         // insert...

@@ -49,7 +49,7 @@ public class ClockIn {
         }
 
         timeRepository.add(
-                new Time.Builder(projectId)
+                Time.builder(projectId)
                         .startInMilliseconds(date.getTime())
                         .build()
         );

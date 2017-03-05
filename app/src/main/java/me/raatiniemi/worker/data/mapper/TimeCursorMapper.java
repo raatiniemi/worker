@@ -43,7 +43,7 @@ public class TimeCursorMapper implements CursorMapper<Time> {
         long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : 0;
         long registered = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.REGISTERED));
 
-        Time.Builder builder = new Time.Builder(projectId)
+        Time.Builder builder = Time.builder(projectId)
                 .id(id)
                 .startInMilliseconds(start)
                 .stopInMilliseconds(stop);

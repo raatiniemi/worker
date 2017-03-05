@@ -29,7 +29,7 @@ import static junit.framework.Assert.assertTrue;
 public class TimesheetChildItemTest {
     @Test
     public void asTime() throws ClockOutBeforeClockInException {
-        Time time = new Time.Builder(1L).build();
+        Time time = Time.builder(1L).build();
         TimesheetChildItem childItem = new TimesheetChildItem(time);
 
         assertTrue(time == childItem.asTime());
@@ -37,7 +37,7 @@ public class TimesheetChildItemTest {
 
     @Test
     public void getId() throws ClockOutBeforeClockInException {
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .id(2L)
                 .build();
         TimesheetChildItem childItem = new TimesheetChildItem(time);

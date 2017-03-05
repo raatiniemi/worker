@@ -65,6 +65,10 @@ public class Time extends DomainObject {
         }
     }
 
+    public static Builder builder(long projectId) {
+        return new Builder(projectId);
+    }
+
     /**
      * Getter method for the project id.
      *
@@ -96,7 +100,7 @@ public class Time extends DomainObject {
             return this;
         }
 
-        return new Builder(getProjectId())
+        return builder(getProjectId())
                 .id(getId())
                 .startInMilliseconds(getStartInMilliseconds())
                 .stopInMilliseconds(getStopInMilliseconds())
@@ -109,7 +113,7 @@ public class Time extends DomainObject {
             return this;
         }
 
-        return new Builder(getProjectId())
+        return builder(getProjectId())
                 .id(getId())
                 .startInMilliseconds(getStartInMilliseconds())
                 .stopInMilliseconds(getStopInMilliseconds())
@@ -128,7 +132,7 @@ public class Time extends DomainObject {
             throw new NullPointerException("Date is not allowed to be null");
         }
 
-        Builder builder = new Builder(getProjectId())
+        Builder builder = builder(getProjectId())
                 .id(getId())
                 .startInMilliseconds(getStartInMilliseconds())
                 .stopInMilliseconds(date.getTime());
@@ -221,7 +225,7 @@ public class Time extends DomainObject {
         private long stopInMilliseconds = 0L;
         private boolean registered = false;
 
-        public Builder(long projectId) {
+        private Builder(long projectId) {
             this.projectId = projectId;
         }
 

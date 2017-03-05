@@ -51,7 +51,7 @@ public class TimeInAdapterResultComparableTest {
     @Parameters
     public static Collection<Object[]> getParameters()
             throws ClockOutBeforeClockInException {
-        Time time = new Time.Builder(0)
+        Time time = Time.builder(0)
                 .build();
 
         return Arrays.asList(

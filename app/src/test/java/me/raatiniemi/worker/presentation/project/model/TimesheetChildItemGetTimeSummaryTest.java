@@ -46,13 +46,13 @@ public class TimesheetChildItemGetTimeSummaryTest {
                 new Object[][]{
                         {
                                 "1.00",
-                                new Time.Builder(1L)
+                                Time.builder(1L)
                                         .stopInMilliseconds(3600000)
                                         .build()
                         },
                         {
                                 "9.00",
-                                new Time.Builder(1L)
+                                Time.builder(1L)
                                         .stopInMilliseconds(32400000)
                                         .build()
                         }

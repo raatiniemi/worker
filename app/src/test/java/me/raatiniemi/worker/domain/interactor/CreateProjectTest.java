@@ -47,7 +47,7 @@ public class CreateProjectTest {
 
     @Test(expected = ProjectAlreadyExistsException.class)
     public void execute_withExistingProject() throws DomainException {
-        Project project = new Project.Builder("Project Name")
+        Project project = Project.builder("Project Name")
                 .build();
         List<Project> projects = new ArrayList<>();
         projects.add(project);
@@ -62,7 +62,7 @@ public class CreateProjectTest {
 
     @Test
     public void execute() throws DomainException {
-        Project project = new Project.Builder("Project Name")
+        Project project = Project.builder("Project Name")
                 .build();
 
         when(projectRepository.matching(any(Criteria.class)))

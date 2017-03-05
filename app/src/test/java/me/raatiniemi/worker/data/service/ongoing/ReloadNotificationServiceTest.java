@@ -68,12 +68,12 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
 
     private Project buildProjectWithIdAndStatus(Long projectId, boolean isActive)
             throws DomainException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .id(projectId)
                 .build();
 
         if (isActive) {
-            Time time = new Time.Builder(projectId)
+            Time time = Time.builder(projectId)
                     .startInMilliseconds(1L)
                     .build();
 

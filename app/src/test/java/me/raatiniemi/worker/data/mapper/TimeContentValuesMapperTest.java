@@ -51,7 +51,7 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
             final long stop,
             final boolean registered
     ) throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(projectId)
+        Time.Builder builder = Time.builder(projectId)
                 .startInMilliseconds(start)
                 .stopInMilliseconds(stop);
 

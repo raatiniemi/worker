@@ -46,7 +46,7 @@ public class ClockInTest {
     public void execute_withActiveTime() throws DomainException {
         when(timeRepository.getActiveTimeForProject(1L))
                 .thenReturn(
-                        new Time.Builder(1L)
+                        Time.builder(1L)
                                 .build()
                 );
 

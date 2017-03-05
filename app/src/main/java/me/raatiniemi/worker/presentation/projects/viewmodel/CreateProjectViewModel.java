@@ -58,7 +58,7 @@ public final class CreateProjectViewModel implements CreateProjectViewModelInput
 
     private Observable<Project> executeUseCase(String name) {
         try {
-            Project project = new Project.Builder(name)
+            Project project = Project.builder(name)
                     .build();
 
             return Observable.just(useCase.execute(project));

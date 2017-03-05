@@ -67,7 +67,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
                                 "Without active time",
                                 null,
                                 new Time[]{
-                                        new Time.Builder(1L)
+                                        Time.builder(1L)
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 }
@@ -112,7 +112,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
 
     @Test
     public void getClockedInSince() throws InvalidProjectNameException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
         if (isNull(registeredTime)) {

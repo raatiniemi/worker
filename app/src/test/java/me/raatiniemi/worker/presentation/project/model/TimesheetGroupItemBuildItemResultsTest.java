@@ -66,7 +66,7 @@ public class TimesheetGroupItemBuildItemResultsTest {
     }
 
     private static Time buildTime() throws ClockOutBeforeClockInException {
-        return new Time.Builder(1)
+        return Time.builder(1)
                 .build();
     }
 

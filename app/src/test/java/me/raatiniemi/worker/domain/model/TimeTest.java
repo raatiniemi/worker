@@ -32,13 +32,13 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(JUnit4.class)
 public class TimeTest {
     private Time.Builder createTimeBuilder() {
-        return new Time.Builder(1L);
+        return Time.builder(1L);
     }
 
     @Test
     public void Builder_withDefaultValues()
             throws ClockOutBeforeClockInException {
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .build();
 
         assertNull(time.getId());
@@ -51,7 +51,7 @@ public class TimeTest {
     @Test
     public void Builder_withValues()
             throws ClockOutBeforeClockInException {
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .id(2L)
                 .startInMilliseconds(3L)
                 .stopInMilliseconds(4L)

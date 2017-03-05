@@ -50,7 +50,7 @@ public class GetProjectsTest {
 
     private Project buildProject(Long id, String name)
             throws InvalidProjectNameException {
-        return new Project.Builder(name)
+        return Project.builder(name)
                 .id(id)
                 .build();
     }

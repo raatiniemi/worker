@@ -54,7 +54,7 @@ public class ProjectEqualsHashCodeTest {
     @Parameters
     public static Collection<Object[]> getParameters()
             throws DomainException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .id(1L)
                 .build();
 
@@ -82,7 +82,7 @@ public class ProjectEqualsHashCodeTest {
                                 "With different project name",
                                 Boolean.FALSE,
                                 project,
-                                new Project.Builder("Name")
+                                Project.builder("Name")
                                         .id(1L)
                                         .build()
                         },
@@ -90,7 +90,7 @@ public class ProjectEqualsHashCodeTest {
                                 "With different id",
                                 Boolean.FALSE,
                                 project,
-                                new Project.Builder("Project name")
+                                Project.builder("Project name")
                                         .id(2L)
                                         .build()
                         },
@@ -106,11 +106,11 @@ public class ProjectEqualsHashCodeTest {
 
     private static Project buildProjectWithRegisteredTime()
             throws DomainException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .id(1L)
                 .build();
 
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(2L)
                 .build();

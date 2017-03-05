@@ -37,7 +37,7 @@ public class ProjectCursorMapper implements CursorMapper<Project> {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ProjectColumns.NAME));
 
-        return new Project.Builder(name)
+        return Project.builder(name)
                 .id(id)
                 .build();
     }

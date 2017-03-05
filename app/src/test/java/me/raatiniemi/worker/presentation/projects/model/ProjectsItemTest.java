@@ -30,7 +30,7 @@ import static junit.framework.Assert.assertTrue;
 public class ProjectsItemTest {
     @Test
     public void asProject() throws InvalidProjectNameException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
 
@@ -39,7 +39,7 @@ public class ProjectsItemTest {
 
     @Test
     public void getTitle() throws InvalidProjectNameException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
 

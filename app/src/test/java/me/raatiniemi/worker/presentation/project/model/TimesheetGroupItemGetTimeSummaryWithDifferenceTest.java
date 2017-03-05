@@ -93,7 +93,7 @@ public class TimesheetGroupItemGetTimeSummaryWithDifferenceTest {
 
     private static TimesheetChildItem buildTimesheetChildItem(long interval)
             throws ClockOutBeforeClockInException {
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(interval)
                 .build();

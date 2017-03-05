@@ -53,7 +53,7 @@ public class TimeInAdapterResultTest {
     @Parameters
     public static Collection<Object[]> getParameters()
             throws ClockOutBeforeClockInException {
-        Time time = new Time.Builder(0)
+        Time time = Time.builder(0)
                 .build();
 
         TimeInAdapterResult timeInAdapterResult = TimeInAdapterResult.build(0, 0, time);
@@ -97,7 +97,7 @@ public class TimeInAdapterResultTest {
                                 TimeInAdapterResult.build(
                                         0,
                                         0,
-                                        new Time.Builder(0)
+                                        Time.builder(0)
                                                 .build()
                                 )
                         }

@@ -52,7 +52,7 @@ public class TimeEqualsHashCodeTest {
     @Parameters
     public static Collection<Object[]> getParameters()
             throws ClockOutBeforeClockInException {
-        Time time = new Time.Builder(1L)
+        Time time = Time.builder(1L)
                 .id(2L)
                 .startInMilliseconds(3L)
                 .stopInMilliseconds(4L)
@@ -82,7 +82,7 @@ public class TimeEqualsHashCodeTest {
                                 "With different project id",
                                 Boolean.FALSE,
                                 time,
-                                new Time.Builder(2L)
+                                Time.builder(2L)
                                         .id(2L)
                                         .startInMilliseconds(3L)
                                         .stopInMilliseconds(4L)
@@ -92,7 +92,7 @@ public class TimeEqualsHashCodeTest {
                                 "With different id",
                                 Boolean.FALSE,
                                 time,
-                                new Time.Builder(1L)
+                                Time.builder(1L)
                                         .id(1L)
                                         .startInMilliseconds(3L)
                                         .stopInMilliseconds(4L)
@@ -102,7 +102,7 @@ public class TimeEqualsHashCodeTest {
                                 "With different start in milliseconds",
                                 Boolean.FALSE,
                                 time,
-                                new Time.Builder(1L)
+                                Time.builder(1L)
                                         .id(2L)
                                         .startInMilliseconds(2L)
                                         .stopInMilliseconds(4L)
@@ -112,7 +112,7 @@ public class TimeEqualsHashCodeTest {
                                 "With different stop in milliseconds",
                                 Boolean.FALSE,
                                 time,
-                                new Time.Builder(1L)
+                                Time.builder(1L)
                                         .id(2L)
                                         .startInMilliseconds(3L)
                                         .stopInMilliseconds(3L)
@@ -122,7 +122,7 @@ public class TimeEqualsHashCodeTest {
                                 "With different register status",
                                 Boolean.FALSE,
                                 time,
-                                new Time.Builder(1L)
+                                Time.builder(1L)
                                         .id(2L)
                                         .startInMilliseconds(3L)
                                         .stopInMilliseconds(4L)

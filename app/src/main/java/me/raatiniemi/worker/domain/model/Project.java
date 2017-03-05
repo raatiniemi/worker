@@ -57,6 +57,10 @@ public class Project extends DomainObject {
         time = new ArrayList<>();
     }
 
+    public static Builder builder(String projectName) {
+        return new Builder(projectName);
+    }
+
     /**
      * Getter method for the project name.
      *
@@ -200,7 +204,7 @@ public class Project extends DomainObject {
         private final String projectName;
         private Long id;
 
-        public Builder(String projectName) {
+        private Builder(String projectName) {
             this.projectName = projectName;
         }
 

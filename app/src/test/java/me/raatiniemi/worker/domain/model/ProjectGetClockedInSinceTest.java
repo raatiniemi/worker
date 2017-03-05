@@ -62,7 +62,7 @@ public class ProjectGetClockedInSinceTest {
                                 "Without active item",
                                 null,
                                 new Time[]{
-                                        new Time.Builder(1L)
+                                        Time.builder(1L)
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 }
@@ -71,7 +71,7 @@ public class ProjectGetClockedInSinceTest {
                                 "With active item",
                                 new Date(50000L),
                                 new Time[]{
-                                        new Time.Builder(1L)
+                                        Time.builder(1L)
                                                 .startInMilliseconds(50000L)
                                                 .build()
                                 }
@@ -82,7 +82,7 @@ public class ProjectGetClockedInSinceTest {
 
     @Test
     public void getClockedInSince() throws InvalidProjectNameException {
-        Project project = new Project.Builder("Project name")
+        Project project = Project.builder("Project name")
                 .build();
         project.addTime(Arrays.asList(times));
 

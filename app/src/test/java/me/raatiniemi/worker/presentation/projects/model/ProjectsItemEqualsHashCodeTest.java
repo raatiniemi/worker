@@ -53,7 +53,7 @@ public class ProjectsItemEqualsHashCodeTest {
     @Parameters
     public static Collection<Object[]> getParameters()
             throws InvalidProjectNameException {
-        Project project = new Project.Builder("Name")
+        Project project = Project.builder("Name")
                 .id(1L)
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
@@ -82,7 +82,7 @@ public class ProjectsItemEqualsHashCodeTest {
                                 Boolean.FALSE,
                                 projectsItem,
                                 new ProjectsItem(
-                                        new Project.Builder("Project name")
+                                        Project.builder("Project name")
                                                 .id(2L)
                                                 .build()
                                 )

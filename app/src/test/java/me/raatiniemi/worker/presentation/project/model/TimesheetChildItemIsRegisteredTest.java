@@ -66,7 +66,7 @@ public class TimesheetChildItemIsRegisteredTest {
 
     private static Time buildTime(boolean registered)
             throws ClockOutBeforeClockInException {
-        Time.Builder builder = new Time.Builder(1L);
+        Time.Builder builder = Time.builder(1L);
 
         if (registered) {
             builder.register();

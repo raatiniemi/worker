@@ -40,7 +40,7 @@ public class ProjectContentValuesMapperTest extends RobolectricTestCase {
     private static Project createProject(
             final String name
     ) throws InvalidProjectNameException {
-        return new Project.Builder(name)
+        return Project.builder(name)
                 .build();
     }
 

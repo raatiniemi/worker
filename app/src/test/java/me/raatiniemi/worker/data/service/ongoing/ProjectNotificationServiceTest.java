@@ -144,7 +144,7 @@ public class ProjectNotificationServiceTest extends RobolectricTestCase {
                 .thenReturn(true);
         when(getProject.execute(eq(1L)))
                 .thenReturn(
-                        new Project.Builder("Project")
+                        Project.builder("Project")
                                 .id(1L)
                                 .build()
                 );

@@ -77,7 +77,7 @@ public class ProjectsAdapterTest extends RobolectricTestCase {
     private ProjectsItem buildProjectsItem(long projectId, String projectName)
             throws InvalidProjectNameException {
 
-        Project project = new Project.Builder(projectName)
+        Project project = Project.builder(projectName)
                 .id(projectId)
                 .build();
 
