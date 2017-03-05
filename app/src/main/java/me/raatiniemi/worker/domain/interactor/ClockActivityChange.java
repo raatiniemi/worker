@@ -67,22 +67,36 @@ public class ClockActivityChange {
      * @return Clocked in/out project.
      * @throws DomainException If domain rules are violated.
      */
-    public Project execute(Project project, final Date date)
-            throws DomainException {
-        if (!project.isActive()) {
-            clockIn.execute(project.getId(), date);
-        } else {
+    public Project execute(final Project project, final Date date) throws DomainException {
+        executeClockActivityChange(project, date);
+
+        return reloadProjectWithRegisteredTime(project);
+    }
+
+    private void executeClockActivityChange(Project project, Date date) throws DomainException {
+        if (project.isActive()) {
             clockOut.execute(project.getId(), date);
+            return;
         }
 
+        clockIn.execute(project.getId(), date);
+    }
+
+    private Project reloadProjectWithRegisteredTime(Project project) throws DomainException {
+        return populateProjectWithRegisteredTime(
+                projectRepository.get(project.getId())
+        );
+    }
+
+    private Project populateProjectWithRegisteredTime(Project project) throws DomainException {
         // Reload the project and populate it with the registered time.
         // TODO: Migrate populate time to separate use case?
-        project = projectRepository.get(project.getId());
         project.addTime(
                 timeRepository.getProjectTimeSinceBeginningOfMonth(
                         project.getId()
                 )
         );
+
         return project;
     }
 }
