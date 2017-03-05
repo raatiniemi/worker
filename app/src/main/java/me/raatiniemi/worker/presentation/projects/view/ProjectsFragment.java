@@ -80,6 +80,9 @@ public class ProjectsFragment extends BaseFragment
                 .inject(this);
 
         eventBus.register(this);
+
+        adapter = new ProjectsAdapter(getResources(), this, new HintedImageButtonListener(getActivity()));
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -90,9 +93,6 @@ public class ProjectsFragment extends BaseFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        adapter = new ProjectsAdapter(getResources(), this, new HintedImageButtonListener(getActivity()));
-        adapter.setOnItemClickListener(this);
 
         recyclerView = ButterKnife.findById(view, R.id.fragment_projects);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
