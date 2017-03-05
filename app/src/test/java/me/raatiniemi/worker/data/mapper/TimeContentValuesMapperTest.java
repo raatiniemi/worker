@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data.mapper;
 import android.content.ContentValues;
 import android.provider.BaseColumns;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
@@ -30,6 +31,13 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
 public class TimeContentValuesMapperTest extends RobolectricTestCase {
+    private TimeContentValuesMapper mapper;
+
+    @Before
+    public void setUp() {
+        mapper = new TimeContentValuesMapper();
+    }
+
     private static ContentValues createContentValues(
             final long projectId,
             final long start,
@@ -63,13 +71,10 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
     }
 
     @Test
-    public void transform()
-            throws ClockOutBeforeClockInException {
-        TimeContentValuesMapper entityMapper = new TimeContentValuesMapper();
-
+    public void transform_withTime() throws ClockOutBeforeClockInException {
         ContentValues expected = createContentValues(1L, 1L, 1L, 0L);
         Time time = createTime(1L, 1L, 1L, false);
-        ContentValues contentValues = entityMapper.transform(time);
+        ContentValues contentValues = mapper.transform(time);
 
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
@@ -78,10 +83,13 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
         assertEquals(expected.get(TimeColumns.START), contentValues.get(TimeColumns.START));
         assertEquals(expected.get(TimeColumns.STOP), contentValues.get(TimeColumns.STOP));
         assertEquals(expected.get(TimeColumns.REGISTERED), contentValues.get(TimeColumns.REGISTERED));
+    }
 
-        expected = createContentValues(1L, 1L, 1L, 1L);
-        time = createTime(1L, 1L, 1L, true);
-        contentValues = entityMapper.transform(time);
+    @Test
+    public void transform_withRegisteredTime() throws ClockOutBeforeClockInException {
+        ContentValues expected = createContentValues(1L, 1L, 1L, 1L);
+        Time time = createTime(1L, 1L, 1L, true);
+        ContentValues contentValues = mapper.transform(time);
 
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
