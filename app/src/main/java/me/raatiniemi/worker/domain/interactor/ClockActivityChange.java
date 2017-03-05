@@ -69,12 +69,6 @@ public class ClockActivityChange {
      */
     public Project execute(Project project, final Date date)
             throws DomainException {
-        // TODO: Migrate clock in and clock out to separate use cases.
-        // A lot more logic for clock out is needed to e.g. handle clock in and
-        // clock out on different days.
-        //
-        // Depending on whether the project is active we have
-        // to clock in or clock out at the given date.
         if (!project.isActive()) {
             clockIn.execute(project.getId(), date);
         } else {
