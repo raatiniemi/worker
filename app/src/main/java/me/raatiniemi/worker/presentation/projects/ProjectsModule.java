@@ -18,8 +18,6 @@ package me.raatiniemi.worker.presentation.projects;
 
 import android.content.Context;
 
-import org.greenrobot.eventbus.EventBus;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -65,7 +63,6 @@ public class ProjectsModule {
 
         return new ProjectsPresenter(
                 timeSummaryPreferences,
-                EventBus.getDefault(),
                 new GetProjects(projectRepository, timeRepository),
                 new GetProjectTimeSince(timeRepository),
                 new ClockActivityChange(

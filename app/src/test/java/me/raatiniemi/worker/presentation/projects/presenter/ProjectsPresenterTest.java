@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,10 +35,8 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
-import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 import static org.mockito.ArgumentMatchers.anyList;
@@ -57,7 +54,6 @@ public class ProjectsPresenterTest {
     @Rule
     public final RxSchedulerRule rxSchedulersRule = new RxSchedulerRule();
 
-    private EventBus eventBus;
     private GetProjects getProjects;
     private GetProjectTimeSince getProjectTimeSince;
     private ClockActivityChange clockActivityChange;
@@ -68,34 +64,18 @@ public class ProjectsPresenterTest {
     @Before
     public void setUp() {
         TimeSummaryPreferences timeSummaryPreferences = mock(TimeSummaryPreferences.class);
-        eventBus = mock(EventBus.class);
         getProjects = mock(GetProjects.class);
         getProjectTimeSince = mock(GetProjectTimeSince.class);
         clockActivityChange = mock(ClockActivityChange.class);
         removeProject = mock(RemoveProject.class);
         presenter = new ProjectsPresenter(
                 timeSummaryPreferences,
-                eventBus,
                 getProjects,
                 getProjectTimeSince,
                 clockActivityChange,
                 removeProject
         );
         view = mock(ProjectsView.class);
-    }
-
-    @Test
-    public void attachView_registerEventBus() {
-        presenter.attachView(view);
-
-        verify(eventBus).register(presenter);
-    }
-
-    @Test
-    public void detachView_unregisterEventBus() {
-        presenter.detachView();
-
-        verify(eventBus).unregister(presenter);
     }
 
     @Test
@@ -324,37 +304,5 @@ public class ProjectsPresenterTest {
 
         verify(view, never()).showClockOutErrorMessage();
         verify(view, never()).showClockInErrorMessage();
-    }
-
-    @Test
-    public void onEventMainThread_changeTimeSummaryStartingPoint() {
-        presenter.attachView(view);
-
-        presenter.onEventMainThread(new TimeSummaryStartingPointChangeEvent());
-
-        verify(view).reloadProjects();
-    }
-
-    @Test
-    public void onEventMainThread_changeTimeSummaryStartingPointWithoutAttachedView() {
-        presenter.onEventMainThread(new TimeSummaryStartingPointChangeEvent());
-
-        verify(view, never()).reloadProjects();
-    }
-
-    @Test
-    public void onEventMainThread_ongoingNotification() {
-        presenter.attachView(view);
-
-        presenter.onEventMainThread(new OngoingNotificationActionEvent(1));
-
-        verify(view).reloadProjects();
-    }
-
-    @Test
-    public void onEventMainThread_ongoingNotificationWithoutAttachedView() {
-        presenter.onEventMainThread(new OngoingNotificationActionEvent(1));
-
-        verify(view, never()).reloadProjects();
     }
 }

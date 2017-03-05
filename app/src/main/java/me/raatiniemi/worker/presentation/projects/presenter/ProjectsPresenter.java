@@ -16,10 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -33,11 +29,9 @@ import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
-import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import rx.Observable;
@@ -57,8 +51,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private Subscription refreshProjectsSubscription;
 
     private final TimeSummaryPreferences timeSummaryPreferences;
-
-    private final EventBus eventBus;
 
     /**
      * Use case for getting projects.
@@ -84,7 +76,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      * Constructor.
      *
      * @param timeSummaryPreferences         Preferences for the time summary.
-     * @param eventBus                       Event bus.
      * @param getProjects                    Use case for getting projects.
      * @param getProjectTimeSince            Use case for getting registered project time.
      * @param clockActivityChange            Use case for project clock in/out.
@@ -92,38 +83,16 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      */
     public ProjectsPresenter(
             TimeSummaryPreferences timeSummaryPreferences,
-            EventBus eventBus,
             GetProjects getProjects,
             GetProjectTimeSince getProjectTimeSince,
             ClockActivityChange clockActivityChange,
             RemoveProject removeProject
     ) {
         this.timeSummaryPreferences = timeSummaryPreferences;
-        this.eventBus = eventBus;
         this.getProjects = getProjects;
         this.getProjectTimeSince = getProjectTimeSince;
         this.clockActivityChange = clockActivityChange;
         this.removeProject = removeProject;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void attachView(ProjectsView view) {
-        super.attachView(view);
-
-        eventBus.register(this);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void detachView() {
-        super.detachView();
-
-        eventBus.unregister(this);
     }
 
     /**
@@ -426,15 +395,5 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         } catch (DomainException e) {
             return Observable.error(e);
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
-        performWithView(ProjectsView::reloadProjects);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(OngoingNotificationActionEvent event) {
-        performWithView(ProjectsView::reloadProjects);
     }
 }

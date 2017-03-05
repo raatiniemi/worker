@@ -42,10 +42,12 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
@@ -69,7 +71,7 @@ public class ProjectsFragment extends BaseFragment
 
     private RecyclerView recyclerView;
 
-    private ProjectsAdapter adapter;
+    ProjectsAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,18 @@ public class ProjectsFragment extends BaseFragment
         int position = adapter.add(item);
 
         recyclerView.scrollToPosition(position);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(OngoingNotificationActionEvent __) {
+        reloadProjects();
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(TimeSummaryStartingPointChangeEvent __) {
+        reloadProjects();
     }
 
     /**
