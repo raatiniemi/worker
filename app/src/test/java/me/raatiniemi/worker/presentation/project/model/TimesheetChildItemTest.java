@@ -20,25 +20,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class TimesheetChildItemTest {
     @Test
-    public void asTime() throws ClockOutBeforeClockInException {
-        Time time = Time.builder(1L).build();
+    public void asTime() {
+        Time time = TimeFactory.builder()
+                .build();
         TimesheetChildItem childItem = new TimesheetChildItem(time);
 
         assertTrue(time == childItem.asTime());
     }
 
     @Test
-    public void getId() throws ClockOutBeforeClockInException {
-        Time time = Time.builder(1L)
-                .id(2L)
+    public void getId() {
+        Time time = TimeFactory.builder()
+                .id(1L)
                 .build();
         TimesheetChildItem childItem = new TimesheetChildItem(time);
 

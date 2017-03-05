@@ -23,6 +23,7 @@ import org.junit.runners.JUnit4;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -31,14 +32,9 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class TimeTest {
-    private Time.Builder createTimeBuilder() {
-        return Time.builder(1L);
-    }
-
     @Test
-    public void Builder_withDefaultValues()
-            throws ClockOutBeforeClockInException {
-        Time time = Time.builder(1L)
+    public void Builder_withDefaultValues() {
+        Time time = TimeFactory.builder(1L)
                 .build();
 
         assertNull(time.getId());
@@ -49,9 +45,8 @@ public class TimeTest {
     }
 
     @Test
-    public void Builder_withValues()
-            throws ClockOutBeforeClockInException {
-        Time time = Time.builder(1L)
+    public void Builder_withValues() {
+        Time time = TimeFactory.builder(1L)
                 .id(2L)
                 .startInMilliseconds(3L)
                 .stopInMilliseconds(4L)
@@ -66,9 +61,8 @@ public class TimeTest {
     }
 
     @Test
-    public void markAsRegistered()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void markAsRegistered() throws ClockOutBeforeClockInException {
+        Time time = TimeFactory.builder()
                 .build();
 
         assertFalse(time.isRegistered());
@@ -77,9 +71,8 @@ public class TimeTest {
     }
 
     @Test
-    public void markAsRegistered_alreadyRegistered()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void markAsRegistered_alreadyRegistered() throws ClockOutBeforeClockInException {
+        Time time = TimeFactory.builder()
                 .register()
                 .build();
 
@@ -89,9 +82,8 @@ public class TimeTest {
     }
 
     @Test
-    public void unmarkRegistered()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void unmarkRegistered() throws ClockOutBeforeClockInException {
+        Time time = TimeFactory.builder()
                 .register()
                 .build();
 
@@ -101,9 +93,8 @@ public class TimeTest {
     }
 
     @Test
-    public void unmarkRegistered_notRegistered()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void unmarkRegistered_notRegistered() throws ClockOutBeforeClockInException {
+        Time time = TimeFactory.builder()
                 .build();
 
         assertFalse(time.isRegistered());
@@ -112,20 +103,17 @@ public class TimeTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void clockOutAt_withNullDate()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void clockOutAt_withNullDate() throws ClockOutBeforeClockInException {
+        Time time = TimeFactory.builder()
                 .build();
 
         time.clockOutAt(null);
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
-    public void clockOutAt_clockOutBeforeClockIn()
-            throws ClockOutBeforeClockInException {
+    public void clockOutAt_clockOutBeforeClockIn() throws ClockOutBeforeClockInException {
         Date date = new Date();
-
-        Time time = createTimeBuilder()
+        Time time = TimeFactory.builder()
                 .startInMilliseconds(date.getTime() + 1)
                 .build();
 
@@ -133,45 +121,41 @@ public class TimeTest {
     }
 
     @Test
-    public void clockOutAt()
-            throws ClockOutBeforeClockInException {
+    public void clockOutAt() throws ClockOutBeforeClockInException {
+        Time time = TimeFactory.builder()
+                .build();
         Date date = new Date();
 
-        Time time = createTimeBuilder()
-                .build();
-
         time = time.clockOutAt(date);
+
         assertEquals(date.getTime(), time.getStopInMilliseconds());
         assertFalse(time.isRegistered());
     }
 
     @Test
-    public void clockOutAt_withRegistered()
-            throws ClockOutBeforeClockInException {
-        Date date = new Date();
-
-        Time time = createTimeBuilder()
+    public void clockOutAt_withRegistered() throws ClockOutBeforeClockInException {
+        Time time = TimeFactory.builder()
                 .register()
                 .build();
+        Date date = new Date();
 
         time = time.clockOutAt(date);
+
         assertEquals(date.getTime(), time.getStopInMilliseconds());
         assertTrue(time.isRegistered());
     }
 
     @Test
-    public void isActive_whenActive()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void isActive_whenActive() {
+        Time time = TimeFactory.builder()
                 .build();
 
         assertTrue(time.isActive());
     }
 
     @Test
-    public void isActive_whenInactive()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void isActive_whenInactive() {
+        Time time = TimeFactory.builder()
                 .stopInMilliseconds(1L)
                 .build();
 
@@ -179,18 +163,17 @@ public class TimeTest {
     }
 
     @Test
-    public void getTime_whenActive()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void getTime_whenActive() {
+        Time time = TimeFactory.builder()
+                .startInMilliseconds(1L)
                 .build();
 
         assertEquals(0L, time.getTime());
     }
 
     @Test
-    public void getTime_whenInactive()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void getTime_whenInactive() {
+        Time time = TimeFactory.builder()
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(11L)
                 .build();
@@ -199,9 +182,8 @@ public class TimeTest {
     }
 
     @Test
-    public void getInterval_whenActive()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void getInterval_whenActive() {
+        Time time = TimeFactory.builder()
                 .startInMilliseconds(1L)
                 .build();
 
@@ -211,9 +193,8 @@ public class TimeTest {
     }
 
     @Test
-    public void getInterval_whenInactive()
-            throws ClockOutBeforeClockInException {
-        Time time = createTimeBuilder()
+    public void getInterval_whenInactive() {
+        Time time = TimeFactory.builder()
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(11L)
                 .build();

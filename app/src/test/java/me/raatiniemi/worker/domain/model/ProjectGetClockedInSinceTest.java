@@ -23,10 +23,12 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -36,45 +38,39 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 public class ProjectGetClockedInSinceTest {
     private final String message;
     private final Date expected;
-    private final Time[] times;
+    private final List<Time> times;
 
-    public ProjectGetClockedInSinceTest(
-            String message,
-            Date expected,
-            Time... times
-    ) {
+    public ProjectGetClockedInSinceTest(String message, Date expected, List<Time> times) {
         this.message = message;
         this.expected = expected;
         this.times = times;
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "Without items",
                                 null,
-                                new Time[]{}
+                                Collections.emptyList()
                         },
                         {
                                 "Without active item",
                                 null,
-                                new Time[]{
-                                        Time.builder(1L)
+                                Collections.singletonList(
+                                        TimeFactory.builder()
                                                 .stopInMilliseconds(1L)
-                                                .build()
-                                }
+                                                .build())
                         },
                         {
                                 "With active item",
                                 new Date(50000L),
-                                new Time[]{
-                                        Time.builder(1L)
+                                Collections.singletonList(
+                                        TimeFactory.builder()
                                                 .startInMilliseconds(50000L)
                                                 .build()
-                                }
+                                )
                         }
                 }
         );
@@ -84,7 +80,7 @@ public class ProjectGetClockedInSinceTest {
     public void getClockedInSince() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        project.addTime(Arrays.asList(times));
+        project.addTime(times);
 
         if (isNull(expected)) {
             assertNull(message, project.getClockedInSince());

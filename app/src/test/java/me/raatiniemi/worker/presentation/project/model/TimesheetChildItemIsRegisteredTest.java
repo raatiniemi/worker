@@ -24,8 +24,8 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -46,33 +46,24 @@ public class TimesheetChildItemIsRegisteredTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "is registered",
                                 Boolean.TRUE,
-                                buildTime(true)
+                                TimeFactory.builder()
+                                        .register()
+                                        .build()
                         },
                         {
                                 "is not registered",
                                 Boolean.FALSE,
-                                buildTime(false)
+                                TimeFactory.builder()
+                                        .build()
                         }
                 }
         );
-    }
-
-    private static Time buildTime(boolean registered)
-            throws ClockOutBeforeClockInException {
-        Time.Builder builder = Time.builder(1L);
-
-        if (registered) {
-            builder.register();
-        }
-
-        return builder.build();
     }
 
     @Test

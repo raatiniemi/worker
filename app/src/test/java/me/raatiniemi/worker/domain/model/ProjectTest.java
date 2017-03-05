@@ -21,10 +21,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -81,24 +82,21 @@ public class ProjectTest {
     }
 
     @Test
-    public void addTime_withList()
-            throws InvalidProjectNameException, ClockOutBeforeClockInException {
+    public void addTime_withList() throws InvalidProjectNameException {
         Project project = createProjectBuilder()
                 .id(1L)
                 .build();
 
-        List<Time> times = new ArrayList<>();
-        times.add(
-                Time.builder(project.getId())
-                        .build()
+        project.addTime(
+                Arrays.asList(
+                        TimeFactory.builder()
+                                .build(),
+                        TimeFactory.builder()
+                                .build()
+                )
         );
-        times.add(
-                Time.builder(project.getId())
-                        .build()
-        );
-        project.addTime(times);
 
-        times = project.getRegisteredTime();
+        List<Time> times = project.getRegisteredTime();
         assertEquals(2, times.size());
     }
 

@@ -24,7 +24,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -50,12 +50,8 @@ public class TimeEqualsHashCodeTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
-        Time time = Time.builder(1L)
-                .id(2L)
-                .startInMilliseconds(3L)
-                .stopInMilliseconds(4L)
+    public static Collection<Object[]> getParameters() {
+        Time time = TimeFactory.builder()
                 .build();
 
         return Arrays.asList(
@@ -82,50 +78,38 @@ public class TimeEqualsHashCodeTest {
                                 "With different project id",
                                 Boolean.FALSE,
                                 time,
-                                Time.builder(2L)
-                                        .id(2L)
-                                        .startInMilliseconds(3L)
-                                        .stopInMilliseconds(4L)
+                                TimeFactory.builder(2L)
                                         .build()
                         },
                         {
                                 "With different id",
                                 Boolean.FALSE,
                                 time,
-                                Time.builder(1L)
-                                        .id(1L)
-                                        .startInMilliseconds(3L)
-                                        .stopInMilliseconds(4L)
+                                TimeFactory.builder()
+                                        .id(2L)
                                         .build()
                         },
                         {
                                 "With different start in milliseconds",
                                 Boolean.FALSE,
                                 time,
-                                Time.builder(1L)
-                                        .id(2L)
+                                TimeFactory.builder()
                                         .startInMilliseconds(2L)
-                                        .stopInMilliseconds(4L)
                                         .build()
                         },
                         {
                                 "With different stop in milliseconds",
                                 Boolean.FALSE,
                                 time,
-                                Time.builder(1L)
-                                        .id(2L)
-                                        .startInMilliseconds(3L)
-                                        .stopInMilliseconds(3L)
+                                TimeFactory.builder()
+                                        .stopInMilliseconds(1L)
                                         .build()
                         },
                         {
                                 "With different register status",
                                 Boolean.FALSE,
                                 time,
-                                Time.builder(1L)
-                                        .id(2L)
-                                        .startInMilliseconds(3L)
-                                        .stopInMilliseconds(4L)
+                                TimeFactory.builder()
                                         .register()
                                         .build()
                         }

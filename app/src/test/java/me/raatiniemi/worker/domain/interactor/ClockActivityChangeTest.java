@@ -22,8 +22,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -35,6 +35,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.util.Optional;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -106,13 +107,11 @@ public class ClockActivityChangeTest {
 
     @Test
     public void execute_clockOutProject() throws DomainException {
-        Time time = Time.builder(1L)
-                .startInMilliseconds(1L)
-                .build();
-        List<Time> registeredTime = new ArrayList<>();
-        registeredTime.add(time);
         Project project = buildProject();
-        project.addTime(registeredTime);
+        Time time = TimeFactory.builder()
+                .stopInMilliseconds(0L)
+                .build();
+        project.addTime(Collections.singletonList(time));
         when(projectRepository.get(1L))
                 .thenReturn(Optional.of(project));
         when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
@@ -142,13 +141,11 @@ public class ClockActivityChangeTest {
 
     @Test(expected = InactiveProjectException.class)
     public void execute_clockOutInactiveProject() throws DomainException {
-        Time time = Time.builder(1L)
-                .startInMilliseconds(1L)
-                .build();
-        List<Time> registeredTime = new ArrayList<>();
-        registeredTime.add(time);
         Project project = buildProject();
-        project.addTime(registeredTime);
+        Time time = TimeFactory.builder()
+                .stopInMilliseconds(0L)
+                .build();
+        project.addTime(Collections.singletonList(time));
         doThrow(InactiveProjectException.class)
                 .when(clockOut).execute(eq(1L), any(Date.class));
 

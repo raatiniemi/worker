@@ -24,8 +24,8 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -40,19 +40,18 @@ public class TimesheetChildItemGetTimeSummaryTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "1.00",
-                                Time.builder(1L)
+                                TimeFactory.builder()
                                         .stopInMilliseconds(3600000)
                                         .build()
                         },
                         {
                                 "9.00",
-                                Time.builder(1L)
+                                TimeFactory.builder()
                                         .stopInMilliseconds(32400000)
                                         .build()
                         }

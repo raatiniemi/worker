@@ -223,7 +223,7 @@ public class Time extends DomainObject {
         private long stopInMilliseconds = 0L;
         private boolean registered = false;
 
-        private Builder(long projectId) {
+        protected Builder(long projectId) {
             this.projectId = projectId;
         }
 

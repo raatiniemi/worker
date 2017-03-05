@@ -36,12 +36,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.RobolectricTestCase;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -73,14 +74,11 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
                 .build();
 
         if (isActive) {
-            Time time = Time.builder(projectId)
-                    .startInMilliseconds(1L)
+            Time time = TimeFactory.builder()
+                    .stopInMilliseconds(0L)
                     .build();
 
-            List<Time> times = new ArrayList<>();
-            times.add(time);
-
-            project.addTime(times);
+            project.addTime(Collections.singletonList(time));
         }
 
         return project;

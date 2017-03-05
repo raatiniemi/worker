@@ -26,17 +26,19 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 @RunWith(Parameterized.class)
 public class TimesheetChildItemGetTitleTest {
-    private final String message;
-    private final String expected;
-    private final Time time;
+    private static final Calendar START = new GregorianCalendar(2016, 1, 28, 8, 0);
+    private static final Calendar STOP = new GregorianCalendar(2016, 1, 28, 11, 30);
+
+    private String message;
+    private String expected;
+    private Time time;
 
     public TimesheetChildItemGetTitleTest(
             String message,
@@ -49,40 +51,26 @@ public class TimesheetChildItemGetTitleTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "active time",
                                 "08:00",
-                                buildTime(
-                                        new GregorianCalendar(2016, 1, 28, 8, 0),
-                                        null
-                                )
+                                TimeFactory.builder()
+                                        .startInMilliseconds(START.getTimeInMillis())
+                                        .build()
                         },
                         {
                                 "inactive time",
                                 "08:00 - 11:30",
-                                buildTime(
-                                        new GregorianCalendar(2016, 1, 28, 8, 0),
-                                        new GregorianCalendar(2016, 1, 28, 11, 30)
-                                )
+                                TimeFactory.builder()
+                                        .startInMilliseconds(START.getTimeInMillis())
+                                        .stopInMilliseconds(STOP.getTimeInMillis())
+                                        .build()
                         }
                 }
         );
-    }
-
-    private static Time buildTime(Calendar start, Calendar stop)
-            throws ClockOutBeforeClockInException {
-        Time.Builder builder = Time.builder(1L)
-                .startInMilliseconds(start.getTimeInMillis());
-
-        if (nonNull(stop)) {
-            builder.stopInMilliseconds(stop.getTimeInMillis());
-        }
-
-        return builder.build();
     }
 
     @Test

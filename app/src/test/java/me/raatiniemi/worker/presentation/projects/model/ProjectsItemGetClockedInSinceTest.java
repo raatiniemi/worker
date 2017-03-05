@@ -26,10 +26,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -54,8 +54,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
@@ -67,7 +66,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
                                 "Without active time",
                                 null,
                                 new Time[]{
-                                        Time.builder(1L)
+                                        TimeFactory.builder()
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 }
@@ -76,7 +75,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
                                 "With an hour elapsed",
                                 "Since 15:14 (1h 0m)",
                                 new Time[]{
-                                        createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
+                                        mockActiveTimeWithElapsedTimeInSecondsAndClockedInTime(
                                                 3600L,
                                                 new GregorianCalendar(2016, 1, 28, 15, 14)
                                         )
@@ -86,7 +85,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
                                 "With half an hour elapsed",
                                 "Since 20:25 (30m)",
                                 new Time[]{
-                                        createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
+                                        mockActiveTimeWithElapsedTimeInSecondsAndClockedInTime(
                                                 1800L,
                                                 new GregorianCalendar(2016, 1, 28, 20, 25)
                                         )
@@ -96,16 +95,20 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
         );
     }
 
-    private static Time createTimeForGetClockedInSinceTestWithElapsedAndClockedInTime(
-            long intervalInSeconds,
+    private static Time mockActiveTimeWithElapsedTimeInSecondsAndClockedInTime(
+            long elapsedTimeInSeconds,
             Calendar clockedInTime
     ) {
         Time time = mock(Time.class);
 
-        when(time.isActive()).thenReturn(true);
-        when(time.getInterval()).thenReturn(intervalInSeconds * 1000);
+        when(time.isActive())
+                .thenReturn(true);
 
-        when(time.getStartInMilliseconds()).thenReturn(clockedInTime.getTimeInMillis());
+        when(time.getInterval())
+                .thenReturn(elapsedTimeInSeconds * 1000);
+
+        when(time.getStartInMilliseconds())
+                .thenReturn(clockedInTime.getTimeInMillis());
 
         return time;
     }

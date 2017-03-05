@@ -30,6 +30,7 @@ import java.util.Collection;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
@@ -47,43 +48,36 @@ public class TimeCursorMapperTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                createTime(1, 1, 1, 0, false),
+                                TimeFactory.builder(1L)
+                                        .id(1L)
+                                        .startInMilliseconds(1L)
+                                        .stopInMilliseconds(0L)
+                                        .build(),
                                 createCursor(1, 1, 1, null, 0)
                         },
                         {
-                                createTime(1, 1, 1, 2L, false),
+                                TimeFactory.builder(1L)
+                                        .id(1L)
+                                        .startInMilliseconds(1L)
+                                        .stopInMilliseconds(2L)
+                                        .build(),
                                 createCursor(1, 1, 1, 2L, 0)
                         },
                         {
-                                createTime(1, 1, 1, 2L, true),
+                                TimeFactory.builder(1L)
+                                        .id(1L)
+                                        .startInMilliseconds(1L)
+                                        .stopInMilliseconds(2L)
+                                        .register()
+                                        .build(),
                                 createCursor(1, 1, 1, 2L, 1)
                         }
                 }
         );
-    }
-
-    private static Time createTime(
-            long id,
-            long projectId,
-            long start,
-            long stop,
-            boolean registered
-    ) throws ClockOutBeforeClockInException {
-        Time.Builder builder = Time.builder(projectId)
-                .id(id)
-                .startInMilliseconds(start)
-                .stopInMilliseconds(stop);
-
-        if (registered) {
-            builder.register();
-        }
-
-        return builder.build();
     }
 
     private static Cursor createCursor(

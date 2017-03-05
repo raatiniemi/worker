@@ -27,6 +27,7 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -45,7 +46,7 @@ public class RemoveTimeTest {
 
     @Test
     public void execute_withItem() throws DomainException {
-        Time time = Time.builder(1L)
+        Time time = TimeFactory.builder()
                 .id(1L)
                 .build();
 
@@ -56,7 +57,7 @@ public class RemoveTimeTest {
 
     @Test
     public void execute_withItems() throws DomainException {
-        Time time = Time.builder(1L)
+        Time time = TimeFactory.builder()
                 .id(1L)
                 .build();
         List<Time> items = Collections.singletonList(time);

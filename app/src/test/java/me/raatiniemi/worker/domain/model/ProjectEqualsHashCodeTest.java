@@ -21,12 +21,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -104,21 +104,17 @@ public class ProjectEqualsHashCodeTest {
         );
     }
 
-    private static Project buildProjectWithRegisteredTime()
-            throws DomainException {
+    private static Project buildProjectWithRegisteredTime() throws DomainException {
         Project project = Project.builder("Project name")
                 .id(1L)
                 .build();
 
-        Time time = Time.builder(1L)
-                .startInMilliseconds(1L)
-                .stopInMilliseconds(2L)
-                .build();
-
-        List<Time> registeredTime = new ArrayList<>();
-        registeredTime.add(time);
-
-        project.addTime(registeredTime);
+        project.addTime(
+                Collections.singletonList(
+                        TimeFactory.builder()
+                                .build()
+                )
+        );
         return project;
     }
 

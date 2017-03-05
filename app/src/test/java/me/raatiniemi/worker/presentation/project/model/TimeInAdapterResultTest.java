@@ -24,8 +24,8 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -51,11 +51,10 @@ public class TimeInAdapterResultTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
-        Time time = Time.builder(0)
+    public static Collection<Object[]> getParameters() {
+        Time time = TimeFactory.builder()
+                .id(1L)
                 .build();
-
         TimeInAdapterResult timeInAdapterResult = TimeInAdapterResult.build(0, 0, time);
 
         return Arrays.asList(
@@ -97,7 +96,8 @@ public class TimeInAdapterResultTest {
                                 TimeInAdapterResult.build(
                                         0,
                                         0,
-                                        Time.builder(1L)
+                                        TimeFactory.builder()
+                                                .id(2L)
                                                 .build()
                                 )
                         }

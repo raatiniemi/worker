@@ -23,9 +23,12 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -35,32 +38,31 @@ import static org.mockito.Mockito.when;
 public class ProjectGetElapsedTest {
     private final String message;
     private final long expected;
-    private final Time[] times;
+    private final List<Time> times;
 
-    public ProjectGetElapsedTest(String message, long expected, Time... times) {
+    public ProjectGetElapsedTest(String message, long expected, List<Time> times) {
         this.message = message;
         this.expected = expected;
         this.times = times;
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws DomainException {
+    public static Collection<Object[]> getParameters() throws DomainException {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "without items",
                                 0L,
-                                new Time[]{}
+                                Collections.emptyList()
                         },
                         {
                                 "without active item",
                                 0L,
-                                new Time[]{
-                                        Time.builder(1L)
+                                Collections.singletonList(
+                                        TimeFactory.builder()
                                                 .stopInMilliseconds(1L)
                                                 .build()
-                                }
+                                )
                         },
                         {
                                 // Due to the implementation of the elapsed calculation
@@ -68,20 +70,20 @@ public class ProjectGetElapsedTest {
                                 // a mock is needed required to test the behaviour.
                                 "with active item",
                                 50000L,
-                                new Time[]{
-                                        createActiveTimeWithElapsedTimeInMilliseconds(50000L)
-                                }
+                                Collections.singletonList(mockActiveTimeWithElapsedTime())
                         }
                 }
         );
     }
 
-    private static Time createActiveTimeWithElapsedTimeInMilliseconds(
-            long elapsedTimeInMilliseconds
-    ) {
+    private static Time mockActiveTimeWithElapsedTime() {
         Time time = mock(Time.class);
-        when(time.isActive()).thenReturn(true);
-        when(time.getInterval()).thenReturn(elapsedTimeInMilliseconds);
+
+        when(time.isActive())
+                .thenReturn(true);
+
+        when(time.getInterval())
+                .thenReturn(50000L);
 
         return time;
     }
@@ -90,7 +92,7 @@ public class ProjectGetElapsedTest {
     public void getElapsed() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        project.addTime(Arrays.asList(times));
+        project.addTime(times);
 
         assertEquals(message, expected, project.getElapsed());
     }

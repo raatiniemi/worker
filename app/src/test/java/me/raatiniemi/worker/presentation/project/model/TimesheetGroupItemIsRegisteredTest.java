@@ -25,15 +25,21 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemIsRegisteredTest {
-    private final boolean expected;
-    private final TimesheetChildItem[] childItems;
+    private static final Time NOT_REGISTERED_TIME = TimeFactory.builder()
+            .build();
+    private final static Time REGISTERED_TIME = TimeFactory.builder()
+            .register()
+            .build();
+
+    private boolean expected;
+    private TimesheetChildItem[] childItems;
 
     public TimesheetGroupItemIsRegisteredTest(
             boolean expected,
@@ -44,50 +50,37 @@ public class TimesheetGroupItemIsRegisteredTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 Boolean.TRUE,
                                 new TimesheetChildItem[]{
-                                        buildTimesheetChildItem(true)
+                                        new TimesheetChildItem(REGISTERED_TIME)
                                 }
                         },
                         {
                                 Boolean.FALSE,
                                 new TimesheetChildItem[]{
-                                        buildTimesheetChildItem(false)
+                                        new TimesheetChildItem(NOT_REGISTERED_TIME)
                                 }
                         },
                         {
                                 Boolean.FALSE,
                                 new TimesheetChildItem[]{
-                                        buildTimesheetChildItem(false),
-                                        buildTimesheetChildItem(true)
+                                        new TimesheetChildItem(NOT_REGISTERED_TIME),
+                                        new TimesheetChildItem(REGISTERED_TIME)
                                 }
                         },
                         {
                                 Boolean.TRUE,
                                 new TimesheetChildItem[]{
-                                        buildTimesheetChildItem(true),
-                                        buildTimesheetChildItem(true)
+                                        new TimesheetChildItem(REGISTERED_TIME),
+                                        new TimesheetChildItem(REGISTERED_TIME)
                                 }
                         }
                 }
         );
-    }
-
-    private static TimesheetChildItem buildTimesheetChildItem(boolean registered)
-            throws ClockOutBeforeClockInException {
-        Time.Builder builder = Time.builder(1L);
-
-        if (registered) {
-            builder.register();
-        }
-
-        Time time = builder.build();
-        return new TimesheetChildItem(time);
     }
 
     @Test

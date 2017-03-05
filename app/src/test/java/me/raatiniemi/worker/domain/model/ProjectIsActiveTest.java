@@ -23,9 +23,11 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -33,45 +35,40 @@ import static junit.framework.Assert.assertTrue;
 public class ProjectIsActiveTest {
     private final String message;
     private final boolean expected;
-    private final Time[] times;
+    private final List<Time> times;
 
-    public ProjectIsActiveTest(
-            String message,
-            boolean expected,
-            Time... times
-    ) {
+    public ProjectIsActiveTest(String message, boolean expected, List<Time> times) {
         this.message = message;
         this.expected = expected;
         this.times = times;
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "Without items",
                                 Boolean.FALSE,
-                                new Time[]{}
+                                Collections.emptyList()
                         },
                         {
                                 "Without active item",
                                 Boolean.FALSE,
-                                new Time[]{
-                                        Time.builder(1L)
+                                Collections.singletonList(
+                                        TimeFactory.builder()
                                                 .stopInMilliseconds(1L)
                                                 .build()
-                                }
+                                )
                         },
                         {
                                 "With active item",
                                 Boolean.TRUE,
-                                new Time[]{
-                                        Time.builder(1L)
-                                                .startInMilliseconds(50000L)
+                                Collections.singletonList(
+                                        TimeFactory.builder()
+                                                .stopInMilliseconds(0L)
                                                 .build()
-                                }
+                                )
                         }
                 }
         );
@@ -81,7 +78,7 @@ public class ProjectIsActiveTest {
     public void isActive() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        project.addTime(Arrays.asList(times));
+        project.addTime(times);
 
         assertTrue(message, expected == project.isActive());
     }

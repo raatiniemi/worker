@@ -28,6 +28,7 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -44,36 +45,38 @@ public class ProjectsItemGetTimeSummaryTest {
     @Parameters
     public static Collection<Object[]> getParameters()
             throws ClockOutBeforeClockInException {
+
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "1h 0m",
                                 new Time[]{
-                                        createTimeForGetTimeSummaryTest(3600)
+                                        TimeFactory.builder()
+                                                .stopInMilliseconds(3600000)
+                                                .build()
                                 }
                         },
                         {
                                 "2h 30m",
                                 new Time[]{
-                                        createTimeForGetTimeSummaryTest(9000)
+                                        TimeFactory.builder()
+                                                .stopInMilliseconds(9000000)
+                                                .build()
                                 }
                         },
                         {
                                 "3h 30m",
                                 new Time[]{
-                                        createTimeForGetTimeSummaryTest(3600),
-                                        createTimeForGetTimeSummaryTest(9000)
+                                        TimeFactory.builder()
+                                                .stopInMilliseconds(3600000)
+                                                .build(),
+                                        TimeFactory.builder()
+                                                .stopInMilliseconds(9000000)
+                                                .build()
                                 }
                         }
                 }
         );
-    }
-
-    private static Time createTimeForGetTimeSummaryTest(long intervalInSeconds)
-            throws ClockOutBeforeClockInException {
-        return Time.builder(1L)
-                .stopInMilliseconds(intervalInSeconds * 1000)
-                .build();
     }
 
     @Test

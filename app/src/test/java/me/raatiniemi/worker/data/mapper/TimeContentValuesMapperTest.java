@@ -22,10 +22,10 @@ import android.provider.BaseColumns;
 import org.junit.Before;
 import org.junit.Test;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.RobolectricTestCase;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -53,27 +53,13 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
         return contentValues;
     }
 
-    private static Time createTime(
-            final long projectId,
-            final long start,
-            final long stop,
-            final boolean registered
-    ) throws ClockOutBeforeClockInException {
-        Time.Builder builder = Time.builder(projectId)
-                .startInMilliseconds(start)
-                .stopInMilliseconds(stop);
-
-        if (registered) {
-            builder.register();
-        }
-
-        return builder.build();
-    }
-
     @Test
-    public void transform_withTime() throws ClockOutBeforeClockInException {
+    public void transform_withTime() {
         ContentValues expected = createContentValues(1L, 1L, 1L, 0L);
-        Time time = createTime(1L, 1L, 1L, false);
+        Time time = TimeFactory.builder(1L)
+                .startInMilliseconds(1L)
+                .stopInMilliseconds(1L)
+                .build();
         ContentValues contentValues = mapper.transform(time);
 
         // the id column should not be mapped since that would introduce the
@@ -86,9 +72,13 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
     }
 
     @Test
-    public void transform_withRegisteredTime() throws ClockOutBeforeClockInException {
+    public void transform_withRegisteredTime() {
         ContentValues expected = createContentValues(1L, 1L, 1L, 1L);
-        Time time = createTime(1L, 1L, 1L, true);
+        Time time = TimeFactory.builder(1L)
+                .startInMilliseconds(1L)
+                .stopInMilliseconds(1L)
+                .register()
+                .build();
         ContentValues contentValues = mapper.transform(time);
 
         // the id column should not be mapped since that would introduce the

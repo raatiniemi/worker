@@ -26,13 +26,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemBuildItemResultsTest {
+    private static final Time time = TimeFactory.builder().build();
+
     private final String message;
     private final List<TimeInAdapterResult> expected;
     private final int groupIndex;
@@ -50,29 +52,24 @@ public class TimesheetGroupItemBuildItemResultsTest {
         this.groupItem = groupItem;
     }
 
-    private static TimesheetGroupItem buildTimesheetGroupWithNumberOfChildItems(
-            int numberOfChildItems
-    ) throws ClockOutBeforeClockInException {
+    private static TimesheetGroupItem buildTimesheetGroupWithNumberOfChildItems(int numberOfChildItems) {
         TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
         if (0 == numberOfChildItems) {
             return groupItem;
         }
 
         for (int i = 0; i < numberOfChildItems; i++) {
-            groupItem.add(new TimesheetChildItem(buildTime()));
+            Time time = TimeFactory.builder()
+                    .build();
+
+            groupItem.add(new TimesheetChildItem(time));
         }
 
         return groupItem;
     }
 
-    private static Time buildTime() throws ClockOutBeforeClockInException {
-        return Time.builder(1)
-                .build();
-    }
-
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
@@ -85,7 +82,7 @@ public class TimesheetGroupItemBuildItemResultsTest {
                         {
                                 "With one item",
                                 new TimeInAdapterResult[]{
-                                        TimeInAdapterResult.build(1, 0, buildTime())
+                                        TimeInAdapterResult.build(1, 0, time)
                                 },
                                 1,
                                 buildTimesheetGroupWithNumberOfChildItems(1)
@@ -93,12 +90,12 @@ public class TimesheetGroupItemBuildItemResultsTest {
                         {
                                 "With multiple items",
                                 new TimeInAdapterResult[]{
-                                        TimeInAdapterResult.build(2, 0, buildTime()),
-                                        TimeInAdapterResult.build(2, 1, buildTime()),
-                                        TimeInAdapterResult.build(2, 2, buildTime()),
-                                        TimeInAdapterResult.build(2, 3, buildTime()),
-                                        TimeInAdapterResult.build(2, 4, buildTime()),
-                                        TimeInAdapterResult.build(2, 5, buildTime()),
+                                        TimeInAdapterResult.build(2, 0, time),
+                                        TimeInAdapterResult.build(2, 1, time),
+                                        TimeInAdapterResult.build(2, 2, time),
+                                        TimeInAdapterResult.build(2, 3, time),
+                                        TimeInAdapterResult.build(2, 4, time),
+                                        TimeInAdapterResult.build(2, 5, time),
                                 },
                                 2,
                                 buildTimesheetGroupWithNumberOfChildItems(6)
