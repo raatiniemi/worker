@@ -33,12 +33,13 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class CreateProjectViewModelTest {
-    private CreateProject useCase;
-    private CreateProjectViewModel vm;
     private TestSubscriber<String> invalidProjectNameError;
     private TestSubscriber<String> duplicateNameError;
     private TestSubscriber<String> createProjectError;
     private TestSubscriber<Project> createProjectSuccess;
+
+    private CreateProject useCase;
+    private CreateProjectViewModel vm;
 
     @Before
     public void setUp() {
