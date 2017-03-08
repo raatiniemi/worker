@@ -28,6 +28,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import rx.Observable;
+import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
 interface ProjectsViewModel {
@@ -39,12 +40,18 @@ interface ProjectsViewModel {
         Observable<List<ProjectsItem>> projects();
     }
 
-    class ViewModel implements Input, Output {
+    interface Error {
+        Observable<Throwable> projectsError();
+    }
+
+    class ViewModel implements Input, Output, Error {
         final Input input = this;
         final Output output = this;
+        final Error error = this;
 
         private int startingPoint = GetProjectTimeSince.MONTH;
         private Observable<List<ProjectsItem>> projects;
+        private PublishSubject<Throwable> projectsError = PublishSubject.create();
 
         private GetProjects getProjects;
         private GetProjectTimeSince getProjectTimeSince;
@@ -56,6 +63,8 @@ interface ProjectsViewModel {
             projects = executeGetProjects()
                     .flatMap(Observable::from)
                     .map(this::populateItemWithRegisteredTime)
+                    .compose(redirectErrorsToSubject())
+                    .compose(hideErrors())
                     .toList();
         }
 
@@ -88,6 +97,19 @@ interface ProjectsViewModel {
             }
         }
 
+        private Observable.Transformer<ProjectsItem, ProjectsItem> redirectErrorsToSubject() {
+            return source -> source
+                    .doOnError(projectsError::onNext)
+                    .onErrorResumeNext(Observable.empty());
+        }
+
+        private Observable.Transformer<ProjectsItem, ProjectsItem> hideErrors() {
+            return source -> source
+                    .doOnError(e -> {
+                    })
+                    .onErrorResumeNext(Observable.empty());
+        }
+
         @Override
         public void startingPointForTimeSummary(int startingPoint) {
             switch (startingPoint) {
@@ -104,6 +126,11 @@ interface ProjectsViewModel {
         @Override
         public Observable<List<ProjectsItem>> projects() {
             return projects;
+        }
+
+        @Override
+        public Observable<Throwable> projectsError() {
+            return projectsError;
         }
     }
 }

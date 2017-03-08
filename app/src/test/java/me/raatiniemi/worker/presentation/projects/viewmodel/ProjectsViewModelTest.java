@@ -43,6 +43,7 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class ProjectsViewModelTest {
     private TestSubscriber<List<ProjectsItem>> projects;
+    private TestSubscriber<Throwable> projectsError;
 
     private GetProjects getProjects;
     private GetProjectTimeSince getProjectTimeSince;
@@ -58,6 +59,7 @@ public class ProjectsViewModelTest {
     @Before
     public void setUp() {
         projects = new TestSubscriber<>();
+        projectsError = new TestSubscriber<>();
 
         getProjects = mock(GetProjects.class);
         getProjectTimeSince = mock(GetProjectTimeSince.class);
@@ -68,10 +70,13 @@ public class ProjectsViewModelTest {
     public void projects_withGetProjectsError() throws DomainException {
         when(getProjects.execute())
                 .thenThrow(DomainException.class);
+        vm.error.projectsError().subscribe(projectsError);
 
         vm.output.projects().subscribe(projects);
 
-        projects.assertError(DomainException.class);
+        projects.assertValueCount(1);
+        projects.assertCompleted();
+        projectsError.assertValueCount(1);
     }
 
     @Test
@@ -80,11 +85,13 @@ public class ProjectsViewModelTest {
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), eq(GetProjectTimeSince.MONTH)))
                 .thenThrow(ClockOutBeforeClockInException.class);
+        vm.error.projectsError().subscribe(projectsError);
 
         vm.output.projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
+        projectsError.assertNoValues();
     }
 
     @Test
@@ -93,11 +100,13 @@ public class ProjectsViewModelTest {
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(Collections.emptyList());
+        vm.error.projectsError().subscribe(projectsError);
 
         vm.output.projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
+        projectsError.assertNoValues();
         verify(getProjectTimeSince)
                 .execute(any(Project.class), eq(GetProjectTimeSince.MONTH));
     }
@@ -108,12 +117,14 @@ public class ProjectsViewModelTest {
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(Collections.emptyList());
+        vm.error.projectsError().subscribe(projectsError);
 
         vm.input.startingPointForTimeSummary(GetProjectTimeSince.WEEK);
         vm.output.projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
+        projectsError.assertNoValues();
         verify(getProjectTimeSince)
                 .execute(any(Project.class), eq(GetProjectTimeSince.WEEK));
     }
@@ -124,12 +135,14 @@ public class ProjectsViewModelTest {
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(Collections.emptyList());
+        vm.error.projectsError().subscribe(projectsError);
 
         vm.input.startingPointForTimeSummary(-1);
         vm.output.projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
+        projectsError.assertNoValues();
         verify(getProjectTimeSince)
                 .execute(any(Project.class), eq(GetProjectTimeSince.MONTH));
     }
@@ -138,10 +151,12 @@ public class ProjectsViewModelTest {
     public void projects_withoutProjects() throws DomainException {
         when(getProjects.execute())
                 .thenReturn(Collections.emptyList());
+        vm.error.projectsError().subscribe(projectsError);
 
         vm.output.projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
+        projectsError.assertNoValues();
     }
 }
