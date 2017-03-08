@@ -103,6 +103,38 @@ public class ProjectsViewModelTest {
     }
 
     @Test
+    public void projects_withWeekAsTimeSummaryStartingPoint() throws DomainException {
+        when(getProjects.execute())
+                .thenReturn(getProjects());
+        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
+                .thenReturn(Collections.emptyList());
+
+        vm.input.startingPointForTimeSummary(GetProjectTimeSince.WEEK);
+        vm.output.projects().subscribe(projects);
+
+        projects.assertValueCount(1);
+        projects.assertCompleted();
+        verify(getProjectTimeSince)
+                .execute(any(Project.class), eq(GetProjectTimeSince.WEEK));
+    }
+
+    @Test
+    public void projects_withInvalidTimeSummaryStartingPoint() throws DomainException {
+        when(getProjects.execute())
+                .thenReturn(getProjects());
+        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
+                .thenReturn(Collections.emptyList());
+
+        vm.input.startingPointForTimeSummary(-1);
+        vm.output.projects().subscribe(projects);
+
+        projects.assertValueCount(1);
+        projects.assertCompleted();
+        verify(getProjectTimeSince)
+                .execute(any(Project.class), eq(GetProjectTimeSince.MONTH));
+    }
+
+    @Test
     public void projects_withoutProjects() throws DomainException {
         when(getProjects.execute())
                 .thenReturn(Collections.emptyList());

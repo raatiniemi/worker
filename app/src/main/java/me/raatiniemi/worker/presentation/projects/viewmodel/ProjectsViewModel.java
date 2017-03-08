@@ -31,13 +31,19 @@ import rx.Observable;
 import timber.log.Timber;
 
 interface ProjectsViewModel {
+    interface Input {
+        void startingPointForTimeSummary(int startingPoint);
+    }
+
     interface Output {
         Observable<List<ProjectsItem>> projects();
     }
 
-    class ViewModel implements Output {
+    class ViewModel implements Input, Output {
+        final Input input = this;
         final Output output = this;
 
+        private int startingPoint = GetProjectTimeSince.MONTH;
         private Observable<List<ProjectsItem>> projects;
 
         private GetProjects getProjects;
@@ -74,11 +80,24 @@ interface ProjectsViewModel {
         @NonNull
         private List<Time> getRegisteredTime(Project project) {
             try {
-                return getProjectTimeSince.execute(project, GetProjectTimeSince.MONTH);
+                return getProjectTimeSince.execute(project, startingPoint);
             } catch (DomainException e) {
                 Timber.w(e, "Unable to get registered time for project");
 
                 return Collections.emptyList();
+            }
+        }
+
+        @Override
+        public void startingPointForTimeSummary(int startingPoint) {
+            switch (startingPoint) {
+                case GetProjectTimeSince.MONTH:
+                case GetProjectTimeSince.WEEK:
+                case GetProjectTimeSince.DAY:
+                    this.startingPoint = startingPoint;
+                    break;
+                default:
+                    Timber.d("Invalid starting point supplied: %i", startingPoint);
             }
         }
 
