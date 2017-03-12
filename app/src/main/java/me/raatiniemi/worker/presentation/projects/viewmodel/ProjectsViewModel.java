@@ -31,7 +31,7 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
-interface ProjectsViewModel {
+public interface ProjectsViewModel {
     interface Input {
         void startingPointForTimeSummary(int startingPoint);
     }
@@ -45,9 +45,9 @@ interface ProjectsViewModel {
     }
 
     class ViewModel implements Input, Output, Error {
-        final Input input = this;
-        final Output output = this;
-        final Error error = this;
+        public final Input input = this;
+        public final Output output = this;
+        public final Error error = this;
 
         private int startingPoint = GetProjectTimeSince.MONTH;
         private Observable<List<ProjectsItem>> projects;
@@ -56,7 +56,7 @@ interface ProjectsViewModel {
         private GetProjects getProjects;
         private GetProjectTimeSince getProjectTimeSince;
 
-        ViewModel(GetProjects getProjects, GetProjectTimeSince getProjectTimeSince) {
+        public ViewModel(GetProjects getProjects, GetProjectTimeSince getProjectTimeSince) {
             this.getProjects = getProjects;
             this.getProjectTimeSince = getProjectTimeSince;
 

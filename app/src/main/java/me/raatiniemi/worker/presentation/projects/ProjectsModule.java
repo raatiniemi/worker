@@ -39,6 +39,7 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 @Module
@@ -63,7 +64,6 @@ public class ProjectsModule {
 
         return new ProjectsPresenter(
                 timeSummaryPreferences,
-                new GetProjects(projectRepository, timeRepository),
                 new GetProjectTimeSince(timeRepository),
                 new ClockActivityChange(
                         projectRepository,
@@ -72,6 +72,26 @@ public class ProjectsModule {
                         new ClockOut(timeRepository)
                 ),
                 new RemoveProject(projectRepository)
+        );
+    }
+
+    @Provides
+    ProjectsViewModel.ViewModel providesProjectsViewModel(Context context) {
+        ProjectRepository projectRepository = new ProjectResolverRepository(
+                context.getContentResolver(),
+                new ProjectCursorMapper(),
+                new ProjectContentValuesMapper()
+        );
+
+        TimeRepository timeRepository = new TimeResolverRepository(
+                context.getContentResolver(),
+                new TimeCursorMapper(),
+                new TimeContentValuesMapper()
+        );
+
+        return new ProjectsViewModel.ViewModel(
+                new GetProjects(projectRepository, timeRepository),
+                new GetProjectTimeSince(timeRepository)
         );
     }
 

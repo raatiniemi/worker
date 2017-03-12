@@ -21,28 +21,45 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
-import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
+import java.util.Collections;
 
+import me.raatiniemi.worker.RobolectricTestCase;
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
+import me.raatiniemi.worker.domain.interactor.GetProjects;
+import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
+import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
+
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ProjectsFragmentTest extends RobolectricTestCase {
     private final EventBus eventBus = new EventBus();
 
-    private ProjectsPresenter presenter;
     private ProjectsAdapter adapter;
     private ProjectsFragment fragment;
 
     @Before
-    public void setUp() {
-        presenter = mock(ProjectsPresenter.class);
+    public void setUp() throws Exception {
+        TimeSummaryPreferences timeSummaryPreferences = mock(TimeSummaryPreferences.class);
+        when(timeSummaryPreferences.getStartingPointForTimeSummary())
+                .thenReturn(GetProjectTimeSince.MONTH);
+
+        GetProjects getProjects = mock(GetProjects.class);
+        when(getProjects.execute())
+                .thenReturn(Collections.emptyList());
+
+        GetProjectTimeSince getProjectTimeSince = mock(GetProjectTimeSince.class);
+
+        ProjectsViewModel.ViewModel viewModel = new ProjectsViewModel.ViewModel(getProjects, getProjectTimeSince);
         adapter = mock(ProjectsAdapter.class);
 
         fragment = new ProjectsFragment();
-        fragment.presenter = presenter;
+        fragment.timeSummaryPreferences = timeSummaryPreferences;
+        fragment.viewModel = viewModel;
         fragment.adapter = adapter;
 
         eventBus.register(fragment);
@@ -58,7 +75,7 @@ public class ProjectsFragmentTest extends RobolectricTestCase {
         eventBus.post(new OngoingNotificationActionEvent(1L));
 
         verify(adapter).clear();
-        verify(presenter).getProjects();
+        verify(adapter).add(eq(Collections.emptyList()));
     }
 
     @Test
@@ -66,6 +83,6 @@ public class ProjectsFragmentTest extends RobolectricTestCase {
         eventBus.post(new TimeSummaryStartingPointChangeEvent());
 
         verify(adapter).clear();
-        verify(presenter).getProjects();
+        verify(adapter).add(eq(Collections.emptyList()));
     }
 }

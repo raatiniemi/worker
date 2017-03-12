@@ -33,18 +33,6 @@ public interface ProjectsView extends MvpView {
     List<ProjectsItem> getProjects();
 
     /**
-     * Show message for failed project retrieval.
-     */
-    void showGetProjectsErrorMessage();
-
-    /**
-     * Add a list of projects to the view.
-     *
-     * @param projects List of projects to add.
-     */
-    void addProjects(List<ProjectsItem> projects);
-
-    /**
      * Update ongoing notification for project.
      *
      * @param project Project for which to update the notification.
@@ -102,9 +90,4 @@ public interface ProjectsView extends MvpView {
      * @param positions Positions for the project to refresh.
      */
     void refreshPositions(List<Integer> positions);
-
-    /**
-     * Reload projects.
-     */
-    void reloadProjects();
 }

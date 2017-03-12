@@ -47,16 +47,19 @@ import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
+import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 
-public class ProjectsFragment extends BaseFragment
+public class ProjectsFragment extends RxFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
 
@@ -64,10 +67,16 @@ public class ProjectsFragment extends BaseFragment
     EventBus eventBus;
 
     @Inject
+    TimeSummaryPreferences timeSummaryPreferences;
+
+    @Inject
     ConfirmClockOutPreferences confirmClockOutPreferences;
 
     @Inject
     ProjectsPresenter presenter;
+
+    @Inject
+    ProjectsViewModel.ViewModel viewModel;
 
     private RecyclerView recyclerView;
 
@@ -101,7 +110,18 @@ public class ProjectsFragment extends BaseFragment
         recyclerView.setAdapter(adapter);
 
         presenter.attachView(this);
-        presenter.getProjects();
+
+        viewModel.input.startingPointForTimeSummary(timeSummaryPreferences.getStartingPointForTimeSummary());
+
+        viewModel.output.projects()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(adapter::add);
+
+        viewModel.error.projectsError()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(__ -> showGetProjectsErrorMessage());
     }
 
     @Override
@@ -159,7 +179,26 @@ public class ProjectsFragment extends BaseFragment
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent __) {
+        viewModel.input.startingPointForTimeSummary(timeSummaryPreferences.getStartingPointForTimeSummary());
+
         reloadProjects();
+    }
+
+    private void showGetProjectsErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_get_projects,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    private void reloadProjects() {
+        adapter.clear();
+
+        // TODO: Move to input event for view model.
+        viewModel.output.projects()
+                .compose(bindToLifecycle())
+                .subscribe(adapter::add);
     }
 
     /**
@@ -168,26 +207,6 @@ public class ProjectsFragment extends BaseFragment
     @Override
     public List<ProjectsItem> getProjects() {
         return adapter.getItems();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showGetProjectsErrorMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.error_message_get_projects,
-                Snackbar.LENGTH_SHORT
-        ).show();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void addProjects(List<ProjectsItem> projects) {
-        adapter.add(projects);
     }
 
     @Override
@@ -290,15 +309,6 @@ public class ProjectsFragment extends BaseFragment
         for (Integer position : positions) {
             adapter.notifyItemChanged(position);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void reloadProjects() {
-        adapter.clear();
-        presenter.getProjects();
     }
 
     @Override

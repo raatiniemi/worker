@@ -32,7 +32,6 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
@@ -54,7 +53,6 @@ public class ProjectsPresenterTest {
     @Rule
     public final RxSchedulerRule rxSchedulersRule = new RxSchedulerRule();
 
-    private GetProjects getProjects;
     private GetProjectTimeSince getProjectTimeSince;
     private ClockActivityChange clockActivityChange;
     private RemoveProject removeProject;
@@ -64,13 +62,11 @@ public class ProjectsPresenterTest {
     @Before
     public void setUp() {
         TimeSummaryPreferences timeSummaryPreferences = mock(TimeSummaryPreferences.class);
-        getProjects = mock(GetProjects.class);
         getProjectTimeSince = mock(GetProjectTimeSince.class);
         clockActivityChange = mock(ClockActivityChange.class);
         removeProject = mock(RemoveProject.class);
         presenter = new ProjectsPresenter(
                 timeSummaryPreferences,
-                getProjects,
                 getProjectTimeSince,
                 clockActivityChange,
                 removeProject
@@ -126,72 +122,6 @@ public class ProjectsPresenterTest {
         presenter.refreshActiveProjects();
 
         verify(view, never()).refreshPositions(anyList());
-    }
-
-    @Test
-    public void getProjects() throws DomainException {
-        List<Project> projects = new ArrayList<>();
-        projects.add(
-                Project.builder("Name")
-                        .build()
-        );
-        when(getProjects.execute()).thenReturn(projects);
-        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
-                .thenReturn(anyList());
-        presenter.attachView(view);
-
-        presenter.getProjects();
-
-        verify(getProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(view).addProjects(anyList());
-    }
-
-    @Test
-    public void getProjects_failureToGetRegisteredTime() throws DomainException {
-        List<Project> projects = new ArrayList<>();
-        projects.add(
-                Project.builder("Name")
-                        .build()
-        );
-        when(getProjects.execute()).thenReturn(projects);
-        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
-                .thenThrow(new ClockOutBeforeClockInException());
-        presenter.attachView(view);
-
-        presenter.getProjects();
-
-        verify(getProjectTimeSince).execute(any(Project.class), anyInt());
-        verify(view).addProjects(anyList());
-    }
-
-    @Test
-    public void getProjects_withoutAttachedView() throws DomainException {
-        List<Project> projects = new ArrayList<>();
-        when(getProjects.execute()).thenReturn(projects);
-
-        presenter.getProjects();
-
-        verify(view, never()).addProjects(anyList());
-    }
-
-    @Test
-    public void getProjects_withError() throws DomainException {
-        when(getProjects.execute()).thenThrow(new RuntimeException());
-        presenter.attachView(view);
-
-        presenter.getProjects();
-
-        verify(getProjectTimeSince, never()).execute(any(Project.class), anyInt());
-        verify(view).showGetProjectsErrorMessage();
-    }
-
-    @Test
-    public void getProjects_withErrorAndWithoutAttachedView() throws DomainException {
-        when(getProjects.execute()).thenThrow(new ClockOutBeforeClockInException());
-
-        presenter.getProjects();
-
-        verify(view, never()).showGetProjectsErrorMessage();
     }
 
     @Test

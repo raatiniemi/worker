@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
@@ -53,11 +52,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private final TimeSummaryPreferences timeSummaryPreferences;
 
     /**
-     * Use case for getting projects.
-     */
-    private final GetProjects getProjects;
-
-    /**
      * Use case for getting registered project time.
      */
     private final GetProjectTimeSince getProjectTimeSince;
@@ -76,20 +70,17 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
      * Constructor.
      *
      * @param timeSummaryPreferences         Preferences for the time summary.
-     * @param getProjects                    Use case for getting projects.
      * @param getProjectTimeSince            Use case for getting registered project time.
      * @param clockActivityChange            Use case for project clock in/out.
      * @param removeProject                  Use case for removing projects.
      */
     public ProjectsPresenter(
             TimeSummaryPreferences timeSummaryPreferences,
-            GetProjects getProjects,
             GetProjectTimeSince getProjectTimeSince,
             ClockActivityChange clockActivityChange,
             RemoveProject removeProject
     ) {
         this.timeSummaryPreferences = timeSummaryPreferences;
-        this.getProjects = getProjects;
         this.getProjectTimeSince = getProjectTimeSince;
         this.clockActivityChange = clockActivityChange;
         this.removeProject = removeProject;
@@ -213,56 +204,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                     @Override
                     public void onCompleted() {
                         Timber.d("refreshActiveProjects onCompleted");
-                    }
-                });
-    }
-
-    /**
-     * Retrieve the projects and push them to the view.
-     */
-    public void getProjects() {
-        // Setup the subscription for retrieving projects.
-        Observable
-                .defer(() -> {
-                    try {
-                        return Observable.just(getProjects.execute());
-                    } catch (DomainException e) {
-                        return Observable.error(e);
-                    }
-                })
-                .map(projects -> {
-                    List<ProjectsItem> items = new ArrayList<>();
-
-                    for (Project project : projects) {
-                        List<Time> registeredTime = getRegisteredTime(project);
-
-                        items.add(new ProjectsItem(project, registeredTime));
-                    }
-
-                    return items;
-                })
-                .compose(RxUtil.applySchedulers())
-                .subscribe(new Subscriber<List<ProjectsItem>>() {
-                    @Override
-                    public void onNext(List<ProjectsItem> items) {
-                        Timber.d("getProjects onNext");
-
-                        performWithView(view -> view.addProjects(items));
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.d("getProjects onError");
-
-                        // Log the error even if the view have been detached.
-                        Timber.w(e, "Failed to get projects");
-
-                        performWithView(ProjectsView::showGetProjectsErrorMessage);
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("getProjects onCompleted");
                     }
                 });
     }
