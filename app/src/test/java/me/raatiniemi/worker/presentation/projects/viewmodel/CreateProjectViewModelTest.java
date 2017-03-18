@@ -39,7 +39,7 @@ public class CreateProjectViewModelTest {
     private TestSubscriber<Project> createProjectSuccess;
 
     private CreateProject useCase;
-    private CreateProjectViewModel vm;
+    private CreateProjectViewModel.ViewModel vm;
 
     @Before
     public void setUp() {
@@ -49,7 +49,7 @@ public class CreateProjectViewModelTest {
         createProjectSuccess = new TestSubscriber<>();
 
         useCase = mock(CreateProject.class);
-        vm = new CreateProjectViewModel(useCase);
+        vm = new CreateProjectViewModel.ViewModel(useCase);
     }
 
     @Test

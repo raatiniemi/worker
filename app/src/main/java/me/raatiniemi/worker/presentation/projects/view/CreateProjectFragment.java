@@ -51,7 +51,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     EventBus eventBus;
 
     @Inject
-    CreateProjectViewModel viewModel;
+    CreateProjectViewModel.ViewModel viewModel;
 
     @BindView(R.id.fragment_create_project_name)
     EditText projectName;

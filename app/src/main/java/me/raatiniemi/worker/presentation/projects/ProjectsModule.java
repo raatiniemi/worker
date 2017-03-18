@@ -76,14 +76,14 @@ public class ProjectsModule {
     }
 
     @Provides
-    CreateProjectViewModel providesCreateProjectViewModel(Context context) {
+    CreateProjectViewModel.ViewModel providesCreateProjectViewModel(Context context) {
         ProjectRepository projectRepository = new ProjectResolverRepository(
                 context.getContentResolver(),
                 new ProjectCursorMapper(),
                 new ProjectContentValuesMapper()
         );
 
-        return new CreateProjectViewModel(
+        return new CreateProjectViewModel.ViewModel(
                 new CreateProject(projectRepository)
         );
     }
