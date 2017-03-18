@@ -40,6 +40,7 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 @Module
@@ -93,6 +94,11 @@ public class ProjectsModule {
                 new GetProjects(projectRepository, timeRepository),
                 new GetProjectTimeSince(timeRepository)
         );
+    }
+
+    @Provides
+    RefreshActiveProjectsViewModel.ViewModel providesRefreshActiveProjectsViewModel() {
+        return new RefreshActiveProjectsViewModel.ViewModel();
     }
 
     @Provides

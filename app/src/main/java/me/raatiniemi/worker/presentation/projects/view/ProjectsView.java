@@ -83,11 +83,4 @@ public interface ProjectsView extends MvpView {
      * Show message for failed project deletion.
      */
     void showDeleteProjectErrorMessage();
-
-    /**
-     * Refresh view for projects within the adapter.
-     *
-     * @param positions Positions for the project to refresh.
-     */
-    void refreshPositions(List<Integer> positions);
 }

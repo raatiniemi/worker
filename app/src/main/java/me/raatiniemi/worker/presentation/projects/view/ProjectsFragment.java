@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -48,20 +49,28 @@ import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
+import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 public class ProjectsFragment extends RxFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
+    @Inject
+    RefreshActiveProjectsViewModel.ViewModel refreshViewModel;
 
     @Inject
     EventBus eventBus;
@@ -78,6 +87,7 @@ public class ProjectsFragment extends RxFragment
     @Inject
     ProjectsViewModel.ViewModel viewModel;
 
+    private Subscription refreshProjectsSubscription;
     private RecyclerView recyclerView;
 
     ProjectsAdapter adapter;
@@ -122,25 +132,29 @@ public class ProjectsFragment extends RxFragment
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(__ -> showGetProjectsErrorMessage());
+
+        refreshViewModel.output.positionsForActiveProjects()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(this::refreshPositions);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        // Setup the subscription for refreshing active projects.
-        presenter.beginRefreshingActiveProjects();
+        refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(__ -> refreshViewModel.input.projects(getProjects()));
 
-        // Initiate the refresh of active projects.
-        presenter.refreshActiveProjects();
+        refreshViewModel.input.projects(getProjects());
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        // Unsubscribe to the refreshing of active projects.
-        presenter.stopRefreshingActiveProjects();
+        unsubscribeIfNotNull(refreshProjectsSubscription);
     }
 
     @Override
@@ -199,6 +213,22 @@ public class ProjectsFragment extends RxFragment
         viewModel.output.projects()
                 .compose(bindToLifecycle())
                 .subscribe(adapter::add);
+    }
+
+    private void refreshPositions(List<Integer> positions) {
+        // Check that we have positions to refresh.
+        if (positions.isEmpty()) {
+            // We should never reach this code since there are supposed to be
+            // checks for positions before the refreshPositions-method is called.
+            Timber.w("No positions, skip refreshing projects");
+            return;
+        }
+
+        // Iterate and refresh every position.
+        Timber.d("Refreshing %d projects", positions.size());
+        for (Integer position : positions) {
+            adapter.notifyItemChanged(position);
+        }
     }
 
     /**
@@ -292,23 +322,6 @@ public class ProjectsFragment extends RxFragment
                 R.string.error_message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show();
-    }
-
-    @Override
-    public void refreshPositions(List<Integer> positions) {
-        // Check that we have positions to refresh.
-        if (positions.isEmpty()) {
-            // We should never reach this code since there are supposed to be
-            // checks for positions before the refreshPositions-method is called.
-            Timber.w("No positions, skip refreshing projects");
-            return;
-        }
-
-        // Iterate and refresh every position.
-        Timber.d("Refreshing %d projects", positions.size());
-        for (Integer position : positions) {
-            adapter.notifyItemChanged(position);
-        }
     }
 
     @Override

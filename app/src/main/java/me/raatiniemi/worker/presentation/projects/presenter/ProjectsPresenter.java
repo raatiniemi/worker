@@ -16,11 +16,9 @@
 
 package me.raatiniemi.worker.presentation.projects.presenter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
@@ -35,20 +33,14 @@ import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 /**
  * Presenter for the projects module, handles loading of projects.
  */
 public class ProjectsPresenter extends BasePresenter<ProjectsView> {
-    private Subscription refreshProjectsSubscription;
-
     private final TimeSummaryPreferences timeSummaryPreferences;
 
     /**
@@ -84,128 +76,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         this.getProjectTimeSince = getProjectTimeSince;
         this.clockActivityChange = clockActivityChange;
         this.removeProject = removeProject;
-    }
-
-    /**
-     * Get the positions for the active projects from the view.
-     *
-     * @return Positions for the active projects.
-     */
-    private List<Integer> getPositionsForActiveProjects() {
-        List<Integer> activePositions = getFromView(view -> {
-            List<Integer> positions = new ArrayList<>();
-
-            List<ProjectsItem> projects = view.getProjects();
-            for (ProjectsItem project : projects) {
-                if (!project.isActive()) {
-                    continue;
-                }
-
-                Timber.d("Queuing refresh of project: %s", project.getTitle());
-                positions.add(projects.indexOf(project));
-            }
-
-            return positions;
-
-        });
-        if (isNull(activePositions)) {
-            return Collections.emptyList();
-        }
-
-        return activePositions;
-    }
-
-    /**
-     * Refresh the project positions on the view.
-     *
-     * @param positions Positions on the view to refresh.
-     */
-    private void refreshActiveProjects(List<Integer> positions) {
-        // Check that we have found active projects to refresh.
-        if (positions.isEmpty()) {
-            Timber.d("No projects are active, nothing to refresh");
-            return;
-        }
-
-        performWithView(view -> {
-            Timber.d("Refreshing active projects");
-
-            view.refreshPositions(positions);
-        });
-    }
-
-    /**
-     * Setup the subscription for refreshing active projects.
-     */
-    public void beginRefreshingActiveProjects() {
-        // Before we create a new subscription for refreshing active projects
-        // we have to unsubscribe to the existing one, if one is available.
-        stopRefreshingActiveProjects();
-
-        Timber.d("Subscribe to the refresh of active projects");
-        refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
-                .map(aLong -> getPositionsForActiveProjects())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Integer>>() {
-                    @Override
-                    public void onNext(List<Integer> positions) {
-                        Timber.d("beginRefreshingActiveProjects onNext");
-
-                        // Push the data to the view.
-                        refreshActiveProjects(positions);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.d("beginRefreshingActiveProjects onError");
-
-                        // Log the error even if the view have been detached.
-                        Timber.w(e, "Failed to get positions");
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("beginRefreshingActiveProjects onCompleted");
-                    }
-                });
-    }
-
-    /**
-     * Unsubscribe to the refresh of active projects.
-     */
-    public void stopRefreshingActiveProjects() {
-        unsubscribeIfNotNull(refreshProjectsSubscription);
-    }
-
-    /**
-     * Refresh active projects.
-     */
-    public void refreshActiveProjects() {
-        Timber.d("Refreshing active projects");
-        Observable.defer(() -> Observable.just(getPositionsForActiveProjects()))
-                .compose(RxUtil.applySchedulers())
-                .subscribe(new Subscriber<List<Integer>>() {
-                    @Override
-                    public void onNext(List<Integer> positions) {
-                        Timber.d("refreshActiveProjects onNext");
-
-                        // Push the data to the view.
-                        refreshActiveProjects(positions);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.d("refreshActiveProjects onError");
-
-                        // Log the error even if the view have been detached.
-                        Timber.w(e, "Failed to get positions");
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("refreshActiveProjects onCompleted");
-                    }
-                });
     }
 
     private List<Time> getRegisteredTime(Project project) {

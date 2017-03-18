@@ -25,7 +25,6 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.RxSchedulerRule;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
@@ -72,56 +71,6 @@ public class ProjectsPresenterTest {
                 removeProject
         );
         view = mock(ProjectsView.class);
-    }
-
-    @Test
-    public void beginRefreshingActiveProjects() throws DomainException {
-        Project activeProject = mock(Project.class);
-        when(activeProject.isActive()).thenReturn(true);
-        List<ProjectsItem> projects = new ArrayList<>();
-        projects.add(new ProjectsItem(Project.builder("Name").build()));
-        projects.add(new ProjectsItem(activeProject));
-        when(view.getProjects()).thenReturn(projects);
-        presenter.attachView(view);
-
-        presenter.beginRefreshingActiveProjects();
-        rxSchedulersRule.advanceTimeTo(60, TimeUnit.SECONDS);
-        presenter.stopRefreshingActiveProjects();
-
-        List<Integer> positions = new ArrayList<>();
-        positions.add(1);
-        verify(view).refreshPositions(positions);
-    }
-
-    @Test
-    public void refreshActiveProjects() throws DomainException {
-        Project activeProject = mock(Project.class);
-        when(activeProject.isActive()).thenReturn(true);
-        List<ProjectsItem> projects = new ArrayList<>();
-        projects.add(new ProjectsItem(Project.builder("Name").build()));
-        projects.add(new ProjectsItem(activeProject));
-        when(view.getProjects()).thenReturn(projects);
-        presenter.attachView(view);
-
-        presenter.refreshActiveProjects();
-
-        List<Integer> positions = new ArrayList<>();
-        positions.add(1);
-        verify(view).refreshPositions(positions);
-    }
-
-    @Test
-    public void refreshActiveProjects_withoutAttachedView() throws DomainException {
-        Project activeProject = mock(Project.class);
-        when(activeProject.isActive()).thenReturn(true);
-        List<ProjectsItem> projects = new ArrayList<>();
-        projects.add(new ProjectsItem(Project.builder("Name").build()));
-        projects.add(new ProjectsItem(activeProject));
-        when(view.getProjects()).thenReturn(projects);
-
-        presenter.refreshActiveProjects();
-
-        verify(view, never()).refreshPositions(anyList());
     }
 
     @Test
