@@ -27,10 +27,30 @@ import rx.subjects.PublishSubject;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public interface CreateProjectViewModel {
-    final class ViewModel implements CreateProjectViewModelInput, CreateProjectViewModelOutput, CreateProjectViewModelError {
-        public final CreateProjectViewModelInput input = this;
-        public final CreateProjectViewModelOutput output = this;
-        public final CreateProjectViewModelError error = this;
+    interface Input {
+        void projectName(String name);
+
+        void createProject();
+    }
+
+    interface Output {
+        Observable<Project> createProjectSuccess();
+
+        Observable<Boolean> isProjectNameValid();
+    }
+
+    interface Error {
+        Observable<String> invalidProjectNameError();
+
+        Observable<String> duplicateProjectNameError();
+
+        Observable<String> createProjectError();
+    }
+
+    final class ViewModel implements Input, Output, Error {
+        public final Input input = this;
+        public final Output output = this;
+        public final Error error = this;
 
         private final PublishSubject<String> projectName = PublishSubject.create();
         private final BehaviorSubject<Boolean> isProjectNameValid = BehaviorSubject.create(Boolean.FALSE);
