@@ -17,13 +17,13 @@
 package me.raatiniemi.worker.presentation.projects.model;
 
 public abstract class ProjectActionEvent {
-    private ProjectsItem projectsItem;
+    private final ProjectsItemAdapterResult result;
 
-    ProjectActionEvent(ProjectsItem projectsItem) {
-        this.projectsItem = projectsItem;
+    ProjectActionEvent(ProjectsItemAdapterResult result) {
+        this.result = result;
     }
 
-    public ProjectsItem getProjectsItem() {
-        return projectsItem;
+    public ProjectsItemAdapterResult getResult() {
+        return result;
     }
 }

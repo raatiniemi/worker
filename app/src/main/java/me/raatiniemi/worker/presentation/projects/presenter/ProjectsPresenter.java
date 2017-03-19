@@ -28,14 +28,13 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResult;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import rx.Observable;
 import rx.Subscriber;
 import timber.log.Timber;
-
-import static me.raatiniemi.util.NullUtil.isNull;
 
 /**
  * Presenter for the projects module, handles loading of projects.
@@ -93,16 +92,11 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     /**
      * Delete project.
      *
-     * @param project Project to be deleted.
+     * @param result Project with position to be deleted.
      */
-    public void deleteProject(final ProjectsItem project) {
-        // Before removing the project we need its current index, it's
-        // needed to handle the restoration if deletion fails.
-        final Integer index = getFromView(view -> view.getProjects().indexOf(project));
-        if (isNull(index)) {
-            Timber.w("Unable to get position from view");
-            return;
-        }
+    public void deleteProject(final ProjectsItemAdapterResult result) {
+        final int position = result.getPosition();
+        final ProjectsItem item = result.getProjectsItem();
 
         performWithView(view ->
             // Remove project from the view before executing the use case,
@@ -110,10 +104,10 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
             //
             // If the deletion fails the project will be added back to the
             // view again, at the previous location.
-            view.deleteProjectAtPosition(index)
+            view.deleteProjectAtPosition(position)
         );
 
-        Observable.just(project)
+        Observable.just(item)
                 .flatMap(projectsItem -> {
                     removeProject.execute(projectsItem.asProject());
 
@@ -136,7 +130,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                         Timber.w(e, "Failed to delete project");
 
                         performWithView(view -> {
-                            view.restoreProjectAtPreviousPosition(index, project);
+                            view.restoreProjectAtPreviousPosition(position, item);
                             view.showDeleteProjectErrorMessage();
                         });
                     }
@@ -153,11 +147,14 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     /**
      * Change the clock activity status for project, i.e. clock in/out.
      *
-     * @param projectsItem Project to change clock activity status.
-     * @param date         Date and time to use for the clock activity change.
+     * @param result Project with position to change clock activity status.
+     * @param date   Date and time to use for the clock activity change.
      */
-    public void clockActivityChange(final ProjectsItem projectsItem, final Date date) {
-        Observable.just(projectsItem.asProject())
+    public void clockActivityChange(final ProjectsItemAdapterResult result, final Date date) {
+        final int position = result.getPosition();
+        final ProjectsItem item = result.getProjectsItem();
+
+        Observable.just(item.asProject())
                 .flatMap(project -> clockActivityChangeViaUseCase(project, date))
                 .map(project -> {
                     List<Time> registeredTime = getRegisteredTime(project);
@@ -172,7 +169,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
 
                         performWithView(view -> {
                             view.updateNotificationForProject(project);
-                            view.updateProject(project);
+                            view.updateProject(position, project);
                         });
                     }
 
@@ -184,7 +181,7 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
                         Timber.w(e, "Failed to change clock activity");
 
                         performWithView(view -> {
-                            if (projectsItem.isActive()) {
+                            if (item.isActive()) {
                                 view.showClockOutErrorMessage();
                                 return;
                             }

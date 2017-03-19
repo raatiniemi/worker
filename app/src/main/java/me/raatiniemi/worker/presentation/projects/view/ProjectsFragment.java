@@ -47,6 +47,7 @@ import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResult;
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
@@ -248,13 +249,7 @@ public class ProjectsFragment extends RxFragment
     }
 
     @Override
-    public void updateProject(ProjectsItem project) {
-        int position = adapter.findProject(project);
-        if (RecyclerView.NO_POSITION == position) {
-            Timber.e("Unable to find position for project in the adapter");
-            return;
-        }
-
+    public void updateProject(int position, ProjectsItem project) {
         adapter.set(position, project);
     }
 
@@ -354,31 +349,33 @@ public class ProjectsFragment extends RxFragment
     }
 
     @Override
-    public void onClockActivityToggle(@NonNull final ProjectsItem project) {
-        if (project.isActive()) {
+    public void onClockActivityToggle(@NonNull final ProjectsItemAdapterResult result) {
+        final ProjectsItem projectsItem = result.getProjectsItem();
+        if (projectsItem.isActive()) {
             // Check if clock out require confirmation.
             if (!confirmClockOutPreferences.shouldConfirmClockOut()) {
-                presenter.clockActivityChange(project, new Date());
+                presenter.clockActivityChange(result, new Date());
                 return;
             }
 
             new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.confirm_clock_out_title))
                     .setMessage(getString(R.string.confirm_clock_out_message))
-                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> presenter.clockActivityChange(project, new Date()))
+                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> presenter.clockActivityChange(result, new Date()))
                     .setNegativeButton(android.R.string.no, null)
                     .show();
             return;
         }
 
-        presenter.clockActivityChange(project, new Date());
+        presenter.clockActivityChange(result, new Date());
     }
 
     @Override
-    public void onClockActivityAt(@NonNull final ProjectsItem project) {
+    public void onClockActivityAt(@NonNull final ProjectsItemAdapterResult result) {
+        final ProjectsItem projectsItem = result.getProjectsItem();
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
-                project.asProject(),
-                calendar -> presenter.clockActivityChange(project, calendar.getTime())
+                projectsItem.asProject(),
+                calendar -> presenter.clockActivityChange(result, calendar.getTime())
         );
 
         getFragmentManager().beginTransaction()
@@ -387,11 +384,11 @@ public class ProjectsFragment extends RxFragment
     }
 
     @Override
-    public void onDelete(@NonNull final ProjectsItem project) {
+    public void onDelete(@NonNull final ProjectsItemAdapterResult result) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> presenter.deleteProject(project))
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> presenter.deleteProject(result))
                 .setNegativeButton(android.R.string.no, null)
                 .show();
     }

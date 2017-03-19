@@ -22,9 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import me.raatiniemi.worker.RxSchedulerRule;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
@@ -34,6 +32,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResult;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsView;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
@@ -78,14 +77,12 @@ public class ProjectsPresenterTest {
         Project project = Project.builder("Name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
-        List<ProjectsItem> projects = new ArrayList<>();
-        projects.add(new ProjectsItem(project));
-        when(view.getProjects()).thenReturn(projects);
+        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         presenter.attachView(view);
 
-        presenter.deleteProject(projectsItem);
+        presenter.deleteProject(result);
 
-        verify(view).deleteProjectAtPosition(0);
+        verify(view).deleteProjectAtPosition(eq(0));
         verify(view).showDeleteProjectSuccessMessage();
     }
 
@@ -94,16 +91,14 @@ public class ProjectsPresenterTest {
         Project project = Project.builder("Name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
-        List<ProjectsItem> projects = new ArrayList<>();
-        projects.add(new ProjectsItem(project));
-        when(view.getProjects()).thenReturn(projects);
+        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         doThrow(new RuntimeException()).when(removeProject).execute(project);
         presenter.attachView(view);
 
-        presenter.deleteProject(projectsItem);
+        presenter.deleteProject(result);
 
-        verify(view).deleteProjectAtPosition(0);
-        verify(view).restoreProjectAtPreviousPosition(0, projectsItem);
+        verify(view).deleteProjectAtPosition(eq(0));
+        verify(view).restoreProjectAtPreviousPosition(eq(0), eq(projectsItem));
         verify(view).showDeleteProjectErrorMessage();
     }
 
@@ -113,17 +108,18 @@ public class ProjectsPresenterTest {
                 .id(1L)
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(anyList());
         presenter.attachView(view);
 
-        presenter.clockActivityChange(projectsItem, new Date());
+        presenter.clockActivityChange(result, new Date());
 
         verify(getProjectTimeSince).execute(any(Project.class), anyInt());
         verify(view).updateNotificationForProject(eq(projectsItem));
-        verify(view).updateProject(projectsItem);
+        verify(view).updateProject(eq(0), eq(projectsItem));
     }
 
     @Test
@@ -132,13 +128,14 @@ public class ProjectsPresenterTest {
                 .id(1L)
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenReturn(project);
 
-        presenter.clockActivityChange(projectsItem, new Date());
+        presenter.clockActivityChange(result, new Date());
 
         verify(view, never()).updateNotificationForProject(any());
-        verify(view, never()).updateProject(projectsItem);
+        verify(view, never()).updateProject(anyInt(), any());
     }
 
     @Test
@@ -146,11 +143,12 @@ public class ProjectsPresenterTest {
         Project project = Project.builder("Name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
         presenter.attachView(view);
 
-        presenter.clockActivityChange(projectsItem, new Date());
+        presenter.clockActivityChange(result, new Date());
 
         verify(view, never()).showClockOutErrorMessage();
         verify(view).showClockInErrorMessage();
@@ -161,11 +159,12 @@ public class ProjectsPresenterTest {
         Project project = mock(Project.class);
         when(project.isActive()).thenReturn(true);
         ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
         presenter.attachView(view);
 
-        presenter.clockActivityChange(projectsItem, new Date());
+        presenter.clockActivityChange(result, new Date());
 
         verify(view).showClockOutErrorMessage();
         verify(view, never()).showClockInErrorMessage();
@@ -176,10 +175,11 @@ public class ProjectsPresenterTest {
         Project project = mock(Project.class);
         when(project.isActive()).thenReturn(true);
         ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(eq(project), any(Date.class)))
                 .thenThrow(new ClockOutBeforeClockInException());
 
-        presenter.clockActivityChange(projectsItem, new Date());
+        presenter.clockActivityChange(result, new Date());
 
         verify(view, never()).showClockOutErrorMessage();
         verify(view, never()).showClockInErrorMessage();

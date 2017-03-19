@@ -17,21 +17,19 @@
 package me.raatiniemi.worker.presentation.projects.view;
 
 import android.content.res.Resources;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.comparator.ProjectComparator;
 import me.raatiniemi.worker.presentation.projects.model.ClockActivityAtEvent;
 import me.raatiniemi.worker.presentation.projects.model.ClockActivityToggleEvent;
 import me.raatiniemi.worker.presentation.projects.model.DeleteProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectActionEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResult;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.RxBus;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
@@ -69,16 +67,16 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
 
     private void propagateActionWithEvent(ProjectActionEvent event) {
         if (event instanceof ClockActivityToggleEvent) {
-            this.onProjectActionListener.onClockActivityToggle(event.getProjectsItem());
+            this.onProjectActionListener.onClockActivityToggle(event.getResult());
             return;
         }
 
         if (event instanceof ClockActivityAtEvent) {
-            this.onProjectActionListener.onClockActivityAt(event.getProjectsItem());
+            this.onProjectActionListener.onClockActivityAt(event.getResult());
             return;
         }
 
-        this.onProjectActionListener.onDelete(event.getProjectsItem());
+        this.onProjectActionListener.onDelete(event.getResult());
     }
 
     @Override
@@ -97,6 +95,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
     @Override
     public void onBindViewHolder(final ProjectsItemViewHolder vh, int index) {
         final ProjectsItem item = get(index);
+        final ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(index, item);
 
         vh.name.setText(item.getTitle());
         vh.time.setText(item.getTimeSummary());
@@ -110,7 +109,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
                 item.getHelpTextForClockActivityToggle(resources)
         );
         vh.clockActivityToggle.setOnClickListener(view ->
-                rxBus.send(ClockActivityToggleEvent.withProjectsItem(item)));
+                rxBus.send(ClockActivityToggleEvent.withAdapterResult(result)));
         vh.clockActivityToggle.setOnLongClickListener(hintedImageButtonListener);
         vh.clockActivityToggle.setActivated(item.isActive());
 
@@ -118,26 +117,11 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
                 item.getHelpTextForClockActivityAt(resources)
         );
         vh.clockActivityAt.setOnClickListener(view ->
-                rxBus.send(ClockActivityAtEvent.withProjectsItem(item)));
+                rxBus.send(ClockActivityAtEvent.withAdapterResult(result)));
         vh.clockActivityAt.setOnLongClickListener(hintedImageButtonListener);
 
         vh.delete.setOnClickListener(view ->
-                rxBus.send(DeleteProjectEvent.withProjectsItem(item)));
+                rxBus.send(DeleteProjectEvent.withAdapterResult(result)));
         vh.delete.setOnLongClickListener(hintedImageButtonListener);
-    }
-
-    int findProject(final ProjectsItem project) {
-        // TODO: Clean up the comparator.
-        final ProjectComparator comparator = new ProjectComparator();
-        int position = Collections.binarySearch(
-                getItems(),
-                project,
-                (lhs, rhs) -> comparator.compare(lhs.asProject(), rhs.asProject())
-        );
-        if (0 > position) {
-            return RecyclerView.NO_POSITION;
-        }
-
-        return position;
     }
 }

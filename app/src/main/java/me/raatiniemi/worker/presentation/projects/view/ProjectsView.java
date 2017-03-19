@@ -42,9 +42,10 @@ public interface ProjectsView extends MvpView {
     /**
      * Update project in the list.
      *
+     * @param position Position of project to update.
      * @param project Project to update in the list.
      */
-    void updateProject(ProjectsItem project);
+    void updateProject(int position, ProjectsItem project);
 
     /**
      * Show message for failed clock in action.
