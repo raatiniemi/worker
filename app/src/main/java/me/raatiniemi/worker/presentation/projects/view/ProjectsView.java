@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
-import java.util.List;
-
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.view.MvpView;
 
@@ -25,13 +23,6 @@ import me.raatiniemi.worker.presentation.view.MvpView;
  * Methods related to handling of the project view.
  */
 public interface ProjectsView extends MvpView {
-    /**
-     * Get the projects from the view.
-     *
-     * @return Projects from the view.
-     */
-    List<ProjectsItem> getProjects();
-
     /**
      * Update ongoing notification for project.
      *

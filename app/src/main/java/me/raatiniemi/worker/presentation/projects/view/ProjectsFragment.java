@@ -146,9 +146,9 @@ public class ProjectsFragment extends RxFragment
 
         refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(__ -> refreshViewModel.input.projects(getProjects()));
+                .subscribe(__ -> refreshViewModel.input.projects(adapter.getItems()));
 
-        refreshViewModel.input.projects(getProjects());
+        refreshViewModel.input.projects(adapter.getItems());
     }
 
     @Override
@@ -230,14 +230,6 @@ public class ProjectsFragment extends RxFragment
         for (Integer position : positions) {
             adapter.notifyItemChanged(position);
         }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<ProjectsItem> getProjects() {
-        return adapter.getItems();
     }
 
     @Override
