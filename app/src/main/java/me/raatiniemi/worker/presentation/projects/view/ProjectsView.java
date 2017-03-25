@@ -47,32 +47,4 @@ public interface ProjectsView extends MvpView {
      * Show message for failed clock out action.
      */
     void showClockOutErrorMessage();
-
-    /**
-     * Delete a project from the view at the given position.
-     *
-     * @param position Position of the project to delete.
-     */
-    void deleteProjectAtPosition(int position);
-
-    /**
-     * Restore a project at its previous position.
-     *
-     * @param previousPosition Previous position of the project.
-     * @param project          Project to restore.
-     */
-    void restoreProjectAtPreviousPosition(
-            int previousPosition,
-            ProjectsItem project
-    );
-
-    /**
-     * Show message for successful project deletion.
-     */
-    void showDeleteProjectSuccessMessage();
-
-    /**
-     * Show message for failed project deletion.
-     */
-    void showDeleteProjectErrorMessage();
 }

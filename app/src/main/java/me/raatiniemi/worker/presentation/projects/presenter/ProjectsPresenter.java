@@ -23,7 +23,6 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
@@ -53,28 +52,20 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
     private final ClockActivityChange clockActivityChange;
 
     /**
-     * Use case for removing projects.
-     */
-    private final RemoveProject removeProject;
-
-    /**
      * Constructor.
      *
-     * @param timeSummaryPreferences         Preferences for the time summary.
-     * @param getProjectTimeSince            Use case for getting registered project time.
-     * @param clockActivityChange            Use case for project clock in/out.
-     * @param removeProject                  Use case for removing projects.
+     * @param timeSummaryPreferences Preferences for the time summary.
+     * @param getProjectTimeSince    Use case for getting registered project time.
+     * @param clockActivityChange    Use case for project clock in/out.
      */
     public ProjectsPresenter(
             TimeSummaryPreferences timeSummaryPreferences,
             GetProjectTimeSince getProjectTimeSince,
-            ClockActivityChange clockActivityChange,
-            RemoveProject removeProject
+            ClockActivityChange clockActivityChange
     ) {
         this.timeSummaryPreferences = timeSummaryPreferences;
         this.getProjectTimeSince = getProjectTimeSince;
         this.clockActivityChange = clockActivityChange;
-        this.removeProject = removeProject;
     }
 
     private List<Time> getRegisteredTime(Project project) {
@@ -87,61 +78,6 @@ public class ProjectsPresenter extends BasePresenter<ProjectsView> {
         }
 
         return Collections.emptyList();
-    }
-
-    /**
-     * Delete project.
-     *
-     * @param result Project with position to be deleted.
-     */
-    public void deleteProject(final ProjectsItemAdapterResult result) {
-        final int position = result.getPosition();
-        final ProjectsItem item = result.getProjectsItem();
-
-        performWithView(view ->
-            // Remove project from the view before executing the use case,
-            // i.e. optimistic propagation, to simulate better latency.
-            //
-            // If the deletion fails the project will be added back to the
-            // view again, at the previous location.
-            view.deleteProjectAtPosition(position)
-        );
-
-        Observable.just(item)
-                .flatMap(projectsItem -> {
-                    removeProject.execute(projectsItem.asProject());
-
-                    return Observable.empty();
-                })
-                .compose(RxUtil.applySchedulers())
-                .subscribe(new Subscriber<Object>() {
-                    @Override
-                    public void onNext(Object o) {
-                        // Nothing to do, everything have been done...
-                        Timber.d("deleteProject onNext");
-                    }
-
-                    @Override
-                    public void onError(final Throwable e) {
-                        Timber.d("deleteProject onError");
-
-                        // Even if the view have been detached we'd want the
-                        // error messaged logged.
-                        Timber.w(e, "Failed to delete project");
-
-                        performWithView(view -> {
-                            view.restoreProjectAtPreviousPosition(position, item);
-                            view.showDeleteProjectErrorMessage();
-                        });
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("deleteProject onCompleted");
-
-                        performWithView(ProjectsView::showDeleteProjectSuccessMessage);
-                    }
-                });
     }
 
     /**

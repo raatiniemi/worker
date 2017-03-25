@@ -51,6 +51,7 @@ import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResul
 import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.RemoveProjectViewModel;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
@@ -72,6 +73,8 @@ public class ProjectsFragment extends RxFragment
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
     @Inject
     RefreshActiveProjectsViewModel.ViewModel refreshViewModel;
+    @Inject
+    RemoveProjectViewModel.ViewModel removeProjectViewModel;
 
     @Inject
     EventBus eventBus;
@@ -133,6 +136,19 @@ public class ProjectsFragment extends RxFragment
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(__ -> showGetProjectsErrorMessage());
+
+        removeProjectViewModel.output.removeProjectSuccess()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(__ -> showDeleteProjectSuccessMessage());
+
+        removeProjectViewModel.error.removeProjectError()
+                .compose(bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    restoreProjectAtPreviousPosition(result.getPosition(), result.getProjectsItem());
+                    showDeleteProjectErrorMessage();
+                });
 
         refreshViewModel.output.positionsForActiveProjects()
                 .compose(bindToLifecycle())
@@ -269,19 +285,11 @@ public class ProjectsFragment extends RxFragment
         ).show();
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void deleteProjectAtPosition(int position) {
+    private void deleteProjectAtPosition(int position) {
         adapter.remove(position);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void restoreProjectAtPreviousPosition(
+    private void restoreProjectAtPreviousPosition(
             int previousPosition,
             ProjectsItem project
     ) {
@@ -290,8 +298,7 @@ public class ProjectsFragment extends RxFragment
         recyclerView.scrollToPosition(previousPosition);
     }
 
-    @Override
-    public void showDeleteProjectSuccessMessage() {
+    private void showDeleteProjectSuccessMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.message_project_deleted,
@@ -299,11 +306,7 @@ public class ProjectsFragment extends RxFragment
         ).show();
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showDeleteProjectErrorMessage() {
+    private void showDeleteProjectErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_project_deleted,
@@ -380,7 +383,11 @@ public class ProjectsFragment extends RxFragment
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> presenter.deleteProject(result))
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    deleteProjectAtPosition(result.getPosition());
+
+                    removeProjectViewModel.input.remove(result);
+                })
                 .setNegativeButton(android.R.string.no, null)
                 .show();
     }

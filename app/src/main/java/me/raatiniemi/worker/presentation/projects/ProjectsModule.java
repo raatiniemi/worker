@@ -41,6 +41,7 @@ import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
 import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.RemoveProjectViewModel;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 @Module
@@ -71,8 +72,7 @@ public class ProjectsModule {
                         timeRepository,
                         new ClockIn(timeRepository),
                         new ClockOut(timeRepository)
-                ),
-                new RemoveProject(projectRepository)
+                )
         );
     }
 
@@ -93,6 +93,19 @@ public class ProjectsModule {
         return new ProjectsViewModel.ViewModel(
                 new GetProjects(projectRepository, timeRepository),
                 new GetProjectTimeSince(timeRepository)
+        );
+    }
+
+    @Provides
+    RemoveProjectViewModel.ViewModel providesRemoveProjectViewModel(Context context) {
+        ProjectRepository projectRepository = new ProjectResolverRepository(
+                context.getContentResolver(),
+                new ProjectCursorMapper(),
+                new ProjectContentValuesMapper()
+        );
+
+        return new RemoveProjectViewModel.ViewModel(
+                new RemoveProject(projectRepository)
         );
     }
 
