@@ -146,7 +146,7 @@ public class ProjectsFragment extends RxFragment
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    restoreProjectAtPreviousPosition(result.getPosition(), result.getProjectsItem());
+                    restoreProjectAtPreviousPosition(result);
                     showDeleteProjectErrorMessage();
                 });
 
@@ -289,13 +289,10 @@ public class ProjectsFragment extends RxFragment
         adapter.remove(position);
     }
 
-    private void restoreProjectAtPreviousPosition(
-            int previousPosition,
-            ProjectsItem project
-    ) {
-        adapter.add(previousPosition, project);
+    private void restoreProjectAtPreviousPosition(ProjectsItemAdapterResult result) {
+        adapter.add(result.getPosition(), result.getProjectsItem());
 
-        recyclerView.scrollToPosition(previousPosition);
+        recyclerView.scrollToPosition(result.getPosition());
     }
 
     private void showDeleteProjectSuccessMessage() {
