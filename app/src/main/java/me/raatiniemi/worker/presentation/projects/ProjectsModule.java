@@ -18,8 +18,6 @@ package me.raatiniemi.worker.presentation.projects;
 
 import android.content.Context;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
@@ -37,18 +35,16 @@ import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ClockActivityViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
-import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.RemoveProjectViewModel;
 
 @Module
 public class ProjectsModule {
     @Provides
-    @Singleton
-    ProjectsPresenter providesProjectsPresenter(
-            Context context,
-            TimeSummaryPreferences timeSummaryPreferences
-    ) {
+    ProjectsViewModel.ViewModel providesProjectsViewModel(Context context) {
         ProjectRepository projectRepository = new ProjectResolverRepository(
                 context.getContentResolver(),
                 new ProjectCursorMapper(),
@@ -61,18 +57,53 @@ public class ProjectsModule {
                 new TimeContentValuesMapper()
         );
 
-        return new ProjectsPresenter(
-                timeSummaryPreferences,
+        return new ProjectsViewModel.ViewModel(
                 new GetProjects(projectRepository, timeRepository),
-                new GetProjectTimeSince(timeRepository),
+                new GetProjectTimeSince(timeRepository)
+        );
+    }
+
+    @Provides
+    ClockActivityViewModel.ViewModel providesClockActivityChangeViewModel(Context context) {
+        ProjectRepository projectRepository = new ProjectResolverRepository(
+                context.getContentResolver(),
+                new ProjectCursorMapper(),
+                new ProjectContentValuesMapper()
+        );
+
+        TimeRepository timeRepository = new TimeResolverRepository(
+                context.getContentResolver(),
+                new TimeCursorMapper(),
+                new TimeContentValuesMapper()
+        );
+
+        return new ClockActivityViewModel.ViewModel(
                 new ClockActivityChange(
                         projectRepository,
                         timeRepository,
                         new ClockIn(timeRepository),
                         new ClockOut(timeRepository)
                 ),
+                new GetProjectTimeSince(timeRepository)
+        );
+    }
+
+    @Provides
+    RemoveProjectViewModel.ViewModel providesRemoveProjectViewModel(Context context) {
+        ProjectRepository projectRepository = new ProjectResolverRepository(
+                context.getContentResolver(),
+                new ProjectCursorMapper(),
+                new ProjectContentValuesMapper()
+        );
+
+        return new RemoveProjectViewModel.ViewModel(
                 new RemoveProject(projectRepository)
         );
+    }
+
+    @Provides
+    RefreshActiveProjectsViewModel.ViewModel providesRefreshActiveProjectsViewModel() {
+        return new RefreshActiveProjectsViewModel.ViewModel();
     }
 
     @Provides

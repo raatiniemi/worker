@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Worker Project
+ * Copyright (C) 2017 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,24 @@
 
 package me.raatiniemi.worker.presentation.projects.model;
 
-public class ClockActivityToggleEvent extends ProjectActionEvent {
-    private ClockActivityToggleEvent(ProjectsItemAdapterResult result) {
-        super(result);
+public class ProjectsItemAdapterResult {
+    private final int position;
+    private final ProjectsItem projectsItem;
+
+    private ProjectsItemAdapterResult(int position, ProjectsItem projectsItem) {
+        this.position = position;
+        this.projectsItem = projectsItem;
     }
 
-    public static ClockActivityToggleEvent withAdapterResult(ProjectsItemAdapterResult result) {
-        return new ClockActivityToggleEvent(result);
+    public static ProjectsItemAdapterResult build(int position, ProjectsItem projectsItem) {
+        return new ProjectsItemAdapterResult(position, projectsItem);
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public ProjectsItem getProjectsItem() {
+        return projectsItem;
     }
 }

@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -46,29 +47,48 @@ import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
-import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResult;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ClockActivityViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
+import me.raatiniemi.worker.presentation.projects.viewmodel.RemoveProjectViewModel;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
+import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
+import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
+import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
-public class ProjectsFragment extends BaseFragment
-        implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
+public class ProjectsFragment extends RxFragment
+        implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
+    @Inject
+    ProjectsViewModel.ViewModel projectsViewModel;
+    @Inject
+    RefreshActiveProjectsViewModel.ViewModel refreshViewModel;
+    @Inject
+    ClockActivityViewModel.ViewModel clockActivityViewModel;
+    @Inject
+    RemoveProjectViewModel.ViewModel removeProjectViewModel;
 
     @Inject
     EventBus eventBus;
 
     @Inject
-    ConfirmClockOutPreferences confirmClockOutPreferences;
+    TimeSummaryPreferences timeSummaryPreferences;
 
     @Inject
-    ProjectsPresenter presenter;
+    ConfirmClockOutPreferences confirmClockOutPreferences;
 
+    private Subscription refreshProjectsSubscription;
     private RecyclerView recyclerView;
 
     ProjectsAdapter adapter;
@@ -100,34 +120,81 @@ public class ProjectsFragment extends BaseFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        presenter.attachView(this);
-        presenter.getProjects();
+        int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
+        projectsViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+        clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+
+        projectsViewModel.output.projects()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(adapter::add);
+
+        projectsViewModel.error.projectsError()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(__ -> showGetProjectsErrorMessage());
+
+        clockActivityViewModel.output.clockInSuccess()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(result -> {
+                    updateNotificationForProject(result.getProjectsItem());
+                    updateProject(result);
+                });
+
+        clockActivityViewModel.error.clockInError()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(__ -> showClockInErrorMessage());
+
+        clockActivityViewModel.output.clockOutSuccess()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(result -> {
+                    updateNotificationForProject(result.getProjectsItem());
+                    updateProject(result);
+                });
+
+        clockActivityViewModel.error.clockOutError()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(__ -> showClockOutErrorMessage());
+
+        removeProjectViewModel.output.removeProjectSuccess()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(__ -> showDeleteProjectSuccessMessage());
+
+        removeProjectViewModel.error.removeProjectError()
+                .compose(bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    restoreProjectAtPreviousPosition(result);
+                    showDeleteProjectErrorMessage();
+                });
+
+        refreshViewModel.output.positionsForActiveProjects()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(this::refreshPositions);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        // Setup the subscription for refreshing active projects.
-        presenter.beginRefreshingActiveProjects();
+        refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(__ -> refreshViewModel.input.projects(adapter.getItems()));
 
-        // Initiate the refresh of active projects.
-        presenter.refreshActiveProjects();
+        refreshViewModel.input.projects(adapter.getItems());
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        // Unsubscribe to the refreshing of active projects.
-        presenter.stopRefreshingActiveProjects();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        detachViewIfNotNull(presenter);
+        unsubscribeIfNotNull(refreshProjectsSubscription);
     }
 
     @Override
@@ -159,22 +226,14 @@ public class ProjectsFragment extends BaseFragment
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent __) {
+        int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
+        projectsViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+        clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+
         reloadProjects();
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<ProjectsItem> getProjects() {
-        return adapter.getItems();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showGetProjectsErrorMessage() {
+    private void showGetProjectsErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_get_projects,
@@ -182,101 +241,16 @@ public class ProjectsFragment extends BaseFragment
         ).show();
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void addProjects(List<ProjectsItem> projects) {
-        adapter.add(projects);
+    private void reloadProjects() {
+        adapter.clear();
+
+        // TODO: Move to input event for view model.
+        projectsViewModel.output.projects()
+                .compose(bindToLifecycle())
+                .subscribe(adapter::add);
     }
 
-    @Override
-    public void updateNotificationForProject(ProjectsItem project) {
-        ProjectNotificationService.startServiceWithContext(
-                getActivity(),
-                project.asProject()
-        );
-    }
-
-    @Override
-    public void updateProject(ProjectsItem project) {
-        int position = adapter.findProject(project);
-        if (RecyclerView.NO_POSITION == position) {
-            Timber.e("Unable to find position for project in the adapter");
-            return;
-        }
-
-        adapter.set(position, project);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showClockInErrorMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.error_message_clock_in,
-                Snackbar.LENGTH_SHORT
-        ).show();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showClockOutErrorMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.error_message_clock_out,
-                Snackbar.LENGTH_SHORT
-        ).show();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void deleteProjectAtPosition(int position) {
-        adapter.remove(position);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void restoreProjectAtPreviousPosition(
-            int previousPosition,
-            ProjectsItem project
-    ) {
-        adapter.add(previousPosition, project);
-
-        recyclerView.scrollToPosition(previousPosition);
-    }
-
-    @Override
-    public void showDeleteProjectSuccessMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.message_project_deleted,
-                Snackbar.LENGTH_SHORT
-        ).show();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showDeleteProjectErrorMessage() {
-        Snackbar.make(
-                getActivity().findViewById(android.R.id.content),
-                R.string.error_message_project_deleted,
-                Snackbar.LENGTH_SHORT
-        ).show();
-    }
-
-    @Override
-    public void refreshPositions(List<Integer> positions) {
+    private void refreshPositions(List<Integer> positions) {
         // Check that we have positions to refresh.
         if (positions.isEmpty()) {
             // We should never reach this code since there are supposed to be
@@ -292,13 +266,57 @@ public class ProjectsFragment extends BaseFragment
         }
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void reloadProjects() {
-        adapter.clear();
-        presenter.getProjects();
+    private void updateNotificationForProject(ProjectsItem project) {
+        ProjectNotificationService.startServiceWithContext(
+                getActivity(),
+                project.asProject()
+        );
+    }
+
+    private void updateProject(ProjectsItemAdapterResult result) {
+        adapter.set(result.getPosition(), result.getProjectsItem());
+    }
+
+    private void showClockInErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_clock_in,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    private void showClockOutErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_clock_out,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    private void deleteProjectAtPosition(int position) {
+        adapter.remove(position);
+    }
+
+    private void restoreProjectAtPreviousPosition(ProjectsItemAdapterResult result) {
+        adapter.add(result.getPosition(), result.getProjectsItem());
+
+        recyclerView.scrollToPosition(result.getPosition());
+    }
+
+    private void showDeleteProjectSuccessMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.message_project_deleted,
+                Snackbar.LENGTH_SHORT
+        ).show();
+    }
+
+    private void showDeleteProjectErrorMessage() {
+        Snackbar.make(
+                getActivity().findViewById(android.R.id.content),
+                R.string.error_message_project_deleted,
+                Snackbar.LENGTH_SHORT
+        ).show();
     }
 
     @Override
@@ -331,31 +349,40 @@ public class ProjectsFragment extends BaseFragment
     }
 
     @Override
-    public void onClockActivityToggle(@NonNull final ProjectsItem project) {
-        if (project.isActive()) {
+    public void onClockActivityToggle(@NonNull final ProjectsItemAdapterResult result) {
+        final ProjectsItem projectsItem = result.getProjectsItem();
+        if (projectsItem.isActive()) {
             // Check if clock out require confirmation.
             if (!confirmClockOutPreferences.shouldConfirmClockOut()) {
-                presenter.clockActivityChange(project, new Date());
+                clockActivityViewModel.input.clockOut(result, new Date());
                 return;
             }
 
             new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.confirm_clock_out_title))
                     .setMessage(getString(R.string.confirm_clock_out_message))
-                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> presenter.clockActivityChange(project, new Date()))
+                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> clockActivityViewModel.input.clockOut(result, new Date()))
                     .setNegativeButton(android.R.string.no, null)
                     .show();
             return;
         }
 
-        presenter.clockActivityChange(project, new Date());
+        clockActivityViewModel.input.clockIn(result, new Date());
     }
 
     @Override
-    public void onClockActivityAt(@NonNull final ProjectsItem project) {
+    public void onClockActivityAt(@NonNull final ProjectsItemAdapterResult result) {
+        final ProjectsItem projectsItem = result.getProjectsItem();
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
-                project.asProject(),
-                calendar -> presenter.clockActivityChange(project, calendar.getTime())
+                projectsItem.asProject(),
+                calendar -> {
+                    if (projectsItem.isActive()) {
+                        clockActivityViewModel.input.clockOut(result, calendar.getTime());
+                        return;
+                    }
+
+                    clockActivityViewModel.input.clockIn(result, calendar.getTime());
+                }
         );
 
         getFragmentManager().beginTransaction()
@@ -364,11 +391,15 @@ public class ProjectsFragment extends BaseFragment
     }
 
     @Override
-    public void onDelete(@NonNull final ProjectsItem project) {
+    public void onDelete(@NonNull final ProjectsItemAdapterResult result) {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.confirm_delete_project_title)
                 .setMessage(R.string.confirm_delete_project_message)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> presenter.deleteProject(project))
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    deleteProjectAtPosition(result.getPosition());
+
+                    removeProjectViewModel.input.remove(result);
+                })
                 .setNegativeButton(android.R.string.no, null)
                 .show();
     }

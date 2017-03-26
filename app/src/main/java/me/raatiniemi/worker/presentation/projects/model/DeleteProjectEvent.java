@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.presentation.projects.model;
 
 public class DeleteProjectEvent extends ProjectActionEvent {
-    private DeleteProjectEvent(ProjectsItem projectsItem) {
-        super(projectsItem);
+    private DeleteProjectEvent(ProjectsItemAdapterResult result) {
+        super(result);
     }
 
-    public static DeleteProjectEvent withProjectsItem(ProjectsItem projectsItem) {
-        return new DeleteProjectEvent(projectsItem);
+    public static DeleteProjectEvent withAdapterResult(ProjectsItemAdapterResult result) {
+        return new DeleteProjectEvent(result);
     }
 }
