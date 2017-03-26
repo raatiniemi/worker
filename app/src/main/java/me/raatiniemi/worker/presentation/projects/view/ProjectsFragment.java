@@ -48,7 +48,7 @@ import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResult;
-import me.raatiniemi.worker.presentation.projects.presenter.ProjectsPresenter;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ClockActivityViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.RemoveProjectViewModel;
@@ -64,15 +64,16 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
 
 public class ProjectsFragment extends RxFragment
-        implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener, ProjectsView {
+        implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
     @Inject
     RefreshActiveProjectsViewModel.ViewModel refreshViewModel;
+    @Inject
+    ClockActivityViewModel.ViewModel clockActivityViewModel;
     @Inject
     RemoveProjectViewModel.ViewModel removeProjectViewModel;
 
@@ -84,9 +85,6 @@ public class ProjectsFragment extends RxFragment
 
     @Inject
     ConfirmClockOutPreferences confirmClockOutPreferences;
-
-    @Inject
-    ProjectsPresenter presenter;
 
     @Inject
     ProjectsViewModel.ViewModel viewModel;
@@ -123,9 +121,9 @@ public class ProjectsFragment extends RxFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        presenter.attachView(this);
-
-        viewModel.input.startingPointForTimeSummary(timeSummaryPreferences.getStartingPointForTimeSummary());
+        int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
+        viewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+        clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
 
         viewModel.output.projects()
                 .compose(bindToLifecycle())
@@ -136,6 +134,32 @@ public class ProjectsFragment extends RxFragment
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(__ -> showGetProjectsErrorMessage());
+
+        clockActivityViewModel.output.clockInSuccess()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(result -> {
+                    updateNotificationForProject(result.getProjectsItem());
+                    updateProject(result.getPosition(), result.getProjectsItem());
+                });
+
+        clockActivityViewModel.error.clockInError()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(__ -> showClockInErrorMessage());
+
+        clockActivityViewModel.output.clockOutSuccess()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(result -> {
+                    updateNotificationForProject(result.getProjectsItem());
+                    updateProject(result.getPosition(), result.getProjectsItem());
+                });
+
+        clockActivityViewModel.error.clockOutError()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(__ -> showClockOutErrorMessage());
 
         removeProjectViewModel.output.removeProjectSuccess()
                 .compose(bindToLifecycle())
@@ -175,13 +199,6 @@ public class ProjectsFragment extends RxFragment
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        detachViewIfNotNull(presenter);
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
 
@@ -210,7 +227,9 @@ public class ProjectsFragment extends RxFragment
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent __) {
-        viewModel.input.startingPointForTimeSummary(timeSummaryPreferences.getStartingPointForTimeSummary());
+        int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
+        viewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+        clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
 
         reloadProjects();
     }
@@ -248,24 +267,18 @@ public class ProjectsFragment extends RxFragment
         }
     }
 
-    @Override
-    public void updateNotificationForProject(ProjectsItem project) {
+    private void updateNotificationForProject(ProjectsItem project) {
         ProjectNotificationService.startServiceWithContext(
                 getActivity(),
                 project.asProject()
         );
     }
 
-    @Override
-    public void updateProject(int position, ProjectsItem project) {
+    private void updateProject(int position, ProjectsItem project) {
         adapter.set(position, project);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showClockInErrorMessage() {
+    private void showClockInErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_clock_in,
@@ -273,11 +286,7 @@ public class ProjectsFragment extends RxFragment
         ).show();
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public void showClockOutErrorMessage() {
+    private void showClockOutErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_clock_out,
@@ -346,20 +355,20 @@ public class ProjectsFragment extends RxFragment
         if (projectsItem.isActive()) {
             // Check if clock out require confirmation.
             if (!confirmClockOutPreferences.shouldConfirmClockOut()) {
-                presenter.clockActivityChange(result, new Date());
+                clockActivityViewModel.input.clockOut(result, new Date());
                 return;
             }
 
             new AlertDialog.Builder(getActivity())
                     .setTitle(getString(R.string.confirm_clock_out_title))
                     .setMessage(getString(R.string.confirm_clock_out_message))
-                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> presenter.clockActivityChange(result, new Date()))
+                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> clockActivityViewModel.input.clockOut(result, new Date()))
                     .setNegativeButton(android.R.string.no, null)
                     .show();
             return;
         }
 
-        presenter.clockActivityChange(result, new Date());
+        clockActivityViewModel.input.clockIn(result, new Date());
     }
 
     @Override
@@ -367,7 +376,14 @@ public class ProjectsFragment extends RxFragment
         final ProjectsItem projectsItem = result.getProjectsItem();
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
                 projectsItem.asProject(),
-                calendar -> presenter.clockActivityChange(result, calendar.getTime())
+                calendar -> {
+                    if (projectsItem.isActive()) {
+                        clockActivityViewModel.input.clockOut(result, calendar.getTime());
+                        return;
+                    }
+
+                    clockActivityViewModel.input.clockIn(result, calendar.getTime());
+                }
         );
 
         getFragmentManager().beginTransaction()

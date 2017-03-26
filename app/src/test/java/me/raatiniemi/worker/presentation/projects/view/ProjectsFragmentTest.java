@@ -24,9 +24,11 @@ import org.junit.Test;
 import java.util.Collections;
 
 import me.raatiniemi.worker.RobolectricTestCase;
+import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.projects.viewmodel.ClockActivityViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
@@ -53,13 +55,16 @@ public class ProjectsFragmentTest extends RobolectricTestCase {
                 .thenReturn(Collections.emptyList());
 
         GetProjectTimeSince getProjectTimeSince = mock(GetProjectTimeSince.class);
+        ClockActivityChange clockActivityChange = mock(ClockActivityChange.class);
 
         ProjectsViewModel.ViewModel viewModel = new ProjectsViewModel.ViewModel(getProjects, getProjectTimeSince);
+        ClockActivityViewModel.ViewModel clockActivityViewModel = new ClockActivityViewModel.ViewModel(clockActivityChange, getProjectTimeSince);
         adapter = mock(ProjectsAdapter.class);
 
         fragment = new ProjectsFragment();
         fragment.timeSummaryPreferences = timeSummaryPreferences;
         fragment.viewModel = viewModel;
+        fragment.clockActivityViewModel = clockActivityViewModel;
         fragment.adapter = adapter;
 
         eventBus.register(fragment);
