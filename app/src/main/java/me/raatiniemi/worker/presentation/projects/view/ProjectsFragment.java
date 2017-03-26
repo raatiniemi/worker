@@ -71,6 +71,8 @@ public class ProjectsFragment extends RxFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
     @Inject
+    ProjectsViewModel.ViewModel projectsViewModel;
+    @Inject
     RefreshActiveProjectsViewModel.ViewModel refreshViewModel;
     @Inject
     ClockActivityViewModel.ViewModel clockActivityViewModel;
@@ -85,9 +87,6 @@ public class ProjectsFragment extends RxFragment
 
     @Inject
     ConfirmClockOutPreferences confirmClockOutPreferences;
-
-    @Inject
-    ProjectsViewModel.ViewModel viewModel;
 
     private Subscription refreshProjectsSubscription;
     private RecyclerView recyclerView;
@@ -122,15 +121,15 @@ public class ProjectsFragment extends RxFragment
         recyclerView.setAdapter(adapter);
 
         int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
-        viewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+        projectsViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
         clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
 
-        viewModel.output.projects()
+        projectsViewModel.output.projects()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(adapter::add);
 
-        viewModel.error.projectsError()
+        projectsViewModel.error.projectsError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(__ -> showGetProjectsErrorMessage());
@@ -228,7 +227,7 @@ public class ProjectsFragment extends RxFragment
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent __) {
         int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
-        viewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+        projectsViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
         clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
 
         reloadProjects();
@@ -246,7 +245,7 @@ public class ProjectsFragment extends RxFragment
         adapter.clear();
 
         // TODO: Move to input event for view model.
-        viewModel.output.projects()
+        projectsViewModel.output.projects()
                 .compose(bindToLifecycle())
                 .subscribe(adapter::add);
     }

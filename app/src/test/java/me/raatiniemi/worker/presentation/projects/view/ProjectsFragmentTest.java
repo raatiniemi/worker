@@ -57,13 +57,13 @@ public class ProjectsFragmentTest extends RobolectricTestCase {
         GetProjectTimeSince getProjectTimeSince = mock(GetProjectTimeSince.class);
         ClockActivityChange clockActivityChange = mock(ClockActivityChange.class);
 
-        ProjectsViewModel.ViewModel viewModel = new ProjectsViewModel.ViewModel(getProjects, getProjectTimeSince);
+        ProjectsViewModel.ViewModel projectsViewModel = new ProjectsViewModel.ViewModel(getProjects, getProjectTimeSince);
         ClockActivityViewModel.ViewModel clockActivityViewModel = new ClockActivityViewModel.ViewModel(clockActivityChange, getProjectTimeSince);
         adapter = mock(ProjectsAdapter.class);
 
         fragment = new ProjectsFragment();
         fragment.timeSummaryPreferences = timeSummaryPreferences;
-        fragment.viewModel = viewModel;
+        fragment.projectsViewModel = projectsViewModel;
         fragment.clockActivityViewModel = clockActivityViewModel;
         fragment.adapter = adapter;
 
