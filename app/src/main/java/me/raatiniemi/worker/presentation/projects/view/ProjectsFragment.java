@@ -139,7 +139,7 @@ public class ProjectsFragment extends RxFragment
                 .compose(applySchedulers())
                 .subscribe(result -> {
                     updateNotificationForProject(result.getProjectsItem());
-                    updateProject(result.getPosition(), result.getProjectsItem());
+                    updateProject(result);
                 });
 
         clockActivityViewModel.error.clockInError()
@@ -152,7 +152,7 @@ public class ProjectsFragment extends RxFragment
                 .compose(applySchedulers())
                 .subscribe(result -> {
                     updateNotificationForProject(result.getProjectsItem());
-                    updateProject(result.getPosition(), result.getProjectsItem());
+                    updateProject(result);
                 });
 
         clockActivityViewModel.error.clockOutError()
@@ -273,8 +273,8 @@ public class ProjectsFragment extends RxFragment
         );
     }
 
-    private void updateProject(int position, ProjectsItem project) {
-        adapter.set(position, project);
+    private void updateProject(ProjectsItemAdapterResult result) {
+        adapter.set(result.getPosition(), result.getProjectsItem());
     }
 
     private void showClockInErrorMessage() {
