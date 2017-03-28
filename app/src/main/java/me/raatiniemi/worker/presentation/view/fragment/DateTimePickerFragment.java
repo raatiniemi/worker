@@ -83,7 +83,7 @@ public class DateTimePickerFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!isStateValid()) {
+        if (isStateInvalid()) {
             dismissDialogWithInvalidState();
             return;
         }
@@ -108,13 +108,13 @@ public class DateTimePickerFragment extends BaseFragment
     }
 
     @CallSuper
-    protected boolean isStateValid() {
+    protected boolean isStateInvalid() {
         if (isNull(onDateTimeSetListener)) {
             Timber.w("No OnDateTimeSetListener have been supplied");
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     private void dismissDialogWithInvalidState() {

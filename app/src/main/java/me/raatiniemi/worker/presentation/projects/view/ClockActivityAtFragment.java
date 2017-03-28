@@ -60,13 +60,13 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     }
 
     @Override
-    protected boolean isStateValid() {
+    protected boolean isStateInvalid() {
         if (isNull(onClockActivityAtListener)) {
             Timber.w("No OnClockActivityAtListener have been supplied");
-            return false;
+            return true;
         }
 
-        return super.isStateValid();
+        return super.isStateInvalid();
     }
 
     @Override
