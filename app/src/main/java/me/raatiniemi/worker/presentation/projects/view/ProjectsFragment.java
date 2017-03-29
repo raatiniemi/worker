@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -57,6 +56,7 @@ import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
+import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import rx.Observable;
 import rx.Subscription;
@@ -358,12 +358,12 @@ public class ProjectsFragment extends RxFragment
                 return;
             }
 
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(getString(R.string.confirm_clock_out_title))
-                    .setMessage(getString(R.string.confirm_clock_out_message))
-                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> clockActivityViewModel.input.clockOut(result, new Date()))
-                    .setNegativeButton(android.R.string.no, null)
-                    .show();
+            ConfirmClockOutDialog.show(getActivity())
+                    .filter(RxDialog::isPositive)
+                    .subscribe(
+                            __ -> clockActivityViewModel.input.clockOut(result, new Date()),
+                            Timber::w
+                    );
             return;
         }
 
@@ -392,15 +392,15 @@ public class ProjectsFragment extends RxFragment
 
     @Override
     public void onDelete(@NonNull final ProjectsItemAdapterResult result) {
-        new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.confirm_delete_project_title)
-                .setMessage(R.string.confirm_delete_project_message)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    deleteProjectAtPosition(result.getPosition());
+        RemoveProjectDialog.show(getActivity())
+                .filter(RxDialog::isPositive)
+                .subscribe(
+                        __ -> {
+                            deleteProjectAtPosition(result.getPosition());
 
-                    removeProjectViewModel.input.remove(result);
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .show();
+                            removeProjectViewModel.input.remove(result);
+                        },
+                        Timber::w
+                );
     }
 }

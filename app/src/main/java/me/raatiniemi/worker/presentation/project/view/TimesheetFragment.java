@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.project.view;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,6 +43,7 @@ import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
+import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
@@ -81,19 +81,16 @@ public class TimesheetFragment extends BaseFragment
 
             switch (item.getItemId()) {
                 case R.id.actions_project_timesheet_delete:
-                    // Before we remove the time, the user have to confirm this
-                    // action since the remove and register is fairly close.
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.confirm_delete_time_title)
-                            .setMessage(R.string.confirm_delete_time_message)
-                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                                presenter.remove(adapter.getSelectedItems());
+                    DeleteTimeDialog.show(getActivity())
+                            .filter(RxDialog::isPositive)
+                            .subscribe(
+                                    __ -> {
+                                        presenter.remove(adapter.getSelectedItems());
 
-                                // Since the item have been removed, we can finish the action.
-                                actionMode.finish();
-                            })
-                            .setNegativeButton(android.R.string.no, null)
-                            .show();
+                                        actionMode.finish();
+                                    },
+                                    Timber::w
+                            );
 
                     // Since we are waiting for the user to confirm the action, we are unable to
                     // finish the action here.
