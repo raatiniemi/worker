@@ -53,10 +53,10 @@ public interface ProjectsViewModel {
 
         private int startingPoint = GetProjectTimeSince.MONTH;
         private Observable<List<ProjectsItem>> projects;
-        private PublishSubject<Throwable> projectsError = PublishSubject.create();
+        private final PublishSubject<Throwable> projectsError = PublishSubject.create();
 
-        private GetProjects getProjects;
-        private GetProjectTimeSince getProjectTimeSince;
+        private final GetProjects getProjects;
+        private final GetProjectTimeSince getProjectTimeSince;
 
         public ViewModel(
                 @NonNull GetProjects getProjects,

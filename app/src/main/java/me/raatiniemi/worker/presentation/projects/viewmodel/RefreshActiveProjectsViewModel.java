@@ -40,8 +40,8 @@ public interface RefreshActiveProjectsViewModel {
         public final Input input = this;
         public final Output output = this;
 
-        private PublishSubject<List<ProjectsItem>> projects = PublishSubject.create();
-        private PublishSubject<List<Integer>> positions = PublishSubject.create();
+        private final PublishSubject<List<ProjectsItem>> projects = PublishSubject.create();
+        private final PublishSubject<List<Integer>> positions = PublishSubject.create();
 
         public ViewModel() {
             projects.map(this::getPositionsForActiveProjects)
