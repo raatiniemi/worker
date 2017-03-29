@@ -125,6 +125,7 @@ public class CreateProjectViewModelTest {
         vm.output.isProjectNameValid().subscribe(isProjectNameValid);
 
         vm.input.projectName(null);
+
         isProjectNameValid.assertValues(Boolean.FALSE, Boolean.FALSE);
     }
 
@@ -134,6 +135,7 @@ public class CreateProjectViewModelTest {
         vm.output.isProjectNameValid().subscribe(isProjectNameValid);
 
         vm.input.projectName("");
+
         isProjectNameValid.assertValues(Boolean.FALSE, Boolean.FALSE);
     }
 
@@ -143,6 +145,7 @@ public class CreateProjectViewModelTest {
         vm.output.isProjectNameValid().subscribe(isProjectNameValid);
 
         vm.input.projectName("Name");
+
         isProjectNameValid.assertValues(Boolean.FALSE, Boolean.TRUE);
     }
 }
