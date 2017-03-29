@@ -40,7 +40,7 @@ public class FileUtils {
      * @param from The source file.
      * @param to   The destination file.
      * @return Number of bytes copied between the locations.
-     * @throws IOException
+     * @throws IOException If file copy is unsuccessful.
      */
     public static long copy(@NonNull File from, @NonNull File to) throws IOException {
         Timber.d("Copy file from %s to %s", from.getPath(), to.getParent());
