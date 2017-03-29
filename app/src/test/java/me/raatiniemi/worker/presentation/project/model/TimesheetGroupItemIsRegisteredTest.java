@@ -32,8 +32,8 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemIsRegisteredTest {
-    private boolean expected;
-    private TimesheetChildItem[] childItems;
+    private final boolean expected;
+    private final TimesheetChildItem[] childItems;
 
     public TimesheetGroupItemIsRegisteredTest(
             boolean expected,

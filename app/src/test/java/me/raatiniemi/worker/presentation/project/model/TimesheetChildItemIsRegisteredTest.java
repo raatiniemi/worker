@@ -31,9 +31,9 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class TimesheetChildItemIsRegisteredTest {
-    private String message;
-    private boolean expected;
-    private Time time;
+    private final String message;
+    private final boolean expected;
+    private final Time time;
 
     public TimesheetChildItemIsRegisteredTest(
             String message,

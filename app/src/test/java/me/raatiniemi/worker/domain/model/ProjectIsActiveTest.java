@@ -31,9 +31,9 @@ import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class ProjectIsActiveTest {
-    private String message;
-    private boolean expected;
-    private Time[] times;
+    private final String message;
+    private final boolean expected;
+    private final Time[] times;
 
     public ProjectIsActiveTest(
             String message,

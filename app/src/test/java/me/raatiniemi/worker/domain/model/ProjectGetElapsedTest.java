@@ -33,9 +33,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class ProjectGetElapsedTest {
-    private String message;
-    private long expected;
-    private Time[] times;
+    private final String message;
+    private final long expected;
+    private final Time[] times;
 
     public ProjectGetElapsedTest(String message, long expected, Time... times) {
         this.message = message;

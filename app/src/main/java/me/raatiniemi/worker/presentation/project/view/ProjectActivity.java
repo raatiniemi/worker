@@ -40,6 +40,7 @@ public class ProjectActivity extends BaseActivity {
      */
     private static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     HideRegisteredTimePreferences hideRegisteredTimePreferences;
 

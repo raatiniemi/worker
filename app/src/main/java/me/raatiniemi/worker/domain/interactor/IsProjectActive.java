@@ -23,7 +23,7 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class IsProjectActive {
-    private TimeRepository timeRepository;
+    private final TimeRepository timeRepository;
 
     public IsProjectActive(TimeRepository timeRepository) {
         this.timeRepository = timeRepository;

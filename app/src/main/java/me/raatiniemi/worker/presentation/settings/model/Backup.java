@@ -29,7 +29,7 @@ public class Backup {
     /**
      * Backup directory.
      */
-    private File backup;
+    private final File backup;
 
     /**
      * Constructor.

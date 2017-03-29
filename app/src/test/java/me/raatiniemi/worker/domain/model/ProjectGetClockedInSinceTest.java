@@ -34,9 +34,9 @@ import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class ProjectGetClockedInSinceTest {
-    private String message;
-    private Date expected;
-    private Time[] times;
+    private final String message;
+    private final Date expected;
+    private final Time[] times;
 
     public ProjectGetClockedInSinceTest(
             String message,

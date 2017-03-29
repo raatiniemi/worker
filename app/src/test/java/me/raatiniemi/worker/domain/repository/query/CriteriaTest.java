@@ -28,9 +28,9 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class CriteriaTest {
-    private String message;
-    private String expected;
-    private Criteria criteria;
+    private final String message;
+    private final String expected;
+    private final Criteria criteria;
 
     public CriteriaTest(
             String message,

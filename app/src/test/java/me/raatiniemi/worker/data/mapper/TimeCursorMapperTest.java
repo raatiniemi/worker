@@ -38,8 +38,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class TimeCursorMapperTest {
-    private Time expected;
-    private Cursor cursor;
+    private final Time expected;
+    private final Cursor cursor;
 
     public TimeCursorMapperTest(Time expected, Cursor cursor) {
         this.expected = expected;

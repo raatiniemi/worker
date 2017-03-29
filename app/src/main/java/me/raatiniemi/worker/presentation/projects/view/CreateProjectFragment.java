@@ -47,15 +47,19 @@ import static me.raatiniemi.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 
 public class CreateProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
+    @SuppressWarnings("CanBeFinal")
     @Inject
     EventBus eventBus;
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     CreateProjectViewModel.ViewModel viewModel;
 
+    @SuppressWarnings("CanBeFinal")
     @BindView(R.id.fragment_create_project_name)
     EditText projectName;
 
+    @SuppressWarnings("CanBeFinal")
     @BindView(R.id.fragment_create_project_submit)
     TextView projectSubmit;
 

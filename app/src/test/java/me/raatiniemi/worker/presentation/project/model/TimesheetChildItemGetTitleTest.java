@@ -34,9 +34,9 @@ import static me.raatiniemi.util.NullUtil.nonNull;
 
 @RunWith(Parameterized.class)
 public class TimesheetChildItemGetTitleTest {
-    private String message;
-    private String expected;
-    private Time time;
+    private final String message;
+    private final String expected;
+    private final Time time;
 
     public TimesheetChildItemGetTitleTest(
             String message,

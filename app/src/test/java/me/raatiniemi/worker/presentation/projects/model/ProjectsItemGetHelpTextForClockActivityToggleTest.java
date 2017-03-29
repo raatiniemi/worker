@@ -32,8 +32,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class ProjectsItemGetHelpTextForClockActivityToggleTest extends ProjectsItemResourceTest {
-    private String expected;
-    private Project project;
+    private final String expected;
+    private final Project project;
 
     public ProjectsItemGetHelpTextForClockActivityToggleTest(
             String expected,

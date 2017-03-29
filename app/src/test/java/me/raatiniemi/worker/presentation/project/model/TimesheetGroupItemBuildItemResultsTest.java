@@ -33,10 +33,10 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemBuildItemResultsTest {
-    private String message;
-    private List<TimeInAdapterResult> expected;
-    private int groupIndex;
-    private TimesheetGroupItem groupItem;
+    private final String message;
+    private final List<TimeInAdapterResult> expected;
+    private final int groupIndex;
+    private final TimesheetGroupItem groupItem;
 
     public TimesheetGroupItemBuildItemResultsTest(
             String message,

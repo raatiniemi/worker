@@ -19,7 +19,7 @@ package me.raatiniemi.worker.presentation.projects.model;
 import me.raatiniemi.worker.domain.model.Project;
 
 public class CreateProjectEvent {
-    private Project project;
+    private final Project project;
 
     public CreateProjectEvent(Project project) {
         this.project = project;

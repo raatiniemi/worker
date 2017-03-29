@@ -34,10 +34,10 @@ import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class ProjectEqualsHashCodeTest {
-    private String message;
-    private Boolean expected;
-    private Project project;
-    private Object compareTo;
+    private final String message;
+    private final Boolean expected;
+    private final Project project;
+    private final Object compareTo;
 
     public ProjectEqualsHashCodeTest(
             String message,

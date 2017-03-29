@@ -30,10 +30,10 @@ import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class CalculatedTimeEqualsHashCodeTest {
-    private String message;
-    private Boolean expected;
-    private CalculatedTime calculatedTime;
-    private Object compareTo;
+    private final String message;
+    private final Boolean expected;
+    private final CalculatedTime calculatedTime;
+    private final Object compareTo;
 
     public CalculatedTimeEqualsHashCodeTest(
             String message,

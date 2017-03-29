@@ -39,9 +39,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest {
-    private String message;
-    private String expected;
-    private Time[] registeredTime;
+    private final String message;
+    private final String expected;
+    private final Time[] registeredTime;
 
     public ProjectsItemGetClockedInSinceTest(
             String message,

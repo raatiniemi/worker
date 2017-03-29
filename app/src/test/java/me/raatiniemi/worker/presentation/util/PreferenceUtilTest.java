@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class PreferenceUtilTest {
     private boolean checked;
-    private PreferenceUtil.ReadCheckBoxPreference toggle = isChecked -> this.checked = isChecked;
+    private final PreferenceUtil.ReadCheckBoxPreference toggle = isChecked -> this.checked = isChecked;
 
     @Test
     public void populateCheckBoxPreference_withCheckedValue() {

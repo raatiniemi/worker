@@ -31,8 +31,8 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetChildItemGetTimeSummaryTest {
-    private String expected;
-    private Time time;
+    private final String expected;
+    private final Time time;
 
     public TimesheetChildItemGetTimeSummaryTest(String expected, Time time) {
         this.expected = expected;

@@ -25,7 +25,7 @@ public class CalculateTime {
     private static final int SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR;
     private static final int SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
 
-    private long milliseconds;
+    private final long milliseconds;
 
     private CalculateTime(long milliseconds) {
         this.milliseconds = milliseconds;

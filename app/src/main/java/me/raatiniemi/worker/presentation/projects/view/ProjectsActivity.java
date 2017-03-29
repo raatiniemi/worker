@@ -46,6 +46,7 @@ public class ProjectsActivity extends BaseActivity {
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
     private static final String FRAGMENT_CREATE_PROJECT_TAG = "create project";
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     EventBus eventBus;
 

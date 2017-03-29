@@ -36,7 +36,7 @@ public class ResumeNotification extends OngoingNotification {
 
     private static final int RESUME_ICON = 0;
 
-    private boolean useChronometer;
+    private final boolean useChronometer;
 
     private ResumeNotification(Context context, Project project, boolean useChronometer) {
         super(context, project);

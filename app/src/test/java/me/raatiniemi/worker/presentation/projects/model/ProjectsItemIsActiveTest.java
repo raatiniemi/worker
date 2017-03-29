@@ -32,8 +32,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class ProjectsItemIsActiveTest {
-    private boolean expected;
-    private Project project;
+    private final boolean expected;
+    private final Project project;
 
     public ProjectsItemIsActiveTest(boolean expected, Project project) {
         this.expected = expected;

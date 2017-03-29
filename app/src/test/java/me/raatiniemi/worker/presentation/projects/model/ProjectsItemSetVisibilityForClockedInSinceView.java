@@ -37,8 +37,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class ProjectsItemSetVisibilityForClockedInSinceView {
-    private int expectedViewVisibility;
-    private Project project;
+    private final int expectedViewVisibility;
+    private final Project project;
 
     public ProjectsItemSetVisibilityForClockedInSinceView(
             int expectedViewVisibility,

@@ -45,15 +45,19 @@ public class ProjectFragment extends BasePreferenceFragment
     private static final String ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
     private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     ConfirmClockOutPreferences confirmClockOutPreferences;
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     OngoingNotificationPreferences ongoingNotificationPreferences;
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     TimeSummaryPreferences timeSummaryPreferences;
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     ProjectPresenter presenter;
 

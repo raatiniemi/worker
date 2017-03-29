@@ -33,10 +33,10 @@ import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class TimeInAdapterResultTest {
-    private String message;
-    private Boolean expected;
-    private TimeInAdapterResult timeInAdapterResult;
-    private Object compareTo;
+    private final String message;
+    private final Boolean expected;
+    private final TimeInAdapterResult timeInAdapterResult;
+    private final Object compareTo;
 
     public TimeInAdapterResultTest(
             String message,

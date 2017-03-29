@@ -19,8 +19,8 @@ package me.raatiniemi.worker.presentation.util;
 import android.support.v7.widget.RecyclerView;
 
 public class SelectionManagerAdapterDecorator<T> extends SelectionManager<T> {
-    private RecyclerView.Adapter adapter;
-    private SelectionListener selectionListener;
+    private final RecyclerView.Adapter adapter;
+    private final SelectionListener selectionListener;
 
     public SelectionManagerAdapterDecorator(
             RecyclerView.Adapter adapter,

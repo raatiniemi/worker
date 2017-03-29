@@ -28,8 +28,8 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class CalculatedTimeAsMillisecondsTest {
-    private long expected;
-    private CalculatedTime calculatedTime;
+    private final long expected;
+    private final CalculatedTime calculatedTime;
 
     public CalculatedTimeAsMillisecondsTest(long expected, CalculatedTime calculatedTime) {
         this.expected = expected;

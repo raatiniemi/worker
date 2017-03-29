@@ -52,7 +52,7 @@ public interface ProjectsViewModel {
         public final Error error = this;
 
         private int startingPoint = GetProjectTimeSince.MONTH;
-        private Observable<List<ProjectsItem>> projects;
+        private final Observable<List<ProjectsItem>> projects;
         private final PublishSubject<Throwable> projectsError = PublishSubject.create();
 
         private final GetProjects getProjects;

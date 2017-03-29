@@ -44,15 +44,15 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class ClockActivityViewModelTest {
-    private ClockActivityChange clockActivityChange = mock(ClockActivityChange.class);
-    private GetProjectTimeSince getProjectTimeSince = mock(GetProjectTimeSince.class);
+    private final ClockActivityChange clockActivityChange = mock(ClockActivityChange.class);
+    private final GetProjectTimeSince getProjectTimeSince = mock(GetProjectTimeSince.class);
     private ClockActivityViewModel.ViewModel vm;
 
-    private TestSubscriber<ProjectsItemAdapterResult> clockInSuccess = new TestSubscriber<>();
-    private TestSubscriber<Throwable> clockInError = new TestSubscriber<>();
+    private final TestSubscriber<ProjectsItemAdapterResult> clockInSuccess = new TestSubscriber<>();
+    private final TestSubscriber<Throwable> clockInError = new TestSubscriber<>();
 
-    private TestSubscriber<ProjectsItemAdapterResult> clockOutSuccess = new TestSubscriber<>();
-    private TestSubscriber<Throwable> clockOutError = new TestSubscriber<>();
+    private final TestSubscriber<ProjectsItemAdapterResult> clockOutSuccess = new TestSubscriber<>();
+    private final TestSubscriber<Throwable> clockOutError = new TestSubscriber<>();
 
     @Before
     public void setUp() {

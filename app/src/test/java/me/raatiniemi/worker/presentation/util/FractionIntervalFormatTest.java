@@ -28,8 +28,8 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class FractionIntervalFormatTest {
-    private String expected;
-    private long intervalInMilliseconds;
+    private final String expected;
+    private final long intervalInMilliseconds;
 
     public FractionIntervalFormatTest(String expected, long intervalInMilliseconds) {
         this.expected = expected;

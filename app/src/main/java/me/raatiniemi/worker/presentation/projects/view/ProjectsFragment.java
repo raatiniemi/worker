@@ -72,19 +72,23 @@ public class ProjectsFragment extends RxFragment
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
     @Inject
     ProjectsViewModel.ViewModel projectsViewModel;
+    @SuppressWarnings("CanBeFinal")
     @Inject
     RefreshActiveProjectsViewModel.ViewModel refreshViewModel;
     @Inject
     ClockActivityViewModel.ViewModel clockActivityViewModel;
+    @SuppressWarnings("CanBeFinal")
     @Inject
     RemoveProjectViewModel.ViewModel removeProjectViewModel;
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     EventBus eventBus;
 
     @Inject
     TimeSummaryPreferences timeSummaryPreferences;
 
+    @SuppressWarnings("CanBeFinal")
     @Inject
     ConfirmClockOutPreferences confirmClockOutPreferences;
 

@@ -33,8 +33,8 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class ProjectsItemGetTimeSummaryTest {
-    private String expected;
-    private Time[] registeredTime;
+    private final String expected;
+    private final Time[] registeredTime;
 
     public ProjectsItemGetTimeSummaryTest(String expected, Time... registeredTime) {
         this.expected = expected;

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Set;
 
 public class SelectionManager<T> {
-    private Set<T> selectedItems = new HashSet<>();
+    private final Set<T> selectedItems = new HashSet<>();
 
     public boolean isSelectionActivated() {
         return !selectedItems.isEmpty();

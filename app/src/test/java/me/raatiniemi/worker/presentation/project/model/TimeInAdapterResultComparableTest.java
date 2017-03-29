@@ -31,10 +31,10 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimeInAdapterResultComparableTest {
-    private String message;
-    private int expected;
-    private TimeInAdapterResult lhs;
-    private TimeInAdapterResult rhs;
+    private final String message;
+    private final int expected;
+    private final TimeInAdapterResult lhs;
+    private final TimeInAdapterResult rhs;
 
     public TimeInAdapterResultComparableTest(
             String message,

@@ -32,8 +32,8 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemGetTimeSummaryWithDifferenceTest {
-    private String expected;
-    private TimesheetChildItem[] childItems;
+    private final String expected;
+    private final TimesheetChildItem[] childItems;
 
     public TimesheetGroupItemGetTimeSummaryWithDifferenceTest(
             String expected,

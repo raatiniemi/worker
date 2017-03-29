@@ -37,8 +37,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class ProjectCursorMapperTest {
-    private Project expected;
-    private Cursor cursor;
+    private final Project expected;
+    private final Cursor cursor;
 
     public ProjectCursorMapperTest(Project expected, Cursor cursor) {
         this.expected = expected;

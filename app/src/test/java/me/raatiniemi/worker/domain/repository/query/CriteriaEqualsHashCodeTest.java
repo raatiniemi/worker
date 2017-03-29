@@ -30,10 +30,10 @@ import static me.raatiniemi.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class CriteriaEqualsHashCodeTest {
-    private String message;
-    private Boolean expected;
-    private Criteria criteria;
-    private Object compareTo;
+    private final String message;
+    private final Boolean expected;
+    private final Criteria criteria;
+    private final Object compareTo;
 
     public CriteriaEqualsHashCodeTest(
             String message,

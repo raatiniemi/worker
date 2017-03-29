@@ -30,8 +30,8 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemGetFirstLetterFromTitleTest {
-    private String expected;
-    private Calendar calendar;
+    private final String expected;
+    private final Calendar calendar;
 
     public TimesheetGroupItemGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
         this.expected = expected;

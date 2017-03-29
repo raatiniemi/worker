@@ -36,12 +36,10 @@ import timber.log.Timber;
 import static me.raatiniemi.util.NullUtil.nonNull;
 
 public class BackupService extends IntentService {
-    private EventBus eventBus;
+    private final EventBus eventBus = EventBus.getDefault();
 
     public BackupService() {
         super("BackupService");
-
-        this.eventBus = EventBus.getDefault();
     }
 
     public static void startBackup(Context context) {
