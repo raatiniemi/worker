@@ -37,10 +37,12 @@ public interface ProjectsViewModel {
     }
 
     interface Output {
+        @NonNull
         Observable<List<ProjectsItem>> projects();
     }
 
     interface Error {
+        @NonNull
         Observable<Throwable> projectsError();
     }
 
@@ -56,7 +58,10 @@ public interface ProjectsViewModel {
         private GetProjects getProjects;
         private GetProjectTimeSince getProjectTimeSince;
 
-        public ViewModel(GetProjects getProjects, GetProjectTimeSince getProjectTimeSince) {
+        public ViewModel(
+                @NonNull GetProjects getProjects,
+                @NonNull GetProjectTimeSince getProjectTimeSince
+        ) {
             this.getProjects = getProjects;
             this.getProjectTimeSince = getProjectTimeSince;
 
@@ -80,14 +85,14 @@ public interface ProjectsViewModel {
         }
 
         @NonNull
-        private ProjectsItem populateItemWithRegisteredTime(Project project) {
+        private ProjectsItem populateItemWithRegisteredTime(@NonNull Project project) {
             List<Time> registeredTime = getRegisteredTime(project);
 
             return new ProjectsItem(project, registeredTime);
         }
 
         @NonNull
-        private List<Time> getRegisteredTime(Project project) {
+        private List<Time> getRegisteredTime(@NonNull Project project) {
             try {
                 return getProjectTimeSince.execute(project, startingPoint);
             } catch (DomainException e) {
@@ -97,12 +102,14 @@ public interface ProjectsViewModel {
             }
         }
 
+        @NonNull
         private Observable.Transformer<ProjectsItem, ProjectsItem> redirectErrorsToSubject() {
             return source -> source
                     .doOnError(projectsError::onNext)
                     .onErrorResumeNext(Observable.empty());
         }
 
+        @NonNull
         private Observable.Transformer<ProjectsItem, ProjectsItem> hideErrors() {
             return source -> source
                     .doOnError(e -> {
@@ -123,11 +130,13 @@ public interface ProjectsViewModel {
             }
         }
 
+        @NonNull
         @Override
         public Observable<List<ProjectsItem>> projects() {
             return projects;
         }
 
+        @NonNull
         @Override
         public Observable<Throwable> projectsError() {
             return projectsError;

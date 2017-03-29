@@ -26,14 +26,16 @@ import rx.subjects.PublishSubject;
 
 public interface RemoveProjectViewModel {
     interface Input {
-        void remove(ProjectsItemAdapterResult result);
+        void remove(@NonNull ProjectsItemAdapterResult result);
     }
 
     interface Output {
+        @NonNull
         Observable<ProjectsItemAdapterResult> removeProjectSuccess();
     }
 
     interface Error {
+        @NonNull
         Observable<ProjectsItemAdapterResult> removeProjectError();
     }
 
@@ -41,12 +43,14 @@ public interface RemoveProjectViewModel {
         public final Input input = this;
         public final Output output = this;
         public final Error error = this;
+
         private final PublishSubject<ProjectsItemAdapterResult> removeProjectSuccess = PublishSubject.create();
         private final PublishSubject<ProjectsItemAdapterResult> removeProjectError = PublishSubject.create();
         private final PublishSubject<ProjectsItemAdapterResult> project = PublishSubject.create();
+
         private final RemoveProject removeProject;
 
-        public ViewModel(RemoveProject removeProject) {
+        public ViewModel(@NonNull RemoveProject removeProject) {
             this.removeProject = removeProject;
 
             project
@@ -58,11 +62,12 @@ public interface RemoveProjectViewModel {
         }
 
         @NonNull
-        private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> redirectErrorToSubject(ProjectsItemAdapterResult result) {
+        private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> redirectErrorToSubject(@NonNull ProjectsItemAdapterResult result) {
             return source -> source.doOnError(__ -> removeProjectError.onNext(result))
                     .onErrorResumeNext(Observable.empty());
         }
 
+        @NonNull
         private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> hideErrors() {
             return source -> source
                     .doOnError(__ -> {
@@ -70,7 +75,8 @@ public interface RemoveProjectViewModel {
                     .onErrorResumeNext(Observable.empty());
         }
 
-        private Observable<ProjectsItemAdapterResult> executeUseCase(ProjectsItemAdapterResult result) {
+        @NonNull
+        private Observable<ProjectsItemAdapterResult> executeUseCase(@NonNull ProjectsItemAdapterResult result) {
             try {
                 ProjectsItem projectsItem = result.getProjectsItem();
                 removeProject.execute(projectsItem.asProject());
@@ -82,15 +88,17 @@ public interface RemoveProjectViewModel {
         }
 
         @Override
-        public void remove(ProjectsItemAdapterResult result) {
+        public void remove(@NonNull ProjectsItemAdapterResult result) {
             project.onNext(result);
         }
 
+        @NonNull
         @Override
         public Observable<ProjectsItemAdapterResult> removeProjectSuccess() {
             return removeProjectSuccess;
         }
 
+        @NonNull
         @Override
         public Observable<ProjectsItemAdapterResult> removeProjectError() {
             return removeProjectError;

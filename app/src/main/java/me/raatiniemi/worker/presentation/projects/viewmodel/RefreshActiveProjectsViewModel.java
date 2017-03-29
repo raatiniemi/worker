@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.presentation.projects.viewmodel;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,10 +28,11 @@ import rx.subjects.PublishSubject;
 
 public interface RefreshActiveProjectsViewModel {
     interface Input {
-        void projects(List<ProjectsItem> projects);
+        void projects(@NonNull List<ProjectsItem> projects);
     }
 
     interface Output {
+        @NonNull
         Observable<List<Integer>> positionsForActiveProjects();
     }
 
@@ -46,7 +49,8 @@ public interface RefreshActiveProjectsViewModel {
                     .subscribe(positions);
         }
 
-        private List<Integer> getPositionsForActiveProjects(List<ProjectsItem> items) {
+        @NonNull
+        private List<Integer> getPositionsForActiveProjects(@NonNull List<ProjectsItem> items) {
             if (items.isEmpty()) {
                 return Collections.emptyList();
             }
@@ -63,6 +67,7 @@ public interface RefreshActiveProjectsViewModel {
             return positions;
         }
 
+        @NonNull
         private <T> Observable.Transformer<T, T> hideErrors() {
             return source -> source
                     .doOnError(e -> {
@@ -71,10 +76,11 @@ public interface RefreshActiveProjectsViewModel {
         }
 
         @Override
-        public void projects(List<ProjectsItem> projects) {
+        public void projects(@NonNull List<ProjectsItem> projects) {
             this.projects.onNext(projects);
         }
 
+        @NonNull
         @Override
         public Observable<List<Integer>> positionsForActiveProjects() {
             return positions.asObservable();
