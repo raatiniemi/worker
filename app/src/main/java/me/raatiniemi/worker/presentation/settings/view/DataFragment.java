@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.settings.view;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
@@ -41,6 +40,7 @@ import me.raatiniemi.worker.data.service.data.RestoreService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
+import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import timber.log.Timber;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -205,20 +205,20 @@ public class DataFragment extends BasePreferenceFragment
      * Initiate the restore action.
      */
     private void runRestore() {
-        new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.activity_settings_restore_confirm_title)
-                .setMessage(R.string.activity_settings_restore_confirm_message)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    Snackbar.make(
-                            getActivity().findViewById(android.R.id.content),
-                            R.string.message_restoring_data,
-                            Snackbar.LENGTH_SHORT
-                    ).show();
+        ConfirmRestoreDialog.show(getActivity())
+                .filter(RxDialog::isPositive)
+                .subscribe(
+                        __ -> {
+                            Snackbar.make(
+                                    getActivity().findViewById(android.R.id.content),
+                                    R.string.message_restoring_data,
+                                    Snackbar.LENGTH_SHORT
+                            ).show();
 
-                    RestoreService.startRestore(getActivity());
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .show();
+                            RestoreService.startRestore(getActivity());
+                        },
+                        Timber::w
+                );
     }
 
     /**
