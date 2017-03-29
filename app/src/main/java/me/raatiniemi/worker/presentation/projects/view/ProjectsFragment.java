@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.projects.view;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -359,12 +358,12 @@ public class ProjectsFragment extends RxFragment
                 return;
             }
 
-            new AlertDialog.Builder(getActivity())
-                    .setTitle(getString(R.string.confirm_clock_out_title))
-                    .setMessage(getString(R.string.confirm_clock_out_message))
-                    .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> clockActivityViewModel.input.clockOut(result, new Date()))
-                    .setNegativeButton(android.R.string.no, null)
-                    .show();
+            ConfirmClockOutDialog.show(getActivity())
+                    .filter(RxDialog::isPositive)
+                    .subscribe(
+                            __ -> clockActivityViewModel.input.clockOut(result, new Date()),
+                            Timber::w
+                    );
             return;
         }
 
