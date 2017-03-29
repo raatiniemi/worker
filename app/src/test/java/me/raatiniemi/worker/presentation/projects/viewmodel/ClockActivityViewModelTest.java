@@ -253,7 +253,7 @@ public class ClockActivityViewModelTest {
                 .execute(any(), eq(GetProjectTimeSince.MONTH));
     }
 
-    private Project mockProjectWithStatus(boolean isActive) throws DomainException {
+    private Project mockProjectWithStatus(boolean isActive) {
         Project project = mock(Project.class);
         when(project.isActive())
                 .thenReturn(isActive);
