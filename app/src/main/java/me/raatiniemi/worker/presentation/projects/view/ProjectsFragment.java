@@ -57,6 +57,7 @@ import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
+import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import rx.Observable;
 import rx.Subscription;
@@ -392,15 +393,15 @@ public class ProjectsFragment extends RxFragment
 
     @Override
     public void onDelete(@NonNull final ProjectsItemAdapterResult result) {
-        new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.confirm_delete_project_title)
-                .setMessage(R.string.confirm_delete_project_message)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    deleteProjectAtPosition(result.getPosition());
+        RemoveProjectDialog.show(getActivity())
+                .filter(RxDialog::isPositive)
+                .subscribe(
+                        __ -> {
+                            deleteProjectAtPosition(result.getPosition());
 
-                    removeProjectViewModel.input.remove(result);
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .show();
+                            removeProjectViewModel.input.remove(result);
+                        },
+                        Timber::w
+                );
     }
 }

@@ -20,15 +20,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.util.Objects;
+
 import rx.Observable;
 import rx.subscriptions.Subscriptions;
 
-final class RxDialog {
+public final class RxDialog {
     private static final Integer NEGATIVE = 0;
     private static final Integer POSITIVE = 1;
 
     @NonNull
-    static Observable<Integer> build(@NonNull Context context, int title, int message) {
+    public static Observable<Integer> build(@NonNull Context context, int title, int message) {
         return Observable.create(subscriber -> {
             AlertDialog alertDialog = new AlertDialog.Builder(context)
                     .setTitle(title)
@@ -46,5 +48,9 @@ final class RxDialog {
             alertDialog.show();
             subscriber.add(Subscriptions.create(alertDialog::dismiss));
         });
+    }
+
+    public static boolean isPositive(@NonNull Integer which) {
+        return Objects.equals(POSITIVE, which);
     }
 }
