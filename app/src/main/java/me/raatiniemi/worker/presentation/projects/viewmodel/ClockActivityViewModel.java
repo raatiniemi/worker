@@ -199,8 +199,8 @@ public interface ClockActivityViewModel {
         }
 
         private static class CombinedResult {
-            private ProjectsItemAdapterResult result;
-            private Date date;
+            private final ProjectsItemAdapterResult result;
+            private final Date date;
 
             private CombinedResult(@NonNull ProjectsItemAdapterResult result, @NonNull Date date) {
                 this.result = result;
