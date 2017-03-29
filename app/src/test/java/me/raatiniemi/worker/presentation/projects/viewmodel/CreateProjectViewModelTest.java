@@ -56,6 +56,7 @@ public class CreateProjectViewModelTest {
     public void createProject_withNull() {
         vm.error.invalidProjectNameError().subscribe(invalidProjectNameError);
 
+        //noinspection ConstantConditions
         vm.input.projectName(null);
         vm.input.createProject();
 
@@ -124,6 +125,7 @@ public class CreateProjectViewModelTest {
         TestSubscriber<Boolean> isProjectNameValid = new TestSubscriber<>();
         vm.output.isProjectNameValid().subscribe(isProjectNameValid);
 
+        //noinspection ConstantConditions
         vm.input.projectName(null);
 
         isProjectNameValid.assertValues(Boolean.FALSE, Boolean.FALSE);
