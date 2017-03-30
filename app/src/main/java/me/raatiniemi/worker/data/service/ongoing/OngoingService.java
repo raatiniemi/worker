@@ -40,6 +40,7 @@ import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 
 abstract class OngoingService extends IntentService {
+    @SuppressWarnings("WeakerAccess")
     @Inject
     OngoingNotificationPreferences ongoingNotificationPreferences;
 

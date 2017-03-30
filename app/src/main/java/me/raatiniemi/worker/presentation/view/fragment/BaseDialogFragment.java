@@ -24,7 +24,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
         }
     }
 
-    protected boolean isStateValid() {
+    boolean isStateValid() {
         return true;
     }
 

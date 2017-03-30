@@ -75,7 +75,7 @@ public class DataFragment extends BasePreferenceFragment
 
     private Snackbar snackbar;
 
-    @SuppressWarnings("CanBeFinal")
+    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
     @Inject
     DataPresenter presenter;
 

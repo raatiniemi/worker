@@ -71,6 +71,7 @@ public class DateTimePickerFragment extends BaseFragment
      *
      * @param maxDate Maximum date.
      */
+    @SuppressWarnings("WeakerAccess")
     protected void setMaxDate(@NonNull Calendar maxDate) {
         if (maxDate.before(minDate)) {
             throw new IllegalArgumentException("Maximum date occurs before minimum date");
@@ -202,7 +203,7 @@ public class DateTimePickerFragment extends BaseFragment
     }
 
     @FunctionalInterface
-    public interface OnDateTimeSetListener {
+    protected interface OnDateTimeSetListener {
         /**
          * Listen for the selected date and time.
          *

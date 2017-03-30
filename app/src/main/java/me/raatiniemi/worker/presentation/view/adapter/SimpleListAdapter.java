@@ -206,7 +206,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @return Click listener for list items, or null if none has been supplied.
      */
     @Nullable
-    public OnItemClickListener getOnItemClickListener() {
+    OnItemClickListener getOnItemClickListener() {
         return onItemClickListener;
     }
 
@@ -245,7 +245,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * On click listener for list items.
      */
-    protected class OnClickListener implements View.OnClickListener {
+    private class OnClickListener implements View.OnClickListener {
         /**
          * Handles click events to the list item.
          *

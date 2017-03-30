@@ -53,7 +53,7 @@ import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfN
 
 public class TimesheetFragment extends BaseFragment
         implements SelectionListener, TimesheetView {
-    @SuppressWarnings("CanBeFinal")
+    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
     @Inject
     TimesheetPresenter presenter;
 
