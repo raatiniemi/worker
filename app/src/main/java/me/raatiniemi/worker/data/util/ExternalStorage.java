@@ -119,23 +119,6 @@ public class ExternalStorage {
     }
 
     /**
-     * Get a list of directories from the application directory on the external storage.
-     *
-     * @return List of directories within the application directory.
-     */
-    @NonNull
-    public static File[] getDirectories() {
-        File[] directories = {};
-
-        File directory = getDirectory();
-        if (nonNull(directory)) {
-            directories = directory.listFiles(File::isDirectory);
-        }
-
-        return directories;
-    }
-
-    /**
      * Get a list of backup directories from the application directory on the external storage.
      *
      * @return List of backup directories within the application directory.
