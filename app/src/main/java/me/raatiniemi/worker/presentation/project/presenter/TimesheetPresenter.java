@@ -268,6 +268,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         }
     }
 
+    @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(OngoingNotificationActionEvent event) {
         performWithView(view -> {
