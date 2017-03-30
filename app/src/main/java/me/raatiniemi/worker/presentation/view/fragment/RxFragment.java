@@ -56,6 +56,7 @@ public abstract class RxFragment extends BaseFragment implements LifecycleProvid
         return RxLifecycleAndroid.bindFragment(lifecycle);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @CallSuper
     public void onAttach(android.app.Activity activity) {

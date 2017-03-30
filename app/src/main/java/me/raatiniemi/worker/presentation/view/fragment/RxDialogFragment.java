@@ -56,6 +56,7 @@ public class RxDialogFragment extends BaseDialogFragment implements LifecyclePro
         return RxLifecycleAndroid.bindFragment(lifecycle);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     @CallSuper
     public void onAttach(android.app.Activity activity) {
