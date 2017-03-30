@@ -203,7 +203,7 @@ public class DateTimePickerFragment extends BaseFragment
     }
 
     @FunctionalInterface
-    protected interface OnDateTimeSetListener {
+    public interface OnDateTimeSetListener {
         /**
          * Listen for the selected date and time.
          *
