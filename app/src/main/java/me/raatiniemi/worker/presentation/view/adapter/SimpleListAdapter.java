@@ -78,9 +78,9 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @param index Index to check.
      * @return True if index exists, otherwise false.
      */
-    private boolean has(int index) {
+    private boolean isOutOfBounds(int index) {
         // Check if index is within bounds.
-        return 0 <= index && getItemCount() > index;
+        return 0 > index || getItemCount() <= index;
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     @Override
     @NonNull
     public T get(int index) {
-        if (!has(index)) {
+        if (isOutOfBounds(index)) {
             throwIndexOutOfBounds(index);
         }
 
@@ -107,7 +107,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      */
     @Override
     public void set(int index, @NonNull T item) {
-        if (!has(index)) {
+        if (isOutOfBounds(index)) {
             throwIndexOutOfBounds(index);
         }
 
@@ -143,7 +143,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
             return;
         }
 
-        if (!has(index)) {
+        if (isOutOfBounds(index)) {
             throwIndexOutOfBounds(index);
         }
 
@@ -177,7 +177,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     @Override
     @NonNull
     public T remove(int index) {
-        if (!has(index)) {
+        if (isOutOfBounds(index)) {
             throwIndexOutOfBounds(index);
         }
 
