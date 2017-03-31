@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data;
+package me.raatiniemi.worker.data.provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

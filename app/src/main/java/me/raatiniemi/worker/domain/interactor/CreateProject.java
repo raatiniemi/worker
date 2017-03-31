@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.interactor;
 
 import java.util.List;
 
-import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;

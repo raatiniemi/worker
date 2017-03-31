@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.Calendar;
 import java.util.List;
 
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data;
+package me.raatiniemi.worker.data.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,10 +24,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.data.WorkerContract.Tables;
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.RobolectricTestCase;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.Tables;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 import static org.mockito.Mockito.mock;

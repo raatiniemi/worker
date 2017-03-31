@@ -37,7 +37,7 @@ import org.robolectric.util.ServiceController;
 import java.util.Date;
 
 import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.data.WorkerContract;
+import me.raatiniemi.worker.data.provider.WorkerContract;
 import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;

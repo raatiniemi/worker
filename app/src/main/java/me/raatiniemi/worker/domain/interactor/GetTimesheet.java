@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;

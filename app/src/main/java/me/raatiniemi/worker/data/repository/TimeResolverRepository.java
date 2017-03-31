@@ -33,12 +33,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.raatiniemi.worker.data.WorkerContract;
-import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
+import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;

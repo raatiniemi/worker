@@ -27,10 +27,10 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.data.WorkerContract;
-import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;

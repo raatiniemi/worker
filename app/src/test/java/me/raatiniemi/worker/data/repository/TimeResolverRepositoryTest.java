@@ -26,9 +26,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.DomainException;

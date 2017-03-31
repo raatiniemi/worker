@@ -20,7 +20,7 @@ import android.database.Cursor;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 

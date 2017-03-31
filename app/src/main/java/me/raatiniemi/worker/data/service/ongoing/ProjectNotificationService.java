@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.service.ongoing;
 import android.content.Context;
 import android.content.Intent;
 
-import me.raatiniemi.worker.data.WorkerContract;
+import me.raatiniemi.worker.data.provider.WorkerContract;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.interactor.IsProjectActive;
 import me.raatiniemi.worker.domain.model.Project;

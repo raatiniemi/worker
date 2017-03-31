@@ -26,7 +26,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;

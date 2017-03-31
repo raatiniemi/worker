@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data;
+package me.raatiniemi.worker.data.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
@@ -30,10 +30,10 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import me.raatiniemi.worker.data.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.data.WorkerContract.Tables;
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.Tables;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.util.SelectionBuilder;
 
 import static me.raatiniemi.worker.util.NullUtil.nonNull;

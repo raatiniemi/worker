@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data;
+package me.raatiniemi.worker.data.provider;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -23,9 +23,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import me.raatiniemi.worker.Worker;
-import me.raatiniemi.worker.data.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.data.WorkerContract.Tables;
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.Tables;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 
 /**
  * A helper class to manage database creation and version management.

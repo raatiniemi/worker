@@ -25,7 +25,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
 
-import me.raatiniemi.worker.data.WorkerContract;
+import me.raatiniemi.worker.data.provider.WorkerContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 

@@ -23,7 +23,7 @@ import org.junit.runners.JUnit4;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
