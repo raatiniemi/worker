@@ -25,8 +25,8 @@ import java.util.Calendar;
 
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class DatePickerFragment extends BaseDialogFragment {
     private DatePickerDialog.OnDateSetListener onDateSetListener;

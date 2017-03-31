@@ -18,7 +18,7 @@ package me.raatiniemi.worker.data.repository.query;
 
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class ContentResolverQuery {
     private final Criteria criteria;

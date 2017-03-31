@@ -20,7 +20,7 @@ import android.support.annotation.Nullable;
 
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class PresenterUtil {
     private PresenterUtil() {

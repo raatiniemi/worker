@@ -29,8 +29,8 @@ import me.raatiniemi.worker.Worker;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
-import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class ProjectActivity extends BaseActivity {
     static final String MESSAGE_PROJECT_ID = "project id";

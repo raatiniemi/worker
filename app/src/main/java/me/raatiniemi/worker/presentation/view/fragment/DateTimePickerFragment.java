@@ -32,8 +32,8 @@ import java.util.Calendar;
 import me.raatiniemi.worker.R;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class DateTimePickerFragment extends BaseFragment
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {

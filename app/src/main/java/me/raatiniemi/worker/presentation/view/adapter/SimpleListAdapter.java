@@ -27,7 +27,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 /**
  * Base adapter for working with the RecyclerView.

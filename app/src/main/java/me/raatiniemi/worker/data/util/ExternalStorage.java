@@ -30,8 +30,8 @@ import java.util.List;
 import me.raatiniemi.worker.Worker;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 /**
  * Methods for working with the device external storage.

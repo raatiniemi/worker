@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class IsProjectActive {
     private final TimeRepository timeRepository;

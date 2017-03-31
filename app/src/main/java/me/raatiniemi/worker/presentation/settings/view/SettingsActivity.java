@@ -25,7 +25,7 @@ import android.view.MenuItem;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class SettingsActivity extends BaseActivity {
     public static Intent newIntent(Context context) {

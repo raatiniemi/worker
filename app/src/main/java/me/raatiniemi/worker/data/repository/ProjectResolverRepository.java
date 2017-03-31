@@ -38,7 +38,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.query.Criteria;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class ProjectResolverRepository
         extends ContentResolverRepository<ProjectCursorMapper, ProjectContentValuesMapper>

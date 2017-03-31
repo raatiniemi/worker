@@ -27,7 +27,7 @@ import android.view.View;
 import me.raatiniemi.worker.R;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 abstract class BasePreferenceFragment extends PreferenceFragment {
     @Override

@@ -43,7 +43,7 @@ import me.raatiniemi.worker.presentation.util.Keyboard;
 import me.raatiniemi.worker.presentation.view.fragment.RxDialogFragment;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 
 public class CreateProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {

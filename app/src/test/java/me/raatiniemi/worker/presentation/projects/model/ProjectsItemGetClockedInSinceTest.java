@@ -33,7 +33,7 @@ import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

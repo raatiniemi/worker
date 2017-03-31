@@ -31,7 +31,7 @@ import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.notification.RestoreNotification;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class RestoreService extends IntentService {
     public RestoreService() {

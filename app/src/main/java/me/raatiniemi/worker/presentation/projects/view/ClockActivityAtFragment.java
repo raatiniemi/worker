@@ -24,8 +24,8 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.view.fragment.DateTimePickerFragment;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class ClockActivityAtFragment extends DateTimePickerFragment
         implements DateTimePickerFragment.OnDateTimeSetListener {

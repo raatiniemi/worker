@@ -29,7 +29,7 @@ import me.raatiniemi.worker.domain.model.Time;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class TimeInAdapterResultTest {

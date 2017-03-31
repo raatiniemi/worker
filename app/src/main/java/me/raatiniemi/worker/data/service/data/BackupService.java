@@ -33,7 +33,7 @@ import me.raatiniemi.worker.presentation.view.notification.BackupNotification;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class BackupService extends IntentService {
     private final EventBus eventBus = EventBus.getDefault();

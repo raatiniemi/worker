@@ -29,7 +29,7 @@ import me.raatiniemi.worker.domain.repository.query.Criteria;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 @RunWith(Parameterized.class)
 public class ContentResolverQueryTest {

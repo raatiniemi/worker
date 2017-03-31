@@ -25,7 +25,7 @@ import android.support.design.widget.Snackbar;
 
 import me.raatiniemi.worker.R;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public abstract class BaseDialogFragment extends DialogFragment {
     private DialogInterface.OnCancelListener onCancelListener;

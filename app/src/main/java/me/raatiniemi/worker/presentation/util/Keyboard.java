@@ -23,7 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class Keyboard {
     /**

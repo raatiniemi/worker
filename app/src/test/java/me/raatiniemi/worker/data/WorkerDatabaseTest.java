@@ -29,7 +29,7 @@ import me.raatiniemi.worker.data.WorkerContract.Tables;
 import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.RobolectricTestCase;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 import static org.mockito.Mockito.mock;
 
 public class WorkerDatabaseTest extends RobolectricTestCase {

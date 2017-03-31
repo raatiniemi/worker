@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 /**
  * Represent a time interval registered to a project.

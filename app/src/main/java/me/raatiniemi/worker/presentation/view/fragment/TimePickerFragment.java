@@ -25,7 +25,7 @@ import java.util.Calendar;
 
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimePickerFragment extends BaseDialogFragment {
     private TimePickerDialog.OnTimeSetListener onTimeSetListener;

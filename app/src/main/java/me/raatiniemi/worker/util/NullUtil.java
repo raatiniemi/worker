@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.util;
+package me.raatiniemi.worker.util;
 
 public final class NullUtil {
     private NullUtil() {

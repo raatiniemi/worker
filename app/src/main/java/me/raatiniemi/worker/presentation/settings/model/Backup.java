@@ -23,7 +23,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.Worker;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class Backup {
     /**

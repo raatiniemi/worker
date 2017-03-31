@@ -39,8 +39,8 @@ import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class ProjectsActivity extends BaseActivity {
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";

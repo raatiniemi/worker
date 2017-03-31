@@ -36,7 +36,7 @@ import me.raatiniemi.worker.data.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.util.SelectionBuilder;
 
-import static me.raatiniemi.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;

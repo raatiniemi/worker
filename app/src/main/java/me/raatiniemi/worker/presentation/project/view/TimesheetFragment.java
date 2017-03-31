@@ -47,7 +47,7 @@ import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
-import static me.raatiniemi.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 
