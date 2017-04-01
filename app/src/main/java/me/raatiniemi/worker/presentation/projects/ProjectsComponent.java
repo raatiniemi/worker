@@ -19,6 +19,7 @@ package me.raatiniemi.worker.presentation.projects;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
 import me.raatiniemi.worker.presentation.projects.view.CreateProjectFragment;
@@ -26,7 +27,12 @@ import me.raatiniemi.worker.presentation.projects.view.ProjectsActivity;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 
 @Singleton
-@Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectsModule.class})
+@Component(modules = {
+        AndroidModule.class,
+        DataModule.class,
+        PreferenceModule.class,
+        ProjectsModule.class
+})
 public interface ProjectsComponent {
     void inject(ProjectsActivity __);
 

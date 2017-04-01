@@ -19,10 +19,14 @@ package me.raatiniemi.worker.data.service.ongoing;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
 
 @Singleton
-@Component(modules = PreferenceModule.class)
+@Component(modules = {
+        DataModule.class,
+        PreferenceModule.class
+})
 public interface OngoingServiceComponent {
     void inject(OngoingService __);
 }

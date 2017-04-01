@@ -22,6 +22,7 @@ import android.preference.PreferenceManager;
 
 import com.squareup.leakcanary.LeakCanary;
 
+import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.data.service.ongoing.DaggerOngoingServiceComponent;
 import me.raatiniemi.worker.data.service.ongoing.OngoingServiceComponent;
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
@@ -87,18 +88,21 @@ public class WorkerApplication extends Application {
         super.onCreate();
 
         AndroidModule androidModule = new AndroidModule(this);
+        DataModule dataModule = new DataModule(this);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         PreferenceModule preferenceModule = new PreferenceModule(preferences);
         ongoingServiceComponent = DaggerOngoingServiceComponent.builder()
+                .dataModule(dataModule)
                 .preferenceModule(preferenceModule)
                 .build();
         projectComponent = DaggerProjectComponent.builder()
-                .androidModule(androidModule)
+                .dataModule(dataModule)
                 .preferenceModule(preferenceModule)
                 .projectModule(new ProjectModule())
                 .build();
         projectsComponent = DaggerProjectsComponent.builder()
                 .androidModule(androidModule)
+                .dataModule(dataModule)
                 .projectsModule(new ProjectsModule())
                 .preferenceModule(preferenceModule)
                 .build();

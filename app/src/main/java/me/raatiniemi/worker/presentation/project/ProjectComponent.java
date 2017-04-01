@@ -19,13 +19,17 @@ package me.raatiniemi.worker.presentation.project;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import me.raatiniemi.worker.presentation.AndroidModule;
+import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
 
 @Singleton
-@Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectModule.class})
+@Component(modules = {
+        DataModule.class,
+        PreferenceModule.class,
+        ProjectModule.class
+})
 public interface ProjectComponent {
     void inject(ProjectActivity __);
 
