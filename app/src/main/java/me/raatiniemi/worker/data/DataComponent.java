@@ -14,12 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.service.ongoing;
+package me.raatiniemi.worker.data;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import me.raatiniemi.worker.data.DataModule;
+import me.raatiniemi.worker.data.service.ongoing.OngoingService;
 import me.raatiniemi.worker.presentation.PreferenceModule;
 
 @Singleton
@@ -27,6 +27,6 @@ import me.raatiniemi.worker.presentation.PreferenceModule;
         DataModule.class,
         PreferenceModule.class
 })
-public interface OngoingServiceComponent {
+public interface DataComponent {
     void inject(OngoingService __);
 }

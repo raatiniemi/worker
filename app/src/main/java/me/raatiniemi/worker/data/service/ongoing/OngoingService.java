@@ -33,7 +33,7 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 
-abstract class OngoingService extends IntentService {
+abstract public class OngoingService extends IntentService {
     @SuppressWarnings("WeakerAccess")
     @Inject
     ProjectRepository projectRepository;
@@ -54,7 +54,7 @@ abstract class OngoingService extends IntentService {
     public void onCreate() {
         super.onCreate();
 
-        ((WorkerApplication) getApplication()).getOngoingServiceComponent()
+        ((WorkerApplication) getApplication()).getDataComponent()
                 .inject(this);
     }
 
