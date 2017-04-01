@@ -24,5 +24,5 @@ import me.raatiniemi.worker.presentation.PreferenceModule;
 @Singleton
 @Component(modules = PreferenceModule.class)
 public interface OngoingServiceComponent {
-    void inject(OngoingService ongoingService);
+    void inject(OngoingService __);
 }

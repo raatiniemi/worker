@@ -27,7 +27,7 @@ import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
 @Singleton
 @Component(modules = {AndroidModule.class, PreferenceModule.class, ProjectModule.class})
 public interface ProjectComponent {
-    void inject(ProjectActivity projectActivity);
+    void inject(ProjectActivity __);
 
-    void inject(TimesheetFragment timesheetFragment);
+    void inject(TimesheetFragment __);
 }

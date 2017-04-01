@@ -30,7 +30,7 @@ import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
 public interface ProjectsComponent {
     void inject(ProjectsActivity __);
 
-    void inject(ProjectsFragment projectsView);
+    void inject(ProjectsFragment __);
 
-    void inject(CreateProjectFragment createProjectFragment);
+    void inject(CreateProjectFragment __);
 }

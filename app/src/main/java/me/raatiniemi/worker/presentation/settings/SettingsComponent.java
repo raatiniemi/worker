@@ -26,7 +26,7 @@ import me.raatiniemi.worker.presentation.settings.view.ProjectFragment;
 @Singleton
 @Component(modules = {PreferenceModule.class, SettingsModule.class})
 public interface SettingsComponent {
-    void inject(ProjectFragment projectFragment);
+    void inject(ProjectFragment __);
 
-    void inject(DataFragment dataFragment);
+    void inject(DataFragment __);
 }
