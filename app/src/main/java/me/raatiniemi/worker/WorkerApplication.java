@@ -19,6 +19,7 @@ package me.raatiniemi.worker;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -87,10 +88,9 @@ public class WorkerApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        AndroidModule androidModule = new AndroidModule(this);
-        DataModule dataModule = new DataModule(this);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        PreferenceModule preferenceModule = new PreferenceModule(preferences);
+        AndroidModule androidModule = createAndroidModule();
+        DataModule dataModule = createDataModule();
+        PreferenceModule preferenceModule = createPreferenceModule();
         dataComponent = DaggerDataComponent.builder()
                 .dataModule(dataModule)
                 .preferenceModule(preferenceModule)
@@ -119,6 +119,23 @@ public class WorkerApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    @NonNull
+    AndroidModule createAndroidModule() {
+        return new AndroidModule(this);
+    }
+
+    @NonNull
+    DataModule createDataModule() {
+        return new DataModule(this);
+    }
+
+    @NonNull
+    PreferenceModule createPreferenceModule() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        return new PreferenceModule(preferences);
     }
 
     public DataComponent getDataComponent() {
