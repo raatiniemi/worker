@@ -30,6 +30,9 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
@@ -53,6 +56,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
+    @Inject
     WorkerDatabase openHelper;
 
     private static UriMatcher buildUriMatcher() {
@@ -70,9 +74,18 @@ public class WorkerProvider extends ContentProvider {
         return matcher;
     }
 
+    private synchronized WorkerDatabase getOpenHelper() {
+        if (null == openHelper) {
+            WorkerApplication.getInstance()
+                    .getDataComponent()
+                    .inject(this);
+        }
+
+        return openHelper;
+    }
+
     @Override
     public boolean onCreate() {
-        openHelper = new WorkerDatabase(getContext());
         return true;
     }
 
@@ -119,7 +132,7 @@ public class WorkerProvider extends ContentProvider {
 
         return buildSelection(uri)
                 .where(selection, selectionArgs)
-                .query(openHelper.getReadableDatabase(), projection, sortOrder, limit);
+                .query(getOpenHelper().getReadableDatabase(), projection, sortOrder, limit);
     }
 
     @Override
@@ -142,14 +155,14 @@ public class WorkerProvider extends ContentProvider {
     }
 
     private Uri insertProject(ContentValues values) {
-        SQLiteDatabase db = openHelper.getWritableDatabase();
+        SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
         long id = db.insertOrThrow(Tables.PROJECT, null, values);
         return ProjectContract.getItemUri(id);
     }
 
     private Uri insertTime(ContentValues values) {
-        SQLiteDatabase db = openHelper.getWritableDatabase();
+        SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
         long id = db.insertOrThrow(Tables.TIME, null, values);
         return TimeContract.getItemUri(id);
@@ -159,14 +172,14 @@ public class WorkerProvider extends ContentProvider {
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return buildSelection(uri)
                 .where(selection, selectionArgs)
-                .update(openHelper.getWritableDatabase(), values);
+                .update(getOpenHelper().getWritableDatabase(), values);
     }
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         return buildSelection(uri)
                 .where(selection, selectionArgs)
-                .delete(openHelper.getWritableDatabase());
+                .delete(getOpenHelper().getWritableDatabase());
     }
 
     @Override
@@ -174,7 +187,7 @@ public class WorkerProvider extends ContentProvider {
     public ContentProviderResult[] applyBatch(@NonNull ArrayList<ContentProviderOperation> operations)
             throws OperationApplicationException {
 
-        final SQLiteDatabase db = openHelper.getWritableDatabase();
+        final SQLiteDatabase db = getOpenHelper().getWritableDatabase();
         db.beginTransaction();
         try {
             final int numberOfOperations = operations.size();

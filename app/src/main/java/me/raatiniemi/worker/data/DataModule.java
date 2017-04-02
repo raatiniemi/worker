@@ -27,6 +27,7 @@ import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
+import me.raatiniemi.worker.data.provider.WorkerDatabase;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
@@ -38,6 +39,13 @@ public class DataModule {
 
     public DataModule(@NonNull Context context) {
         this.context = context;
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    WorkerDatabase providesWorkerDatabase() {
+        return new WorkerDatabase(context);
     }
 
     @NonNull

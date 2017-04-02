@@ -30,7 +30,7 @@ import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 /**
  * A helper class to manage database creation and version management.
  */
-class WorkerDatabase extends SQLiteOpenHelper {
+public class WorkerDatabase extends SQLiteOpenHelper {
     static final int DATABASE_VERSION = 2;
 
     /**

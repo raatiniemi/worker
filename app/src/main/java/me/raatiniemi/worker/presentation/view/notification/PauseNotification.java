@@ -98,6 +98,9 @@ public class PauseNotification extends OngoingNotification {
 
     private TimeRepository getTimeRepository() {
         if (isNull(repository)) {
+            // TODO: Implement proper dependency injection.
+            // Adding a `null`-check to the application instance assignment is causing the
+            // `ReloadNotificationService`-test to fail due to invalid thread for context.
             repository = new TimeResolverRepository(
                     getContext().getContentResolver(),
                     new TimeCursorMapper(),

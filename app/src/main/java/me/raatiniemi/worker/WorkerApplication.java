@@ -79,6 +79,8 @@ public class WorkerApplication extends Application {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
+    private static WorkerApplication instance;
+
     private DataComponent dataComponent;
     private ProjectComponent projectComponent;
     private ProjectsComponent projectsComponent;
@@ -87,6 +89,10 @@ public class WorkerApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        synchronized (WorkerApplication.class) {
+            instance = this;
+        }
 
         AndroidModule androidModule = createAndroidModule();
         DataModule dataModule = createDataModule();
@@ -119,6 +125,14 @@ public class WorkerApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    public synchronized static WorkerApplication getInstance() {
+        if (null == instance) {
+            throw new RuntimeException("No application instance is available");
+        }
+
+        return instance;
     }
 
     @NonNull

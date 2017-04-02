@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import me.raatiniemi.worker.data.provider.WorkerProvider;
 import me.raatiniemi.worker.data.service.ongoing.OngoingService;
 import me.raatiniemi.worker.presentation.PreferenceModule;
 
@@ -28,5 +29,7 @@ import me.raatiniemi.worker.presentation.PreferenceModule;
         PreferenceModule.class
 })
 public interface DataComponent {
+    void inject(WorkerProvider __);
+
     void inject(OngoingService __);
 }
