@@ -25,7 +25,7 @@ import android.view.MenuItem;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
@@ -85,7 +85,7 @@ public class ProjectActivity extends BaseActivity {
                     .commit();
         }
 
-        ((Worker) getApplication()).getProjectComponent()
+        ((WorkerApplication) getApplication()).getProjectComponent()
                 .inject(this);
     }
 

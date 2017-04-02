@@ -25,7 +25,7 @@ import android.content.Intent;
 import org.greenrobot.eventbus.EventBus;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.strategy.StorageBackupStrategy;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.domain.interactor.CreateBackup;
@@ -82,7 +82,7 @@ public class BackupService extends IntentService {
             // ClassCastException have been thrown.
             if (nonNull(manager) && nonNull(notification)) {
                 manager.notify(
-                        Worker.NOTIFICATION_BACKUP_SERVICE_ID,
+                        WorkerApplication.NOTIFICATION_BACKUP_SERVICE_ID,
                         notification
                 );
             }

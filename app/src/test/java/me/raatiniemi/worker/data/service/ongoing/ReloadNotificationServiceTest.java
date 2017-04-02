@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
@@ -183,7 +183,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
         verify(notificationManager)
                 .notify(
                         eq("2"),
-                        eq(Worker.NOTIFICATION_ON_GOING_ID),
+                        eq(WorkerApplication.NOTIFICATION_ON_GOING_ID),
                         isA(Notification.class)
                 );
     }
@@ -203,13 +203,13 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
         verify(notificationManager)
                 .notify(
                         eq("2"),
-                        eq(Worker.NOTIFICATION_ON_GOING_ID),
+                        eq(WorkerApplication.NOTIFICATION_ON_GOING_ID),
                         isA(Notification.class)
                 );
         verify(notificationManager)
                 .notify(
                         eq("3"),
-                        eq(Worker.NOTIFICATION_ON_GOING_ID),
+                        eq(WorkerApplication.NOTIFICATION_ON_GOING_ID),
                         isA(Notification.class)
                 );
     }

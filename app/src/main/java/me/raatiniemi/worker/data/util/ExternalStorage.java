@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
@@ -68,7 +68,7 @@ public class ExternalStorage {
      */
     @Nullable
     private static File getDirectory() {
-        File directory = new File(Environment.getExternalStorageDirectory(), Worker.PACKAGE);
+        File directory = new File(Environment.getExternalStorageDirectory(), WorkerApplication.PACKAGE);
         if (!directory.exists() && !directory.mkdir()) {
             // TODO: Throw exception, avoiding checks for null everywhere.
             Timber.w("Unable to create non existing directory");
@@ -114,7 +114,7 @@ public class ExternalStorage {
         // Build the backup folder name with the current timestamp to prevent
         // running multiple backups against the same directory, which would
         // effectively override any previous backups.
-        String name = Worker.STORAGE_BACKUP_DIRECTORY_PREFIX + (new Date()).getTime();
+        String name = WorkerApplication.STORAGE_BACKUP_DIRECTORY_PREFIX + (new Date()).getTime();
         return getDirectory(name);
     }
 
@@ -130,7 +130,7 @@ public class ExternalStorage {
         File directory = getDirectory();
         if (nonNull(directory)) {
             directories = directory.listFiles(file -> file.isDirectory() &&
-                    file.getName().matches(Worker.STORAGE_BACKUP_DIRECTORY_PATTERN));
+                    file.getName().matches(WorkerApplication.STORAGE_BACKUP_DIRECTORY_PATTERN));
         }
 
         return new ArrayList<>(Arrays.asList(directories));

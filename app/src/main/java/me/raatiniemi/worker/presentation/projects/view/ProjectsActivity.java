@@ -33,7 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.settings.view.SettingsActivity;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
@@ -67,7 +67,7 @@ public class ProjectsActivity extends BaseActivity {
                     .commit();
         }
 
-        ((Worker) getApplication())
+        ((WorkerApplication) getApplication())
                 .getProjectsComponent()
                 .inject(this);
 
@@ -78,7 +78,7 @@ public class ProjectsActivity extends BaseActivity {
         Intent intent = getIntent();
 
         return nonNull(intent) && nonNull(intent.getAction())
-                && Worker.INTENT_ACTION_RESTART.equals(intent.getAction());
+                && WorkerApplication.INTENT_ACTION_RESTART.equals(intent.getAction());
     }
 
     private void restart() {

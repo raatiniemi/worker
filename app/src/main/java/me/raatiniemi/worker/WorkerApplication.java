@@ -42,7 +42,7 @@ import timber.log.Timber.DebugTree;
 /**
  * Stores application constants.
  */
-public class Worker extends Application {
+public class WorkerApplication extends Application {
     /**
      * Package for the application.
      */
@@ -70,7 +70,7 @@ public class Worker extends Application {
      * Pattern for the backup directories.
      */
     public static final String STORAGE_BACKUP_DIRECTORY_PATTERN
-            = Worker.STORAGE_BACKUP_DIRECTORY_PREFIX + "(\\d+)";
+            = WorkerApplication.STORAGE_BACKUP_DIRECTORY_PREFIX + "(\\d+)";
 
     /**
      * Intent action for restarting the application.

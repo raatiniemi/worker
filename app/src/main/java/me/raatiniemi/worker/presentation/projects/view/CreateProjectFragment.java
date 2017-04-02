@@ -35,7 +35,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
@@ -73,7 +73,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((Worker) getActivity().getApplication())
+        ((WorkerApplication) getActivity().getApplication())
                 .getProjectsComponent()
                 .inject(this);
 

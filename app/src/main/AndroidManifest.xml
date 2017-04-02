@@ -9,7 +9,7 @@
         />
 
     <application
-        android:name=".Worker"
+        android:name=".WorkerApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_scheme"
         android:label="@string/name"

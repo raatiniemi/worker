@@ -34,7 +34,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.BackupService;
 import me.raatiniemi.worker.data.service.data.RestoreService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
@@ -83,7 +83,7 @@ public class DataFragment extends BasePreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((Worker) getActivity().getApplication())
+        ((WorkerApplication) getActivity().getApplication())
                 .getSettingsComponent()
                 .inject(this);
 

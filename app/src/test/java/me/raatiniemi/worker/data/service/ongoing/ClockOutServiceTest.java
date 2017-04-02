@@ -36,7 +36,7 @@ import org.robolectric.util.ServiceController;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.provider.WorkerContract;
 import me.raatiniemi.worker.domain.exception.ClockActivityException;
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -119,7 +119,7 @@ public class ClockOutServiceTest extends RobolectricTestCase {
         verify(eventBus, never()).post(isA(OngoingNotificationActionEvent.class));
         verify(notificationManager).notify(
                 eq("1"),
-                eq(Worker.NOTIFICATION_ON_GOING_ID),
+                eq(WorkerApplication.NOTIFICATION_ON_GOING_ID),
                 isA(Notification.class)
         );
     }
@@ -140,7 +140,7 @@ public class ClockOutServiceTest extends RobolectricTestCase {
         verify(eventBus).post(isA(OngoingNotificationActionEvent.class));
         verify(notificationManager).cancel(
                 eq("1"),
-                eq(Worker.NOTIFICATION_ON_GOING_ID)
+                eq(WorkerApplication.NOTIFICATION_ON_GOING_ID)
         );
     }
 

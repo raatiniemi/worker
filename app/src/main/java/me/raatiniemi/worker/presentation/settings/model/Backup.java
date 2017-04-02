@@ -21,7 +21,7 @@ import android.support.annotation.Nullable;
 import java.io.File;
 import java.util.Date;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
@@ -62,7 +62,7 @@ public class Backup {
         }
 
         String timestamp = getBackup().getName().replaceFirst(
-                Worker.STORAGE_BACKUP_DIRECTORY_PATTERN,
+                WorkerApplication.STORAGE_BACKUP_DIRECTORY_PATTERN,
                 "$1"
         );
 

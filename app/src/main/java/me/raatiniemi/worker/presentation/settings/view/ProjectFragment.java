@@ -27,7 +27,7 @@ import android.view.View;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
@@ -65,7 +65,7 @@ public class ProjectFragment extends BasePreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((Worker) getActivity().getApplication())
+        ((WorkerApplication) getActivity().getApplication())
                 .getSettingsComponent()
                 .inject(this);
 

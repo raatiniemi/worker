@@ -33,7 +33,7 @@ import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowContextImpl;
 import org.robolectric.util.ServiceController;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.provider.WorkerContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProject;
@@ -134,7 +134,7 @@ public class ProjectNotificationServiceTest extends RobolectricTestCase {
         verify(isProjectActive).execute(eq(1L));
         verify(getProject, never()).execute(anyInt());
         verify(notificationManager)
-                .cancel(eq("1"), eq(Worker.NOTIFICATION_ON_GOING_ID));
+                .cancel(eq("1"), eq(WorkerApplication.NOTIFICATION_ON_GOING_ID));
     }
 
     @Test
@@ -159,7 +159,7 @@ public class ProjectNotificationServiceTest extends RobolectricTestCase {
         verify(notificationManager)
                 .notify(
                         eq("1"),
-                        eq(Worker.NOTIFICATION_ON_GOING_ID),
+                        eq(WorkerApplication.NOTIFICATION_ON_GOING_ID),
                         isA(Notification.class)
                 );
     }

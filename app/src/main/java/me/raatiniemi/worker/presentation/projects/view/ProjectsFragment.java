@@ -39,7 +39,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
@@ -101,7 +101,7 @@ public class ProjectsFragment extends RxFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((Worker) getActivity().getApplication())
+        ((WorkerApplication) getActivity().getApplication())
                 .getProjectsComponent()
                 .inject(this);
 

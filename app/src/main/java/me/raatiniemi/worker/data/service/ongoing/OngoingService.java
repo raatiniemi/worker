@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
@@ -52,7 +52,7 @@ abstract class OngoingService extends IntentService {
     public void onCreate() {
         super.onCreate();
 
-        ((Worker) getApplication()).getOngoingServiceComponent()
+        ((WorkerApplication) getApplication()).getOngoingServiceComponent()
                 .inject(this);
     }
 
@@ -90,7 +90,7 @@ abstract class OngoingService extends IntentService {
         NotificationManager manager = getNotificationManager();
         manager.notify(
                 buildNotificationTag(projectId),
-                Worker.NOTIFICATION_ON_GOING_ID,
+                WorkerApplication.NOTIFICATION_ON_GOING_ID,
                 notification
         );
     }
@@ -99,7 +99,7 @@ abstract class OngoingService extends IntentService {
         NotificationManager manager = getNotificationManager();
         manager.cancel(
                 buildNotificationTag(projectId),
-                Worker.NOTIFICATION_ON_GOING_ID
+                WorkerApplication.NOTIFICATION_ON_GOING_ID
         );
     }
 

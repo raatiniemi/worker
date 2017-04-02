@@ -22,7 +22,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.Tables;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
@@ -39,7 +39,7 @@ class WorkerDatabase extends SQLiteOpenHelper {
      * @param context Context used with the database.
      */
     public WorkerDatabase(Context context) {
-        super(context, Worker.DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, WorkerApplication.DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     /**
@@ -96,7 +96,7 @@ class WorkerDatabase extends SQLiteOpenHelper {
      * @param oldVersion The old database version.
      * @param newVersion The new database version.
      * @throws IllegalArgumentException If oldVersion is less than 1.
-     * @throws IllegalArgumentException If newVersion is more than `Worker.DATABASE_VERSION`.
+     * @throws IllegalArgumentException If newVersion is more than `WorkerApplication.DATABASE_VERSION`.
      * @throws IllegalArgumentException If newVersion is less than oldVersion, i.e. downgrade.
      */
     @Override
@@ -110,7 +110,7 @@ class WorkerDatabase extends SQLiteOpenHelper {
         }
 
         // Check the state of the newVersion, we cannot allow to upgrade past
-        // the latest available version (i.e. `Worker.DATABASE_VERSION`).
+        // the latest available version (i.e. `WorkerApplication.DATABASE_VERSION`).
         if (DATABASE_VERSION < newVersion) {
             throw new IllegalArgumentException(
                     "newVersion cannot be more than " + DATABASE_VERSION

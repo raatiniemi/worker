@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.strategy.StorageRestoreStrategy;
 import me.raatiniemi.worker.domain.interactor.RestoreBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
@@ -79,7 +79,7 @@ public class RestoreService extends IntentService {
             // ClassCastException have been thrown.
             if (nonNull(manager) && nonNull(notification)) {
                 manager.notify(
-                        Worker.NOTIFICATION_RESTORE_SERVICE_ID,
+                        WorkerApplication.NOTIFICATION_RESTORE_SERVICE_ID,
                         notification
                 );
             }

@@ -20,7 +20,7 @@ import android.annotation.SuppressLint;
 
 @SuppressLint("Registered")
 @SuppressWarnings("unused")
-public class TestWorker extends Worker {
+public class TestWorkerApplication extends WorkerApplication {
     @Override
     boolean isUnitTesting() {
         return true;

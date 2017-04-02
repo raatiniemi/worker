@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.strategy.exception.RestoreException;
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.data.util.FileUtils;
@@ -66,8 +66,8 @@ public class StorageRestoreStrategy implements RestoreStrategy {
             }
 
             // Retrieve the source and destination file locations.
-            File from = new File(directory, Worker.DATABASE_NAME);
-            File to = context.getDatabasePath(Worker.DATABASE_NAME);
+            File from = new File(directory, WorkerApplication.DATABASE_NAME);
+            File to = context.getDatabasePath(WorkerApplication.DATABASE_NAME);
 
             // Perform the file copy.
             FileUtils.copy(from, to);

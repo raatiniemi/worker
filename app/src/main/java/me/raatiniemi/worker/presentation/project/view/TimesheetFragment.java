@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
@@ -138,7 +138,7 @@ public class TimesheetFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((Worker) getActivity().getApplication())
+        ((WorkerApplication) getActivity().getApplication())
                 .getProjectComponent()
                 .inject(this);
     }

@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import me.raatiniemi.worker.Worker;
+import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.strategy.exception.BackupException;
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.data.util.FileUtils;
@@ -77,8 +77,8 @@ public class StorageBackupStrategy implements BackupStrategy {
             }
 
             // Retrieve the source and destination file locations.
-            File from = context.getDatabasePath(Worker.DATABASE_NAME);
-            File to = new File(directory, Worker.DATABASE_NAME);
+            File from = context.getDatabasePath(WorkerApplication.DATABASE_NAME);
+            File to = new File(directory, WorkerApplication.DATABASE_NAME);
 
             // Perform the file copy.
             FileUtils.copy(from, to);
