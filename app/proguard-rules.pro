@@ -36,3 +36,6 @@
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# Retrolambda
+-dontwarn java.lang.invoke.*
