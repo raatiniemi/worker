@@ -83,7 +83,7 @@ sonarqube {
         def binaries = "${buildDir}/intermediates/classes/release"
 
         def androidPath = android.sdkDirectory.getPath()
-        def libraries = "${buildDir}/intermediates/exploded-aar/**/classes.jar," +
+        def libraries = "${buildDir}/intermediates/pre-dexed/*/*.jar," +
                 "${androidPath}/platforms/${android.compileSdkVersion}/android.jar," +
                 "${androidPath}/extras/**/*.jar"
 
@@ -106,7 +106,7 @@ sonarqube {
         properties['sonar.java.libraries'] = libraries
         properties['sonar.java.test.libraries'] = libraries
 
-        properties['sonar.junit.reportsPath'] = "$buildDir/test-results/testReleaseUnitTest/release"
+        properties['sonar.junit.reportsPath'] = "$buildDir/test-results/testReleaseUnitTest"
         properties['sonar.jacoco.reportPaths'] = "$buildDir/jacoco/testReleaseUnitTest.exec"
         properties['sonar.java.coveragePlugin'] = 'jacoco'
     }
