@@ -50,6 +50,8 @@ import static org.hamcrest.Matchers.allOf;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CreateProjectTests {
+    private static final String PROJECT_NAME = "Project name";
+
     @Rule
     public ActivityTestRule<ProjectsActivity> rule = new ActivityTestRule<>(ProjectsActivity.class);
 
@@ -66,14 +68,14 @@ public class CreateProjectTests {
                         withParent(allOf(withId(R.id.fragment_create_project),
                                 withParent(withId(android.R.id.content)))),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("Project name"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText(PROJECT_NAME), closeSoftKeyboard());
 
         ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(R.id.fragment_create_project_submit), withText("Create"), isDisplayed()));
         appCompatTextView2.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.fragment_projects_item_name), withText("Project name"),
+                allOf(withId(R.id.fragment_projects_item_name), withText(PROJECT_NAME),
                         childAtPosition(
                                 allOf(withId(R.id.fragment_projects_item_content),
                                         childAtPosition(
@@ -81,7 +83,7 @@ public class CreateProjectTests {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Project name")));
+        textView.check(matches(withText(PROJECT_NAME)));
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.fragment_projects_item_time), withText("0m"),
