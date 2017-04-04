@@ -60,7 +60,7 @@ public class CreateProjectTests {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
         ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.title), withText("Create project"), isDisplayed()));
+                allOf(withId(R.id.title), withText(R.string.menu_actions_projects_create_project), isDisplayed()));
         appCompatTextView.perform(click());
 
         ViewInteraction appCompatEditText = onView(
@@ -71,7 +71,7 @@ public class CreateProjectTests {
         appCompatEditText.perform(replaceText(PROJECT_NAME), closeSoftKeyboard());
 
         ViewInteraction appCompatTextView2 = onView(
-                allOf(withId(R.id.fragment_create_project_submit), withText("Create"), isDisplayed()));
+                allOf(withId(R.id.fragment_create_project_submit), withText(R.string.fragment_create_project_submit), isDisplayed()));
         appCompatTextView2.perform(click());
 
         ViewInteraction textView = onView(
