@@ -35,7 +35,7 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 
 @Module
 public class DataModule {
-    private final Context context;
+    final Context context;
 
     public DataModule(@NonNull Context context) {
         this.context = context;

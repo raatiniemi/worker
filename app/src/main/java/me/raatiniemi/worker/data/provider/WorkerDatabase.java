@@ -33,13 +33,21 @@ import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 public class WorkerDatabase extends SQLiteOpenHelper {
     static final int DATABASE_VERSION = 2;
 
+    private WorkerDatabase(Context context, String name) {
+        super(context, name, null, DATABASE_VERSION);
+    }
+
     /**
      * Constructor.
      *
      * @param context Context used with the database.
      */
     public WorkerDatabase(Context context) {
-        super(context, WorkerApplication.DATABASE_NAME, null, DATABASE_VERSION);
+        this(context, WorkerApplication.DATABASE_NAME);
+    }
+
+    public static WorkerDatabase inMemory(Context context) {
+        return new WorkerDatabase(context, null);
     }
 
     /**

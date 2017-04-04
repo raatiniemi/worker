@@ -14,17 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker;
+package me.raatiniemi.worker.data;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.test.espresso.core.deps.dagger.Module;
 
-import me.raatiniemi.worker.data.AndroidTestDataModule;
-import me.raatiniemi.worker.data.DataModule;
+import me.raatiniemi.worker.data.provider.WorkerDatabase;
 
-public class AndroidTestApplication extends WorkerApplication {
+@Module
+public class AndroidTestDataModule extends DataModule {
+    public AndroidTestDataModule(@NonNull Context context) {
+        super(context);
+    }
+
     @NonNull
     @Override
-    DataModule createDataModule() {
-        return new AndroidTestDataModule(this);
+    WorkerDatabase providesWorkerDatabase() {
+        return WorkerDatabase.inMemory(context);
     }
 }
