@@ -29,6 +29,9 @@ public final class RxDialog {
     private static final Integer NEGATIVE = 0;
     private static final Integer POSITIVE = 1;
 
+    private RxDialog() {
+    }
+
     @NonNull
     public static Observable<Integer> build(@NonNull Context context, int title, int message) {
         return Observable.create(subscriber -> {
