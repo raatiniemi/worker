@@ -21,17 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.concurrent.TimeUnit;
-
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.projects.model.ClockActivityAtEvent;
-import me.raatiniemi.worker.presentation.projects.model.ClockActivityToggleEvent;
-import me.raatiniemi.worker.presentation.projects.model.DeleteProjectEvent;
-import me.raatiniemi.worker.presentation.projects.model.ProjectActionEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResult;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
-import me.raatiniemi.worker.presentation.util.RxBus;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 
 /**
@@ -42,7 +35,6 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
     private final HintedImageButtonListener hintedImageButtonListener;
 
     private final Resources resources;
-    private final RxBus<ProjectActionEvent> rxBus = new RxBus<>();
 
     /**
      * Construct the ProjectsAdapter.
@@ -60,23 +52,6 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
         this.hintedImageButtonListener = hintedImageButtonListener;
 
         this.resources = resources;
-        rxBus.toObservable()
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .subscribe(this::propagateActionWithEvent);
-    }
-
-    private void propagateActionWithEvent(ProjectActionEvent event) {
-        if (event instanceof ClockActivityToggleEvent) {
-            this.onProjectActionListener.onClockActivityToggle(event.getResult());
-            return;
-        }
-
-        if (event instanceof ClockActivityAtEvent) {
-            this.onProjectActionListener.onClockActivityAt(event.getResult());
-            return;
-        }
-
-        this.onProjectActionListener.onDelete(event.getResult());
     }
 
     @Override
@@ -108,20 +83,17 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
         vh.clockActivityToggle.setContentDescription(
                 item.getHelpTextForClockActivityToggle(resources)
         );
-        vh.clockActivityToggle.setOnClickListener(view ->
-                rxBus.send(ClockActivityToggleEvent.withAdapterResult(result)));
+        vh.clockActivityToggle.setOnClickListener(view -> onProjectActionListener.onClockActivityToggle(result));
         vh.clockActivityToggle.setOnLongClickListener(hintedImageButtonListener);
         vh.clockActivityToggle.setActivated(item.isActive());
 
         vh.clockActivityAt.setContentDescription(
                 item.getHelpTextForClockActivityAt(resources)
         );
-        vh.clockActivityAt.setOnClickListener(view ->
-                rxBus.send(ClockActivityAtEvent.withAdapterResult(result)));
+        vh.clockActivityAt.setOnClickListener(view -> onProjectActionListener.onClockActivityAt(result));
         vh.clockActivityAt.setOnLongClickListener(hintedImageButtonListener);
 
-        vh.delete.setOnClickListener(view ->
-                rxBus.send(DeleteProjectEvent.withAdapterResult(result)));
+        vh.delete.setOnClickListener(view -> onProjectActionListener.onDelete(result));
         vh.delete.setOnLongClickListener(hintedImageButtonListener);
     }
 }

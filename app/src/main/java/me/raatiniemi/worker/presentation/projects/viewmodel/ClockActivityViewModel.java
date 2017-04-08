@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
@@ -87,6 +88,7 @@ public interface ClockActivityViewModel {
             this.getProjectTimeSince = getProjectTimeSince;
 
             Observable.zip(clockInResult, clockInDate, CombinedResult::new)
+                    .throttleFirst(500, TimeUnit.MILLISECONDS)
                     .switchMap(result -> executeUseCase(result)
                             .compose(redirectErrorToSubject(clockInError))
                             .compose(hideErrors())
@@ -94,6 +96,7 @@ public interface ClockActivityViewModel {
                     .subscribe(clockInSuccess);
 
             Observable.zip(clockOutResult, clockOutDate, CombinedResult::new)
+                    .throttleFirst(500, TimeUnit.MILLISECONDS)
                     .switchMap(result -> executeUseCase(result)
                             .compose(redirectErrorToSubject(clockOutError))
                             .compose(hideErrors())
