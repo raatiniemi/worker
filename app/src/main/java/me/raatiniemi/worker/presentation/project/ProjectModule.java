@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.presentation.project;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -24,9 +24,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.interactor.GetTimesheet;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
@@ -39,15 +36,9 @@ public class ProjectModule {
     @Provides
     @Singleton
     TimesheetPresenter providesTimesheetPresenter(
-            Context context,
-            HideRegisteredTimePreferences hideRegisteredTimePreferences
+            @NonNull TimeRepository timeRepository,
+            @NonNull HideRegisteredTimePreferences hideRegisteredTimePreferences
     ) {
-        TimeRepository timeRepository = new TimeResolverRepository(
-                context.getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
-
         return new TimesheetPresenter(
                 hideRegisteredTimePreferences,
                 EventBus.getDefault(),

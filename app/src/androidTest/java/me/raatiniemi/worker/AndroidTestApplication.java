@@ -14,15 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.service.ongoing;
+package me.raatiniemi.worker;
 
-import javax.inject.Singleton;
+import android.support.annotation.NonNull;
 
-import dagger.Component;
-import me.raatiniemi.worker.presentation.PreferenceModule;
+import me.raatiniemi.worker.data.AndroidTestDataModule;
+import me.raatiniemi.worker.data.DataModule;
 
-@Singleton
-@Component(modules = PreferenceModule.class)
-public interface OngoingServiceComponent {
-    void inject(OngoingService __);
+public class AndroidTestApplication extends WorkerApplication {
+    @NonNull
+    @Override
+    DataModule createDataModule() {
+        return new AndroidTestDataModule(this);
+    }
 }

@@ -14,24 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project;
+package me.raatiniemi.worker;
 
-import javax.inject.Singleton;
+import android.app.Application;
+import android.content.Context;
+import android.support.test.runner.AndroidJUnitRunner;
 
-import dagger.Component;
-import me.raatiniemi.worker.data.DataModule;
-import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
-import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
-
-@Singleton
-@Component(modules = {
-        DataModule.class,
-        PreferenceModule.class,
-        ProjectModule.class
-})
-public interface ProjectComponent {
-    void inject(ProjectActivity __);
-
-    void inject(TimesheetFragment __);
+public class AndroidTestRunner extends AndroidJUnitRunner {
+    @Override
+    public Application newApplication(ClassLoader cl, String className, Context context)
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        return super.newApplication(cl, AndroidTestApplication.class.getName(), context);
+    }
 }

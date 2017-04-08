@@ -17,6 +17,8 @@ android {
         versionCode projectVersionCode
 
         resConfigs "en"
+
+        testInstrumentationRunner 'me.raatiniemi.worker.AndroidTestRunner'
     }
     if (System.getenv("CI")) {
         signingConfigs {
@@ -144,4 +146,11 @@ dependencies {
     testCompile deps.mockitoCore
     testCompile deps.robolectric
     testCompile deps.leakCanaryNoOp
+    androidTestCompile(deps.espressoCore) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
+    androidTestCompile(deps.androidSupportTestRunner) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
 }

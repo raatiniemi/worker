@@ -27,19 +27,21 @@ import org.greenrobot.eventbus.EventBus;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.provider.WorkerContract;
-import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
-import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 
-abstract class OngoingService extends IntentService {
+abstract public class OngoingService extends IntentService {
+    @SuppressWarnings("WeakerAccess")
+    @Inject
+    ProjectRepository projectRepository;
+
+    @SuppressWarnings("WeakerAccess")
+    @Inject
+    TimeRepository timeRepository;
+
     @SuppressWarnings("WeakerAccess")
     @Inject
     OngoingNotificationPreferences ongoingNotificationPreferences;
@@ -52,7 +54,7 @@ abstract class OngoingService extends IntentService {
     public void onCreate() {
         super.onCreate();
 
-        ((WorkerApplication) getApplication()).getOngoingServiceComponent()
+        ((WorkerApplication) getApplication()).getDataComponent()
                 .inject(this);
     }
 
@@ -70,20 +72,12 @@ abstract class OngoingService extends IntentService {
         return projectId;
     }
 
-    TimeRepository getTimeRepository() {
-        return new TimeResolverRepository(
-                getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
+    ProjectRepository getProjectRepository() {
+        return projectRepository;
     }
 
-    ProjectRepository getProjectRepository() {
-        return new ProjectResolverRepository(
-                getContentResolver(),
-                new ProjectCursorMapper(),
-                new ProjectContentValuesMapper()
-        );
+    TimeRepository getTimeRepository() {
+        return timeRepository;
     }
 
     void sendNotification(long projectId, Notification notification) {

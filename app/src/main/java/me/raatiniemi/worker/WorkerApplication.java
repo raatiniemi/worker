@@ -19,11 +19,13 @@ package me.raatiniemi.worker;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import me.raatiniemi.worker.data.service.ongoing.DaggerOngoingServiceComponent;
-import me.raatiniemi.worker.data.service.ongoing.OngoingServiceComponent;
+import me.raatiniemi.worker.data.DaggerDataComponent;
+import me.raatiniemi.worker.data.DataModule;
+import me.raatiniemi.worker.data.DataComponent;
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
 import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
@@ -77,7 +79,9 @@ public class WorkerApplication extends Application {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
-    private OngoingServiceComponent ongoingServiceComponent;
+    private static WorkerApplication instance;
+
+    private DataComponent dataComponent;
     private ProjectComponent projectComponent;
     private ProjectsComponent projectsComponent;
     private SettingsComponent settingsComponent;
@@ -86,19 +90,25 @@ public class WorkerApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        AndroidModule androidModule = new AndroidModule(this);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        PreferenceModule preferenceModule = new PreferenceModule(preferences);
-        ongoingServiceComponent = DaggerOngoingServiceComponent.builder()
+        synchronized (WorkerApplication.class) {
+            instance = this;
+        }
+
+        AndroidModule androidModule = createAndroidModule();
+        DataModule dataModule = createDataModule();
+        PreferenceModule preferenceModule = createPreferenceModule();
+        dataComponent = DaggerDataComponent.builder()
+                .dataModule(dataModule)
                 .preferenceModule(preferenceModule)
                 .build();
         projectComponent = DaggerProjectComponent.builder()
-                .androidModule(androidModule)
+                .dataModule(dataModule)
                 .preferenceModule(preferenceModule)
                 .projectModule(new ProjectModule())
                 .build();
         projectsComponent = DaggerProjectsComponent.builder()
                 .androidModule(androidModule)
+                .dataModule(dataModule)
                 .projectsModule(new ProjectsModule())
                 .preferenceModule(preferenceModule)
                 .build();
@@ -117,8 +127,33 @@ public class WorkerApplication extends Application {
         }
     }
 
-    public OngoingServiceComponent getOngoingServiceComponent() {
-        return ongoingServiceComponent;
+    public synchronized static WorkerApplication getInstance() {
+        if (null == instance) {
+            throw new RuntimeException("No application instance is available");
+        }
+
+        return instance;
+    }
+
+    @NonNull
+    AndroidModule createAndroidModule() {
+        return new AndroidModule(this);
+    }
+
+    @NonNull
+    DataModule createDataModule() {
+        return new DataModule(this);
+    }
+
+    @NonNull
+    PreferenceModule createPreferenceModule() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        return new PreferenceModule(preferences);
+    }
+
+    public DataComponent getDataComponent() {
+        return dataComponent;
     }
 
     public ProjectComponent getProjectComponent() {

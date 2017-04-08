@@ -14,24 +14,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project;
+package me.raatiniemi.worker.data;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
-import me.raatiniemi.worker.data.DataModule;
+import me.raatiniemi.worker.data.provider.WorkerProvider;
+import me.raatiniemi.worker.data.service.ongoing.OngoingService;
 import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
-import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
 
 @Singleton
 @Component(modules = {
         DataModule.class,
-        PreferenceModule.class,
-        ProjectModule.class
+        PreferenceModule.class
 })
-public interface ProjectComponent {
-    void inject(ProjectActivity __);
+public interface DataComponent {
+    void inject(WorkerProvider __);
 
-    void inject(TimesheetFragment __);
+    void inject(OngoingService __);
 }
