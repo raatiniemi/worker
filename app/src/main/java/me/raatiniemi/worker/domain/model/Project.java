@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -77,7 +78,7 @@ public class Project extends DomainObject {
      * @return Project time.
      */
     public List<Time> getRegisteredTime() {
-        return registeredTime;
+        return Collections.unmodifiableList(registeredTime);
     }
 
     /**
@@ -96,7 +97,7 @@ public class Project extends DomainObject {
             return;
         }
 
-        getRegisteredTime().addAll(time);
+        registeredTime.addAll(time);
     }
 
     /**
@@ -123,13 +124,12 @@ public class Project extends DomainObject {
      */
     private Time getActiveTime() {
         // If no time is registered, the project can't be active.
-        List<Time> list = getRegisteredTime();
-        if (list.isEmpty()) {
+        if (registeredTime.isEmpty()) {
             return null;
         }
 
         // If the first item is not active, the project is not active.
-        Time time = list.get(0);
+        Time time = registeredTime.get(0);
         if (!time.isActive()) {
             return null;
         }
