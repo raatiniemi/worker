@@ -136,17 +136,17 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     }
 
     @OnTextChanged(R.id.fragment_create_project_name)
-    void projectName(final CharSequence name) {
+    void onProjectName(final CharSequence name) {
         viewModel.input.projectName(name.toString());
     }
 
     @OnClick(R.id.fragment_create_project_submit)
-    void createProject() {
+    void onCreateProject() {
         viewModel.input.createProject();
     }
 
     @OnClick(R.id.fragment_create_project_dismiss)
-    void dismissDialog() {
+    void onDismissDialog() {
         dismiss();
     }
 
