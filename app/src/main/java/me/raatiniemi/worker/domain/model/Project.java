@@ -24,6 +24,7 @@ import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
+import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.domain.validator.ProjectName.isValid;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
@@ -87,9 +88,7 @@ public class Project extends DomainObject {
      * @param time Time to add to the project.
      */
     public void addTime(final List<Time> time) {
-        if (isNull(time)) {
-            throw new NullPointerException("Time is not allowed to be null");
-        }
+        requireNonNull(time, "Time is not allowed to be null");
 
         // If the list with items are empty, there's no
         // need to attempt to add them.
