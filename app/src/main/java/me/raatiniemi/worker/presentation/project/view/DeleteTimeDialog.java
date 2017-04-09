@@ -24,8 +24,8 @@ import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import rx.Observable;
 
 final class DeleteTimeDialog {
-    private final static int TITLE = R.string.confirm_delete_time_title;
-    private final static int MESSAGE = R.string.confirm_delete_time_message;
+    private static final int TITLE = R.string.confirm_delete_time_title;
+    private static final int MESSAGE = R.string.confirm_delete_time_message;
 
     @NonNull
     static Observable<Integer> show(@NonNull Context context) {
