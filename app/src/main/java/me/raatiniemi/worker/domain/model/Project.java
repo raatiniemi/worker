@@ -39,7 +39,7 @@ public class Project extends DomainObject {
     /**
      * Time registered for the project.
      */
-    private final List<Time> time;
+    private final List<Time> time = new ArrayList<>();
 
     /**
      * Constructor.
@@ -56,9 +56,6 @@ public class Project extends DomainObject {
         }
 
         this.name = name;
-
-        // Set default value for non-constructor arguments.
-        time = new ArrayList<>();
     }
 
     public static Builder builder(String projectName) {
