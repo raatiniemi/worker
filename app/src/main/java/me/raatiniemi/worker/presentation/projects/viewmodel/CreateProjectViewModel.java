@@ -54,9 +54,9 @@ public interface CreateProjectViewModel {
     }
 
     final class ViewModel implements Input, Output, Error {
-        public final Input input = this;
-        public final Output output = this;
-        public final Error error = this;
+        public final Input input;
+        public final Output output;
+        public final Error error;
 
         private final PublishSubject<String> projectName = PublishSubject.create();
         private final BehaviorSubject<Boolean> isProjectNameValid = BehaviorSubject.create(Boolean.FALSE);
@@ -67,6 +67,10 @@ public interface CreateProjectViewModel {
         private final CreateProject useCase;
 
         public ViewModel(@NonNull CreateProject useCase) {
+            input = this;
+            output = this;
+            error = this;
+
             this.useCase = useCase;
 
             projectName.map(ProjectName::isValid)

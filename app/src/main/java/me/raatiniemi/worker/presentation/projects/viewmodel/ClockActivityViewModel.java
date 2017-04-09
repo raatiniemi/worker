@@ -59,9 +59,9 @@ public interface ClockActivityViewModel {
     }
 
     class ViewModel implements Input, Output, Error {
-        public final Input input = this;
-        public final Output output = this;
-        public final Error error = this;
+        public final Input input;
+        public final Output output;
+        public final Error error;
 
         private int startingPoint = GetProjectTimeSince.MONTH;
 
@@ -84,6 +84,10 @@ public interface ClockActivityViewModel {
                 @NonNull ClockActivityChange clockActivityChange,
                 @NonNull GetProjectTimeSince getProjectTimeSince
         ) {
+            input = this;
+            output = this;
+            error = this;
+
             this.clockActivityChange = clockActivityChange;
             this.getProjectTimeSince = getProjectTimeSince;
 

@@ -40,9 +40,9 @@ public interface RemoveProjectViewModel {
     }
 
     class ViewModel implements Input, Output, Error {
-        public final Input input = this;
-        public final Output output = this;
-        public final Error error = this;
+        public final Input input;
+        public final Output output;
+        public final Error error;
 
         private final PublishSubject<ProjectsItemAdapterResult> removeProjectSuccess = PublishSubject.create();
         private final PublishSubject<ProjectsItemAdapterResult> removeProjectError = PublishSubject.create();
@@ -51,6 +51,10 @@ public interface RemoveProjectViewModel {
         private final RemoveProject removeProject;
 
         public ViewModel(@NonNull RemoveProject removeProject) {
+            input = this;
+            output = this;
+            error = this;
+
             this.removeProject = removeProject;
 
             project

@@ -37,13 +37,16 @@ public interface RefreshActiveProjectsViewModel {
     }
 
     class ViewModel implements Input, Output {
-        public final Input input = this;
-        public final Output output = this;
+        public final Input input;
+        public final Output output;
 
         private final PublishSubject<List<ProjectsItem>> projects = PublishSubject.create();
         private final PublishSubject<List<Integer>> positions = PublishSubject.create();
 
         public ViewModel() {
+            input = this;
+            output = this;
+
             projects.map(ViewModel::getPositionsForActiveProjects)
                     .compose(hideErrors())
                     .subscribe(positions);
