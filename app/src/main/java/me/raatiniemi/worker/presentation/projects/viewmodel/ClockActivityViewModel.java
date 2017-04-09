@@ -130,7 +130,7 @@ public interface ClockActivityViewModel {
         }
 
         @NonNull
-        private ProjectsItemAdapterResult buildResult(
+        private static ProjectsItemAdapterResult buildResult(
                 @NonNull ProjectsItemAdapterResult result,
                 @NonNull ProjectsItem projectsItem
         ) {

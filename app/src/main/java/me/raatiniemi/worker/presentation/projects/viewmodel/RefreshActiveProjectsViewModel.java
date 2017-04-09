@@ -44,13 +44,13 @@ public interface RefreshActiveProjectsViewModel {
         private final PublishSubject<List<Integer>> positions = PublishSubject.create();
 
         public ViewModel() {
-            projects.map(this::getPositionsForActiveProjects)
+            projects.map(ViewModel::getPositionsForActiveProjects)
                     .compose(hideErrors())
                     .subscribe(positions);
         }
 
         @NonNull
-        private List<Integer> getPositionsForActiveProjects(@NonNull List<ProjectsItem> items) {
+        private static List<Integer> getPositionsForActiveProjects(@NonNull List<ProjectsItem> items) {
             if (items.isEmpty()) {
                 return Collections.emptyList();
             }

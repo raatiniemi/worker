@@ -132,11 +132,11 @@ public interface CreateProjectViewModel {
         @Override
         public Observable<String> invalidProjectNameError() {
             return createProjectError
-                    .filter(this::isInvalidProjectNameError)
+                    .filter(ViewModel::isInvalidProjectNameError)
                     .map(Throwable::getMessage);
         }
 
-        private boolean isInvalidProjectNameError(@NonNull Throwable e) {
+        private static boolean isInvalidProjectNameError(@NonNull Throwable e) {
             return e instanceof InvalidProjectNameException;
         }
 
@@ -144,11 +144,11 @@ public interface CreateProjectViewModel {
         @Override
         public Observable<String> duplicateProjectNameError() {
             return createProjectError
-                    .filter(this::isDuplicateProjectNameError)
+                    .filter(ViewModel::isDuplicateProjectNameError)
                     .map(Throwable::getMessage);
         }
 
-        private boolean isDuplicateProjectNameError(@NonNull Throwable e) {
+        private static boolean isDuplicateProjectNameError(@NonNull Throwable e) {
             return e instanceof ProjectAlreadyExistsException;
         }
 
@@ -156,11 +156,11 @@ public interface CreateProjectViewModel {
         @Override
         public Observable<String> createProjectError() {
             return createProjectError
-                    .filter(this::isUnknownError)
+                    .filter(ViewModel::isUnknownError)
                     .map(Throwable::getMessage);
         }
 
-        private boolean isUnknownError(@NonNull Throwable e) {
+        private static boolean isUnknownError(@NonNull Throwable e) {
             return !isInvalidProjectNameError(e) && !isDuplicateProjectNameError(e);
         }
     }
