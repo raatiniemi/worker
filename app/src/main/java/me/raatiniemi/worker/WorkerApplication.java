@@ -27,6 +27,7 @@ import me.raatiniemi.worker.data.DaggerDataComponent;
 import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.data.DataComponent;
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
+import me.raatiniemi.worker.exception.NoApplicationInstanceException;
 import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
 import me.raatiniemi.worker.presentation.project.DaggerProjectComponent;
@@ -129,7 +130,7 @@ public class WorkerApplication extends Application {
 
     public synchronized static WorkerApplication getInstance() {
         if (null == instance) {
-            throw new RuntimeException("No application instance is available");
+            throw new NoApplicationInstanceException();
         }
 
         return instance;
