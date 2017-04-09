@@ -86,8 +86,7 @@ sonarqube {
         def binaries = "${buildDir}/intermediates/classes/release"
 
         def androidPath = android.sdkDirectory.getPath()
-        def libraries = "${buildDir}/intermediates/pre-dexed/*/*.jar," +
-                "${androidPath}/platforms/${android.compileSdkVersion}/android.jar," +
+        def libraries = "${androidPath}/platforms/${android.compileSdkVersion}/android.jar," +
                 "${androidPath}/extras/**/*.jar"
 
         properties['sonar.projectKey'] = 'worker:android'
