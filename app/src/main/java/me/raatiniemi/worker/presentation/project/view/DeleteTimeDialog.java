@@ -27,6 +27,9 @@ final class DeleteTimeDialog {
     private static final int TITLE = R.string.confirm_delete_time_title;
     private static final int MESSAGE = R.string.confirm_delete_time_message;
 
+    private DeleteTimeDialog() {
+    }
+
     @NonNull
     static Observable<Integer> show(@NonNull Context context) {
         return RxDialog.build(context, TITLE, MESSAGE);

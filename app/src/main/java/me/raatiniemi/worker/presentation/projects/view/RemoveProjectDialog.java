@@ -27,6 +27,9 @@ final class RemoveProjectDialog {
     private static final int TITLE = R.string.confirm_delete_project_title;
     private static final int MESSAGE = R.string.confirm_delete_project_message;
 
+    private RemoveProjectDialog() {
+    }
+
     @NonNull
     static Observable<Integer> show(@NonNull Context context) {
         return RxDialog.build(context, TITLE, MESSAGE);
