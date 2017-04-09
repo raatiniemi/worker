@@ -1,0 +1,18 @@
+#!/bin/bash
+BIN_DIRECTORY="$(dirname $0)";
+SDK_DIRECTORY="/opt/android-sdk";
+API_VERSION=25;
+
+# Later versions of the Android SDK have moved libQt5Widgets.so.5 which prevents
+# the emulator from booting. Adding the new path to the `$LD_LIBRARY_PATH` will
+# help the emulator to find the necessary files.
+export LD_LIBRARY_PATH="${SDK_DIRECTORY}/tools/lib64:${SDK_DIRECTORY}/tools/lib64/qt/lib:${LD_LIBRARY_PATH}"
+
+echo y | android --silent update sdk --no-ui --all --filter sys-img-x86-google_apis-$API_VERSION
+echo no | android create avd -n test -t android-$API_VERSION --abi google_apis/x86
+
+emulator64-x86 -avd test -no-window -no-audio &
+
+"${BIN_DIRECTORY}/android-wait-for-emulator"
+adb shell input keyevent 82 &
+exit $?;

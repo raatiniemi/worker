@@ -1,0 +1,6 @@
+#!/bin/bash
+GRADLE_RUNNER="$(dirname $0)/gradle";
+TASKS="connectedAndroidTest";
+
+$GRADLE_RUNNER $TASKS;
+exit $?;
