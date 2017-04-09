@@ -17,17 +17,15 @@
 package me.raatiniemi.worker.presentation.projects.viewmodel;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.validator.ProjectName;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
-
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public interface CreateProjectViewModel {
     interface Input {
@@ -71,7 +69,7 @@ public interface CreateProjectViewModel {
         public ViewModel(@NonNull CreateProject useCase) {
             this.useCase = useCase;
 
-            projectName.map(this::isNameValid)
+            projectName.map(ProjectName::isValid)
                     .subscribe(isProjectNameValid);
 
             createProject.withLatestFrom(projectName, (event, name) -> name)
@@ -79,10 +77,6 @@ public interface CreateProjectViewModel {
                             .compose(redirectErrorsToSubject())
                             .compose(hideErrors()))
                     .subscribe(createProjectSuccess);
-        }
-
-        private boolean isNameValid(@Nullable String name) {
-            return nonNull(name) && !name.isEmpty();
         }
 
         @NonNull

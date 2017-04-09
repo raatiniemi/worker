@@ -23,6 +23,7 @@ import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
+import static me.raatiniemi.worker.domain.validator.ProjectName.isValid;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
@@ -47,11 +48,14 @@ public class Project extends DomainObject {
      * @param name Name of the project.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
-    private Project(final Long id, final String name)
-            throws InvalidProjectNameException {
+    private Project(final Long id, final String name) throws InvalidProjectNameException {
         super(id);
 
-        setName(name);
+        if (!isValid(name)) {
+            throw new InvalidProjectNameException();
+        }
+
+        this.name = name;
 
         // Set default value for non-constructor arguments.
         time = new ArrayList<>();
@@ -68,20 +72,6 @@ public class Project extends DomainObject {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Setter method for the project name.
-     *
-     * @param name Project name.
-     * @throws InvalidProjectNameException If project name is null or empty.
-     */
-    private void setName(final String name) throws InvalidProjectNameException {
-        if (isNull(name) || 0 == name.length()) {
-            throw new InvalidProjectNameException();
-        }
-
-        this.name = name;
     }
 
     /**
