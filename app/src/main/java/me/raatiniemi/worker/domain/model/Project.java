@@ -34,7 +34,7 @@ public class Project extends DomainObject {
     /**
      * Name for the project.
      */
-    private String name;
+    private final String name;
 
     /**
      * Time registered for the project.
