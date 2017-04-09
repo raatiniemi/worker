@@ -100,7 +100,7 @@ sonarqube {
         properties['sonar.java.target'] = targetCompatibilityVersion
 
         properties['sonar.sources'] = combineSourceSetDirectories android.sourceSets.main
-        properties['sonar.tests'] = 'src/test/java'
+        properties['sonar.tests'] = 'src/test/java,src/androidTest/java'
 
         properties['sonar.java.binaries'] = binaries
         properties['sonar.java.test.binaries'] = binaries
@@ -108,8 +108,8 @@ sonarqube {
         properties['sonar.java.libraries'] = libraries
         properties['sonar.java.test.libraries'] = libraries
 
-        properties['sonar.junit.reportsPath'] = "$buildDir/test-results/testReleaseUnitTest"
-        properties['sonar.jacoco.reportPaths'] = "$buildDir/jacoco/testReleaseUnitTest.exec"
+        properties['sonar.junit.reportsPath'] = "${buildDir}/test-results/testReleaseUnitTest"
+        properties['sonar.jacoco.reportPaths'] = fileTree(dir: buildDir, includes: ['**/*.exec', '**/*.ec'])
         properties['sonar.java.coveragePlugin'] = 'jacoco'
     }
 }

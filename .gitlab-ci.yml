@@ -40,6 +40,8 @@ instrumentation:
 sonar:
   stage: test
   script:
+    - bin/start-emulator
+    - bin/instrumentation
     - bin/sonar
   artifacts:
     paths:
