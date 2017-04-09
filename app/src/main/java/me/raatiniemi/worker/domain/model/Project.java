@@ -39,7 +39,7 @@ public class Project extends DomainObject {
     /**
      * Time registered for the project.
      */
-    private final List<Time> time = new ArrayList<>();
+    private final List<Time> registeredTime = new ArrayList<>();
 
     /**
      * Constructor.
@@ -76,8 +76,8 @@ public class Project extends DomainObject {
      *
      * @return Project time.
      */
-    public List<Time> getTime() {
-        return time;
+    public List<Time> getRegisteredTime() {
+        return registeredTime;
     }
 
     /**
@@ -96,7 +96,7 @@ public class Project extends DomainObject {
             return;
         }
 
-        getTime().addAll(time);
+        getRegisteredTime().addAll(time);
     }
 
     /**
@@ -123,7 +123,7 @@ public class Project extends DomainObject {
      */
     private Time getActiveTime() {
         // If no time is registered, the project can't be active.
-        List<Time> list = getTime();
+        List<Time> list = getRegisteredTime();
         if (list.isEmpty()) {
             return null;
         }
@@ -175,7 +175,7 @@ public class Project extends DomainObject {
         Project project = (Project) o;
         return Objects.equals(getId(), project.getId())
                 && getName().equals(project.getName())
-                && getTime().equals(project.getTime());
+                && getRegisteredTime().equals(project.getRegisteredTime());
     }
 
     @Override
@@ -183,7 +183,7 @@ public class Project extends DomainObject {
         int result = 17;
         result = 31 * result + Objects.hashCode(getId());
         result = 31 * result + getName().hashCode();
-        result = 31 * result + getTime().hashCode();
+        result = 31 * result + getRegisteredTime().hashCode();
         return result;
     }
 
