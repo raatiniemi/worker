@@ -136,7 +136,7 @@ public class ProjectsFragment extends RxFragment
         projectsViewModel.error.projectsError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
-                .subscribe(__ -> showGetProjectsErrorMessage());
+                .subscribe(e -> showGetProjectsErrorMessage());
 
         clockActivityViewModel.output.clockInSuccess()
                 .compose(bindToLifecycle())
@@ -149,7 +149,7 @@ public class ProjectsFragment extends RxFragment
         clockActivityViewModel.error.clockInError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
-                .subscribe(__ -> showClockInErrorMessage());
+                .subscribe(e -> showClockInErrorMessage());
 
         clockActivityViewModel.output.clockOutSuccess()
                 .compose(bindToLifecycle())
@@ -162,12 +162,12 @@ public class ProjectsFragment extends RxFragment
         clockActivityViewModel.error.clockOutError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
-                .subscribe(__ -> showClockOutErrorMessage());
+                .subscribe(e -> showClockOutErrorMessage());
 
         removeProjectViewModel.output.removeProjectSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
-                .subscribe(__ -> showDeleteProjectSuccessMessage());
+                .subscribe(result -> showDeleteProjectSuccessMessage());
 
         removeProjectViewModel.error.removeProjectError()
                 .compose(bindToLifecycle())
@@ -189,7 +189,7 @@ public class ProjectsFragment extends RxFragment
 
         refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(__ -> refreshViewModel.input.projects(adapter.getItems()));
+                .subscribe(interval -> refreshViewModel.input.projects(adapter.getItems()));
 
         refreshViewModel.input.projects(adapter.getItems());
     }
@@ -223,13 +223,13 @@ public class ProjectsFragment extends RxFragment
 
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(OngoingNotificationActionEvent __) {
+    public void onEventMainThread(OngoingNotificationActionEvent event) {
         reloadProjects();
     }
 
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(TimeSummaryStartingPointChangeEvent __) {
+    public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
         int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
         projectsViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
         clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
@@ -365,7 +365,7 @@ public class ProjectsFragment extends RxFragment
             ConfirmClockOutDialog.show(getActivity())
                     .filter(RxDialog::isPositive)
                     .subscribe(
-                            __ -> clockActivityViewModel.input.clockOut(result, new Date()),
+                            which -> clockActivityViewModel.input.clockOut(result, new Date()),
                             Timber::w
                     );
             return;
@@ -399,7 +399,7 @@ public class ProjectsFragment extends RxFragment
         RemoveProjectDialog.show(getActivity())
                 .filter(RxDialog::isPositive)
                 .subscribe(
-                        __ -> {
+                        which -> {
                             deleteProjectAtPosition(result.getPosition());
 
                             removeProjectViewModel.input.remove(result);

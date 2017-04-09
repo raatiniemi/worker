@@ -84,15 +84,15 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
 
         viewModel.error.invalidProjectNameError()
                 .compose(bindToLifecycle())
-                .subscribe(__ -> showInvalidNameError());
+                .subscribe(message -> showInvalidNameError());
 
         viewModel.error.duplicateProjectNameError()
                 .compose(bindToLifecycle())
-                .subscribe(__ -> showDuplicateNameError());
+                .subscribe(message -> showDuplicateNameError());
 
         viewModel.error.createProjectError()
                 .compose(bindToLifecycle())
-                .subscribe(__ -> showUnknownError());
+                .subscribe(message -> showUnknownError());
     }
 
     @Override

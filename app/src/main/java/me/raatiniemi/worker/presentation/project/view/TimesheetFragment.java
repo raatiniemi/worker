@@ -85,7 +85,7 @@ public class TimesheetFragment extends BaseFragment
                     DeleteTimeDialog.show(getActivity())
                             .filter(RxDialog::isPositive)
                             .subscribe(
-                                    __ -> {
+                                    which -> {
                                         presenter.remove(adapter.getSelectedItems());
 
                                         actionMode.finish();

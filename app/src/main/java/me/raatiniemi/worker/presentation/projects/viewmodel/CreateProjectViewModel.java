@@ -74,7 +74,7 @@ public interface CreateProjectViewModel {
             projectName.map(this::isNameValid)
                     .subscribe(isProjectNameValid);
 
-            createProject.withLatestFrom(projectName, (__, name) -> name)
+            createProject.withLatestFrom(projectName, (event, name) -> name)
                     .switchMap(name -> executeUseCase(name)
                             .compose(redirectErrorsToSubject())
                             .compose(hideErrors()))

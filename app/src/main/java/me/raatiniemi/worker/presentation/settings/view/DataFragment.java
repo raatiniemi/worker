@@ -209,7 +209,7 @@ public class DataFragment extends BasePreferenceFragment
         ConfirmRestoreDialog.show(getActivity())
                 .filter(RxDialog::isPositive)
                 .subscribe(
-                        __ -> {
+                        which -> {
                             Snackbar.make(
                                     getActivity().findViewById(android.R.id.content),
                                     R.string.message_restoring_data,

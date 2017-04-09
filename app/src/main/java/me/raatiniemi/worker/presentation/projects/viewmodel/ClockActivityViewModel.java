@@ -147,7 +147,7 @@ public interface ClockActivityViewModel {
         @NonNull
         private <T> Observable.Transformer<T, T> hideErrors() {
             return source -> source
-                    .doOnError(__ -> {
+                    .doOnError(e -> {
                     })
                     .onErrorResumeNext(Observable.empty());
         }

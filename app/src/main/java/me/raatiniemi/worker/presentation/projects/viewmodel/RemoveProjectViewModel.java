@@ -63,14 +63,14 @@ public interface RemoveProjectViewModel {
 
         @NonNull
         private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> redirectErrorToSubject(@NonNull ProjectsItemAdapterResult result) {
-            return source -> source.doOnError(__ -> removeProjectError.onNext(result))
+            return source -> source.doOnError(e -> removeProjectError.onNext(result))
                     .onErrorResumeNext(Observable.empty());
         }
 
         @NonNull
         private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> hideErrors() {
             return source -> source
-                    .doOnError(__ -> {
+                    .doOnError(e -> {
                     })
                     .onErrorResumeNext(Observable.empty());
         }
