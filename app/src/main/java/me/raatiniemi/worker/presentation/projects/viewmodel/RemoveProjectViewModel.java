@@ -24,6 +24,8 @@ import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResul
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+
 public interface RemoveProjectViewModel {
     interface Input {
         void remove(@NonNull ProjectsItemAdapterResult result);
@@ -68,14 +70,6 @@ public interface RemoveProjectViewModel {
         @NonNull
         private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> redirectErrorToSubject(@NonNull ProjectsItemAdapterResult result) {
             return source -> source.doOnError(e -> removeProjectError.onNext(result))
-                    .onErrorResumeNext(Observable.empty());
-        }
-
-        @NonNull
-        private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> hideErrors() {
-            return source -> source
-                    .doOnError(e -> {
-                    })
                     .onErrorResumeNext(Observable.empty());
         }
 

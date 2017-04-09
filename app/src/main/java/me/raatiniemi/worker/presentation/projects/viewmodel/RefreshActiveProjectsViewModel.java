@@ -26,6 +26,8 @@ import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+
 public interface RefreshActiveProjectsViewModel {
     interface Input {
         void projects(@NonNull List<ProjectsItem> projects);
@@ -68,14 +70,6 @@ public interface RefreshActiveProjectsViewModel {
             }
 
             return activePositions;
-        }
-
-        @NonNull
-        private <T> Observable.Transformer<T, T> hideErrors() {
-            return source -> source
-                    .doOnError(e -> {
-                    })
-                    .onErrorResumeNext(Observable.empty());
         }
 
         @Override

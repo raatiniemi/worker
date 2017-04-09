@@ -31,6 +31,9 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+import static me.raatiniemi.worker.presentation.util.RxUtil.redirectErrors;
+
 public interface ProjectsViewModel {
     interface Input {
         void startingPointForTimeSummary(int startingPoint);
@@ -72,7 +75,7 @@ public interface ProjectsViewModel {
             projects = executeGetProjects()
                     .flatMap(Observable::from)
                     .map(this::populateItemWithRegisteredTime)
-                    .compose(redirectErrorsToSubject())
+                    .compose(redirectErrors(projectsError))
                     .compose(hideErrors())
                     .toList();
         }
@@ -104,21 +107,6 @@ public interface ProjectsViewModel {
 
                 return Collections.emptyList();
             }
-        }
-
-        @NonNull
-        private Observable.Transformer<ProjectsItem, ProjectsItem> redirectErrorsToSubject() {
-            return source -> source
-                    .doOnError(projectsError::onNext)
-                    .onErrorResumeNext(Observable.empty());
-        }
-
-        @NonNull
-        private Observable.Transformer<ProjectsItem, ProjectsItem> hideErrors() {
-            return source -> source
-                    .doOnError(e -> {
-                    })
-                    .onErrorResumeNext(Observable.empty());
         }
 
         @Override

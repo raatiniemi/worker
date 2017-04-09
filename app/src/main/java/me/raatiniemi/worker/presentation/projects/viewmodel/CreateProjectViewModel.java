@@ -27,6 +27,9 @@ import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+import static me.raatiniemi.worker.presentation.util.RxUtil.redirectErrors;
+
 public interface CreateProjectViewModel {
     interface Input {
         void projectName(@NonNull String name);
@@ -78,7 +81,7 @@ public interface CreateProjectViewModel {
 
             createProject.withLatestFrom(projectName, (event, name) -> name)
                     .switchMap(name -> executeUseCase(name)
-                            .compose(redirectErrorsToSubject())
+                            .compose(redirectErrors(createProjectError))
                             .compose(hideErrors()))
                     .subscribe(createProjectSuccess);
         }
@@ -93,21 +96,6 @@ public interface CreateProjectViewModel {
             } catch (Exception e) {
                 return Observable.error(e);
             }
-        }
-
-        @NonNull
-        private Observable.Transformer<Project, Project> redirectErrorsToSubject() {
-            return source -> source
-                    .doOnError(createProjectError::onNext)
-                    .onErrorResumeNext(Observable.empty());
-        }
-
-        @NonNull
-        private Observable.Transformer<Project, Project> hideErrors() {
-            return source -> source
-                    .doOnError(e -> {
-                    })
-                    .onErrorResumeNext(Observable.empty());
         }
 
         @Override
