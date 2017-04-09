@@ -77,20 +77,20 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
                 .getProjectsComponent()
                 .inject(this);
 
-        viewModel.output.createProjectSuccess()
+        viewModel.output().createProjectSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(this::success);
 
-        viewModel.error.invalidProjectNameError()
+        viewModel.error().invalidProjectNameError()
                 .compose(bindToLifecycle())
                 .subscribe(message -> showInvalidNameError());
 
-        viewModel.error.duplicateProjectNameError()
+        viewModel.error().duplicateProjectNameError()
                 .compose(bindToLifecycle())
                 .subscribe(message -> showDuplicateNameError());
 
-        viewModel.error.createProjectError()
+        viewModel.error().createProjectError()
                 .compose(bindToLifecycle())
                 .subscribe(message -> showUnknownError());
     }
@@ -110,7 +110,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
         getDialog().setTitle(R.string.fragment_create_project_title);
         getDialog().setOnShowListener(this);
 
-        viewModel.output.isProjectNameValid()
+        viewModel.output().isProjectNameValid()
                 .compose(bindToLifecycle())
                 .subscribe(projectSubmit::setEnabled);
     }
@@ -137,12 +137,12 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
 
     @OnTextChanged(R.id.fragment_create_project_name)
     void onProjectName(final CharSequence name) {
-        viewModel.input.projectName(name.toString());
+        viewModel.input().projectName(name.toString());
     }
 
     @OnClick(R.id.fragment_create_project_submit)
     void onCreateProject() {
-        viewModel.input.createProject();
+        viewModel.input().createProject();
     }
 
     @OnClick(R.id.fragment_create_project_dismiss)

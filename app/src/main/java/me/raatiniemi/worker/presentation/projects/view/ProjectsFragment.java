@@ -125,20 +125,20 @@ public class ProjectsFragment extends RxFragment
         recyclerView.setAdapter(adapter);
 
         int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
-        projectsViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
-        clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+        projectsViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary);
+        clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary);
 
-        projectsViewModel.output.projects()
+        projectsViewModel.output().projects()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(adapter::add);
 
-        projectsViewModel.error.projectsError()
+        projectsViewModel.error().projectsError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(e -> showGetProjectsErrorMessage());
 
-        clockActivityViewModel.output.clockInSuccess()
+        clockActivityViewModel.output().clockInSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(result -> {
@@ -146,12 +146,12 @@ public class ProjectsFragment extends RxFragment
                     updateProject(result);
                 });
 
-        clockActivityViewModel.error.clockInError()
+        clockActivityViewModel.error().clockInError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(e -> showClockInErrorMessage());
 
-        clockActivityViewModel.output.clockOutSuccess()
+        clockActivityViewModel.output().clockOutSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(result -> {
@@ -159,17 +159,17 @@ public class ProjectsFragment extends RxFragment
                     updateProject(result);
                 });
 
-        clockActivityViewModel.error.clockOutError()
+        clockActivityViewModel.error().clockOutError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(e -> showClockOutErrorMessage());
 
-        removeProjectViewModel.output.removeProjectSuccess()
+        removeProjectViewModel.output().removeProjectSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(result -> showDeleteProjectSuccessMessage());
 
-        removeProjectViewModel.error.removeProjectError()
+        removeProjectViewModel.error().removeProjectError()
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -177,7 +177,7 @@ public class ProjectsFragment extends RxFragment
                     showDeleteProjectErrorMessage();
                 });
 
-        refreshViewModel.output.positionsForActiveProjects()
+        refreshViewModel.output().positionsForActiveProjects()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(this::refreshPositions);
@@ -189,9 +189,9 @@ public class ProjectsFragment extends RxFragment
 
         refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(interval -> refreshViewModel.input.projects(adapter.getItems()));
+                .subscribe(interval -> refreshViewModel.input().projects(adapter.getItems()));
 
-        refreshViewModel.input.projects(adapter.getItems());
+        refreshViewModel.input().projects(adapter.getItems());
     }
 
     @Override
@@ -231,8 +231,8 @@ public class ProjectsFragment extends RxFragment
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
         int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
-        projectsViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
-        clockActivityViewModel.input.startingPointForTimeSummary(startingPointForTimeSummary);
+        projectsViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary);
+        clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary);
 
         reloadProjects();
     }
@@ -249,7 +249,7 @@ public class ProjectsFragment extends RxFragment
         adapter.clear();
 
         // TODO: Move to input event for view model.
-        projectsViewModel.output.projects()
+        projectsViewModel.output().projects()
                 .compose(bindToLifecycle())
                 .subscribe(adapter::add);
     }
@@ -358,20 +358,20 @@ public class ProjectsFragment extends RxFragment
         if (projectsItem.isActive()) {
             // Check if clock out require confirmation.
             if (!confirmClockOutPreferences.shouldConfirmClockOut()) {
-                clockActivityViewModel.input.clockOut(result, new Date());
+                clockActivityViewModel.input().clockOut(result, new Date());
                 return;
             }
 
             ConfirmClockOutDialog.show(getActivity())
                     .filter(RxDialog::isPositive)
                     .subscribe(
-                            which -> clockActivityViewModel.input.clockOut(result, new Date()),
+                            which -> clockActivityViewModel.input().clockOut(result, new Date()),
                             Timber::w
                     );
             return;
         }
 
-        clockActivityViewModel.input.clockIn(result, new Date());
+        clockActivityViewModel.input().clockIn(result, new Date());
     }
 
     @Override
@@ -381,11 +381,11 @@ public class ProjectsFragment extends RxFragment
                 projectsItem.asProject(),
                 calendar -> {
                     if (projectsItem.isActive()) {
-                        clockActivityViewModel.input.clockOut(result, calendar.getTime());
+                        clockActivityViewModel.input().clockOut(result, calendar.getTime());
                         return;
                     }
 
-                    clockActivityViewModel.input.clockIn(result, calendar.getTime());
+                    clockActivityViewModel.input().clockIn(result, calendar.getTime());
                 }
         );
 
@@ -402,7 +402,7 @@ public class ProjectsFragment extends RxFragment
                         which -> {
                             deleteProjectAtPosition(result.getPosition());
 
-                            removeProjectViewModel.input.remove(result);
+                            removeProjectViewModel.input().remove(result);
                         },
                         Timber::w
                 );

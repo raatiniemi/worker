@@ -58,11 +58,11 @@ public class ClockActivityViewModelTest {
     public void setUp() {
         vm = new ClockActivityViewModel.ViewModel(clockActivityChange, getProjectTimeSince);
 
-        vm.output.clockInSuccess().subscribe(clockInSuccess);
-        vm.error.clockInError().subscribe(clockInError);
+        vm.output().clockInSuccess().subscribe(clockInSuccess);
+        vm.error().clockInError().subscribe(clockInError);
 
-        vm.output.clockOutSuccess().subscribe(clockOutSuccess);
-        vm.error.clockOutError().subscribe(clockOutError);
+        vm.output().clockOutSuccess().subscribe(clockOutSuccess);
+        vm.error().clockOutError().subscribe(clockOutError);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ClockActivityViewModelTest {
         doThrow(ClockOutBeforeClockInException.class)
                 .when(clockActivityChange).execute(any(), any());
 
-        vm.input.clockIn(result, new Date());
+        vm.input().clockIn(result, new Date());
 
         clockInSuccess.assertNoValues();
         clockInError.assertValueCount(1);
@@ -94,7 +94,7 @@ public class ClockActivityViewModelTest {
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(activeProject);
 
-        vm.input.clockIn(result, new Date());
+        vm.input().clockIn(result, new Date());
 
         clockInSuccess.assertValueCount(1);
         clockInError.assertNoValues();
@@ -118,8 +118,8 @@ public class ClockActivityViewModelTest {
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(activeProject);
 
-        vm.input.startingPointForTimeSummary(GetProjectTimeSince.DAY);
-        vm.input.clockIn(result, new Date());
+        vm.input().startingPointForTimeSummary(GetProjectTimeSince.DAY);
+        vm.input().clockIn(result, new Date());
 
         clockInSuccess.assertValueCount(1);
         clockInError.assertNoValues();
@@ -143,8 +143,8 @@ public class ClockActivityViewModelTest {
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(activeProject);
 
-        vm.input.startingPointForTimeSummary(-1);
-        vm.input.clockIn(result, new Date());
+        vm.input().startingPointForTimeSummary(-1);
+        vm.input().clockIn(result, new Date());
 
         clockInSuccess.assertValueCount(1);
         clockInError.assertNoValues();
@@ -167,7 +167,7 @@ public class ClockActivityViewModelTest {
         doThrow(ClockOutBeforeClockInException.class)
                 .when(clockActivityChange).execute(any(), any());
 
-        vm.input.clockOut(result, new Date());
+        vm.input().clockOut(result, new Date());
 
         clockInSuccess.assertNoValues();
         clockInError.assertNoValues();
@@ -188,7 +188,7 @@ public class ClockActivityViewModelTest {
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(project);
 
-        vm.input.clockOut(result, new Date());
+        vm.input().clockOut(result, new Date());
 
         clockInSuccess.assertNoValues();
         clockInError.assertNoValues();
@@ -212,8 +212,8 @@ public class ClockActivityViewModelTest {
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(project);
 
-        vm.input.startingPointForTimeSummary(GetProjectTimeSince.DAY);
-        vm.input.clockOut(result, new Date());
+        vm.input().startingPointForTimeSummary(GetProjectTimeSince.DAY);
+        vm.input().clockOut(result, new Date());
 
         clockInSuccess.assertNoValues();
         clockInError.assertNoValues();
@@ -237,8 +237,8 @@ public class ClockActivityViewModelTest {
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(project);
 
-        vm.input.startingPointForTimeSummary(-1);
-        vm.input.clockOut(result, new Date());
+        vm.input().startingPointForTimeSummary(-1);
+        vm.input().clockOut(result, new Date());
 
         clockInSuccess.assertNoValues();
         clockInError.assertNoValues();

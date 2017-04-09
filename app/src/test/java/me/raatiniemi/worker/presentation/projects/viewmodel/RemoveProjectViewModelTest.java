@@ -46,10 +46,10 @@ public class RemoveProjectViewModelTest {
         vm = new RemoveProjectViewModel.ViewModel(removeProject);
 
         removeProjectSuccess = new TestSubscriber<>();
-        vm.output.removeProjectSuccess().subscribe(removeProjectSuccess);
+        vm.output().removeProjectSuccess().subscribe(removeProjectSuccess);
 
         removeProjectError = new TestSubscriber<>();
-        vm.error.removeProjectError().subscribe(removeProjectError);
+        vm.error().removeProjectError().subscribe(removeProjectError);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class RemoveProjectViewModelTest {
         doThrow(RuntimeException.class)
                 .when(removeProject).execute(any());
 
-        vm.input.remove(result);
+        vm.input().remove(result);
 
         removeProjectSuccess.assertNoValues();
         removeProjectSuccess.assertNoTerminalEvent();
@@ -73,7 +73,7 @@ public class RemoveProjectViewModelTest {
         ProjectsItem item = new ProjectsItem(project);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);
 
-        vm.input.remove(result);
+        vm.input().remove(result);
 
         removeProjectSuccess.assertValue(result);
         removeProjectSuccess.assertNoTerminalEvent();

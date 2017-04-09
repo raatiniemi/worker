@@ -54,9 +54,9 @@ public interface CreateProjectViewModel {
     }
 
     final class ViewModel implements Input, Output, Error {
-        public final Input input;
-        public final Output output;
-        public final Error error;
+        private final Input input;
+        private final Output output;
+        private final Error error;
 
         private final PublishSubject<String> projectName = PublishSubject.create();
         private final BehaviorSubject<Boolean> isProjectNameValid = BehaviorSubject.create(Boolean.FALSE);
@@ -166,6 +166,21 @@ public interface CreateProjectViewModel {
 
         private static boolean isUnknownError(@NonNull Throwable e) {
             return !isInvalidProjectNameError(e) && !isDuplicateProjectNameError(e);
+        }
+
+        @NonNull
+        public Input input() {
+            return input;
+        }
+
+        @NonNull
+        public Output output() {
+            return output;
+        }
+
+        @NonNull
+        public Error error() {
+            return error;
         }
     }
 }

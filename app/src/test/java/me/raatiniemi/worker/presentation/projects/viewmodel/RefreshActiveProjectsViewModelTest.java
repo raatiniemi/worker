@@ -55,10 +55,10 @@ public class RefreshActiveProjectsViewModelTest {
 
     @Test
     public void positionsForActiveProjects_withoutProjects() {
-        vm.output.positionsForActiveProjects()
+        vm.output().positionsForActiveProjects()
                 .subscribe(positionsForActiveProjects);
 
-        vm.input.projects(Collections.emptyList());
+        vm.input().projects(Collections.emptyList());
 
         positionsForActiveProjects.assertValue(Collections.emptyList());
         positionsForActiveProjects.assertNotCompleted();
@@ -66,10 +66,10 @@ public class RefreshActiveProjectsViewModelTest {
 
     @Test
     public void positionsForActiveProjects_withoutActiveProjects() throws DomainException {
-        vm.output.positionsForActiveProjects()
+        vm.output().positionsForActiveProjects()
                 .subscribe(positionsForActiveProjects);
 
-        vm.input.projects(Collections.singletonList(getProjectsItem(false)));
+        vm.input().projects(Collections.singletonList(getProjectsItem(false)));
 
         positionsForActiveProjects.assertValue(Collections.emptyList());
         positionsForActiveProjects.assertNotCompleted();
@@ -77,10 +77,10 @@ public class RefreshActiveProjectsViewModelTest {
 
     @Test
     public void positionsForActiveProjects_withActiveProject() throws DomainException {
-        vm.output.positionsForActiveProjects()
+        vm.output().positionsForActiveProjects()
                 .subscribe(positionsForActiveProjects);
 
-        vm.input.projects(Arrays.asList(getProjectsItem(false), getProjectsItem(true)));
+        vm.input().projects(Arrays.asList(getProjectsItem(false), getProjectsItem(true)));
 
         positionsForActiveProjects.assertValue(Collections.singletonList(1));
         positionsForActiveProjects.assertNotCompleted();

@@ -37,8 +37,8 @@ public interface RefreshActiveProjectsViewModel {
     }
 
     class ViewModel implements Input, Output {
-        public final Input input;
-        public final Output output;
+        private final Input input;
+        private final Output output;
 
         private final PublishSubject<List<ProjectsItem>> projects = PublishSubject.create();
         private final PublishSubject<List<Integer>> positions = PublishSubject.create();
@@ -87,6 +87,16 @@ public interface RefreshActiveProjectsViewModel {
         @Override
         public Observable<List<Integer>> positionsForActiveProjects() {
             return positions.asObservable();
+        }
+
+        @NonNull
+        public Input input() {
+            return input;
+        }
+
+        @NonNull
+        public Output output() {
+            return output;
         }
     }
 }

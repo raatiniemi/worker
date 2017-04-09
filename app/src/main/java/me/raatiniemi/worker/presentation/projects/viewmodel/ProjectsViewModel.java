@@ -47,9 +47,9 @@ public interface ProjectsViewModel {
     }
 
     class ViewModel implements Input, Output, Error {
-        public final Input input;
-        public final Output output;
-        public final Error error;
+        private final Input input;
+        private final Output output;
+        private final Error error;
 
         private int startingPoint = GetProjectTimeSince.MONTH;
         private final Observable<List<ProjectsItem>> projects;
@@ -144,6 +144,21 @@ public interface ProjectsViewModel {
         @Override
         public Observable<Throwable> projectsError() {
             return projectsError;
+        }
+
+        @NonNull
+        public Input input() {
+            return input;
+        }
+
+        @NonNull
+        public Output output() {
+            return output;
+        }
+
+        @NonNull
+        public Error error() {
+            return error;
         }
     }
 }
