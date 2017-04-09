@@ -55,16 +55,16 @@ public interface RefreshActiveProjectsViewModel {
                 return Collections.emptyList();
             }
 
-            List<Integer> positions = new ArrayList<>();
+            List<Integer> activePositions = new ArrayList<>();
             for (ProjectsItem item : items) {
                 if (!item.isActive()) {
                     continue;
                 }
 
-                positions.add(items.indexOf(item));
+                activePositions.add(items.indexOf(item));
             }
 
-            return positions;
+            return activePositions;
         }
 
         @NonNull
