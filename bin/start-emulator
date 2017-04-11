@@ -12,7 +12,10 @@ echo y | android --silent update sdk --no-ui --all --filter sys-img-armeabi-v7a-
 echo no | android create avd -n test -t android-$API_VERSION --abi google_apis/armeabi-v7a
 
 emulator64-arm -avd test -no-window -no-audio &
-
 "${BIN_DIRECTORY}/android-wait-for-emulator"
+
+adb shell settings put global window_animation_scale 0 &
+adb shell settings put global transition_animation_scale 0 &
+adb shell settings put global animator_duration_scale 0 &
 adb shell input keyevent 82 &
 exit $?;
