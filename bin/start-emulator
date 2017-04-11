@@ -1,0 +1,21 @@
+#!/bin/bash
+BIN_DIRECTORY="$(dirname $0)";
+SDK_DIRECTORY="/opt/android-sdk";
+API_VERSION=21;
+
+# Later versions of the Android SDK have moved libQt5Widgets.so.5 which prevents
+# the emulator from booting. Adding the new path to the `$LD_LIBRARY_PATH` will
+# help the emulator to find the necessary files.
+export LD_LIBRARY_PATH="${SDK_DIRECTORY}/tools/lib64:${SDK_DIRECTORY}/tools/lib64/qt/lib:${LD_LIBRARY_PATH}"
+
+echo y | android --silent update sdk --no-ui --all --filter sys-img-armeabi-v7a-google_apis-$API_VERSION
+echo no | android create avd -n test -t android-$API_VERSION --abi google_apis/armeabi-v7a
+
+emulator64-arm -avd test -no-window -no-audio &
+"${BIN_DIRECTORY}/android-wait-for-emulator"
+
+adb shell settings put global window_animation_scale 0 &
+adb shell settings put global transition_animation_scale 0 &
+adb shell settings put global animator_duration_scale 0 &
+adb shell input keyevent 82 &
+exit $?;
