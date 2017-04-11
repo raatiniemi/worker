@@ -54,11 +54,11 @@ public class CreateProjectViewModelTest {
 
     @Test
     public void createProject_withNull() {
-        vm.error.invalidProjectNameError().subscribe(invalidProjectNameError);
+        vm.error().invalidProjectNameError().subscribe(invalidProjectNameError);
 
         //noinspection ConstantConditions
-        vm.input.projectName(null);
-        vm.input.createProject();
+        vm.input().projectName(null);
+        vm.input().createProject();
 
         invalidProjectNameError.assertValueCount(1);
         duplicateNameError.assertNoValues();
@@ -68,10 +68,10 @@ public class CreateProjectViewModelTest {
 
     @Test
     public void createProject_withEmptyName() {
-        vm.error.invalidProjectNameError().subscribe(invalidProjectNameError);
+        vm.error().invalidProjectNameError().subscribe(invalidProjectNameError);
 
-        vm.input.projectName("");
-        vm.input.createProject();
+        vm.input().projectName("");
+        vm.input().createProject();
 
         invalidProjectNameError.assertValueCount(1);
         duplicateNameError.assertNoValues();
@@ -83,10 +83,10 @@ public class CreateProjectViewModelTest {
     public void createProject_withDuplicateName() throws DomainException {
         when(useCase.execute(any(Project.class)))
                 .thenThrow(ProjectAlreadyExistsException.class);
-        vm.error.duplicateProjectNameError().subscribe(duplicateNameError);
+        vm.error().duplicateProjectNameError().subscribe(duplicateNameError);
 
-        vm.input.projectName("Name");
-        vm.input.createProject();
+        vm.input().projectName("Name");
+        vm.input().createProject();
 
         invalidProjectNameError.assertNoValues();
         duplicateNameError.assertValueCount(1);
@@ -98,10 +98,10 @@ public class CreateProjectViewModelTest {
     public void createProject_withUnknownError() throws DomainException {
         when(useCase.execute(any(Project.class)))
                 .thenThrow(RuntimeException.class);
-        vm.error.createProjectError().subscribe(createProjectError);
+        vm.error().createProjectError().subscribe(createProjectError);
 
-        vm.input.projectName("Name");
-        vm.input.createProject();
+        vm.input().projectName("Name");
+        vm.input().createProject();
 
         invalidProjectNameError.assertNoValues();
         duplicateNameError.assertNoValues();
@@ -111,10 +111,10 @@ public class CreateProjectViewModelTest {
 
     @Test
     public void createProject_withValidName() {
-        vm.output.createProjectSuccess().subscribe(createProjectSuccess);
+        vm.output().createProjectSuccess().subscribe(createProjectSuccess);
 
-        vm.input.projectName("Name");
-        vm.input.createProject();
+        vm.input().projectName("Name");
+        vm.input().createProject();
 
         createProjectSuccess.assertValueCount(1);
         createProjectSuccess.assertNotCompleted();
@@ -123,10 +123,10 @@ public class CreateProjectViewModelTest {
     @Test
     public void isProjectNameValid_withNull() {
         TestSubscriber<Boolean> isProjectNameValid = new TestSubscriber<>();
-        vm.output.isProjectNameValid().subscribe(isProjectNameValid);
+        vm.output().isProjectNameValid().subscribe(isProjectNameValid);
 
         //noinspection ConstantConditions
-        vm.input.projectName(null);
+        vm.input().projectName(null);
 
         isProjectNameValid.assertValues(Boolean.FALSE, Boolean.FALSE);
     }
@@ -134,9 +134,9 @@ public class CreateProjectViewModelTest {
     @Test
     public void isProjectNameValid_withEmptyName() {
         TestSubscriber<Boolean> isProjectNameValid = new TestSubscriber<>();
-        vm.output.isProjectNameValid().subscribe(isProjectNameValid);
+        vm.output().isProjectNameValid().subscribe(isProjectNameValid);
 
-        vm.input.projectName("");
+        vm.input().projectName("");
 
         isProjectNameValid.assertValues(Boolean.FALSE, Boolean.FALSE);
     }
@@ -144,9 +144,9 @@ public class CreateProjectViewModelTest {
     @Test
     public void isProjectNameValid_withValidName() {
         TestSubscriber<Boolean> isProjectNameValid = new TestSubscriber<>();
-        vm.output.isProjectNameValid().subscribe(isProjectNameValid);
+        vm.output().isProjectNameValid().subscribe(isProjectNameValid);
 
-        vm.input.projectName("Name");
+        vm.input().projectName("Name");
 
         isProjectNameValid.assertValues(Boolean.FALSE, Boolean.TRUE);
     }

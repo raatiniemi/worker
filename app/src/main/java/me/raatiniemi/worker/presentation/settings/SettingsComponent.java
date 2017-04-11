@@ -19,7 +19,6 @@ package me.raatiniemi.worker.presentation.settings;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
 import me.raatiniemi.worker.presentation.settings.view.DataFragment;
 import me.raatiniemi.worker.presentation.settings.view.ProjectFragment;
@@ -30,7 +29,7 @@ import me.raatiniemi.worker.presentation.settings.view.ProjectFragment;
         SettingsModule.class
 })
 public interface SettingsComponent {
-    void inject(ProjectFragment __);
+    void inject(ProjectFragment fragment);
 
-    void inject(DataFragment __);
+    void inject(DataFragment fragment);
 }

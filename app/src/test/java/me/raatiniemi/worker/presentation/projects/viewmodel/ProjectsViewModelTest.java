@@ -70,9 +70,9 @@ public class ProjectsViewModelTest {
     public void projects_withGetProjectsError() throws DomainException {
         when(getProjects.execute())
                 .thenThrow(DomainException.class);
-        vm.error.projectsError().subscribe(projectsError);
+        vm.error().projectsError().subscribe(projectsError);
 
-        vm.output.projects().subscribe(projects);
+        vm.output().projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
@@ -85,9 +85,9 @@ public class ProjectsViewModelTest {
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), eq(GetProjectTimeSince.MONTH)))
                 .thenThrow(ClockOutBeforeClockInException.class);
-        vm.error.projectsError().subscribe(projectsError);
+        vm.error().projectsError().subscribe(projectsError);
 
-        vm.output.projects().subscribe(projects);
+        vm.output().projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
@@ -100,9 +100,9 @@ public class ProjectsViewModelTest {
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(Collections.emptyList());
-        vm.error.projectsError().subscribe(projectsError);
+        vm.error().projectsError().subscribe(projectsError);
 
-        vm.output.projects().subscribe(projects);
+        vm.output().projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
@@ -117,10 +117,10 @@ public class ProjectsViewModelTest {
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(Collections.emptyList());
-        vm.error.projectsError().subscribe(projectsError);
+        vm.error().projectsError().subscribe(projectsError);
 
-        vm.input.startingPointForTimeSummary(GetProjectTimeSince.WEEK);
-        vm.output.projects().subscribe(projects);
+        vm.input().startingPointForTimeSummary(GetProjectTimeSince.WEEK);
+        vm.output().projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
@@ -135,10 +135,10 @@ public class ProjectsViewModelTest {
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
                 .thenReturn(Collections.emptyList());
-        vm.error.projectsError().subscribe(projectsError);
+        vm.error().projectsError().subscribe(projectsError);
 
-        vm.input.startingPointForTimeSummary(-1);
-        vm.output.projects().subscribe(projects);
+        vm.input().startingPointForTimeSummary(-1);
+        vm.output().projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
@@ -151,9 +151,9 @@ public class ProjectsViewModelTest {
     public void projects_withoutProjects() throws DomainException {
         when(getProjects.execute())
                 .thenReturn(Collections.emptyList());
-        vm.error.projectsError().subscribe(projectsError);
+        vm.error().projectsError().subscribe(projectsError);
 
-        vm.output.projects().subscribe(projects);
+        vm.output().projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();

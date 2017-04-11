@@ -26,6 +26,8 @@ import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+
 public interface RefreshActiveProjectsViewModel {
     interface Input {
         void projects(@NonNull List<ProjectsItem> projects);
@@ -37,42 +39,37 @@ public interface RefreshActiveProjectsViewModel {
     }
 
     class ViewModel implements Input, Output {
-        public final Input input = this;
-        public final Output output = this;
+        private final Input input;
+        private final Output output;
 
         private final PublishSubject<List<ProjectsItem>> projects = PublishSubject.create();
         private final PublishSubject<List<Integer>> positions = PublishSubject.create();
 
         public ViewModel() {
-            projects.map(this::getPositionsForActiveProjects)
+            input = this;
+            output = this;
+
+            projects.map(ViewModel::getPositionsForActiveProjects)
                     .compose(hideErrors())
                     .subscribe(positions);
         }
 
         @NonNull
-        private List<Integer> getPositionsForActiveProjects(@NonNull List<ProjectsItem> items) {
+        private static List<Integer> getPositionsForActiveProjects(@NonNull List<ProjectsItem> items) {
             if (items.isEmpty()) {
                 return Collections.emptyList();
             }
 
-            List<Integer> positions = new ArrayList<>();
+            List<Integer> activePositions = new ArrayList<>();
             for (ProjectsItem item : items) {
                 if (!item.isActive()) {
                     continue;
                 }
 
-                positions.add(items.indexOf(item));
+                activePositions.add(items.indexOf(item));
             }
 
-            return positions;
-        }
-
-        @NonNull
-        private <T> Observable.Transformer<T, T> hideErrors() {
-            return source -> source
-                    .doOnError(e -> {
-                    })
-                    .onErrorResumeNext(Observable.empty());
+            return activePositions;
         }
 
         @Override
@@ -84,6 +81,16 @@ public interface RefreshActiveProjectsViewModel {
         @Override
         public Observable<List<Integer>> positionsForActiveProjects() {
             return positions.asObservable();
+        }
+
+        @NonNull
+        public Input input() {
+            return input;
+        }
+
+        @NonNull
+        public Output output() {
+            return output;
         }
     }
 }

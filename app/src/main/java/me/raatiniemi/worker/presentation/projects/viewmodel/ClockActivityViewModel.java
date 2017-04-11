@@ -33,6 +33,9 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+import static me.raatiniemi.worker.presentation.util.RxUtil.redirectErrors;
+
 public interface ClockActivityViewModel {
     interface Input {
         void startingPointForTimeSummary(int startingPoint);
@@ -59,9 +62,9 @@ public interface ClockActivityViewModel {
     }
 
     class ViewModel implements Input, Output, Error {
-        public final Input input = this;
-        public final Output output = this;
-        public final Error error = this;
+        private final Input input;
+        private final Output output;
+        private final Error error;
 
         private int startingPoint = GetProjectTimeSince.MONTH;
 
@@ -84,13 +87,17 @@ public interface ClockActivityViewModel {
                 @NonNull ClockActivityChange clockActivityChange,
                 @NonNull GetProjectTimeSince getProjectTimeSince
         ) {
+            input = this;
+            output = this;
+            error = this;
+
             this.clockActivityChange = clockActivityChange;
             this.getProjectTimeSince = getProjectTimeSince;
 
             Observable.zip(clockInResult, clockInDate, CombinedResult::new)
                     .throttleFirst(500, TimeUnit.MILLISECONDS)
                     .switchMap(result -> executeUseCase(result)
-                            .compose(redirectErrorToSubject(clockInError))
+                            .compose(redirectErrors(clockInError))
                             .compose(hideErrors())
                     )
                     .subscribe(clockInSuccess);
@@ -98,7 +105,7 @@ public interface ClockActivityViewModel {
             Observable.zip(clockOutResult, clockOutDate, CombinedResult::new)
                     .throttleFirst(500, TimeUnit.MILLISECONDS)
                     .switchMap(result -> executeUseCase(result)
-                            .compose(redirectErrorToSubject(clockOutError))
+                            .compose(redirectErrors(clockOutError))
                             .compose(hideErrors())
                     )
                     .subscribe(clockOutSuccess);
@@ -130,26 +137,11 @@ public interface ClockActivityViewModel {
         }
 
         @NonNull
-        private ProjectsItemAdapterResult buildResult(
+        private static ProjectsItemAdapterResult buildResult(
                 @NonNull ProjectsItemAdapterResult result,
                 @NonNull ProjectsItem projectsItem
         ) {
             return ProjectsItemAdapterResult.build(result.getPosition(), projectsItem);
-        }
-
-        @NonNull
-        private <T> Observable.Transformer<T, T> redirectErrorToSubject(PublishSubject<Throwable> subject) {
-            return source -> source
-                    .doOnError(subject::onNext)
-                    .onErrorResumeNext(Observable.empty());
-        }
-
-        @NonNull
-        private <T> Observable.Transformer<T, T> hideErrors() {
-            return source -> source
-                    .doOnError(__ -> {
-                    })
-                    .onErrorResumeNext(Observable.empty());
         }
 
         @Override
@@ -199,6 +191,21 @@ public interface ClockActivityViewModel {
         @Override
         public Observable<Throwable> clockOutError() {
             return clockOutError;
+        }
+
+        @NonNull
+        public Input input() {
+            return input;
+        }
+
+        @NonNull
+        public Output output() {
+            return output;
+        }
+
+        @NonNull
+        public Error error() {
+            return error;
         }
 
         private static class CombinedResult {

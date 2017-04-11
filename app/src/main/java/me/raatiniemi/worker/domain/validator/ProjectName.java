@@ -14,24 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.projects.view;
+package me.raatiniemi.worker.domain.validator;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
-import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
-import rx.Observable;
-
-final class ConfirmClockOutDialog {
-    private static final int TITLE = R.string.confirm_clock_out_title;
-    private static final int MESSAGE = R.string.confirm_clock_out_message;
-
-    private ConfirmClockOutDialog() {
+public final class ProjectName {
+    private ProjectName() {
     }
 
-    @NonNull
-    static Observable<Integer> show(@NonNull Context context) {
-        return RxDialog.build(context, TITLE, MESSAGE);
+    public static boolean isValid(String name) {
+        return nonNull(name) && !name.isEmpty();
     }
 }

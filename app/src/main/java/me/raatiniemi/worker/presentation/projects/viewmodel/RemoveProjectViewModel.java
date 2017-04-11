@@ -24,6 +24,8 @@ import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResul
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+
 public interface RemoveProjectViewModel {
     interface Input {
         void remove(@NonNull ProjectsItemAdapterResult result);
@@ -40,9 +42,9 @@ public interface RemoveProjectViewModel {
     }
 
     class ViewModel implements Input, Output, Error {
-        public final Input input = this;
-        public final Output output = this;
-        public final Error error = this;
+        private final Input input;
+        private final Output output;
+        private final Error error;
 
         private final PublishSubject<ProjectsItemAdapterResult> removeProjectSuccess = PublishSubject.create();
         private final PublishSubject<ProjectsItemAdapterResult> removeProjectError = PublishSubject.create();
@@ -51,6 +53,10 @@ public interface RemoveProjectViewModel {
         private final RemoveProject removeProject;
 
         public ViewModel(@NonNull RemoveProject removeProject) {
+            input = this;
+            output = this;
+            error = this;
+
             this.removeProject = removeProject;
 
             project
@@ -63,15 +69,7 @@ public interface RemoveProjectViewModel {
 
         @NonNull
         private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> redirectErrorToSubject(@NonNull ProjectsItemAdapterResult result) {
-            return source -> source.doOnError(__ -> removeProjectError.onNext(result))
-                    .onErrorResumeNext(Observable.empty());
-        }
-
-        @NonNull
-        private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> hideErrors() {
-            return source -> source
-                    .doOnError(__ -> {
-                    })
+            return source -> source.doOnError(e -> removeProjectError.onNext(result))
                     .onErrorResumeNext(Observable.empty());
         }
 
@@ -102,6 +100,21 @@ public interface RemoveProjectViewModel {
         @Override
         public Observable<ProjectsItemAdapterResult> removeProjectError() {
             return removeProjectError;
+        }
+
+        @NonNull
+        public Input input() {
+            return input;
+        }
+
+        @NonNull
+        public Output output() {
+            return output;
+        }
+
+        @NonNull
+        public Error error() {
+            return error;
         }
     }
 }

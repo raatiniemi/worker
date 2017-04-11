@@ -17,12 +17,15 @@
 package me.raatiniemi.worker.domain.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 
+import static java.util.Objects.requireNonNull;
+import static me.raatiniemi.worker.domain.validator.ProjectName.isValid;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
@@ -33,12 +36,12 @@ public class Project extends DomainObject {
     /**
      * Name for the project.
      */
-    private String name;
+    private final String name;
 
     /**
      * Time registered for the project.
      */
-    private final List<Time> time;
+    private final List<Time> registeredTime = new ArrayList<>();
 
     /**
      * Constructor.
@@ -47,14 +50,14 @@ public class Project extends DomainObject {
      * @param name Name of the project.
      * @throws InvalidProjectNameException If project name is null or empty.
      */
-    private Project(final Long id, final String name)
-            throws InvalidProjectNameException {
+    private Project(final Long id, final String name) throws InvalidProjectNameException {
         super(id);
 
-        setName(name);
+        if (!isValid(name)) {
+            throw new InvalidProjectNameException();
+        }
 
-        // Set default value for non-constructor arguments.
-        time = new ArrayList<>();
+        this.name = name;
     }
 
     public static Builder builder(String projectName) {
@@ -71,26 +74,12 @@ public class Project extends DomainObject {
     }
 
     /**
-     * Setter method for the project name.
-     *
-     * @param name Project name.
-     * @throws InvalidProjectNameException If project name is null or empty.
-     */
-    private void setName(final String name) throws InvalidProjectNameException {
-        if (isNull(name) || 0 == name.length()) {
-            throw new InvalidProjectNameException();
-        }
-
-        this.name = name;
-    }
-
-    /**
      * Getter method for the project time.
      *
      * @return Project time.
      */
-    public List<Time> getTime() {
-        return time;
+    public List<Time> getRegisteredTime() {
+        return Collections.unmodifiableList(registeredTime);
     }
 
     /**
@@ -99,9 +88,7 @@ public class Project extends DomainObject {
      * @param time Time to add to the project.
      */
     public void addTime(final List<Time> time) {
-        if (isNull(time)) {
-            throw new NullPointerException("Time is not allowed to be null");
-        }
+        requireNonNull(time, "Time is not allowed to be null");
 
         // If the list with items are empty, there's no
         // need to attempt to add them.
@@ -109,7 +96,7 @@ public class Project extends DomainObject {
             return;
         }
 
-        getTime().addAll(time);
+        registeredTime.addAll(time);
     }
 
     /**
@@ -136,13 +123,12 @@ public class Project extends DomainObject {
      */
     private Time getActiveTime() {
         // If no time is registered, the project can't be active.
-        List<Time> list = getTime();
-        if (list.isEmpty()) {
+        if (registeredTime.isEmpty()) {
             return null;
         }
 
         // If the first item is not active, the project is not active.
-        Time time = list.get(0);
+        Time time = registeredTime.get(0);
         if (!time.isActive()) {
             return null;
         }
@@ -188,7 +174,7 @@ public class Project extends DomainObject {
         Project project = (Project) o;
         return Objects.equals(getId(), project.getId())
                 && getName().equals(project.getName())
-                && getTime().equals(project.getTime());
+                && getRegisteredTime().equals(project.getRegisteredTime());
     }
 
     @Override
@@ -196,7 +182,7 @@ public class Project extends DomainObject {
         int result = 17;
         result = 31 * result + Objects.hashCode(getId());
         result = 31 * result + getName().hashCode();
-        result = 31 * result + getTime().hashCode();
+        result = 31 * result + getRegisteredTime().hashCode();
         return result;
     }
 

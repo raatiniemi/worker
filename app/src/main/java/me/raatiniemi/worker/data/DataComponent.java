@@ -29,7 +29,7 @@ import me.raatiniemi.worker.presentation.PreferenceModule;
         PreferenceModule.class
 })
 public interface DataComponent {
-    void inject(WorkerProvider __);
+    void inject(WorkerProvider provider);
 
-    void inject(OngoingService __);
+    void inject(OngoingService service);
 }

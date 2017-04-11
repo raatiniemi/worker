@@ -48,7 +48,7 @@ public class ProjectsItem {
     }
 
     public ProjectsItem(Project project) {
-        this(project, project.getTime());
+        this(project, project.getRegisteredTime());
     }
 
     private static void showTextView(TextView textView) {

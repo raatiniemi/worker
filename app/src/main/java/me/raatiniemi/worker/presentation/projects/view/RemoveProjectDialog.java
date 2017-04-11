@@ -24,8 +24,11 @@ import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import rx.Observable;
 
 final class RemoveProjectDialog {
-    private final static int TITLE = R.string.confirm_delete_project_title;
-    private final static int MESSAGE = R.string.confirm_delete_project_message;
+    private static final int TITLE = R.string.confirm_delete_project_title;
+    private static final int MESSAGE = R.string.confirm_delete_project_message;
+
+    private RemoveProjectDialog() {
+    }
 
     @NonNull
     static Observable<Integer> show(@NonNull Context context) {

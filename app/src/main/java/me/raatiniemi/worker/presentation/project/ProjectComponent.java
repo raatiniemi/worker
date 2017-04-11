@@ -31,7 +31,7 @@ import me.raatiniemi.worker.presentation.project.view.TimesheetFragment;
         ProjectModule.class
 })
 public interface ProjectComponent {
-    void inject(ProjectActivity __);
+    void inject(ProjectActivity activity);
 
-    void inject(TimesheetFragment __);
+    void inject(TimesheetFragment fragment);
 }

@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 
-import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Represent a time interval registered to a project.
@@ -128,9 +128,7 @@ public class Time extends DomainObject {
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
     public Time clockOutAt(final Date date) throws ClockOutBeforeClockInException {
-        if (isNull(date)) {
-            throw new NullPointerException("Date is not allowed to be null");
-        }
+        requireNonNull(date, "Date is not allowed to be null");
 
         Builder builder = builder(getProjectId())
                 .id(getId())

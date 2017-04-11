@@ -24,8 +24,11 @@ import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import rx.Observable;
 
 final class ConfirmRestoreDialog {
-    private final static int TITLE = R.string.activity_settings_restore_confirm_title;
-    private final static int MESSAGE = R.string.activity_settings_restore_confirm_message;
+    private static final int TITLE = R.string.activity_settings_restore_confirm_title;
+    private static final int MESSAGE = R.string.activity_settings_restore_confirm_message;
+
+    private ConfirmRestoreDialog() {
+    }
 
     @NonNull
     static Observable<Integer> show(@NonNull Context context) {

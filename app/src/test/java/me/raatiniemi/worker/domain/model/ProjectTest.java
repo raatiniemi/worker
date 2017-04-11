@@ -98,7 +98,7 @@ public class ProjectTest {
         );
         project.addTime(times);
 
-        times = project.getTime();
+        times = project.getRegisteredTime();
         assertEquals(2, times.size());
     }
 
@@ -120,6 +120,6 @@ public class ProjectTest {
         List<Time> times = new ArrayList<>();
         project.addTime(times);
 
-        assertTrue(project.getTime().isEmpty());
+        assertTrue(project.getRegisteredTime().isEmpty());
     }
 }

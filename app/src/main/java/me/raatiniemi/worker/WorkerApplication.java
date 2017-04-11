@@ -128,7 +128,7 @@ public class WorkerApplication extends Application {
         }
     }
 
-    public synchronized static WorkerApplication getInstance() {
+    public static synchronized WorkerApplication getInstance() {
         if (null == instance) {
             throw new NoApplicationInstanceException();
         }

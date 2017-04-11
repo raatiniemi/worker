@@ -17,17 +17,18 @@
 package me.raatiniemi.worker.presentation.projects.viewmodel;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.validator.ProjectName;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+import static me.raatiniemi.worker.presentation.util.RxUtil.redirectErrors;
 
 public interface CreateProjectViewModel {
     interface Input {
@@ -56,9 +57,9 @@ public interface CreateProjectViewModel {
     }
 
     final class ViewModel implements Input, Output, Error {
-        public final Input input = this;
-        public final Output output = this;
-        public final Error error = this;
+        private final Input input;
+        private final Output output;
+        private final Error error;
 
         private final PublishSubject<String> projectName = PublishSubject.create();
         private final BehaviorSubject<Boolean> isProjectNameValid = BehaviorSubject.create(Boolean.FALSE);
@@ -69,20 +70,20 @@ public interface CreateProjectViewModel {
         private final CreateProject useCase;
 
         public ViewModel(@NonNull CreateProject useCase) {
+            input = this;
+            output = this;
+            error = this;
+
             this.useCase = useCase;
 
-            projectName.map(this::isNameValid)
+            projectName.map(ProjectName::isValid)
                     .subscribe(isProjectNameValid);
 
-            createProject.withLatestFrom(projectName, (__, name) -> name)
+            createProject.withLatestFrom(projectName, (event, name) -> name)
                     .switchMap(name -> executeUseCase(name)
-                            .compose(redirectErrorsToSubject())
+                            .compose(redirectErrors(createProjectError))
                             .compose(hideErrors()))
                     .subscribe(createProjectSuccess);
-        }
-
-        private boolean isNameValid(@Nullable String name) {
-            return nonNull(name) && !name.isEmpty();
         }
 
         @NonNull
@@ -95,21 +96,6 @@ public interface CreateProjectViewModel {
             } catch (Exception e) {
                 return Observable.error(e);
             }
-        }
-
-        @NonNull
-        private Observable.Transformer<Project, Project> redirectErrorsToSubject() {
-            return source -> source
-                    .doOnError(createProjectError::onNext)
-                    .onErrorResumeNext(Observable.empty());
-        }
-
-        @NonNull
-        private Observable.Transformer<Project, Project> hideErrors() {
-            return source -> source
-                    .doOnError(e -> {
-                    })
-                    .onErrorResumeNext(Observable.empty());
         }
 
         @Override
@@ -138,11 +124,11 @@ public interface CreateProjectViewModel {
         @Override
         public Observable<String> invalidProjectNameError() {
             return createProjectError
-                    .filter(this::isInvalidProjectNameError)
+                    .filter(ViewModel::isInvalidProjectNameError)
                     .map(Throwable::getMessage);
         }
 
-        private boolean isInvalidProjectNameError(@NonNull Throwable e) {
+        private static boolean isInvalidProjectNameError(@NonNull Throwable e) {
             return e instanceof InvalidProjectNameException;
         }
 
@@ -150,11 +136,11 @@ public interface CreateProjectViewModel {
         @Override
         public Observable<String> duplicateProjectNameError() {
             return createProjectError
-                    .filter(this::isDuplicateProjectNameError)
+                    .filter(ViewModel::isDuplicateProjectNameError)
                     .map(Throwable::getMessage);
         }
 
-        private boolean isDuplicateProjectNameError(@NonNull Throwable e) {
+        private static boolean isDuplicateProjectNameError(@NonNull Throwable e) {
             return e instanceof ProjectAlreadyExistsException;
         }
 
@@ -162,12 +148,27 @@ public interface CreateProjectViewModel {
         @Override
         public Observable<String> createProjectError() {
             return createProjectError
-                    .filter(this::isUnknownError)
+                    .filter(ViewModel::isUnknownError)
                     .map(Throwable::getMessage);
         }
 
-        private boolean isUnknownError(@NonNull Throwable e) {
+        private static boolean isUnknownError(@NonNull Throwable e) {
             return !isInvalidProjectNameError(e) && !isDuplicateProjectNameError(e);
+        }
+
+        @NonNull
+        public Input input() {
+            return input;
+        }
+
+        @NonNull
+        public Output output() {
+            return output;
+        }
+
+        @NonNull
+        public Error error() {
+            return error;
         }
     }
 }

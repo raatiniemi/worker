@@ -34,9 +34,9 @@ import me.raatiniemi.worker.presentation.projects.view.ProjectsFragment;
         ProjectsModule.class
 })
 public interface ProjectsComponent {
-    void inject(ProjectsActivity __);
+    void inject(ProjectsActivity activity);
 
-    void inject(ProjectsFragment __);
+    void inject(ProjectsFragment fragment);
 
-    void inject(CreateProjectFragment __);
+    void inject(CreateProjectFragment fragment);
 }

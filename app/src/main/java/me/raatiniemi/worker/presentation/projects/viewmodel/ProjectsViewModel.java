@@ -31,6 +31,9 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
+import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+import static me.raatiniemi.worker.presentation.util.RxUtil.redirectErrors;
+
 public interface ProjectsViewModel {
     interface Input {
         void startingPointForTimeSummary(int startingPoint);
@@ -47,9 +50,9 @@ public interface ProjectsViewModel {
     }
 
     class ViewModel implements Input, Output, Error {
-        public final Input input = this;
-        public final Output output = this;
-        public final Error error = this;
+        private final Input input;
+        private final Output output;
+        private final Error error;
 
         private int startingPoint = GetProjectTimeSince.MONTH;
         private final Observable<List<ProjectsItem>> projects;
@@ -62,13 +65,17 @@ public interface ProjectsViewModel {
                 @NonNull GetProjects getProjects,
                 @NonNull GetProjectTimeSince getProjectTimeSince
         ) {
+            input = this;
+            output = this;
+            error = this;
+
             this.getProjects = getProjects;
             this.getProjectTimeSince = getProjectTimeSince;
 
             projects = executeGetProjects()
                     .flatMap(Observable::from)
                     .map(this::populateItemWithRegisteredTime)
-                    .compose(redirectErrorsToSubject())
+                    .compose(redirectErrors(projectsError))
                     .compose(hideErrors())
                     .toList();
         }
@@ -102,21 +109,6 @@ public interface ProjectsViewModel {
             }
         }
 
-        @NonNull
-        private Observable.Transformer<ProjectsItem, ProjectsItem> redirectErrorsToSubject() {
-            return source -> source
-                    .doOnError(projectsError::onNext)
-                    .onErrorResumeNext(Observable.empty());
-        }
-
-        @NonNull
-        private Observable.Transformer<ProjectsItem, ProjectsItem> hideErrors() {
-            return source -> source
-                    .doOnError(e -> {
-                    })
-                    .onErrorResumeNext(Observable.empty());
-        }
-
         @Override
         public void startingPointForTimeSummary(int startingPoint) {
             switch (startingPoint) {
@@ -140,6 +132,21 @@ public interface ProjectsViewModel {
         @Override
         public Observable<Throwable> projectsError() {
             return projectsError;
+        }
+
+        @NonNull
+        public Input input() {
+            return input;
+        }
+
+        @NonNull
+        public Output output() {
+            return output;
+        }
+
+        @NonNull
+        public Error error() {
+            return error;
         }
     }
 }

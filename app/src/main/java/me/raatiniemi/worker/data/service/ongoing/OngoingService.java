@@ -33,7 +33,7 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 
-abstract public class OngoingService extends IntentService {
+public abstract class OngoingService extends IntentService {
     @SuppressWarnings("WeakerAccess")
     @Inject
     ProjectRepository projectRepository;
