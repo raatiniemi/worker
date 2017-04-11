@@ -1,7 +1,7 @@
 #!/bin/bash
 BIN_DIRECTORY="$(dirname $0)";
 SDK_DIRECTORY="/opt/android-sdk";
-API_VERSION=25;
+API_VERSION=21;
 
 # Later versions of the Android SDK have moved libQt5Widgets.so.5 which prevents
 # the emulator from booting. Adding the new path to the `$LD_LIBRARY_PATH` will
