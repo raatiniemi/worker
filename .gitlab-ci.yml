@@ -27,21 +27,9 @@ test:
   tags:
     - docker
 
-instrumentation:
-  stage: test
-  script:
-    - bin/start-emulator
-    - bin/instrumentation
-  except:
-    - tags
-  tags:
-    - docker
-
 sonar:
   stage: test
   script:
-    - bin/start-emulator
-    - bin/instrumentation
     - bin/sonar
   artifacts:
     paths:
