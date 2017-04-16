@@ -43,16 +43,16 @@ public class WorkerContract {
     /**
      * Name for the available tables within the database.
      */
-    public final class Tables {
+    final class Tables {
         /**
          * Name for the project table.
          */
-        public static final String PROJECT = "project";
+        static final String PROJECT = "project";
 
         /**
          * Name for the registered time table.
          */
-        public static final String TIME = "time";
+        static final String TIME = "time";
 
         private Tables() {
         }
@@ -83,10 +83,10 @@ public class WorkerContract {
     }
 
     public static class ProjectContract {
-        public static final String STREAM_TYPE =
+        static final String STREAM_TYPE =
                 "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 
-        public static final String ITEM_TYPE =
+        static final String ITEM_TYPE =
                 "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
         public static final String ORDER_BY = BaseColumns._ID + " ASC";
@@ -100,7 +100,7 @@ public class WorkerContract {
         /**
          * Group by clause for timesheet.
          */
-        public static final String GROUP_BY_TIMESHEET =
+        static final String GROUP_BY_TIMESHEET =
                 "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
 
         /**
@@ -179,10 +179,10 @@ public class WorkerContract {
     }
 
     public static class TimeContract {
-        public static final String STREAM_TYPE =
+        static final String STREAM_TYPE =
                 "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
 
-        public static final String ITEM_TYPE =
+        static final String ITEM_TYPE =
                 "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
