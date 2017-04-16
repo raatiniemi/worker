@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,15 +74,8 @@ public class ProjectResolverRepository
         return projects;
     }
 
-    @Override
-    public Project findProjectByName(String projectName) throws InvalidProjectNameException {
-        final Cursor cursor = getContentResolver().query(
-                ProjectContract.getStreamUri(),
-                ProjectContract.getColumns(),
-                ProjectColumns.NAME + "=? COLLATE NOCASE",
-                new String[]{projectName},
-                null
-        );
+    @Nullable
+    private Project fetchRow(Cursor cursor) throws InvalidProjectNameException {
         if (isNull(cursor)) {
             return null;
         }
@@ -96,6 +90,18 @@ public class ProjectResolverRepository
         }
 
         return project;
+    }
+
+    @Override
+    public Project findProjectByName(String projectName) throws InvalidProjectNameException {
+        final Cursor cursor = getContentResolver().query(
+                ProjectContract.getStreamUri(),
+                ProjectContract.getColumns(),
+                ProjectColumns.NAME + "=? COLLATE NOCASE",
+                new String[]{projectName},
+                null
+        );
+        return fetchRow(cursor);
     }
 
     /**
@@ -126,20 +132,7 @@ public class ProjectResolverRepository
                 null,
                 null
         );
-        if (isNull(cursor)) {
-            return null;
-        }
-
-        Project project = null;
-        try {
-            if (cursor.moveToFirst()) {
-                project = getCursorMapper().transform(cursor);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return project;
+        return fetchRow(cursor);
     }
 
     /**
