@@ -95,7 +95,6 @@ public interface TimeRepository {
      * @param projectId Id for the project.
      * @return Registered time for project.
      * @throws DomainException If domain rules are violated.
-     * TODO: Replace with query/criteria method.
      */
     List<Time> getProjectTimeSinceBeginningOfMonth(long projectId) throws DomainException;
 
@@ -121,7 +120,6 @@ public interface TimeRepository {
      * @param projectId Id for project.
      * @return Active time for project, or null if project is inactive.
      * @throws DomainException If domain rules are violated.
-     * TODO: Replace with query/criteria method.
      */
     Time getActiveTimeForProject(long projectId) throws DomainException;
 }
