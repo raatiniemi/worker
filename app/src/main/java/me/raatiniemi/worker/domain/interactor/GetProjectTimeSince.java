@@ -19,13 +19,11 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.Calendar;
 import java.util.List;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
 
 /**
  * Get the registered time for a project since a defined starting point, i.e. {@link #DAY},
@@ -40,15 +38,6 @@ public class GetProjectTimeSince {
 
     public GetProjectTimeSince(TimeRepository timeRepository) {
         this.timeRepository = timeRepository;
-    }
-
-    private static Criteria buildStartingPointCriteria(int startingPoint) {
-        // TODO: Remove dependency on `TimeColumns.START`
-        // The domain package should not depend on outside definitions.
-        return Criteria.moreThanOrEqualTo(
-                TimeColumns.START,
-                getMillisecondsForStartingPoint(startingPoint)
-        );
     }
 
     private static long getMillisecondsForStartingPoint(int startingPoint) {
@@ -85,6 +74,9 @@ public class GetProjectTimeSince {
      * @throws DomainException If domain rules are violated.
      */
     public List<Time> execute(Project project, int startingPoint) throws DomainException {
-        return timeRepository.matching(project, buildStartingPointCriteria(startingPoint));
+        return timeRepository.findProjectTimeSinceStartingPointInMilliseconds(
+                project,
+                getMillisecondsForStartingPoint(startingPoint)
+        );
     }
 }

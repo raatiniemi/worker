@@ -21,16 +21,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -49,11 +45,9 @@ public class CreateProjectTest {
     public void execute_withExistingProject() throws DomainException {
         Project project = Project.builder("Project Name")
                 .build();
-        List<Project> projects = new ArrayList<>();
-        projects.add(project);
 
-        when(projectRepository.matching(any(Criteria.class)))
-                .thenReturn(projects);
+        when(projectRepository.findProjectByName(eq("Project Name")))
+                .thenReturn(project);
 
         CreateProject createProject = new CreateProject(projectRepository);
         createProject.execute(project);
@@ -65,8 +59,8 @@ public class CreateProjectTest {
         Project project = Project.builder("Project Name")
                 .build();
 
-        when(projectRepository.matching(any(Criteria.class)))
-                .thenReturn(new ArrayList<>());
+        when(projectRepository.findProjectByName(eq("Project Name")))
+                .thenReturn(null);
 
         CreateProject createProject = new CreateProject(projectRepository);
         createProject.execute(project);

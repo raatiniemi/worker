@@ -26,13 +26,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
-import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -82,80 +82,57 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void matching_withNullCursor() throws InvalidProjectNameException {
+    public void findProjectByName_withNullCursor() throws InvalidProjectNameException {
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
-                        "name=? COLLATE NOCASE",
+                        ProjectColumns.NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
                 )
         ).thenReturn(null);
 
-        Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        Project project = repository.findProjectByName("Name");
 
-        assertTrue(projects.isEmpty());
+        assertNull(project);
     }
 
     @Test
-    public void matching_withEmptyCursor() throws InvalidProjectNameException {
+    public void findProjectByName_withEmptyCursor() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
-                        "name=? COLLATE NOCASE",
+                        ProjectColumns.NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
                 )
         ).thenReturn(cursor);
 
-        Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        Project project = repository.findProjectByName("Name");
 
-        assertTrue(projects.isEmpty());
-        assertTrue("Failed to close cursor", cursor.isClosed());
+        assertNull(project);
+        verify(cursor).close();
     }
 
     @Test
-    public void matching_withRow() throws InvalidProjectNameException {
+    public void findProjectByName_withProject() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
-                        "name=? COLLATE NOCASE",
+                        ProjectColumns.NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
                 )
         ).thenReturn(cursor);
 
-        Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        Project project = repository.findProjectByName("Name");
 
-        assertTrue(1 == projects.size());
-        verify(cursor).close();
-    }
-
-    @Test
-    public void matching_withRows() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(5);
-        when(
-                contentResolver.query(
-                        ProjectContract.getStreamUri(),
-                        ProjectContract.getColumns(),
-                        "name=? COLLATE NOCASE",
-                        new String[]{"Name"},
-                        null
-                )
-        ).thenReturn(cursor);
-
-        Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
-
-        assertTrue(5 == projects.size());
+        assertNotNull(project);
         verify(cursor).close();
     }
 

@@ -30,14 +30,14 @@ import me.raatiniemi.worker.domain.repository.query.Criteria;
  */
 public interface TimeRepository {
     /**
-     * Find registered time for a project matching criteria.
+     * Find registered project time since starting point.
      *
-     * @param project  Project for which to get the registered time.
-     * @param criteria Criteria for matching time intervals.
-     * @return Registered time for project matching criteria.
+     * @param project Project for which to use as filter.
+     * @param milliseconds Starting point in milliseconds.
+     * @return Registered time for project since starting point.
      * @throws DomainException If domain rules are violated.
      */
-    List<Time> matching(Project project, Criteria criteria) throws DomainException;
+    List<Time> findProjectTimeSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException;
 
     /**
      * Get time by id.

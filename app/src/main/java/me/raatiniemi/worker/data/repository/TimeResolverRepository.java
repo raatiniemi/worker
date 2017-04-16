@@ -65,19 +65,15 @@ public class TimeResolverRepository
         super(contentResolver, cursorMapper, contentValuesMapper);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
-    public List<Time> matching(Project project, Criteria criteria) throws DomainException {
+    public List<Time> findProjectTimeSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException {
         List<Time> time = new ArrayList<>();
 
-        ContentResolverQuery query = ContentResolverQuery.from(criteria);
         Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(project.getId()),
                 TimeContract.getColumns(),
-                query.getSelection(),
-                query.getSelectionArgs(),
+                TimeColumns.START + ">=?",
+                new String[]{String.valueOf(milliseconds)},
                 null
         );
         if (isNull(cursor)) {

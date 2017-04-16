@@ -26,16 +26,15 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.raatiniemi.worker.RobolectricTestCase;
+import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
+import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
-import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -88,78 +87,74 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void matching_withNullCursor() throws DomainException {
+    public void findProjectTimeSinceStartingPointInMilliseconds_withNullCursor() throws DomainException {
         when(
                 contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
                         TimeContract.getColumns(),
-                        "start>=? COLLATE NOCASE",
+                        TimeColumns.START + ">=?",
                         new String[]{"1234567890"},
                         null
                 )
         ).thenReturn(null);
 
-        Criteria criteria = Criteria.moreThanOrEqualTo(TimeColumns.START, 1234567890);
-        List<Time> time = repository.matching(project, criteria);
+        List<Time> time = repository.findProjectTimeSinceStartingPointInMilliseconds(project, 1234567890);
 
         assertTrue(time.isEmpty());
     }
 
     @Test
-    public void matching_withEmptyCursor() throws DomainException {
+    public void findProjectTimeSinceStartingPointInMilliseconds_withEmptyCursor() throws DomainException {
         Cursor cursor = buildCursorWithNumberOfItems(0);
         when(
                 contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
                         TimeContract.getColumns(),
-                        "start>=? COLLATE NOCASE",
+                        TimeColumns.START + ">=?",
                         new String[]{"1234567890"},
                         null
                 )
         ).thenReturn(cursor);
 
-        Criteria criteria = Criteria.moreThanOrEqualTo(TimeColumns.START, 1234567890);
-        List<Time> time = repository.matching(project, criteria);
+        List<Time> time = repository.findProjectTimeSinceStartingPointInMilliseconds(project, 1234567890);
 
         assertTrue(time.isEmpty());
         verify(cursor).close();
     }
 
     @Test
-    public void matching_withRow() throws DomainException {
+    public void findProjectTimeSinceStartingPointInMilliseconds_withRow() throws DomainException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
                         TimeContract.getColumns(),
-                        "start>=? COLLATE NOCASE",
+                        TimeColumns.START + ">=?",
                         new String[]{"1234567890"},
                         null
                 )
         ).thenReturn(cursor);
 
-        Criteria criteria = Criteria.moreThanOrEqualTo(TimeColumns.START, 1234567890);
-        List<Time> time = repository.matching(project, criteria);
+        List<Time> time = repository.findProjectTimeSinceStartingPointInMilliseconds(project, 1234567890);
 
         assertTrue(1 == time.size());
         verify(cursor).close();
     }
 
     @Test
-    public void matching_withRows() throws DomainException {
+    public void findProjectTimeSinceStartingPointInMilliseconds_withRows() throws DomainException {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
                 contentResolver.query(
                         ProjectContract.getItemTimeUri(1),
                         TimeContract.getColumns(),
-                        "start>=? COLLATE NOCASE",
+                        TimeColumns.START + ">=?",
                         new String[]{"1234567890"},
                         null
                 )
         ).thenReturn(cursor);
 
-        Criteria criteria = Criteria.moreThanOrEqualTo(TimeColumns.START, 1234567890);
-        List<Time> time = repository.matching(project, criteria);
+        List<Time> time = repository.findProjectTimeSinceStartingPointInMilliseconds(project, 1234567890);
 
         assertTrue(5 == time.size());
         verify(cursor).close();

@@ -23,13 +23,12 @@ import org.junit.runners.JUnit4;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -38,13 +37,6 @@ public class GetProjectTimeSinceTest {
     private TimeRepository timeRepository;
     private GetProjectTimeSince getProjectTimeSince;
     private Project project;
-
-    private static Criteria buildStartingPointCriteria(int startingPoint) {
-        return Criteria.moreThanOrEqualTo(
-                TimeColumns.START,
-                getMillisecondsForStartingPoint(startingPoint)
-        );
-    }
 
     private static long getMillisecondsForStartingPoint(int startingPoint) {
         Calendar calendar = Calendar.getInstance();
@@ -85,9 +77,9 @@ public class GetProjectTimeSinceTest {
         getProjectTimeSince.execute(project, GetProjectTimeSince.DAY);
 
         verify(timeRepository)
-                .matching(
-                        project,
-                        buildStartingPointCriteria(GetProjectTimeSince.DAY)
+                .findProjectTimeSinceStartingPointInMilliseconds(
+                        eq(project),
+                        eq(getMillisecondsForStartingPoint(GetProjectTimeSince.DAY))
                 );
     }
 
@@ -96,9 +88,9 @@ public class GetProjectTimeSinceTest {
         getProjectTimeSince.execute(project, GetProjectTimeSince.WEEK);
 
         verify(timeRepository)
-                .matching(
-                        project,
-                        buildStartingPointCriteria(GetProjectTimeSince.WEEK)
+                .findProjectTimeSinceStartingPointInMilliseconds(
+                        eq(project),
+                        eq(getMillisecondsForStartingPoint(GetProjectTimeSince.WEEK))
                 );
     }
 
@@ -107,9 +99,9 @@ public class GetProjectTimeSinceTest {
         getProjectTimeSince.execute(project, GetProjectTimeSince.MONTH);
 
         verify(timeRepository)
-                .matching(
-                        project,
-                        buildStartingPointCriteria(GetProjectTimeSince.MONTH)
+                .findProjectTimeSinceStartingPointInMilliseconds(
+                        eq(project),
+                        eq(getMillisecondsForStartingPoint(GetProjectTimeSince.MONTH))
                 );
     }
 

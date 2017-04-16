@@ -30,13 +30,12 @@ import java.util.List;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
-import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
@@ -52,23 +51,6 @@ public class ProjectResolverRepository
             @NonNull final ProjectContentValuesMapper contentValuesMapper
     ) {
         super(contentResolver, cursorMapper, contentValuesMapper);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<Project> matching(final Criteria criteria) throws InvalidProjectNameException {
-        ContentResolverQuery query = ContentResolverQuery.from(criteria);
-        final Cursor cursor = getContentResolver().query(
-                ProjectContract.getStreamUri(),
-                ProjectContract.getColumns(),
-                query.getSelection(),
-                query.getSelectionArgs(),
-                null
-        );
-
-        return fetch(cursor);
     }
 
     private List<Project> fetch(Cursor cursor) throws InvalidProjectNameException {
@@ -89,6 +71,31 @@ public class ProjectResolverRepository
         }
 
         return projects;
+    }
+
+    @Override
+    public Project findProjectByName(String projectName) throws InvalidProjectNameException {
+        final Cursor cursor = getContentResolver().query(
+                ProjectContract.getStreamUri(),
+                ProjectContract.getColumns(),
+                ProjectColumns.NAME + "=? COLLATE NOCASE",
+                new String[]{projectName},
+                null
+        );
+        if (isNull(cursor)) {
+            return null;
+        }
+
+        Project project = null;
+        try {
+            if (cursor.moveToFirst()) {
+                project = getCursorMapper().transform(cursor);
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return project;
     }
 
     /**
