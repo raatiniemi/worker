@@ -28,6 +28,7 @@ import me.raatiniemi.worker.domain.interactor.GetTimesheet;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 
@@ -37,12 +38,13 @@ public class ProjectModule {
     @Singleton
     TimesheetPresenter providesTimesheetPresenter(
             @NonNull TimeRepository timeRepository,
+            @NonNull TimesheetRepository timesheetRepository,
             @NonNull HideRegisteredTimePreferences hideRegisteredTimePreferences
     ) {
         return new TimesheetPresenter(
                 hideRegisteredTimePreferences,
                 EventBus.getDefault(),
-                new GetTimesheet(timeRepository),
+                new GetTimesheet(timesheetRepository),
                 new MarkRegisteredTime(timeRepository),
                 new RemoveTime(timeRepository)
         );

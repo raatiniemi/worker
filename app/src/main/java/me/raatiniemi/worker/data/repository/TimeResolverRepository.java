@@ -41,20 +41,19 @@ import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
-import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
-        implements TimeRepository {
+        implements TimeRepository, TimesheetRepository {
     /**
      * @inheritDoc
      */
@@ -245,32 +244,9 @@ public class TimeResolverRepository
         return fetch(cursor);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public Map<Date, List<Time>> getTimesheet(
-            final long projectId,
-            final int offset,
-            final Criteria criteria
-    ) {
+    @NonNull
+    private Map<Date, List<Time>> fetchTimesheet(@Nullable Cursor cursor) {
         Map<Date, List<Time>> result = new LinkedHashMap<>();
-
-        // TODO: Simplify the building of the URI with query parameters.
-        Uri uri = ProjectContract.getItemTimesheetUri(projectId)
-                .buildUpon()
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
-                .build();
-
-        ContentResolverQuery query = ContentResolverQuery.from(criteria);
-        final Cursor cursor = getContentResolver().query(
-                uri,
-                ProjectContract.getTimesheetColumns(),
-                query.getSelection(),
-                query.getSelectionArgs(),
-                ProjectContract.ORDER_BY_TIMESHEET
-        );
         if (isNull(cursor)) {
             return result;
         }
@@ -303,6 +279,47 @@ public class TimeResolverRepository
         cursor.close();
 
         return result;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public Map<Date, List<Time>> getTimesheet(final long projectId, final int offset) {
+        // TODO: Simplify the building of the URI with query parameters.
+        Uri uri = ProjectContract.getItemTimesheetUri(projectId)
+                .buildUpon()
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
+                .build();
+
+        final Cursor cursor = getContentResolver().query(
+                uri,
+                ProjectContract.getTimesheetColumns(),
+                null,
+                null,
+                ProjectContract.ORDER_BY_TIMESHEET
+        );
+        return fetchTimesheet(cursor);
+    }
+
+    @Override
+    public Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(long projectId, int offset) {
+        // TODO: Simplify the building of the URI with query parameters.
+        Uri uri = ProjectContract.getItemTimesheetUri(projectId)
+                .buildUpon()
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
+                .build();
+
+        final Cursor cursor = getContentResolver().query(
+                uri,
+                ProjectContract.getTimesheetColumns(),
+                TimeColumns.REGISTERED + " = 0",
+                null,
+                ProjectContract.ORDER_BY_TIMESHEET
+        );
+        return fetchTimesheet(cursor);
     }
 
     /**

@@ -20,27 +20,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 
 /**
  * Use case for getting segment from project timesheet.
  */
 public class GetTimesheet {
-    /**
-     * Time repository.
-     */
-    private final TimeRepository timeRepository;
+    private final TimesheetRepository repository;
 
     /**
      * Constructor.
      *
-     * @param timeRepository Time repository.
+     * @param repository Timesheet repository.
      */
-    public GetTimesheet(TimeRepository timeRepository) {
-        this.timeRepository = timeRepository;
+    public GetTimesheet(TimesheetRepository repository) {
+        this.repository = repository;
     }
 
     /**
@@ -56,12 +51,10 @@ public class GetTimesheet {
             final int offset,
             boolean hideRegisteredTime
     ) {
-        Criteria criteria = null;
         if (hideRegisteredTime) {
-            // TODO: Refactor to remove dependency on the data-package for column name.
-            criteria = Criteria.equalTo(TimeColumns.REGISTERED, "0");
+            return repository.getTimesheetWithoutRegisteredEntries(projectId, offset);
         }
 
-        return timeRepository.getTimesheet(projectId, offset, criteria);
+        return repository.getTimesheet(projectId, offset);
     }
 }

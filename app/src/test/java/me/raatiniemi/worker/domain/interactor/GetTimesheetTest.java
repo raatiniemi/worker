@@ -22,37 +22,34 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class GetTimesheetTest {
-    private TimeRepository timeRepository;
+    private TimesheetRepository repository;
 
     @Before
     public void setUp() {
-        timeRepository = mock(TimeRepository.class);
+        repository = mock(TimesheetRepository.class);
     }
 
     @Test
     public void execute_hideRegisteredTime() throws DomainException {
-        GetTimesheet getTimesheet = new GetTimesheet(timeRepository);
+        GetTimesheet getTimesheet = new GetTimesheet(repository);
         getTimesheet.execute(1L, 0, true);
 
-        verify(timeRepository).getTimesheet(eq(1L), eq(0), any(Criteria.class));
+        verify(repository).getTimesheetWithoutRegisteredEntries(eq(1L), eq(0));
     }
 
     @Test
     public void execute_withRegisteredTime() throws DomainException {
-        GetTimesheet getTimesheet = new GetTimesheet(timeRepository);
+        GetTimesheet getTimesheet = new GetTimesheet(repository);
         getTimesheet.execute(1L, 0, false);
 
-        verify(timeRepository).getTimesheet(eq(1L), eq(0), isNull());
+        verify(repository).getTimesheet(eq(1L), eq(0));
     }
 }
