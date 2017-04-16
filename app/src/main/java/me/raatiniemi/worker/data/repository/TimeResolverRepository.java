@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,10 +66,46 @@ public class TimeResolverRepository
         super(contentResolver, cursorMapper, contentValuesMapper);
     }
 
+    @NonNull
+    private List<Time> fetch(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+        List<Time> results = new ArrayList<>();
+        if (isNull(cursor)) {
+            return results;
+        }
+
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    results.add(getCursorMapper().transform(cursor));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return results;
+    }
+
+    @Nullable
+    private Time fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+        if (isNull(cursor)) {
+            return null;
+        }
+
+        Time result = null;
+        try {
+            if (cursor.moveToFirst()) {
+                result = getCursorMapper().transform(cursor);
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return result;
+    }
+
     @Override
     public List<Time> findProjectTimeSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException {
-        List<Time> time = new ArrayList<>();
-
         Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(project.getId()),
                 TimeContract.getColumns(),
@@ -76,21 +113,7 @@ public class TimeResolverRepository
                 new String[]{String.valueOf(milliseconds)},
                 null
         );
-        if (isNull(cursor)) {
-            return time;
-        }
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    time.add(getCursorMapper().transform(cursor));
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return time;
+        return fetch(cursor);
     }
 
     /**
@@ -105,20 +128,7 @@ public class TimeResolverRepository
                 null,
                 null
         );
-        if (isNull(cursor)) {
-            return null;
-        }
-
-        Time time = null;
-        try {
-            if (cursor.moveToFirst()) {
-                time = getCursorMapper().transform(cursor);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return time;
+        return fetchRow(cursor);
     }
 
     /**
@@ -217,8 +227,6 @@ public class TimeResolverRepository
     @Override
     public List<Time> getProjectTimeSinceBeginningOfMonth(long projectId)
             throws ClockOutBeforeClockInException {
-        final List<Time> result = new ArrayList<>();
-
         // Reset the calendar to retrieve timestamp
         // of the beginning of the month.
         final Calendar calendar = Calendar.getInstance();
@@ -234,21 +242,7 @@ public class TimeResolverRepository
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
                 ProjectContract.ORDER_BY_TIME
         );
-        if (isNull(cursor)) {
-            return result;
-        }
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    result.add(getCursorMapper().transform(cursor));
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return result;
+        return fetch(cursor);
     }
 
     /**
@@ -324,19 +318,6 @@ public class TimeResolverRepository
                 null,
                 null
         );
-        if (isNull(cursor)) {
-            return null;
-        }
-
-        Time time = null;
-        try {
-            if (cursor.moveToFirst()) {
-                time = getCursorMapper().transform(cursor);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return time;
+        return fetchRow(cursor);
     }
 }
