@@ -54,9 +54,9 @@ public class ProjectResolverRepository
         super(contentResolver, cursorMapper, contentValuesMapper);
     }
 
-    private List<Project> fetch(Cursor cursor) throws InvalidProjectNameException {
+    @NonNull
+    private List<Project> fetch(@Nullable Cursor cursor) throws InvalidProjectNameException {
         final List<Project> projects = new ArrayList<>();
-
         if (isNull(cursor)) {
             return projects;
         }
@@ -75,7 +75,7 @@ public class ProjectResolverRepository
     }
 
     @Nullable
-    private Project fetchRow(Cursor cursor) throws InvalidProjectNameException {
+    private Project fetchRow(@Nullable Cursor cursor) throws InvalidProjectNameException {
         if (isNull(cursor)) {
             return null;
         }
