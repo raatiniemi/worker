@@ -61,9 +61,9 @@ public class WorkerContract {
     public final class ProjectColumns {
         public static final String NAME = "name";
 
-        public static final String DESCRIPTION = "description";
+        static final String DESCRIPTION = "description";
 
-        public static final String ARCHIVED = "archived";
+        static final String ARCHIVED = "archived";
 
         private ProjectColumns() {
         }
