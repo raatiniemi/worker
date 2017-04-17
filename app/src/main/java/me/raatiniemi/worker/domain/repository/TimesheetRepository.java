@@ -26,18 +26,18 @@ public interface TimesheetRepository {
     /**
      * Get timesheet segment for a project.
      *
-     * @param projectId Id for the project.
-     * @param offset    Offset for segment.
+     * @param projectId   Id for the project.
+     * @param pageRequest Defines the page segment.
      * @return Project timesheet segment.
      */
-    Map<Date, List<Time>> getTimesheet(final long projectId, final int offset);
+    Map<Date, List<Time>> getTimesheet(final long projectId, final PageRequest pageRequest);
 
     /**
      * Get timesheet segment for a project, without registered entries.
      *
-     * @param projectId Id for the project.
-     * @param offset    Offset for segment.
+     * @param projectId   Id for the project.
+     * @param pageRequest Defines the page segment.
      * @return Project timesheet segment.
      */
-    Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(final long projectId, final int offset);
+    Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(final long projectId, final PageRequest pageRequest);
 }

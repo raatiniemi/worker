@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 
 import static org.mockito.Matchers.eq;
@@ -42,7 +43,7 @@ public class GetTimesheetTest {
         GetTimesheet getTimesheet = new GetTimesheet(repository);
         getTimesheet.execute(1L, 0, true);
 
-        verify(repository).getTimesheetWithoutRegisteredEntries(eq(1L), eq(0));
+        verify(repository).getTimesheetWithoutRegisteredEntries(eq(1L), eq(PageRequest.withOffset(0)));
     }
 
     @Test
@@ -50,6 +51,6 @@ public class GetTimesheetTest {
         GetTimesheet getTimesheet = new GetTimesheet(repository);
         getTimesheet.execute(1L, 0, false);
 
-        verify(repository).getTimesheet(eq(1L), eq(0));
+        verify(repository).getTimesheet(eq(1L), eq(PageRequest.withOffset(0)));
     }
 }

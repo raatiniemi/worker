@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 
 /**
@@ -51,10 +52,12 @@ public class GetTimesheet {
             final int offset,
             boolean hideRegisteredTime
     ) {
+        PageRequest pageRequest = PageRequest.withOffset(offset);
+
         if (hideRegisteredTime) {
-            return repository.getTimesheetWithoutRegisteredEntries(projectId, offset);
+            return repository.getTimesheetWithoutRegisteredEntries(projectId, pageRequest);
         }
 
-        return repository.getTimesheet(projectId, offset);
+        return repository.getTimesheet(projectId, pageRequest);
     }
 }

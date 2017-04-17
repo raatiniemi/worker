@@ -45,6 +45,7 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 import timber.log.Timber;
@@ -285,12 +286,12 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Map<Date, List<Time>> getTimesheet(final long projectId, final int offset) {
+    public Map<Date, List<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
         // TODO: Simplify the building of the URI with query parameters.
         Uri uri = ProjectContract.getItemTimesheetUri(projectId)
                 .buildUpon()
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(pageRequest.getOffset()))
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, String.valueOf(pageRequest.getMaxResults()))
                 .build();
 
         final Cursor cursor = getContentResolver().query(
@@ -304,12 +305,12 @@ public class TimeResolverRepository
     }
 
     @Override
-    public Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(long projectId, int offset) {
+    public Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
         // TODO: Simplify the building of the URI with query parameters.
         Uri uri = ProjectContract.getItemTimesheetUri(projectId)
                 .buildUpon()
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(pageRequest.getOffset()))
+                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, String.valueOf(pageRequest.getMaxResults()))
                 .build();
 
         final Cursor cursor = getContentResolver().query(
