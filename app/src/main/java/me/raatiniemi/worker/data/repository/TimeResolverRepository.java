@@ -36,7 +36,6 @@ import java.util.Map;
 
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.provider.QueryParameter;
 import me.raatiniemi.worker.data.provider.WorkerContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;

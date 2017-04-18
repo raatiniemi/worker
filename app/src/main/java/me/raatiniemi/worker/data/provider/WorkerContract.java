@@ -20,16 +20,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class WorkerContract {
-    /**
-     * Name for the offset query parameter.
-     */
-    public static final String QUERY_PARAMETER_OFFSET = "offset";
-
-    /**
-     * Name for the limit query parameter.
-     */
-    public static final String QUERY_PARAMETER_LIMIT = "limit";
-
     public static final String AUTHORITY = "me.raatiniemi.worker";
 
     private static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);

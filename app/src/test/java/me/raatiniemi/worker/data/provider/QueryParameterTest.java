@@ -24,8 +24,8 @@ import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 
 import static junit.framework.Assert.assertEquals;
-import static me.raatiniemi.worker.data.provider.WorkerContract.QUERY_PARAMETER_LIMIT;
-import static me.raatiniemi.worker.data.provider.WorkerContract.QUERY_PARAMETER_OFFSET;
+import static me.raatiniemi.worker.data.provider.QueryParameter.QUERY_PARAMETER_LIMIT;
+import static me.raatiniemi.worker.data.provider.QueryParameter.QUERY_PARAMETER_OFFSET;
 
 public class QueryParameterTest extends RobolectricTestCase {
     @Test(expected = NullPointerException.class)

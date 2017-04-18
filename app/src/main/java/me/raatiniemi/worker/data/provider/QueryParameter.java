@@ -21,10 +21,11 @@ import android.net.Uri;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 
 import static java.util.Objects.requireNonNull;
-import static me.raatiniemi.worker.data.provider.WorkerContract.QUERY_PARAMETER_LIMIT;
-import static me.raatiniemi.worker.data.provider.WorkerContract.QUERY_PARAMETER_OFFSET;
 
 public final class QueryParameter {
+    static final String QUERY_PARAMETER_OFFSET = "offset";
+    static final String QUERY_PARAMETER_LIMIT = "limit";
+
     private QueryParameter() {
     }
 

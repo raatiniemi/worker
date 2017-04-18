@@ -122,12 +122,12 @@ public class WorkerProvider extends ContentProvider {
         // TODO: Add proper validation and additional controls.
         // TODO: Simplify the process of retrieving offset and limit.
         String limit = null;
-        if (nonNull(uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT))) {
+        if (nonNull(uri.getQueryParameter(QueryParameter.QUERY_PARAMETER_LIMIT))) {
             limit = "";
-            if (nonNull(uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET))) {
-                limit = uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET) + ",";
+            if (nonNull(uri.getQueryParameter(QueryParameter.QUERY_PARAMETER_OFFSET))) {
+                limit = uri.getQueryParameter(QueryParameter.QUERY_PARAMETER_OFFSET) + ",";
             }
-            limit = limit + uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT);
+            limit = limit + uri.getQueryParameter(QueryParameter.QUERY_PARAMETER_LIMIT);
         }
 
         return buildSelection(uri)
