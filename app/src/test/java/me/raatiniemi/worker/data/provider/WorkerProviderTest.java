@@ -241,7 +241,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         provider.query(
                 ProjectContract.getStreamUri()
                         .buildUpon()
-                        .appendQueryParameter(QueryParameter.QUERY_PARAMETER_LIMIT, "1")
+                        .appendQueryParameter(QueryParameter.LIMIT, "1")
                         .build(),
                 ProjectContract.getColumns(),
                 "",
@@ -266,8 +266,8 @@ public class WorkerProviderTest extends RobolectricTestCase {
         provider.query(
                 ProjectContract.getStreamUri()
                         .buildUpon()
-                        .appendQueryParameter(QueryParameter.QUERY_PARAMETER_OFFSET, "10")
-                        .appendQueryParameter(QueryParameter.QUERY_PARAMETER_LIMIT, "5")
+                        .appendQueryParameter(QueryParameter.OFFSET, "10")
+                        .appendQueryParameter(QueryParameter.LIMIT, "5")
                         .build(),
                 ProjectContract.getColumns(),
                 "",

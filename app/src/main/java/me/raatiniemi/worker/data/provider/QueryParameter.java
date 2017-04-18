@@ -23,8 +23,8 @@ import me.raatiniemi.worker.domain.repository.PageRequest;
 import static java.util.Objects.requireNonNull;
 
 public final class QueryParameter {
-    static final String QUERY_PARAMETER_OFFSET = "offset";
-    static final String QUERY_PARAMETER_LIMIT = "limit";
+    static final String OFFSET = "offset";
+    static final String LIMIT = "limit";
 
     private QueryParameter() {
     }
@@ -34,8 +34,8 @@ public final class QueryParameter {
         requireNonNull(pageRequest, "Page request is required when appending to Uri");
 
         return uri.buildUpon()
-                .appendQueryParameter(QUERY_PARAMETER_OFFSET, String.valueOf(pageRequest.getOffset()))
-                .appendQueryParameter(QUERY_PARAMETER_LIMIT, String.valueOf(pageRequest.getMaxResults()))
+                .appendQueryParameter(OFFSET, String.valueOf(pageRequest.getOffset()))
+                .appendQueryParameter(LIMIT, String.valueOf(pageRequest.getMaxResults()))
                 .build();
     }
 }

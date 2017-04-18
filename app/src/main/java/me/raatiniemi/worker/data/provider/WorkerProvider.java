@@ -130,12 +130,12 @@ public class WorkerProvider extends ContentProvider {
 
     @Nullable
     private String parseLimitFromUri(@NonNull Uri uri) {
-        String limit = uri.getQueryParameter(QueryParameter.QUERY_PARAMETER_LIMIT);
+        String limit = uri.getQueryParameter(QueryParameter.LIMIT);
         if (isNull(limit)) {
             return null;
         }
 
-        String offset = uri.getQueryParameter(QueryParameter.QUERY_PARAMETER_OFFSET);
+        String offset = uri.getQueryParameter(QueryParameter.OFFSET);
         if (nonNull(offset)) {
             return String.format(Locale.getDefault(), "%s,%s", offset, limit);
         }
