@@ -36,6 +36,7 @@ import java.util.Map;
 
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
+import me.raatiniemi.worker.data.provider.QueryParameter;
 import me.raatiniemi.worker.data.provider.WorkerContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
@@ -50,6 +51,7 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 import timber.log.Timber;
 
+import static me.raatiniemi.worker.data.provider.QueryParameter.appendPageRequest;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimeResolverRepository
@@ -287,15 +289,9 @@ public class TimeResolverRepository
      */
     @Override
     public Map<Date, List<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
-        // TODO: Simplify the building of the URI with query parameters.
-        Uri uri = ProjectContract.getItemTimesheetUri(projectId)
-                .buildUpon()
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(pageRequest.getOffset()))
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, String.valueOf(pageRequest.getMaxResults()))
-                .build();
-
+        final Uri uri = ProjectContract.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
-                uri,
+                appendPageRequest(uri, pageRequest),
                 ProjectContract.getTimesheetColumns(),
                 null,
                 null,
@@ -306,15 +302,9 @@ public class TimeResolverRepository
 
     @Override
     public Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
-        // TODO: Simplify the building of the URI with query parameters.
-        Uri uri = ProjectContract.getItemTimesheetUri(projectId)
-                .buildUpon()
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(pageRequest.getOffset()))
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, String.valueOf(pageRequest.getMaxResults()))
-                .build();
-
+        final Uri uri = ProjectContract.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
-                uri,
+                appendPageRequest(uri, pageRequest),
                 ProjectContract.getTimesheetColumns(),
                 TimeColumns.REGISTERED + " = 0",
                 null,
