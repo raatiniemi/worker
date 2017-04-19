@@ -55,31 +55,6 @@ public class MarkRegisteredTimeTest {
     }
 
     @Test
-    public void execute_unmarkRegistered() throws DomainException {
-        Time markedTime = Time.builder(1L)
-                .register()
-                .build();
-
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
-        markRegisteredTime.execute(markedTime);
-
-        Time unmarkedTime = markedTime.unmarkRegistered();
-        verify(timeRepository).update(eq(unmarkedTime));
-    }
-
-    @Test
-    public void execute_markRegistered() throws DomainException {
-        Time unmarkedTime = Time.builder(1L)
-                .build();
-
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
-        markRegisteredTime.execute(unmarkedTime);
-
-        Time markedTime = unmarkedTime.markAsRegistered();
-        verify(timeRepository).update(eq(markedTime));
-    }
-
-    @Test
     public void execute_withMultipleUnregisteredItems() throws DomainException {
         List<Time> timeToUpdate = new ArrayList<>();
         timeToUpdate.add(buildTime());

@@ -66,21 +66,6 @@ public class MarkRegisteredTime {
         return !times.get(0).isRegistered();
     }
 
-    /**
-     * Mark time as registered.
-     *
-     * @param time Time to mark.
-     * @return Marked time.
-     * @throws DomainException If domain rules are violated.
-     */
-    public Time execute(final Time time) throws DomainException {
-        if (time.isRegistered()) {
-            return timeRepository.update(time.unmarkRegistered());
-        }
-
-        return timeRepository.update(time.markAsRegistered());
-    }
-
     public List<Time> execute(List<Time> times) throws DomainException {
         List<Time> timeToUpdate = collectTimeToUpdate(times);
         return timeRepository.update(timeToUpdate);
