@@ -27,6 +27,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.util.Optional;
 
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -45,7 +46,7 @@ public class ClockOutTest {
     @Test(expected = InactiveProjectException.class)
     public void execute_withoutActiveTime() throws DomainException {
         when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(null);
+                .thenReturn(Optional.empty());
 
         ClockOut clockOut = new ClockOut(timeRepository);
         clockOut.execute(1L, new Date());
@@ -53,11 +54,9 @@ public class ClockOutTest {
 
     @Test
     public void execute() throws DomainException {
+        Time time = Time.builder(1L).build();
         when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(
-                        Time.builder(1L)
-                                .build()
-                );
+                .thenReturn(Optional.of(time));
 
         ClockOut clockOut = new ClockOut(timeRepository);
         clockOut.execute(1L, new Date());

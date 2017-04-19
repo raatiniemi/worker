@@ -19,8 +19,7 @@ package me.raatiniemi.worker.domain.interactor;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
+import me.raatiniemi.worker.util.Optional;
 
 public class IsProjectActive {
     private final TimeRepository timeRepository;
@@ -30,8 +29,8 @@ public class IsProjectActive {
     }
 
     public boolean execute(long projectId) throws DomainException {
-        Time time = timeRepository.getActiveTimeForProject(projectId);
+        Optional<Time> value = timeRepository.getActiveTimeForProject(projectId);
 
-        return nonNull(time);
+        return value.isPresent();
     }
 }

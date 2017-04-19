@@ -21,6 +21,7 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.util.Optional;
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
@@ -43,7 +44,7 @@ public interface TimeRepository {
      * @return Time, or null if none was found.
      * @throws DomainException If domain rules are violated.
      */
-    Time get(long id) throws DomainException;
+    Optional<Time> get(long id) throws DomainException;
 
     /**
      * Add time.
@@ -52,7 +53,7 @@ public interface TimeRepository {
      * @return Added time.
      * @throws DomainException If domain rules are violated.
      */
-    Time add(Time time) throws DomainException;
+    Optional<Time> add(Time time) throws DomainException;
 
     /**
      * Update time.
@@ -61,7 +62,7 @@ public interface TimeRepository {
      * @return Updated time.
      * @throws DomainException If domain rules are violated.
      */
-    Time update(Time time) throws DomainException;
+    Optional<Time> update(Time time) throws DomainException;
 
     /**
      * Update items.
@@ -102,5 +103,5 @@ public interface TimeRepository {
      * @return Active time for project, or null if project is inactive.
      * @throws DomainException If domain rules are violated.
      */
-    Time getActiveTimeForProject(long projectId) throws DomainException;
+    Optional<Time> getActiveTimeForProject(long projectId) throws DomainException;
 }

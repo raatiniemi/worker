@@ -48,6 +48,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
+import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.data.provider.QueryParameter.appendPageRequest;
@@ -88,21 +89,21 @@ public class TimeResolverRepository
     }
 
     @Nullable
-    private Time fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+    private Optional<Time> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
         if (isNull(cursor)) {
-            return null;
+            return Optional.empty();
         }
 
-        Time result = null;
         try {
             if (cursor.moveToFirst()) {
-                result = getCursorMapper().transform(cursor);
+                Time result = getCursorMapper().transform(cursor);
+                return Optional.of(result);
             }
+
+            return Optional.empty();
         } finally {
             cursor.close();
         }
-
-        return result;
     }
 
     @Override
@@ -121,7 +122,7 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time get(final long id) throws ClockOutBeforeClockInException {
+    public Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 TimeContract.getItemUri(id),
                 TimeContract.getColumns(),
@@ -136,7 +137,7 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time add(final Time time) throws ClockOutBeforeClockInException {
+    public Optional<Time> add(final Time time) throws ClockOutBeforeClockInException {
         final ContentValues values = getContentValuesMapper().transform(time);
 
         final Uri uri = getContentResolver().insert(
@@ -150,7 +151,7 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time update(final Time time) throws ClockOutBeforeClockInException {
+    public Optional<Time> update(final Time time) throws ClockOutBeforeClockInException {
         getContentResolver().update(
                 TimeContract.getItemUri(time.getId()),
                 getContentValuesMapper().transform(time),
@@ -185,7 +186,10 @@ public class TimeResolverRepository
 
         List<Time> updatedTimes = new ArrayList<>();
         for (Time time : times) {
-            updatedTimes.add(get(time.getId()));
+            Optional<Time> value = get(time.getId());
+            if (value.isPresent()) {
+                updatedTimes.add(value.get());
+            }
         }
 
         return updatedTimes;
@@ -264,7 +268,8 @@ public class TimeResolverRepository
                 List<Time> items = new ArrayList<>();
                 for (String id : rows) {
                     try {
-                        items.add(get(Long.parseLong(id)));
+                        Optional<Time> value = get(Long.parseLong(id));
+                        items.add(value.get());
                     } catch (DomainException e) {
                         Timber.w(e, "Unable to fetch item for timesheet");
                     }
@@ -316,7 +321,7 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time getActiveTimeForProject(long projectId)
+    public Optional<Time> getActiveTimeForProject(long projectId)
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(projectId),
