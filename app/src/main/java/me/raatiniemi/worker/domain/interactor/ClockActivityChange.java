@@ -19,9 +19,11 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.util.Optional;
 
 /**
  * Use case for project clock in/out.
@@ -83,9 +85,12 @@ public class ClockActivityChange {
     }
 
     private Project reloadProjectWithRegisteredTime(Project project) throws DomainException {
-        return populateProjectWithRegisteredTime(
-                projectRepository.get(project.getId())
-        );
+        Optional<Project> value = projectRepository.get(project.getId());
+        if (value.isPresent()) {
+            return populateProjectWithRegisteredTime(value.get());
+        }
+
+        throw new NoProjectException();
     }
 
     private Project populateProjectWithRegisteredTime(Project project) throws DomainException {

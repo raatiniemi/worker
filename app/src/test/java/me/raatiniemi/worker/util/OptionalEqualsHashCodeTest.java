@@ -14,12 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.repository.query;
+package me.raatiniemi.worker.util;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -29,65 +28,59 @@ import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
-public class CriteriaEqualsHashCodeTest {
-    private final String message;
-    private final Boolean expected;
-    private final Criteria criteria;
-    private final Object compareTo;
+public class OptionalEqualsHashCodeTest {
+    private String message;
+    private Boolean expected;
+    private Optional<String> optional;
+    private Object compareTo;
 
-    public CriteriaEqualsHashCodeTest(
+    public OptionalEqualsHashCodeTest(
             String message,
             Boolean expected,
-            Criteria criteria,
+            Optional<String> optional,
             Object compareTo
     ) {
         this.message = message;
         this.expected = expected;
-        this.criteria = criteria;
+        this.optional = optional;
         this.compareTo = compareTo;
     }
 
-    @Parameters
+    @Parameterized.Parameters
     public static Collection<Object[]> getParameters() {
-        Criteria criteria = Criteria.equalTo("foo", "bar");
+        Optional<String> optional = Optional.of("Value");
 
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "With same instance",
                                 Boolean.TRUE,
-                                criteria,
-                                criteria
+                                optional,
+                                optional
                         },
                         {
                                 "With null",
                                 Boolean.FALSE,
-                                criteria,
+                                optional,
                                 null
                         },
                         {
-                                "With incompatible object",
-                                Boolean.FALSE,
-                                criteria,
-                                ""
-                        },
-                        {
-                                "With different field",
-                                Boolean.FALSE,
-                                criteria,
-                                Criteria.equalTo("baz", "bar")
+                                "With same value",
+                                Boolean.TRUE,
+                                optional,
+                                Optional.of("Value")
                         },
                         {
                                 "With different value",
                                 Boolean.FALSE,
-                                criteria,
-                                Criteria.equalTo("foo", "baz")
+                                optional,
+                                Optional.of("Different value")
                         },
                         {
-                                "With different operator",
+                                "With different data type",
                                 Boolean.FALSE,
-                                criteria,
-                                Criteria.lessThan("foo", "bar")
+                                optional,
+                                Optional.of(1L)
                         }
                 }
         );
@@ -103,32 +96,31 @@ public class CriteriaEqualsHashCodeTest {
         assertNotEqual();
     }
 
-    private Boolean shouldBeEqual() {
+    public Boolean shouldBeEqual() {
         return expected;
     }
 
-    private void assertEqual() {
-        assertTrue(message, criteria.equals(compareTo));
+    public void assertEqual() {
+        assertTrue(message, optional.equals(compareTo));
 
         validateHashCodeWhenEqual();
     }
 
-    private void validateHashCodeWhenEqual() {
-        assertTrue(message, criteria.hashCode() == compareTo.hashCode());
+    public void validateHashCodeWhenEqual() {
+        assertTrue(message, optional.hashCode() == compareTo.hashCode());
     }
 
-    private void assertNotEqual() {
-        assertFalse(message, criteria.equals(compareTo));
-
+    public void assertNotEqual() {
+        assertFalse(message, optional.equals(compareTo));
 
         validateHashCodeWhenNotEqual();
     }
 
-    private void validateHashCodeWhenNotEqual() {
+    public void validateHashCodeWhenNotEqual() {
         if (isNull(compareTo)) {
             return;
         }
 
-        assertFalse(message, criteria.hashCode() == compareTo.hashCode());
+        assertFalse(message, optional.hashCode() == compareTo.hashCode());
     }
 }

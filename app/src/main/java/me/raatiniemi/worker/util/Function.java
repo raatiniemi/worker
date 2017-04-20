@@ -14,14 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.util;
 
-public class DomainException extends Exception {
-    DomainException() {
-        super();
-    }
-
-    DomainException(String message) {
-        super(message);
-    }
+/**
+ * Represents a function that accepts one argument and produces a result.
+ *
+ * @param <T> The function argument.
+ * @param <R> The function result.
+ */
+public interface Function<T, R> {
+    /**
+     * Applies this function to the given argument.
+     *
+     * @param value Value to transform.
+     * @return Produced result.
+     */
+    R apply(T value);
 }

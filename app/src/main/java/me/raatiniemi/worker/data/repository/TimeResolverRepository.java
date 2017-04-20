@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,20 +41,23 @@ import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
-import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.domain.repository.TimesheetRepository;
+import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
 
+import static java.util.Objects.requireNonNull;
+import static me.raatiniemi.worker.data.provider.QueryParameter.appendPageRequest;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
-        implements TimeRepository {
+        implements TimeRepository, TimesheetRepository {
     /**
      * @inheritDoc
      */
@@ -65,43 +69,63 @@ public class TimeResolverRepository
         super(contentResolver, cursorMapper, contentValuesMapper);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<Time> matching(Project project, Criteria criteria) throws DomainException {
-        List<Time> time = new ArrayList<>();
-
-        ContentResolverQuery query = ContentResolverQuery.from(criteria);
-        Cursor cursor = getContentResolver().query(
-                ProjectContract.getItemTimeUri(project.getId()),
-                TimeContract.getColumns(),
-                query.getSelection(),
-                query.getSelectionArgs(),
-                null
-        );
+    @NonNull
+    private List<Time> fetch(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+        List<Time> results = new ArrayList<>();
         if (isNull(cursor)) {
-            return time;
+            return results;
         }
 
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    time.add(getCursorMapper().transform(cursor));
+                    results.add(getCursorMapper().transform(cursor));
                 } while (cursor.moveToNext());
             }
         } finally {
             cursor.close();
         }
 
-        return time;
+        return results;
+    }
+
+    @Nullable
+    private Optional<Time> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+        if (isNull(cursor)) {
+            return Optional.empty();
+        }
+
+        try {
+            if (cursor.moveToFirst()) {
+                Time result = getCursorMapper().transform(cursor);
+                return Optional.of(result);
+            }
+
+            return Optional.empty();
+        } finally {
+            cursor.close();
+        }
+    }
+
+    @Override
+    public List<Time> findProjectTimeSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException {
+        requireNonNull(project);
+
+        Cursor cursor = getContentResolver().query(
+                ProjectContract.getItemTimeUri(project.getId()),
+                TimeContract.getColumns(),
+                TimeColumns.START + ">=?",
+                new String[]{String.valueOf(milliseconds)},
+                null
+        );
+        return fetch(cursor);
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Time get(final long id) throws ClockOutBeforeClockInException {
+    public Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 TimeContract.getItemUri(id),
                 TimeContract.getColumns(),
@@ -109,27 +133,16 @@ public class TimeResolverRepository
                 null,
                 null
         );
-        if (isNull(cursor)) {
-            return null;
-        }
-
-        Time time = null;
-        try {
-            if (cursor.moveToFirst()) {
-                time = getCursorMapper().transform(cursor);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return time;
+        return fetchRow(cursor);
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Time add(final Time time) throws ClockOutBeforeClockInException {
+    public Optional<Time> add(final Time time) throws ClockOutBeforeClockInException {
+        requireNonNull(time);
+
         final ContentValues values = getContentValuesMapper().transform(time);
 
         final Uri uri = getContentResolver().insert(
@@ -143,7 +156,9 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time update(final Time time) throws ClockOutBeforeClockInException {
+    public Optional<Time> update(final Time time) throws ClockOutBeforeClockInException {
+        requireNonNull(time);
+
         getContentResolver().update(
                 TimeContract.getItemUri(time.getId()),
                 getContentValuesMapper().transform(time),
@@ -159,6 +174,8 @@ public class TimeResolverRepository
      */
     @Override
     public List<Time> update(List<Time> times) throws ClockOutBeforeClockInException {
+        requireNonNull(times);
+
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         for (Time time : times) {
@@ -178,7 +195,10 @@ public class TimeResolverRepository
 
         List<Time> updatedTimes = new ArrayList<>();
         for (Time time : times) {
-            updatedTimes.add(get(time.getId()));
+            Optional<Time> value = get(time.getId());
+            if (value.isPresent()) {
+                updatedTimes.add(value.get());
+            }
         }
 
         return updatedTimes;
@@ -201,6 +221,8 @@ public class TimeResolverRepository
      */
     @Override
     public void remove(List<Time> times) {
+        requireNonNull(times);
+
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         for (Time time : times) {
@@ -221,8 +243,6 @@ public class TimeResolverRepository
     @Override
     public List<Time> getProjectTimeSinceBeginningOfMonth(long projectId)
             throws ClockOutBeforeClockInException {
-        final List<Time> result = new ArrayList<>();
-
         // Reset the calendar to retrieve timestamp
         // of the beginning of the month.
         final Calendar calendar = Calendar.getInstance();
@@ -238,49 +258,12 @@ public class TimeResolverRepository
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
                 ProjectContract.ORDER_BY_TIME
         );
-        if (isNull(cursor)) {
-            return result;
-        }
-
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    result.add(getCursorMapper().transform(cursor));
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return result;
+        return fetch(cursor);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public Map<Date, List<Time>> getTimesheet(
-            final long projectId,
-            final int offset,
-            final Criteria criteria
-    ) {
+    @NonNull
+    private Map<Date, List<Time>> fetchTimesheet(@Nullable Cursor cursor) {
         Map<Date, List<Time>> result = new LinkedHashMap<>();
-
-        // TODO: Simplify the building of the URI with query parameters.
-        Uri uri = ProjectContract.getItemTimesheetUri(projectId)
-                .buildUpon()
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET, String.valueOf(offset))
-                .appendQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT, "10")
-                .build();
-
-        ContentResolverQuery query = ContentResolverQuery.from(criteria);
-        final Cursor cursor = getContentResolver().query(
-                uri,
-                ProjectContract.getTimesheetColumns(),
-                query.getSelection(),
-                query.getSelectionArgs(),
-                ProjectContract.ORDER_BY_TIMESHEET
-        );
         if (isNull(cursor)) {
             return result;
         }
@@ -296,7 +279,8 @@ public class TimeResolverRepository
                 List<Time> items = new ArrayList<>();
                 for (String id : rows) {
                     try {
-                        items.add(get(Long.parseLong(id)));
+                        Optional<Time> value = get(Long.parseLong(id));
+                        items.add(value.get());
                     } catch (DomainException e) {
                         Timber.w(e, "Unable to fetch item for timesheet");
                     }
@@ -319,7 +303,40 @@ public class TimeResolverRepository
      * @inheritDoc
      */
     @Override
-    public Time getActiveTimeForProject(long projectId)
+    public Map<Date, List<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
+        requireNonNull(pageRequest);
+
+        final Uri uri = ProjectContract.getItemTimesheetUri(projectId);
+        final Cursor cursor = getContentResolver().query(
+                appendPageRequest(uri, pageRequest),
+                ProjectContract.getTimesheetColumns(),
+                null,
+                null,
+                ProjectContract.ORDER_BY_TIMESHEET
+        );
+        return fetchTimesheet(cursor);
+    }
+
+    @Override
+    public Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
+        requireNonNull(pageRequest);
+
+        final Uri uri = ProjectContract.getItemTimesheetUri(projectId);
+        final Cursor cursor = getContentResolver().query(
+                appendPageRequest(uri, pageRequest),
+                ProjectContract.getTimesheetColumns(),
+                TimeColumns.REGISTERED + " = 0",
+                null,
+                ProjectContract.ORDER_BY_TIMESHEET
+        );
+        return fetchTimesheet(cursor);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public Optional<Time> getActiveTimeForProject(long projectId)
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(projectId),
@@ -328,19 +345,6 @@ public class TimeResolverRepository
                 null,
                 null
         );
-        if (isNull(cursor)) {
-            return null;
-        }
-
-        Time time = null;
-        try {
-            if (cursor.moveToFirst()) {
-                time = getCursorMapper().transform(cursor);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return time;
+        return fetchRow(cursor);
     }
 }

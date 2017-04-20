@@ -20,16 +20,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class WorkerContract {
-    /**
-     * Name for the offset query parameter.
-     */
-    public static final String QUERY_PARAMETER_OFFSET = "offset";
-
-    /**
-     * Name for the limit query parameter.
-     */
-    public static final String QUERY_PARAMETER_LIMIT = "limit";
-
     public static final String AUTHORITY = "me.raatiniemi.worker";
 
     private static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
@@ -43,16 +33,16 @@ public class WorkerContract {
     /**
      * Name for the available tables within the database.
      */
-    public final class Tables {
+    final class Tables {
         /**
          * Name for the project table.
          */
-        public static final String PROJECT = "project";
+        static final String PROJECT = "project";
 
         /**
          * Name for the registered time table.
          */
-        public static final String TIME = "time";
+        static final String TIME = "time";
 
         private Tables() {
         }
@@ -61,9 +51,9 @@ public class WorkerContract {
     public final class ProjectColumns {
         public static final String NAME = "name";
 
-        public static final String DESCRIPTION = "description";
+        static final String DESCRIPTION = "description";
 
-        public static final String ARCHIVED = "archived";
+        static final String ARCHIVED = "archived";
 
         private ProjectColumns() {
         }
@@ -83,10 +73,10 @@ public class WorkerContract {
     }
 
     public static class ProjectContract {
-        public static final String STREAM_TYPE =
+        static final String STREAM_TYPE =
                 "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
 
-        public static final String ITEM_TYPE =
+        static final String ITEM_TYPE =
                 "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
         public static final String ORDER_BY = BaseColumns._ID + " ASC";
@@ -100,7 +90,7 @@ public class WorkerContract {
         /**
          * Group by clause for timesheet.
          */
-        public static final String GROUP_BY_TIMESHEET =
+        static final String GROUP_BY_TIMESHEET =
                 "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
 
         /**
@@ -179,10 +169,10 @@ public class WorkerContract {
     }
 
     public static class TimeContract {
-        public static final String STREAM_TYPE =
+        static final String STREAM_TYPE =
                 "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
 
-        public static final String ITEM_TYPE =
+        static final String ITEM_TYPE =
                 "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);

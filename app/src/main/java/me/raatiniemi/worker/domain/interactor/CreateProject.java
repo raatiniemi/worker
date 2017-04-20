@@ -16,14 +16,12 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
-import java.util.List;
-
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.util.Optional;
 
 /**
  * Use case for creating a project.
@@ -50,15 +48,23 @@ public class CreateProject {
      * @return Created project.
      */
     public Project execute(final Project project) throws DomainException {
-        // TODO: Refactor to remove dependency on the data-package for column name.
-        Criteria criteria = Criteria.equalTo(ProjectColumns.NAME, project.getName());
-        List<Project> projects = repository.matching(criteria);
-        if (!projects.isEmpty()) {
+        if (isProjectNameInUse(project.getName())) {
             throw new ProjectAlreadyExistsException(
                     "Project '" + project.getName() + "' already exists"
             );
         }
 
-        return repository.add(project);
+        Optional<Project> value = repository.add(project);
+        if (value.isPresent()) {
+            return value.get();
+        }
+
+        throw new NoProjectException();
+    }
+
+    private boolean isProjectNameInUse(String projectName) throws DomainException {
+        Optional<Project> value = repository.findProjectByName(projectName);
+
+        return value.isPresent();
     }
 }

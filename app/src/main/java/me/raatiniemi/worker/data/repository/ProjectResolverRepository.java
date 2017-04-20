@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +31,15 @@ import java.util.List;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
-import me.raatiniemi.worker.data.repository.query.ContentResolverQuery;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.util.Optional;
 
+import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class ProjectResolverRepository
@@ -54,26 +56,9 @@ public class ProjectResolverRepository
         super(contentResolver, cursorMapper, contentValuesMapper);
     }
 
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public List<Project> matching(final Criteria criteria) throws InvalidProjectNameException {
-        ContentResolverQuery query = ContentResolverQuery.from(criteria);
-        final Cursor cursor = getContentResolver().query(
-                ProjectContract.getStreamUri(),
-                ProjectContract.getColumns(),
-                query.getSelection(),
-                query.getSelectionArgs(),
-                null
-        );
-
-        return fetch(cursor);
-    }
-
-    private List<Project> fetch(Cursor cursor) throws InvalidProjectNameException {
+    @NonNull
+    private List<Project> fetch(@Nullable Cursor cursor) throws InvalidProjectNameException {
         final List<Project> projects = new ArrayList<>();
-
         if (isNull(cursor)) {
             return projects;
         }
@@ -89,6 +74,39 @@ public class ProjectResolverRepository
         }
 
         return projects;
+    }
+
+    @NonNull
+    private Optional<Project> fetchRow(@Nullable Cursor cursor) throws InvalidProjectNameException {
+        if (isNull(cursor)) {
+            return Optional.empty();
+        }
+
+        try {
+            if (cursor.moveToFirst()) {
+                Project project = getCursorMapper().transform(cursor);
+
+                return Optional.of(project);
+            }
+
+            return Optional.empty();
+        } finally {
+            cursor.close();
+        }
+    }
+
+    @Override
+    public Optional<Project> findProjectByName(String projectName) throws InvalidProjectNameException {
+        requireNonNull(projectName);
+
+        final Cursor cursor = getContentResolver().query(
+                ProjectContract.getStreamUri(),
+                ProjectContract.getColumns(),
+                ProjectColumns.NAME + "=? COLLATE NOCASE",
+                new String[]{projectName},
+                null
+        );
+        return fetchRow(cursor);
     }
 
     /**
@@ -111,7 +129,7 @@ public class ProjectResolverRepository
      * @inheritDoc
      */
     @Override
-    public Project get(final long id) throws InvalidProjectNameException {
+    public Optional<Project> get(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemUri(id),
                 ProjectContract.getColumns(),
@@ -119,27 +137,16 @@ public class ProjectResolverRepository
                 null,
                 null
         );
-        if (isNull(cursor)) {
-            return null;
-        }
-
-        Project project = null;
-        try {
-            if (cursor.moveToFirst()) {
-                project = getCursorMapper().transform(cursor);
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return project;
+        return fetchRow(cursor);
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public Project add(final Project project) throws InvalidProjectNameException {
+    public Optional<Project> add(final Project project) throws InvalidProjectNameException {
+        requireNonNull(project);
+
         final Uri uri = getContentResolver().insert(
                 ProjectContract.getStreamUri(),
                 getContentValuesMapper().transform(project)

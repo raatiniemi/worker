@@ -32,6 +32,7 @@ import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 
 @Module
 public class DataModule {
@@ -63,6 +64,17 @@ public class DataModule {
     @Provides
     @Singleton
     TimeRepository providesTimeRepository() {
+        return new TimeResolverRepository(
+                context.getContentResolver(),
+                new TimeCursorMapper(),
+                new TimeContentValuesMapper()
+        );
+    }
+
+    @NonNull
+    @Provides
+    @Singleton
+    TimesheetRepository providesTimesheetRepository() {
         return new TimeResolverRepository(
                 context.getContentResolver(),
                 new TimeCursorMapper(),

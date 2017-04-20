@@ -27,8 +27,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -39,6 +41,7 @@ import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
 import me.raatiniemi.worker.data.util.SelectionBuilder;
 
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class WorkerProvider extends ContentProvider {
@@ -118,21 +121,26 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        // Build the limit section of the query, with the offset.
-        // TODO: Add proper validation and additional controls.
-        // TODO: Simplify the process of retrieving offset and limit.
-        String limit = null;
-        if (nonNull(uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT))) {
-            limit = "";
-            if (nonNull(uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET))) {
-                limit = uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_OFFSET) + ",";
-            }
-            limit = limit + uri.getQueryParameter(WorkerContract.QUERY_PARAMETER_LIMIT);
-        }
+        String limit = parseLimitFromUri(uri);
 
         return buildSelection(uri)
                 .where(selection, selectionArgs)
                 .query(getOpenHelper().getReadableDatabase(), projection, sortOrder, limit);
+    }
+
+    @Nullable
+    private String parseLimitFromUri(@NonNull Uri uri) {
+        String limit = uri.getQueryParameter(QueryParameter.LIMIT);
+        if (isNull(limit)) {
+            return null;
+        }
+
+        String offset = uri.getQueryParameter(QueryParameter.OFFSET);
+        if (nonNull(offset)) {
+            return String.format(Locale.getDefault(), "%s,%s", offset, limit);
+        }
+
+        return limit;
     }
 
     @Override

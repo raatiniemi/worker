@@ -22,25 +22,44 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.NoProjectException;
+import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.util.Optional;
 
+import static junit.framework.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class GetProjectTest {
     private ProjectRepository projectRepository;
+    private GetProject getProject;
 
     @Before
     public void setUp() {
         projectRepository = mock(ProjectRepository.class);
+        getProject = new GetProject(projectRepository);
     }
 
     @Test
     public void execute() throws DomainException {
-        GetProject getProject = new GetProject(projectRepository);
-        getProject.execute(1L);
+        Project project = Project.builder("Name")
+                .build();
+        when(projectRepository.get(eq(1L)))
+                .thenReturn(Optional.of(project));
 
-        verify(projectRepository).get(1L);
+        project = getProject.execute(1L);
+
+        assertNotNull(project);
+    }
+
+    @Test(expected = NoProjectException.class)
+    public void execute_withoutProject() throws DomainException {
+        when(projectRepository.get(eq(1L)))
+                .thenReturn(Optional.empty());
+
+        getProject.execute(1L);
     }
 }

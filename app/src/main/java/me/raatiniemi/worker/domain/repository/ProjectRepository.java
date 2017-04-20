@@ -20,20 +20,20 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
+import me.raatiniemi.worker.util.Optional;
 
 /**
  * Represent a unified interface for working with projects using different data sources.
  */
 public interface ProjectRepository {
     /**
-     * Find projects matching a criteria.
+     * Find project by name.
      *
-     * @param criteria Criteria for matching projects
-     * @return Projects matching the criteria.
+     * @param projectName Project name to search for.
+     * @return Project with name, or null.
      * @throws DomainException If domain rules are violated.
      */
-    List<Project> matching(Criteria criteria) throws DomainException;
+    Optional<Project> findProjectByName(String projectName) throws DomainException;
 
     /**
      * Get projects.
@@ -50,7 +50,7 @@ public interface ProjectRepository {
      * @return Project, or null if none was found.
      * @throws DomainException If domain rules are violated.
      */
-    Project get(long id) throws DomainException;
+    Optional<Project> get(long id) throws DomainException;
 
     /**
      * Add a new project.
@@ -59,7 +59,7 @@ public interface ProjectRepository {
      * @return Added project.
      * @throws DomainException If domain rules are violated.
      */
-    Project add(Project project) throws DomainException;
+    Optional<Project> add(Project project) throws DomainException;
 
     /**
      * Remove project by id.

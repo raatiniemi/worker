@@ -29,7 +29,6 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -52,31 +51,6 @@ public class MarkRegisteredTimeTest {
     @Before
     public void setUp() {
         timeRepository = mock(TimeRepository.class);
-    }
-
-    @Test
-    public void execute_unmarkRegistered() throws DomainException {
-        Time markedTime = Time.builder(1L)
-                .register()
-                .build();
-
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
-        markRegisteredTime.execute(markedTime);
-
-        Time unmarkedTime = markedTime.unmarkRegistered();
-        verify(timeRepository).update(eq(unmarkedTime));
-    }
-
-    @Test
-    public void execute_markRegistered() throws DomainException {
-        Time unmarkedTime = Time.builder(1L)
-                .build();
-
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
-        markRegisteredTime.execute(unmarkedTime);
-
-        Time markedTime = unmarkedTime.markAsRegistered();
-        verify(timeRepository).update(eq(markedTime));
     }
 
     @Test

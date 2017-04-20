@@ -18,28 +18,26 @@ package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.query.Criteria;
-import me.raatiniemi.worker.RobolectricTestCase;
+import me.raatiniemi.worker.util.Optional;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,6 +46,14 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     private final ProjectContentValuesMapper contentValuesMapper = new ProjectContentValuesMapper();
     private ContentResolver contentResolver;
     private ProjectResolverRepository repository;
+
+    private static Cursor buildCursorWithNumberOfItems(int numberOfItems) {
+        return CursorFactory.build(
+                ProjectContract.getColumns(),
+                numberOfItems,
+                number -> Arrays.asList(number, "Name")
+        );
+    }
 
     @Before
     public void setUp() {
@@ -59,103 +65,58 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         );
     }
 
-    private Cursor buildCursorWithNumberOfItems(int numberOfItems) {
-        MatrixCursor cursor = buildCursor();
-
-        for (long i = 1; i <= numberOfItems; i++) {
-            cursor.addRow(buildCursorRow(i, "Name"));
-        }
-
-        return cursor;
-    }
-
-    private MatrixCursor buildCursor() {
-        return spy(new MatrixCursor(ProjectContract.getColumns()));
-    }
-
-    private List<Object> buildCursorRow(Long id, String name) {
-        List<Object> columns = new ArrayList<>();
-        columns.add(id);
-        columns.add(name);
-
-        return columns;
-    }
-
     @Test
-    public void matching_withNullCursor() throws InvalidProjectNameException {
+    public void findProjectByName_withNullCursor() throws InvalidProjectNameException {
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
-                        "name=? COLLATE NOCASE",
+                        ProjectColumns.NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
                 )
         ).thenReturn(null);
 
-        Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        Optional<Project> value = repository.findProjectByName("Name");
 
-        assertTrue(projects.isEmpty());
+        assertFalse(value.isPresent());
     }
 
     @Test
-    public void matching_withEmptyCursor() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(0);
+    public void findProjectByName_withEmptyCursor() throws InvalidProjectNameException {
+        Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
-                        "name=? COLLATE NOCASE",
+                        ProjectColumns.NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
                 )
         ).thenReturn(cursor);
 
-        Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        Optional<Project> value = repository.findProjectByName("Name");
 
-        assertTrue(projects.isEmpty());
-        assertTrue("Failed to close cursor", cursor.isClosed());
+        assertFalse(value.isPresent());
+        verify(cursor).close();
     }
 
     @Test
-    public void matching_withRow() throws InvalidProjectNameException {
+    public void findProjectByName_withProject() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
                         ProjectContract.getColumns(),
-                        "name=? COLLATE NOCASE",
+                        ProjectColumns.NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
                 )
         ).thenReturn(cursor);
 
-        Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
+        Optional<Project> value = repository.findProjectByName("Name");
 
-        assertTrue(1 == projects.size());
-        verify(cursor).close();
-    }
-
-    @Test
-    public void matching_withRows() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(5);
-        when(
-                contentResolver.query(
-                        ProjectContract.getStreamUri(),
-                        ProjectContract.getColumns(),
-                        "name=? COLLATE NOCASE",
-                        new String[]{"Name"},
-                        null
-                )
-        ).thenReturn(cursor);
-
-        Criteria criteria = Criteria.equalTo("name", "Name");
-        List<Project> projects = repository.matching(criteria);
-
-        assertTrue(5 == projects.size());
+        assertTrue(value.isPresent());
         verify(cursor).close();
     }
 
@@ -178,7 +139,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
     @Test
     public void get_projectsWithEmptyCursor() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(0);
+        Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
                         ProjectContract.getStreamUri(),
@@ -245,14 +206,14 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(null);
 
-        Project project = repository.get(1);
+        Optional<Project> value = repository.get(1);
 
-        assertNull(project);
+        assertFalse(value.isPresent());
     }
 
     @Test
     public void get_projectWithoutRow() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(0);
+        Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
                         ProjectContract.getItemUri(1),
@@ -263,9 +224,9 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        Project project = repository.get(1);
+        Optional<Project> value = repository.get(1);
 
-        assertNull(project);
+        assertFalse(value.isPresent());
         verify(cursor).close();
     }
 
@@ -282,9 +243,9 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        Project project = repository.get(1);
+        Optional<Project> value = repository.get(1);
 
-        assertNotNull(project);
+        assertTrue(value.isPresent());
         verify(cursor).close();
     }
 
@@ -311,10 +272,10 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        project = repository.add(project);
+        Optional<Project> value = repository.add(project);
 
-        assertNotNull(project);
-        assertEquals(Long.valueOf(1L), project.getId());
+        assertTrue(value.isPresent());
+        assertEquals(Long.valueOf(1L), value.get().getId());
         verify(cursor).close();
     }
 }

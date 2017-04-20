@@ -22,8 +22,7 @@ import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
+import me.raatiniemi.worker.util.Optional;
 
 /**
  * Use case for clocking in.
@@ -43,8 +42,8 @@ public class ClockIn {
      * @throws ActiveProjectException If project is active.
      */
     public void execute(long projectId, Date date) throws DomainException {
-        Time time = timeRepository.getActiveTimeForProject(projectId);
-        if (nonNull(time)) {
+        Optional<Time> value = timeRepository.getActiveTimeForProject(projectId);
+        if (value.isPresent()) {
             throw new ActiveProjectException("Project is active");
         }
 

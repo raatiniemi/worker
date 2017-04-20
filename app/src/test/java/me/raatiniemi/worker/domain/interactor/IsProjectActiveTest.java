@@ -24,6 +24,7 @@ import org.junit.runners.JUnit4;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.util.Optional;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -42,7 +43,7 @@ public class IsProjectActiveTest {
     @Test
     public void execute_withoutTime() throws DomainException {
         when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(null);
+                .thenReturn(Optional.empty());
 
         IsProjectActive isProjectActive = new IsProjectActive(timeRepository);
         assertFalse(isProjectActive.execute(1L));
@@ -50,11 +51,9 @@ public class IsProjectActiveTest {
 
     @Test
     public void execute_withActiveTime() throws DomainException {
+        Time time = Time.builder(1L).build();
         when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(
-                        Time.builder(1L)
-                                .build()
-                );
+                .thenReturn(Optional.of(time));
 
         IsProjectActive isProjectActive = new IsProjectActive(timeRepository);
         assertTrue(isProjectActive.execute(1L));

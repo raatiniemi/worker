@@ -17,8 +17,10 @@
 package me.raatiniemi.worker.domain.interactor;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.util.Optional;
 
 /**
  * Use case for getting a project.
@@ -37,8 +39,12 @@ public class GetProject {
      * @return Project with id, or null if not found.
      * @throws DomainException If domain rules are violated.
      */
-    public Project execute(long projectId)
-            throws DomainException {
-        return projectRepository.get(projectId);
+    public Project execute(long projectId) throws DomainException {
+        Optional<Project> value = projectRepository.get(projectId);
+        if (value.isPresent()) {
+            return value.get();
+        }
+
+        throw new NoProjectException();
     }
 }

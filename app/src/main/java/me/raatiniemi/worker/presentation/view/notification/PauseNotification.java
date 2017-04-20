@@ -36,10 +36,10 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 /**
  * Notification for pausing or clocking out an active project.
@@ -116,15 +116,16 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private long includeActiveTime(long registeredTime) throws DomainException {
-        Time activeTime = getActiveTimeForProject();
-        if (nonNull(activeTime)) {
-            registeredTime += activeTime.getInterval();
+        Optional<Time> value = getActiveTimeForProject();
+        if (value.isPresent()) {
+            Time activeTime = value.get();
+            return registeredTime + activeTime.getInterval();
         }
 
         return registeredTime;
     }
 
-    private Time getActiveTimeForProject() throws DomainException {
+    private Optional<Time> getActiveTimeForProject() throws DomainException {
         return getTimeRepository()
                 .getActiveTimeForProject(getProject().getId());
     }

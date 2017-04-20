@@ -16,12 +16,8 @@
 
 package me.raatiniemi.worker.domain.exception;
 
-public class DomainException extends Exception {
-    DomainException() {
+public class NoProjectException extends DomainException {
+    public NoProjectException() {
         super();
-    }
-
-    DomainException(String message) {
-        super(message);
     }
 }
