@@ -51,6 +51,7 @@ import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
 
+import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.data.provider.QueryParameter.appendPageRequest;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
@@ -108,6 +109,8 @@ public class TimeResolverRepository
 
     @Override
     public List<Time> findProjectTimeSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException {
+        requireNonNull(project);
+
         Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemTimeUri(project.getId()),
                 TimeContract.getColumns(),
@@ -138,6 +141,8 @@ public class TimeResolverRepository
      */
     @Override
     public Optional<Time> add(final Time time) throws ClockOutBeforeClockInException {
+        requireNonNull(time);
+
         final ContentValues values = getContentValuesMapper().transform(time);
 
         final Uri uri = getContentResolver().insert(
@@ -152,6 +157,8 @@ public class TimeResolverRepository
      */
     @Override
     public Optional<Time> update(final Time time) throws ClockOutBeforeClockInException {
+        requireNonNull(time);
+
         getContentResolver().update(
                 TimeContract.getItemUri(time.getId()),
                 getContentValuesMapper().transform(time),
@@ -167,6 +174,8 @@ public class TimeResolverRepository
      */
     @Override
     public List<Time> update(List<Time> times) throws ClockOutBeforeClockInException {
+        requireNonNull(times);
+
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         for (Time time : times) {
@@ -212,6 +221,8 @@ public class TimeResolverRepository
      */
     @Override
     public void remove(List<Time> times) {
+        requireNonNull(times);
+
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         for (Time time : times) {
@@ -293,6 +304,8 @@ public class TimeResolverRepository
      */
     @Override
     public Map<Date, List<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
+        requireNonNull(pageRequest);
+
         final Uri uri = ProjectContract.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
@@ -306,6 +319,8 @@ public class TimeResolverRepository
 
     @Override
     public Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
+        requireNonNull(pageRequest);
+
         final Uri uri = ProjectContract.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),

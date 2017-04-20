@@ -39,6 +39,7 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.util.Optional;
 
+import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class ProjectResolverRepository
@@ -96,6 +97,8 @@ public class ProjectResolverRepository
 
     @Override
     public Optional<Project> findProjectByName(String projectName) throws InvalidProjectNameException {
+        requireNonNull(projectName);
+
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getStreamUri(),
                 ProjectContract.getColumns(),
@@ -142,6 +145,8 @@ public class ProjectResolverRepository
      */
     @Override
     public Optional<Project> add(final Project project) throws InvalidProjectNameException {
+        requireNonNull(project);
+
         final Uri uri = getContentResolver().insert(
                 ProjectContract.getStreamUri(),
                 getContentValuesMapper().transform(project)
