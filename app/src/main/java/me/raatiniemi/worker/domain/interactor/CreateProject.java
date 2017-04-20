@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.domain.interactor;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
+import me.raatiniemi.worker.util.Optional;
 
 /**
  * Use case for creating a project.
@@ -54,12 +54,17 @@ public class CreateProject {
             );
         }
 
-        return repository.add(project);
+        Optional<Project> value = repository.add(project);
+        if (value.isPresent()) {
+            return value.get();
+        }
+
+        throw new NoProjectException();
     }
 
     private boolean isProjectNameInUse(String projectName) throws DomainException {
-        Project project = repository.findProjectByName(projectName);
+        Optional<Project> value = repository.findProjectByName(projectName);
 
-        return nonNull(project);
+        return value.isPresent();
     }
 }

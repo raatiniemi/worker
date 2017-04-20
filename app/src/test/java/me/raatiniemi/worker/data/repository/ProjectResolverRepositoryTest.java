@@ -32,10 +32,10 @@ import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.util.Optional;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -77,9 +77,9 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(null);
 
-        Project project = repository.findProjectByName("Name");
+        Optional<Project> value = repository.findProjectByName("Name");
 
-        assertNull(project);
+        assertFalse(value.isPresent());
     }
 
     @Test
@@ -95,9 +95,9 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        Project project = repository.findProjectByName("Name");
+        Optional<Project> value = repository.findProjectByName("Name");
 
-        assertNull(project);
+        assertFalse(value.isPresent());
         verify(cursor).close();
     }
 
@@ -114,9 +114,9 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        Project project = repository.findProjectByName("Name");
+        Optional<Project> value = repository.findProjectByName("Name");
 
-        assertNotNull(project);
+        assertTrue(value.isPresent());
         verify(cursor).close();
     }
 
@@ -206,9 +206,9 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(null);
 
-        Project project = repository.get(1);
+        Optional<Project> value = repository.get(1);
 
-        assertNull(project);
+        assertFalse(value.isPresent());
     }
 
     @Test
@@ -224,9 +224,9 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        Project project = repository.get(1);
+        Optional<Project> value = repository.get(1);
 
-        assertNull(project);
+        assertFalse(value.isPresent());
         verify(cursor).close();
     }
 
@@ -243,9 +243,9 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        Project project = repository.get(1);
+        Optional<Project> value = repository.get(1);
 
-        assertNotNull(project);
+        assertTrue(value.isPresent());
         verify(cursor).close();
     }
 
@@ -272,10 +272,10 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        project = repository.add(project);
+        Optional<Project> value = repository.add(project);
 
-        assertNotNull(project);
-        assertEquals(Long.valueOf(1L), project.getId());
+        assertTrue(value.isPresent());
+        assertEquals(Long.valueOf(1L), value.get().getId());
         verify(cursor).close();
     }
 }

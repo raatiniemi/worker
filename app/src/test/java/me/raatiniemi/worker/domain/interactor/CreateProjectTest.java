@@ -22,9 +22,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.util.Optional;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Matchers.isA;
@@ -35,10 +37,12 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class CreateProjectTest {
     private ProjectRepository projectRepository;
+    private CreateProject createProject;
 
     @Before
     public void setUp() {
         projectRepository = mock(ProjectRepository.class);
+        createProject = new CreateProject(projectRepository);
     }
 
     @Test(expected = ProjectAlreadyExistsException.class)
@@ -47,24 +51,34 @@ public class CreateProjectTest {
                 .build();
 
         when(projectRepository.findProjectByName(eq("Project Name")))
-                .thenReturn(project);
+                .thenReturn(Optional.of(project));
 
-        CreateProject createProject = new CreateProject(projectRepository);
         createProject.execute(project);
     }
-
 
     @Test
     public void execute() throws DomainException {
         Project project = Project.builder("Project Name")
                 .build();
-
         when(projectRepository.findProjectByName(eq("Project Name")))
-                .thenReturn(null);
+                .thenReturn(Optional.empty());
+        when(projectRepository.add(eq(project)))
+                .thenReturn(Optional.of(project));
 
-        CreateProject createProject = new CreateProject(projectRepository);
         createProject.execute(project);
 
         verify(projectRepository).add(isA(Project.class));
+    }
+
+    @Test(expected = NoProjectException.class)
+    public void execute_with() throws DomainException {
+        Project project = Project.builder("Project Name")
+                .build();
+        when(projectRepository.findProjectByName(eq("Project Name")))
+                .thenReturn(Optional.empty());
+        when(projectRepository.add(eq(project)))
+                .thenReturn(Optional.empty());
+
+        createProject.execute(project);
     }
 }

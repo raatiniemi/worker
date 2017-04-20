@@ -37,6 +37,7 @@ import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchE
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.util.Optional;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
@@ -74,26 +75,27 @@ public class ProjectResolverRepository
         return projects;
     }
 
-    @Nullable
-    private Project fetchRow(@Nullable Cursor cursor) throws InvalidProjectNameException {
+    @NonNull
+    private Optional<Project> fetchRow(@Nullable Cursor cursor) throws InvalidProjectNameException {
         if (isNull(cursor)) {
-            return null;
+            return Optional.empty();
         }
 
-        Project project = null;
         try {
             if (cursor.moveToFirst()) {
-                project = getCursorMapper().transform(cursor);
+                Project project = getCursorMapper().transform(cursor);
+
+                return Optional.of(project);
             }
+
+            return Optional.empty();
         } finally {
             cursor.close();
         }
-
-        return project;
     }
 
     @Override
-    public Project findProjectByName(String projectName) throws InvalidProjectNameException {
+    public Optional<Project> findProjectByName(String projectName) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getStreamUri(),
                 ProjectContract.getColumns(),
@@ -124,7 +126,7 @@ public class ProjectResolverRepository
      * @inheritDoc
      */
     @Override
-    public Project get(final long id) throws InvalidProjectNameException {
+    public Optional<Project> get(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
                 ProjectContract.getItemUri(id),
                 ProjectContract.getColumns(),
@@ -139,7 +141,7 @@ public class ProjectResolverRepository
      * @inheritDoc
      */
     @Override
-    public Project add(final Project project) throws InvalidProjectNameException {
+    public Optional<Project> add(final Project project) throws InvalidProjectNameException {
         final Uri uri = getContentResolver().insert(
                 ProjectContract.getStreamUri(),
                 getContentValuesMapper().transform(project)

@@ -24,8 +24,6 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.util.Optional;
 
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
-
 /**
  * Use case for clocking in.
  */
