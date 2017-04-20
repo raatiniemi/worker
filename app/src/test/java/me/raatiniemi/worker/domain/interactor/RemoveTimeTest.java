@@ -21,6 +21,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Collections;
+import java.util.List;
+
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
@@ -32,21 +35,34 @@ import static org.mockito.Mockito.verify;
 @RunWith(JUnit4.class)
 public class RemoveTimeTest {
     private TimeRepository timeRepository;
+    private RemoveTime removeTime;
 
     @Before
     public void setUp() {
         timeRepository = mock(TimeRepository.class);
+        removeTime = new RemoveTime(timeRepository);
     }
 
     @Test
-    public void execute() throws DomainException {
+    public void execute_withItem() throws DomainException {
         Time time = Time.builder(1L)
                 .id(1L)
                 .build();
 
-        RemoveTime removeTime = new RemoveTime(timeRepository);
         removeTime.execute(time);
 
         verify(timeRepository).remove(eq(1L));
+    }
+
+    @Test
+    public void execute_withItems() throws DomainException {
+        Time time = Time.builder(1L)
+                .id(1L)
+                .build();
+        List<Time> items = Collections.singletonList(time);
+
+        removeTime.execute(items);
+
+        verify(timeRepository).remove(eq(items));
     }
 }
