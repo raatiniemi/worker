@@ -68,9 +68,6 @@ public abstract class ExpandableListAdapter<
         return has(group) ? get(group).size() : 0;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     public List<T> getItems() {
@@ -101,9 +98,6 @@ public abstract class ExpandableListAdapter<
         return has(index) && 0 <= child && getChildCount(index) > child;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     public T get(int index) {
@@ -145,9 +139,6 @@ public abstract class ExpandableListAdapter<
         );
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void set(int index, @NonNull T item) {
         if (!has(index)) {
@@ -181,9 +172,6 @@ public abstract class ExpandableListAdapter<
         set(group, groupItem);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public int add(@NonNull T item) {
         // Retrieve the index of the new item by retrieving the number of
@@ -198,18 +186,12 @@ public abstract class ExpandableListAdapter<
         return index;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void add(final int index, @NonNull final T item) {
         // TODO: Implement adding at specific index for ExpandableListAdapter.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public int add(@NonNull List<T> items) {
         // Retrieve the current count to have a reference point
@@ -224,9 +206,6 @@ public abstract class ExpandableListAdapter<
         return index;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     public T remove(int index) {
@@ -266,9 +245,6 @@ public abstract class ExpandableListAdapter<
         notifyDataSetChanged();
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void clear() {
         items.clear();

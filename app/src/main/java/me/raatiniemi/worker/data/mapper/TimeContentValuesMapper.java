@@ -26,9 +26,6 @@ import me.raatiniemi.worker.domain.model.Time;
  * Handle transformation from {@link Time} to {@link ContentValues}.
  */
 public class TimeContentValuesMapper implements ContentValuesMapper<Time> {
-    /**
-     * @inheritDoc
-     */
     @NonNull
     @Override
     public ContentValues transform(@NonNull Time entity) {

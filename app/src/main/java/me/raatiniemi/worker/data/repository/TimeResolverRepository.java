@@ -58,9 +58,6 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
         implements TimeRepository, TimesheetRepository {
-    /**
-     * @inheritDoc
-     */
     public TimeResolverRepository(
             @NonNull ContentResolver contentResolver,
             @NonNull TimeCursorMapper cursorMapper,
@@ -121,9 +118,6 @@ public class TimeResolverRepository
         return fetch(cursor);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
@@ -136,9 +130,6 @@ public class TimeResolverRepository
         return fetchRow(cursor);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public Optional<Time> add(final Time time) throws ClockOutBeforeClockInException {
         requireNonNull(time);
@@ -152,9 +143,6 @@ public class TimeResolverRepository
         return get(Long.parseLong(TimeContract.getItemId(uri)));
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public Optional<Time> update(final Time time) throws ClockOutBeforeClockInException {
         requireNonNull(time);
@@ -169,9 +157,6 @@ public class TimeResolverRepository
         return get(time.getId());
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public List<Time> update(List<Time> times) throws ClockOutBeforeClockInException {
         requireNonNull(times);
@@ -204,9 +189,6 @@ public class TimeResolverRepository
         return updatedTimes;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void remove(final long id) {
         getContentResolver().delete(
@@ -216,9 +198,6 @@ public class TimeResolverRepository
         );
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void remove(List<Time> times) {
         requireNonNull(times);
@@ -237,9 +216,6 @@ public class TimeResolverRepository
         }
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public List<Time> getProjectTimeSinceBeginningOfMonth(long projectId)
             throws ClockOutBeforeClockInException {
@@ -299,9 +275,6 @@ public class TimeResolverRepository
         return result;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public Map<Date, List<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
@@ -332,9 +305,6 @@ public class TimeResolverRepository
         return fetchTimesheet(cursor);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public Optional<Time> getActiveTimeForProject(long projectId)
             throws ClockOutBeforeClockInException {

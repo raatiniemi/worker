@@ -59,9 +59,6 @@ public class StorageBackupStrategy implements BackupStrategy {
         this.eventBus = eventBus;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void execute() {
         try {

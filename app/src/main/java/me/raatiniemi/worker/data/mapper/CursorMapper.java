@@ -28,9 +28,6 @@ import me.raatiniemi.worker.domain.mapper.EntityMapper;
  * @param <T> Type reference from the domain entity.
  */
 public interface CursorMapper<T> extends EntityMapper<T, Cursor> {
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     T transform(@NonNull Cursor cursor) throws DomainException;

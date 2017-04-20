@@ -75,9 +75,6 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         return exists;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create the structure for the `project`-table.

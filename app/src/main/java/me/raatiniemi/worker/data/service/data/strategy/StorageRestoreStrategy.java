@@ -48,9 +48,6 @@ public class StorageRestoreStrategy implements RestoreStrategy {
         this.context = context;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void execute() {
         try {

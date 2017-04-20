@@ -28,9 +28,6 @@ import me.raatiniemi.worker.domain.model.Project;
  * Handle transformation from {@link Cursor} to {@link Project}.
  */
 public class ProjectCursorMapper implements CursorMapper<Project> {
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     public Project transform(@NonNull Cursor cursor) throws InvalidProjectNameException {

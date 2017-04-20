@@ -45,9 +45,6 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 public class ProjectResolverRepository
         extends ContentResolverRepository<ProjectCursorMapper, ProjectContentValuesMapper>
         implements ProjectRepository {
-    /**
-     * @inheritDoc
-     */
     public ProjectResolverRepository(
             @NonNull ContentResolver contentResolver,
             @NonNull ProjectCursorMapper cursorMapper,
@@ -109,9 +106,6 @@ public class ProjectResolverRepository
         return fetchRow(cursor);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public List<Project> get() throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
@@ -125,9 +119,6 @@ public class ProjectResolverRepository
         return fetch(cursor);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public Optional<Project> get(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
@@ -140,9 +131,6 @@ public class ProjectResolverRepository
         return fetchRow(cursor);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public Optional<Project> add(final Project project) throws InvalidProjectNameException {
         requireNonNull(project);
@@ -154,9 +142,6 @@ public class ProjectResolverRepository
         return get(Long.parseLong(ProjectContract.getItemId(uri)));
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void remove(final long id) {
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();

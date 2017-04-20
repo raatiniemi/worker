@@ -28,9 +28,6 @@ public class FractionIntervalFormat implements DateIntervalFormat {
     private static final String FRACTION_FORMAT = "%.2f";
     private static final float MINUTES_IN_HOUR = 60;
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public String format(long milliseconds) {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);

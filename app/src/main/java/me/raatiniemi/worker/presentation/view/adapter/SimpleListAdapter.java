@@ -63,9 +63,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         return items.size();
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     public List<T> getItems() {
@@ -83,9 +80,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         return 0 > index || getItemCount() <= index;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     public T get(int index) {
@@ -102,9 +96,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         );
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void set(int index, @NonNull T item) {
         if (isOutOfBounds(index)) {
@@ -116,9 +107,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         notifyItemChanged(index);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public int add(@NonNull T item) {
         // Retrieve the index for the new item by retrieving the number of
@@ -133,9 +121,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         return index;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void add(final int index, @NonNull final T item) {
         if (getItemCount() == index) {
@@ -154,9 +139,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         notifyItemInserted(index);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public int add(@NonNull List<T> items) {
         // Retrieve the current count to have a reference point
@@ -171,9 +153,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         return index;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     public T remove(int index) {
@@ -191,9 +170,6 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         return item;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void clear() {
         items.clear();

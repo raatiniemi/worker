@@ -28,9 +28,6 @@ public class HoursMinutesIntervalFormat implements DateIntervalFormat {
     private static final String HOURS_MINUTES_FORMAT = "%1$dh %2$dm";
     private static final String MINUTES_FORMAT = "%2$dm";
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public String format(long milliseconds) {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);

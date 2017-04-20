@@ -89,9 +89,6 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         this.removeTime = removeTime;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void attachView(TimesheetView view) {
         super.attachView(view);
@@ -99,9 +96,6 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         eventBus.register(this);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void detachView() {
         super.detachView();

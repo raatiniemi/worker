@@ -28,9 +28,6 @@ import me.raatiniemi.worker.domain.model.Time;
  * Handle transformation from {@link Cursor} to {@link Time}.
  */
 public class TimeCursorMapper implements CursorMapper<Time> {
-    /**
-     * @inheritDoc
-     */
     @Override
     @NonNull
     public Time transform(@NonNull Cursor cursor) throws ClockOutBeforeClockInException {

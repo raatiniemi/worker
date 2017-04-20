@@ -229,9 +229,6 @@ public class TimesheetFragment extends BaseFragment
         adapter.remove(results);
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void showGetTimesheetErrorMessage() {
         Snackbar.make(
@@ -241,9 +238,6 @@ public class TimesheetFragment extends BaseFragment
         ).show();
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void showDeleteErrorMessage(int numberOfItems) {
         Snackbar.make(
@@ -256,9 +250,6 @@ public class TimesheetFragment extends BaseFragment
         ).show();
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void showRegisterErrorMessage(int numberOfItems) {
         Snackbar.make(

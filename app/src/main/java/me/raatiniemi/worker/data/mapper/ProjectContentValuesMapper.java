@@ -26,9 +26,6 @@ import me.raatiniemi.worker.domain.model.Project;
  * Handle transformation from {@link Project} to {@link ContentValues}.
  */
 public class ProjectContentValuesMapper implements ContentValuesMapper<Project> {
-    /**
-     * @inheritDoc
-     */
     @NonNull
     @Override
     public ContentValues transform(@NonNull Project entity) {
