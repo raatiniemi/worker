@@ -47,9 +47,9 @@ import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
 import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimesheetFragment extends BaseFragment
         implements SelectionListener, TimesheetView {
@@ -78,38 +78,19 @@ public class TimesheetFragment extends BaseFragment
 
         @Override
         public boolean onActionItemClicked(final ActionMode actionMode, MenuItem item) {
-            boolean shouldFinish = false;
-
             switch (item.getItemId()) {
                 case R.id.actions_project_timesheet_delete:
-                    DeleteTimeDialog.show(getActivity())
-                            .filter(RxDialog::isPositive)
-                            .subscribe(
-                                    which -> {
-                                        presenter.remove(adapter.getSelectedItems());
+                    confirmRemoveSelectedItems(actionMode);
+                    return false;
 
-                                        actionMode.finish();
-                                    },
-                                    Timber::w
-                            );
-
-                    // Since we are waiting for the user to confirm the action, we are unable to
-                    // finish the action here.
-                    shouldFinish = false;
-                    break;
                 case R.id.actions_project_timesheet_register:
-                    presenter.register(adapter.getSelectedItems());
-                    shouldFinish = true;
-                    break;
+                    toggleRegisterSelectedItems(actionMode);
+                    return true;
+
                 default:
                     Timber.w("Undefined action: %d", item.getItemId());
-                    break;
+                    return false;
             }
-
-            if (shouldFinish) {
-                actionMode.finish();
-            }
-            return shouldFinish;
         }
 
         @Override
@@ -117,6 +98,25 @@ public class TimesheetFragment extends BaseFragment
             adapter.deselectItems();
 
             TimesheetFragment.this.actionMode = null;
+        }
+
+        private void confirmRemoveSelectedItems(ActionMode actionMode) {
+            DeleteTimeDialog.show(getActivity())
+                    .filter(RxDialog::isPositive)
+                    .subscribe(
+                            which -> {
+                                presenter.remove(adapter.getSelectedItems());
+
+                                actionMode.finish();
+                            },
+                            Timber::w
+                    );
+        }
+
+        private void toggleRegisterSelectedItems(ActionMode actionMode) {
+            presenter.register(adapter.getSelectedItems());
+
+            actionMode.finish();
         }
     };
 
