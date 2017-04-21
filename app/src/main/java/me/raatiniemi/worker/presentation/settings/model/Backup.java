@@ -29,25 +29,15 @@ public class Backup {
     /**
      * Backup directory.
      */
-    private final File backup;
+    private final File directory;
 
     /**
      * Constructor.
      *
-     * @param backup Backup directory.
+     * @param directory Backup directory.
      */
-    public Backup(@Nullable File backup) {
-        this.backup = backup;
-    }
-
-    /**
-     * Get the backup directory.
-     *
-     * @return Backup directory, or null if none have been supplied.
-     */
-    @Nullable
-    private File getBackup() {
-        return backup;
+    public Backup(@Nullable File directory) {
+        this.directory = directory;
     }
 
     /**
@@ -57,11 +47,11 @@ public class Backup {
      */
     @Nullable
     private Long getTimestamp() {
-        if (isNull(getBackup())) {
+        if (isNull(directory)) {
             return null;
         }
 
-        String timestamp = getBackup().getName().replaceFirst(
+        String timestamp = directory.getName().replaceFirst(
                 WorkerApplication.STORAGE_BACKUP_DIRECTORY_PATTERN,
                 "$1"
         );
