@@ -57,6 +57,7 @@ public class ProjectsActivity extends BaseActivity {
 
         if (shouldRestartApplication()) {
             restart();
+            return;
         }
 
         if (isNull(savedInstanceState)) {
@@ -101,14 +102,15 @@ public class ProjectsActivity extends BaseActivity {
         }
 
         finish();
-        System.exit(0);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        eventBus.unregister(this);
+        if (nonNull(eventBus) && eventBus.isRegistered(this)) {
+            eventBus.unregister(this);
+        }
     }
 
     @Override
