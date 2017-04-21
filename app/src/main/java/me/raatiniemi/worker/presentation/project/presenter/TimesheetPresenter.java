@@ -38,6 +38,7 @@ import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.RxUtil;
+import me.raatiniemi.worker.util.Optional;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -242,24 +243,40 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         }
 
         try {
-            List<Time> updatedTime = markRegisteredTime.execute(timeToUpdate);
+            List<Time> updates = markRegisteredTime.execute(timeToUpdate);
 
-            List<TimeInAdapterResult> newResults = new ArrayList<>();
-            for (TimeInAdapterResult result : results) {
-                Time previousTime = result.getTime();
-
-                for (Time time : updatedTime) {
-                    if (time.getId().equals(previousTime.getId())) {
-                        newResults.add(TimeInAdapterResult.build(result, time));
-                        break;
-                    }
-                }
-            }
-
-            return Observable.just(newResults);
+            return Observable.just(mapUpdatesToPositionOfSelectedItems(updates, results));
         } catch (DomainException e) {
             return Observable.error(e);
         }
+    }
+
+    private List<TimeInAdapterResult> mapUpdatesToPositionOfSelectedItems(
+            List<Time> updates,
+            List<TimeInAdapterResult> selectedItems
+    ) {
+        List<TimeInAdapterResult> newResults = new ArrayList<>();
+
+        for (TimeInAdapterResult selectedItem : selectedItems) {
+            Optional<Time> value = findUpdateForSelectedItem(selectedItem, updates);
+            if (value.isPresent()) {
+                newResults.add(TimeInAdapterResult.build(selectedItem, value.get()));
+            }
+        }
+
+        return newResults;
+    }
+
+    private Optional<Time> findUpdateForSelectedItem(TimeInAdapterResult selectedItem, List<Time> updates) {
+        Time previousTime = selectedItem.getTime();
+
+        for (Time update : updates) {
+            if (update.getId().equals(previousTime.getId())) {
+                return Optional.of(update);
+            }
+        }
+
+        return Optional.empty();
     }
 
     @SuppressWarnings("unused")
