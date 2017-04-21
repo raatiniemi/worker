@@ -78,7 +78,7 @@ public class TimesheetFragment extends BaseFragment
 
         @Override
         public boolean onActionItemClicked(final ActionMode actionMode, MenuItem item) {
-            boolean finish = false;
+            boolean shouldFinish = false;
 
             switch (item.getItemId()) {
                 case R.id.actions_project_timesheet_delete:
@@ -95,21 +95,21 @@ public class TimesheetFragment extends BaseFragment
 
                     // Since we are waiting for the user to confirm the action, we are unable to
                     // finish the action here.
-                    finish = false;
+                    shouldFinish = false;
                     break;
                 case R.id.actions_project_timesheet_register:
                     presenter.register(adapter.getSelectedItems());
-                    finish = true;
+                    shouldFinish = true;
                     break;
                 default:
                     Timber.w("Undefined action: %d", item.getItemId());
                     break;
             }
 
-            if (finish) {
+            if (shouldFinish) {
                 actionMode.finish();
             }
-            return finish;
+            return shouldFinish;
         }
 
         @Override
