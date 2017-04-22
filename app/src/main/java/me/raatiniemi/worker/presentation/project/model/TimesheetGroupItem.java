@@ -27,13 +27,14 @@ import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
+    private static final String LANGUAGE_TAG = "en_US";
     private static final DateIntervalFormat intervalFormat;
 
     static {
         intervalFormat = new FractionIntervalFormat();
     }
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag("en_US"));
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG));
     private final Date date;
     private final long daysSinceUnixEpoch;
 
@@ -63,7 +64,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
 
     private static String getFormattedTimeDifference(float difference) {
         return String.format(
-                Locale.forLanguageTag("en_US"),
+                Locale.forLanguageTag(LANGUAGE_TAG),
                 getTimeDifferenceFormat(difference),
                 difference
         );
@@ -115,7 +116,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
 
     private String getTimeSummary() {
         return String.format(
-                Locale.forLanguageTag("en_US"),
+                Locale.forLanguageTag(LANGUAGE_TAG),
                 "%.2f",
                 calculateTimeIntervalSummary()
         );
