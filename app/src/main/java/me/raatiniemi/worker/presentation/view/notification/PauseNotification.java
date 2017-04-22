@@ -87,8 +87,9 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private List<Time> getRegisteredTime() throws DomainException {
-        TimeRepository repository = getTimeRepository();
-        GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(repository);
+        GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(
+                getTimeRepository()
+        );
 
         return registeredTimeUseCase.execute(
                 getProject(),
