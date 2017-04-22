@@ -41,7 +41,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
     /**
      * On click listener for views.
      */
-    private final OnClickListener onClickListener = new OnClickListener();
+    private final View.OnClickListener onClickListener = new OnClickListener();
 
     /**
      * Available items.
@@ -201,7 +201,7 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
      * @return Click listener for list item views.
      */
     @NonNull
-    protected OnClickListener getOnClickListener() {
+    protected View.OnClickListener getOnClickListener() {
         return onClickListener;
     }
 
