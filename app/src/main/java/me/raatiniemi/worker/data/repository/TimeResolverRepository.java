@@ -58,6 +58,9 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 public class TimeResolverRepository
         extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
         implements TimeRepository, TimesheetRepository {
+    private static final int TIMESHEET_DATE_CURSOR_INDEX = 0;
+    private static final int TIMESHEET_IDS_CURSOR_INDEX = 1;
+
     public TimeResolverRepository(
             @NonNull ContentResolver contentResolver,
             @NonNull TimeCursorMapper cursorMapper,
@@ -128,6 +131,10 @@ public class TimeResolverRepository
                 null
         );
         return fetchRow(cursor);
+    }
+
+    private Optional<Time> get(final String id) throws ClockOutBeforeClockInException {
+        return get(Long.valueOf(id));
     }
 
     @Override
@@ -239,40 +246,60 @@ public class TimeResolverRepository
 
     @NonNull
     private Map<Date, List<Time>> fetchTimesheet(@Nullable Cursor cursor) {
-        Map<Date, List<Time>> result = new LinkedHashMap<>();
         if (isNull(cursor)) {
-            return result;
+            return Collections.emptyMap();
         }
+
+        Map<Date, List<Time>> result = new LinkedHashMap<>();
 
         if (cursor.moveToFirst()) {
             do {
-                String ids = cursor.getString(1);
+                String ids = cursor.getString(TIMESHEET_IDS_CURSOR_INDEX);
                 String[] rows = ids.split(",");
-                if (0 == rows.length) {
+
+                List<Time> segment = getSegmentForTimesheet(rows);
+                if (segment.isEmpty()) {
                     continue;
                 }
 
-                List<Time> items = new ArrayList<>();
-                for (String id : rows) {
-                    try {
-                        Optional<Time> value = get(Long.parseLong(id));
-                        items.add(value.get());
-                    } catch (DomainException e) {
-                        Timber.w(e, "Unable to fetch item for timesheet");
-                    }
-                }
-
-                // Reverse the order of the children to put the latest
-                // item at the top of the list.
-                Collections.reverse(items);
-
-                Date date = new Date(cursor.getLong(0));
-                result.put(date, items);
+                Date date = new Date(cursor.getLong(TIMESHEET_DATE_CURSOR_INDEX));
+                result.put(date, segment);
             } while (cursor.moveToNext());
         }
         cursor.close();
 
         return result;
+    }
+
+    @NonNull
+    private List<Time> getSegmentForTimesheet(String[] ids) {
+        if (0 == ids.length) {
+            return Collections.emptyList();
+        }
+
+        List<Time> items = new ArrayList<>();
+        for (String id : ids) {
+            Optional<Time> value = getSegmentItemForTimesheet(id);
+            if (value.isPresent()) {
+                items.add(value.get());
+            }
+        }
+
+        // Reverse the order of the children to put the latest
+        // item at the top of the list.
+        Collections.reverse(items);
+        return items;
+    }
+
+    @NonNull
+    private Optional<Time> getSegmentItemForTimesheet(@NonNull final String id) {
+        try {
+            return get(id);
+        } catch (DomainException e) {
+            Timber.w(e, "Unable to fetch item for timesheet");
+
+            return Optional.empty();
+        }
     }
 
     @Override
