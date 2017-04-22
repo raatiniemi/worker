@@ -112,7 +112,7 @@ public class PauseNotification extends OngoingNotification {
         return repository;
     }
 
-    private GetProjectTimeSince buildRegisteredTimeUseCase(TimeRepository repository) {
+    private static GetProjectTimeSince buildRegisteredTimeUseCase(TimeRepository repository) {
         return new GetProjectTimeSince(repository);
     }
 
