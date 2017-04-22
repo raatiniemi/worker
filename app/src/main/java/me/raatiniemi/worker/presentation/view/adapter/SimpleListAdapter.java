@@ -38,10 +38,14 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<V>
         implements ListAdapter<T> {
-    /**
-     * On click listener for views.
-     */
-    private final View.OnClickListener onClickListener = new OnClickListener();
+    private final View.OnClickListener onClickListener = view -> {
+        if (isNull(getOnItemClickListener())) {
+            Timber.e("No OnItemClickListener have been supplied");
+            return;
+        }
+
+        getOnItemClickListener().onItemClick(view);
+    };
 
     /**
      * Available items.
@@ -216,27 +220,5 @@ public abstract class SimpleListAdapter<T, V extends RecyclerView.ViewHolder>
          * @param view View that has been clicked.
          */
         void onItemClick(@NonNull View view);
-    }
-
-    /**
-     * On click listener for list items.
-     */
-    private class OnClickListener implements View.OnClickListener {
-        /**
-         * Handles click events to the list item.
-         *
-         * @param view List item that have been clicked.
-         */
-        @Override
-        public void onClick(@NonNull View view) {
-            // Check that the OnItemClickListener have been supplied.
-            if (isNull(getOnItemClickListener())) {
-                Timber.e("No OnItemClickListener have been supplied");
-                return;
-            }
-
-            // Relay the event with the item view to the OnItemClickListener.
-            getOnItemClickListener().onItemClick(view);
-        }
     }
 }
