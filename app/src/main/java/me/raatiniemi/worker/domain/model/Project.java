@@ -23,11 +23,10 @@ import java.util.List;
 import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
+import me.raatiniemi.worker.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.domain.validator.ProjectName.isValid;
-import static me.raatiniemi.worker.util.NullUtil.isNull;
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 /**
  * Represent a project.
@@ -105,35 +104,32 @@ public class Project extends DomainObject {
      * @return Elapsed time in milliseconds, zero if project is not active.
      */
     public long getElapsed() {
-        long elapsed = 0;
+        Optional<Time> value = getActiveTime();
+        if (value.isPresent()) {
+            Time time = value.get();
 
-        // Retrieve the interval for the active time.
-        Time time = getActiveTime();
-        if (nonNull(time)) {
-            elapsed = time.getInterval();
+            return time.getInterval();
         }
 
-        return elapsed;
+        return 0L;
     }
 
     /**
      * Retrieve the active time, if available.
      *
-     * @return Active time, or null if project is not active.
+     * @return Active time, or empty optional if project is not active.
      */
-    private Time getActiveTime() {
-        // If no time is registered, the project can't be active.
+    private Optional<Time> getActiveTime() {
         if (registeredTime.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
 
-        // If the first item is not active, the project is not active.
         Time time = registeredTime.get(0);
-        if (!time.isActive()) {
-            return null;
+        if (time.isActive()) {
+            return Optional.of(time);
         }
 
-        return time;
+        return Optional.empty();
     }
 
     /**
@@ -143,13 +139,15 @@ public class Project extends DomainObject {
      */
     public Date getClockedInSince() {
         // Retrieve the last time, i.e. the active time session.
-        Time time = getActiveTime();
-        if (isNull(time)) {
-            return null;
+        Optional<Time> value = getActiveTime();
+        if (value.isPresent()) {
+            Time time = value.get();
+
+            // TODO: Do not instantiate inside method, return value from get start?
+            return new Date(time.getStartInMilliseconds());
         }
 
-        // TODO: Do not instantiate inside method, return value from get start?
-        return new Date(time.getStartInMilliseconds());
+        return null;
     }
 
     /**
@@ -158,7 +156,9 @@ public class Project extends DomainObject {
      * @return True if the project is active, otherwise false.
      */
     public boolean isActive() {
-        return nonNull(getActiveTime());
+        Optional<Time> value = getActiveTime();
+
+        return value.isPresent();
     }
 
     @Override
