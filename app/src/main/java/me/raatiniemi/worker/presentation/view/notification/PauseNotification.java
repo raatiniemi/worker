@@ -73,13 +73,13 @@ public class PauseNotification extends OngoingNotification {
         useChronometer = true;
 
         try {
-            long registeredTime = 0L;
+            long accumulatedTime = 0L;
 
             for (Time time : getRegisteredTime()) {
-                registeredTime += time.getTime();
+                accumulatedTime += time.getTime();
             }
 
-            this.registeredTime = includeActiveTime(registeredTime);
+            registeredTime = includeActiveTime(accumulatedTime);
         } catch (DomainException e) {
             Timber.w(e, "Unable to populate registered time");
             useChronometer = false;
