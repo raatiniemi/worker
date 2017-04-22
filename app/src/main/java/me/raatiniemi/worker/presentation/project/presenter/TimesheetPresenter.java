@@ -40,7 +40,6 @@ import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.util.Optional;
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -129,31 +128,25 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     return groupItems;
                 })
                 .compose(RxUtil.applySchedulers())
-                .subscribe(new Subscriber<List<TimesheetGroupItem>>() {
-                    @Override
-                    public void onNext(List<TimesheetGroupItem> groupItems) {
-                        Timber.d("getTimesheet onNext");
+                .subscribe(
+                        groupItems -> {
+                            Timber.d("getTimesheet onNext");
 
-                        performWithView(view -> view.add(groupItems));
-                    }
+                            performWithView(view -> view.add(groupItems));
+                        },
+                        e -> {
+                            Timber.d("getTimesheet onError");
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.d("getTimesheet onError");
+                            // Log the error even if the view have been detached.
+                            Timber.w(e, "Failed to get timesheet");
+                            performWithView(TimesheetView::showGetTimesheetErrorMessage);
+                        },
+                        () -> {
+                            Timber.d("getTimesheet onCompleted");
 
-                        // Log the error even if the view have been detached.
-                        Timber.w(e, "Failed to get timesheet");
-
-                        performWithView(TimesheetView::showGetTimesheetErrorMessage);
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("getTimesheet onCompleted");
-
-                        performWithView(TimesheetView::finishLoading);
-                    }
-                });
+                            performWithView(TimesheetView::finishLoading);
+                        }
+                );
     }
 
     public void remove(List<TimeInAdapterResult> results) {
@@ -171,29 +164,21 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     return items;
                 })
                 .compose(RxUtil.applySchedulers())
-                .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
-                    @Override
-                    public void onNext(List<TimeInAdapterResult> results) {
-                        Timber.d("remove onNext");
+                .subscribe(
+                        items -> {
+                            Timber.d("remove onNext");
 
-                        performWithView(view -> view.remove(results));
-                    }
+                            performWithView(view -> view.remove(items));
+                        },
+                        e -> {
+                            Timber.d("remove onError");
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.d("remove onError");
-
-                        // Log the error even if the view have been detached.
-                        Timber.w(e, "Failed to remove time");
-
-                        performWithView(view -> view.showDeleteErrorMessage(numberOfItems));
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("remove onCompleted");
-                    }
-                });
+                            // Log the error even if the view have been detached.
+                            Timber.w(e, "Failed to remove time");
+                            performWithView(view -> view.showDeleteErrorMessage(numberOfItems));
+                        },
+                        () -> Timber.d("remove onCompleted")
+                );
     }
 
     public void register(List<TimeInAdapterResult> results) {
@@ -203,36 +188,28 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         Observable.just(results)
                 .flatMap(this::registerTimeViaUseCase)
                 .compose(RxUtil.applySchedulers())
-                .subscribe(new Subscriber<List<TimeInAdapterResult>>() {
-                    @Override
-                    public void onNext(List<TimeInAdapterResult> results) {
-                        Timber.d("register onNext");
+                .subscribe(
+                        items -> {
+                            Timber.d("register onNext");
 
-                        performWithView(view -> {
-                            if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
-                                view.remove(results);
-                                return;
-                            }
+                            performWithView(view -> {
+                                if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+                                    view.remove(items);
+                                    return;
+                                }
 
-                            view.update(results);
-                        });
-                    }
+                                view.update(items);
+                            });
+                        },
+                        e -> {
+                            Timber.d("register onError");
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Timber.d("register onError");
-
-                        // Log the error even if the view have been detached.
-                        Timber.w(e, "Failed to mark time as registered");
-
-                        performWithView(view -> view.showRegisterErrorMessage(numberOfItems));
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        Timber.d("register onCompleted");
-                    }
-                });
+                            // Log the error even if the view have been detached.
+                            Timber.w(e, "Failed to mark time as registered");
+                            performWithView(view -> view.showRegisterErrorMessage(numberOfItems));
+                        },
+                        () -> Timber.d("register onCompleted")
+                );
     }
 
     private Observable<List<TimeInAdapterResult>> registerTimeViaUseCase(List<TimeInAdapterResult> results) {
