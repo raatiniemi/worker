@@ -118,7 +118,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                 .map(result -> {
                     List<TimesheetGroupItem> groupItems = new ArrayList<>();
                     for (Map.Entry<Date, List<Time>> date : result.entrySet()) {
-                        TimesheetGroupItem groupItem = new TimesheetGroupItem(date.getKey());
+                        TimesheetGroupItem groupItem = TimesheetGroupItem.build(date.getKey());
                         for (Time time : date.getValue()) {
                             groupItem.add(new TimesheetChildItem(time));
                         }

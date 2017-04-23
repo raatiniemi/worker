@@ -76,7 +76,7 @@ public class TimesheetGroupItemGetFirstLetterFromTitleTest {
 
     @Test
     public void getFirstLetterFromTitle() {
-        TimesheetGroupItem groupItem = new TimesheetGroupItem(calendar.getTime());
+        TimesheetGroupItem groupItem = TimesheetGroupItem.build(calendar.getTime());
 
         assertEquals(expected, groupItem.getFirstLetterFromTitle());
     }

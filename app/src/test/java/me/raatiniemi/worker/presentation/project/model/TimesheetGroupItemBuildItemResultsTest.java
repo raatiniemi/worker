@@ -53,7 +53,7 @@ public class TimesheetGroupItemBuildItemResultsTest {
     }
 
     private static TimesheetGroupItem buildTimesheetGroupWithNumberOfChildItems(int numberOfChildItems) {
-        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
+        TimesheetGroupItem groupItem = TimesheetGroupItem.build(new Date());
         if (0 == numberOfChildItems) {
             return groupItem;
         }

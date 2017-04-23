@@ -126,13 +126,11 @@ public class ClockActivityChangeTest {
 
     @Test(expected = NoProjectException.class)
     public void execute_clockOutWithoutProject() throws DomainException {
-        Time time = Time.builder(1L)
-                .startInMilliseconds(1L)
-                .build();
-        List<Time> registeredTime = new ArrayList<>();
-        registeredTime.add(time);
         Project project = buildProject();
-        project.addTime(registeredTime);
+        Time time = TimeFactory.builder()
+                .stopInMilliseconds(0L)
+                .build();
+        project.addTime(Collections.singletonList(time));
         when(projectRepository.get(1L))
                 .thenReturn(Optional.empty());
 

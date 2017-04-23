@@ -38,9 +38,13 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     private final Date date;
     private final long daysSinceUnixEpoch;
 
-    public TimesheetGroupItem(Date date) {
+    private TimesheetGroupItem(Date date) {
         this.date = date;
         daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(date);
+    }
+
+    public static TimesheetGroupItem build(Date date) {
+        return new TimesheetGroupItem(date);
     }
 
     private static long calculateDaysSinceUnixEpoch(Date date) {

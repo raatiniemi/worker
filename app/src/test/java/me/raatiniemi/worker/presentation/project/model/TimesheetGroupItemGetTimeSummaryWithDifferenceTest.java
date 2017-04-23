@@ -136,7 +136,7 @@ public class TimesheetGroupItemGetTimeSummaryWithDifferenceTest {
 
     @Test
     public void getTimeSummaryWithDifference() {
-        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
+        TimesheetGroupItem groupItem = TimesheetGroupItem.build(new Date());
         for (TimesheetChildItem childItem : childItems) {
             groupItem.add(childItem);
         }

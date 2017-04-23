@@ -85,7 +85,7 @@ public class TimesheetGroupItemIsRegisteredTest {
 
     @Test
     public void isRegistered() {
-        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
+        TimesheetGroupItem groupItem = TimesheetGroupItem.build(new Date());
         for (TimesheetChildItem childItem : childItems) {
             groupItem.add(childItem);
         }
