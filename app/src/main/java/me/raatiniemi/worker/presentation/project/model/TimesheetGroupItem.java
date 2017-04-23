@@ -18,10 +18,12 @@ package me.raatiniemi.worker.presentation.project.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
@@ -44,7 +46,23 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     }
 
     public static TimesheetGroupItem build(Date date) {
-        return new TimesheetGroupItem(date);
+        return build(date, Collections.emptyList());
+    }
+
+    public static TimesheetGroupItem build(Date date, List<Time> times) {
+        List<TimesheetChildItem> children = new ArrayList<>();
+        //noinspection Convert2streamapi
+        for (Time time : times) {
+            children.add(new TimesheetChildItem(time));
+        }
+
+        TimesheetGroupItem group = new TimesheetGroupItem(date);
+        //noinspection Convert2streamapi
+        for (TimesheetChildItem child : children) {
+            group.add(child);
+        }
+
+        return group;
     }
 
     private static long calculateDaysSinceUnixEpoch(Date date) {

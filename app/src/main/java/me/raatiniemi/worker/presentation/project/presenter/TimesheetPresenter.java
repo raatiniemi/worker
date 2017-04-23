@@ -33,7 +33,6 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetChildItem;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
@@ -117,14 +116,12 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                 })
                 .map(result -> {
                     List<TimesheetGroupItem> groupItems = new ArrayList<>();
-                    for (Map.Entry<Date, List<Time>> date : result.entrySet()) {
-                        TimesheetGroupItem groupItem = TimesheetGroupItem.build(date.getKey());
-                        for (Time time : date.getValue()) {
-                            groupItem.add(new TimesheetChildItem(time));
-                        }
 
-                        groupItems.add(groupItem);
+                    //noinspection Convert2streamapi
+                    for (Map.Entry<Date, List<Time>> date : result.entrySet()) {
+                        groupItems.add(TimesheetGroupItem.build(date.getKey(), date.getValue()));
                     }
+
                     return groupItems;
                 })
                 .compose(RxUtil.applySchedulers())

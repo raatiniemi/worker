@@ -38,15 +38,15 @@ public class TimesheetGroupItemIsRegisteredTest {
             .register()
             .build();
 
-    private boolean expected;
-    private TimesheetChildItem[] childItems;
+    private final boolean expected;
+    private final TimesheetGroupItem item;
 
     public TimesheetGroupItemIsRegisteredTest(
             boolean expected,
-            TimesheetChildItem... childItems
+            Time... times
     ) {
         this.expected = expected;
-        this.childItems = childItems;
+        item = TimesheetGroupItem.build(new Date(), Arrays.asList(times));
     }
 
     @Parameters
@@ -55,28 +55,28 @@ public class TimesheetGroupItemIsRegisteredTest {
                 new Object[][]{
                         {
                                 Boolean.TRUE,
-                                new TimesheetChildItem[]{
-                                        new TimesheetChildItem(REGISTERED_TIME)
+                                new Time[]{
+                                        REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.FALSE,
-                                new TimesheetChildItem[]{
-                                        new TimesheetChildItem(NOT_REGISTERED_TIME)
+                                new Time[]{
+                                        NOT_REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.FALSE,
-                                new TimesheetChildItem[]{
-                                        new TimesheetChildItem(NOT_REGISTERED_TIME),
-                                        new TimesheetChildItem(REGISTERED_TIME)
+                                new Time[]{
+                                        NOT_REGISTERED_TIME,
+                                        REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.TRUE,
-                                new TimesheetChildItem[]{
-                                        new TimesheetChildItem(REGISTERED_TIME),
-                                        new TimesheetChildItem(REGISTERED_TIME)
+                                new Time[]{
+                                        REGISTERED_TIME,
+                                        REGISTERED_TIME
                                 }
                         }
                 }
@@ -85,11 +85,6 @@ public class TimesheetGroupItemIsRegisteredTest {
 
     @Test
     public void isRegistered() {
-        TimesheetGroupItem groupItem = TimesheetGroupItem.build(new Date());
-        for (TimesheetChildItem childItem : childItems) {
-            groupItem.add(childItem);
-        }
-
-        assertEquals(expected, groupItem.isRegistered());
+        assertEquals(expected, item.isRegistered());
     }
 }

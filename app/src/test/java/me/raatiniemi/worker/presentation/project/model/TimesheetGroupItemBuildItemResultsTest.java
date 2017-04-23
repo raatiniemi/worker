@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -55,17 +56,15 @@ public class TimesheetGroupItemBuildItemResultsTest {
     private static TimesheetGroupItem buildTimesheetGroupWithNumberOfChildItems(int numberOfChildItems) {
         TimesheetGroupItem groupItem = TimesheetGroupItem.build(new Date());
         if (0 == numberOfChildItems) {
-            return groupItem;
+            return TimesheetGroupItem.build(new Date());
         }
 
+        List<Time> times = new ArrayList<>();
         for (int i = 0; i < numberOfChildItems; i++) {
-            Time time = TimeFactory.builder()
-                    .build();
-
-            groupItem.add(new TimesheetChildItem(time));
+            times.add(time);
         }
 
-        return groupItem;
+        return TimesheetGroupItem.build(new Date(), times);
     }
 
     @Parameters
