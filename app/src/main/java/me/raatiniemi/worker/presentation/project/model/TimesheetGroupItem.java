@@ -38,14 +38,14 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG));
     private final Date date;
-    private final long daysSinceUnixEpoch;
     private final List<TimesheetChildItem> items;
+    private final long daysSinceUnixEpoch;
 
     private TimesheetGroupItem(Date date, List<TimesheetChildItem> items) {
         this.date = date;
-        daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(date);
-
         this.items = items;
+
+        daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(date);
     }
 
     public static TimesheetGroupItem build(Date date) {
