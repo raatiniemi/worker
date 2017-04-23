@@ -39,11 +39,13 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG));
     private final Date date;
     private final long daysSinceUnixEpoch;
-    private final List<TimesheetChildItem> items = new ArrayList<>();
+    private final List<TimesheetChildItem> items;
 
-    private TimesheetGroupItem(Date date) {
+    private TimesheetGroupItem(Date date, List<TimesheetChildItem> items) {
         this.date = date;
         daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(date);
+
+        this.items = items;
     }
 
     public static TimesheetGroupItem build(Date date) {
@@ -57,13 +59,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
             children.add(new TimesheetChildItem(time));
         }
 
-        TimesheetGroupItem group = new TimesheetGroupItem(date);
-        //noinspection Convert2streamapi
-        for (TimesheetChildItem child : children) {
-            group.add(child);
-        }
-
-        return group;
+        return new TimesheetGroupItem(date, children);
     }
 
     private static long calculateDaysSinceUnixEpoch(Date date) {
