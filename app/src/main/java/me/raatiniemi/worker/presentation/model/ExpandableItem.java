@@ -24,8 +24,6 @@ import java.util.List;
  * @param <C> Reference type for the child item.
  */
 public abstract class ExpandableItem<C> {
-    public abstract boolean add(C item);
-
     public abstract C get(int index);
 
     public abstract void set(int index, C item);

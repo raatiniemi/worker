@@ -174,11 +174,6 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     }
 
     @Override
-    public boolean add(TimesheetChildItem item) {
-        return items.add(item);
-    }
-
-    @Override
     public TimesheetChildItem get(int index) {
         return items.get(index);
     }
