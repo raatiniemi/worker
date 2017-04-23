@@ -39,6 +39,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG));
     private final Date date;
     private final long daysSinceUnixEpoch;
+    private final List<TimesheetChildItem> items = new ArrayList<>();
 
     private TimesheetGroupItem(Date date) {
         this.date = date;
@@ -174,5 +175,35 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
         }
 
         return results;
+    }
+
+    @Override
+    public boolean add(TimesheetChildItem item) {
+        return items.add(item);
+    }
+
+    @Override
+    public TimesheetChildItem get(int index) {
+        return items.get(index);
+    }
+
+    @Override
+    public void set(int index, TimesheetChildItem item) {
+        items.set(index, item);
+    }
+
+    @Override
+    public TimesheetChildItem remove(int index) {
+        return items.remove(index);
+    }
+
+    @Override
+    public int size() {
+        return items.size();
+    }
+
+    @Override
+    protected List<TimesheetChildItem> getItems() {
+        return Collections.unmodifiableList(items);
     }
 }

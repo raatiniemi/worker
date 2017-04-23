@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,30 +23,16 @@ import java.util.List;
  *
  * @param <C> Reference type for the child item.
  */
-public class ExpandableItem<C> {
-    private final List<C> items = new ArrayList<>();
+public abstract class ExpandableItem<C> {
+    public abstract boolean add(C item);
 
-    public boolean add(C item) {
-        return items.add(item);
-    }
+    public abstract C get(int index);
 
-    public C get(int index) {
-        return items.get(index);
-    }
+    public abstract void set(int index, C item);
 
-    public void set(int index, C item) {
-        items.set(index, item);
-    }
+    public abstract C remove(int index);
 
-    public C remove(int index) {
-        return items.remove(index);
-    }
+    public abstract int size();
 
-    public int size() {
-        return items.size();
-    }
-
-    protected List<C> getItems() {
-        return Collections.unmodifiableList(items);
-    }
+    protected abstract List<C> getItems();
 }
