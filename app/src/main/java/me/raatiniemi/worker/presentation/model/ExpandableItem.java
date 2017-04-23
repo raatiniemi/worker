@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.presentation.model;
 
-import java.util.List;
-
 /**
  * Base type for the combined group and child item.
  *
@@ -31,6 +29,4 @@ public abstract class ExpandableItem<C> {
     public abstract C remove(int index);
 
     public abstract int size();
-
-    protected abstract List<C> getItems();
 }

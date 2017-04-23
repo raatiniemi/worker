@@ -116,7 +116,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     public boolean isRegistered() {
         boolean registered = true;
 
-        for (TimesheetChildItem childItem : getItems()) {
+        for (TimesheetChildItem childItem : items) {
             if (!childItem.isRegistered()) {
                 registered = false;
                 break;
@@ -144,7 +144,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     private float calculateTimeIntervalSummary() {
         float interval = 0;
 
-        for (TimesheetChildItem childItem : getItems()) {
+        for (TimesheetChildItem childItem : items) {
             interval += calculateFractionFromMilliseconds(
                     childItem.calculateIntervalInMilliseconds()
             );
@@ -158,7 +158,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
 
         int childIndex = 0;
 
-        for (TimesheetChildItem childItem : getItems()) {
+        for (TimesheetChildItem childItem : items) {
             results.add(
                     TimeInAdapterResult.build(
                             groupIndex,
@@ -191,10 +191,5 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     @Override
     public int size() {
         return items.size();
-    }
-
-    @Override
-    protected List<TimesheetChildItem> getItems() {
-        return Collections.unmodifiableList(items);
     }
 }
