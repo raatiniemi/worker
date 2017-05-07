@@ -17,12 +17,15 @@
 package me.raatiniemi.worker.domain.interactor;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator;
+import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
@@ -50,7 +53,7 @@ public class GetTimesheet {
      * @param hideRegisteredTime Should registered time be hidden.
      * @return Segment of project timesheet.
      */
-    public SortedMap<Date, List<Time>> execute(
+    public SortedMap<Date, SortedSet<Time>> execute(
             final Long projectId,
             final int offset,
             boolean hideRegisteredTime
@@ -64,9 +67,19 @@ public class GetTimesheet {
         return sortedEntries(repository.getTimesheet(projectId, pageRequest));
     }
 
-    private SortedMap<Date, List<Time>> sortedEntries(Map<Date, List<Time>> entries) {
-        SortedMap<Date, List<Time>> result = new TreeMap<>(new TimesheetDateComparator());
-        result.putAll(entries);
+    private SortedMap<Date, SortedSet<Time>> sortedEntries(Map<Date, Set<Time>> entries) {
+        SortedMap<Date, SortedSet<Time>> result = new TreeMap<>(new TimesheetDateComparator());
+
+        for (Map.Entry<Date, Set<Time>> entry : entries.entrySet()) {
+            result.put(entry.getKey(), sortItems(entry.getValue()));
+        }
+
+        return result;
+    }
+
+    private SortedSet<Time> sortItems(Set<Time> items) {
+        SortedSet<Time> result = new TreeSet<>(new TimesheetItemComparator());
+        result.addAll(items);
 
         return result;
     }

@@ -21,17 +21,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
+import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -45,6 +49,76 @@ public class GetTimesheetTest {
 
     private TimesheetRepository repository;
     private GetTimesheet useCase;
+
+    private static Set<Time> getShuffledSet() {
+        return new HashSet<Time>() {{
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(2L)
+                            .stopInMilliseconds(3L)
+                            .build()
+            );
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(4L)
+                            .stopInMilliseconds(0L)
+                            .build()
+            );
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(1L)
+                            .stopInMilliseconds(3L)
+                            .build()
+            );
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(1L)
+                            .stopInMilliseconds(2L)
+                            .build()
+            );
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(4L)
+                            .stopInMilliseconds(5L)
+                            .build()
+            );
+        }};
+    }
+
+    private static SortedSet<Time> getSortedSet() {
+        return new TreeSet<Time>(new TimesheetItemComparator()) {{
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(4L)
+                            .stopInMilliseconds(0L)
+                            .build()
+            );
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(4L)
+                            .stopInMilliseconds(5L)
+                            .build()
+            );
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(2L)
+                            .stopInMilliseconds(3L)
+                            .build()
+            );
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(1L)
+                            .stopInMilliseconds(3L)
+                            .build()
+            );
+            add(
+                    TimeFactory.builder()
+                            .startInMilliseconds(1L)
+                            .stopInMilliseconds(2L)
+                            .build()
+            );
+        }};
+    }
 
     @Before
     public void setUp() {
@@ -69,36 +143,36 @@ public class GetTimesheetTest {
     @Test
     public void execute_withSortedDatesHidingRegisteredTime() throws DomainException {
         when(repository.getTimesheetWithoutRegisteredEntries(1L, pageRequest))
-                .thenReturn(new HashMap<Date, List<Time>>() {{
-                    put(new Date(1L), Collections.emptyList());
-                    put(new Date(2L), Collections.emptyList());
-                    put(new Date(3L), Collections.emptyList());
+                .thenReturn(new HashMap<Date, Set<Time>>() {{
+                    put(new Date(1L), getShuffledSet());
+                    put(new Date(2L), getShuffledSet());
+                    put(new Date(3L), getShuffledSet());
                 }});
 
-        SortedMap<Date, List<Time>> actual = useCase.execute(1L, 0, true);
+        SortedMap<Date, SortedSet<Time>> actual = useCase.execute(1L, 0, true);
 
-        assertEquals(new TreeMap<Date, List<Time>>() {{
-            put(new Date(3L), Collections.emptyList());
-            put(new Date(2L), Collections.emptyList());
-            put(new Date(1L), Collections.emptyList());
+        assertEquals(new TreeMap<Date, SortedSet<Time>>() {{
+            put(new Date(3L), getSortedSet());
+            put(new Date(2L), getSortedSet());
+            put(new Date(1L), getSortedSet());
         }}, actual);
     }
 
     @Test
     public void execute_withSortedDatesWithRegisteredTime() throws DomainException {
         when(repository.getTimesheet(1L, pageRequest))
-                .thenReturn(new HashMap<Date, List<Time>>() {{
-                    put(new Date(1L), Collections.emptyList());
-                    put(new Date(2L), Collections.emptyList());
-                    put(new Date(3L), Collections.emptyList());
+                .thenReturn(new HashMap<Date, Set<Time>>() {{
+                    put(new Date(1L), getShuffledSet());
+                    put(new Date(2L), getShuffledSet());
+                    put(new Date(3L), getShuffledSet());
                 }});
 
-        SortedMap<Date, List<Time>> actual = useCase.execute(1L, 0, false);
+        SortedMap<Date, SortedSet<Time>> actual = useCase.execute(1L, 0, false);
 
-        assertEquals(new TreeMap<Date, List<Time>>() {{
-            put(new Date(3L), Collections.emptyList());
-            put(new Date(2L), Collections.emptyList());
-            put(new Date(1L), Collections.emptyList());
+        assertEquals(new TreeMap<Date, SortedSet<Time>>() {{
+            put(new Date(3L), getSortedSet());
+            put(new Date(2L), getSortedSet());
+            put(new Date(1L), getSortedSet());
         }}, actual);
     }
 }

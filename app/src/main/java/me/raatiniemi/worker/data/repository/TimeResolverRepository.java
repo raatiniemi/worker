@@ -31,8 +31,10 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
@@ -245,19 +247,19 @@ public class TimeResolverRepository
     }
 
     @NonNull
-    private Map<Date, List<Time>> fetchTimesheet(@Nullable Cursor cursor) {
+    private Map<Date, Set<Time>> fetchTimesheet(@Nullable Cursor cursor) {
         if (isNull(cursor)) {
             return Collections.emptyMap();
         }
 
-        Map<Date, List<Time>> result = new LinkedHashMap<>();
+        Map<Date, Set<Time>> result = new LinkedHashMap<>();
 
         if (cursor.moveToFirst()) {
             do {
                 String ids = cursor.getString(TIMESHEET_IDS_CURSOR_INDEX);
                 String[] rows = ids.split(",");
 
-                List<Time> segment = getSegmentForTimesheet(rows);
+                Set<Time> segment = getSegmentForTimesheet(rows);
                 if (segment.isEmpty()) {
                     continue;
                 }
@@ -272,12 +274,12 @@ public class TimeResolverRepository
     }
 
     @NonNull
-    private List<Time> getSegmentForTimesheet(String[] ids) {
+    private Set<Time> getSegmentForTimesheet(String[] ids) {
         if (0 == ids.length) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<Time> items = new ArrayList<>();
+        Set<Time> items = new LinkedHashSet<>();
         for (String id : ids) {
             Optional<Time> value = getSegmentItemForTimesheet(id);
             if (value.isPresent()) {
@@ -285,9 +287,6 @@ public class TimeResolverRepository
             }
         }
 
-        // Reverse the order of the children to put the latest
-        // item at the top of the list.
-        Collections.reverse(items);
         return items;
     }
 
@@ -303,7 +302,7 @@ public class TimeResolverRepository
     }
 
     @Override
-    public Map<Date, List<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
+    public Map<Date, Set<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
         final Uri uri = ProjectContract.getItemTimesheetUri(projectId);
@@ -318,7 +317,7 @@ public class TimeResolverRepository
     }
 
     @Override
-    public Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
+    public Map<Date, Set<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
         final Uri uri = ProjectContract.getItemTimesheetUri(projectId);

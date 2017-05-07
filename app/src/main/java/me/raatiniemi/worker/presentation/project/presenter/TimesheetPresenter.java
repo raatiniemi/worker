@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetTimesheet;
@@ -118,7 +119,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     List<TimesheetGroupItem> groupItems = new ArrayList<>();
 
                     //noinspection Convert2streamapi
-                    for (Map.Entry<Date, List<Time>> date : result.entrySet()) {
+                    for (Map.Entry<Date, SortedSet<Time>> date : result.entrySet()) {
                         groupItems.add(TimesheetGroupItem.build(date.getKey(), date.getValue()));
                     }
 

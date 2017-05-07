@@ -24,7 +24,9 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.factory.TimeFactory;
 
@@ -40,7 +42,10 @@ public class TimesheetGroupItemGetTimeSummaryWithDifferenceTest {
             Time... times
     ) {
         this.expected = expected;
-        item = TimesheetGroupItem.build(new Date(), Arrays.asList(times));
+
+        TreeSet<Time> items = new TreeSet<>(new TimesheetItemComparator());
+        items.addAll(Arrays.asList(times));
+        item = TimesheetGroupItem.build(new Date(), items);
     }
 
     @Parameters

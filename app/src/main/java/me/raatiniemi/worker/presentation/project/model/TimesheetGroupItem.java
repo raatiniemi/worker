@@ -18,10 +18,11 @@ package me.raatiniemi.worker.presentation.project.model;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
@@ -49,10 +50,10 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     }
 
     public static TimesheetGroupItem build(Date date) {
-        return build(date, Collections.emptyList());
+        return build(date, new TreeSet<>());
     }
 
-    public static TimesheetGroupItem build(Date date, List<Time> times) {
+    public static TimesheetGroupItem build(Date date, SortedSet<Time> times) {
         List<TimesheetChildItem> children = new ArrayList<>();
         //noinspection Convert2streamapi
         for (Time time : times) {
