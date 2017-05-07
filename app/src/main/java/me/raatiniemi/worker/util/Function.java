@@ -22,6 +22,7 @@ package me.raatiniemi.worker.util;
  * @param <T> The function argument.
  * @param <R> The function result.
  */
+@FunctionalInterface
 public interface Function<T, R> {
     /**
      * Applies this function to the given argument.
