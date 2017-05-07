@@ -1,1 +1,4 @@
-Hi, I'm a robot and due to lazy developers I'll be building the application from now.
+* Improve sorting of timesheet view.
+* Began converting presentation-layer to use MVVM.
+* Various, under the hood, improvements.
+288 files changed, 6268 insertions(+), 4808 deletions(-)
