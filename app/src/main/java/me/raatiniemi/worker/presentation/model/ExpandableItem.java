@@ -16,39 +16,17 @@
 
 package me.raatiniemi.worker.presentation.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Base type for the combined group and child item.
  *
  * @param <C> Reference type for the child item.
  */
-public class ExpandableItem<C> {
-    private final List<C> items = new ArrayList<>();
+public abstract class ExpandableItem<C> {
+    public abstract C get(int index);
 
-    public boolean add(C item) {
-        return items.add(item);
-    }
+    public abstract void set(int index, C item);
 
-    public C get(int index) {
-        return items.get(index);
-    }
+    public abstract C remove(int index);
 
-    public void set(int index, C item) {
-        items.set(index, item);
-    }
-
-    public C remove(int index) {
-        return items.remove(index);
-    }
-
-    public int size() {
-        return items.size();
-    }
-
-    protected List<C> getItems() {
-        return Collections.unmodifiableList(items);
-    }
+    public abstract int size();
 }

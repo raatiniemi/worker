@@ -24,7 +24,9 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.factory.TimeFactory;
 
@@ -38,15 +40,18 @@ public class TimesheetGroupItemIsRegisteredTest {
             .register()
             .build();
 
-    private boolean expected;
-    private TimesheetChildItem[] childItems;
+    private final boolean expected;
+    private final TimesheetGroupItem item;
 
     public TimesheetGroupItemIsRegisteredTest(
             boolean expected,
-            TimesheetChildItem... childItems
+            Time... times
     ) {
         this.expected = expected;
-        this.childItems = childItems;
+
+        TreeSet<Time> items = new TreeSet<>(new TimesheetItemComparator());
+        items.addAll(Arrays.asList(times));
+        item = TimesheetGroupItem.build(new Date(), items);
     }
 
     @Parameters
@@ -55,28 +60,28 @@ public class TimesheetGroupItemIsRegisteredTest {
                 new Object[][]{
                         {
                                 Boolean.TRUE,
-                                new TimesheetChildItem[]{
-                                        new TimesheetChildItem(REGISTERED_TIME)
+                                new Time[]{
+                                        REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.FALSE,
-                                new TimesheetChildItem[]{
-                                        new TimesheetChildItem(NOT_REGISTERED_TIME)
+                                new Time[]{
+                                        NOT_REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.FALSE,
-                                new TimesheetChildItem[]{
-                                        new TimesheetChildItem(NOT_REGISTERED_TIME),
-                                        new TimesheetChildItem(REGISTERED_TIME)
+                                new Time[]{
+                                        NOT_REGISTERED_TIME,
+                                        REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.TRUE,
-                                new TimesheetChildItem[]{
-                                        new TimesheetChildItem(REGISTERED_TIME),
-                                        new TimesheetChildItem(REGISTERED_TIME)
+                                new Time[]{
+                                        REGISTERED_TIME,
+                                        REGISTERED_TIME
                                 }
                         }
                 }
@@ -85,11 +90,6 @@ public class TimesheetGroupItemIsRegisteredTest {
 
     @Test
     public void isRegistered() {
-        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
-        for (TimesheetChildItem childItem : childItems) {
-            groupItem.add(childItem);
-        }
-
-        assertEquals(expected, groupItem.isRegistered());
+        assertEquals(expected, item.isRegistered());
     }
 }

@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.domain.repository;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import me.raatiniemi.worker.domain.model.Time;
 
@@ -30,7 +30,7 @@ public interface TimesheetRepository {
      * @param pageRequest Defines the page segment.
      * @return Project timesheet segment.
      */
-    Map<Date, List<Time>> getTimesheet(final long projectId, final PageRequest pageRequest);
+    Map<Date, Set<Time>> getTimesheet(final long projectId, final PageRequest pageRequest);
 
     /**
      * Get timesheet segment for a project, without registered entries.
@@ -39,5 +39,5 @@ public interface TimesheetRepository {
      * @param pageRequest Defines the page segment.
      * @return Project timesheet segment.
      */
-    Map<Date, List<Time>> getTimesheetWithoutRegisteredEntries(final long projectId, final PageRequest pageRequest);
+    Map<Date, Set<Time>> getTimesheetWithoutRegisteredEntries(final long projectId, final PageRequest pageRequest);
 }

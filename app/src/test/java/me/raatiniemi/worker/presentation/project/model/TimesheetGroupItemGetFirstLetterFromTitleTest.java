@@ -31,11 +31,11 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemGetFirstLetterFromTitleTest {
     private final String expected;
-    private final Calendar calendar;
+    private final TimesheetGroupItem item;
 
     public TimesheetGroupItemGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
-        this.calendar = calendar;
+        item = TimesheetGroupItem.build(calendar.getTime());
     }
 
     @Parameters
@@ -76,8 +76,6 @@ public class TimesheetGroupItemGetFirstLetterFromTitleTest {
 
     @Test
     public void getFirstLetterFromTitle() {
-        TimesheetGroupItem groupItem = new TimesheetGroupItem(calendar.getTime());
-
-        assertEquals(expected, groupItem.getFirstLetterFromTitle());
+        assertEquals(expected, item.getFirstLetterFromTitle());
     }
 }

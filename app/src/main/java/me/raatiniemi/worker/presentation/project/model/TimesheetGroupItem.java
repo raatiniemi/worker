@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
@@ -36,11 +39,28 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG));
     private final Date date;
+    private final List<TimesheetChildItem> items;
     private final long daysSinceUnixEpoch;
 
-    public TimesheetGroupItem(Date date) {
+    private TimesheetGroupItem(Date date, List<TimesheetChildItem> items) {
         this.date = date;
+        this.items = items;
+
         daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(date);
+    }
+
+    public static TimesheetGroupItem build(Date date) {
+        return build(date, new TreeSet<>());
+    }
+
+    public static TimesheetGroupItem build(Date date, SortedSet<Time> times) {
+        List<TimesheetChildItem> children = new ArrayList<>();
+        //noinspection Convert2streamapi
+        for (Time time : times) {
+            children.add(new TimesheetChildItem(time));
+        }
+
+        return new TimesheetGroupItem(date, children);
     }
 
     private static long calculateDaysSinceUnixEpoch(Date date) {
@@ -97,7 +117,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     public boolean isRegistered() {
         boolean registered = true;
 
-        for (TimesheetChildItem childItem : getItems()) {
+        for (TimesheetChildItem childItem : items) {
             if (!childItem.isRegistered()) {
                 registered = false;
                 break;
@@ -125,7 +145,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
     private float calculateTimeIntervalSummary() {
         float interval = 0;
 
-        for (TimesheetChildItem childItem : getItems()) {
+        for (TimesheetChildItem childItem : items) {
             interval += calculateFractionFromMilliseconds(
                     childItem.calculateIntervalInMilliseconds()
             );
@@ -139,7 +159,7 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
 
         int childIndex = 0;
 
-        for (TimesheetChildItem childItem : getItems()) {
+        for (TimesheetChildItem childItem : items) {
             results.add(
                     TimeInAdapterResult.build(
                             groupIndex,
@@ -152,5 +172,25 @@ public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
         }
 
         return results;
+    }
+
+    @Override
+    public TimesheetChildItem get(int index) {
+        return items.get(index);
+    }
+
+    @Override
+    public void set(int index, TimesheetChildItem item) {
+        items.set(index, item);
+    }
+
+    @Override
+    public TimesheetChildItem remove(int index) {
+        return items.remove(index);
+    }
+
+    @Override
+    public int size() {
+        return items.size();
     }
 }

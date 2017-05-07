@@ -14,8 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project.model;
+package me.raatiniemi.worker.domain.comparator;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -25,14 +26,34 @@ import java.util.Date;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
-public class TimesheetGroupItemTest {
+public class TimesheetDateComparatorTest {
+    private TimesheetDateComparator comparator;
+
+    @Before
+    public void setUp() throws Exception {
+        comparator = new TimesheetDateComparator();
+    }
+
     @Test
-    public void getId() {
-        Date date = new Date();
-        long days = date.getTime() / 1000 / 60 / 60 / 24;
+    public void compare_withDateBefore() {
+        Date before = new Date(1L);
+        Date after = new Date(2L);
 
-        TimesheetGroupItem groupItem = TimesheetGroupItem.build(date);
+        assertEquals(-1, comparator.compare(after, before));
+    }
 
-        assertEquals(days, groupItem.getId());
+    @Test
+    public void compare_withDateAfter() {
+        Date before = new Date(1L);
+        Date after = new Date(2L);
+
+        assertEquals(1, comparator.compare(before, after));
+    }
+
+    @Test
+    public void compare_withSameDate() {
+        Date date = new Date(1L);
+
+        assertEquals(0, comparator.compare(date, date));
     }
 }

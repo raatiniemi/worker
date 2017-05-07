@@ -25,7 +25,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.factory.TimeFactory;
 
@@ -33,8 +36,6 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemBuildItemResultsTest {
-    private static final Time time = TimeFactory.builder().build();
-
     private final String message;
     private final List<TimeInAdapterResult> expected;
     private final int groupIndex;
@@ -53,19 +54,16 @@ public class TimesheetGroupItemBuildItemResultsTest {
     }
 
     private static TimesheetGroupItem buildTimesheetGroupWithNumberOfChildItems(int numberOfChildItems) {
-        TimesheetGroupItem groupItem = new TimesheetGroupItem(new Date());
         if (0 == numberOfChildItems) {
-            return groupItem;
+            return TimesheetGroupItem.build(new Date());
         }
 
-        for (int i = 0; i < numberOfChildItems; i++) {
-            Time time = TimeFactory.builder()
-                    .build();
-
-            groupItem.add(new TimesheetChildItem(time));
+        SortedSet<Time> times = new TreeSet<>(new TimesheetItemComparator());
+        for (long i = 0; i < numberOfChildItems; i++) {
+            times.add(TimeFactory.builder().startInMilliseconds(i).build());
         }
 
-        return groupItem;
+        return TimesheetGroupItem.build(new Date(), times);
     }
 
     @Parameters
@@ -82,7 +80,7 @@ public class TimesheetGroupItemBuildItemResultsTest {
                         {
                                 "With one item",
                                 new TimeInAdapterResult[]{
-                                        TimeInAdapterResult.build(1, 0, time)
+                                        TimeInAdapterResult.build(1, 0, TimeFactory.builder().startInMilliseconds(0L).build())
                                 },
                                 1,
                                 buildTimesheetGroupWithNumberOfChildItems(1)
@@ -90,12 +88,12 @@ public class TimesheetGroupItemBuildItemResultsTest {
                         {
                                 "With multiple items",
                                 new TimeInAdapterResult[]{
-                                        TimeInAdapterResult.build(2, 0, time),
-                                        TimeInAdapterResult.build(2, 1, time),
-                                        TimeInAdapterResult.build(2, 2, time),
-                                        TimeInAdapterResult.build(2, 3, time),
-                                        TimeInAdapterResult.build(2, 4, time),
-                                        TimeInAdapterResult.build(2, 5, time),
+                                        TimeInAdapterResult.build(2, 0, TimeFactory.builder().startInMilliseconds(5L).build()),
+                                        TimeInAdapterResult.build(2, 1, TimeFactory.builder().startInMilliseconds(4L).build()),
+                                        TimeInAdapterResult.build(2, 2, TimeFactory.builder().startInMilliseconds(3L).build()),
+                                        TimeInAdapterResult.build(2, 3, TimeFactory.builder().startInMilliseconds(2L).build()),
+                                        TimeInAdapterResult.build(2, 4, TimeFactory.builder().startInMilliseconds(1L).build()),
+                                        TimeInAdapterResult.build(2, 5, TimeFactory.builder().startInMilliseconds(0L).build()),
                                 },
                                 2,
                                 buildTimesheetGroupWithNumberOfChildItems(6)
