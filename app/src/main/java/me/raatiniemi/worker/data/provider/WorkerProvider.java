@@ -129,7 +129,7 @@ public class WorkerProvider extends ContentProvider {
     }
 
     @Nullable
-    private String parseLimitFromUri(@NonNull Uri uri) {
+    private static String parseLimitFromUri(@NonNull Uri uri) {
         String limit = uri.getQueryParameter(QueryParameter.LIMIT);
         if (isNull(limit)) {
             return null;

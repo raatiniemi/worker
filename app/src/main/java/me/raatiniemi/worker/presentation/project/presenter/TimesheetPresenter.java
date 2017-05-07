@@ -226,7 +226,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         }
     }
 
-    private List<TimeInAdapterResult> mapUpdatesToPositionOfSelectedItems(
+    private static List<TimeInAdapterResult> mapUpdatesToPositionOfSelectedItems(
             List<Time> updates,
             List<TimeInAdapterResult> selectedItems
     ) {
@@ -242,7 +242,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         return newResults;
     }
 
-    private Optional<Time> findUpdateForSelectedItem(TimeInAdapterResult selectedItem, List<Time> updates) {
+    private static Optional<Time> findUpdateForSelectedItem(TimeInAdapterResult selectedItem, List<Time> updates) {
         Time previousTime = selectedItem.getTime();
 
         for (Time update : updates) {

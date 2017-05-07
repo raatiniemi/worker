@@ -67,7 +67,7 @@ public class GetTimesheet {
         return sortedEntries(repository.getTimesheet(projectId, pageRequest));
     }
 
-    private SortedMap<Date, SortedSet<Time>> sortedEntries(Map<Date, Set<Time>> entries) {
+    private static SortedMap<Date, SortedSet<Time>> sortedEntries(Map<Date, Set<Time>> entries) {
         SortedMap<Date, SortedSet<Time>> result = new TreeMap<>(new TimesheetDateComparator());
 
         for (Map.Entry<Date, Set<Time>> entry : entries.entrySet()) {
@@ -77,7 +77,7 @@ public class GetTimesheet {
         return result;
     }
 
-    private SortedSet<Time> sortItems(Set<Time> items) {
+    private static SortedSet<Time> sortItems(Set<Time> items) {
         SortedSet<Time> result = new TreeSet<>(new TimesheetItemComparator());
         result.addAll(items);
 
