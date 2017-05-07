@@ -21,12 +21,12 @@ package me.raatiniemi.worker.presentation.model;
  *
  * @param <C> Reference type for the child item.
  */
-public abstract class ExpandableItem<C> {
-    public abstract C get(int index);
+public interface ExpandableItem<C> {
+    C get(int index);
 
-    public abstract void set(int index, C item);
+    void set(int index, C item);
 
-    public abstract C remove(int index);
+    C remove(int index);
 
-    public abstract int size();
+    int size();
 }

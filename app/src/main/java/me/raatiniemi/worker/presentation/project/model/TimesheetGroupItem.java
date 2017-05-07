@@ -29,7 +29,7 @@ import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public class TimesheetGroupItem extends ExpandableItem<TimesheetChildItem> {
+public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
     private static final String LANGUAGE_TAG = "en_US";
     private static final DateIntervalFormat intervalFormat;
 
