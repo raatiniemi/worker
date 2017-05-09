@@ -56,7 +56,7 @@ import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
+import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
 import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import rx.Observable;
 import rx.Subscription;
@@ -363,7 +363,7 @@ public class ProjectsFragment extends RxFragment
             }
 
             ConfirmClockOutDialog.show(getActivity())
-                    .filter(RxDialog::isPositive)
+                    .filter(RxAlertDialog::isPositive)
                     .subscribe(
                             which -> clockActivityViewModel.input().clockOut(result, new Date()),
                             Timber::w
@@ -397,7 +397,7 @@ public class ProjectsFragment extends RxFragment
     @Override
     public void onDelete(@NonNull final ProjectsItemAdapterResult result) {
         RemoveProjectDialog.show(getActivity())
-                .filter(RxDialog::isPositive)
+                .filter(RxAlertDialog::isPositive)
                 .subscribe(
                         which -> {
                             deleteProjectAtPosition(result.getPosition());

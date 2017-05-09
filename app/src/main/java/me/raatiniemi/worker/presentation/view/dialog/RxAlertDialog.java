@@ -25,11 +25,11 @@ import java.util.Objects;
 import rx.Observable;
 import rx.subscriptions.Subscriptions;
 
-public final class RxDialog {
+public final class RxAlertDialog {
     private static final Integer NEGATIVE = 0;
     private static final Integer POSITIVE = 1;
 
-    private RxDialog() {
+    private RxAlertDialog() {
     }
 
     @NonNull

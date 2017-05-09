@@ -43,7 +43,7 @@ import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
-import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
+import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
 import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
 import timber.log.Timber;
 
@@ -102,7 +102,7 @@ public class TimesheetFragment extends BaseFragment
 
         private void confirmRemoveSelectedItems(ActionMode actionMode) {
             DeleteTimeDialog.show(getActivity())
-                    .filter(RxDialog::isPositive)
+                    .filter(RxAlertDialog::isPositive)
                     .subscribe(
                             which -> {
                                 presenter.remove(adapter.getSelectedItems());

@@ -20,7 +20,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
+import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
 import rx.Observable;
 
 final class ConfirmClockOutDialog {
@@ -32,6 +32,6 @@ final class ConfirmClockOutDialog {
 
     @NonNull
     static Observable<Integer> show(@NonNull Context context) {
-        return RxDialog.build(context, TITLE, MESSAGE);
+        return RxAlertDialog.build(context, TITLE, MESSAGE);
     }
 }

@@ -40,7 +40,7 @@ import me.raatiniemi.worker.data.service.data.RestoreService;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
-import me.raatiniemi.worker.presentation.view.dialog.RxDialog;
+import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
 import timber.log.Timber;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -207,7 +207,7 @@ public class DataFragment extends BasePreferenceFragment
      */
     private void runRestore() {
         ConfirmRestoreDialog.show(getActivity())
-                .filter(RxDialog::isPositive)
+                .filter(RxAlertDialog::isPositive)
                 .subscribe(
                         which -> {
                             Snackbar.make(
