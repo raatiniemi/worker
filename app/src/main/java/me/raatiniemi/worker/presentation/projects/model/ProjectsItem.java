@@ -39,12 +39,12 @@ public class ProjectsItem {
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Project project;
-    private long registeredTimeSummary = 0;
+    private final long registeredTimeSummary;
 
     public ProjectsItem(Project project, List<Time> registeredTime) {
         this.project = project;
 
-        calculateSummaryFromRegisteredTime(registeredTime);
+        registeredTimeSummary = calculateSummaryFromRegisteredTime(registeredTime);
     }
 
     public ProjectsItem(Project project) {
@@ -63,10 +63,14 @@ public class ProjectsItem {
         return resources.getString(R.string.fragment_projects_item_clocked_in_since);
     }
 
-    private void calculateSummaryFromRegisteredTime(List<Time> registeredTime) {
+    private long calculateSummaryFromRegisteredTime(List<Time> registeredTime) {
+        long timeSummary = 0;
+
         for (Time interval : registeredTime) {
-            registeredTimeSummary += interval.getTime();
+            timeSummary += interval.getTime();
         }
+
+        return timeSummary;
     }
 
     public Project asProject() {
