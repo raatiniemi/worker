@@ -1,0 +1,14 @@
+#!/bin/bash
+TAG=$1;
+if [ -z "${TAG}" ]; then
+  echo "No valid tag name have been supplied.";
+  echo "Usage: $0 0.9.15";
+  exit 1;
+fi;
+
+git tag -a -m "Release v${TAG}" $TAG;
+if [ $? -ne 0 ]; then
+  echo "Unable to create tag: ${TAG}";
+  exit 1;
+fi;
+exit $?;
