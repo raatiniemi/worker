@@ -1,4 +1,1 @@
-* Improve sorting of timesheet view.
-* Began converting presentation-layer to use MVVM.
-* Various, under the hood, improvements.
-288 files changed, 6268 insertions(+), 4808 deletions(-)
+Include elapsed time for active projects in the time summary.
