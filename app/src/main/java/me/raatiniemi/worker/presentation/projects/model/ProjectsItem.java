@@ -51,6 +51,16 @@ public class ProjectsItem {
         this(project, project.getRegisteredTime());
     }
 
+    private static long calculateSummaryFromRegisteredTime(List<Time> registeredTime) {
+        long timeSummary = 0;
+
+        for (Time interval : registeredTime) {
+            timeSummary += interval.getTime();
+        }
+
+        return timeSummary;
+    }
+
     private static void showTextView(TextView textView) {
         textView.setVisibility(View.VISIBLE);
     }
@@ -61,16 +71,6 @@ public class ProjectsItem {
 
     private static String getClockedInSinceFormatTemplate(Resources resources) {
         return resources.getString(R.string.fragment_projects_item_clocked_in_since);
-    }
-
-    private long calculateSummaryFromRegisteredTime(List<Time> registeredTime) {
-        long timeSummary = 0;
-
-        for (Time interval : registeredTime) {
-            timeSummary += interval.getTime();
-        }
-
-        return timeSummary;
     }
 
     public Project asProject() {
