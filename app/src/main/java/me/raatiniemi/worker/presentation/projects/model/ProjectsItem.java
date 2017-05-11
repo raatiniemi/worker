@@ -39,16 +39,26 @@ public class ProjectsItem {
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Project project;
-    private long timeSummary = 0;
+    private final long registeredTimeSummary;
 
     public ProjectsItem(Project project, List<Time> registeredTime) {
         this.project = project;
 
-        calculateTimeSummaryFromRegisteredTime(registeredTime);
+        registeredTimeSummary = calculateSummaryFromRegisteredTime(registeredTime);
     }
 
     public ProjectsItem(Project project) {
         this(project, project.getRegisteredTime());
+    }
+
+    private static long calculateSummaryFromRegisteredTime(List<Time> registeredTime) {
+        long timeSummary = 0;
+
+        for (Time interval : registeredTime) {
+            timeSummary += interval.getTime();
+        }
+
+        return timeSummary;
     }
 
     private static void showTextView(TextView textView) {
@@ -61,12 +71,6 @@ public class ProjectsItem {
 
     private static String getClockedInSinceFormatTemplate(Resources resources) {
         return resources.getString(R.string.fragment_projects_item_clocked_in_since);
-    }
-
-    private void calculateTimeSummaryFromRegisteredTime(List<Time> registeredTime) {
-        for (Time interval : registeredTime) {
-            timeSummary += interval.getTime();
-        }
     }
 
     public Project asProject() {
@@ -82,7 +86,9 @@ public class ProjectsItem {
     }
 
     public String getTimeSummary() {
-        return intervalFormat.format(timeSummary);
+        long registeredTimeWithElapsed = registeredTimeSummary + project.getElapsed();
+
+        return intervalFormat.format(registeredTimeWithElapsed);
     }
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
