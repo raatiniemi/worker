@@ -30,6 +30,7 @@ import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetChildItem;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
+import me.raatiniemi.worker.presentation.util.SelectionManager;
 import me.raatiniemi.worker.presentation.util.SelectionManagerAdapterDecorator;
 import me.raatiniemi.worker.presentation.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
@@ -40,7 +41,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         GroupItemViewHolder,
         ChildItemViewHolder
         > {
-    private final SelectionManagerAdapterDecorator<TimeInAdapterResult> selectionManager;
+    private final SelectionManager<TimeInAdapterResult> selectionManager;
 
     TimesheetAdapter(SelectionListener selectionListener) {
         selectionManager = new SelectionManagerAdapterDecorator<>(this, selectionListener);
