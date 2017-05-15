@@ -44,7 +44,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetChildItem,
         TimesheetGroupItem,
         TimesheetAdapter.GroupItemViewHolder,
-        TimesheetAdapter.ChildItemViewHolder
+        ChildItemViewHolder
         > {
     private final SelectionManagerAdapterDecorator<TimeInAdapterResult> selectionManager;
 
@@ -247,19 +247,5 @@ class TimesheetAdapter extends ExpandableListAdapter<
             ButterKnife.bind(this, view);
         }
 
-    }
-
-    class ChildItemViewHolder extends AbstractExpandableItemViewHolder {
-        @BindView(R.id.fragment_timesheet_child_item_title)
-        TextView title;
-
-        @BindView(R.id.fragment_timesheet_child_item_summarize)
-        TextView summarize;
-
-        private ChildItemViewHolder(View view) {
-            super(view);
-
-            ButterKnife.bind(this, view);
-        }
     }
 }
