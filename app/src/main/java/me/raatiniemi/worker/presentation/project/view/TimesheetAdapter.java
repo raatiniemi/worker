@@ -20,16 +20,10 @@ import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
@@ -43,7 +37,7 @@ import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetChildItem,
         TimesheetGroupItem,
-        TimesheetAdapter.GroupItemViewHolder,
+        GroupItemViewHolder,
         ChildItemViewHolder
         > {
     private final SelectionManagerAdapterDecorator<TimeInAdapterResult> selectionManager;
@@ -229,23 +223,5 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     void deselectItems() {
         selectionManager.deselectItems();
-    }
-
-    class GroupItemViewHolder extends AbstractExpandableItemViewHolder {
-        @BindView(R.id.fragment_timesheet_group_item_letter)
-        ImageView letter;
-
-        @BindView(R.id.fragment_timesheet_group_item_title)
-        TextView title;
-
-        @BindView(R.id.fragment_timesheet_group_item_summarize)
-        TextView summarize;
-
-        private GroupItemViewHolder(View view) {
-            super(view);
-
-            ButterKnife.bind(this, view);
-        }
-
     }
 }
