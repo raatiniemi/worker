@@ -23,8 +23,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.provider.WorkerDatabase;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
@@ -51,29 +49,20 @@ public class DataModule {
     @Provides
     @Singleton
     ProjectRepository providesProjectRepository() {
-        return new ProjectResolverRepository(
-                context.getContentResolver(),
-                new ProjectContentValuesMapper()
-        );
+        return new ProjectResolverRepository(context.getContentResolver());
     }
 
     @NonNull
     @Provides
     @Singleton
     TimeRepository providesTimeRepository() {
-        return new TimeResolverRepository(
-                context.getContentResolver(),
-                new TimeContentValuesMapper()
-        );
+        return new TimeResolverRepository(context.getContentResolver());
     }
 
     @NonNull
     @Provides
     @Singleton
     TimesheetRepository providesTimesheetRepository() {
-        return new TimeResolverRepository(
-                context.getContentResolver(),
-                new TimeContentValuesMapper()
-        );
+        return new TimeResolverRepository(context.getContentResolver());
     }
 }

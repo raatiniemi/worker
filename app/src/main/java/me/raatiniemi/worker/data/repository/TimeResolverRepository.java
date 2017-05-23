@@ -58,17 +58,15 @@ import static me.raatiniemi.worker.data.provider.QueryParameter.appendPageReques
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimeResolverRepository
-        extends ContentResolverRepository<TimeContentValuesMapper>
+        extends ContentResolverRepository
         implements TimeRepository, TimesheetRepository {
     private static final int TIMESHEET_DATE_CURSOR_INDEX = 0;
     private static final int TIMESHEET_IDS_CURSOR_INDEX = 1;
     private final TimeCursorMapper cursorMapper = new TimeCursorMapper();
+    private final TimeContentValuesMapper contentValuesMapper = new TimeContentValuesMapper();
 
-    public TimeResolverRepository(
-            @NonNull ContentResolver contentResolver,
-            @NonNull final TimeContentValuesMapper contentValuesMapper
-    ) {
-        super(contentResolver, contentValuesMapper);
+    public TimeResolverRepository(@NonNull ContentResolver contentResolver) {
+        super(contentResolver);
     }
 
     @NonNull
@@ -143,7 +141,7 @@ public class TimeResolverRepository
     public Optional<Time> add(final Time time) throws ClockOutBeforeClockInException {
         requireNonNull(time);
 
-        final ContentValues values = getContentValuesMapper().transform(time);
+        final ContentValues values = contentValuesMapper.transform(time);
 
         final Uri uri = getContentResolver().insert(
                 TimeContract.getStreamUri(),
@@ -158,7 +156,7 @@ public class TimeResolverRepository
 
         getContentResolver().update(
                 TimeContract.getItemUri(time.getId()),
-                getContentValuesMapper().transform(time),
+                contentValuesMapper.transform(time),
                 null,
                 null
         );
@@ -176,7 +174,7 @@ public class TimeResolverRepository
             Uri uri = TimeContract.getItemUri(time.getId());
 
             ContentProviderOperation operation = ContentProviderOperation.newUpdate(uri)
-                    .withValues(getContentValuesMapper().transform(time))
+                    .withValues(contentValuesMapper.transform(time))
                     .build();
             batch.add(operation);
         }

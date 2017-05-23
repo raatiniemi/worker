@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
@@ -55,10 +54,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
     @Before
     public void setUp() throws Exception {
         contentResolver = mock(ContentResolver.class);
-        repository = new TimeResolverRepository(
-                contentResolver,
-                new TimeContentValuesMapper()
-        );
+        repository = new TimeResolverRepository(contentResolver);
 
         project = Project.builder("Name")
                 .id(1L)

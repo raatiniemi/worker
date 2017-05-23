@@ -43,15 +43,13 @@ import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class ProjectResolverRepository
-        extends ContentResolverRepository<ProjectContentValuesMapper>
+        extends ContentResolverRepository
         implements ProjectRepository {
     private final ProjectCursorMapper cursorMapper = new ProjectCursorMapper();
+    private final ProjectContentValuesMapper contentValuesMapper = new ProjectContentValuesMapper();
 
-    public ProjectResolverRepository(
-            @NonNull ContentResolver contentResolver,
-            @NonNull final ProjectContentValuesMapper contentValuesMapper
-    ) {
-        super(contentResolver, contentValuesMapper);
+    public ProjectResolverRepository(@NonNull ContentResolver contentResolver) {
+        super(contentResolver);
     }
 
     @NonNull
@@ -138,7 +136,7 @@ public class ProjectResolverRepository
 
         final Uri uri = getContentResolver().insert(
                 ProjectContract.getStreamUri(),
-                getContentValuesMapper().transform(project)
+                contentValuesMapper.transform(project)
         );
         return get(Long.parseLong(ProjectContract.getItemId(uri)));
     }

@@ -19,36 +19,22 @@ package me.raatiniemi.worker.data.repository;
 import android.content.ContentResolver;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.mapper.ContentValuesMapper;
-
 /**
  * Base for repositories using a content a content resolver as data source.
- *
- * @param <V> Type reference for the ContentValues mapper used.
  */
-abstract class ContentResolverRepository<V extends ContentValuesMapper> {
+abstract class ContentResolverRepository {
     /**
      * Content resolver used with the repository.
      */
     private final ContentResolver contentResolver;
 
     /**
-     * ContentValues mapper used with the repository.
-     */
-    private final V contentValuesMapper;
-
-    /**
      * Constructor.
      *
-     * @param contentResolver     Content resolver used with the repository.
-     * @param contentValuesMapper ContentValues mapper used with the repository.
+     * @param contentResolver Content resolver used with the repository.
      */
-    ContentResolverRepository(
-            @NonNull ContentResolver contentResolver,
-            @NonNull V contentValuesMapper
-    ) {
+    ContentResolverRepository(@NonNull ContentResolver contentResolver) {
         this.contentResolver = contentResolver;
-        this.contentValuesMapper = contentValuesMapper;
     }
 
     /**
@@ -59,14 +45,5 @@ abstract class ContentResolverRepository<V extends ContentValuesMapper> {
     @NonNull
     ContentResolver getContentResolver() {
         return contentResolver;
-    }
-
-    /**
-     * Get the ContentValues mapper.
-     *
-     * @return ContentValues mapper.
-     */
-    V getContentValuesMapper() {
-        return contentValuesMapper;
     }
 }

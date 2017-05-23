@@ -56,10 +56,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     @Before
     public void setUp() {
         contentResolver = mock(ContentResolver.class);
-        repository = new ProjectResolverRepository(
-                contentResolver,
-                contentValuesMapper
-        );
+        repository = new ProjectResolverRepository(contentResolver);
     }
 
     @Test
