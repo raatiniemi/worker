@@ -27,7 +27,6 @@ import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
 import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
@@ -42,7 +41,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ProjectResolverRepositoryTest extends RobolectricTestCase {
-    private final ProjectCursorMapper cursorMapper = new ProjectCursorMapper();
     private final ProjectContentValuesMapper contentValuesMapper = new ProjectContentValuesMapper();
     private ContentResolver contentResolver;
     private ProjectResolverRepository repository;
@@ -60,7 +58,6 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         contentResolver = mock(ContentResolver.class);
         repository = new ProjectResolverRepository(
                 contentResolver,
-                cursorMapper,
                 contentValuesMapper
         );
     }

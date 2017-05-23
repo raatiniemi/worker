@@ -58,17 +58,17 @@ import static me.raatiniemi.worker.data.provider.QueryParameter.appendPageReques
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimeResolverRepository
-        extends ContentResolverRepository<TimeCursorMapper, TimeContentValuesMapper>
+        extends ContentResolverRepository<TimeContentValuesMapper>
         implements TimeRepository, TimesheetRepository {
     private static final int TIMESHEET_DATE_CURSOR_INDEX = 0;
     private static final int TIMESHEET_IDS_CURSOR_INDEX = 1;
+    private final TimeCursorMapper cursorMapper = new TimeCursorMapper();
 
     public TimeResolverRepository(
             @NonNull ContentResolver contentResolver,
-            @NonNull TimeCursorMapper cursorMapper,
             @NonNull final TimeContentValuesMapper contentValuesMapper
     ) {
-        super(contentResolver, cursorMapper, contentValuesMapper);
+        super(contentResolver, contentValuesMapper);
     }
 
     @NonNull
@@ -81,7 +81,7 @@ public class TimeResolverRepository
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    results.add(getCursorMapper().transform(cursor));
+                    results.add(cursorMapper.transform(cursor));
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -99,7 +99,7 @@ public class TimeResolverRepository
 
         try {
             if (cursor.moveToFirst()) {
-                Time result = getCursorMapper().transform(cursor);
+                Time result = cursorMapper.transform(cursor);
                 return Optional.of(result);
             }
 

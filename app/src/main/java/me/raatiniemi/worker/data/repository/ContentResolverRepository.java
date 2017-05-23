@@ -20,24 +20,17 @@ import android.content.ContentResolver;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.mapper.ContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.CursorMapper;
 
 /**
  * Base for repositories using a content a content resolver as data source.
  *
- * @param <M> Type reference for the cursor mapper used.
  * @param <V> Type reference for the ContentValues mapper used.
  */
-abstract class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesMapper> {
+abstract class ContentResolverRepository<V extends ContentValuesMapper> {
     /**
      * Content resolver used with the repository.
      */
     private final ContentResolver contentResolver;
-
-    /**
-     * Cursor mapper used with the repository.
-     */
-    private final M cursorMapper;
 
     /**
      * ContentValues mapper used with the repository.
@@ -48,16 +41,13 @@ abstract class ContentResolverRepository<M extends CursorMapper, V extends Conte
      * Constructor.
      *
      * @param contentResolver     Content resolver used with the repository.
-     * @param cursorMapper        Cursor mapper used with the repository.
      * @param contentValuesMapper ContentValues mapper used with the repository.
      */
     ContentResolverRepository(
             @NonNull ContentResolver contentResolver,
-            @NonNull M cursorMapper,
             @NonNull V contentValuesMapper
     ) {
         this.contentResolver = contentResolver;
-        this.cursorMapper = cursorMapper;
         this.contentValuesMapper = contentValuesMapper;
     }
 
@@ -69,16 +59,6 @@ abstract class ContentResolverRepository<M extends CursorMapper, V extends Conte
     @NonNull
     ContentResolver getContentResolver() {
         return contentResolver;
-    }
-
-    /**
-     * Get the cursor mapper.
-     *
-     * @return Cursor mapper.
-     */
-    @NonNull
-    M getCursorMapper() {
-        return cursorMapper;
     }
 
     /**

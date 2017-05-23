@@ -27,7 +27,6 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.data.service.ongoing.ClockOutService;
 import me.raatiniemi.worker.data.service.ongoing.PauseService;
@@ -104,7 +103,6 @@ public class PauseNotification extends OngoingNotification {
             // `ReloadNotificationService`-test to fail due to invalid thread for context.
             repository = new TimeResolverRepository(
                     getContext().getContentResolver(),
-                    new TimeCursorMapper(),
                     new TimeContentValuesMapper()
             );
         }

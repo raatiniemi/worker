@@ -43,14 +43,15 @@ import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class ProjectResolverRepository
-        extends ContentResolverRepository<ProjectCursorMapper, ProjectContentValuesMapper>
+        extends ContentResolverRepository<ProjectContentValuesMapper>
         implements ProjectRepository {
+    private final ProjectCursorMapper cursorMapper = new ProjectCursorMapper();
+
     public ProjectResolverRepository(
             @NonNull ContentResolver contentResolver,
-            @NonNull ProjectCursorMapper cursorMapper,
             @NonNull final ProjectContentValuesMapper contentValuesMapper
     ) {
-        super(contentResolver, cursorMapper, contentValuesMapper);
+        super(contentResolver, contentValuesMapper);
     }
 
     @NonNull
@@ -63,7 +64,7 @@ public class ProjectResolverRepository
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    projects.add(getCursorMapper().transform(cursor));
+                    projects.add(cursorMapper.transform(cursor));
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -81,7 +82,7 @@ public class ProjectResolverRepository
 
         try {
             if (cursor.moveToFirst()) {
-                Project project = getCursorMapper().transform(cursor);
+                Project project = cursorMapper.transform(cursor);
 
                 return Optional.of(project);
             }
