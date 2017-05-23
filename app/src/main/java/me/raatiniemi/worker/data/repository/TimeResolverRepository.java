@@ -75,7 +75,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         return results;
     }
 
-    @Nullable
+    @NonNull
     private Optional<Time> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
         if (isNull(cursor)) {
             return Optional.empty();
