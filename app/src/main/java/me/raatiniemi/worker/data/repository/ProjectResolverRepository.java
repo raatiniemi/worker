@@ -42,9 +42,7 @@ import me.raatiniemi.worker.util.Optional;
 import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
-public class ProjectResolverRepository
-        extends ContentResolverRepository
-        implements ProjectRepository {
+public class ProjectResolverRepository extends ContentResolverRepository implements ProjectRepository {
     private final ProjectCursorMapper cursorMapper = new ProjectCursorMapper();
     private final ProjectContentValuesMapper contentValuesMapper = new ProjectContentValuesMapper();
 

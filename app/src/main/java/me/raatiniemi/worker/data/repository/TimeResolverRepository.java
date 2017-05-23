@@ -57,9 +57,7 @@ import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.data.provider.QueryParameter.appendPageRequest;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
-public class TimeResolverRepository
-        extends ContentResolverRepository
-        implements TimeRepository, TimesheetRepository {
+public class TimeResolverRepository extends ContentResolverRepository implements TimeRepository, TimesheetRepository {
     private static final int TIMESHEET_DATE_CURSOR_INDEX = 0;
     private static final int TIMESHEET_IDS_CURSOR_INDEX = 1;
     private final TimeCursorMapper cursorMapper = new TimeCursorMapper();
