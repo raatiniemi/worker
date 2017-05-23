@@ -26,6 +26,7 @@ import dagger.Provides;
 import me.raatiniemi.worker.data.provider.WorkerDatabase;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
+import me.raatiniemi.worker.data.repository.TimesheetResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
@@ -63,6 +64,6 @@ public class DataModule {
     @Provides
     @Singleton
     TimesheetRepository providesTimesheetRepository() {
-        return new TimeResolverRepository(context.getContentResolver());
+        return new TimesheetResolverRepository(context.getContentResolver());
     }
 }
