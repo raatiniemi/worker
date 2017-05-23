@@ -28,7 +28,7 @@ import me.raatiniemi.worker.data.mapper.CursorMapper;
  * @param <M> Type reference for the cursor mapper used.
  * @param <V> Type reference for the ContentValues mapper used.
  */
-class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesMapper> {
+abstract class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesMapper> {
     /**
      * Content resolver used with the repository.
      */
