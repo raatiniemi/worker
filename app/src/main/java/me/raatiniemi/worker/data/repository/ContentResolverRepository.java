@@ -19,46 +19,22 @@ package me.raatiniemi.worker.data.repository;
 import android.content.ContentResolver;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.mapper.ContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.CursorMapper;
-
 /**
  * Base for repositories using a content a content resolver as data source.
- *
- * @param <M> Type reference for the cursor mapper used.
- * @param <V> Type reference for the ContentValues mapper used.
  */
-class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesMapper> {
+abstract class ContentResolverRepository {
     /**
      * Content resolver used with the repository.
      */
     private final ContentResolver contentResolver;
 
     /**
-     * Cursor mapper used with the repository.
-     */
-    private final M cursorMapper;
-
-    /**
-     * ContentValues mapper used with the repository.
-     */
-    private final V contentValuesMapper;
-
-    /**
      * Constructor.
      *
-     * @param contentResolver     Content resolver used with the repository.
-     * @param cursorMapper        Cursor mapper used with the repository.
-     * @param contentValuesMapper ContentValues mapper used with the repository.
+     * @param contentResolver Content resolver used with the repository.
      */
-    ContentResolverRepository(
-            @NonNull ContentResolver contentResolver,
-            @NonNull M cursorMapper,
-            @NonNull V contentValuesMapper
-    ) {
+    ContentResolverRepository(@NonNull ContentResolver contentResolver) {
         this.contentResolver = contentResolver;
-        this.cursorMapper = cursorMapper;
-        this.contentValuesMapper = contentValuesMapper;
     }
 
     /**
@@ -69,24 +45,5 @@ class ContentResolverRepository<M extends CursorMapper, V extends ContentValuesM
     @NonNull
     ContentResolver getContentResolver() {
         return contentResolver;
-    }
-
-    /**
-     * Get the cursor mapper.
-     *
-     * @return Cursor mapper.
-     */
-    @NonNull
-    M getCursorMapper() {
-        return cursorMapper;
-    }
-
-    /**
-     * Get the ContentValues mapper.
-     *
-     * @return ContentValues mapper.
-     */
-    V getContentValuesMapper() {
-        return contentValuesMapper;
     }
 }

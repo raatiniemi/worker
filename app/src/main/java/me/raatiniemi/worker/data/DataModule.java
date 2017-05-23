@@ -23,13 +23,10 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.provider.WorkerDatabase;
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
+import me.raatiniemi.worker.data.repository.TimesheetResolverRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
@@ -53,32 +50,20 @@ public class DataModule {
     @Provides
     @Singleton
     ProjectRepository providesProjectRepository() {
-        return new ProjectResolverRepository(
-                context.getContentResolver(),
-                new ProjectCursorMapper(),
-                new ProjectContentValuesMapper()
-        );
+        return new ProjectResolverRepository(context.getContentResolver());
     }
 
     @NonNull
     @Provides
     @Singleton
     TimeRepository providesTimeRepository() {
-        return new TimeResolverRepository(
-                context.getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
+        return new TimeResolverRepository(context.getContentResolver());
     }
 
     @NonNull
     @Provides
     @Singleton
     TimesheetRepository providesTimesheetRepository() {
-        return new TimeResolverRepository(
-                context.getContentResolver(),
-                new TimeCursorMapper(),
-                new TimeContentValuesMapper()
-        );
+        return new TimesheetResolverRepository(context.getContentResolver());
     }
 }

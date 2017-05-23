@@ -42,15 +42,12 @@ import me.raatiniemi.worker.util.Optional;
 import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
-public class ProjectResolverRepository
-        extends ContentResolverRepository<ProjectCursorMapper, ProjectContentValuesMapper>
-        implements ProjectRepository {
-    public ProjectResolverRepository(
-            @NonNull ContentResolver contentResolver,
-            @NonNull ProjectCursorMapper cursorMapper,
-            @NonNull final ProjectContentValuesMapper contentValuesMapper
-    ) {
-        super(contentResolver, cursorMapper, contentValuesMapper);
+public class ProjectResolverRepository extends ContentResolverRepository implements ProjectRepository {
+    private final ProjectCursorMapper cursorMapper = new ProjectCursorMapper();
+    private final ProjectContentValuesMapper contentValuesMapper = new ProjectContentValuesMapper();
+
+    public ProjectResolverRepository(@NonNull ContentResolver contentResolver) {
+        super(contentResolver);
     }
 
     @NonNull
@@ -63,7 +60,7 @@ public class ProjectResolverRepository
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    projects.add(getCursorMapper().transform(cursor));
+                    projects.add(cursorMapper.transform(cursor));
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -81,7 +78,7 @@ public class ProjectResolverRepository
 
         try {
             if (cursor.moveToFirst()) {
-                Project project = getCursorMapper().transform(cursor);
+                Project project = cursorMapper.transform(cursor);
 
                 return Optional.of(project);
             }
@@ -137,7 +134,7 @@ public class ProjectResolverRepository
 
         final Uri uri = getContentResolver().insert(
                 ProjectContract.getStreamUri(),
-                getContentValuesMapper().transform(project)
+                contentValuesMapper.transform(project)
         );
         return get(Long.parseLong(ProjectContract.getItemId(uri)));
     }

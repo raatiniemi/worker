@@ -26,8 +26,6 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.repository.TimeResolverRepository;
 import me.raatiniemi.worker.data.service.ongoing.ClockOutService;
 import me.raatiniemi.worker.data.service.ongoing.PauseService;
@@ -102,11 +100,7 @@ public class PauseNotification extends OngoingNotification {
             // TODO: Implement proper dependency injection.
             // Adding a `null`-check to the application instance assignment is causing the
             // `ReloadNotificationService`-test to fail due to invalid thread for context.
-            repository = new TimeResolverRepository(
-                    getContext().getContentResolver(),
-                    new TimeCursorMapper(),
-                    new TimeContentValuesMapper()
-            );
+            repository = new TimeResolverRepository(getContext().getContentResolver());
         }
 
         return repository;

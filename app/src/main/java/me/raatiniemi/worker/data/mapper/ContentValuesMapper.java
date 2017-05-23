@@ -26,7 +26,7 @@ import me.raatiniemi.worker.domain.mapper.DataMapper;
  *
  * @param <T> Type reference for domain entity to transform.
  */
-public interface ContentValuesMapper<T> extends DataMapper<ContentValues, T> {
+interface ContentValuesMapper<T> extends DataMapper<ContentValues, T> {
     /**
      * Perform the transformation.
      *
