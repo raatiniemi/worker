@@ -120,11 +120,18 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        String limit = parseLimitFromUri(uri);
-
-        return buildSelection(uri)
-                .where(selection, selectionArgs)
-                .query(getOpenHelper().getReadableDatabase(), projection, sortOrder, limit);
+        Selection select = buildSelection(uri, selection, selectionArgs);
+        return getOpenHelper().getReadableDatabase()
+                .query(
+                        select.getTable(),
+                        projection,
+                        select.getSelection(),
+                        select.getSelectionArgs(),
+                        select.getGroupBy(),
+                        null,
+                        sortOrder,
+                        parseLimitFromUri(uri)
+                );
     }
 
     @Nullable
@@ -177,16 +184,25 @@ public class WorkerProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return buildSelection(uri)
-                .where(selection, selectionArgs)
-                .update(getOpenHelper().getWritableDatabase(), values);
+        Selection builder = buildSelection(uri, selection, selectionArgs);
+        return getOpenHelper().getWritableDatabase()
+                .update(
+                        builder.getTable(),
+                        values,
+                        builder.getSelection(),
+                        builder.getSelectionArgs()
+                );
     }
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
-        return buildSelection(uri)
-                .where(selection, selectionArgs)
-                .delete(getOpenHelper().getWritableDatabase());
+        Selection select = buildSelection(uri, selection, selectionArgs);
+        return getOpenHelper().getWritableDatabase()
+                .delete(
+                        select.getTable(),
+                        select.getSelection(),
+                        select.getSelectionArgs()
+                );
     }
 
     @Override
@@ -210,14 +226,8 @@ public class WorkerProvider extends ContentProvider {
         }
     }
 
-    /**
-     * Build the selection based on the URI.
-     *
-     * @param uri URI for building the selection.
-     * @return Selection ready to be queried.
-     */
-    private static SelectionBuilder buildSelection(Uri uri) {
-        SelectionBuilder builder;
+    private static Selection buildSelection(Uri uri, String selection, String[] selectionArgs) {
+        Selection.Builder builder;
 
         final int match = uriMatcher.match(uri);
         switch (match) {
@@ -242,15 +252,15 @@ public class WorkerProvider extends ContentProvider {
                 );
         }
 
-        return builder;
+        return builder.where(selection, selectionArgs).build();
     }
 
     private static class ProjectsSelection {
         private ProjectsSelection() {
         }
 
-        private static SelectionBuilder build() {
-            return new SelectionBuilder()
+        private static Selection.Builder build() {
+            return new Selection.Builder()
                     .table(Tables.PROJECT);
         }
     }
@@ -259,8 +269,8 @@ public class WorkerProvider extends ContentProvider {
         private ProjectSelection() {
         }
 
-        private static SelectionBuilder build(Uri uri) {
-            return new SelectionBuilder()
+        private static Selection.Builder build(Uri uri) {
+            return new Selection.Builder()
                     .table(Tables.PROJECT)
                     .where(
                             BaseColumns._ID + "=?",
@@ -273,8 +283,8 @@ public class WorkerProvider extends ContentProvider {
         private ProjectTimeSelection() {
         }
 
-        private static SelectionBuilder build(Uri uri) {
-            return new SelectionBuilder()
+        private static Selection.Builder build(Uri uri) {
+            return new Selection.Builder()
                     .table(Tables.TIME)
                     .where(
                             TimeColumns.PROJECT_ID + "=?",
@@ -287,8 +297,8 @@ public class WorkerProvider extends ContentProvider {
         private ProjectTimesheetSelection() {
         }
 
-        private static SelectionBuilder build(Uri uri) {
-            return new SelectionBuilder()
+        private static Selection.Builder build(Uri uri) {
+            return new Selection.Builder()
                     .table(Tables.TIME)
                     .where(
                             TimeColumns.PROJECT_ID + "=?",
@@ -302,8 +312,8 @@ public class WorkerProvider extends ContentProvider {
         private TimeSelection() {
         }
 
-        private static SelectionBuilder build(Uri uri) {
-            return new SelectionBuilder()
+        private static Selection.Builder build(Uri uri) {
+            return new Selection.Builder()
                     .table(Tables.TIME)
                     .where(
                             BaseColumns._ID + "=?",
