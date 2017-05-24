@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.util;
+package me.raatiniemi.worker.data.provider;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -27,7 +27,7 @@ import java.util.List;
 
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
-public class SelectionBuilder {
+class SelectionBuilder {
     private String table;
 
     private final StringBuilder selection = new StringBuilder();
@@ -36,12 +36,12 @@ public class SelectionBuilder {
 
     private String groupBy;
 
-    public SelectionBuilder table(String table) {
+    SelectionBuilder table(String table) {
         this.table = table;
         return this;
     }
 
-    public SelectionBuilder where(String selection, String... selectionArgs) {
+    SelectionBuilder where(String selection, String... selectionArgs) {
         // If the selection is empty, we can continue.
         if (TextUtils.isEmpty(selection)) {
             return this;
@@ -70,12 +70,12 @@ public class SelectionBuilder {
         return selectionArgs.toArray(new String[selectionArgs.size()]);
     }
 
-    public SelectionBuilder groupBy(String groupBy) {
+    SelectionBuilder groupBy(String groupBy) {
         this.groupBy = groupBy;
         return this;
     }
 
-    public Cursor query(SQLiteDatabase db, String[] columns, String orderBy, String limit) {
+    Cursor query(SQLiteDatabase db, String[] columns, String orderBy, String limit) {
         return db.query(
                 table,
                 columns,
@@ -88,7 +88,7 @@ public class SelectionBuilder {
         );
     }
 
-    public int update(SQLiteDatabase db, ContentValues values) {
+    int update(SQLiteDatabase db, ContentValues values) {
         return db.update(
                 table,
                 values,
@@ -97,7 +97,7 @@ public class SelectionBuilder {
         );
     }
 
-    public int delete(SQLiteDatabase db) {
+    int delete(SQLiteDatabase db) {
         return db.delete(table, selection(), selectionArgs());
     }
 }
