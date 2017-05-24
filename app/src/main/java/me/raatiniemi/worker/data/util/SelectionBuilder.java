@@ -36,8 +36,6 @@ public class SelectionBuilder {
 
     private String groupBy;
 
-    private String having;
-
     public SelectionBuilder table(String table) {
         this.table = table;
         return this;
@@ -77,15 +75,6 @@ public class SelectionBuilder {
         return this;
     }
 
-    public SelectionBuilder having(String having) {
-        this.having = having;
-        return this;
-    }
-
-    public Cursor query(SQLiteDatabase db, String[] columns, String orderBy) {
-        return query(db, columns, orderBy, null);
-    }
-
     public Cursor query(SQLiteDatabase db, String[] columns, String orderBy, String limit) {
         return db.query(
                 table,
@@ -93,7 +82,7 @@ public class SelectionBuilder {
                 selection(),
                 selectionArgs(),
                 groupBy,
-                having,
+                null,
                 orderBy,
                 limit
         );
