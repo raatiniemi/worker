@@ -34,8 +34,8 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.util.Optional;
 import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.util.Optional;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
