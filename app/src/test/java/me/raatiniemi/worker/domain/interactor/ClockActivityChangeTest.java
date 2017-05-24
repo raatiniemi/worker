@@ -24,7 +24,6 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
