@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.provider;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class ProviderContract {
+public final class ProviderContract {
     public static final String AUTHORITY = "me.raatiniemi.worker";
     private static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
 
@@ -54,7 +54,7 @@ public class ProviderContract {
         }
     }
 
-    public static class ProjectContract {
+    public final static class ProjectContract {
         public static final String ORDER_BY_TIME = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
         public static final String ORDER_BY_TIMESHEET = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
         public static final String ORDER_BY = BaseColumns._ID + " ASC";
@@ -104,7 +104,7 @@ public class ProviderContract {
         }
     }
 
-    public static class TimeContract {
+    public final static class TimeContract {
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
 
         static final String STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
