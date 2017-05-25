@@ -25,13 +25,13 @@ import java.util.Date;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
-public class TimesheetGroupItemTest {
+public class TimesheetGroupTest {
     @Test
     public void getId() {
         Date date = new Date();
         long days = date.getTime() / 1000 / 60 / 60 / 24;
 
-        TimesheetGroupItem groupItem = TimesheetGroupItem.build(date);
+        TimesheetGroup groupItem = TimesheetGroup.build(date);
 
         assertEquals(days, groupItem.getId());
     }

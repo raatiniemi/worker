@@ -33,7 +33,7 @@ import me.raatiniemi.worker.factory.TimeFactory;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupItemIsRegisteredTest {
+public class TimesheetGroupIsRegisteredTest {
     private static final Time NOT_REGISTERED_TIME = TimeFactory.builder()
             .build();
     private final static Time REGISTERED_TIME = TimeFactory.builder()
@@ -41,9 +41,9 @@ public class TimesheetGroupItemIsRegisteredTest {
             .build();
 
     private final boolean expected;
-    private final TimesheetGroupItem item;
+    private final TimesheetGroup item;
 
-    public TimesheetGroupItemIsRegisteredTest(
+    public TimesheetGroupIsRegisteredTest(
             boolean expected,
             Time... times
     ) {
@@ -51,7 +51,7 @@ public class TimesheetGroupItemIsRegisteredTest {
 
         TreeSet<Time> items = new TreeSet<>(new TimesheetItemComparator());
         items.addAll(Arrays.asList(times));
-        item = TimesheetGroupItem.build(new Date(), items);
+        item = TimesheetGroup.build(new Date(), items);
     }
 
     @Parameters

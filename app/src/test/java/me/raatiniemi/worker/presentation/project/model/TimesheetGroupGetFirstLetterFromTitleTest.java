@@ -29,13 +29,13 @@ import java.util.GregorianCalendar;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupItemGetFirstLetterFromTitleTest {
+public class TimesheetGroupGetFirstLetterFromTitleTest {
     private final String expected;
-    private final TimesheetGroupItem item;
+    private final TimesheetGroup item;
 
-    public TimesheetGroupItemGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
+    public TimesheetGroupGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
-        item = TimesheetGroupItem.build(calendar.getTime());
+        item = TimesheetGroup.build(calendar.getTime());
     }
 
     @Parameters

@@ -29,11 +29,11 @@ import java.util.GregorianCalendar;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupItemGetTitleTest {
+public class TimesheetGroupGetTitleTest {
     private final String expected;
     private final Calendar calendar;
 
-    public TimesheetGroupItemGetTitleTest(String expected, Calendar calendar) {
+    public TimesheetGroupGetTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
         this.calendar = calendar;
     }
@@ -52,7 +52,7 @@ public class TimesheetGroupItemGetTitleTest {
 
     @Test
     public void getTitle() {
-        TimesheetGroupItem groupItem = TimesheetGroupItem.build(calendar.getTime());
+        TimesheetGroup groupItem = TimesheetGroup.build(calendar.getTime());
 
         assertEquals(expected, groupItem.getTitle());
     }

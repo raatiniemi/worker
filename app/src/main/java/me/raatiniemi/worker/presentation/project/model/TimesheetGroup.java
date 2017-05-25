@@ -30,7 +30,7 @@ import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public class TimesheetGroupItem implements ExpandableItem<TimesheetItem> {
+public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     private static final String LANGUAGE_TAG = "en_US";
     private static final DateIntervalFormat intervalFormat;
 
@@ -43,25 +43,25 @@ public class TimesheetGroupItem implements ExpandableItem<TimesheetItem> {
     private final List<TimesheetItem> items;
     private final long daysSinceUnixEpoch;
 
-    private TimesheetGroupItem(Date date, List<TimesheetItem> items) {
+    private TimesheetGroup(Date date, List<TimesheetItem> items) {
         this.date = date;
         this.items = items;
 
         daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(date);
     }
 
-    public static TimesheetGroupItem build(Date date) {
+    public static TimesheetGroup build(Date date) {
         return build(date, new TreeSet<>());
     }
 
-    public static TimesheetGroupItem build(Date date, SortedSet<Time> times) {
+    public static TimesheetGroup build(Date date, SortedSet<Time> times) {
         List<TimesheetItem> items = new ArrayList<>();
         //noinspection Convert2streamapi
         for (Time time : times) {
             items.add(new TimesheetItem(time));
         }
 
-        return new TimesheetGroupItem(date, items);
+        return new TimesheetGroup(date, items);
     }
 
     private static long calculateDaysSinceUnixEpoch(Date date) {

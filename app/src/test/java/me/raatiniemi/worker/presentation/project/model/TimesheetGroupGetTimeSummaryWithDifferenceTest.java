@@ -33,11 +33,11 @@ import me.raatiniemi.worker.factory.TimeFactory;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupItemGetTimeSummaryWithDifferenceTest {
+public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
     private final String expected;
-    private final TimesheetGroupItem item;
+    private final TimesheetGroup item;
 
-    public TimesheetGroupItemGetTimeSummaryWithDifferenceTest(
+    public TimesheetGroupGetTimeSummaryWithDifferenceTest(
             String expected,
             Time... times
     ) {
@@ -45,7 +45,7 @@ public class TimesheetGroupItemGetTimeSummaryWithDifferenceTest {
 
         TreeSet<Time> items = new TreeSet<>(new TimesheetItemComparator());
         items.addAll(Arrays.asList(times));
-        item = TimesheetGroupItem.build(new Date(), items);
+        item = TimesheetGroup.build(new Date(), items);
     }
 
     @Parameters

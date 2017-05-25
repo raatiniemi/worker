@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
@@ -215,8 +215,8 @@ public class TimesheetFragment extends BaseFragment
     }
 
     @Override
-    public void add(@NonNull List<TimesheetGroupItem> groupItems) {
-        adapter.add(groupItems);
+    public void add(@NonNull List<TimesheetGroup> groups) {
+        adapter.add(groups);
     }
 
     @Override

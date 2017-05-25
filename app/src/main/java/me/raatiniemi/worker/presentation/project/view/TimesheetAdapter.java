@@ -28,7 +28,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.util.SelectionManager;
 import me.raatiniemi.worker.presentation.util.SelectionManagerAdapterDecorator;
@@ -37,7 +37,7 @@ import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
 class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetItem,
-        TimesheetGroupItem,
+        TimesheetGroup,
         GroupItemViewHolder,
         ChildItemViewHolder
         > {
@@ -78,7 +78,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindGroupViewHolder(GroupItemViewHolder vh, int group, int viewType) {
-        TimesheetGroupItem groupItem = get(group);
+        TimesheetGroup groupItem = get(group);
 
         vh.title.setText(groupItem.getTitle());
         vh.summarize.setText(groupItem.getTimeSummaryWithDifference());
@@ -178,7 +178,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getGroupId(int group) {
-        TimesheetGroupItem groupItem = get(group);
+        TimesheetGroup groupItem = get(group);
         return groupItem.getId();
     }
 

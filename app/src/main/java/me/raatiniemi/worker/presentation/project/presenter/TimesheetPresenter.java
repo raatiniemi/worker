@@ -34,7 +34,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
+import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.RxUtil;
@@ -116,21 +116,21 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     );
                 })
                 .map(result -> {
-                    List<TimesheetGroupItem> groupItems = new ArrayList<>();
+                    List<TimesheetGroup> groups = new ArrayList<>();
 
                     //noinspection Convert2streamapi
                     for (Map.Entry<Date, SortedSet<Time>> date : result.entrySet()) {
-                        groupItems.add(TimesheetGroupItem.build(date.getKey(), date.getValue()));
+                        groups.add(TimesheetGroup.build(date.getKey(), date.getValue()));
                     }
 
-                    return groupItems;
+                    return groups;
                 })
                 .compose(RxUtil.applySchedulers())
                 .subscribe(
-                        groupItems -> {
+                        groups -> {
                             Timber.d("getTimesheet onNext");
 
-                            performWithView(view -> view.add(groupItems));
+                            performWithView(view -> view.add(groups));
                         },
                         e -> {
                             Timber.d("getTimesheet onError");

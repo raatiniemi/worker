@@ -35,17 +35,17 @@ import me.raatiniemi.worker.factory.TimeFactory;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupItemBuildItemResultsTest {
+public class TimesheetGroupItemBuildResultsTest {
     private final String message;
     private final List<TimeInAdapterResult> expected;
     private final int groupIndex;
-    private final TimesheetGroupItem groupItem;
+    private final TimesheetGroup groupItem;
 
-    public TimesheetGroupItemBuildItemResultsTest(
+    public TimesheetGroupItemBuildResultsTest(
             String message,
             TimeInAdapterResult[] expected,
             int groupIndex,
-            TimesheetGroupItem groupItem
+            TimesheetGroup groupItem
     ) {
         this.message = message;
         this.expected = Arrays.asList(expected);
@@ -53,9 +53,9 @@ public class TimesheetGroupItemBuildItemResultsTest {
         this.groupItem = groupItem;
     }
 
-    private static TimesheetGroupItem buildTimesheetGroupWithNumberOfItems(int numberOfItems) {
+    private static TimesheetGroup buildTimesheetGroupWithNumberOfItems(int numberOfItems) {
         if (0 == numberOfItems) {
-            return TimesheetGroupItem.build(new Date());
+            return TimesheetGroup.build(new Date());
         }
 
         SortedSet<Time> times = new TreeSet<>(new TimesheetItemComparator());
@@ -63,7 +63,7 @@ public class TimesheetGroupItemBuildItemResultsTest {
             times.add(TimeFactory.builder().startInMilliseconds(i).build());
         }
 
-        return TimesheetGroupItem.build(new Date(), times);
+        return TimesheetGroup.build(new Date(), times);
     }
 
     @Parameters
