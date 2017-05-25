@@ -36,9 +36,13 @@ public class TimesheetChildItem {
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Time time;
+    private final long calculatedIntervalInMilliseconds;
 
     public TimesheetChildItem(Time time) {
         this.time = time;
+
+        CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
+        calculatedIntervalInMilliseconds = calculatedTime.asMilliseconds();
     }
 
     private static Date buildDateFromMilliseconds(long milliseconds) {
@@ -91,8 +95,7 @@ public class TimesheetChildItem {
         return time.isRegistered();
     }
 
-    long calculateIntervalInMilliseconds() {
-        CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
-        return calculatedTime.asMilliseconds();
+    long getCalculateIntervalInMilliseconds() {
+        return calculatedIntervalInMilliseconds;
     }
 }

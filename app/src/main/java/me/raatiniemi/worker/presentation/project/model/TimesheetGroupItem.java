@@ -147,7 +147,7 @@ public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
 
         for (TimesheetChildItem childItem : items) {
             interval += calculateFractionFromMilliseconds(
-                    childItem.calculateIntervalInMilliseconds()
+                    childItem.getCalculateIntervalInMilliseconds()
             );
         }
 
