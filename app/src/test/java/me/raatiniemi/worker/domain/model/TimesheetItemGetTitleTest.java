@@ -22,23 +22,26 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.model.TimesheetChildItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetChildItemIsRegisteredTest {
-    private final String message;
-    private final boolean expected;
-    private final Time time;
+public class TimesheetItemGetTitleTest {
+    private static final Calendar START = new GregorianCalendar(2016, 1, 28, 8, 0);
+    private static final Calendar STOP = new GregorianCalendar(2016, 1, 28, 11, 30);
 
-    public TimesheetChildItemIsRegisteredTest(
+    private String message;
+    private String expected;
+    private Time time;
+
+    public TimesheetItemGetTitleTest(
             String message,
-            boolean expected,
+            String expected,
             Time time
     ) {
         this.message = message;
@@ -51,16 +54,18 @@ public class TimesheetChildItemIsRegisteredTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "is registered",
-                                Boolean.TRUE,
+                                "active time",
+                                "08:00",
                                 TimeFactory.builder()
-                                        .register()
+                                        .startInMilliseconds(START.getTimeInMillis())
                                         .build()
                         },
                         {
-                                "is not registered",
-                                Boolean.FALSE,
+                                "inactive time",
+                                "08:00 - 11:30",
                                 TimeFactory.builder()
+                                        .startInMilliseconds(START.getTimeInMillis())
+                                        .stopInMilliseconds(STOP.getTimeInMillis())
                                         .build()
                         }
                 }
@@ -68,9 +73,9 @@ public class TimesheetChildItemIsRegisteredTest {
     }
 
     @Test
-    public void isRegistered() {
-        TimesheetChildItem childItem = new TimesheetChildItem(time);
+    public void getTitle() {
+        TimesheetItem item = new TimesheetItem(time);
 
-        assertTrue(message, expected == childItem.isRegistered());
+        assertEquals(message, expected, item.getTitle());
     }
 }

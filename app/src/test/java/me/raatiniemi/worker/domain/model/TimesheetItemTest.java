@@ -20,21 +20,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.model.TimesheetChildItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
-public class TimesheetChildItemTest {
+public class TimesheetItemTest {
     @Test
     public void asTime() {
         Time time = TimeFactory.builder()
                 .build();
-        TimesheetChildItem childItem = new TimesheetChildItem(time);
+        TimesheetItem item = new TimesheetItem(time);
 
-        assertTrue(time == childItem.asTime());
+        assertTrue(time == item.asTime());
     }
 
     @Test
@@ -42,8 +40,8 @@ public class TimesheetChildItemTest {
         Time time = TimeFactory.builder()
                 .id(1L)
                 .build();
-        TimesheetChildItem childItem = new TimesheetChildItem(time);
+        TimesheetItem item = new TimesheetItem(time);
 
-        assertTrue(time.getId() == childItem.getId());
+        assertTrue(time.getId() == item.getId());
     }
 }

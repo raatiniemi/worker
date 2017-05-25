@@ -24,18 +24,16 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.model.TimesheetChildItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetChildItemGetTimeSummaryTest {
+public class TimesheetItemGetTimeSummaryTest {
     private final String expected;
     private final Time time;
 
-    public TimesheetChildItemGetTimeSummaryTest(String expected, Time time) {
+    public TimesheetItemGetTimeSummaryTest(String expected, Time time) {
         this.expected = expected;
         this.time = time;
     }
@@ -62,8 +60,8 @@ public class TimesheetChildItemGetTimeSummaryTest {
 
     @Test
     public void getTimeSummary() {
-        TimesheetChildItem childItem = new TimesheetChildItem(time);
+        TimesheetItem item = new TimesheetItem(time);
 
-        assertEquals(expected, childItem.getTimeSummary());
+        assertEquals(expected, item.getTimeSummary());
     }
 }

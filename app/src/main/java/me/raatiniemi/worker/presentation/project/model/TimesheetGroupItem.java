@@ -25,12 +25,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.model.TimesheetChildItem;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
+public class TimesheetGroupItem implements ExpandableItem<TimesheetItem> {
     private static final String LANGUAGE_TAG = "en_US";
     private static final DateIntervalFormat intervalFormat;
 
@@ -40,10 +40,10 @@ public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG));
     private final Date date;
-    private final List<TimesheetChildItem> items;
+    private final List<TimesheetItem> items;
     private final long daysSinceUnixEpoch;
 
-    private TimesheetGroupItem(Date date, List<TimesheetChildItem> items) {
+    private TimesheetGroupItem(Date date, List<TimesheetItem> items) {
         this.date = date;
         this.items = items;
 
@@ -55,13 +55,13 @@ public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
     }
 
     public static TimesheetGroupItem build(Date date, SortedSet<Time> times) {
-        List<TimesheetChildItem> children = new ArrayList<>();
+        List<TimesheetItem> items = new ArrayList<>();
         //noinspection Convert2streamapi
         for (Time time : times) {
-            children.add(new TimesheetChildItem(time));
+            items.add(new TimesheetItem(time));
         }
 
-        return new TimesheetGroupItem(date, children);
+        return new TimesheetGroupItem(date, items);
     }
 
     private static long calculateDaysSinceUnixEpoch(Date date) {
@@ -118,8 +118,8 @@ public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
     public boolean isRegistered() {
         boolean registered = true;
 
-        for (TimesheetChildItem childItem : items) {
-            if (!childItem.isRegistered()) {
+        for (TimesheetItem item : items) {
+            if (!item.isRegistered()) {
                 registered = false;
                 break;
             }
@@ -146,9 +146,9 @@ public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
     private float calculateTimeIntervalSummary() {
         float interval = 0;
 
-        for (TimesheetChildItem childItem : items) {
+        for (TimesheetItem item : items) {
             interval += calculateFractionFromMilliseconds(
-                    childItem.getCalculateIntervalInMilliseconds()
+                    item.getCalculateIntervalInMilliseconds()
             );
         }
 
@@ -160,12 +160,12 @@ public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
 
         int childIndex = 0;
 
-        for (TimesheetChildItem childItem : items) {
+        for (TimesheetItem item : items) {
             results.add(
                     TimeInAdapterResult.build(
                             groupIndex,
                             childIndex,
-                            childItem.asTime()
+                            item.asTime()
                     )
             );
 
@@ -176,17 +176,17 @@ public class TimesheetGroupItem implements ExpandableItem<TimesheetChildItem> {
     }
 
     @Override
-    public TimesheetChildItem get(int index) {
+    public TimesheetItem get(int index) {
         return items.get(index);
     }
 
     @Override
-    public void set(int index, TimesheetChildItem item) {
+    public void set(int index, TimesheetItem item) {
         items.set(index, item);
     }
 
     @Override
-    public TimesheetChildItem remove(int index) {
+    public TimesheetItem remove(int index) {
         return items.remove(index);
     }
 

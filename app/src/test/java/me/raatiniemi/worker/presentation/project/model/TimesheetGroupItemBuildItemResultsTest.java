@@ -53,13 +53,13 @@ public class TimesheetGroupItemBuildItemResultsTest {
         this.groupItem = groupItem;
     }
 
-    private static TimesheetGroupItem buildTimesheetGroupWithNumberOfChildItems(int numberOfChildItems) {
-        if (0 == numberOfChildItems) {
+    private static TimesheetGroupItem buildTimesheetGroupWithNumberOfItems(int numberOfItems) {
+        if (0 == numberOfItems) {
             return TimesheetGroupItem.build(new Date());
         }
 
         SortedSet<Time> times = new TreeSet<>(new TimesheetItemComparator());
-        for (long i = 0; i < numberOfChildItems; i++) {
+        for (long i = 0; i < numberOfItems; i++) {
             times.add(TimeFactory.builder().startInMilliseconds(i).build());
         }
 
@@ -75,7 +75,7 @@ public class TimesheetGroupItemBuildItemResultsTest {
                                 new TimeInAdapterResult[]{
                                 },
                                 0,
-                                buildTimesheetGroupWithNumberOfChildItems(0)
+                                buildTimesheetGroupWithNumberOfItems(0)
                         },
                         {
                                 "With one item",
@@ -83,7 +83,7 @@ public class TimesheetGroupItemBuildItemResultsTest {
                                         TimeInAdapterResult.build(1, 0, TimeFactory.builder().startInMilliseconds(0L).build())
                                 },
                                 1,
-                                buildTimesheetGroupWithNumberOfChildItems(1)
+                                buildTimesheetGroupWithNumberOfItems(1)
                         },
                         {
                                 "With multiple items",
@@ -96,7 +96,7 @@ public class TimesheetGroupItemBuildItemResultsTest {
                                         TimeInAdapterResult.build(2, 5, TimeFactory.builder().startInMilliseconds(0L).build()),
                                 },
                                 2,
-                                buildTimesheetGroupWithNumberOfChildItems(6)
+                                buildTimesheetGroupWithNumberOfItems(6)
                         }
                 }
         );

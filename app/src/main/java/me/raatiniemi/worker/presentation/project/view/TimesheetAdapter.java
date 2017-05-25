@@ -26,7 +26,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.model.TimesheetChildItem;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
@@ -36,7 +36,7 @@ import me.raatiniemi.worker.presentation.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
 
 class TimesheetAdapter extends ExpandableListAdapter<
-        TimesheetChildItem,
+        TimesheetItem,
         TimesheetGroupItem,
         GroupItemViewHolder,
         ChildItemViewHolder
@@ -122,8 +122,8 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindChildViewHolder(ChildItemViewHolder vh, final int group, final int child, int viewType) {
-        final TimesheetChildItem childItem = get(group, child);
-        final Time time = childItem.asTime();
+        final TimesheetItem item = get(group, child);
+        final Time time = item.asTime();
 
         final TimeInAdapterResult result = TimeInAdapterResult.build(group, child, time);
 
@@ -159,11 +159,11 @@ class TimesheetAdapter extends ExpandableListAdapter<
         // it. The selected background color should take precedence.
         vh.itemView.setActivated(false);
         if (!vh.itemView.isSelected()) {
-            vh.itemView.setActivated(childItem.isRegistered());
+            vh.itemView.setActivated(item.isRegistered());
         }
 
-        vh.title.setText(childItem.getTitle());
-        vh.summarize.setText(childItem.getTimeSummary());
+        vh.title.setText(item.getTitle());
+        vh.summarize.setText(item.getTimeSummary());
     }
 
     @Override
@@ -184,8 +184,8 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getChildId(int group, int child) {
-        TimesheetChildItem childItem = get(group, child);
-        return childItem.getId();
+        TimesheetItem item = get(group, child);
+        return item.getId();
     }
 
     @Override
@@ -209,7 +209,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
             set(
                     result.getGroup(),
                     result.getChild(),
-                    new TimesheetChildItem(result.getTime())
+                    new TimesheetItem(result.getTime())
             );
         }
     }

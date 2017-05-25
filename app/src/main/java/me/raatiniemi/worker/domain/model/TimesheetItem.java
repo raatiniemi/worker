@@ -24,7 +24,7 @@ import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public class TimesheetChildItem {
+public class TimesheetItem {
     private static final String TIME_SEPARATOR = " - ";
     private static final DateIntervalFormat intervalFormat;
 
@@ -36,7 +36,7 @@ public class TimesheetChildItem {
     private final Time time;
     private final long calculatedIntervalInMilliseconds;
 
-    public TimesheetChildItem(Time time) {
+    public TimesheetItem(Time time) {
         this.time = time;
 
         CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
