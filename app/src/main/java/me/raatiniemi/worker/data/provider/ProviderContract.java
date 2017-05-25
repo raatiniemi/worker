@@ -56,13 +56,10 @@ public final class ProviderContract {
 
     public final static class Project {
         public static final String ORDER_BY_TIME = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
-        public static final String ORDER_BY_TIMESHEET = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
         public static final String ORDER_BY = BaseColumns._ID + " ASC";
 
         static final String STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
         static final String ITEM_TYPE = "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
-
-        static final String GROUP_BY_TIMESHEET = "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
@@ -76,13 +73,6 @@ public final class ProviderContract {
             };
         }
 
-        public static String[] getTimesheetColumns() {
-            return new String[]{
-                    "MIN(" + TimeColumns.START + ") AS date",
-                    "GROUP_CONCAT(" + BaseColumns._ID + ")"
-            };
-        }
-
         public static Uri getStreamUri() {
             return STREAM_URI;
         }
@@ -93,10 +83,6 @@ public final class ProviderContract {
 
         public static Uri getItemTimeUri(final long id) {
             return Uri.withAppendedPath(getItemUri(id), PATH_TIME);
-        }
-
-        public static Uri getItemTimesheetUri(final long id) {
-            return Uri.withAppendedPath(getItemUri(id), PATH_TIMESHEET);
         }
 
         public static String getItemId(Uri uri) {
@@ -133,6 +119,23 @@ public final class ProviderContract {
 
         public static String getItemId(Uri uri) {
             return uri.getPathSegments().get(1);
+        }
+    }
+
+    public final static class Timesheet {
+        public static final String ORDER_BY = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
+
+        static final String GROUP_BY = "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
+
+        public static String[] getTimesheetColumns() {
+            return new String[]{
+                    "MIN(" + TimeColumns.START + ") AS date",
+                    "GROUP_CONCAT(" + BaseColumns._ID + ")"
+            };
+        }
+
+        public static Uri getItemTimesheetUri(final long id) {
+            return Uri.withAppendedPath(Project.getItemUri(id), PATH_TIMESHEET);
         }
     }
 }

@@ -142,13 +142,13 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     public Map<Date, Set<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
-        final Uri uri = ProviderContract.Project.getItemTimesheetUri(projectId);
+        final Uri uri = ProviderContract.Timesheet.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
-                ProviderContract.Project.getTimesheetColumns(),
+                ProviderContract.Timesheet.getTimesheetColumns(),
                 null,
                 null,
-                ProviderContract.Project.ORDER_BY_TIMESHEET
+                ProviderContract.Timesheet.ORDER_BY
         );
         return fetchTimesheet(cursor);
     }
@@ -157,13 +157,13 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     public Map<Date, Set<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
-        final Uri uri = ProviderContract.Project.getItemTimesheetUri(projectId);
+        final Uri uri = ProviderContract.Timesheet.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
-                ProviderContract.Project.getTimesheetColumns(),
+                ProviderContract.Timesheet.getTimesheetColumns(),
                 ProviderContract.TimeColumns.REGISTERED + " = 0",
                 null,
-                ProviderContract.Project.ORDER_BY_TIMESHEET
+                ProviderContract.Timesheet.ORDER_BY
         );
         return fetchTimesheet(cursor);
     }

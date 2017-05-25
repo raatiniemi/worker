@@ -302,7 +302,7 @@ public class WorkerProvider extends ContentProvider {
                             TimeColumns.PROJECT_ID + "=?",
                             ProviderContract.Project.getItemId(uri)
                     )
-                    .groupBy(ProviderContract.Project.GROUP_BY_TIMESHEET);
+                    .groupBy(ProviderContract.Timesheet.GROUP_BY);
         }
     }
 
