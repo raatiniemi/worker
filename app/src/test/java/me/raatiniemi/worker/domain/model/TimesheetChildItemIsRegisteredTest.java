@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project.model;
+package me.raatiniemi.worker.domain.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,27 +22,23 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetChildItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
-public class TimesheetChildItemGetTitleTest {
-    private static final Calendar START = new GregorianCalendar(2016, 1, 28, 8, 0);
-    private static final Calendar STOP = new GregorianCalendar(2016, 1, 28, 11, 30);
+public class TimesheetChildItemIsRegisteredTest {
+    private final String message;
+    private final boolean expected;
+    private final Time time;
 
-    private String message;
-    private String expected;
-    private Time time;
-
-    public TimesheetChildItemGetTitleTest(
+    public TimesheetChildItemIsRegisteredTest(
             String message,
-            String expected,
+            boolean expected,
             Time time
     ) {
         this.message = message;
@@ -55,18 +51,16 @@ public class TimesheetChildItemGetTitleTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "active time",
-                                "08:00",
+                                "is registered",
+                                Boolean.TRUE,
                                 TimeFactory.builder()
-                                        .startInMilliseconds(START.getTimeInMillis())
+                                        .register()
                                         .build()
                         },
                         {
-                                "inactive time",
-                                "08:00 - 11:30",
+                                "is not registered",
+                                Boolean.FALSE,
                                 TimeFactory.builder()
-                                        .startInMilliseconds(START.getTimeInMillis())
-                                        .stopInMilliseconds(STOP.getTimeInMillis())
                                         .build()
                         }
                 }
@@ -74,9 +68,9 @@ public class TimesheetChildItemGetTitleTest {
     }
 
     @Test
-    public void getTitle() {
+    public void isRegistered() {
         TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertEquals(message, expected, childItem.getTitle());
+        assertTrue(message, expected == childItem.isRegistered());
     }
 }

@@ -14,13 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project.model;
+package me.raatiniemi.worker.domain.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetChildItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertTrue;

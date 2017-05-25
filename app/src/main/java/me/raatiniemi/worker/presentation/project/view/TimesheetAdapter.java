@@ -26,8 +26,8 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetChildItem;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetChildItem;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroupItem;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.util.SelectionManager;

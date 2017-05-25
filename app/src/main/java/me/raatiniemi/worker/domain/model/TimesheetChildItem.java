@@ -14,14 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project.model;
+package me.raatiniemi.worker.domain.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import me.raatiniemi.worker.domain.model.CalculatedTime;
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
@@ -95,7 +93,7 @@ public class TimesheetChildItem {
         return time.isRegistered();
     }
 
-    long getCalculateIntervalInMilliseconds() {
+    public long getCalculateIntervalInMilliseconds() {
         return calculatedIntervalInMilliseconds;
     }
 }

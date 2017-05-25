@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.project.model;
+package me.raatiniemi.worker.domain.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,22 +25,17 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetChildItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetChildItemIsRegisteredTest {
-    private final String message;
-    private final boolean expected;
+public class TimesheetChildItemGetTimeSummaryTest {
+    private final String expected;
     private final Time time;
 
-    public TimesheetChildItemIsRegisteredTest(
-            String message,
-            boolean expected,
-            Time time
-    ) {
-        this.message = message;
+    public TimesheetChildItemGetTimeSummaryTest(String expected, Time time) {
         this.expected = expected;
         this.time = time;
     }
@@ -50,16 +45,15 @@ public class TimesheetChildItemIsRegisteredTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "is registered",
-                                Boolean.TRUE,
+                                "1.00",
                                 TimeFactory.builder()
-                                        .register()
+                                        .stopInMilliseconds(3600000)
                                         .build()
                         },
                         {
-                                "is not registered",
-                                Boolean.FALSE,
+                                "9.00",
                                 TimeFactory.builder()
+                                        .stopInMilliseconds(32400000)
                                         .build()
                         }
                 }
@@ -67,9 +61,9 @@ public class TimesheetChildItemIsRegisteredTest {
     }
 
     @Test
-    public void isRegistered() {
+    public void getTimeSummary() {
         TimesheetChildItem childItem = new TimesheetChildItem(time);
 
-        assertTrue(message, expected == childItem.isRegistered());
+        assertEquals(expected, childItem.getTimeSummary());
     }
 }

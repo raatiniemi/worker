@@ -25,6 +25,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetChildItem;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
