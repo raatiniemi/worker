@@ -35,7 +35,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
@@ -98,10 +97,10 @@ public class WorkerProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                mimeType = ProjectContract.STREAM_TYPE;
+                mimeType = ProviderContract.Project.STREAM_TYPE;
                 break;
             case PROJECTS_ID:
-                mimeType = ProjectContract.ITEM_TYPE;
+                mimeType = ProviderContract.Project.ITEM_TYPE;
                 break;
             case PROJECTS_TIME:
             case PROJECTS_TIMESHEET:
@@ -172,7 +171,7 @@ public class WorkerProvider extends ContentProvider {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
         long id = db.insertOrThrow(Tables.PROJECT, null, values);
-        return ProjectContract.getItemUri(id);
+        return ProviderContract.Project.getItemUri(id);
     }
 
     private Uri insertTime(ContentValues values) {
@@ -274,7 +273,7 @@ public class WorkerProvider extends ContentProvider {
                     .table(Tables.PROJECT)
                     .where(
                             BaseColumns._ID + "=?",
-                            ProjectContract.getItemId(uri)
+                            ProviderContract.Project.getItemId(uri)
                     );
         }
     }
@@ -288,7 +287,7 @@ public class WorkerProvider extends ContentProvider {
                     .table(Tables.TIME)
                     .where(
                             TimeColumns.PROJECT_ID + "=?",
-                            ProjectContract.getItemId(uri)
+                            ProviderContract.Project.getItemId(uri)
                     );
         }
     }
@@ -302,9 +301,9 @@ public class WorkerProvider extends ContentProvider {
                     .table(Tables.TIME)
                     .where(
                             TimeColumns.PROJECT_ID + "=?",
-                            ProjectContract.getItemId(uri)
+                            ProviderContract.Project.getItemId(uri)
                     )
-                    .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+                    .groupBy(ProviderContract.Project.GROUP_BY_TIMESHEET);
         }
     }
 

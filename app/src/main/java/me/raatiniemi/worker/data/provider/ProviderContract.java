@@ -54,7 +54,7 @@ public final class ProviderContract {
         }
     }
 
-    public final static class ProjectContract {
+    public final static class Project {
         public static final String ORDER_BY_TIME = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
         public static final String ORDER_BY_TIMESHEET = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
         public static final String ORDER_BY = BaseColumns._ID + " ASC";
@@ -66,7 +66,7 @@ public final class ProviderContract {
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
-        private ProjectContract() {
+        private Project() {
         }
 
         public static String[] getColumns() {

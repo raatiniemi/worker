@@ -65,7 +65,7 @@ public class ProjectNotificationServiceTest extends RobolectricTestCase {
     }
 
     private Uri buildProjectDataUri() {
-        return ProviderContract.ProjectContract.getItemUri(1L);
+        return ProviderContract.Project.getItemUri(1L);
     }
 
     private TestService getService() {

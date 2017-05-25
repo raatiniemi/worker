@@ -33,7 +33,6 @@ import java.util.List;
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectContract;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
@@ -98,7 +97,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         requireNonNull(project);
 
         Cursor cursor = getContentResolver().query(
-                ProjectContract.getItemTimeUri(project.getId()),
+                ProviderContract.Project.getItemTimeUri(project.getId()),
                 TimeContract.getColumns(),
                 TimeColumns.START + ">=?",
                 new String[]{String.valueOf(milliseconds)},
@@ -217,11 +216,11 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         calendar.set(Calendar.SECOND, 0);
 
         final Cursor cursor = getContentResolver().query(
-                ProjectContract.getItemTimeUri(projectId),
+                ProviderContract.Project.getItemTimeUri(projectId),
                 TimeContract.getColumns(),
                 TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0",
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
-                ProjectContract.ORDER_BY_TIME
+                ProviderContract.Project.ORDER_BY_TIME
         );
         return fetch(cursor);
     }
@@ -230,7 +229,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     public Optional<Time> getActiveTimeForProject(long projectId)
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
-                ProjectContract.getItemTimeUri(projectId),
+                ProviderContract.Project.getItemTimeUri(projectId),
                 TimeContract.getColumns(),
                 TimeColumns.STOP + " = 0",
                 null,

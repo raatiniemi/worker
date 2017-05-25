@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -65,7 +65,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
     public void findProjectTimeSinceStartingPointInMilliseconds_withNullCursor() throws DomainException {
         when(
                 contentResolver.query(
-                        ProjectContract.getItemTimeUri(1),
+                        ProviderContract.Project.getItemTimeUri(1),
                         TimeContract.getColumns(),
                         TimeColumns.START + ">=?",
                         new String[]{"1234567890"},
@@ -83,7 +83,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
-                        ProjectContract.getItemTimeUri(1),
+                        ProviderContract.Project.getItemTimeUri(1),
                         TimeContract.getColumns(),
                         TimeColumns.START + ">=?",
                         new String[]{"1234567890"},
@@ -102,7 +102,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
-                        ProjectContract.getItemTimeUri(1),
+                        ProviderContract.Project.getItemTimeUri(1),
                         TimeContract.getColumns(),
                         TimeColumns.START + ">=?",
                         new String[]{"1234567890"},
@@ -121,7 +121,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
                 contentResolver.query(
-                        ProjectContract.getItemTimeUri(1),
+                        ProviderContract.Project.getItemTimeUri(1),
                         TimeContract.getColumns(),
                         TimeColumns.START + ">=?",
                         new String[]{"1234567890"},

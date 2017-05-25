@@ -63,7 +63,7 @@ public abstract class OngoingService extends IntentService {
     }
 
     long getProjectId(Intent intent) {
-        String itemId = ProviderContract.ProjectContract.getItemId(intent.getData());
+        String itemId = ProviderContract.Project.getItemId(intent.getData());
         long projectId = Long.parseLong(itemId);
         if (0 == projectId) {
             throw new IllegalArgumentException("Unable to extract project id from URI");
