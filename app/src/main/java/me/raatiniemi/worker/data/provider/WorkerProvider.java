@@ -37,7 +37,6 @@ import javax.inject.Inject;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
@@ -105,10 +104,10 @@ public class WorkerProvider extends ContentProvider {
             case PROJECTS_TIME:
             case PROJECTS_TIMESHEET:
             case TIME:
-                mimeType = TimeContract.STREAM_TYPE;
+                mimeType = ProviderContract.Time.STREAM_TYPE;
                 break;
             case TIME_ID:
-                mimeType = TimeContract.ITEM_TYPE;
+                mimeType = ProviderContract.Time.ITEM_TYPE;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -178,7 +177,7 @@ public class WorkerProvider extends ContentProvider {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
         long id = db.insertOrThrow(Tables.TIME, null, values);
-        return TimeContract.getItemUri(id);
+        return ProviderContract.Time.getItemUri(id);
     }
 
     @Override
@@ -316,7 +315,7 @@ public class WorkerProvider extends ContentProvider {
                     .table(Tables.TIME)
                     .where(
                             BaseColumns._ID + "=?",
-                            TimeContract.getItemId(uri)
+                            ProviderContract.Time.getItemId(uri)
                     );
         }
     }

@@ -104,13 +104,13 @@ public final class ProviderContract {
         }
     }
 
-    public final static class TimeContract {
+    public final static class Time {
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
 
         static final String STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
         static final String ITEM_TYPE = "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
 
-        private TimeContract() {
+        private Time() {
         }
 
         public static String[] getColumns() {

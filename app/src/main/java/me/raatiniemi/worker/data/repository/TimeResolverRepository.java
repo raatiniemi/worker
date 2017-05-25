@@ -34,7 +34,6 @@ import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -98,7 +97,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
 
         Cursor cursor = getContentResolver().query(
                 ProviderContract.Project.getItemTimeUri(project.getId()),
-                TimeContract.getColumns(),
+                ProviderContract.Time.getColumns(),
                 TimeColumns.START + ">=?",
                 new String[]{String.valueOf(milliseconds)},
                 null
@@ -109,8 +108,8 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     @Override
     public Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
-                TimeContract.getItemUri(id),
-                TimeContract.getColumns(),
+                ProviderContract.Time.getItemUri(id),
+                ProviderContract.Time.getColumns(),
                 null,
                 null,
                 null
@@ -125,10 +124,10 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         final ContentValues values = contentValuesMapper.transform(time);
 
         final Uri uri = getContentResolver().insert(
-                TimeContract.getStreamUri(),
+                ProviderContract.Time.getStreamUri(),
                 values
         );
-        return get(Long.parseLong(TimeContract.getItemId(uri)));
+        return get(Long.parseLong(ProviderContract.Time.getItemId(uri)));
     }
 
     @Override
@@ -136,7 +135,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         requireNonNull(time);
 
         getContentResolver().update(
-                TimeContract.getItemUri(time.getId()),
+                ProviderContract.Time.getItemUri(time.getId()),
                 contentValuesMapper.transform(time),
                 null,
                 null
@@ -152,7 +151,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         for (Time time : times) {
-            Uri uri = TimeContract.getItemUri(time.getId());
+            Uri uri = ProviderContract.Time.getItemUri(time.getId());
 
             ContentProviderOperation operation = ContentProviderOperation.newUpdate(uri)
                     .withValues(contentValuesMapper.transform(time))
@@ -180,7 +179,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     @Override
     public void remove(final long id) {
         getContentResolver().delete(
-                TimeContract.getItemUri(id),
+                ProviderContract.Time.getItemUri(id),
                 null,
                 null
         );
@@ -193,7 +192,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         for (Time time : times) {
-            Uri uri = TimeContract.getItemUri(time.getId());
+            Uri uri = ProviderContract.Time.getItemUri(time.getId());
             batch.add(ContentProviderOperation.newDelete(uri).build());
         }
 
@@ -217,7 +216,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
 
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.Project.getItemTimeUri(projectId),
-                TimeContract.getColumns(),
+                ProviderContract.Time.getColumns(),
                 TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0",
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
                 ProviderContract.Project.ORDER_BY_TIME
@@ -230,7 +229,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.Project.getItemTimeUri(projectId),
-                TimeContract.getColumns(),
+                ProviderContract.Time.getColumns(),
                 TimeColumns.STOP + " = 0",
                 null,
                 null

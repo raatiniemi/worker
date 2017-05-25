@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
@@ -88,28 +87,28 @@ public class WorkerProviderTest extends RobolectricTestCase {
     public void getType_withProjectsTimeUri() {
         String mimeType = provider.getType(ProviderContract.Project.getItemTimeUri(1));
 
-        assertEquals(TimeContract.STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.Time.STREAM_TYPE, mimeType);
     }
 
     @Test
     public void getType_withProjectsTimesheetUri() {
         String mimeType = provider.getType(ProviderContract.Project.getItemTimesheetUri(1));
 
-        assertEquals(TimeContract.STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.Time.STREAM_TYPE, mimeType);
     }
 
     @Test
     public void getType_withTimeStreamUri() {
-        String mimeType = provider.getType(TimeContract.getStreamUri());
+        String mimeType = provider.getType(ProviderContract.Time.getStreamUri());
 
-        assertEquals(TimeContract.STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.Time.STREAM_TYPE, mimeType);
     }
 
     @Test
     public void getType_withTimeItemUri() {
-        String mimeType = provider.getType(TimeContract.getItemUri(1));
+        String mimeType = provider.getType(ProviderContract.Time.getItemUri(1));
 
-        assertEquals(TimeContract.ITEM_TYPE, mimeType);
+        assertEquals(ProviderContract.Time.ITEM_TYPE, mimeType);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -173,7 +172,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
     public void query_projectTime() {
         provider.query(
                 ProviderContract.Project.getItemTimeUri(1),
-                TimeContract.getColumns(),
+                ProviderContract.Time.getColumns(),
                 "",
                 new String[]{},
                 ""
@@ -181,7 +180,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
         verify(database).query(
                 eq(TIME),
-                eq(TimeContract.getColumns()),
+                eq(ProviderContract.Time.getColumns()),
                 eq("(" + PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(null),
@@ -216,8 +215,8 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_time() {
         provider.query(
-                TimeContract.getItemUri(1),
-                TimeContract.getColumns(),
+                ProviderContract.Time.getItemUri(1),
+                ProviderContract.Time.getColumns(),
                 "",
                 new String[]{},
                 ""
@@ -225,7 +224,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
         verify(database).query(
                 eq(TIME),
-                eq(TimeContract.getColumns()),
+                eq(ProviderContract.Time.getColumns()),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(null),
@@ -292,7 +291,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         uris.add(ProviderContract.Project.getItemUri(1));
         uris.add(ProviderContract.Project.getItemTimeUri(1));
         uris.add(ProviderContract.Project.getItemTimesheetUri(1));
-        uris.add(TimeContract.getItemUri(1));
+        uris.add(ProviderContract.Time.getItemUri(1));
         ContentValues values = new ContentValues();
 
         String format = "Non-stream URI \"%s\" did not throw exception";
@@ -324,9 +323,9 @@ public class WorkerProviderTest extends RobolectricTestCase {
         when(database.insertOrThrow(eq(TIME), eq(null), eq(values)))
                 .thenReturn(1L);
 
-        Uri uri = provider.insert(TimeContract.getStreamUri(), values);
+        Uri uri = provider.insert(ProviderContract.Time.getStreamUri(), values);
 
-        assertEquals(TimeContract.getItemUri(1), uri);
+        assertEquals(ProviderContract.Time.getItemUri(1), uri);
     }
 
     @Test
@@ -353,7 +352,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         ContentValues values = new ContentValues();
 
         provider.update(
-                TimeContract.getItemUri(1),
+                ProviderContract.Time.getItemUri(1),
                 values,
                 null,
                 null
@@ -385,7 +384,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void delete_timeItem() {
         provider.delete(
-                TimeContract.getItemUri(1),
+                ProviderContract.Time.getItemUri(1),
                 null,
                 null
         );
