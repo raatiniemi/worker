@@ -37,9 +37,8 @@ import javax.inject.Inject;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
-
-import static me.raatiniemi.worker.util.NullUtil.isNull;
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
+import me.raatiniemi.worker.domain.repository.PageRequest;
+import me.raatiniemi.worker.util.Optional;
 
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
@@ -134,17 +133,19 @@ public class WorkerProvider extends ContentProvider {
 
     @Nullable
     private static String parseLimitFromUri(@NonNull Uri uri) {
-        String limit = uri.getQueryParameter(QueryParameter.LIMIT);
-        if (isNull(limit)) {
-            return null;
+        Optional<PageRequest> value = QueryParameter.extractPageRequestFromUri(uri);
+        if (value.isPresent()) {
+            PageRequest pageRequest = value.get();
+
+            return String.format(
+                    Locale.getDefault(),
+                    "%d,%d",
+                    pageRequest.getOffset(),
+                    pageRequest.getMaxResults()
+            );
         }
 
-        String offset = uri.getQueryParameter(QueryParameter.OFFSET);
-        if (nonNull(offset)) {
-            return String.format(Locale.getDefault(), "%s,%s", offset, limit);
-        }
-
-        return limit;
+        return null;
     }
 
     @Override

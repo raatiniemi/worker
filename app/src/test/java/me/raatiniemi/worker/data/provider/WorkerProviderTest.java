@@ -255,7 +255,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
                 eq(null),
                 eq(null),
                 eq(""),
-                eq("1")
+                eq("0,1")
         );
     }
 

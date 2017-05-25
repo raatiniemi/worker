@@ -22,8 +22,11 @@ import org.junit.Test;
 
 import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.domain.repository.PageRequest;
+import me.raatiniemi.worker.util.Optional;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.data.provider.QueryParameter.LIMIT;
 import static me.raatiniemi.worker.data.provider.QueryParameter.OFFSET;
 
@@ -47,5 +50,40 @@ public class QueryParameterTest extends RobolectricTestCase {
 
         assertEquals("20", uri.getQueryParameter(OFFSET));
         assertEquals("10", uri.getQueryParameter(LIMIT));
+    }
+
+    @Test
+    public void extractPageRequestFromUri_withEmptyUri() {
+        Optional<PageRequest> value = QueryParameter.extractPageRequestFromUri(Uri.EMPTY);
+
+        assertFalse(value.isPresent());
+    }
+
+    @Test
+    public void extractPageRequestFromUri_withoutLimit() {
+        Uri uri = Uri.parse("/uri");
+        Optional<PageRequest> value = QueryParameter.extractPageRequestFromUri(uri);
+
+        assertFalse(value.isPresent());
+    }
+
+    @Test
+    public void extractPageRequestFromUri_withoutOffset() {
+        PageRequest pageRequest = PageRequest.withMaxResults(10);
+        Uri uri = QueryParameter.appendPageRequest(Uri.parse("/uri"), pageRequest);
+        Optional<PageRequest> value = QueryParameter.extractPageRequestFromUri(uri);
+
+        assertTrue(value.isPresent());
+        assertEquals(value.get(), pageRequest);
+    }
+
+    @Test
+    public void extractPageRequestFromUri() {
+        PageRequest pageRequest = PageRequest.withOffset(10);
+        Uri uri = QueryParameter.appendPageRequest(Uri.parse("/uri"), pageRequest);
+        Optional<PageRequest> value = QueryParameter.extractPageRequestFromUri(uri);
+
+        assertTrue(value.isPresent());
+        assertEquals(value.get(), pageRequest);
     }
 }

@@ -20,13 +20,23 @@ public class PageRequest {
     private static final int MAX_RESULTS = 10;
 
     private final int offset;
+    private final int maxResults;
 
-    private PageRequest(final int offset) {
+    private PageRequest(final int offset, int maxResults) {
         this.offset = offset;
+        this.maxResults = maxResults;
+    }
+
+    public static PageRequest withOffsetAndMaxResults(final int offset, final int maxResults) {
+        return new PageRequest(offset, maxResults);
     }
 
     public static PageRequest withOffset(final int offset) {
-        return new PageRequest(offset);
+        return PageRequest.withOffsetAndMaxResults(offset, MAX_RESULTS);
+    }
+
+    public static PageRequest withMaxResults(final int maxResults) {
+        return PageRequest.withOffsetAndMaxResults(0, maxResults);
     }
 
     public int getOffset() {
@@ -34,7 +44,7 @@ public class PageRequest {
     }
 
     public int getMaxResults() {
-        return MAX_RESULTS;
+        return maxResults;
     }
 
     @Override
