@@ -26,9 +26,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;

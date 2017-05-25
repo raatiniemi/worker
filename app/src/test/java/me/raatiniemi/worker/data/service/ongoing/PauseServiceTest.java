@@ -37,7 +37,7 @@ import org.robolectric.util.ServiceController;
 import java.util.Date;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
@@ -74,7 +74,7 @@ public class PauseServiceTest extends RobolectricTestCase {
     }
 
     private Uri buildProjectDataUri() {
-        return WorkerContract.ProjectContract.getItemUri(1L);
+        return ProviderContract.ProjectContract.getItemUri(1L);
     }
 
     private Project buildProject(long projectId)

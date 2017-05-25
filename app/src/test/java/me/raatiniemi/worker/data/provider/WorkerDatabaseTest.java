@@ -25,9 +25,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.data.provider.WorkerContract.Tables;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 import static org.mockito.Mockito.mock;

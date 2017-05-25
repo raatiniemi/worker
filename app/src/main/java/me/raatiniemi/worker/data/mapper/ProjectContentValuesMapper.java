@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.mapper;
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
 import me.raatiniemi.worker.domain.model.Project;
 
 /**

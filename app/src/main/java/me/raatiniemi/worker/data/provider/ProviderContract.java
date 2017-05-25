@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.provider;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class WorkerContract {
+public class ProviderContract {
     public static final String AUTHORITY = "me.raatiniemi.worker";
     private static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
 

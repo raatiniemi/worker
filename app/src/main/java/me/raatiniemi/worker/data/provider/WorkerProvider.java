@@ -35,10 +35,10 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.data.provider.WorkerContract.Tables;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
@@ -63,7 +63,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = WorkerContract.AUTHORITY;
+        final String authority = ProviderContract.AUTHORITY;
 
         matcher.addURI(authority, "projects", PROJECTS);
         matcher.addURI(authority, "projects/#", PROJECTS_ID);

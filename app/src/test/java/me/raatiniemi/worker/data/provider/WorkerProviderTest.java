@@ -30,14 +30,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
-import static me.raatiniemi.worker.data.provider.WorkerContract.Tables.PROJECT;
-import static me.raatiniemi.worker.data.provider.WorkerContract.Tables.TIME;
-import static me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns.PROJECT_ID;
+import static me.raatiniemi.worker.data.provider.ProviderContract.Tables.PROJECT;
+import static me.raatiniemi.worker.data.provider.ProviderContract.Tables.TIME;
+import static me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns.PROJECT_ID;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;

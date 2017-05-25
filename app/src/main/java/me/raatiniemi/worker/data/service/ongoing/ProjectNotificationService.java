@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.service.ongoing;
 import android.content.Context;
 import android.content.Intent;
 
-import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.interactor.IsProjectActive;
 import me.raatiniemi.worker.domain.model.Project;
@@ -33,7 +33,7 @@ public class ProjectNotificationService extends OngoingService {
 
     public static void startServiceWithContext(Context context, Project project) {
         Intent intent = new Intent(context, ProjectNotificationService.class);
-        intent.setData(WorkerContract.ProjectContract.getItemUri(project.getId()));
+        intent.setData(ProviderContract.ProjectContract.getItemUri(project.getId()));
         context.startService(intent);
     }
 

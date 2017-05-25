@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
@@ -63,7 +63,7 @@ public abstract class OngoingService extends IntentService {
     }
 
     long getProjectId(Intent intent) {
-        String itemId = WorkerContract.ProjectContract.getItemId(intent.getData());
+        String itemId = ProviderContract.ProjectContract.getItemId(intent.getData());
         long projectId = Long.parseLong(itemId);
         if (0 == projectId) {
             throw new IllegalArgumentException("Unable to extract project id from URI");

@@ -32,10 +32,10 @@ import java.util.List;
 
 import me.raatiniemi.worker.data.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.provider.WorkerContract;
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
+import me.raatiniemi.worker.data.provider.ProviderContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -162,7 +162,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         }
 
         try {
-            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+            getContentResolver().applyBatch(ProviderContract.AUTHORITY, batch);
         } catch (RemoteException | OperationApplicationException e) {
             throw new ContentResolverApplyBatchException(e);
         }
@@ -199,7 +199,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         }
 
         try {
-            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+            getContentResolver().applyBatch(ProviderContract.AUTHORITY, batch);
         } catch (RemoteException | OperationApplicationException e) {
             throw new ContentResolverApplyBatchException(e);
         }
