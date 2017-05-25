@@ -20,7 +20,7 @@ import android.database.Cursor;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 

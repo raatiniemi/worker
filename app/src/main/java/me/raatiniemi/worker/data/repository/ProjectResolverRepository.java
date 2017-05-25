@@ -30,9 +30,8 @@ import java.util.List;
 
 import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.data.provider.WorkerContract;
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectColumns;
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
+import me.raatiniemi.worker.data.provider.ProviderContract;
+import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
@@ -94,8 +93,8 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         requireNonNull(projectName);
 
         final Cursor cursor = getContentResolver().query(
-                ProjectContract.getStreamUri(),
-                ProjectContract.getColumns(),
+                ProviderContract.Project.getStreamUri(),
+                ProviderContract.Project.getColumns(),
                 ProjectColumns.NAME + "=? COLLATE NOCASE",
                 new String[]{projectName},
                 null
@@ -106,11 +105,11 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     @Override
     public List<Project> get() throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
-                ProjectContract.getStreamUri(),
-                ProjectContract.getColumns(),
+                ProviderContract.Project.getStreamUri(),
+                ProviderContract.Project.getColumns(),
                 null,
                 null,
-                ProjectContract.ORDER_BY
+                ProviderContract.Project.ORDER_BY
         );
 
         return fetch(cursor);
@@ -119,8 +118,8 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     @Override
     public Optional<Project> get(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
-                ProjectContract.getItemUri(id),
-                ProjectContract.getColumns(),
+                ProviderContract.Project.getItemUri(id),
+                ProviderContract.Project.getColumns(),
                 null,
                 null,
                 null
@@ -133,10 +132,10 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         requireNonNull(project);
 
         final Uri uri = getContentResolver().insert(
-                ProjectContract.getStreamUri(),
+                ProviderContract.Project.getStreamUri(),
                 contentValuesMapper.transform(project)
         );
-        return get(Long.parseLong(ProjectContract.getItemId(uri)));
+        return get(Long.parseLong(ProviderContract.Project.getItemId(uri)));
     }
 
     @Override
@@ -146,17 +145,17 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         // Add operation for removing the registered time for the
         // project. The operation have to be performed before the
         // actual project deletion.
-        Uri uri = ProjectContract.getItemTimeUri(id);
+        Uri uri = ProviderContract.Project.getItemTimeUri(id);
         batch.add(ContentProviderOperation.newDelete(uri).build());
 
         // Add operation for removing the project.
-        uri = ProjectContract.getItemUri(id);
+        uri = ProviderContract.Project.getItemUri(id);
         batch.add(ContentProviderOperation.newDelete(uri).build());
 
         try {
             // Attempt to remove the registered time and project
             // within a single transactional operation.
-            getContentResolver().applyBatch(WorkerContract.AUTHORITY, batch);
+            getContentResolver().applyBatch(ProviderContract.AUTHORITY, batch);
         } catch (RemoteException | OperationApplicationException e) {
             throw new ContentResolverApplyBatchException(e);
         }

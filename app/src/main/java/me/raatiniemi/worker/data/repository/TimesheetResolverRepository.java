@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import me.raatiniemi.worker.data.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
@@ -74,8 +74,8 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     @NonNull
     private Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
-                WorkerContract.TimeContract.getItemUri(id),
-                WorkerContract.TimeContract.getColumns(),
+                ProviderContract.Time.getItemUri(id),
+                ProviderContract.Time.getColumns(),
                 null,
                 null,
                 null
@@ -142,13 +142,13 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     public Map<Date, Set<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
-        final Uri uri = WorkerContract.ProjectContract.getItemTimesheetUri(projectId);
+        final Uri uri = ProviderContract.Timesheet.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
-                WorkerContract.ProjectContract.getTimesheetColumns(),
+                ProviderContract.Timesheet.getTimesheetColumns(),
                 null,
                 null,
-                WorkerContract.ProjectContract.ORDER_BY_TIMESHEET
+                ProviderContract.Timesheet.ORDER_BY
         );
         return fetchTimesheet(cursor);
     }
@@ -157,13 +157,13 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     public Map<Date, Set<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
-        final Uri uri = WorkerContract.ProjectContract.getItemTimesheetUri(projectId);
+        final Uri uri = ProviderContract.Timesheet.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
-                WorkerContract.ProjectContract.getTimesheetColumns(),
-                WorkerContract.TimeColumns.REGISTERED + " = 0",
+                ProviderContract.Timesheet.getTimesheetColumns(),
+                ProviderContract.TimeColumns.REGISTERED + " = 0",
                 null,
-                WorkerContract.ProjectContract.ORDER_BY_TIMESHEET
+                ProviderContract.Timesheet.ORDER_BY
         );
         return fetchTimesheet(cursor);
     }

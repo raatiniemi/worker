@@ -19,29 +19,16 @@ package me.raatiniemi.worker.data.provider;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-public class WorkerContract {
+public final class ProviderContract {
     public static final String AUTHORITY = "me.raatiniemi.worker";
-
     private static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
 
     private static final String PATH_PROJECTS = "projects";
-
     private static final String PATH_TIMESHEET = "timesheet";
-
     private static final String PATH_TIME = "time";
 
-    /**
-     * Name for the available tables within the database.
-     */
     final class Tables {
-        /**
-         * Name for the project table.
-         */
         static final String PROJECT = "project";
-
-        /**
-         * Name for the registered time table.
-         */
         static final String TIME = "time";
 
         private Tables() {
@@ -50,9 +37,7 @@ public class WorkerContract {
 
     public final class ProjectColumns {
         public static final String NAME = "name";
-
         static final String DESCRIPTION = "description";
-
         static final String ARCHIVED = "archived";
 
         private ProjectColumns() {
@@ -61,47 +46,24 @@ public class WorkerContract {
 
     public final class TimeColumns {
         public static final String PROJECT_ID = "project_id";
-
         public static final String START = "start";
-
         public static final String STOP = "stop";
-
         public static final String REGISTERED = "registered";
 
         private TimeColumns() {
         }
     }
 
-    public static class ProjectContract {
-        static final String STREAM_TYPE =
-                "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
-
-        static final String ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
-
+    public final static class Project {
+        public static final String ORDER_BY_TIME = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
         public static final String ORDER_BY = BaseColumns._ID + " ASC";
 
-        /**
-         * Order by clause for project time.
-         */
-        public static final String ORDER_BY_TIME =
-                TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
-
-        /**
-         * Group by clause for timesheet.
-         */
-        static final String GROUP_BY_TIMESHEET =
-                "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
-
-        /**
-         * Order by clause for timesheet.
-         */
-        public static final String ORDER_BY_TIMESHEET =
-                TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
+        static final String STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
+        static final String ITEM_TYPE = "vnd.android.cursor.item/vnd.me.raatiniemi.worker.project";
 
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_PROJECTS);
 
-        private ProjectContract() {
+        private Project() {
         }
 
         public static String[] getColumns() {
@@ -111,73 +73,30 @@ public class WorkerContract {
             };
         }
 
-        public static String[] getTimesheetColumns() {
-            return new String[]{
-                    "MIN(" + TimeColumns.START + ") AS date",
-                    "GROUP_CONCAT(" + BaseColumns._ID + ")"
-            };
-        }
-
-        /**
-         * Get the project stream URI.
-         *
-         * @return Project stream URI.
-         */
         public static Uri getStreamUri() {
             return STREAM_URI;
         }
 
-        /**
-         * Build the URI for working with a specific project.
-         *
-         * @param id Id for the project.
-         * @return URI for working with specific project.
-         */
         public static Uri getItemUri(final long id) {
             return Uri.withAppendedPath(getStreamUri(), String.valueOf(id));
         }
 
-        /**
-         * Build the project time stream URI.
-         *
-         * @param id Id for the project.
-         * @return Project time stream URI.
-         */
         public static Uri getItemTimeUri(final long id) {
             return Uri.withAppendedPath(getItemUri(id), PATH_TIME);
         }
 
-        /**
-         * Build the project timesheet stream URI.
-         *
-         * @param id Id for the project.
-         * @return Project timesheet stream URI.
-         */
-        public static Uri getItemTimesheetUri(final long id) {
-            return Uri.withAppendedPath(getItemUri(id), PATH_TIMESHEET);
-        }
-
-        /**
-         * Retrieve the identifier from the project URI.
-         *
-         * @param uri URI for working with specific project.
-         * @return Id for the project.
-         */
         public static String getItemId(Uri uri) {
             return uri.getPathSegments().get(1);
         }
     }
 
-    public static class TimeContract {
-        static final String STREAM_TYPE =
-                "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
-
-        static final String ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
-
+    public final static class Time {
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
 
-        private TimeContract() {
+        static final String STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
+        static final String ITEM_TYPE = "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
+
+        private Time() {
         }
 
         public static String[] getColumns() {
@@ -190,33 +109,33 @@ public class WorkerContract {
             };
         }
 
-        /**
-         * Get the time stream URI.
-         *
-         * @return Time stream URI.
-         */
         public static Uri getStreamUri() {
             return STREAM_URI;
         }
 
-        /**
-         * Build the URI for working with a specific time item.
-         *
-         * @param id Id for the time row.
-         * @return URI for working with specific time item.
-         */
         public static Uri getItemUri(final long id) {
             return Uri.withAppendedPath(getStreamUri(), String.valueOf(id));
         }
 
-        /**
-         * Retrieve the identifier from the time URI.
-         *
-         * @param uri URI for working with specific time item.
-         * @return Id for the time item.
-         */
         public static String getItemId(Uri uri) {
             return uri.getPathSegments().get(1);
+        }
+    }
+
+    public final static class Timesheet {
+        public static final String ORDER_BY = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
+
+        static final String GROUP_BY = "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
+
+        public static String[] getTimesheetColumns() {
+            return new String[]{
+                    "MIN(" + TimeColumns.START + ") AS date",
+                    "GROUP_CONCAT(" + BaseColumns._ID + ")"
+            };
+        }
+
+        public static Uri getItemTimesheetUri(final long id) {
+            return Uri.withAppendedPath(Project.getItemUri(id), PATH_TIMESHEET);
         }
     }
 }

@@ -27,7 +27,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.factory.TimeFactory;

@@ -34,7 +34,7 @@ import org.robolectric.shadows.ShadowContextImpl;
 import org.robolectric.util.ServiceController;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.WorkerContract;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.interactor.IsProjectActive;
@@ -65,7 +65,7 @@ public class ProjectNotificationServiceTest extends RobolectricTestCase {
     }
 
     private Uri buildProjectDataUri() {
-        return WorkerContract.ProjectContract.getItemUri(1L);
+        return ProviderContract.Project.getItemUri(1L);
     }
 
     private TestService getService() {

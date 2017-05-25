@@ -17,10 +17,13 @@
 package me.raatiniemi.worker.data.provider;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.domain.repository.PageRequest;
+import me.raatiniemi.worker.util.Optional;
 
 import static java.util.Objects.requireNonNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public final class QueryParameter {
     static final String OFFSET = "offset";
@@ -37,5 +40,27 @@ public final class QueryParameter {
                 .appendQueryParameter(OFFSET, String.valueOf(pageRequest.getOffset()))
                 .appendQueryParameter(LIMIT, String.valueOf(pageRequest.getMaxResults()))
                 .build();
+    }
+
+    @NonNull
+    static Optional<PageRequest> extractPageRequestFromUri(@NonNull Uri uri) {
+        String rawLimit = uri.getQueryParameter(LIMIT);
+        if (isNull(rawLimit)) {
+            return Optional.empty();
+        }
+
+        int limit = Integer.parseInt(rawLimit);
+
+        String rawOffset = uri.getQueryParameter(OFFSET);
+        if (isNull(rawOffset)) {
+            PageRequest pageRequest = PageRequest.withMaxResults(limit);
+            return Optional.of(pageRequest);
+        }
+
+        int offset = Integer.parseInt(rawOffset);
+
+        PageRequest pageRequest = PageRequest.withOffsetAndMaxResults(offset, limit);
+        return Optional.of(pageRequest);
+
     }
 }

@@ -35,13 +35,10 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.WorkerContract.ProjectContract;
-import me.raatiniemi.worker.data.provider.WorkerContract.Tables;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeColumns;
-import me.raatiniemi.worker.data.provider.WorkerContract.TimeContract;
-
-import static me.raatiniemi.worker.util.NullUtil.isNull;
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
+import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.domain.repository.PageRequest;
+import me.raatiniemi.worker.util.Optional;
 
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
@@ -63,7 +60,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = WorkerContract.AUTHORITY;
+        final String authority = ProviderContract.AUTHORITY;
 
         matcher.addURI(authority, "projects", PROJECTS);
         matcher.addURI(authority, "projects/#", PROJECTS_ID);
@@ -98,18 +95,18 @@ public class WorkerProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                mimeType = ProjectContract.STREAM_TYPE;
+                mimeType = ProviderContract.Project.STREAM_TYPE;
                 break;
             case PROJECTS_ID:
-                mimeType = ProjectContract.ITEM_TYPE;
+                mimeType = ProviderContract.Project.ITEM_TYPE;
                 break;
             case PROJECTS_TIME:
             case PROJECTS_TIMESHEET:
             case TIME:
-                mimeType = TimeContract.STREAM_TYPE;
+                mimeType = ProviderContract.Time.STREAM_TYPE;
                 break;
             case TIME_ID:
-                mimeType = TimeContract.ITEM_TYPE;
+                mimeType = ProviderContract.Time.ITEM_TYPE;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -136,17 +133,19 @@ public class WorkerProvider extends ContentProvider {
 
     @Nullable
     private static String parseLimitFromUri(@NonNull Uri uri) {
-        String limit = uri.getQueryParameter(QueryParameter.LIMIT);
-        if (isNull(limit)) {
-            return null;
+        Optional<PageRequest> value = QueryParameter.extractPageRequestFromUri(uri);
+        if (value.isPresent()) {
+            PageRequest pageRequest = value.get();
+
+            return String.format(
+                    Locale.getDefault(),
+                    "%d,%d",
+                    pageRequest.getOffset(),
+                    pageRequest.getMaxResults()
+            );
         }
 
-        String offset = uri.getQueryParameter(QueryParameter.OFFSET);
-        if (nonNull(offset)) {
-            return String.format(Locale.getDefault(), "%s,%s", offset, limit);
-        }
-
-        return limit;
+        return null;
     }
 
     @Override
@@ -172,14 +171,14 @@ public class WorkerProvider extends ContentProvider {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
         long id = db.insertOrThrow(Tables.PROJECT, null, values);
-        return ProjectContract.getItemUri(id);
+        return ProviderContract.Project.getItemUri(id);
     }
 
     private Uri insertTime(ContentValues values) {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
         long id = db.insertOrThrow(Tables.TIME, null, values);
-        return TimeContract.getItemUri(id);
+        return ProviderContract.Time.getItemUri(id);
     }
 
     @Override
@@ -274,7 +273,7 @@ public class WorkerProvider extends ContentProvider {
                     .table(Tables.PROJECT)
                     .where(
                             BaseColumns._ID + "=?",
-                            ProjectContract.getItemId(uri)
+                            ProviderContract.Project.getItemId(uri)
                     );
         }
     }
@@ -288,7 +287,7 @@ public class WorkerProvider extends ContentProvider {
                     .table(Tables.TIME)
                     .where(
                             TimeColumns.PROJECT_ID + "=?",
-                            ProjectContract.getItemId(uri)
+                            ProviderContract.Project.getItemId(uri)
                     );
         }
     }
@@ -302,9 +301,9 @@ public class WorkerProvider extends ContentProvider {
                     .table(Tables.TIME)
                     .where(
                             TimeColumns.PROJECT_ID + "=?",
-                            ProjectContract.getItemId(uri)
+                            ProviderContract.Project.getItemId(uri)
                     )
-                    .groupBy(ProjectContract.GROUP_BY_TIMESHEET);
+                    .groupBy(ProviderContract.Timesheet.GROUP_BY);
         }
     }
 
@@ -317,7 +316,7 @@ public class WorkerProvider extends ContentProvider {
                     .table(Tables.TIME)
                     .where(
                             BaseColumns._ID + "=?",
-                            TimeContract.getItemId(uri)
+                            ProviderContract.Time.getItemId(uri)
                     );
         }
     }
