@@ -14,26 +14,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.mapper;
+package me.raatiniemi.worker.domain.repository.mapper;
+
+import me.raatiniemi.worker.domain.exception.DomainException;
 
 /**
- * Interface for transforming from domain entity to another data source.
+ * Interface for transforming to domain entity from another data source.
  * <p/>
- * The interface should only be used for transforming from domain entity to
- * another data source.
+ * The interface should only be used for transforming from another data source
+ * to domain entity.
  * <p/>
- * For transforming to domain entity the {@link EntityMapper} should be used.
+ * For transforming from domain entity the {@link DataMapper} should be used.
  *
- * @param <T> Type reference for the transformation destination.
- * @param <F> Type reference for the domain entity.
+ * @param <T> Type reference for the domain entity.
+ * @param <F> Type reference for the transformation source.
  */
 @FunctionalInterface
-public interface DataMapper<T, F> {
+public interface EntityMapper<T, F> {
     /**
      * Perform the transformation.
      *
-     * @param entity Domain entity to be transformed.
-     * @return Transformed domain entity.
+     * @param from Data to be transformed.
+     * @return Transformed data.
+     * @throws DomainException If data violate domain rules.
      */
-    T transform(F entity);
+    T transform(F from) throws DomainException;
 }

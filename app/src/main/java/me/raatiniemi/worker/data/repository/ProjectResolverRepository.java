@@ -28,11 +28,11 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.data.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.data.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
+import me.raatiniemi.worker.data.repository.mapper.ProjectContentValuesMapper;
+import me.raatiniemi.worker.data.repository.mapper.ProjectCursorMapper;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;

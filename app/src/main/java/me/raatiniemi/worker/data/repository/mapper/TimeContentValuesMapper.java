@@ -14,23 +14,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.mapper;
+package me.raatiniemi.worker.data.repository.mapper;
 
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
-import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.domain.model.Time;
 
 /**
- * Handle transformation from {@link Project} to {@link ContentValues}.
+ * Handle transformation from {@link Time} to {@link ContentValues}.
  */
-public class ProjectContentValuesMapper implements ContentValuesMapper<Project> {
+public class TimeContentValuesMapper implements ContentValuesMapper<Time> {
     @NonNull
     @Override
-    public ContentValues transform(@NonNull Project entity) {
+    public ContentValues transform(@NonNull Time entity) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ProjectColumns.NAME, entity.getName());
+        contentValues.put(TimeColumns.PROJECT_ID, entity.getProjectId());
+        contentValues.put(TimeColumns.START, entity.getStartInMilliseconds());
+        contentValues.put(TimeColumns.STOP, entity.getStopInMilliseconds());
+        contentValues.put(TimeColumns.REGISTERED, entity.isRegistered() ? 1L : 0L);
 
         return contentValues;
     }

@@ -14,13 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.mapper;
+package me.raatiniemi.worker.data.repository.mapper;
 
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.mapper.EntityMapper;
+import me.raatiniemi.worker.domain.repository.mapper.EntityMapper;
 
 /**
  * Interface for transforming {@link Cursor} to domain entity.

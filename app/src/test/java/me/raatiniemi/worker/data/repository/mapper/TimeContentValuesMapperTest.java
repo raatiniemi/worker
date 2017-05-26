@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.mapper;
+package me.raatiniemi.worker.data.repository.mapper;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
