@@ -106,29 +106,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Since the first version of the structure was 1, upgrading from any
-        // value less than 1 is not allowed.
-        if (1 > oldVersion) {
-            throw new IllegalArgumentException(
-                    "oldVersion cannot be less than 1"
-            );
-        }
-
-        // Check the state of the newVersion, we cannot allow to upgrade past
-        // the latest available version (i.e. `WorkerApplication.DATABASE_VERSION`).
-        if (DATABASE_VERSION < newVersion) {
-            throw new IllegalArgumentException(
-                    "newVersion cannot be more than " + DATABASE_VERSION
-            );
-        }
-
-        // Check the relation between oldVersion and newVersion, downgrade via
-        // the `onUpgrade`-method is not allowed.
-        if (oldVersion > newVersion) {
-            throw new IllegalArgumentException(
-                    "newVersion cannot be less than oldVersion"
-            );
-        }
+        checkVersionsForUpgrade(oldVersion, newVersion);
 
         // since sqlite is unable to remove columns we need to check if the
         // column already exists before adding it.
@@ -137,6 +115,29 @@ public class WorkerDatabase extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + Tables.TIME +
                     " ADD COLUMN " + TimeColumns.REGISTERED +
                     " INTEGER NOT NULL DEFAULT 0");
+        }
+    }
+
+    private void checkVersionsForUpgrade(int oldVersion, int newVersion) {
+        boolean isOldVersionLessThanFirstVersion = 1 > oldVersion;
+        if (isOldVersionLessThanFirstVersion) {
+            throw new IllegalArgumentException(
+                    "oldVersion cannot be less than 1"
+            );
+        }
+
+        boolean isNewVersionHigherThanLatestVersion = DATABASE_VERSION < newVersion;
+        if (isNewVersionHigherThanLatestVersion) {
+            throw new IllegalArgumentException(
+                    "newVersion cannot be more than " + DATABASE_VERSION
+            );
+        }
+
+        boolean isOldVersionHigherThanNewVersion = oldVersion > newVersion;
+        if (isOldVersionHigherThanNewVersion) {
+            throw new IllegalArgumentException(
+                    "newVersion cannot be less than oldVersion"
+            );
         }
     }
 
@@ -151,17 +152,19 @@ public class WorkerDatabase extends SQLiteOpenHelper {
      */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Since the first version of the structure was 1, downgrading to any
-        // value less than 1 is not allowed.
-        if (1 > newVersion) {
+        checkVersionsForDowngrade(oldVersion, newVersion);
+    }
+
+    private void checkVersionsForDowngrade(int oldVersion, int newVersion) {
+        boolean isNewVersionLessThanFirstVersion = 1 > newVersion;
+        if (isNewVersionLessThanFirstVersion) {
             throw new IllegalArgumentException(
                     "newVersion cannot be less than 1"
             );
         }
 
-        // Check the relation between oldVersion and newVersion, upgrade via
-        // the `onDowngrade`-method is not allowed.
-        if (oldVersion < newVersion) {
+        boolean isOldVersionLessThanNewVersion = oldVersion < newVersion;
+        if (isOldVersionLessThanNewVersion) {
             throw new IllegalArgumentException(
                     "oldVersion cannot be less than newVersion"
             );
