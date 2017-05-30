@@ -96,4 +96,23 @@ public class TimesheetItem {
     public long getCalculateIntervalInMilliseconds() {
         return calculatedIntervalInMilliseconds;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof TimesheetItem)) {
+            return false;
+        }
+
+        TimesheetItem that = (TimesheetItem) o;
+        return time.equals(that.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return time.hashCode();
+    }
 }
