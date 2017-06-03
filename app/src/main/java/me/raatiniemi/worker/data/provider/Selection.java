@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 final class Selection {
@@ -50,7 +51,11 @@ final class Selection {
     }
 
     String[] getSelectionArgs() {
-        return selectionArgs;
+        if (isNull(selectionArgs)) {
+            return null;
+        }
+
+        return selectionArgs.clone();
     }
 
     String getGroupBy() {
