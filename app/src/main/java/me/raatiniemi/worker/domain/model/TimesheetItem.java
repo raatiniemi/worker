@@ -24,7 +24,7 @@ import me.raatiniemi.worker.domain.util.CalculateTime;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
 import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
-public final class TimesheetItem {
+public final class TimesheetItem implements Comparable<TimesheetItem> {
     private static final String TIME_SEPARATOR = " - ";
     private static final DateIntervalFormat intervalFormat;
 
@@ -45,6 +45,48 @@ public final class TimesheetItem {
 
     private static Date buildDateFromMilliseconds(long milliseconds) {
         return new Date(milliseconds);
+    }
+
+    private static boolean isActive(Time time) {
+        return 0 == time.getStopInMilliseconds();
+    }
+
+    private static boolean isBefore(long lhs, long rhs) {
+        return lhs < rhs;
+    }
+
+    private static boolean isAfter(long lhs, long rhs) {
+        return lhs > rhs;
+    }
+
+    private static int compare(Time lhs, Time rhs) {
+        if (lhs.getStopInMilliseconds() != rhs.getStopInMilliseconds()) {
+            if (isActive(lhs)) {
+                return -1;
+            }
+
+            if (isActive(rhs)) {
+                return 1;
+            }
+        }
+
+        if (isAfter(lhs.getStartInMilliseconds(), rhs.getStartInMilliseconds())) {
+            return -1;
+        }
+
+        if (isBefore(lhs.getStartInMilliseconds(), rhs.getStartInMilliseconds())) {
+            return 1;
+        }
+
+        if (isAfter(lhs.getStopInMilliseconds(), rhs.getStopInMilliseconds())) {
+            return -1;
+        }
+
+        if (isBefore(lhs.getStopInMilliseconds(), rhs.getStopInMilliseconds())) {
+            return 1;
+        }
+
+        return 0;
     }
 
     public Time asTime() {
@@ -114,5 +156,10 @@ public final class TimesheetItem {
     @Override
     public int hashCode() {
         return time.hashCode();
+    }
+
+    @Override
+    public int compareTo(TimesheetItem o) {
+        return compare(asTime(), o.asTime());
     }
 }

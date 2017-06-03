@@ -24,7 +24,6 @@ import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
@@ -54,11 +53,11 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return build(date, new TreeSet<>());
     }
 
-    public static TimesheetGroup build(Date date, SortedSet<Time> times) {
+    public static TimesheetGroup build(Date date, SortedSet<TimesheetItem> timesheetItems) {
         List<TimesheetItem> items = new ArrayList<>();
         //noinspection Convert2streamapi
-        for (Time time : times) {
-            items.add(new TimesheetItem(time));
+        for (TimesheetItem timesheetItem : timesheetItems) {
+            items.add(timesheetItem);
         }
 
         return new TimesheetGroup(date, items);

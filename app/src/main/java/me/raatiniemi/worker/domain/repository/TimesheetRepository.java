@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 
 public interface TimesheetRepository {
     /**
@@ -30,7 +30,7 @@ public interface TimesheetRepository {
      * @param pageRequest Defines the page segment.
      * @return Project timesheet segment.
      */
-    Map<Date, Set<Time>> getTimesheet(final long projectId, final PageRequest pageRequest);
+    Map<Date, Set<TimesheetItem>> getTimesheet(final long projectId, final PageRequest pageRequest);
 
     /**
      * Get timesheet segment for a project, without registered entries.
@@ -39,5 +39,5 @@ public interface TimesheetRepository {
      * @param pageRequest Defines the page segment.
      * @return Project timesheet segment.
      */
-    Map<Date, Set<Time>> getTimesheetWithoutRegisteredEntries(final long projectId, final PageRequest pageRequest);
+    Map<Date, Set<TimesheetItem>> getTimesheetWithoutRegisteredEntries(final long projectId, final PageRequest pageRequest);
 }

@@ -34,6 +34,7 @@ import me.raatiniemi.worker.data.repository.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 import me.raatiniemi.worker.util.Optional;
@@ -84,19 +85,19 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @NonNull
-    private Map<Date, Set<Time>> fetchTimesheet(@Nullable Cursor cursor) {
+    private Map<Date, Set<TimesheetItem>> fetchTimesheet(@Nullable Cursor cursor) {
         if (isNull(cursor)) {
             return Collections.emptyMap();
         }
 
-        Map<Date, Set<Time>> result = new LinkedHashMap<>();
+        Map<Date, Set<TimesheetItem>> result = new LinkedHashMap<>();
 
         if (cursor.moveToFirst()) {
             do {
                 String ids = cursor.getString(TIMESHEET_IDS_CURSOR_INDEX);
                 String[] rows = ids.split(",");
 
-                Set<Time> segment = getSegmentForTimesheet(rows);
+                Set<TimesheetItem> segment = getSegmentForTimesheet(rows);
                 if (segment.isEmpty()) {
                     continue;
                 }
@@ -111,16 +112,16 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @NonNull
-    private Set<Time> getSegmentForTimesheet(String[] ids) {
+    private Set<TimesheetItem> getSegmentForTimesheet(String[] ids) {
         if (0 == ids.length) {
             return Collections.emptySet();
         }
 
-        Set<Time> items = new LinkedHashSet<>();
+        Set<TimesheetItem> items = new LinkedHashSet<>();
         for (String id : ids) {
             Optional<Time> value = getSegmentItemForTimesheet(id);
             if (value.isPresent()) {
-                items.add(value.get());
+                items.add(new TimesheetItem(value.get()));
             }
         }
 
@@ -139,7 +140,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @Override
-    public Map<Date, Set<Time>> getTimesheet(final long projectId, final PageRequest pageRequest) {
+    public Map<Date, Set<TimesheetItem>> getTimesheet(final long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
         final Uri uri = ProviderContract.Timesheet.getItemTimesheetUri(projectId);
@@ -154,7 +155,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @Override
-    public Map<Date, Set<Time>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
+    public Map<Date, Set<TimesheetItem>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
         final Uri uri = ProviderContract.Timesheet.getItemTimesheetUri(projectId);

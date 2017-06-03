@@ -30,9 +30,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 import me.raatiniemi.worker.factory.TimeFactory;
@@ -50,73 +49,32 @@ public class GetTimesheetTest {
     private TimesheetRepository repository;
     private GetTimesheet useCase;
 
-    private static Set<Time> getShuffledSet() {
-        return new HashSet<Time>() {{
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(2L)
-                            .stopInMilliseconds(3L)
-                            .build()
-            );
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(4L)
-                            .stopInMilliseconds(0L)
-                            .build()
-            );
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(1L)
-                            .stopInMilliseconds(3L)
-                            .build()
-            );
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(1L)
-                            .stopInMilliseconds(2L)
-                            .build()
-            );
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(4L)
-                            .stopInMilliseconds(5L)
-                            .build()
-            );
+    private static TimesheetItem buildTimesheetItemWithInterval(long startInMilliseconds, long stopInMilliseconds) {
+        return new TimesheetItem(
+                TimeFactory.builder()
+                        .startInMilliseconds(startInMilliseconds)
+                        .stopInMilliseconds(stopInMilliseconds)
+                        .build()
+        );
+    }
+
+    private static Set<TimesheetItem> getShuffledSet() {
+        return new HashSet<TimesheetItem>() {{
+            add(buildTimesheetItemWithInterval(2L, 3L));
+            add(buildTimesheetItemWithInterval(4L, 0L));
+            add(buildTimesheetItemWithInterval(1L, 3L));
+            add(buildTimesheetItemWithInterval(1L, 2L));
+            add(buildTimesheetItemWithInterval(4L, 5L));
         }};
     }
 
-    private static SortedSet<Time> getSortedSet() {
-        return new TreeSet<Time>(new TimesheetItemComparator()) {{
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(4L)
-                            .stopInMilliseconds(0L)
-                            .build()
-            );
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(4L)
-                            .stopInMilliseconds(5L)
-                            .build()
-            );
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(2L)
-                            .stopInMilliseconds(3L)
-                            .build()
-            );
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(1L)
-                            .stopInMilliseconds(3L)
-                            .build()
-            );
-            add(
-                    TimeFactory.builder()
-                            .startInMilliseconds(1L)
-                            .stopInMilliseconds(2L)
-                            .build()
-            );
+    private static SortedSet<TimesheetItem> getSortedSet() {
+        return new TreeSet<TimesheetItem>() {{
+            add(buildTimesheetItemWithInterval(4L, 0L));
+            add(buildTimesheetItemWithInterval(4L, 5L));
+            add(buildTimesheetItemWithInterval(2L, 3L));
+            add(buildTimesheetItemWithInterval(1L, 3L));
+            add(buildTimesheetItemWithInterval(1L, 2L));
         }};
     }
 
@@ -143,15 +101,15 @@ public class GetTimesheetTest {
     @Test
     public void execute_withSortedDatesHidingRegisteredTime() throws DomainException {
         when(repository.getTimesheetWithoutRegisteredEntries(1L, pageRequest))
-                .thenReturn(new HashMap<Date, Set<Time>>() {{
+                .thenReturn(new HashMap<Date, Set<TimesheetItem>>() {{
                     put(new Date(1L), getShuffledSet());
                     put(new Date(2L), getShuffledSet());
                     put(new Date(3L), getShuffledSet());
                 }});
 
-        SortedMap<Date, SortedSet<Time>> actual = useCase.execute(1L, 0, true);
+        SortedMap<Date, SortedSet<TimesheetItem>> actual = useCase.execute(1L, 0, true);
 
-        assertEquals(new TreeMap<Date, SortedSet<Time>>() {{
+        assertEquals(new TreeMap<Date, SortedSet<TimesheetItem>>() {{
             put(new Date(3L), getSortedSet());
             put(new Date(2L), getSortedSet());
             put(new Date(1L), getSortedSet());
@@ -161,15 +119,15 @@ public class GetTimesheetTest {
     @Test
     public void execute_withSortedDatesWithRegisteredTime() throws DomainException {
         when(repository.getTimesheet(1L, pageRequest))
-                .thenReturn(new HashMap<Date, Set<Time>>() {{
+                .thenReturn(new HashMap<Date, Set<TimesheetItem>>() {{
                     put(new Date(1L), getShuffledSet());
                     put(new Date(2L), getShuffledSet());
                     put(new Date(3L), getShuffledSet());
                 }});
 
-        SortedMap<Date, SortedSet<Time>> actual = useCase.execute(1L, 0, false);
+        SortedMap<Date, SortedSet<TimesheetItem>> actual = useCase.execute(1L, 0, false);
 
-        assertEquals(new TreeMap<Date, SortedSet<Time>>() {{
+        assertEquals(new TreeMap<Date, SortedSet<TimesheetItem>>() {{
             put(new Date(3L), getSortedSet());
             put(new Date(2L), getSortedSet());
             put(new Date(1L), getSortedSet());

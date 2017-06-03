@@ -25,25 +25,23 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetItemComparatorTest {
-    private static final TimesheetItemComparator comparator = new TimesheetItemComparator();
-
     private final String message;
     private final int expected;
-    private final Time lhs;
-    private final Time rhs;
+    private final TimesheetItem lhs;
+    private final TimesheetItem rhs;
 
     public TimesheetItemComparatorTest(
             String message,
             int expected,
-            Time lhs,
-            Time rhs
+            TimesheetItem lhs,
+            TimesheetItem rhs
     ) {
         this.message = message;
         this.expected = expected;
@@ -58,98 +56,130 @@ public class TimesheetItemComparatorTest {
                         {
                                 "Active with lhs.start = rhs.start",
                                 0,
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(0L)
-                                        .build(),
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(0L)
-                                        .build()
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(0L)
+                                                .build()
+                                ),
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(0L)
+                                                .build()
+                                )
                         },
                         {
                                 "Active with lhs.start > rhs.start",
                                 -1,
-                                TimeFactory.builder()
-                                        .startInMilliseconds(2L)
-                                        .stopInMilliseconds(0L)
-                                        .build(),
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(0L)
-                                        .build()
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(2L)
+                                                .stopInMilliseconds(0L)
+                                                .build()
+                                ),
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(0L)
+                                                .build()
+                                )
                         },
                         {
                                 "Active with lhs.start < rhs.start",
                                 1,
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(0L)
-                                        .build(),
-                                TimeFactory.builder()
-                                        .startInMilliseconds(2L)
-                                        .stopInMilliseconds(0L)
-                                        .build()
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(0L)
+                                                .build()
+                                ),
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(2L)
+                                                .stopInMilliseconds(0L)
+                                                .build()
+                                )
                         },
                         {
                                 "lhs == rhs",
                                 0,
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(2L)
-                                        .build(),
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(2L)
-                                        .build()
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(2L)
+                                                .build()
+                                ),
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(2L)
+                                                .build()
+                                )
                         },
                         {
                                 "lhs.start > rhs.start",
                                 -1,
-                                TimeFactory.builder()
-                                        .startInMilliseconds(2L)
-                                        .stopInMilliseconds(2L)
-                                        .build(),
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(2L)
-                                        .build()
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(2L)
+                                                .stopInMilliseconds(2L)
+                                                .build()
+                                ),
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(2L)
+                                                .build()
+                                )
                         },
                         {
                                 "lhs.start < rhs.start",
                                 1,
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(2L)
-                                        .build(),
-                                TimeFactory.builder()
-                                        .startInMilliseconds(2L)
-                                        .stopInMilliseconds(2L)
-                                        .build()
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(2L)
+                                                .build()
+                                ),
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(2L)
+                                                .stopInMilliseconds(2L)
+                                                .build()
+                                )
                         },
                         {
                                 "lhs.stop > rhs.stop",
                                 -1,
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(2L)
-                                        .build(),
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(1L)
-                                        .build()
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(2L)
+                                                .build()
+                                ),
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(1L)
+                                                .build()
+                                )
                         },
                         {
                                 "lhs.stop < rhs.stop",
                                 1,
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(1L)
-                                        .build(),
-                                TimeFactory.builder()
-                                        .startInMilliseconds(1L)
-                                        .stopInMilliseconds(2L)
-                                        .build()
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(1L)
+                                                .build()
+                                ),
+                                new TimesheetItem(
+                                        TimeFactory.builder()
+                                                .startInMilliseconds(1L)
+                                                .stopInMilliseconds(2L)
+                                                .build()
+                                )
                         }
                 }
         );
@@ -157,6 +187,6 @@ public class TimesheetItemComparatorTest {
 
     @Test
     public void compareTo() {
-        assertEquals(message, expected, comparator.compare(lhs, rhs));
+        assertEquals(message, expected, lhs.compareTo(rhs));
     }
 }

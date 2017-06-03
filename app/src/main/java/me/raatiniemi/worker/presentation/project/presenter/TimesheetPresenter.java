@@ -31,6 +31,7 @@ import me.raatiniemi.worker.domain.interactor.GetTimesheet;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
@@ -119,7 +120,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                     List<TimesheetGroup> groups = new ArrayList<>();
 
                     //noinspection Convert2streamapi
-                    for (Map.Entry<Date, SortedSet<Time>> date : result.entrySet()) {
+                    for (Map.Entry<Date, SortedSet<TimesheetItem>> date : result.entrySet()) {
                         groups.add(TimesheetGroup.build(date.getKey(), date.getValue()));
                     }
 

@@ -26,8 +26,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.TreeSet;
 
-import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
@@ -39,12 +38,11 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
 
     public TimesheetGroupGetTimeSummaryWithDifferenceTest(
             String expected,
-            Time... times
+            TimesheetItem... times
     ) {
         this.expected = expected;
 
-        TreeSet<Time> items = new TreeSet<>(new TimesheetItemComparator());
-        items.addAll(Arrays.asList(times));
+        TreeSet<TimesheetItem> items = new TreeSet<>(Arrays.asList(times));
         item = TimesheetGroup.build(new Date(), items);
     }
 
@@ -54,52 +52,54 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
                 new Object[][]{
                         {
                                 "1.00 (-7.00)",
-                                new Time[]{
-                                        buildTimeWithInterval(3600000)
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(3600000)
                                 }
                         },
                         {
                                 "8.00",
-                                new Time[]{
-                                        buildTimeWithInterval(28800000)
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(28800000)
                                 }
                         },
                         {
                                 "9.00 (+1.00)",
-                                new Time[]{
-                                        buildTimeWithInterval(32400000)
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(32400000)
                                 }
                         },
                         {
                                 "9.12 (+1.12)",
-                                new Time[]{
-                                        buildTimeWithInterval(14380327),
-                                        buildTimeWithInterval(18407820)
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(14380327),
+                                        buildTimesheetItemWithInterval(18407820)
                                 }
                         },
                         {
                                 "8.76 (+0.76)",
-                                new Time[]{
-                                        buildTimeWithInterval(13956031),
-                                        buildTimeWithInterval(17594386)
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(13956031),
+                                        buildTimesheetItemWithInterval(17594386)
                                 }
                         },
                         {
                                 "7.86 (-0.14)",
-                                new Time[]{
-                                        buildTimeWithInterval(11661632),
-                                        buildTimeWithInterval(16707601)
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(11661632),
+                                        buildTimesheetItemWithInterval(16707601)
                                 }
                         }
                 }
         );
     }
 
-    private static Time buildTimeWithInterval(long interval) {
-        return TimeFactory.builder()
-                .startInMilliseconds(1L)
-                .stopInMilliseconds(interval)
-                .build();
+    private static TimesheetItem buildTimesheetItemWithInterval(long interval) {
+        return new TimesheetItem(
+                TimeFactory.builder()
+                        .startInMilliseconds(1L)
+                        .stopInMilliseconds(interval)
+                        .build()
+        );
     }
 
     @Test

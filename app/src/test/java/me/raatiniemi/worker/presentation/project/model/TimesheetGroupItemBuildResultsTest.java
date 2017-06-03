@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
@@ -58,12 +58,16 @@ public class TimesheetGroupItemBuildResultsTest {
             return TimesheetGroup.build(new Date());
         }
 
-        SortedSet<Time> times = new TreeSet<>(new TimesheetItemComparator());
+        SortedSet<TimesheetItem> items = new TreeSet<>();
         for (long i = 0; i < numberOfItems; i++) {
-            times.add(TimeFactory.builder().startInMilliseconds(i).build());
+            Time time = TimeFactory.builder()
+                    .startInMilliseconds(i)
+                    .build();
+
+            items.add(new TimesheetItem(time));
         }
 
-        return TimesheetGroup.build(new Date(), times);
+        return TimesheetGroup.build(new Date(), items);
     }
 
     @Parameters
