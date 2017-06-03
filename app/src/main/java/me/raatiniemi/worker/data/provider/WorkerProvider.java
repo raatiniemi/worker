@@ -259,7 +259,7 @@ public class WorkerProvider extends ContentProvider {
         }
 
         private static Selection.Builder build() {
-            return new Selection.Builder()
+            return Selection.builder()
                     .table(Tables.PROJECT);
         }
     }
@@ -269,7 +269,7 @@ public class WorkerProvider extends ContentProvider {
         }
 
         private static Selection.Builder build(Uri uri) {
-            return new Selection.Builder()
+            return Selection.builder()
                     .table(Tables.PROJECT)
                     .where(
                             BaseColumns._ID + "=?",
@@ -283,7 +283,7 @@ public class WorkerProvider extends ContentProvider {
         }
 
         private static Selection.Builder build(Uri uri) {
-            return new Selection.Builder()
+            return Selection.builder()
                     .table(Tables.TIME)
                     .where(
                             TimeColumns.PROJECT_ID + "=?",
@@ -297,7 +297,7 @@ public class WorkerProvider extends ContentProvider {
         }
 
         private static Selection.Builder build(Uri uri) {
-            return new Selection.Builder()
+            return Selection.builder()
                     .table(Tables.TIME)
                     .where(
                             TimeColumns.PROJECT_ID + "=?",
@@ -312,7 +312,7 @@ public class WorkerProvider extends ContentProvider {
         }
 
         private static Selection.Builder build(Uri uri) {
-            return new Selection.Builder()
+            return Selection.builder()
                     .table(Tables.TIME)
                     .where(
                             BaseColumns._ID + "=?",

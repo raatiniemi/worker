@@ -37,6 +37,10 @@ final class Selection {
         groupBy = builder.groupBy;
     }
 
+    static Builder builder() {
+        return new Builder();
+    }
+
     String getTable() {
         return table;
     }
@@ -58,6 +62,9 @@ final class Selection {
         private final List<String> selectionArgs = new ArrayList<>();
         private String table;
         private String groupBy;
+
+        private Builder() {
+        }
 
         Builder table(String table) {
             this.table = table;
