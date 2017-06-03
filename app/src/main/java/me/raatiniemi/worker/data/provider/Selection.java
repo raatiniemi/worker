@@ -24,7 +24,7 @@ import java.util.List;
 
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
-class Selection {
+final class Selection {
     private final String table;
     private final String selection;
     private final String[] selectionArgs;
@@ -53,7 +53,7 @@ class Selection {
         return groupBy;
     }
 
-    static class Builder {
+    final static class Builder {
         private final StringBuilder selection = new StringBuilder();
         private final List<String> selectionArgs = new ArrayList<>();
         private String table;
