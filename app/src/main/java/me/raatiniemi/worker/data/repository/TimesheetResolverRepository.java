@@ -146,7 +146,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
         final Uri uri = ProviderContract.Timesheet.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
-                ProviderContract.Timesheet.getTimesheetColumns(),
+                ProviderContract.Timesheet.getTimesheetGroupColumns(),
                 null,
                 null,
                 ProviderContract.Timesheet.ORDER_BY
@@ -161,7 +161,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
         final Uri uri = ProviderContract.Timesheet.getItemTimesheetUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
-                ProviderContract.Timesheet.getTimesheetColumns(),
+                ProviderContract.Timesheet.getTimesheetGroupColumns(),
                 ProviderContract.TimeColumns.REGISTERED + " = 0",
                 null,
                 ProviderContract.Timesheet.ORDER_BY

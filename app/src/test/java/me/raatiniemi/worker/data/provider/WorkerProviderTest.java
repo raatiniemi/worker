@@ -194,7 +194,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
     public void query_projectTimesheet() {
         provider.query(
                 ProviderContract.Timesheet.getItemTimesheetUri(1),
-                ProviderContract.Timesheet.getTimesheetColumns(),
+                ProviderContract.Timesheet.getTimesheetGroupColumns(),
                 "",
                 new String[]{},
                 ""
@@ -202,7 +202,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
         verify(database).query(
                 eq(TIME),
-                eq(ProviderContract.Timesheet.getTimesheetColumns()),
+                eq(ProviderContract.Timesheet.getTimesheetGroupColumns()),
                 eq("(" + PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(ProviderContract.Timesheet.GROUP_BY),
