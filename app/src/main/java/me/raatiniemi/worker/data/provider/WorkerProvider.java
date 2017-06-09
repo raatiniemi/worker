@@ -226,19 +226,19 @@ public class WorkerProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                builder = ProjectsSelection.build();
+                builder = selectionForProjectStream();
                 break;
             case PROJECTS_ID:
-                builder = ProjectSelection.build(uri);
+                builder = selectionForProjectWithUri(uri);
                 break;
             case PROJECTS_TIME:
-                builder = ProjectTimeSelection.build(uri);
+                builder = selectionForProjectTimeStreamWithUri(uri);
                 break;
             case PROJECTS_TIMESHEET:
-                builder = TimesheetStreamSelection.build(uri);
+                builder = selectionForProjectTimesheetStreamWithUri(uri);
                 break;
             case TIME_ID:
-                builder = TimeSelection.build(uri);
+                builder = selectionForTimeWithUri(uri);
                 break;
             default:
                 throw new UnsupportedOperationException(
@@ -249,70 +249,45 @@ public class WorkerProvider extends ContentProvider {
         return builder.where(selection, selectionArgs).build();
     }
 
-    private static class ProjectsSelection {
-        private ProjectsSelection() {
-        }
-
-        private static Selection.Builder build() {
-            return Selection.builder()
-                    .table(Tables.PROJECT);
-        }
+    private static Selection.Builder selectionForProjectStream() {
+        return Selection.builder()
+                .table(Tables.PROJECT);
     }
 
-    private static class ProjectSelection {
-        private ProjectSelection() {
-        }
-
-        private static Selection.Builder build(Uri uri) {
-            return Selection.builder()
-                    .table(Tables.PROJECT)
-                    .where(
-                            BaseColumns._ID + "=?",
-                            ProviderContract.Project.getItemId(uri)
-                    );
-        }
+    private static Selection.Builder selectionForProjectWithUri(Uri uri) {
+        return Selection.builder()
+                .table(Tables.PROJECT)
+                .where(
+                        BaseColumns._ID + "=?",
+                        ProviderContract.Project.getItemId(uri)
+                );
     }
 
-    private static class ProjectTimeSelection {
-        private ProjectTimeSelection() {
-        }
-
-        private static Selection.Builder build(Uri uri) {
-            return Selection.builder()
-                    .table(Tables.TIME)
-                    .where(
-                            TimeColumns.PROJECT_ID + "=?",
-                            ProviderContract.Project.getItemId(uri)
-                    );
-        }
+    private static Selection.Builder selectionForProjectTimeStreamWithUri(Uri uri) {
+        return Selection.builder()
+                .table(Tables.TIME)
+                .where(
+                        TimeColumns.PROJECT_ID + "=?",
+                        ProviderContract.Project.getItemId(uri)
+                );
     }
 
-    private static class TimesheetStreamSelection {
-        private TimesheetStreamSelection() {
-        }
-
-        private static Selection.Builder build(Uri uri) {
-            return Selection.builder()
-                    .table(Tables.TIME)
-                    .where(
-                            TimeColumns.PROJECT_ID + "=?",
-                            ProviderContract.Project.getItemId(uri)
-                    )
-                    .groupBy(ProviderContract.Timesheet.GROUP_BY);
-        }
+    private static Selection.Builder selectionForProjectTimesheetStreamWithUri(Uri uri) {
+        return Selection.builder()
+                .table(Tables.TIME)
+                .where(
+                        TimeColumns.PROJECT_ID + "=?",
+                        ProviderContract.Project.getItemId(uri)
+                )
+                .groupBy(ProviderContract.Timesheet.GROUP_BY);
     }
 
-    private static class TimeSelection {
-        private TimeSelection() {
-        }
-
-        private static Selection.Builder build(Uri uri) {
-            return Selection.builder()
-                    .table(Tables.TIME)
-                    .where(
-                            BaseColumns._ID + "=?",
-                            ProviderContract.Time.getItemId(uri)
-                    );
-        }
+    private static Selection.Builder selectionForTimeWithUri(Uri uri) {
+        return Selection.builder()
+                .table(Tables.TIME)
+                .where(
+                        BaseColumns._ID + "=?",
+                        ProviderContract.Time.getItemId(uri)
+                );
     }
 }
