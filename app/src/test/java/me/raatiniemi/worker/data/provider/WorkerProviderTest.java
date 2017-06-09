@@ -92,7 +92,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
     @Test
     public void getType_withProjectsTimesheetUri() {
-        String mimeType = provider.getType(ProviderContract.Timesheet.getItemTimesheetUri(1));
+        String mimeType = provider.getType(ProviderContract.Timesheet.getStreamUri(1));
 
         assertEquals(ProviderContract.Time.STREAM_TYPE, mimeType);
     }
@@ -193,8 +193,8 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_projectTimesheet() {
         provider.query(
-                ProviderContract.Timesheet.getItemTimesheetUri(1),
-                ProviderContract.Timesheet.getTimesheetGroupColumns(),
+                ProviderContract.Timesheet.getStreamUri(1),
+                ProviderContract.Timesheet.getStreamColumns(),
                 "",
                 new String[]{},
                 ""
@@ -202,7 +202,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
         verify(database).query(
                 eq(TIME),
-                eq(ProviderContract.Timesheet.getTimesheetGroupColumns()),
+                eq(ProviderContract.Timesheet.getStreamColumns()),
                 eq("(" + PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(ProviderContract.Timesheet.GROUP_BY),
@@ -290,7 +290,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         List<Uri> uris = new ArrayList<>();
         uris.add(ProviderContract.Project.getItemUri(1));
         uris.add(ProviderContract.Project.getItemTimeUri(1));
-        uris.add(ProviderContract.Timesheet.getItemTimesheetUri(1));
+        uris.add(ProviderContract.Timesheet.getStreamUri(1));
         uris.add(ProviderContract.Time.getItemUri(1));
         ContentValues values = new ContentValues();
 

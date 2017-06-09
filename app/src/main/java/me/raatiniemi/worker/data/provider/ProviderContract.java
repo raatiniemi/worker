@@ -127,14 +127,14 @@ public final class ProviderContract {
 
         static final String GROUP_BY = "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
 
-        public static String[] getTimesheetGroupColumns() {
+        public static String[] getStreamColumns() {
             return new String[]{
                     "MIN(" + TimeColumns.START + ") AS date",
                     "GROUP_CONCAT(" + BaseColumns._ID + ")"
             };
         }
 
-        public static Uri getItemTimesheetUri(final long id) {
+        public static Uri getStreamUri(final long id) {
             return Uri.withAppendedPath(Project.getItemUri(id), PATH_TIMESHEET);
         }
     }

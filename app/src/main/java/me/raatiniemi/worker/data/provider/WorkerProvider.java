@@ -42,15 +42,10 @@ import me.raatiniemi.worker.util.Optional;
 
 public class WorkerProvider extends ContentProvider {
     private static final int PROJECTS = 100;
-
     private static final int PROJECTS_ID = 101;
-
     private static final int PROJECTS_TIME = 102;
-
     private static final int PROJECTS_TIMESHEET = 103;
-
     private static final int TIME = 200;
-
     private static final int TIME_ID = 201;
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
@@ -240,7 +235,7 @@ public class WorkerProvider extends ContentProvider {
                 builder = ProjectTimeSelection.build(uri);
                 break;
             case PROJECTS_TIMESHEET:
-                builder = ProjectTimesheetSelection.build(uri);
+                builder = TimesheetStreamSelection.build(uri);
                 break;
             case TIME_ID:
                 builder = TimeSelection.build(uri);
@@ -292,8 +287,8 @@ public class WorkerProvider extends ContentProvider {
         }
     }
 
-    private static class ProjectTimesheetSelection {
-        private ProjectTimesheetSelection() {
+    private static class TimesheetStreamSelection {
+        private TimesheetStreamSelection() {
         }
 
         private static Selection.Builder build(Uri uri) {
