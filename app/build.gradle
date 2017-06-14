@@ -62,6 +62,8 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     testOptions {
+        unitTests.returnDefaultValues = true
+
         unitTests.all {
             jacoco {
                 includeNoLocationClasses = true
