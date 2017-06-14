@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.fernandocejas.frodo'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
