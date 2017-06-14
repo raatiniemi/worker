@@ -176,16 +176,16 @@ public class ProjectsFragment extends RxFragment
                     restoreProjectAtPreviousPosition(result);
                     showDeleteProjectErrorMessage();
                 });
-
-        refreshViewModel.output().positionsForActiveProjects()
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe(this::refreshPositions);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        refreshViewModel.output().positionsForActiveProjects()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(this::refreshPositions);
 
         refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
