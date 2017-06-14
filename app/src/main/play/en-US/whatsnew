@@ -1,1 +1,1 @@
-Include elapsed time for active projects in the time summary.
+Fix issue in which the active projects is not properly refreshed.
