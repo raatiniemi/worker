@@ -18,6 +18,8 @@ package me.raatiniemi.worker.presentation.projects.viewmodel;
 
 import android.support.annotation.NonNull;
 
+import com.fernandocejas.frodo.annotation.RxLogObservable;
+
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
@@ -110,18 +112,21 @@ public interface CreateProjectViewModel {
 
         @NonNull
         @Override
+        @RxLogObservable
         public Observable<Boolean> isProjectNameValid() {
             return isProjectNameValid;
         }
 
         @NonNull
         @Override
+        @RxLogObservable
         public Observable<Project> createProjectSuccess() {
             return createProjectSuccess.asObservable();
         }
 
         @NonNull
         @Override
+        @RxLogObservable
         public Observable<String> invalidProjectNameError() {
             return createProjectError
                     .filter(ViewModel::isInvalidProjectNameError)
@@ -134,6 +139,7 @@ public interface CreateProjectViewModel {
 
         @NonNull
         @Override
+        @RxLogObservable
         public Observable<String> duplicateProjectNameError() {
             return createProjectError
                     .filter(ViewModel::isDuplicateProjectNameError)
@@ -146,6 +152,7 @@ public interface CreateProjectViewModel {
 
         @NonNull
         @Override
+        @RxLogObservable
         public Observable<String> createProjectError() {
             return createProjectError
                     .filter(ViewModel::isUnknownError)

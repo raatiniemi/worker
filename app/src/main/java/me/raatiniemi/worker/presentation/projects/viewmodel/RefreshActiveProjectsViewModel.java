@@ -18,6 +18,8 @@ package me.raatiniemi.worker.presentation.projects.viewmodel;
 
 import android.support.annotation.NonNull;
 
+import com.fernandocejas.frodo.annotation.RxLogObservable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,6 +81,7 @@ public interface RefreshActiveProjectsViewModel {
 
         @NonNull
         @Override
+        @RxLogObservable
         public Observable<List<Integer>> positionsForActiveProjects() {
             return positions.asObservable();
         }
