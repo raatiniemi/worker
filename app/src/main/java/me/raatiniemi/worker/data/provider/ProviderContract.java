@@ -127,6 +127,9 @@ public final class ProviderContract {
 
         static final String GROUP_BY = "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
 
+        private Timesheet() {
+        }
+
         public static String[] getStreamColumns() {
             return new String[]{
                     "MIN(" + TimeColumns.START + ") AS date",
