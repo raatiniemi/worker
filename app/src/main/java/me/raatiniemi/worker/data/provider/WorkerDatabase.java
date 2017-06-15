@@ -118,7 +118,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         }
     }
 
-    private void checkVersionsForUpgrade(int oldVersion, int newVersion) {
+    private static void checkVersionsForUpgrade(int oldVersion, int newVersion) {
         boolean isOldVersionLessThanFirstVersion = 1 > oldVersion;
         if (isOldVersionLessThanFirstVersion) {
             throw new IllegalArgumentException(
@@ -155,7 +155,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         checkVersionsForDowngrade(oldVersion, newVersion);
     }
 
-    private void checkVersionsForDowngrade(int oldVersion, int newVersion) {
+    private static void checkVersionsForDowngrade(int oldVersion, int newVersion) {
         boolean isNewVersionLessThanFirstVersion = 1 > newVersion;
         if (isNewVersionLessThanFirstVersion) {
             throw new IllegalArgumentException(
