@@ -62,7 +62,7 @@ final class Selection {
         return groupBy;
     }
 
-    final static class Builder {
+    static final class Builder {
         private final StringBuilder selection = new StringBuilder();
         private final List<String> selectionArgs = new ArrayList<>();
         private String table;

@@ -54,7 +54,7 @@ public final class ProviderContract {
         }
     }
 
-    public final static class Project {
+    public static final class Project {
         public static final String ORDER_BY_TIME = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
         public static final String ORDER_BY = BaseColumns._ID + " ASC";
 
@@ -90,7 +90,7 @@ public final class ProviderContract {
         }
     }
 
-    public final static class Time {
+    public static final class Time {
         private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
 
         static final String STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
@@ -122,7 +122,7 @@ public final class ProviderContract {
         }
     }
 
-    public final static class Timesheet {
+    public static final class Timesheet {
         public static final String ORDER_BY = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
 
         static final String GROUP_BY = "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
