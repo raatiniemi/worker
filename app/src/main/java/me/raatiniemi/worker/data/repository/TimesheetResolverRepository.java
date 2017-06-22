@@ -149,7 +149,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
                 ProviderContract.getTimesheetStreamColumns(),
                 null,
                 null,
-                ProviderContract.TIMESHEET_ORDER_BY
+                ProviderContract.ORDER_BY_TIMESHEET
         );
         return fetchTimesheet(cursor);
     }
@@ -164,7 +164,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
                 ProviderContract.getTimesheetStreamColumns(),
                 ProviderContract.COLUMN_TIME_REGISTERED + " = 0",
                 null,
-                ProviderContract.TIMESHEET_ORDER_BY
+                ProviderContract.ORDER_BY_TIMESHEET
         );
         return fetchTimesheet(cursor);
     }

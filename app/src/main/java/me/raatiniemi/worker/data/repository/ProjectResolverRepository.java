@@ -108,7 +108,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
                 ProviderContract.getProjectColumns(),
                 null,
                 null,
-                ProviderContract.PROJECT_ORDER_BY
+                ProviderContract.ORDER_BY_PROJECT
         );
 
         return fetch(cursor);

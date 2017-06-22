@@ -218,7 +218,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
                 ProviderContract.getTimeColumns(),
                 ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
-                ProviderContract.PROJECT_ORDER_BY_TIME
+                ProviderContract.ORDER_BY_PROJECT_TIME
         );
         return fetch(cursor);
     }

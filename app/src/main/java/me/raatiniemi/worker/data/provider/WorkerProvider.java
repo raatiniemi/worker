@@ -88,18 +88,18 @@ public class WorkerProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                mimeType = ProviderContract.PROJECT_STREAM_TYPE;
+                mimeType = ProviderContract.TYPE_STREAM_PROJECT;
                 break;
             case PROJECTS_ID:
-                mimeType = ProviderContract.PROJECT_ITEM_TYPE;
+                mimeType = ProviderContract.TYPE_ITEM_PROJECT;
                 break;
             case PROJECTS_TIME:
             case PROJECTS_TIMESHEET:
             case TIME:
-                mimeType = ProviderContract.TIME_STREAM_TYPE;
+                mimeType = ProviderContract.TYPE_STREAM_TIME;
                 break;
             case TIME_ID:
-                mimeType = ProviderContract.TIME_ITEM_TYPE;
+                mimeType = ProviderContract.TYPE_ITEM_TIME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -277,7 +277,7 @@ public class WorkerProvider extends ContentProvider {
                         ProviderContract.COLUMN_TIME_PROJECT_ID + "=?",
                         ProviderContract.getProjectItemId(uri)
                 )
-                .groupBy(ProviderContract.TIMESHEET_GROUP_BY);
+                .groupBy(ProviderContract.GROUP_BY_TIMESHEET);
     }
 
     private static Selection.Builder selectionForTimeWithUri(Uri uri) {

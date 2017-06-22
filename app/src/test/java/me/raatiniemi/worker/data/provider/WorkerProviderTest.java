@@ -70,42 +70,42 @@ public class WorkerProviderTest extends RobolectricTestCase {
     public void getType_withProjectsStreamUri() {
         String mimeType = provider.getType(ProviderContract.getProjectStreamUri());
 
-        assertEquals(ProviderContract.PROJECT_STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_STREAM_PROJECT, mimeType);
     }
 
     @Test
     public void getType_withProjectsIdUri() {
         String mimeType = provider.getType(ProviderContract.getProjectItemUri(1));
 
-        assertEquals(ProviderContract.PROJECT_ITEM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_ITEM_PROJECT, mimeType);
     }
 
     @Test
     public void getType_withProjectsTimeUri() {
         String mimeType = provider.getType(ProviderContract.getProjectItemTimeUri(1));
 
-        assertEquals(ProviderContract.TIME_STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_STREAM_TIME, mimeType);
     }
 
     @Test
     public void getType_withProjectsTimesheetUri() {
         String mimeType = provider.getType(ProviderContract.getTimesheetStreamUri(1));
 
-        assertEquals(ProviderContract.TIME_STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_STREAM_TIME, mimeType);
     }
 
     @Test
     public void getType_withTimeStreamUri() {
         String mimeType = provider.getType(ProviderContract.getTimeStreamUri());
 
-        assertEquals(ProviderContract.TIME_STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_STREAM_TIME, mimeType);
     }
 
     @Test
     public void getType_withTimeItemUri() {
         String mimeType = provider.getType(ProviderContract.getTimeItemUri(1));
 
-        assertEquals(ProviderContract.TIME_ITEM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_ITEM_TIME, mimeType);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -202,7 +202,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
                 eq(ProviderContract.getTimesheetStreamColumns()),
                 eq("(" + ProviderContract.COLUMN_TIME_PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
-                eq(ProviderContract.TIMESHEET_GROUP_BY),
+                eq(ProviderContract.GROUP_BY_TIMESHEET),
                 eq(null),
                 eq(""),
                 eq(null)

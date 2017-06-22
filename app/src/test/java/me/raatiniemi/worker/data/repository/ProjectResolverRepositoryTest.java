@@ -121,7 +121,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                         ProviderContract.getProjectColumns(),
                         null,
                         null,
-                        ProviderContract.PROJECT_ORDER_BY
+                        ProviderContract.ORDER_BY_PROJECT
                 )
         ).thenReturn(null);
 
@@ -139,7 +139,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                         ProviderContract.getProjectColumns(),
                         null,
                         null,
-                        ProviderContract.PROJECT_ORDER_BY
+                        ProviderContract.ORDER_BY_PROJECT
                 )
         ).thenReturn(cursor);
 
@@ -158,7 +158,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                         ProviderContract.getProjectColumns(),
                         null,
                         null,
-                        ProviderContract.PROJECT_ORDER_BY
+                        ProviderContract.ORDER_BY_PROJECT
                 )
         ).thenReturn(cursor);
 
@@ -177,7 +177,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                         ProviderContract.getProjectColumns(),
                         null,
                         null,
-                        ProviderContract.PROJECT_ORDER_BY
+                        ProviderContract.ORDER_BY_PROJECT
                 )
         ).thenReturn(cursor);
 
