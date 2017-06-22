@@ -43,7 +43,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
 
     private static Cursor buildCursorWithNumberOfItems(int numberOfItems) {
         return CursorFactory.build(
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getTimeColumns(),
                 numberOfItems,
                 number -> Arrays.asList(number, 1L, 123456789L, 123456789L, 0L)
         );
@@ -64,7 +64,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
-                        ProviderContract.Time.getColumns(),
+                        ProviderContract.getTimeColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
                         null
@@ -82,7 +82,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
-                        ProviderContract.Time.getColumns(),
+                        ProviderContract.getTimeColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
                         null
@@ -101,7 +101,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
-                        ProviderContract.Time.getColumns(),
+                        ProviderContract.getTimeColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
                         null
@@ -120,7 +120,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
-                        ProviderContract.Time.getColumns(),
+                        ProviderContract.getTimeColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
                         null

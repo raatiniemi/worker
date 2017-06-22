@@ -75,8 +75,8 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     @NonNull
     private Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
-                ProviderContract.Time.getItemUri(id),
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getTimeItemUri(id),
+                ProviderContract.getTimeColumns(),
                 null,
                 null,
                 null

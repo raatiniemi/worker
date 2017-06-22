@@ -96,10 +96,10 @@ public class WorkerProvider extends ContentProvider {
             case PROJECTS_TIME:
             case PROJECTS_TIMESHEET:
             case TIME:
-                mimeType = ProviderContract.Time.STREAM_TYPE;
+                mimeType = ProviderContract.TIME_STREAM_TYPE;
                 break;
             case TIME_ID:
-                mimeType = ProviderContract.Time.ITEM_TYPE;
+                mimeType = ProviderContract.TIME_ITEM_TYPE;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -171,7 +171,7 @@ public class WorkerProvider extends ContentProvider {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
         long id = db.insertOrThrow(ProviderContract.TABLE_TIME, null, values);
-        return ProviderContract.Time.getItemUri(id);
+        return ProviderContract.getTimeItemUri(id);
     }
 
     @Override
@@ -285,7 +285,7 @@ public class WorkerProvider extends ContentProvider {
                 .table(ProviderContract.TABLE_TIME)
                 .where(
                         BaseColumns._ID + "=?",
-                        ProviderContract.Time.getItemId(uri)
+                        ProviderContract.getTimeItemId(uri)
                 );
     }
 }

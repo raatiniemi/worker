@@ -70,36 +70,31 @@ public final class ProviderContract {
         return uri.getPathSegments().get(1);
     }
 
-    public static final class Time {
-        private static final Uri STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
+    static final String TIME_STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
+    static final String TIME_ITEM_TYPE = "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
 
-        static final String STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.time";
-        static final String ITEM_TYPE = "vnd.android.cursor.item/vnd.me.raatiniemi.worker.time";
+    private static final Uri TIME_STREAM_URI = Uri.withAppendedPath(AUTHORITY_URI, PATH_TIME);
 
-        private Time() {
-        }
+    public static String[] getTimeColumns() {
+        return new String[]{
+                BaseColumns._ID,
+                COLUMN_TIME_PROJECT_ID,
+                COLUMN_TIME_START,
+                COLUMN_TIME_STOP,
+                COLUMN_TIME_REGISTERED
+        };
+    }
 
-        public static String[] getColumns() {
-            return new String[]{
-                    BaseColumns._ID,
-                    COLUMN_TIME_PROJECT_ID,
-                    COLUMN_TIME_START,
-                    COLUMN_TIME_STOP,
-                    COLUMN_TIME_REGISTERED
-            };
-        }
+    public static Uri getTimeStreamUri() {
+        return TIME_STREAM_URI;
+    }
 
-        public static Uri getStreamUri() {
-            return STREAM_URI;
-        }
+    public static Uri getTimeItemUri(final long id) {
+        return Uri.withAppendedPath(getTimeStreamUri(), String.valueOf(id));
+    }
 
-        public static Uri getItemUri(final long id) {
-            return Uri.withAppendedPath(getStreamUri(), String.valueOf(id));
-        }
-
-        public static String getItemId(Uri uri) {
-            return uri.getPathSegments().get(1);
-        }
+    public static String getTimeItemId(Uri uri) {
+        return uri.getPathSegments().get(1);
     }
 
     public static final class Timesheet {

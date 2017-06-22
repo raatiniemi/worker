@@ -96,7 +96,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
 
         Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(project.getId()),
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getTimeColumns(),
                 ProviderContract.COLUMN_TIME_START + ">=?",
                 new String[]{String.valueOf(milliseconds)},
                 null
@@ -107,8 +107,8 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     @Override
     public Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
-                ProviderContract.Time.getItemUri(id),
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getTimeItemUri(id),
+                ProviderContract.getTimeColumns(),
                 null,
                 null,
                 null
@@ -123,10 +123,10 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         final ContentValues values = contentValuesMapper.transform(time);
 
         final Uri uri = getContentResolver().insert(
-                ProviderContract.Time.getStreamUri(),
+                ProviderContract.getTimeStreamUri(),
                 values
         );
-        return get(Long.parseLong(ProviderContract.Time.getItemId(uri)));
+        return get(Long.parseLong(ProviderContract.getTimeItemId(uri)));
     }
 
     @Override
@@ -134,7 +134,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         requireNonNull(time);
 
         getContentResolver().update(
-                ProviderContract.Time.getItemUri(time.getId()),
+                ProviderContract.getTimeItemUri(time.getId()),
                 contentValuesMapper.transform(time),
                 null,
                 null
@@ -150,7 +150,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         for (Time time : times) {
-            Uri uri = ProviderContract.Time.getItemUri(time.getId());
+            Uri uri = ProviderContract.getTimeItemUri(time.getId());
 
             ContentProviderOperation operation = ContentProviderOperation.newUpdate(uri)
                     .withValues(contentValuesMapper.transform(time))
@@ -178,7 +178,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     @Override
     public void remove(final long id) {
         getContentResolver().delete(
-                ProviderContract.Time.getItemUri(id),
+                ProviderContract.getTimeItemUri(id),
                 null,
                 null
         );
@@ -191,7 +191,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         for (Time time : times) {
-            Uri uri = ProviderContract.Time.getItemUri(time.getId());
+            Uri uri = ProviderContract.getTimeItemUri(time.getId());
             batch.add(ContentProviderOperation.newDelete(uri).build());
         }
 
@@ -215,7 +215,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
 
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(projectId),
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getTimeColumns(),
                 ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
                 ProviderContract.PROJECT_ORDER_BY_TIME
@@ -228,7 +228,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(projectId),
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getTimeColumns(),
                 ProviderContract.COLUMN_TIME_STOP + " = 0",
                 null,
                 null
