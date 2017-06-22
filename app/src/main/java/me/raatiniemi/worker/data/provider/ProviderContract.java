@@ -27,13 +27,8 @@ public final class ProviderContract {
     private static final String PATH_TIMESHEET = "timesheet";
     private static final String PATH_TIME = "time";
 
-    final class Tables {
-        static final String PROJECT = "project";
-        static final String TIME = "time";
-
-        private Tables() {
-        }
-    }
+    static final String TABLE_PROJECT = "project";
+    static final String TABLE_TIME = "time";
 
     public final class ProjectColumns {
         public static final String NAME = "name";

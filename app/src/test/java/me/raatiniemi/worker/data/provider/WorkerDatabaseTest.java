@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
-import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
@@ -136,7 +135,7 @@ public class WorkerDatabaseTest extends RobolectricTestCase {
         @Override
         public void onCreate(SQLiteDatabase db) {
             // Create the structure for the `project`-table.
-            db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
+            db.execSQL("CREATE TABLE " + ProviderContract.TABLE_PROJECT + " ( " +
                     BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     ProjectColumns.NAME + " TEXT NOT NULL, " +
                     ProjectColumns.DESCRIPTION + " TEXT NULL, " +
@@ -144,7 +143,7 @@ public class WorkerDatabaseTest extends RobolectricTestCase {
                     "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
 
             // Create the structure for the `time`-table.
-            db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
+            db.execSQL("CREATE TABLE " + ProviderContract.TABLE_TIME + " ( " +
                     BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
                     TimeColumns.START + " INTEGER NOT NULL, " +

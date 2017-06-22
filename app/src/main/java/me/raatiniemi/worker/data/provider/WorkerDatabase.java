@@ -24,7 +24,6 @@ import android.provider.BaseColumns;
 
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
-import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 
 /**
@@ -78,7 +77,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create the structure for the `project`-table.
-        db.execSQL("CREATE TABLE " + Tables.PROJECT + " ( " +
+        db.execSQL("CREATE TABLE " + ProviderContract.TABLE_PROJECT + " ( " +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ProjectColumns.NAME + " TEXT NOT NULL, " +
                 ProjectColumns.DESCRIPTION + " TEXT NULL, " +
@@ -86,7 +85,7 @@ public class WorkerDatabase extends SQLiteOpenHelper {
                 "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
 
         // Create the structure for the `time`-table.
-        db.execSQL("CREATE TABLE " + Tables.TIME + " ( " +
+        db.execSQL("CREATE TABLE " + ProviderContract.TABLE_TIME + " ( " +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
                 TimeColumns.START + " INTEGER NOT NULL, " +
@@ -110,9 +109,9 @@ public class WorkerDatabase extends SQLiteOpenHelper {
 
         // since sqlite is unable to remove columns we need to check if the
         // column already exists before adding it.
-        if (!columnExists(db, Tables.TIME, TimeColumns.REGISTERED)) {
+        if (!columnExists(db, ProviderContract.TABLE_TIME, TimeColumns.REGISTERED)) {
             // Add the `registered`-column to the `time`-table.
-            db.execSQL("ALTER TABLE " + Tables.TIME +
+            db.execSQL("ALTER TABLE " + ProviderContract.TABLE_TIME +
                     " ADD COLUMN " + TimeColumns.REGISTERED +
                     " INTEGER NOT NULL DEFAULT 0");
         }

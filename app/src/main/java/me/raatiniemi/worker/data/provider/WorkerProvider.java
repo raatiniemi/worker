@@ -35,7 +35,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
 import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.util.Optional;
@@ -165,14 +164,14 @@ public class WorkerProvider extends ContentProvider {
     private Uri insertProject(ContentValues values) {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
-        long id = db.insertOrThrow(Tables.PROJECT, null, values);
+        long id = db.insertOrThrow(ProviderContract.TABLE_PROJECT, null, values);
         return ProviderContract.Project.getItemUri(id);
     }
 
     private Uri insertTime(ContentValues values) {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
-        long id = db.insertOrThrow(Tables.TIME, null, values);
+        long id = db.insertOrThrow(ProviderContract.TABLE_TIME, null, values);
         return ProviderContract.Time.getItemUri(id);
     }
 
@@ -251,12 +250,12 @@ public class WorkerProvider extends ContentProvider {
 
     private static Selection.Builder selectionForProjectStream() {
         return Selection.builder()
-                .table(Tables.PROJECT);
+                .table(ProviderContract.TABLE_PROJECT);
     }
 
     private static Selection.Builder selectionForProjectWithUri(Uri uri) {
         return Selection.builder()
-                .table(Tables.PROJECT)
+                .table(ProviderContract.TABLE_PROJECT)
                 .where(
                         BaseColumns._ID + "=?",
                         ProviderContract.Project.getItemId(uri)
@@ -265,7 +264,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static Selection.Builder selectionForProjectTimeStreamWithUri(Uri uri) {
         return Selection.builder()
-                .table(Tables.TIME)
+                .table(ProviderContract.TABLE_TIME)
                 .where(
                         TimeColumns.PROJECT_ID + "=?",
                         ProviderContract.Project.getItemId(uri)
@@ -274,7 +273,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static Selection.Builder selectionForProjectTimesheetStreamWithUri(Uri uri) {
         return Selection.builder()
-                .table(Tables.TIME)
+                .table(ProviderContract.TABLE_TIME)
                 .where(
                         TimeColumns.PROJECT_ID + "=?",
                         ProviderContract.Project.getItemId(uri)
@@ -284,7 +283,7 @@ public class WorkerProvider extends ContentProvider {
 
     private static Selection.Builder selectionForTimeWithUri(Uri uri) {
         return Selection.builder()
-                .table(Tables.TIME)
+                .table(ProviderContract.TABLE_TIME)
                 .where(
                         BaseColumns._ID + "=?",
                         ProviderContract.Time.getItemId(uri)

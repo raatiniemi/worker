@@ -33,8 +33,6 @@ import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
-import static me.raatiniemi.worker.data.provider.ProviderContract.Tables.PROJECT;
-import static me.raatiniemi.worker.data.provider.ProviderContract.Tables.TIME;
 import static me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns.PROJECT_ID;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
@@ -135,7 +133,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).query(
-                eq(PROJECT),
+                eq(ProviderContract.TABLE_PROJECT),
                 eq(ProviderContract.Project.getColumns()),
                 eq(""),
                 isA(String[].class),
@@ -157,7 +155,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).query(
-                eq(PROJECT),
+                eq(ProviderContract.TABLE_PROJECT),
                 eq(ProviderContract.Project.getColumns()),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"}),
@@ -179,7 +177,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).query(
-                eq(TIME),
+                eq(ProviderContract.TABLE_TIME),
                 eq(ProviderContract.Time.getColumns()),
                 eq("(" + PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
@@ -201,7 +199,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).query(
-                eq(TIME),
+                eq(ProviderContract.TABLE_TIME),
                 eq(ProviderContract.Timesheet.getStreamColumns()),
                 eq("(" + PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
@@ -223,7 +221,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).query(
-                eq(TIME),
+                eq(ProviderContract.TABLE_TIME),
                 eq(ProviderContract.Time.getColumns()),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"}),
@@ -248,7 +246,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).query(
-                eq(PROJECT),
+                eq(ProviderContract.TABLE_PROJECT),
                 eq(ProviderContract.Project.getColumns()),
                 eq(""),
                 isA(String[].class),
@@ -274,7 +272,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).query(
-                eq(PROJECT),
+                eq(ProviderContract.TABLE_PROJECT),
                 eq(ProviderContract.Project.getColumns()),
                 eq(""),
                 isA(String[].class),
@@ -309,7 +307,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void insert_withProjectsStreamUri() {
         ContentValues values = new ContentValues();
-        when(database.insertOrThrow(eq(PROJECT), eq(null), eq(values)))
+        when(database.insertOrThrow(eq(ProviderContract.TABLE_PROJECT), eq(null), eq(values)))
                 .thenReturn(1L);
 
         Uri uri = provider.insert(ProviderContract.Project.getStreamUri(), values);
@@ -320,7 +318,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void insert_withTimeStreamUri() {
         ContentValues values = new ContentValues();
-        when(database.insertOrThrow(eq(TIME), eq(null), eq(values)))
+        when(database.insertOrThrow(eq(ProviderContract.TABLE_TIME), eq(null), eq(values)))
                 .thenReturn(1L);
 
         Uri uri = provider.insert(ProviderContract.Time.getStreamUri(), values);
@@ -340,7 +338,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).update(
-                eq(PROJECT),
+                eq(ProviderContract.TABLE_PROJECT),
                 eq(values),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"})
@@ -359,7 +357,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).update(
-                eq(TIME),
+                eq(ProviderContract.TABLE_TIME),
                 eq(values),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"})
@@ -375,7 +373,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).delete(
-                eq(PROJECT),
+                eq(ProviderContract.TABLE_PROJECT),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"})
         );
@@ -390,7 +388,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         );
 
         verify(database).delete(
-                eq(TIME),
+                eq(ProviderContract.TABLE_TIME),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"})
         );
