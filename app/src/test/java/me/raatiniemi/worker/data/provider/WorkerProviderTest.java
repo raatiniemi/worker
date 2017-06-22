@@ -68,21 +68,21 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
     @Test
     public void getType_withProjectsStreamUri() {
-        String mimeType = provider.getType(ProviderContract.Project.getStreamUri());
+        String mimeType = provider.getType(ProviderContract.getProjectStreamUri());
 
-        assertEquals(ProviderContract.Project.STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.PROJECT_STREAM_TYPE, mimeType);
     }
 
     @Test
     public void getType_withProjectsIdUri() {
-        String mimeType = provider.getType(ProviderContract.Project.getItemUri(1));
+        String mimeType = provider.getType(ProviderContract.getProjectItemUri(1));
 
-        assertEquals(ProviderContract.Project.ITEM_TYPE, mimeType);
+        assertEquals(ProviderContract.PROJECT_ITEM_TYPE, mimeType);
     }
 
     @Test
     public void getType_withProjectsTimeUri() {
-        String mimeType = provider.getType(ProviderContract.Project.getItemTimeUri(1));
+        String mimeType = provider.getType(ProviderContract.getProjectItemTimeUri(1));
 
         assertEquals(ProviderContract.Time.STREAM_TYPE, mimeType);
     }
@@ -124,8 +124,8 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_projects() {
         provider.query(
-                ProviderContract.Project.getStreamUri(),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectStreamUri(),
+                ProviderContract.getProjectColumns(),
                 "",
                 new String[]{},
                 ""
@@ -133,7 +133,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
         verify(database).query(
                 eq(ProviderContract.TABLE_PROJECT),
-                eq(ProviderContract.Project.getColumns()),
+                eq(ProviderContract.getProjectColumns()),
                 eq(""),
                 isA(String[].class),
                 eq(null),
@@ -146,8 +146,8 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_project() {
         provider.query(
-                ProviderContract.Project.getItemUri(1),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectItemUri(1),
+                ProviderContract.getProjectColumns(),
                 "",
                 new String[]{},
                 ""
@@ -155,7 +155,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
         verify(database).query(
                 eq(ProviderContract.TABLE_PROJECT),
-                eq(ProviderContract.Project.getColumns()),
+                eq(ProviderContract.getProjectColumns()),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(null),
@@ -168,7 +168,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_projectTime() {
         provider.query(
-                ProviderContract.Project.getItemTimeUri(1),
+                ProviderContract.getProjectItemTimeUri(1),
                 ProviderContract.Time.getColumns(),
                 "",
                 new String[]{},
@@ -234,11 +234,11 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_withLimit() {
         provider.query(
-                ProviderContract.Project.getStreamUri()
+                ProviderContract.getProjectStreamUri()
                         .buildUpon()
                         .appendQueryParameter(QueryParameter.LIMIT, "1")
                         .build(),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectColumns(),
                 "",
                 new String[]{},
                 ""
@@ -246,7 +246,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
         verify(database).query(
                 eq(ProviderContract.TABLE_PROJECT),
-                eq(ProviderContract.Project.getColumns()),
+                eq(ProviderContract.getProjectColumns()),
                 eq(""),
                 isA(String[].class),
                 eq(null),
@@ -259,12 +259,12 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_withLimitAndOffset() {
         provider.query(
-                ProviderContract.Project.getStreamUri()
+                ProviderContract.getProjectStreamUri()
                         .buildUpon()
                         .appendQueryParameter(QueryParameter.OFFSET, "10")
                         .appendQueryParameter(QueryParameter.LIMIT, "5")
                         .build(),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectColumns(),
                 "",
                 new String[]{},
                 ""
@@ -272,7 +272,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
         verify(database).query(
                 eq(ProviderContract.TABLE_PROJECT),
-                eq(ProviderContract.Project.getColumns()),
+                eq(ProviderContract.getProjectColumns()),
                 eq(""),
                 isA(String[].class),
                 eq(null),
@@ -285,8 +285,8 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void insert_withNoneStreamUris() {
         List<Uri> uris = new ArrayList<>();
-        uris.add(ProviderContract.Project.getItemUri(1));
-        uris.add(ProviderContract.Project.getItemTimeUri(1));
+        uris.add(ProviderContract.getProjectItemUri(1));
+        uris.add(ProviderContract.getProjectItemTimeUri(1));
         uris.add(ProviderContract.Timesheet.getStreamUri(1));
         uris.add(ProviderContract.Time.getItemUri(1));
         ContentValues values = new ContentValues();
@@ -309,9 +309,9 @@ public class WorkerProviderTest extends RobolectricTestCase {
         when(database.insertOrThrow(eq(ProviderContract.TABLE_PROJECT), eq(null), eq(values)))
                 .thenReturn(1L);
 
-        Uri uri = provider.insert(ProviderContract.Project.getStreamUri(), values);
+        Uri uri = provider.insert(ProviderContract.getProjectStreamUri(), values);
 
-        assertEquals(ProviderContract.Project.getItemUri(1), uri);
+        assertEquals(ProviderContract.getProjectItemUri(1), uri);
     }
 
     @Test
@@ -330,7 +330,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         ContentValues values = new ContentValues();
 
         provider.update(
-                ProviderContract.Project.getItemUri(1),
+                ProviderContract.getProjectItemUri(1),
                 values,
                 null,
                 null
@@ -366,7 +366,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void delete_projectItem() {
         provider.delete(
-                ProviderContract.Project.getItemUri(1),
+                ProviderContract.getProjectItemUri(1),
                 null,
                 null
         );

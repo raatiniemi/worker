@@ -88,10 +88,10 @@ public class WorkerProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                mimeType = ProviderContract.Project.STREAM_TYPE;
+                mimeType = ProviderContract.PROJECT_STREAM_TYPE;
                 break;
             case PROJECTS_ID:
-                mimeType = ProviderContract.Project.ITEM_TYPE;
+                mimeType = ProviderContract.PROJECT_ITEM_TYPE;
                 break;
             case PROJECTS_TIME:
             case PROJECTS_TIMESHEET:
@@ -164,7 +164,7 @@ public class WorkerProvider extends ContentProvider {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
         long id = db.insertOrThrow(ProviderContract.TABLE_PROJECT, null, values);
-        return ProviderContract.Project.getItemUri(id);
+        return ProviderContract.getProjectItemUri(id);
     }
 
     private Uri insertTime(ContentValues values) {
@@ -257,7 +257,7 @@ public class WorkerProvider extends ContentProvider {
                 .table(ProviderContract.TABLE_PROJECT)
                 .where(
                         BaseColumns._ID + "=?",
-                        ProviderContract.Project.getItemId(uri)
+                        ProviderContract.getProjectItemId(uri)
                 );
     }
 
@@ -266,7 +266,7 @@ public class WorkerProvider extends ContentProvider {
                 .table(ProviderContract.TABLE_TIME)
                 .where(
                         ProviderContract.COLUMN_TIME_PROJECT_ID + "=?",
-                        ProviderContract.Project.getItemId(uri)
+                        ProviderContract.getProjectItemId(uri)
                 );
     }
 
@@ -275,7 +275,7 @@ public class WorkerProvider extends ContentProvider {
                 .table(ProviderContract.TABLE_TIME)
                 .where(
                         ProviderContract.COLUMN_TIME_PROJECT_ID + "=?",
-                        ProviderContract.Project.getItemId(uri)
+                        ProviderContract.getProjectItemId(uri)
                 )
                 .groupBy(ProviderContract.Timesheet.GROUP_BY);
     }

@@ -66,7 +66,7 @@ public class ClockOutServiceTest extends RobolectricTestCase {
     }
 
     private Uri buildProjectDataUri() {
-        return ProviderContract.Project.getItemUri(1L);
+        return ProviderContract.getProjectItemUri(1L);
     }
 
     @Before

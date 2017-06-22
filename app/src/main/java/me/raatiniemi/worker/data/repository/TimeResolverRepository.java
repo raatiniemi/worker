@@ -95,7 +95,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         requireNonNull(project);
 
         Cursor cursor = getContentResolver().query(
-                ProviderContract.Project.getItemTimeUri(project.getId()),
+                ProviderContract.getProjectItemTimeUri(project.getId()),
                 ProviderContract.Time.getColumns(),
                 ProviderContract.COLUMN_TIME_START + ">=?",
                 new String[]{String.valueOf(milliseconds)},
@@ -214,11 +214,11 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         calendar.set(Calendar.SECOND, 0);
 
         final Cursor cursor = getContentResolver().query(
-                ProviderContract.Project.getItemTimeUri(projectId),
+                ProviderContract.getProjectItemTimeUri(projectId),
                 ProviderContract.Time.getColumns(),
                 ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
-                ProviderContract.Project.ORDER_BY_TIME
+                ProviderContract.PROJECT_ORDER_BY_TIME
         );
         return fetch(cursor);
     }
@@ -227,7 +227,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     public Optional<Time> getActiveTimeForProject(long projectId)
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
-                ProviderContract.Project.getItemTimeUri(projectId),
+                ProviderContract.getProjectItemTimeUri(projectId),
                 ProviderContract.Time.getColumns(),
                 ProviderContract.COLUMN_TIME_STOP + " = 0",
                 null,

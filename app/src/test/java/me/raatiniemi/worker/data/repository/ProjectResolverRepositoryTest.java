@@ -46,7 +46,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
     private static Cursor buildCursorWithNumberOfItems(int numberOfItems) {
         return CursorFactory.build(
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectColumns(),
                 numberOfItems,
                 number -> Arrays.asList(number, "Name")
         );
@@ -62,8 +62,8 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     public void findProjectByName_withNullCursor() throws InvalidProjectNameException {
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getStreamUri(),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
                         ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -80,8 +80,8 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getStreamUri(),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
                         ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -99,8 +99,8 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getStreamUri(),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
                         ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
                         new String[]{"Name"},
                         null
@@ -117,11 +117,11 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     public void get_projectsWithNullCursor() throws InvalidProjectNameException {
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getStreamUri(),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
                         null,
                         null,
-                        ProviderContract.Project.ORDER_BY
+                        ProviderContract.PROJECT_ORDER_BY
                 )
         ).thenReturn(null);
 
@@ -135,11 +135,11 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getStreamUri(),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
                         null,
                         null,
-                        ProviderContract.Project.ORDER_BY
+                        ProviderContract.PROJECT_ORDER_BY
                 )
         ).thenReturn(cursor);
 
@@ -154,11 +154,11 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getStreamUri(),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
                         null,
                         null,
-                        ProviderContract.Project.ORDER_BY
+                        ProviderContract.PROJECT_ORDER_BY
                 )
         ).thenReturn(cursor);
 
@@ -173,11 +173,11 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getStreamUri(),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
                         null,
                         null,
-                        ProviderContract.Project.ORDER_BY
+                        ProviderContract.PROJECT_ORDER_BY
                 )
         ).thenReturn(cursor);
 
@@ -191,8 +191,8 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     public void get_projectWithNullCursor() throws InvalidProjectNameException {
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getItemUri(1),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectItemUri(1),
+                        ProviderContract.getProjectColumns(),
                         null,
                         null,
                         null
@@ -209,8 +209,8 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getItemUri(1),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectItemUri(1),
+                        ProviderContract.getProjectColumns(),
                         null,
                         null,
                         null
@@ -228,8 +228,8 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getItemUri(1),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectItemUri(1),
+                        ProviderContract.getProjectColumns(),
                         null,
                         null,
                         null
@@ -250,15 +250,15 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
         // insert...
         when(
                 contentResolver.insert(
-                        ProviderContract.Project.getStreamUri(),
+                        ProviderContract.getProjectStreamUri(),
                         contentValuesMapper.transform(project)
                 )
-        ).thenReturn(ProviderContract.Project.getItemUri(1));
+        ).thenReturn(ProviderContract.getProjectItemUri(1));
         // get...
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getItemUri(1),
-                        ProviderContract.Project.getColumns(),
+                        ProviderContract.getProjectItemUri(1),
+                        ProviderContract.getProjectColumns(),
                         null,
                         null,
                         null

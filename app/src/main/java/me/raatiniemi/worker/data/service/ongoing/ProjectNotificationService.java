@@ -33,7 +33,7 @@ public class ProjectNotificationService extends OngoingService {
 
     public static void startServiceWithContext(Context context, Project project) {
         Intent intent = new Intent(context, ProjectNotificationService.class);
-        intent.setData(ProviderContract.Project.getItemUri(project.getId()));
+        intent.setData(ProviderContract.getProjectItemUri(project.getId()));
         context.startService(intent);
     }
 

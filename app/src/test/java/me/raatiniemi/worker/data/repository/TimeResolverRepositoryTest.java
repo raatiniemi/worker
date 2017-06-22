@@ -63,7 +63,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
     public void findProjectTimeSinceStartingPointInMilliseconds_withNullCursor() throws DomainException {
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getItemTimeUri(1),
+                        ProviderContract.getProjectItemTimeUri(1),
                         ProviderContract.Time.getColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
@@ -81,7 +81,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getItemTimeUri(1),
+                        ProviderContract.getProjectItemTimeUri(1),
                         ProviderContract.Time.getColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
@@ -100,7 +100,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getItemTimeUri(1),
+                        ProviderContract.getProjectItemTimeUri(1),
                         ProviderContract.Time.getColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
@@ -119,7 +119,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
                 contentResolver.query(
-                        ProviderContract.Project.getItemTimeUri(1),
+                        ProviderContract.getProjectItemTimeUri(1),
                         ProviderContract.Time.getColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
