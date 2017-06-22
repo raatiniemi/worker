@@ -277,7 +277,7 @@ public class WorkerProvider extends ContentProvider {
                         ProviderContract.COLUMN_TIME_PROJECT_ID + "=?",
                         ProviderContract.getProjectItemId(uri)
                 )
-                .groupBy(ProviderContract.Timesheet.GROUP_BY);
+                .groupBy(ProviderContract.TIMESHEET_GROUP_BY);
     }
 
     private static Selection.Builder selectionForTimeWithUri(Uri uri) {

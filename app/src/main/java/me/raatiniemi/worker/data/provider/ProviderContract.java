@@ -97,23 +97,17 @@ public final class ProviderContract {
         return uri.getPathSegments().get(1);
     }
 
-    public static final class Timesheet {
-        public static final String ORDER_BY = COLUMN_TIME_START + " DESC," + COLUMN_TIME_STOP + " DESC";
+    public static final String TIMESHEET_ORDER_BY = COLUMN_TIME_START + " DESC," + COLUMN_TIME_STOP + " DESC";
+    static final String TIMESHEET_GROUP_BY = "strftime('%Y%m%d', " + COLUMN_TIME_START + " / 1000, 'unixepoch')";
 
-        static final String GROUP_BY = "strftime('%Y%m%d', " + COLUMN_TIME_START + " / 1000, 'unixepoch')";
+    public static String[] getTimesheetStreamColumns() {
+        return new String[]{
+                "MIN(" + COLUMN_TIME_START + ") AS date",
+                "GROUP_CONCAT(" + BaseColumns._ID + ")"
+        };
+    }
 
-        private Timesheet() {
-        }
-
-        public static String[] getStreamColumns() {
-            return new String[]{
-                    "MIN(" + COLUMN_TIME_START + ") AS date",
-                    "GROUP_CONCAT(" + BaseColumns._ID + ")"
-            };
-        }
-
-        public static Uri getStreamUri(final long id) {
-            return Uri.withAppendedPath(getProjectItemUri(id), PATH_TIMESHEET);
-        }
+    public static Uri getTimesheetStreamUri(final long id) {
+        return Uri.withAppendedPath(getProjectItemUri(id), PATH_TIMESHEET);
     }
 }
