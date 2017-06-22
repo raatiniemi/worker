@@ -23,7 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.factory.TimeFactory;
 
@@ -45,10 +45,10 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
             final long registered
     ) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TimeColumns.PROJECT_ID, projectId);
-        contentValues.put(TimeColumns.START, start);
-        contentValues.put(TimeColumns.STOP, stop);
-        contentValues.put(TimeColumns.REGISTERED, registered);
+        contentValues.put(ProviderContract.COLUMN_TIME_PROJECT_ID, projectId);
+        contentValues.put(ProviderContract.COLUMN_TIME_START, start);
+        contentValues.put(ProviderContract.COLUMN_TIME_STOP, stop);
+        contentValues.put(ProviderContract.COLUMN_TIME_REGISTERED, registered);
 
         return contentValues;
     }
@@ -65,10 +65,10 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
         assertNull(contentValues.get(BaseColumns._ID));
-        assertEquals(expected.get(TimeColumns.PROJECT_ID), contentValues.get(TimeColumns.PROJECT_ID));
-        assertEquals(expected.get(TimeColumns.START), contentValues.get(TimeColumns.START));
-        assertEquals(expected.get(TimeColumns.STOP), contentValues.get(TimeColumns.STOP));
-        assertEquals(expected.get(TimeColumns.REGISTERED), contentValues.get(TimeColumns.REGISTERED));
+        assertEquals(expected.get(ProviderContract.COLUMN_TIME_PROJECT_ID), contentValues.get(ProviderContract.COLUMN_TIME_PROJECT_ID));
+        assertEquals(expected.get(ProviderContract.COLUMN_TIME_START), contentValues.get(ProviderContract.COLUMN_TIME_START));
+        assertEquals(expected.get(ProviderContract.COLUMN_TIME_STOP), contentValues.get(ProviderContract.COLUMN_TIME_STOP));
+        assertEquals(expected.get(ProviderContract.COLUMN_TIME_REGISTERED), contentValues.get(ProviderContract.COLUMN_TIME_REGISTERED));
     }
 
     @Test
@@ -84,9 +84,9 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
         assertNull(contentValues.get(BaseColumns._ID));
-        assertEquals(expected.get(TimeColumns.PROJECT_ID), contentValues.get(TimeColumns.PROJECT_ID));
-        assertEquals(expected.get(TimeColumns.START), contentValues.get(TimeColumns.START));
-        assertEquals(expected.get(TimeColumns.STOP), contentValues.get(TimeColumns.STOP));
-        assertEquals(expected.get(TimeColumns.REGISTERED), contentValues.get(TimeColumns.REGISTERED));
+        assertEquals(expected.get(ProviderContract.COLUMN_TIME_PROJECT_ID), contentValues.get(ProviderContract.COLUMN_TIME_PROJECT_ID));
+        assertEquals(expected.get(ProviderContract.COLUMN_TIME_START), contentValues.get(ProviderContract.COLUMN_TIME_START));
+        assertEquals(expected.get(ProviderContract.COLUMN_TIME_STOP), contentValues.get(ProviderContract.COLUMN_TIME_STOP));
+        assertEquals(expected.get(ProviderContract.COLUMN_TIME_REGISTERED), contentValues.get(ProviderContract.COLUMN_TIME_REGISTERED));
     }
 }

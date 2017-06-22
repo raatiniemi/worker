@@ -20,7 +20,7 @@ import android.database.Cursor;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
@@ -32,13 +32,13 @@ public class TimeCursorMapper implements CursorMapper<Time> {
     @NonNull
     public Time transform(@NonNull Cursor cursor) throws ClockOutBeforeClockInException {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
-        long projectId = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.PROJECT_ID));
-        long start = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.START));
+        long projectId = cursor.getLong(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_PROJECT_ID));
+        long start = cursor.getLong(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_START));
 
         // Handle the nullability of the `stop`-column.
-        int stopIndex = cursor.getColumnIndexOrThrow(TimeColumns.STOP);
+        int stopIndex = cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_STOP);
         long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : 0;
-        long registered = cursor.getLong(cursor.getColumnIndexOrThrow(TimeColumns.REGISTERED));
+        long registered = cursor.getLong(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_REGISTERED));
 
         Time.Builder builder = Time.builder(projectId)
                 .id(id)

@@ -75,8 +75,8 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     @NonNull
     private Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
-                ProviderContract.Time.getItemUri(id),
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getTimeItemUri(id),
+                ProviderContract.getTimeColumns(),
                 null,
                 null,
                 null
@@ -143,13 +143,13 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     public Map<Date, Set<TimesheetItem>> getTimesheet(final long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
-        final Uri uri = ProviderContract.Timesheet.getStreamUri(projectId);
+        final Uri uri = ProviderContract.getTimesheetStreamUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
-                ProviderContract.Timesheet.getStreamColumns(),
+                ProviderContract.getTimesheetStreamColumns(),
                 null,
                 null,
-                ProviderContract.Timesheet.ORDER_BY
+                ProviderContract.ORDER_BY_TIMESHEET
         );
         return fetchTimesheet(cursor);
     }
@@ -158,13 +158,13 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     public Map<Date, Set<TimesheetItem>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
         requireNonNull(pageRequest);
 
-        final Uri uri = ProviderContract.Timesheet.getStreamUri(projectId);
+        final Uri uri = ProviderContract.getTimesheetStreamUri(projectId);
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
-                ProviderContract.Timesheet.getStreamColumns(),
-                ProviderContract.TimeColumns.REGISTERED + " = 0",
+                ProviderContract.getTimesheetStreamColumns(),
+                ProviderContract.COLUMN_TIME_REGISTERED + " = 0",
                 null,
-                ProviderContract.Timesheet.ORDER_BY
+                ProviderContract.ORDER_BY_TIMESHEET
         );
         return fetchTimesheet(cursor);
     }

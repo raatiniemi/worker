@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.repository.mapper;
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.Time;
 
 /**
@@ -30,10 +30,10 @@ public class TimeContentValuesMapper implements ContentValuesMapper<Time> {
     @Override
     public ContentValues transform(@NonNull Time entity) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TimeColumns.PROJECT_ID, entity.getProjectId());
-        contentValues.put(TimeColumns.START, entity.getStartInMilliseconds());
-        contentValues.put(TimeColumns.STOP, entity.getStopInMilliseconds());
-        contentValues.put(TimeColumns.REGISTERED, entity.isRegistered() ? 1L : 0L);
+        contentValues.put(ProviderContract.COLUMN_TIME_PROJECT_ID, entity.getProjectId());
+        contentValues.put(ProviderContract.COLUMN_TIME_START, entity.getStartInMilliseconds());
+        contentValues.put(ProviderContract.COLUMN_TIME_STOP, entity.getStopInMilliseconds());
+        contentValues.put(ProviderContract.COLUMN_TIME_REGISTERED, entity.isRegistered() ? 1L : 0L);
 
         return contentValues;
     }

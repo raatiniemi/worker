@@ -79,7 +79,7 @@ abstract class OngoingNotification {
     }
 
     private Uri getDataUri() {
-        return ProviderContract.Project.getItemUri(project.getId());
+        return ProviderContract.getProjectItemUri(project.getId());
     }
 
     PendingIntent buildPendingIntentWithService(Intent intent) {

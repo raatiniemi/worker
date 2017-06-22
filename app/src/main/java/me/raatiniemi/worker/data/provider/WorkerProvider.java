@@ -35,8 +35,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.ProviderContract.Tables;
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.util.Optional;
 
@@ -90,18 +88,18 @@ public class WorkerProvider extends ContentProvider {
         final int match = uriMatcher.match(uri);
         switch (match) {
             case PROJECTS:
-                mimeType = ProviderContract.Project.STREAM_TYPE;
+                mimeType = ProviderContract.TYPE_STREAM_PROJECT;
                 break;
             case PROJECTS_ID:
-                mimeType = ProviderContract.Project.ITEM_TYPE;
+                mimeType = ProviderContract.TYPE_ITEM_PROJECT;
                 break;
             case PROJECTS_TIME:
             case PROJECTS_TIMESHEET:
             case TIME:
-                mimeType = ProviderContract.Time.STREAM_TYPE;
+                mimeType = ProviderContract.TYPE_STREAM_TIME;
                 break;
             case TIME_ID:
-                mimeType = ProviderContract.Time.ITEM_TYPE;
+                mimeType = ProviderContract.TYPE_ITEM_TIME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -165,15 +163,15 @@ public class WorkerProvider extends ContentProvider {
     private Uri insertProject(ContentValues values) {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
-        long id = db.insertOrThrow(Tables.PROJECT, null, values);
-        return ProviderContract.Project.getItemUri(id);
+        long id = db.insertOrThrow(ProviderContract.TABLE_PROJECT, null, values);
+        return ProviderContract.getProjectItemUri(id);
     }
 
     private Uri insertTime(ContentValues values) {
         SQLiteDatabase db = getOpenHelper().getWritableDatabase();
 
-        long id = db.insertOrThrow(Tables.TIME, null, values);
-        return ProviderContract.Time.getItemUri(id);
+        long id = db.insertOrThrow(ProviderContract.TABLE_TIME, null, values);
+        return ProviderContract.getTimeItemUri(id);
     }
 
     @Override
@@ -251,43 +249,43 @@ public class WorkerProvider extends ContentProvider {
 
     private static Selection.Builder selectionForProjectStream() {
         return Selection.builder()
-                .table(Tables.PROJECT);
+                .table(ProviderContract.TABLE_PROJECT);
     }
 
     private static Selection.Builder selectionForProjectWithUri(Uri uri) {
         return Selection.builder()
-                .table(Tables.PROJECT)
+                .table(ProviderContract.TABLE_PROJECT)
                 .where(
                         BaseColumns._ID + "=?",
-                        ProviderContract.Project.getItemId(uri)
+                        ProviderContract.getProjectItemId(uri)
                 );
     }
 
     private static Selection.Builder selectionForProjectTimeStreamWithUri(Uri uri) {
         return Selection.builder()
-                .table(Tables.TIME)
+                .table(ProviderContract.TABLE_TIME)
                 .where(
-                        TimeColumns.PROJECT_ID + "=?",
-                        ProviderContract.Project.getItemId(uri)
+                        ProviderContract.COLUMN_TIME_PROJECT_ID + "=?",
+                        ProviderContract.getProjectItemId(uri)
                 );
     }
 
     private static Selection.Builder selectionForProjectTimesheetStreamWithUri(Uri uri) {
         return Selection.builder()
-                .table(Tables.TIME)
+                .table(ProviderContract.TABLE_TIME)
                 .where(
-                        TimeColumns.PROJECT_ID + "=?",
-                        ProviderContract.Project.getItemId(uri)
+                        ProviderContract.COLUMN_TIME_PROJECT_ID + "=?",
+                        ProviderContract.getProjectItemId(uri)
                 )
-                .groupBy(ProviderContract.Timesheet.GROUP_BY);
+                .groupBy(ProviderContract.GROUP_BY_TIMESHEET);
     }
 
     private static Selection.Builder selectionForTimeWithUri(Uri uri) {
         return Selection.builder()
-                .table(Tables.TIME)
+                .table(ProviderContract.TABLE_TIME)
                 .where(
                         BaseColumns._ID + "=?",
-                        ProviderContract.Time.getItemId(uri)
+                        ProviderContract.getTimeItemId(uri)
                 );
     }
 }

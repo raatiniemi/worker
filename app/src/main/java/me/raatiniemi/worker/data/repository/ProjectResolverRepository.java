@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.data.repository.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.repository.mapper.ProjectCursorMapper;
@@ -93,9 +92,9 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         requireNonNull(projectName);
 
         final Cursor cursor = getContentResolver().query(
-                ProviderContract.Project.getStreamUri(),
-                ProviderContract.Project.getColumns(),
-                ProjectColumns.NAME + "=? COLLATE NOCASE",
+                ProviderContract.getProjectStreamUri(),
+                ProviderContract.getProjectColumns(),
+                ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
                 new String[]{projectName},
                 null
         );
@@ -105,11 +104,11 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     @Override
     public List<Project> get() throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
-                ProviderContract.Project.getStreamUri(),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectStreamUri(),
+                ProviderContract.getProjectColumns(),
                 null,
                 null,
-                ProviderContract.Project.ORDER_BY
+                ProviderContract.ORDER_BY_PROJECT
         );
 
         return fetch(cursor);
@@ -118,8 +117,8 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     @Override
     public Optional<Project> get(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
-                ProviderContract.Project.getItemUri(id),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectItemUri(id),
+                ProviderContract.getProjectColumns(),
                 null,
                 null,
                 null
@@ -132,10 +131,10 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         requireNonNull(project);
 
         final Uri uri = getContentResolver().insert(
-                ProviderContract.Project.getStreamUri(),
+                ProviderContract.getProjectStreamUri(),
                 contentValuesMapper.transform(project)
         );
-        return get(Long.parseLong(ProviderContract.Project.getItemId(uri)));
+        return get(Long.parseLong(ProviderContract.getProjectItemId(uri)));
     }
 
     @Override
@@ -145,11 +144,11 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         // Add operation for removing the registered time for the
         // project. The operation have to be performed before the
         // actual project deletion.
-        Uri uri = ProviderContract.Project.getItemTimeUri(id);
+        Uri uri = ProviderContract.getProjectItemTimeUri(id);
         batch.add(ContentProviderOperation.newDelete(uri).build());
 
         // Add operation for removing the project.
-        uri = ProviderContract.Project.getItemUri(id);
+        uri = ProviderContract.getProjectItemUri(id);
         batch.add(ContentProviderOperation.newDelete(uri).build());
 
         try {

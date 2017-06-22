@@ -27,7 +27,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.factory.TimeFactory;
@@ -90,10 +90,10 @@ public class TimeCursorMapperTest {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndexOrThrow(BaseColumns._ID)).thenReturn(0);
-        when(cursor.getColumnIndexOrThrow(TimeColumns.PROJECT_ID)).thenReturn(1);
-        when(cursor.getColumnIndexOrThrow(TimeColumns.START)).thenReturn(2);
-        when(cursor.getColumnIndexOrThrow(TimeColumns.STOP)).thenReturn(3);
-        when(cursor.getColumnIndexOrThrow(TimeColumns.REGISTERED)).thenReturn(4);
+        when(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_PROJECT_ID)).thenReturn(1);
+        when(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_START)).thenReturn(2);
+        when(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_STOP)).thenReturn(3);
+        when(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_REGISTERED)).thenReturn(4);
 
         when(cursor.getLong(0)).thenReturn(id);
         when(cursor.getLong(1)).thenReturn(projectId);

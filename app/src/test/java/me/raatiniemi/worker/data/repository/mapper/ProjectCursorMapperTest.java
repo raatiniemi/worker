@@ -27,7 +27,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
@@ -73,7 +73,7 @@ public class ProjectCursorMapperTest {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndexOrThrow(BaseColumns._ID)).thenReturn(0);
-        when(cursor.getColumnIndexOrThrow(ProjectColumns.NAME)).thenReturn(1);
+        when(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_PROJECT_NAME)).thenReturn(1);
 
         when(cursor.getLong(0)).thenReturn(id);
         when(cursor.getString(1)).thenReturn(name);

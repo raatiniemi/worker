@@ -33,9 +33,6 @@ import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
-import static me.raatiniemi.worker.data.provider.ProviderContract.Tables.PROJECT;
-import static me.raatiniemi.worker.data.provider.ProviderContract.Tables.TIME;
-import static me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns.PROJECT_ID;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -71,44 +68,44 @@ public class WorkerProviderTest extends RobolectricTestCase {
 
     @Test
     public void getType_withProjectsStreamUri() {
-        String mimeType = provider.getType(ProviderContract.Project.getStreamUri());
+        String mimeType = provider.getType(ProviderContract.getProjectStreamUri());
 
-        assertEquals(ProviderContract.Project.STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_STREAM_PROJECT, mimeType);
     }
 
     @Test
     public void getType_withProjectsIdUri() {
-        String mimeType = provider.getType(ProviderContract.Project.getItemUri(1));
+        String mimeType = provider.getType(ProviderContract.getProjectItemUri(1));
 
-        assertEquals(ProviderContract.Project.ITEM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_ITEM_PROJECT, mimeType);
     }
 
     @Test
     public void getType_withProjectsTimeUri() {
-        String mimeType = provider.getType(ProviderContract.Project.getItemTimeUri(1));
+        String mimeType = provider.getType(ProviderContract.getProjectItemTimeUri(1));
 
-        assertEquals(ProviderContract.Time.STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_STREAM_TIME, mimeType);
     }
 
     @Test
     public void getType_withProjectsTimesheetUri() {
-        String mimeType = provider.getType(ProviderContract.Timesheet.getStreamUri(1));
+        String mimeType = provider.getType(ProviderContract.getTimesheetStreamUri(1));
 
-        assertEquals(ProviderContract.Time.STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_STREAM_TIME, mimeType);
     }
 
     @Test
     public void getType_withTimeStreamUri() {
-        String mimeType = provider.getType(ProviderContract.Time.getStreamUri());
+        String mimeType = provider.getType(ProviderContract.getTimeStreamUri());
 
-        assertEquals(ProviderContract.Time.STREAM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_STREAM_TIME, mimeType);
     }
 
     @Test
     public void getType_withTimeItemUri() {
-        String mimeType = provider.getType(ProviderContract.Time.getItemUri(1));
+        String mimeType = provider.getType(ProviderContract.getTimeItemUri(1));
 
-        assertEquals(ProviderContract.Time.ITEM_TYPE, mimeType);
+        assertEquals(ProviderContract.TYPE_ITEM_TIME, mimeType);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -127,16 +124,16 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_projects() {
         provider.query(
-                ProviderContract.Project.getStreamUri(),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectStreamUri(),
+                ProviderContract.getProjectColumns(),
                 "",
                 new String[]{},
                 ""
         );
 
         verify(database).query(
-                eq(PROJECT),
-                eq(ProviderContract.Project.getColumns()),
+                eq(ProviderContract.TABLE_PROJECT),
+                eq(ProviderContract.getProjectColumns()),
                 eq(""),
                 isA(String[].class),
                 eq(null),
@@ -149,16 +146,16 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_project() {
         provider.query(
-                ProviderContract.Project.getItemUri(1),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectItemUri(1),
+                ProviderContract.getProjectColumns(),
                 "",
                 new String[]{},
                 ""
         );
 
         verify(database).query(
-                eq(PROJECT),
-                eq(ProviderContract.Project.getColumns()),
+                eq(ProviderContract.TABLE_PROJECT),
+                eq(ProviderContract.getProjectColumns()),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(null),
@@ -171,17 +168,17 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_projectTime() {
         provider.query(
-                ProviderContract.Project.getItemTimeUri(1),
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getProjectItemTimeUri(1),
+                ProviderContract.getTimeColumns(),
                 "",
                 new String[]{},
                 ""
         );
 
         verify(database).query(
-                eq(TIME),
-                eq(ProviderContract.Time.getColumns()),
-                eq("(" + PROJECT_ID + "=?)"),
+                eq(ProviderContract.TABLE_TIME),
+                eq(ProviderContract.getTimeColumns()),
+                eq("(" + ProviderContract.COLUMN_TIME_PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(null),
                 eq(null),
@@ -193,19 +190,19 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_projectTimesheet() {
         provider.query(
-                ProviderContract.Timesheet.getStreamUri(1),
-                ProviderContract.Timesheet.getStreamColumns(),
+                ProviderContract.getTimesheetStreamUri(1),
+                ProviderContract.getTimesheetStreamColumns(),
                 "",
                 new String[]{},
                 ""
         );
 
         verify(database).query(
-                eq(TIME),
-                eq(ProviderContract.Timesheet.getStreamColumns()),
-                eq("(" + PROJECT_ID + "=?)"),
+                eq(ProviderContract.TABLE_TIME),
+                eq(ProviderContract.getTimesheetStreamColumns()),
+                eq("(" + ProviderContract.COLUMN_TIME_PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
-                eq(ProviderContract.Timesheet.GROUP_BY),
+                eq(ProviderContract.GROUP_BY_TIMESHEET),
                 eq(null),
                 eq(""),
                 eq(null)
@@ -215,16 +212,16 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_time() {
         provider.query(
-                ProviderContract.Time.getItemUri(1),
-                ProviderContract.Time.getColumns(),
+                ProviderContract.getTimeItemUri(1),
+                ProviderContract.getTimeColumns(),
                 "",
                 new String[]{},
                 ""
         );
 
         verify(database).query(
-                eq(TIME),
-                eq(ProviderContract.Time.getColumns()),
+                eq(ProviderContract.TABLE_TIME),
+                eq(ProviderContract.getTimeColumns()),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(null),
@@ -237,19 +234,19 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_withLimit() {
         provider.query(
-                ProviderContract.Project.getStreamUri()
+                ProviderContract.getProjectStreamUri()
                         .buildUpon()
                         .appendQueryParameter(QueryParameter.LIMIT, "1")
                         .build(),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectColumns(),
                 "",
                 new String[]{},
                 ""
         );
 
         verify(database).query(
-                eq(PROJECT),
-                eq(ProviderContract.Project.getColumns()),
+                eq(ProviderContract.TABLE_PROJECT),
+                eq(ProviderContract.getProjectColumns()),
                 eq(""),
                 isA(String[].class),
                 eq(null),
@@ -262,20 +259,20 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void query_withLimitAndOffset() {
         provider.query(
-                ProviderContract.Project.getStreamUri()
+                ProviderContract.getProjectStreamUri()
                         .buildUpon()
                         .appendQueryParameter(QueryParameter.OFFSET, "10")
                         .appendQueryParameter(QueryParameter.LIMIT, "5")
                         .build(),
-                ProviderContract.Project.getColumns(),
+                ProviderContract.getProjectColumns(),
                 "",
                 new String[]{},
                 ""
         );
 
         verify(database).query(
-                eq(PROJECT),
-                eq(ProviderContract.Project.getColumns()),
+                eq(ProviderContract.TABLE_PROJECT),
+                eq(ProviderContract.getProjectColumns()),
                 eq(""),
                 isA(String[].class),
                 eq(null),
@@ -288,10 +285,10 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void insert_withNoneStreamUris() {
         List<Uri> uris = new ArrayList<>();
-        uris.add(ProviderContract.Project.getItemUri(1));
-        uris.add(ProviderContract.Project.getItemTimeUri(1));
-        uris.add(ProviderContract.Timesheet.getStreamUri(1));
-        uris.add(ProviderContract.Time.getItemUri(1));
+        uris.add(ProviderContract.getProjectItemUri(1));
+        uris.add(ProviderContract.getProjectItemTimeUri(1));
+        uris.add(ProviderContract.getTimesheetStreamUri(1));
+        uris.add(ProviderContract.getTimeItemUri(1));
         ContentValues values = new ContentValues();
 
         String format = "Non-stream URI \"%s\" did not throw exception";
@@ -309,23 +306,23 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void insert_withProjectsStreamUri() {
         ContentValues values = new ContentValues();
-        when(database.insertOrThrow(eq(PROJECT), eq(null), eq(values)))
+        when(database.insertOrThrow(eq(ProviderContract.TABLE_PROJECT), eq(null), eq(values)))
                 .thenReturn(1L);
 
-        Uri uri = provider.insert(ProviderContract.Project.getStreamUri(), values);
+        Uri uri = provider.insert(ProviderContract.getProjectStreamUri(), values);
 
-        assertEquals(ProviderContract.Project.getItemUri(1), uri);
+        assertEquals(ProviderContract.getProjectItemUri(1), uri);
     }
 
     @Test
     public void insert_withTimeStreamUri() {
         ContentValues values = new ContentValues();
-        when(database.insertOrThrow(eq(TIME), eq(null), eq(values)))
+        when(database.insertOrThrow(eq(ProviderContract.TABLE_TIME), eq(null), eq(values)))
                 .thenReturn(1L);
 
-        Uri uri = provider.insert(ProviderContract.Time.getStreamUri(), values);
+        Uri uri = provider.insert(ProviderContract.getTimeStreamUri(), values);
 
-        assertEquals(ProviderContract.Time.getItemUri(1), uri);
+        assertEquals(ProviderContract.getTimeItemUri(1), uri);
     }
 
     @Test
@@ -333,14 +330,14 @@ public class WorkerProviderTest extends RobolectricTestCase {
         ContentValues values = new ContentValues();
 
         provider.update(
-                ProviderContract.Project.getItemUri(1),
+                ProviderContract.getProjectItemUri(1),
                 values,
                 null,
                 null
         );
 
         verify(database).update(
-                eq(PROJECT),
+                eq(ProviderContract.TABLE_PROJECT),
                 eq(values),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"})
@@ -352,14 +349,14 @@ public class WorkerProviderTest extends RobolectricTestCase {
         ContentValues values = new ContentValues();
 
         provider.update(
-                ProviderContract.Time.getItemUri(1),
+                ProviderContract.getTimeItemUri(1),
                 values,
                 null,
                 null
         );
 
         verify(database).update(
-                eq(TIME),
+                eq(ProviderContract.TABLE_TIME),
                 eq(values),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"})
@@ -369,13 +366,13 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void delete_projectItem() {
         provider.delete(
-                ProviderContract.Project.getItemUri(1),
+                ProviderContract.getProjectItemUri(1),
                 null,
                 null
         );
 
         verify(database).delete(
-                eq(PROJECT),
+                eq(ProviderContract.TABLE_PROJECT),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"})
         );
@@ -384,13 +381,13 @@ public class WorkerProviderTest extends RobolectricTestCase {
     @Test
     public void delete_timeItem() {
         provider.delete(
-                ProviderContract.Time.getItemUri(1),
+                ProviderContract.getTimeItemUri(1),
                 null,
                 null
         );
 
         verify(database).delete(
-                eq(TIME),
+                eq(ProviderContract.TABLE_TIME),
                 eq("(" + BaseColumns._ID + "=?)"),
                 eq(new String[]{"1"})
         );
