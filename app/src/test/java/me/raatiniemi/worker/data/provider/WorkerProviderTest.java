@@ -33,7 +33,6 @@ import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
-import static me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns.PROJECT_ID;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
@@ -179,7 +178,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         verify(database).query(
                 eq(ProviderContract.TABLE_TIME),
                 eq(ProviderContract.Time.getColumns()),
-                eq("(" + PROJECT_ID + "=?)"),
+                eq("(" + ProviderContract.COLUMN_TIME_PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(null),
                 eq(null),
@@ -201,7 +200,7 @@ public class WorkerProviderTest extends RobolectricTestCase {
         verify(database).query(
                 eq(ProviderContract.TABLE_TIME),
                 eq(ProviderContract.Timesheet.getStreamColumns()),
-                eq("(" + PROJECT_ID + "=?)"),
+                eq("(" + ProviderContract.COLUMN_TIME_PROJECT_ID + "=?)"),
                 eq(new String[]{"1"}),
                 eq(ProviderContract.Timesheet.GROUP_BY),
                 eq(null),

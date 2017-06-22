@@ -31,7 +31,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.data.repository.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.repository.mapper.TimeCursorMapper;
@@ -98,7 +97,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         Cursor cursor = getContentResolver().query(
                 ProviderContract.Project.getItemTimeUri(project.getId()),
                 ProviderContract.Time.getColumns(),
-                TimeColumns.START + ">=?",
+                ProviderContract.COLUMN_TIME_START + ">=?",
                 new String[]{String.valueOf(milliseconds)},
                 null
         );
@@ -217,7 +216,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.Project.getItemTimeUri(projectId),
                 ProviderContract.Time.getColumns(),
-                TimeColumns.START + ">=? OR " + TimeColumns.STOP + " = 0",
+                ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                 new String[]{String.valueOf(calendar.getTimeInMillis())},
                 ProviderContract.Project.ORDER_BY_TIME
         );
@@ -230,7 +229,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.Project.getItemTimeUri(projectId),
                 ProviderContract.Time.getColumns(),
-                TimeColumns.STOP + " = 0",
+                ProviderContract.COLUMN_TIME_STOP + " = 0",
                 null,
                 null
         );

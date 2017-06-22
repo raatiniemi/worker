@@ -22,7 +22,7 @@ import android.provider.BaseColumns;
 import org.junit.Test;
 
 import me.raatiniemi.worker.RobolectricTestCase;
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
@@ -32,7 +32,7 @@ import static junit.framework.Assert.assertNull;
 public class ProjectContentValuesMapperTest extends RobolectricTestCase {
     private static ContentValues createContentValues(final String name) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ProjectColumns.NAME, name);
+        contentValues.put(ProviderContract.COLUMN_PROJECT_NAME, name);
 
         return contentValues;
     }
@@ -55,7 +55,7 @@ public class ProjectContentValuesMapperTest extends RobolectricTestCase {
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
         assertNull(contentValues.get(BaseColumns._ID));
-        assertEquals(expected.get(ProjectColumns.NAME), contentValues.get(ProjectColumns.NAME));
+        assertEquals(expected.get(ProviderContract.COLUMN_PROJECT_NAME), contentValues.get(ProviderContract.COLUMN_PROJECT_NAME));
 
         expected = createContentValues("Name");
         project = createProject("Name");
@@ -64,6 +64,6 @@ public class ProjectContentValuesMapperTest extends RobolectricTestCase {
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
         assertNull(contentValues.get(BaseColumns._ID));
-        assertEquals(expected.get(ProjectColumns.NAME), contentValues.get(ProjectColumns.NAME));
+        assertEquals(expected.get(ProviderContract.COLUMN_PROJECT_NAME), contentValues.get(ProviderContract.COLUMN_PROJECT_NAME));
     }
 }

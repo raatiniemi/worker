@@ -35,7 +35,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.util.Optional;
 
@@ -266,7 +265,7 @@ public class WorkerProvider extends ContentProvider {
         return Selection.builder()
                 .table(ProviderContract.TABLE_TIME)
                 .where(
-                        TimeColumns.PROJECT_ID + "=?",
+                        ProviderContract.COLUMN_TIME_PROJECT_ID + "=?",
                         ProviderContract.Project.getItemId(uri)
                 );
     }
@@ -275,7 +274,7 @@ public class WorkerProvider extends ContentProvider {
         return Selection.builder()
                 .table(ProviderContract.TABLE_TIME)
                 .where(
-                        TimeColumns.PROJECT_ID + "=?",
+                        ProviderContract.COLUMN_TIME_PROJECT_ID + "=?",
                         ProviderContract.Project.getItemId(uri)
                 )
                 .groupBy(ProviderContract.Timesheet.GROUP_BY);

@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.repository.mapper;
 import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
+import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.Project;
 
 /**
@@ -30,7 +30,7 @@ public class ProjectContentValuesMapper implements ContentValuesMapper<Project> 
     @Override
     public ContentValues transform(@NonNull Project entity) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ProjectColumns.NAME, entity.getName());
+        contentValues.put(ProviderContract.COLUMN_PROJECT_NAME, entity.getName());
 
         return contentValues;
     }

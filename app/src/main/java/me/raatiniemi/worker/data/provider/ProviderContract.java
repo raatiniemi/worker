@@ -30,27 +30,17 @@ public final class ProviderContract {
     static final String TABLE_PROJECT = "project";
     static final String TABLE_TIME = "time";
 
-    public final class ProjectColumns {
-        public static final String NAME = "name";
-        static final String DESCRIPTION = "description";
-        static final String ARCHIVED = "archived";
+    public static final String COLUMN_PROJECT_NAME = "name";
+    static final String COLUMN_PROJECT_DESCRIPTION = "description";
+    static final String COLUMN_PROJECT_ARCHIVED = "archived";
 
-        private ProjectColumns() {
-        }
-    }
-
-    public final class TimeColumns {
-        public static final String PROJECT_ID = "project_id";
-        public static final String START = "start";
-        public static final String STOP = "stop";
-        public static final String REGISTERED = "registered";
-
-        private TimeColumns() {
-        }
-    }
+    public static final String COLUMN_TIME_PROJECT_ID = "project_id";
+    public static final String COLUMN_TIME_START = "start";
+    public static final String COLUMN_TIME_STOP = "stop";
+    public static final String COLUMN_TIME_REGISTERED = "registered";
 
     public static final class Project {
-        public static final String ORDER_BY_TIME = TimeColumns.STOP + " ASC," + TimeColumns.START + " ASC";
+        public static final String ORDER_BY_TIME = COLUMN_TIME_STOP + " ASC," + COLUMN_TIME_START + " ASC";
         public static final String ORDER_BY = BaseColumns._ID + " ASC";
 
         static final String STREAM_TYPE = "vnd.android.cursor.dir/vnd.me.raatiniemi.worker.project";
@@ -64,7 +54,7 @@ public final class ProviderContract {
         public static String[] getColumns() {
             return new String[]{
                     BaseColumns._ID,
-                    ProjectColumns.NAME
+                    COLUMN_PROJECT_NAME
             };
         }
 
@@ -97,10 +87,10 @@ public final class ProviderContract {
         public static String[] getColumns() {
             return new String[]{
                     BaseColumns._ID,
-                    TimeColumns.PROJECT_ID,
-                    TimeColumns.START,
-                    TimeColumns.STOP,
-                    TimeColumns.REGISTERED
+                    COLUMN_TIME_PROJECT_ID,
+                    COLUMN_TIME_START,
+                    COLUMN_TIME_STOP,
+                    COLUMN_TIME_REGISTERED
             };
         }
 
@@ -118,16 +108,16 @@ public final class ProviderContract {
     }
 
     public static final class Timesheet {
-        public static final String ORDER_BY = TimeColumns.START + " DESC," + TimeColumns.STOP + " DESC";
+        public static final String ORDER_BY = COLUMN_TIME_START + " DESC," + COLUMN_TIME_STOP + " DESC";
 
-        static final String GROUP_BY = "strftime('%Y%m%d', " + TimeColumns.START + " / 1000, 'unixepoch')";
+        static final String GROUP_BY = "strftime('%Y%m%d', " + COLUMN_TIME_START + " / 1000, 'unixepoch')";
 
         private Timesheet() {
         }
 
         public static String[] getStreamColumns() {
             return new String[]{
-                    "MIN(" + TimeColumns.START + ") AS date",
+                    "MIN(" + COLUMN_TIME_START + ") AS date",
                     "GROUP_CONCAT(" + BaseColumns._ID + ")"
             };
         }

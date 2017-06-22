@@ -162,7 +162,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
         final Cursor cursor = getContentResolver().query(
                 appendPageRequest(uri, pageRequest),
                 ProviderContract.Timesheet.getStreamColumns(),
-                ProviderContract.TimeColumns.REGISTERED + " = 0",
+                ProviderContract.COLUMN_TIME_REGISTERED + " = 0",
                 null,
                 ProviderContract.Timesheet.ORDER_BY
         );

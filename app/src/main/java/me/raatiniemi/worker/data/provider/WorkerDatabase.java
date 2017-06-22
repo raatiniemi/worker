@@ -23,8 +23,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.data.provider.ProviderContract.ProjectColumns;
-import me.raatiniemi.worker.data.provider.ProviderContract.TimeColumns;
 
 /**
  * A helper class to manage database creation and version management.
@@ -79,18 +77,18 @@ public class WorkerDatabase extends SQLiteOpenHelper {
         // Create the structure for the `project`-table.
         db.execSQL("CREATE TABLE " + ProviderContract.TABLE_PROJECT + " ( " +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ProjectColumns.NAME + " TEXT NOT NULL, " +
-                ProjectColumns.DESCRIPTION + " TEXT NULL, " +
-                ProjectColumns.ARCHIVED + " INTEGER DEFAULT 0, " +
-                "UNIQUE (" + ProjectColumns.NAME + ") ON CONFLICT ROLLBACK)");
+                ProviderContract.COLUMN_PROJECT_NAME + " TEXT NOT NULL, " +
+                ProviderContract.COLUMN_PROJECT_DESCRIPTION + " TEXT NULL, " +
+                ProviderContract.COLUMN_PROJECT_ARCHIVED + " INTEGER DEFAULT 0, " +
+                "UNIQUE (" + ProviderContract.COLUMN_PROJECT_NAME + ") ON CONFLICT ROLLBACK)");
 
         // Create the structure for the `time`-table.
         db.execSQL("CREATE TABLE " + ProviderContract.TABLE_TIME + " ( " +
                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                TimeColumns.PROJECT_ID + " INTEGER NOT NULL, " +
-                TimeColumns.START + " INTEGER NOT NULL, " +
-                TimeColumns.STOP + " INTEGER DEFAULT 0, " +
-                TimeColumns.REGISTERED + " INTEGER NOT NULL DEFAULT 0)");
+                ProviderContract.COLUMN_TIME_PROJECT_ID + " INTEGER NOT NULL, " +
+                ProviderContract.COLUMN_TIME_START + " INTEGER NOT NULL, " +
+                ProviderContract.COLUMN_TIME_STOP + " INTEGER DEFAULT 0, " +
+                ProviderContract.COLUMN_TIME_REGISTERED + " INTEGER NOT NULL DEFAULT 0)");
     }
 
     /**
@@ -109,10 +107,10 @@ public class WorkerDatabase extends SQLiteOpenHelper {
 
         // since sqlite is unable to remove columns we need to check if the
         // column already exists before adding it.
-        if (!columnExists(db, ProviderContract.TABLE_TIME, TimeColumns.REGISTERED)) {
+        if (!columnExists(db, ProviderContract.TABLE_TIME, ProviderContract.COLUMN_TIME_REGISTERED)) {
             // Add the `registered`-column to the `time`-table.
             db.execSQL("ALTER TABLE " + ProviderContract.TABLE_TIME +
-                    " ADD COLUMN " + TimeColumns.REGISTERED +
+                    " ADD COLUMN " + ProviderContract.COLUMN_TIME_REGISTERED +
                     " INTEGER NOT NULL DEFAULT 0");
         }
     }
