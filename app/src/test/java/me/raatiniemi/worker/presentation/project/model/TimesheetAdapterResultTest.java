@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertFalse;
@@ -32,73 +33,74 @@ import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
-public class TimeInAdapterResultTest {
+public class TimesheetAdapterResultTest {
     private final String message;
     private final Boolean expected;
-    private final TimeInAdapterResult timeInAdapterResult;
+    private final TimesheetAdapterResult result;
     private final Object compareTo;
 
-    public TimeInAdapterResultTest(
+    public TimesheetAdapterResultTest(
             String message,
             Boolean expected,
-            TimeInAdapterResult timeInAdapterResult,
+            TimesheetAdapterResult result,
             Object compareTo
     ) {
         this.message = message;
         this.expected = expected;
-        this.timeInAdapterResult = timeInAdapterResult;
+        this.result = result;
         this.compareTo = compareTo;
     }
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        Time time = TimeFactory.builder()
-                .id(1L)
-                .build();
-        TimeInAdapterResult timeInAdapterResult = TimeInAdapterResult.build(0, 0, time);
+        Time time = TimeFactory.builder().id(1L).build();
+        TimesheetItem item = new TimesheetItem(time);
+        TimesheetAdapterResult result = TimesheetAdapterResult.build(0, 0, item);
 
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "With same instance",
                                 Boolean.TRUE,
-                                timeInAdapterResult,
-                                timeInAdapterResult
+                                result,
+                                result
                         },
                         {
                                 "With null",
                                 Boolean.FALSE,
-                                timeInAdapterResult,
+                                result,
                                 null
                         },
                         {
                                 "With incompatible object",
                                 Boolean.FALSE,
-                                timeInAdapterResult,
+                                result,
                                 ""
                         },
                         {
                                 "With different group position",
                                 Boolean.FALSE,
-                                timeInAdapterResult,
-                                TimeInAdapterResult.build(1, 0, time)
+                                result,
+                                TimesheetAdapterResult.build(1, 0, new TimesheetItem(time))
                         },
                         {
                                 "With different child position",
                                 Boolean.FALSE,
-                                timeInAdapterResult,
-                                TimeInAdapterResult.build(0, 1, time)
+                                result,
+                                TimesheetAdapterResult.build(0, 1, new TimesheetItem(time))
                         },
                         {
                                 "With different time object",
                                 Boolean.FALSE,
-                                timeInAdapterResult,
-                                TimeInAdapterResult.build(
+                                result,
+                                TimesheetAdapterResult.build(
                                         0,
                                         0,
-                                        TimeFactory.builder()
-                                                .id(2L)
-                                                .build()
+                                        new TimesheetItem(
+                                                TimeFactory.builder()
+                                                        .id(2L)
+                                                        .build()
+                                        )
                                 )
                         }
                 }
@@ -122,15 +124,15 @@ public class TimeInAdapterResultTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, timeInAdapterResult.equals(compareTo));
+        assertTrue(message, result.equals(compareTo));
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, timeInAdapterResult.hashCode() == compareTo.hashCode());
+        assertTrue(message, result.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, timeInAdapterResult.equals(compareTo));
+        assertFalse(message, result.equals(compareTo));
     }
 
     private void validateHashCodeWhenNotEqual() {
@@ -138,6 +140,6 @@ public class TimeInAdapterResultTest {
             return;
         }
 
-        assertFalse(message, timeInAdapterResult.hashCode() == compareTo.hashCode());
+        assertFalse(message, result.hashCode() == compareTo.hashCode());
     }
 }

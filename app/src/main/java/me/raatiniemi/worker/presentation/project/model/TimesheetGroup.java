@@ -154,19 +154,13 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return interval;
     }
 
-    public List<TimeInAdapterResult> buildItemResultsWithGroupIndex(int groupIndex) {
-        ArrayList<TimeInAdapterResult> results = new ArrayList<>();
+    public List<TimesheetAdapterResult> buildItemResultsWithGroupIndex(int groupIndex) {
+        ArrayList<TimesheetAdapterResult> results = new ArrayList<>();
 
         int childIndex = 0;
 
         for (TimesheetItem item : items) {
-            results.add(
-                    TimeInAdapterResult.build(
-                            groupIndex,
-                            childIndex,
-                            item.asTime()
-                    )
-            );
+            results.add(TimesheetAdapterResult.build(groupIndex, childIndex, item));
 
             childIndex++;
         }

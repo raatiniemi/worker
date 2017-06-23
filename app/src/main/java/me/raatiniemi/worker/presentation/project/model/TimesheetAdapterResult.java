@@ -21,26 +21,27 @@ import android.support.annotation.NonNull;
 import java.util.Objects;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 
-public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult> {
+public final class TimesheetAdapterResult implements Comparable<TimesheetAdapterResult> {
     private final int group;
 
     private final int child;
 
-    private final Time time;
+    private final TimesheetItem item;
 
-    private TimeInAdapterResult(int group, int child, Time time) {
+    private TimesheetAdapterResult(int group, int child, TimesheetItem item) {
         this.group = group;
         this.child = child;
-        this.time = time;
+        this.item = item;
     }
 
-    public static TimeInAdapterResult build(int group, int child, Time time) {
-        return new TimeInAdapterResult(group, child, time);
+    public static TimesheetAdapterResult build(int group, int child, TimesheetItem item) {
+        return new TimesheetAdapterResult(group, child, item);
     }
 
-    public static TimeInAdapterResult build(TimeInAdapterResult result, Time time) {
-        return build(result.getGroup(), result.getChild(), time);
+    public static TimesheetAdapterResult build(TimesheetAdapterResult result, TimesheetItem item) {
+        return build(result.getGroup(), result.getChild(), item);
     }
 
     public int getGroup() {
@@ -52,7 +53,7 @@ public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult
     }
 
     public Time getTime() {
-        return time;
+        return item.asTime();
     }
 
     @Override
@@ -61,14 +62,14 @@ public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult
             return true;
         }
 
-        if (!(o instanceof TimeInAdapterResult)) {
+        if (!(o instanceof TimesheetAdapterResult)) {
             return false;
         }
 
-        TimeInAdapterResult result = (TimeInAdapterResult) o;
+        TimesheetAdapterResult result = (TimesheetAdapterResult) o;
         return group == result.group
                 && child == result.child
-                && Objects.equals(time, result.time);
+                && Objects.equals(item, result.item);
     }
 
     @Override
@@ -76,13 +77,13 @@ public final class TimeInAdapterResult implements Comparable<TimeInAdapterResult
         int result = 17;
         result = 31 * result + group;
         result = 31 * result + child;
-        result = 31 * result + Objects.hashCode(time);
+        result = 31 * result + Objects.hashCode(item);
 
         return result;
     }
 
     @Override
-    public int compareTo(@NonNull TimeInAdapterResult rhs) {
+    public int compareTo(@NonNull TimesheetAdapterResult rhs) {
         if (getGroup() == rhs.getGroup()) {
             if (getChild() == rhs.getChild()) {
                 return 0;

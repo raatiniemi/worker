@@ -25,9 +25,8 @@ import java.util.Collections;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
+import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.util.SelectionManager;
@@ -41,7 +40,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         GroupItemViewHolder,
         ChildItemViewHolder
         > {
-    private final SelectionManager<TimeInAdapterResult> selectionManager;
+    private final SelectionManager<TimesheetAdapterResult> selectionManager;
 
     TimesheetAdapter(SelectionListener selectionListener) {
         selectionManager = new SelectionManagerAdapterDecorator<>(this, selectionListener);
@@ -87,7 +86,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
                 LetterDrawable.build(groupItem.getFirstLetterFromTitle())
         );
 
-        final List<TimeInAdapterResult> results = groupItem.buildItemResultsWithGroupIndex(group);
+        final List<TimesheetAdapterResult> results = groupItem.buildItemResultsWithGroupIndex(group);
 
         vh.letter.setOnLongClickListener(view -> {
             if (selectionManager.isSelectionActivated()) {
@@ -123,9 +122,8 @@ class TimesheetAdapter extends ExpandableListAdapter<
     @Override
     public void onBindChildViewHolder(ChildItemViewHolder vh, final int group, final int child, int viewType) {
         final TimesheetItem item = get(group, child);
-        final Time time = item.asTime();
 
-        final TimeInAdapterResult result = TimeInAdapterResult.build(group, child, time);
+        final TimesheetAdapterResult result = TimesheetAdapterResult.build(group, child, item);
 
         // Register the long click listener on the time item.
         vh.itemView.setOnLongClickListener(view -> {
@@ -193,19 +191,19 @@ class TimesheetAdapter extends ExpandableListAdapter<
         return !selectionManager.isSelectionActivated() || !isPointInView(new Point(x, y), vh.letter);
     }
 
-    public void remove(List<TimeInAdapterResult> results) {
+    public void remove(List<TimesheetAdapterResult> results) {
         Collections.sort(results);
         Collections.reverse(results);
 
-        for (TimeInAdapterResult result : results) {
+        for (TimesheetAdapterResult result : results) {
             remove(result.getGroup(), result.getChild());
         }
     }
 
-    public void set(List<TimeInAdapterResult> results) {
+    public void set(List<TimesheetAdapterResult> results) {
         Collections.sort(results);
 
-        for (TimeInAdapterResult result : results) {
+        for (TimesheetAdapterResult result : results) {
             set(
                     result.getGroup(),
                     result.getChild(),
@@ -218,7 +216,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         return selectionManager.isSelectionActivated();
     }
 
-    List<TimeInAdapterResult> getSelectedItems() {
+    List<TimesheetAdapterResult> getSelectedItems() {
         return selectionManager.getSelectedItems();
     }
 

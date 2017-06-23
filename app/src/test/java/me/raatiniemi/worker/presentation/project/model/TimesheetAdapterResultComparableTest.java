@@ -25,22 +25,23 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimeInAdapterResultComparableTest {
+public class TimesheetAdapterResultComparableTest {
     private final String message;
     private final int expected;
-    private final TimeInAdapterResult lhs;
-    private final TimeInAdapterResult rhs;
+    private final TimesheetAdapterResult lhs;
+    private final TimesheetAdapterResult rhs;
 
-    public TimeInAdapterResultComparableTest(
+    public TimesheetAdapterResultComparableTest(
             String message,
             int expected,
-            TimeInAdapterResult lhs,
-            TimeInAdapterResult rhs
+            TimesheetAdapterResult lhs,
+            TimesheetAdapterResult rhs
     ) {
         this.message = message;
         this.expected = expected;
@@ -50,40 +51,40 @@ public class TimeInAdapterResultComparableTest {
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        Time time = TimeFactory.builder()
-                .build();
+        Time time = TimeFactory.builder().build();
+        TimesheetItem item = new TimesheetItem(time);
 
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "Equal",
                                 0,
-                                TimeInAdapterResult.build(0, 0, time),
-                                TimeInAdapterResult.build(0, 0, time)
+                                TimesheetAdapterResult.build(0, 0, item),
+                                TimesheetAdapterResult.build(0, 0, item)
                         },
                         {
                                 "lhs is more than rhs (group)",
                                 1,
-                                TimeInAdapterResult.build(1, 0, time),
-                                TimeInAdapterResult.build(0, 0, time)
+                                TimesheetAdapterResult.build(1, 0, item),
+                                TimesheetAdapterResult.build(0, 0, item)
                         },
                         {
                                 "lhs is less than rhs (group)",
                                 -1,
-                                TimeInAdapterResult.build(0, 0, time),
-                                TimeInAdapterResult.build(1, 0, time)
+                                TimesheetAdapterResult.build(0, 0, item),
+                                TimesheetAdapterResult.build(1, 0, item)
                         },
                         {
                                 "lhs is more than rhs (child)",
                                 1,
-                                TimeInAdapterResult.build(0, 1, time),
-                                TimeInAdapterResult.build(0, 0, time)
+                                TimesheetAdapterResult.build(0, 1, item),
+                                TimesheetAdapterResult.build(0, 0, item)
                         },
                         {
                                 "lhs is less than rhs (child)",
                                 -1,
-                                TimeInAdapterResult.build(0, 0, time),
-                                TimeInAdapterResult.build(0, 1, time)
+                                TimesheetAdapterResult.build(0, 0, item),
+                                TimesheetAdapterResult.build(0, 1, item)
                         }
                 }
         );
@@ -91,10 +92,6 @@ public class TimeInAdapterResultComparableTest {
 
     @Test
     public void compareTo() {
-        assertEquals(
-                message,
-                expected,
-                lhs.compareTo(rhs)
-        );
+        assertEquals(message, expected, lhs.compareTo(rhs));
     }
 }

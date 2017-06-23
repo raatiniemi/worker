@@ -39,7 +39,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
+import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
@@ -220,12 +220,12 @@ public class TimesheetFragment extends BaseFragment
     }
 
     @Override
-    public void update(List<TimeInAdapterResult> results) {
+    public void update(List<TimesheetAdapterResult> results) {
         adapter.set(results);
     }
 
     @Override
-    public void remove(List<TimeInAdapterResult> results) {
+    public void remove(List<TimesheetAdapterResult> results) {
         adapter.remove(results);
     }
 

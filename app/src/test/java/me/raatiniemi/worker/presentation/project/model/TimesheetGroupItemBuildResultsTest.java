@@ -37,13 +37,13 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemBuildResultsTest {
     private final String message;
-    private final List<TimeInAdapterResult> expected;
+    private final List<TimesheetAdapterResult> expected;
     private final int groupIndex;
     private final TimesheetGroup groupItem;
 
     public TimesheetGroupItemBuildResultsTest(
             String message,
-            TimeInAdapterResult[] expected,
+            TimesheetAdapterResult[] expected,
             int groupIndex,
             TimesheetGroup groupItem
     ) {
@@ -76,28 +76,28 @@ public class TimesheetGroupItemBuildResultsTest {
                 new Object[][]{
                         {
                                 "Without items",
-                                new TimeInAdapterResult[]{
+                                new TimesheetAdapterResult[]{
                                 },
                                 0,
                                 buildTimesheetGroupWithNumberOfItems(0)
                         },
                         {
                                 "With one item",
-                                new TimeInAdapterResult[]{
-                                        TimeInAdapterResult.build(1, 0, TimeFactory.builder().startInMilliseconds(0L).build())
+                                new TimesheetAdapterResult[]{
+                                        TimesheetAdapterResult.build(1, 0, new TimesheetItem(TimeFactory.builder().startInMilliseconds(0L).build()))
                                 },
                                 1,
                                 buildTimesheetGroupWithNumberOfItems(1)
                         },
                         {
                                 "With multiple items",
-                                new TimeInAdapterResult[]{
-                                        TimeInAdapterResult.build(2, 0, TimeFactory.builder().startInMilliseconds(5L).build()),
-                                        TimeInAdapterResult.build(2, 1, TimeFactory.builder().startInMilliseconds(4L).build()),
-                                        TimeInAdapterResult.build(2, 2, TimeFactory.builder().startInMilliseconds(3L).build()),
-                                        TimeInAdapterResult.build(2, 3, TimeFactory.builder().startInMilliseconds(2L).build()),
-                                        TimeInAdapterResult.build(2, 4, TimeFactory.builder().startInMilliseconds(1L).build()),
-                                        TimeInAdapterResult.build(2, 5, TimeFactory.builder().startInMilliseconds(0L).build()),
+                                new TimesheetAdapterResult[]{
+                                        TimesheetAdapterResult.build(2, 0, new TimesheetItem(TimeFactory.builder().startInMilliseconds(5L).build())),
+                                        TimesheetAdapterResult.build(2, 1, new TimesheetItem(TimeFactory.builder().startInMilliseconds(4L).build())),
+                                        TimesheetAdapterResult.build(2, 2, new TimesheetItem(TimeFactory.builder().startInMilliseconds(3L).build())),
+                                        TimesheetAdapterResult.build(2, 3, new TimesheetItem(TimeFactory.builder().startInMilliseconds(2L).build())),
+                                        TimesheetAdapterResult.build(2, 4, new TimesheetItem(TimeFactory.builder().startInMilliseconds(1L).build())),
+                                        TimesheetAdapterResult.build(2, 5, new TimesheetItem(TimeFactory.builder().startInMilliseconds(0L).build()))
                                 },
                                 2,
                                 buildTimesheetGroupWithNumberOfItems(6)
@@ -108,7 +108,7 @@ public class TimesheetGroupItemBuildResultsTest {
 
     @Test
     public void buildItemResultsWithGroupIndex() {
-        List<TimeInAdapterResult> actual =
+        List<TimesheetAdapterResult> actual =
                 groupItem.buildItemResultsWithGroupIndex(groupIndex);
 
         assertEquals(message, expected, actual);

@@ -34,7 +34,7 @@ import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
-import me.raatiniemi.worker.presentation.project.model.TimeInAdapterResult;
+import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
@@ -148,14 +148,14 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                 );
     }
 
-    public void remove(List<TimeInAdapterResult> results) {
+    public void remove(List<TimesheetAdapterResult> results) {
         final int numberOfItems = results.size();
 
         Observable.just(results)
                 .map(items -> {
                     List<Time> timeToRemove = new ArrayList<>();
                     // noinspection Convert2streamapi
-                    for (TimeInAdapterResult result : items) {
+                    for (TimesheetAdapterResult result : items) {
                         timeToRemove.add(result.getTime());
                     }
 
@@ -180,7 +180,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                 );
     }
 
-    public void register(List<TimeInAdapterResult> results) {
+    public void register(List<TimesheetAdapterResult> results) {
         final int numberOfItems = results.size();
 
         // TODO: Refactor to use optimistic propagation.
@@ -211,10 +211,10 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
                 );
     }
 
-    private Observable<List<TimeInAdapterResult>> registerTimeViaUseCase(List<TimeInAdapterResult> results) {
+    private Observable<List<TimesheetAdapterResult>> registerTimeViaUseCase(List<TimesheetAdapterResult> results) {
         List<Time> timeToUpdate = new ArrayList<>();
         // noinspection Convert2streamapi
-        for (TimeInAdapterResult result : results) {
+        for (TimesheetAdapterResult result : results) {
             timeToUpdate.add(result.getTime());
         }
 
@@ -227,23 +227,24 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         }
     }
 
-    private static List<TimeInAdapterResult> mapUpdatesToPositionOfSelectedItems(
+    private static List<TimesheetAdapterResult> mapUpdatesToPositionOfSelectedItems(
             List<Time> updates,
-            List<TimeInAdapterResult> selectedItems
+            List<TimesheetAdapterResult> selectedItems
     ) {
-        List<TimeInAdapterResult> newResults = new ArrayList<>();
+        List<TimesheetAdapterResult> newResults = new ArrayList<>();
 
-        for (TimeInAdapterResult selectedItem : selectedItems) {
+        for (TimesheetAdapterResult selectedItem : selectedItems) {
             Optional<Time> value = findUpdateForSelectedItem(selectedItem, updates);
             if (value.isPresent()) {
-                newResults.add(TimeInAdapterResult.build(selectedItem, value.get()));
+                TimesheetItem timesheetItem = new TimesheetItem(value.get());
+                newResults.add(TimesheetAdapterResult.build(selectedItem, timesheetItem));
             }
         }
 
         return newResults;
     }
 
-    private static Optional<Time> findUpdateForSelectedItem(TimeInAdapterResult selectedItem, List<Time> updates) {
+    private static Optional<Time> findUpdateForSelectedItem(TimesheetAdapterResult selectedItem, List<Time> updates) {
         Time previousTime = selectedItem.getTime();
 
         for (Time update : updates) {
