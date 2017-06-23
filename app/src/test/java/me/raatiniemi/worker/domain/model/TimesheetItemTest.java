@@ -30,7 +30,7 @@ public class TimesheetItemTest {
     public void asTime() {
         Time time = TimeFactory.builder()
                 .build();
-        TimesheetItem item = new TimesheetItem(time);
+        TimesheetItem item = TimesheetItem.with(time);
 
         assertTrue(time == item.asTime());
     }
@@ -40,7 +40,7 @@ public class TimesheetItemTest {
         Time time = TimeFactory.builder()
                 .id(1L)
                 .build();
-        TimesheetItem item = new TimesheetItem(time);
+        TimesheetItem item = TimesheetItem.with(time);
 
         assertTrue(time.getId() == item.getId());
     }

@@ -67,7 +67,7 @@ public class TimesheetItemIsRegisteredTest {
 
     @Test
     public void isRegistered() {
-        TimesheetItem item = new TimesheetItem(time);
+        TimesheetItem item = TimesheetItem.with(time);
 
         assertTrue(message, expected == item.isRegistered());
     }

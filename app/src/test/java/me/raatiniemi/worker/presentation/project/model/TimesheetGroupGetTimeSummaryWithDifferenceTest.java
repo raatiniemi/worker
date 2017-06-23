@@ -94,7 +94,7 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
     }
 
     private static TimesheetItem buildTimesheetItemWithInterval(long interval) {
-        return new TimesheetItem(
+        return TimesheetItem.with(
                 TimeFactory.builder()
                         .startInMilliseconds(1L)
                         .stopInMilliseconds(interval)

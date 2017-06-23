@@ -52,7 +52,7 @@ public class TimesheetAdapterResultComparableTest {
     @Parameters
     public static Collection<Object[]> getParameters() {
         Time time = TimeFactory.builder().build();
-        TimesheetItem item = new TimesheetItem(time);
+        TimesheetItem item = TimesheetItem.with(time);
 
         return Arrays.asList(
                 new Object[][]{

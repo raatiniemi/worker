@@ -74,7 +74,7 @@ public class TimesheetItemGetTitleTest {
 
     @Test
     public void getTitle() {
-        TimesheetItem item = new TimesheetItem(time);
+        TimesheetItem item = TimesheetItem.with(time);
 
         assertEquals(message, expected, item.getTitle());
     }

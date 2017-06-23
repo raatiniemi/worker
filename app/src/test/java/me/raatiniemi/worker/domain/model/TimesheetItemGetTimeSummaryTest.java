@@ -60,7 +60,7 @@ public class TimesheetItemGetTimeSummaryTest {
 
     @Test
     public void getTimeSummary() {
-        TimesheetItem item = new TimesheetItem(time);
+        TimesheetItem item = TimesheetItem.with(time);
 
         assertEquals(expected, item.getTimeSummary());
     }

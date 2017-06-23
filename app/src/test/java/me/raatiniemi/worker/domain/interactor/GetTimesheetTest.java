@@ -50,7 +50,7 @@ public class GetTimesheetTest {
     private GetTimesheet useCase;
 
     private static TimesheetItem buildTimesheetItemWithInterval(long startInMilliseconds, long stopInMilliseconds) {
-        return new TimesheetItem(
+        return TimesheetItem.with(
                 TimeFactory.builder()
                         .startInMilliseconds(startInMilliseconds)
                         .stopInMilliseconds(stopInMilliseconds)

@@ -39,10 +39,10 @@ public class TimesheetGroupIsRegisteredTest {
 
     static {
         Time notRegistered = TimeFactory.builder().build();
-        NOT_REGISTERED_TIME = new TimesheetItem(notRegistered);
+        NOT_REGISTERED_TIME = TimesheetItem.with(notRegistered);
 
         Time registered = TimeFactory.builder().register().build();
-        REGISTERED_TIME = new TimesheetItem(registered);
+        REGISTERED_TIME = TimesheetItem.with(registered);
     }
 
     private final boolean expected;

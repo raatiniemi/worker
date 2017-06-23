@@ -121,7 +121,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
         for (String id : ids) {
             Optional<Time> value = getSegmentItemForTimesheet(id);
             if (value.isPresent()) {
-                items.add(new TimesheetItem(value.get()));
+                items.add(TimesheetItem.with(value.get()));
             }
         }
 

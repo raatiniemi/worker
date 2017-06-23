@@ -236,7 +236,7 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         for (TimesheetAdapterResult selectedItem : selectedItems) {
             Optional<Time> value = findUpdateForSelectedItem(selectedItem, updates);
             if (value.isPresent()) {
-                TimesheetItem timesheetItem = new TimesheetItem(value.get());
+                TimesheetItem timesheetItem = TimesheetItem.with(value.get());
                 newResults.add(TimesheetAdapterResult.build(selectedItem, timesheetItem));
             }
         }

@@ -207,7 +207,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
             set(
                     result.getGroup(),
                     result.getChild(),
-                    new TimesheetItem(result.getTime())
+                    TimesheetItem.with(result.getTime())
             );
         }
     }

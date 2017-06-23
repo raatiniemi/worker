@@ -54,7 +54,7 @@ public class TimesheetAdapterResultTest {
     @Parameters
     public static Collection<Object[]> getParameters() {
         Time time = TimeFactory.builder().id(1L).build();
-        TimesheetItem item = new TimesheetItem(time);
+        TimesheetItem item = TimesheetItem.with(time);
         TimesheetAdapterResult result = TimesheetAdapterResult.build(0, 0, item);
 
         return Arrays.asList(
@@ -81,13 +81,13 @@ public class TimesheetAdapterResultTest {
                                 "With different group position",
                                 Boolean.FALSE,
                                 result,
-                                TimesheetAdapterResult.build(1, 0, new TimesheetItem(time))
+                                TimesheetAdapterResult.build(1, 0, TimesheetItem.with(time))
                         },
                         {
                                 "With different child position",
                                 Boolean.FALSE,
                                 result,
-                                TimesheetAdapterResult.build(0, 1, new TimesheetItem(time))
+                                TimesheetAdapterResult.build(0, 1, TimesheetItem.with(time))
                         },
                         {
                                 "With different time object",
@@ -96,7 +96,7 @@ public class TimesheetAdapterResultTest {
                                 TimesheetAdapterResult.build(
                                         0,
                                         0,
-                                        new TimesheetItem(
+                                        TimesheetItem.with(
                                                 TimeFactory.builder()
                                                         .id(2L)
                                                         .build()

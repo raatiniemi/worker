@@ -51,7 +51,7 @@ public class TimesheetItemEqualsHashCodeTest {
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        TimesheetItem timesheetItem = new TimesheetItem(
+        TimesheetItem timesheetItem = TimesheetItem.with(
                 TimeFactory.builder()
                         .build()
         );
@@ -80,7 +80,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 "With different project id",
                                 Boolean.FALSE,
                                 timesheetItem,
-                                new TimesheetItem(
+                                TimesheetItem.with(
                                         TimeFactory.builder(2L)
                                                 .build()
                                 )
@@ -89,7 +89,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 "With different id",
                                 Boolean.FALSE,
                                 timesheetItem,
-                                new TimesheetItem(
+                                TimesheetItem.with(
                                         TimeFactory.builder()
                                                 .id(2L)
                                                 .build()
@@ -99,7 +99,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 "With different start in milliseconds",
                                 Boolean.FALSE,
                                 timesheetItem,
-                                new TimesheetItem(
+                                TimesheetItem.with(
                                         TimeFactory.builder()
                                                 .startInMilliseconds(2L)
                                                 .build()
@@ -109,7 +109,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 "With different stop in milliseconds",
                                 Boolean.FALSE,
                                 timesheetItem,
-                                new TimesheetItem(
+                                TimesheetItem.with(
                                         TimeFactory.builder()
                                                 .stopInMilliseconds(1L)
                                                 .build()
@@ -119,7 +119,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 "With different register status",
                                 Boolean.FALSE,
                                 timesheetItem,
-                                new TimesheetItem(
+                                TimesheetItem.with(
                                         TimeFactory.builder()
                                                 .register()
                                                 .build()

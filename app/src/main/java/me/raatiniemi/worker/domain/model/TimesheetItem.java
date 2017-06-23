@@ -40,7 +40,7 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
     private final Time time;
     private final long calculatedIntervalInMilliseconds;
 
-    public TimesheetItem(Time time) {
+    private TimesheetItem(Time time) {
         this.time = time;
 
         CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
@@ -49,6 +49,10 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
 
     private static Date buildDateFromMilliseconds(long milliseconds) {
         return new Date(milliseconds);
+    }
+
+    public static TimesheetItem with(Time time) {
+        return new TimesheetItem(time);
     }
 
     public Time asTime() {
