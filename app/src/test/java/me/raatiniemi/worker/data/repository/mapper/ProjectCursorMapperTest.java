@@ -52,10 +52,6 @@ public class ProjectCursorMapperTest {
                         {
                                 createProject(),
                                 createCursor()
-                        },
-                        {
-                                createProject(),
-                                createCursor()
                         }
                 }
         );
