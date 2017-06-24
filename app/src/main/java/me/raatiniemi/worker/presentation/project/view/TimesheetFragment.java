@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.presentation.project.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,30 +31,44 @@ import android.view.ViewGroup;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
-import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
+import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel;
+import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
+import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
-import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
+import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
-import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
-public class TimesheetFragment extends BaseFragment
-        implements SelectionListener, TimesheetView {
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
+public class TimesheetFragment extends RxFragment implements SelectionListener {
     @Inject
-    TimesheetPresenter presenter;
+    HideRegisteredTimePreferences hideRegisteredTimePreferences;
+
+    @Inject
+    GetTimesheetViewModel.ViewModel getTimesheetViewModel;
+
+    @Inject
+    RegisterTimesheetViewModel.ViewModel registerTimesheetViewModel;
+
+    @Inject
+    RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel;
+
+    @Inject
+    EventBus eventBus;
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -105,7 +118,7 @@ public class TimesheetFragment extends BaseFragment
                     .filter(RxAlertDialog::isPositive)
                     .subscribe(
                             which -> {
-                                presenter.remove(adapter.getSelectedItems());
+                                removeTimesheetViewModel.remove(adapter.getSelectedItems());
 
                                 actionMode.finish();
                             },
@@ -114,7 +127,7 @@ public class TimesheetFragment extends BaseFragment
         }
 
         private void toggleRegisterSelectedItems(ActionMode actionMode) {
-            presenter.register(adapter.getSelectedItems());
+            registerTimesheetViewModel.register(adapter.getSelectedItems());
 
             actionMode.finish();
         }
@@ -129,8 +142,7 @@ public class TimesheetFragment extends BaseFragment
         return timesheetFragment;
     }
 
-    @Override
-    public long getProjectId() {
+    private long getProjectId() {
         return getArguments().getLong(ProjectActivity.MESSAGE_PROJECT_ID, -1);
     }
 
@@ -141,6 +153,8 @@ public class TimesheetFragment extends BaseFragment
         ((WorkerApplication) getActivity().getApplication())
                 .getProjectComponent()
                 .inject(this);
+
+        eventBus.register(this);
     }
 
     @Override
@@ -196,41 +210,63 @@ public class TimesheetFragment extends BaseFragment
                         int offset = adapter.getGroupCount();
 
                         // Retrieve additional timesheet items with offset.
-                        presenter.getTimesheet(getProjectId(), offset);
+                        getTimesheetViewModel.fetch(getProjectId(), offset);
                     }
                 }
             }
         });
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
-        presenter.attachView(this);
-        presenter.getTimesheet(getProjectId(), 0);
+        if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+            getTimesheetViewModel.hideRegisteredTime();
+        }
+
+        getTimesheetViewModel.success()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(
+                        group -> adapter.add(group),
+                        e -> {
+                        },
+                        // TODO: Improve infinite scrolling.
+                        this::finishLoading
+                );
+        getTimesheetViewModel.errors()
+                .compose(bindToLifecycle())
+                .subscribe(e -> showGetTimesheetErrorMessage());
+        registerTimesheetViewModel.success()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(result -> {
+                    if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+                        adapter.remove(result);
+                        return;
+                    }
+
+                    adapter.set(result);
+                });
+        registerTimesheetViewModel.errors()
+                .compose(bindToLifecycle())
+                .subscribe(e -> showRegisterErrorMessage());
+        removeTimesheetViewModel.success()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(result -> adapter.remove(result));
+        removeTimesheetViewModel.errors()
+                .compose(bindToLifecycle())
+                .subscribe(e -> showDeleteErrorMessage());
+
+        getTimesheetViewModel.fetch(getProjectId(), 0);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
 
-        detachViewIfNotNull(presenter);
+        eventBus.unregister(this);
     }
 
-    @Override
-    public void add(@NonNull List<TimesheetGroup> groups) {
-        adapter.add(groups);
-    }
-
-    @Override
-    public void update(List<TimesheetAdapterResult> results) {
-        adapter.set(results);
-    }
-
-    @Override
-    public void remove(List<TimesheetAdapterResult> results) {
-        adapter.remove(results);
-    }
-
-    @Override
-    public void showGetTimesheetErrorMessage() {
+    private void showGetTimesheetErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_get_timesheet,
@@ -238,40 +274,36 @@ public class TimesheetFragment extends BaseFragment
         ).show();
     }
 
-    @Override
-    public void showDeleteErrorMessage(int numberOfItems) {
+    private void showDeleteErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                getResources().getQuantityText(
-                        R.plurals.error_message_delete_timesheet,
-                        numberOfItems
-                ),
+                R.string.error_message_delete_timesheet,
                 Snackbar.LENGTH_SHORT
         ).show();
     }
 
-    @Override
-    public void showRegisterErrorMessage(int numberOfItems) {
+    private void showRegisterErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                getResources().getQuantityText(
-                        R.plurals.error_message_register_timesheet,
-                        numberOfItems
-                ),
+                R.string.error_message_register_timesheet,
                 Snackbar.LENGTH_SHORT
         ).show();
     }
 
-    @Override
-    public void finishLoading() {
+    private void finishLoading() {
         loading = false;
     }
 
-    @Override
-    public void refresh() {
+    void refresh() {
+        if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+            getTimesheetViewModel.hideRegisteredTime();
+        } else {
+            getTimesheetViewModel.showRegisteredTime();
+        }
+
         // Clear the items from the list and start loading from the beginning...
         adapter.clear();
-        presenter.getTimesheet(getProjectId(), 0);
+        getTimesheetViewModel.fetch(getProjectId(), 0);
     }
 
     @Override
@@ -292,5 +324,16 @@ public class TimesheetFragment extends BaseFragment
         }
 
         actionMode.finish();
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(OngoingNotificationActionEvent event) {
+        if (event.getProjectId() == getProjectId()) {
+            refresh();
+            return;
+        }
+
+        Timber.d("No need to refresh, event is related to another project");
     }
 }

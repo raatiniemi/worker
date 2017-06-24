@@ -18,8 +18,6 @@ package me.raatiniemi.worker.presentation.project;
 
 import android.support.annotation.NonNull;
 
-import org.greenrobot.eventbus.EventBus;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -29,24 +27,39 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
-import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
-import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
+import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel;
+import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
 
 @Module
 public class ProjectModule {
     @Provides
     @Singleton
-    TimesheetPresenter providesTimesheetPresenter(
-            @NonNull TimeRepository timeRepository,
-            @NonNull TimesheetRepository timesheetRepository,
-            @NonNull HideRegisteredTimePreferences hideRegisteredTimePreferences
+    GetTimesheetViewModel.ViewModel providesGetTimesheetViewModel(
+            @NonNull TimesheetRepository repository
     ) {
-        return new TimesheetPresenter(
-                hideRegisteredTimePreferences,
-                EventBus.getDefault(),
-                new GetTimesheet(timesheetRepository),
-                new MarkRegisteredTime(timeRepository),
-                new RemoveTime(timeRepository)
-        );
+        GetTimesheet useCase = new GetTimesheet(repository);
+
+        return new GetTimesheetViewModel.ViewModel(useCase);
+    }
+
+    @Provides
+    @Singleton
+    RegisterTimesheetViewModel.ViewModel providesRegisterTimeViewModel(
+            @NonNull TimeRepository repository
+    ) {
+        MarkRegisteredTime useCase = new MarkRegisteredTime(repository);
+
+        return new RegisterTimesheetViewModel.ViewModel(useCase);
+    }
+
+    @Provides
+    @Singleton
+    RemoveTimesheetViewModel.ViewModel providesRemoveTimeViewModel(
+            @NonNull TimeRepository repository
+    ) {
+        RemoveTime useCase = new RemoveTime(repository);
+
+        return new RemoveTimesheetViewModel.ViewModel(useCase);
     }
 }
