@@ -35,9 +35,9 @@ public class TimesheetItemGetTitleTest {
     private static final Calendar START = new GregorianCalendar(2016, 1, 28, 8, 0);
     private static final Calendar STOP = new GregorianCalendar(2016, 1, 28, 11, 30);
 
-    private String message;
-    private String expected;
-    private Time time;
+    private final String message;
+    private final String expected;
+    private final Time time;
 
     public TimesheetItemGetTitleTest(
             String message,

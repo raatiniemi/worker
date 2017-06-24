@@ -29,10 +29,10 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
 public class OptionalEqualsHashCodeTest {
-    private String message;
-    private Boolean expected;
-    private Optional<String> optional;
-    private Object compareTo;
+    private final String message;
+    private final Boolean expected;
+    private final Optional<String> optional;
+    private final Object compareTo;
 
     public OptionalEqualsHashCodeTest(
             String message,
