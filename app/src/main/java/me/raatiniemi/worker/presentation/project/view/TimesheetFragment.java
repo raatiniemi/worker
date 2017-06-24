@@ -42,20 +42,29 @@ import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
+import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
-import me.raatiniemi.worker.presentation.view.fragment.BaseFragment;
+import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
+import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
-public class TimesheetFragment extends BaseFragment
+public class TimesheetFragment extends RxFragment
         implements SelectionListener, TimesheetView {
+    @Inject
+    HideRegisteredTimePreferences hideRegisteredTimePreferences;
+
     @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
     @Inject
     TimesheetPresenter presenter;
+
+    @Inject
+    GetTimesheetViewModel.ViewModel getTimesheetViewModel;
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -196,15 +205,33 @@ public class TimesheetFragment extends BaseFragment
                         int offset = adapter.getGroupCount();
 
                         // Retrieve additional timesheet items with offset.
-                        presenter.getTimesheet(getProjectId(), offset);
+                        getTimesheetViewModel.fetch(getProjectId(), offset);
                     }
                 }
             }
         });
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
+        if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+            getTimesheetViewModel.hideRegisteredTime();
+        }
+
+        getTimesheetViewModel.success()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(
+                        group -> adapter.add(group),
+                        e -> {
+                        },
+                        // TODO: Improve infinite scrolling.
+                        this::finishLoading
+                );
+        getTimesheetViewModel.errors()
+                .compose(bindToLifecycle())
+                .subscribe(e -> showGetTimesheetErrorMessage());
+
         presenter.attachView(this);
-        presenter.getTimesheet(getProjectId(), 0);
+        getTimesheetViewModel.fetch(getProjectId(), 0);
     }
 
     @Override
@@ -269,9 +296,15 @@ public class TimesheetFragment extends BaseFragment
 
     @Override
     public void refresh() {
+        if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+            getTimesheetViewModel.hideRegisteredTime();
+        } else {
+            getTimesheetViewModel.showRegisteredTime();
+        }
+
         // Clear the items from the list and start loading from the beginning...
         adapter.clear();
-        presenter.getTimesheet(getProjectId(), 0);
+        getTimesheetViewModel.fetch(getProjectId(), 0);
     }
 
     @Override

@@ -21,13 +21,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.interactor.GetTimesheet;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
@@ -35,27 +31,16 @@ import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.RxUtil;
 import me.raatiniemi.worker.util.Optional;
 import rx.Observable;
-import rx.Subscription;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
-
 public class TimesheetPresenter extends BasePresenter<TimesheetView> {
-    private Subscription getTimesheetSubscription;
-
     private final HideRegisteredTimePreferences hideRegisteredTimePreferences;
     private final EventBus eventBus;
-
-    /**
-     * Use case for getting project timesheet.
-     */
-    private final GetTimesheet getTimesheet;
 
     /**
      * Use case for marking time as registered.
@@ -72,20 +57,17 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
      *
      * @param hideRegisteredTimePreferences Preferences for hide registered time.
      * @param eventBus                      Event bus.
-     * @param getTimesheet                  Use case for getting project timesheet.
      * @param markRegisteredTime            Use case for marking time as registered.
      * @param removeTime                    Use case for removing time.
      */
     public TimesheetPresenter(
             HideRegisteredTimePreferences hideRegisteredTimePreferences,
             EventBus eventBus,
-            GetTimesheet getTimesheet,
             MarkRegisteredTime markRegisteredTime,
             RemoveTime removeTime
     ) {
         this.hideRegisteredTimePreferences = hideRegisteredTimePreferences;
         this.eventBus = eventBus;
-        this.getTimesheet = getTimesheet;
         this.markRegisteredTime = markRegisteredTime;
         this.removeTime = removeTime;
     }
@@ -102,50 +84,6 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         super.detachView();
 
         eventBus.unregister(this);
-        unsubscribeIfNotNull(getTimesheetSubscription);
-    }
-
-    public void getTimesheet(final Long id, final int offset) {
-        unsubscribeIfNotNull(getTimesheetSubscription);
-
-        // Setup the subscription for retrieving timesheet.
-        getTimesheetSubscription = Observable
-                .defer(() -> {
-                    boolean hideRegisteredTime = hideRegisteredTimePreferences.shouldHideRegisteredTime();
-                    return Observable.just(
-                            getTimesheet.execute(id, offset, hideRegisteredTime)
-                    );
-                })
-                .map(result -> {
-                    List<TimesheetGroup> groups = new ArrayList<>();
-
-                    //noinspection Convert2streamapi
-                    for (Map.Entry<Date, SortedSet<TimesheetItem>> date : result.entrySet()) {
-                        groups.add(TimesheetGroup.build(date.getKey(), date.getValue()));
-                    }
-
-                    return groups;
-                })
-                .compose(RxUtil.applySchedulers())
-                .subscribe(
-                        groups -> {
-                            Timber.d("getTimesheet onNext");
-
-                            performWithView(view -> view.add(groups));
-                        },
-                        e -> {
-                            Timber.d("getTimesheet onError");
-
-                            // Log the error even if the view have been detached.
-                            Timber.w(e, "Failed to get timesheet");
-                            performWithView(TimesheetView::showGetTimesheetErrorMessage);
-                        },
-                        () -> {
-                            Timber.d("getTimesheet onCompleted");
-
-                            performWithView(TimesheetView::finishLoading);
-                        }
-                );
     }
 
     public void remove(List<TimesheetAdapterResult> results) {
