@@ -30,17 +30,15 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
 public class ProjectContentValuesMapperTest extends RobolectricTestCase {
-    private static ContentValues createContentValues(final String name) {
+    private static ContentValues createContentValues() {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ProviderContract.COLUMN_PROJECT_NAME, name);
+        contentValues.put(ProviderContract.COLUMN_PROJECT_NAME, "Name");
 
         return contentValues;
     }
 
-    private static Project createProject(
-            final String name
-    ) throws InvalidProjectNameException {
-        return Project.builder(name)
+    private static Project createProject() throws InvalidProjectNameException {
+        return Project.builder("Name")
                 .build();
     }
 
@@ -48,8 +46,8 @@ public class ProjectContentValuesMapperTest extends RobolectricTestCase {
     public void transform() throws InvalidProjectNameException {
         ProjectContentValuesMapper entityMapper = new ProjectContentValuesMapper();
 
-        ContentValues expected = createContentValues("Name");
-        Project project = createProject("Name");
+        ContentValues expected = createContentValues();
+        Project project = createProject();
         ContentValues contentValues = entityMapper.transform(project);
 
         // the id column should not be mapped since that would introduce the
@@ -57,8 +55,8 @@ public class ProjectContentValuesMapperTest extends RobolectricTestCase {
         assertNull(contentValues.get(BaseColumns._ID));
         assertEquals(expected.get(ProviderContract.COLUMN_PROJECT_NAME), contentValues.get(ProviderContract.COLUMN_PROJECT_NAME));
 
-        expected = createContentValues("Name");
-        project = createProject("Name");
+        expected = createContentValues();
+        project = createProject();
         contentValues = entityMapper.transform(project);
 
         // the id column should not be mapped since that would introduce the

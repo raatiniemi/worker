@@ -46,37 +46,35 @@ public class ProjectCursorMapperTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws InvalidProjectNameException {
+    public static Collection<Object[]> getParameters() throws InvalidProjectNameException {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                createProject(1, "Name"),
-                                createCursor(1, "Name")
+                                createProject(),
+                                createCursor()
                         },
                         {
-                                createProject(1, "Name"),
-                                createCursor(1, "Name")
+                                createProject(),
+                                createCursor()
                         }
                 }
         );
     }
 
-    private static Project createProject(long id, String name)
-            throws InvalidProjectNameException {
-        return Project.builder(name)
-                .id(id)
+    private static Project createProject() throws InvalidProjectNameException {
+        return Project.builder("Name")
+                .id(1L)
                 .build();
     }
 
-    private static Cursor createCursor(long id, String name) {
+    private static Cursor createCursor() {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndexOrThrow(BaseColumns._ID)).thenReturn(0);
         when(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_PROJECT_NAME)).thenReturn(1);
 
-        when(cursor.getLong(0)).thenReturn(id);
-        when(cursor.getString(1)).thenReturn(name);
+        when(cursor.getLong(0)).thenReturn(1L);
+        when(cursor.getString(1)).thenReturn("Name");
 
         return cursor;
     }

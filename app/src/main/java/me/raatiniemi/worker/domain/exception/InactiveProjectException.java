@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.exception;
 
 public class InactiveProjectException extends ClockActivityException {
-    public InactiveProjectException(String message) {
-        super(message);
+    public InactiveProjectException() {
+        super("Project is not active");
     }
 }

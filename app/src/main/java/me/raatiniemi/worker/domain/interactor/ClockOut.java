@@ -44,7 +44,7 @@ public class ClockOut {
     public void execute(long projectId, Date date) throws DomainException {
         Optional<Time> value = timeRepository.getActiveTimeForProject(projectId);
         if (!value.isPresent()) {
-            throw new InactiveProjectException("Project is not active");
+            throw new InactiveProjectException();
         }
 
         Time time = value.get();

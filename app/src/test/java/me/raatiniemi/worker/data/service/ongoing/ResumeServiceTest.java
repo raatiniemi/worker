@@ -77,10 +77,9 @@ public class ResumeServiceTest extends RobolectricTestCase {
         return ProviderContract.getProjectItemUri(1L);
     }
 
-    private Project buildProject(long projectId)
-            throws InvalidProjectNameException {
+    private Project buildProject() throws InvalidProjectNameException {
         return Project.builder("Project name")
-                .id(projectId)
+                .id(1L)
                 .build();
     }
 
@@ -146,7 +145,7 @@ public class ResumeServiceTest extends RobolectricTestCase {
 
         when(
                 getProject.execute(1L)
-        ).thenReturn(buildProject(1L));
+        ).thenReturn(buildProject());
 
         serviceController.withIntent(intent)
                 .startCommand(0, 0);
@@ -175,7 +174,7 @@ public class ResumeServiceTest extends RobolectricTestCase {
 
         when(
                 getProject.execute(1L)
-        ).thenReturn(buildProject(1L));
+        ).thenReturn(buildProject());
 
         serviceController.withIntent(intent)
                 .startCommand(0, 0);
@@ -206,7 +205,7 @@ public class ResumeServiceTest extends RobolectricTestCase {
         doThrow(ActiveProjectException.class)
                 .when(clockIn).execute(eq(1L), any(Date.class));
         when(getProject.execute(1L))
-                .thenReturn(buildProject(1L));
+                .thenReturn(buildProject());
 
         serviceController.withIntent(intent)
                 .startCommand(0, 0);
@@ -231,7 +230,7 @@ public class ResumeServiceTest extends RobolectricTestCase {
         doThrow(ActiveProjectException.class)
                 .when(clockIn).execute(eq(1L), any(Date.class));
         when(getProject.execute(1L))
-                .thenReturn(buildProject(1L));
+                .thenReturn(buildProject());
 
         serviceController.withIntent(intent)
                 .startCommand(0, 0);

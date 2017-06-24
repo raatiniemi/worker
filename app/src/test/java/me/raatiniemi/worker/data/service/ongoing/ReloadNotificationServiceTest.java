@@ -63,8 +63,8 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
         return buildProjectWithIdAndStatus(projectId, true);
     }
 
-    private Project buildInactiveProjectWithId(Long projectId) throws DomainException {
-        return buildProjectWithIdAndStatus(projectId, false);
+    private Project buildInactiveProjectWithId() throws DomainException {
+        return buildProjectWithIdAndStatus(1L, false);
     }
 
     private Project buildProjectWithIdAndStatus(Long projectId, boolean isActive)
@@ -157,7 +157,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
     public void onHandleIntent_withoutActiveProjects() throws DomainException {
         getService().enableOngoingNotification();
         List<Project> projects = new ArrayList<>();
-        projects.add(buildInactiveProjectWithId(1L));
+        projects.add(buildInactiveProjectWithId());
         when(getProjects.execute())
                 .thenReturn(projects);
 
@@ -171,7 +171,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
     public void onHandleIntent_withActiveProject() throws DomainException {
         getService().enableOngoingNotification();
         List<Project> projects = new ArrayList<>();
-        projects.add(buildInactiveProjectWithId(1L));
+        projects.add(buildInactiveProjectWithId());
         projects.add(buildActiveProjectWithId(2L));
         when(getProjects.execute())
                 .thenReturn(projects);
@@ -190,7 +190,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
     public void onHandleIntent_withActiveProjects() throws DomainException {
         getService().enableOngoingNotification();
         List<Project> projects = new ArrayList<>();
-        projects.add(buildInactiveProjectWithId(1L));
+        projects.add(buildInactiveProjectWithId());
         projects.add(buildActiveProjectWithId(2L));
         projects.add(buildActiveProjectWithId(3L));
         when(getProjects.execute())

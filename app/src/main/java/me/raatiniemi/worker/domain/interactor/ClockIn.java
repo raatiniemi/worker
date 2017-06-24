@@ -44,7 +44,7 @@ public class ClockIn {
     public void execute(long projectId, Date date) throws DomainException {
         Optional<Time> value = timeRepository.getActiveTimeForProject(projectId);
         if (value.isPresent()) {
-            throw new ActiveProjectException("Project is active");
+            throw new ActiveProjectException();
         }
 
         timeRepository.add(

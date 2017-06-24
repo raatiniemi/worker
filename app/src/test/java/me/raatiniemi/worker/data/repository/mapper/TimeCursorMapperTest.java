@@ -57,7 +57,7 @@ public class TimeCursorMapperTest {
                                         .startInMilliseconds(1L)
                                         .stopInMilliseconds(0L)
                                         .build(),
-                                createCursor(1, 1, 1, null, 0)
+                                createCursor(null, 0)
                         },
                         {
                                 TimeFactory.builder(1L)
@@ -65,7 +65,7 @@ public class TimeCursorMapperTest {
                                         .startInMilliseconds(1L)
                                         .stopInMilliseconds(2L)
                                         .build(),
-                                createCursor(1, 1, 1, 2L, 0)
+                                createCursor(2L, 0)
                         },
                         {
                                 TimeFactory.builder(1L)
@@ -74,19 +74,13 @@ public class TimeCursorMapperTest {
                                         .stopInMilliseconds(2L)
                                         .register()
                                         .build(),
-                                createCursor(1, 1, 1, 2L, 1)
+                                createCursor(2L, 1)
                         }
                 }
         );
     }
 
-    private static Cursor createCursor(
-            long id,
-            long projectId,
-            long start,
-            Long stop,
-            long registered
-    ) {
+    private static Cursor createCursor(Long stop, long registered) {
         Cursor cursor = mock(Cursor.class);
 
         when(cursor.getColumnIndexOrThrow(BaseColumns._ID)).thenReturn(0);
@@ -95,9 +89,9 @@ public class TimeCursorMapperTest {
         when(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_STOP)).thenReturn(3);
         when(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_REGISTERED)).thenReturn(4);
 
-        when(cursor.getLong(0)).thenReturn(id);
-        when(cursor.getLong(1)).thenReturn(projectId);
-        when(cursor.getLong(2)).thenReturn(start);
+        when(cursor.getLong(0)).thenReturn(1L);
+        when(cursor.getLong(1)).thenReturn(1L);
+        when(cursor.getLong(2)).thenReturn(1L);
         when(cursor.getLong(4)).thenReturn(registered);
 
         // Depending on whether the `stop` variable is `null` different

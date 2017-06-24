@@ -38,16 +38,11 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
         mapper = new TimeContentValuesMapper();
     }
 
-    private static ContentValues createContentValues(
-            final long projectId,
-            final long start,
-            final long stop,
-            final long registered
-    ) {
+    private static ContentValues createContentValues(final long registered) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ProviderContract.COLUMN_TIME_PROJECT_ID, projectId);
-        contentValues.put(ProviderContract.COLUMN_TIME_START, start);
-        contentValues.put(ProviderContract.COLUMN_TIME_STOP, stop);
+        contentValues.put(ProviderContract.COLUMN_TIME_PROJECT_ID, 1L);
+        contentValues.put(ProviderContract.COLUMN_TIME_START, 1L);
+        contentValues.put(ProviderContract.COLUMN_TIME_STOP, 1L);
         contentValues.put(ProviderContract.COLUMN_TIME_REGISTERED, registered);
 
         return contentValues;
@@ -55,7 +50,7 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
 
     @Test
     public void transform_withTime() {
-        ContentValues expected = createContentValues(1L, 1L, 1L, 0L);
+        ContentValues expected = createContentValues(0L);
         Time time = TimeFactory.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(1L)
@@ -73,7 +68,7 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
 
     @Test
     public void transform_withRegisteredTime() {
-        ContentValues expected = createContentValues(1L, 1L, 1L, 1L);
+        ContentValues expected = createContentValues(1L);
         Time time = TimeFactory.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(1L)
