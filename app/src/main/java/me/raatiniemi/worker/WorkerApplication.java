@@ -137,7 +137,7 @@ public class WorkerApplication extends Application {
     }
 
     @NonNull
-    AndroidModule createAndroidModule() {
+    private AndroidModule createAndroidModule() {
         return new AndroidModule(this);
     }
 
@@ -147,7 +147,7 @@ public class WorkerApplication extends Application {
     }
 
     @NonNull
-    PreferenceModule createPreferenceModule() {
+    private PreferenceModule createPreferenceModule() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         return new PreferenceModule(preferences);

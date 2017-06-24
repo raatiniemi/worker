@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 import me.raatiniemi.worker.data.AndroidTestDataModule;
 import me.raatiniemi.worker.data.DataModule;
 
-public class AndroidTestApplication extends WorkerApplication {
+class AndroidTestApplication extends WorkerApplication {
     @NonNull
     @Override
     DataModule createDataModule() {
