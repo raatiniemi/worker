@@ -31,6 +31,7 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 
 @Module
@@ -44,8 +45,7 @@ public class ProjectModule {
         return new TimesheetPresenter(
                 hideRegisteredTimePreferences,
                 EventBus.getDefault(),
-                new MarkRegisteredTime(repository),
-                new RemoveTime(repository)
+                new MarkRegisteredTime(repository)
         );
     }
 
@@ -57,5 +57,15 @@ public class ProjectModule {
         GetTimesheet useCase = new GetTimesheet(repository);
 
         return new GetTimesheetViewModel.ViewModel(useCase);
+    }
+
+    @Provides
+    @Singleton
+    RemoveTimesheetViewModel.ViewModel providesRemoveTimeViewModel(
+            @NonNull TimeRepository repository
+    ) {
+        RemoveTime useCase = new RemoveTime(repository);
+
+        return new RemoveTimesheetViewModel.ViewModel(useCase);
     }
 }

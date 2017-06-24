@@ -43,6 +43,7 @@ import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
@@ -65,6 +66,9 @@ public class TimesheetFragment extends RxFragment
 
     @Inject
     GetTimesheetViewModel.ViewModel getTimesheetViewModel;
+
+    @Inject
+    RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel;
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -114,7 +118,7 @@ public class TimesheetFragment extends RxFragment
                     .filter(RxAlertDialog::isPositive)
                     .subscribe(
                             which -> {
-                                presenter.remove(adapter.getSelectedItems());
+                                removeTimesheetViewModel.remove(adapter.getSelectedItems());
 
                                 actionMode.finish();
                             },
@@ -229,6 +233,14 @@ public class TimesheetFragment extends RxFragment
         getTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showGetTimesheetErrorMessage());
+        removeTimesheetViewModel.success()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(result -> adapter.remove(result));
+        removeTimesheetViewModel.errors()
+                .compose(bindToLifecycle())
+                // TODO: Remove quantity from error message.
+                .subscribe(e -> showDeleteErrorMessage(1));
 
         presenter.attachView(this);
         getTimesheetViewModel.fetch(getProjectId(), 0);

@@ -25,7 +25,6 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
-import me.raatiniemi.worker.domain.interactor.RemoveTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
@@ -48,28 +47,20 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     private final MarkRegisteredTime markRegisteredTime;
 
     /**
-     * Use case for removing time.
-     */
-    private final RemoveTime removeTime;
-
-    /**
      * Constructor.
      *
      * @param hideRegisteredTimePreferences Preferences for hide registered time.
      * @param eventBus                      Event bus.
      * @param markRegisteredTime            Use case for marking time as registered.
-     * @param removeTime                    Use case for removing time.
      */
     public TimesheetPresenter(
             HideRegisteredTimePreferences hideRegisteredTimePreferences,
             EventBus eventBus,
-            MarkRegisteredTime markRegisteredTime,
-            RemoveTime removeTime
+            MarkRegisteredTime markRegisteredTime
     ) {
         this.hideRegisteredTimePreferences = hideRegisteredTimePreferences;
         this.eventBus = eventBus;
         this.markRegisteredTime = markRegisteredTime;
-        this.removeTime = removeTime;
     }
 
     @Override
@@ -84,38 +75,6 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         super.detachView();
 
         eventBus.unregister(this);
-    }
-
-    public void remove(List<TimesheetAdapterResult> results) {
-        final int numberOfItems = results.size();
-
-        Observable.just(results)
-                .map(items -> {
-                    List<Time> timeToRemove = new ArrayList<>();
-                    // noinspection Convert2streamapi
-                    for (TimesheetAdapterResult result : items) {
-                        timeToRemove.add(result.getTime());
-                    }
-
-                    removeTime.execute(timeToRemove);
-                    return items;
-                })
-                .compose(RxUtil.applySchedulers())
-                .subscribe(
-                        items -> {
-                            Timber.d("remove onNext");
-
-                            performWithView(view -> view.remove(items));
-                        },
-                        e -> {
-                            Timber.d("remove onError");
-
-                            // Log the error even if the view have been detached.
-                            Timber.w(e, "Failed to remove time");
-                            performWithView(view -> view.showDeleteErrorMessage(numberOfItems));
-                        },
-                        () -> Timber.d("remove onCompleted")
-                );
     }
 
     public void register(List<TimesheetAdapterResult> results) {
