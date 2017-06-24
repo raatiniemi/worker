@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.presentation.project.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,17 +35,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
-import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
-import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
@@ -57,18 +51,12 @@ import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
-import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
-public class TimesheetFragment extends RxFragment
-        implements SelectionListener, TimesheetView {
+public class TimesheetFragment extends RxFragment implements SelectionListener {
     @Inject
     HideRegisteredTimePreferences hideRegisteredTimePreferences;
-
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    TimesheetPresenter presenter;
 
     @Inject
     GetTimesheetViewModel.ViewModel getTimesheetViewModel;
@@ -154,8 +142,7 @@ public class TimesheetFragment extends RxFragment
         return timesheetFragment;
     }
 
-    @Override
-    public long getProjectId() {
+    private long getProjectId() {
         return getArguments().getLong(ProjectActivity.MESSAGE_PROJECT_ID, -1);
     }
 
@@ -271,15 +258,7 @@ public class TimesheetFragment extends RxFragment
                 // TODO: Remove quantity from error message.
                 .subscribe(e -> showDeleteErrorMessage(1));
 
-        presenter.attachView(this);
         getTimesheetViewModel.fetch(getProjectId(), 0);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        detachViewIfNotNull(presenter);
     }
 
     @Override
@@ -289,23 +268,7 @@ public class TimesheetFragment extends RxFragment
         eventBus.unregister(this);
     }
 
-    @Override
-    public void add(@NonNull List<TimesheetGroup> groups) {
-        adapter.add(groups);
-    }
-
-    @Override
-    public void update(List<TimesheetAdapterResult> results) {
-        adapter.set(results);
-    }
-
-    @Override
-    public void remove(List<TimesheetAdapterResult> results) {
-        adapter.remove(results);
-    }
-
-    @Override
-    public void showGetTimesheetErrorMessage() {
+    private void showGetTimesheetErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_get_timesheet,
@@ -313,8 +276,7 @@ public class TimesheetFragment extends RxFragment
         ).show();
     }
 
-    @Override
-    public void showDeleteErrorMessage(int numberOfItems) {
+    private void showDeleteErrorMessage(int numberOfItems) {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 getResources().getQuantityText(
@@ -325,8 +287,7 @@ public class TimesheetFragment extends RxFragment
         ).show();
     }
 
-    @Override
-    public void showRegisterErrorMessage(int numberOfItems) {
+    private void showRegisterErrorMessage(int numberOfItems) {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 getResources().getQuantityText(
@@ -337,13 +298,11 @@ public class TimesheetFragment extends RxFragment
         ).show();
     }
 
-    @Override
-    public void finishLoading() {
+    private void finishLoading() {
         loading = false;
     }
 
-    @Override
-    public void refresh() {
+    void refresh() {
         if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
             getTimesheetViewModel.hideRegisteredTime();
         } else {
