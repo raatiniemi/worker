@@ -255,8 +255,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
                 .subscribe(result -> adapter.remove(result));
         removeTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
-                // TODO: Remove quantity from error message.
-                .subscribe(e -> showDeleteErrorMessage(1));
+                .subscribe(e -> showDeleteErrorMessage());
 
         getTimesheetViewModel.fetch(getProjectId(), 0);
     }
@@ -276,13 +275,10 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         ).show();
     }
 
-    private void showDeleteErrorMessage(int numberOfItems) {
+    private void showDeleteErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                getResources().getQuantityText(
-                        R.plurals.error_message_delete_timesheet,
-                        numberOfItems
-                ),
+                R.string.error_message_delete_timesheet,
                 Snackbar.LENGTH_SHORT
         ).show();
     }

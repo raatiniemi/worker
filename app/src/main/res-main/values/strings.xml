@@ -47,11 +47,7 @@
     <string name="error_message_clock_out">Failed to clock out project.</string>
 
     <string name="error_message_get_timesheet">Failed to retrieve timesheet.</string>
-
-    <plurals name="error_message_delete_timesheet">
-        <item quantity="one">Failed to delete item.</item>
-        <item quantity="other">Failed to delete items.</item>
-    </plurals>
+    <string name="error_message_delete_timesheet">Failed to delete item(s).</string>
     <plurals name="error_message_register_timesheet">
         <item quantity="one">Failed to update item.</item>
         <item quantity="other">Failed to update items.</item>
