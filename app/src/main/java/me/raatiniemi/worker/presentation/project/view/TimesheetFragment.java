@@ -32,6 +32,10 @@ import android.view.ViewGroup;
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,6 +43,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
+import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
@@ -69,6 +74,9 @@ public class TimesheetFragment extends RxFragment
 
     @Inject
     RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel;
+
+    @Inject
+    EventBus eventBus;
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -154,6 +162,8 @@ public class TimesheetFragment extends RxFragment
         ((WorkerApplication) getActivity().getApplication())
                 .getProjectComponent()
                 .inject(this);
+
+        eventBus.register(this);
     }
 
     @Override
@@ -254,6 +264,13 @@ public class TimesheetFragment extends RxFragment
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        eventBus.unregister(this);
+    }
+
+    @Override
     public void add(@NonNull List<TimesheetGroup> groups) {
         adapter.add(groups);
     }
@@ -337,5 +354,16 @@ public class TimesheetFragment extends RxFragment
         }
 
         actionMode.finish();
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(OngoingNotificationActionEvent event) {
+        if (event.getProjectId() == getProjectId()) {
+            refresh();
+            return;
+        }
+
+        Timber.d("No need to refresh, event is related to another project");
     }
 }

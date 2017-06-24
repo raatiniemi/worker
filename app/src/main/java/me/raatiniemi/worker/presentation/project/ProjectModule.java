@@ -18,8 +18,6 @@ package me.raatiniemi.worker.presentation.project;
 
 import android.support.annotation.NonNull;
 
-import org.greenrobot.eventbus.EventBus;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -44,7 +42,6 @@ public class ProjectModule {
     ) {
         return new TimesheetPresenter(
                 hideRegisteredTimePreferences,
-                EventBus.getDefault(),
                 new MarkRegisteredTime(repository)
         );
     }

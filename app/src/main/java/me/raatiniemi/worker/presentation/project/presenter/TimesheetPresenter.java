@@ -16,10 +16,6 @@
 
 package me.raatiniemi.worker.presentation.project.presenter;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +23,6 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.view.TimesheetView;
@@ -39,7 +34,6 @@ import timber.log.Timber;
 
 public class TimesheetPresenter extends BasePresenter<TimesheetView> {
     private final HideRegisteredTimePreferences hideRegisteredTimePreferences;
-    private final EventBus eventBus;
 
     /**
      * Use case for marking time as registered.
@@ -50,31 +44,14 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
      * Constructor.
      *
      * @param hideRegisteredTimePreferences Preferences for hide registered time.
-     * @param eventBus                      Event bus.
      * @param markRegisteredTime            Use case for marking time as registered.
      */
     public TimesheetPresenter(
             HideRegisteredTimePreferences hideRegisteredTimePreferences,
-            EventBus eventBus,
             MarkRegisteredTime markRegisteredTime
     ) {
         this.hideRegisteredTimePreferences = hideRegisteredTimePreferences;
-        this.eventBus = eventBus;
         this.markRegisteredTime = markRegisteredTime;
-    }
-
-    @Override
-    public void attachView(TimesheetView view) {
-        super.attachView(view);
-
-        eventBus.register(this);
-    }
-
-    @Override
-    public void detachView() {
-        super.detachView();
-
-        eventBus.unregister(this);
     }
 
     public void register(List<TimesheetAdapterResult> results) {
@@ -151,18 +128,5 @@ public class TimesheetPresenter extends BasePresenter<TimesheetView> {
         }
 
         return Optional.empty();
-    }
-
-    @SuppressWarnings("unused")
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(OngoingNotificationActionEvent event) {
-        performWithView(view -> {
-            if (event.getProjectId() != view.getProjectId()) {
-                Timber.d("No need to refresh, event is related to another project");
-                return;
-            }
-
-            view.refresh();
-        });
     }
 }
