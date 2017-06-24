@@ -48,6 +48,7 @@ import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.project.presenter.TimesheetPresenter;
 import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
@@ -71,6 +72,9 @@ public class TimesheetFragment extends RxFragment
 
     @Inject
     GetTimesheetViewModel.ViewModel getTimesheetViewModel;
+
+    @Inject
+    RegisterTimesheetViewModel.ViewModel registerTimesheetViewModel;
 
     @Inject
     RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel;
@@ -135,7 +139,7 @@ public class TimesheetFragment extends RxFragment
         }
 
         private void toggleRegisterSelectedItems(ActionMode actionMode) {
-            presenter.register(adapter.getSelectedItems());
+            registerTimesheetViewModel.register(adapter.getSelectedItems());
 
             actionMode.finish();
         }
@@ -243,6 +247,21 @@ public class TimesheetFragment extends RxFragment
         getTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showGetTimesheetErrorMessage());
+        registerTimesheetViewModel.success()
+                .compose(bindToLifecycle())
+                .compose(applySchedulers())
+                .subscribe(result -> {
+                    if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+                        adapter.remove(result);
+                        return;
+                    }
+
+                    adapter.set(result);
+                });
+        registerTimesheetViewModel.errors()
+                .compose(bindToLifecycle())
+                // TODO: Remove quantity from error message.
+                .subscribe(e -> showRegisterErrorMessage(1));
         removeTimesheetViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())

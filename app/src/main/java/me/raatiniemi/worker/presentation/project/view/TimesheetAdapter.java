@@ -208,13 +208,14 @@ class TimesheetAdapter extends ExpandableListAdapter<
     public void set(List<TimesheetAdapterResult> results) {
         Collections.sort(results);
 
+        //noinspection Convert2streamapi
         for (TimesheetAdapterResult result : results) {
-            set(
-                    result.getGroup(),
-                    result.getChild(),
-                    TimesheetItem.with(result.getTime())
-            );
+            set(result);
         }
+    }
+
+    public void set(TimesheetAdapterResult result) {
+        set(result.getGroup(), result.getChild(), TimesheetItem.with(result.getTime()));
     }
 
     boolean haveSelectedItems() {
