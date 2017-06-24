@@ -247,8 +247,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
                 });
         registerTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
-                // TODO: Remove quantity from error message.
-                .subscribe(e -> showRegisterErrorMessage(1));
+                .subscribe(e -> showRegisterErrorMessage());
         removeTimesheetViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
@@ -283,13 +282,10 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         ).show();
     }
 
-    private void showRegisterErrorMessage(int numberOfItems) {
+    private void showRegisterErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                getResources().getQuantityText(
-                        R.plurals.error_message_register_timesheet,
-                        numberOfItems
-                ),
+                R.string.error_message_register_timesheet,
                 Snackbar.LENGTH_SHORT
         ).show();
     }
