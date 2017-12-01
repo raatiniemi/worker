@@ -87,7 +87,7 @@ ext {
             rxlifecycle               : 'com.trello:rxlifecycle-android:1.0',
             timber                    : 'com.jakewharton.timber:timber:4.6.0',
             eventbus                  : 'org.greenrobot:eventbus:3.0.0',
-            advrecyclerview           : 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.2',
+            advrecyclerview           : 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.11.0',
 
             // dagger
             dagger                    : "com.google.dagger:dagger:$daggerVersion",
