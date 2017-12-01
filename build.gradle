@@ -65,7 +65,7 @@ ext {
     androidTargetSdkVersion = androidCompileSdkVersion
 
     androidSupportVersion = '27.0.2'
-    daggerVersion = '2.8'
+    daggerVersion = '2.13'
     butterKnifeVersion = '8.4.0'
     leakCanaryVersion = '1.5'
 
