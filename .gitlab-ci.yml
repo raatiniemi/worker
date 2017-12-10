@@ -1,4 +1,24 @@
-image: raatiniemi/android-environment:latest
+image: openjdk:8
+
+variables:
+  ANDROID_HOME: "/opt/android-sdk"
+  ANDROID_SDK_TOOLS: "25.2.5"
+  ANDROID_BUILD_TOOLS: "25.0.2"
+  ANDROID_COMPILE_SDK: "25"
+
+before_script:
+  - dpkg --add-architecture i386
+  - apt-get -qq update -y
+  - apt-get -qq install -y libstdc++6:i386 zlib1g:i386 libncurses5:i386 --no-install-recommends
+  - mkdir -p ${ANDROID_HOME}
+  - curl -O -Ls http://dl.google.com/android/repository/tools_r${ANDROID_SDK_TOOLS}-linux.zip
+  - unzip -qq tools_r${ANDROID_SDK_TOOLS}-linux.zip -d "${ANDROID_HOME}"
+  - export PATH="${PATH}:${ANDROID_HOME}/tools/"
+  - echo y | android --silent update sdk -u -a -t tools,platform-tools
+  - echo y | android --silent update sdk -u -a -t build-tools-${ANDROID_BUILD_TOOLS}
+  - echo y | android --silent update sdk -u -a -t android-${ANDROID_COMPILE_SDK}
+  - echo y | android --silent update sdk -u -a -t extra-android-support,extra-android-m2repository
+  - chmod +x ./gradlew
 
 stages:
   - build
