@@ -112,6 +112,6 @@ ext {
             junit                     : 'junit:junit:4.12',
             espressoCore              : 'com.android.support.test.espresso:espresso-core:2.2.2',
             mockitoCore               : 'org.mockito:mockito-core:2.6.2',
-            robolectric               : 'org.robolectric:robolectric:3.0'
+            robolectric               : 'org.robolectric:robolectric:3.5.1'
     ]
 }

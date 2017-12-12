@@ -25,6 +25,8 @@ import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,19 +36,23 @@ public class PermissionUtilTest extends RobolectricTestCase {
     @Test
     public void havePermission_granted() {
         Context context = mock(Context.class);
-        when(context.checkPermission(PERMISSION, 0, 0))
+        when(context.checkPermission(eq(PERMISSION), anyInt(), anyInt()))
                 .thenReturn(PackageManager.PERMISSION_GRANTED);
 
-        assertTrue(PermissionUtil.havePermission(context, PERMISSION));
+        boolean havePermission = PermissionUtil.havePermission(context, PERMISSION);
+
+        assertTrue(havePermission);
     }
 
     @Test
     public void havePermission_denied() {
         Context context = mock(Context.class);
-        when(context.checkPermission(PERMISSION, 0, 0))
+        when(context.checkPermission(eq(PERMISSION), anyInt(), anyInt()))
                 .thenReturn(PackageManager.PERMISSION_DENIED);
 
-        assertFalse(PermissionUtil.havePermission(context, PERMISSION));
+        boolean havePermission = PermissionUtil.havePermission(context, PERMISSION);
+
+        assertFalse(havePermission);
     }
 
     @Test

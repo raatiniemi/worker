@@ -17,8 +17,6 @@
 package me.raatiniemi.worker.data.service.ongoing;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -28,9 +26,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
-import org.robolectric.shadows.ShadowContextImpl;
-import org.robolectric.util.ServiceController;
+import org.robolectric.android.controller.ServiceController;
+import org.robolectric.shadows.ShadowNotificationManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,19 +41,21 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.factory.TimeFactory;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 public class ReloadNotificationServiceTest extends RobolectricTestCase {
+    private final ShadowNotificationManager nm = shadowOf((NotificationManager) RuntimeEnvironment
+            .application
+            .getSystemService(Context.NOTIFICATION_SERVICE));
+
     private ServiceController<TestService> serviceController;
 
-    private NotificationManager notificationManager;
     private GetProjects getProjects;
 
     private Project buildActiveProjectWithId(Long projectId) throws DomainException {
@@ -87,20 +86,10 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
     @Before
     public void setUp() {
         serviceController = Robolectric.buildService(TestService.class);
-        serviceController.attach()
-                .create()
+        serviceController.create()
                 .get();
 
-        setUpNotificationManager();
         setUpService();
-    }
-
-    private void setUpNotificationManager() {
-        notificationManager = mock(NotificationManager.class);
-
-        Application application = RuntimeEnvironment.application;
-        ShadowContextImpl shadowContext = (ShadowContextImpl) Shadows.shadowOf(application.getBaseContext());
-        shadowContext.setSystemService(Context.NOTIFICATION_SERVICE, notificationManager);
     }
 
     private void setUpService() {
@@ -122,8 +111,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
         serviceController.startCommand(0, 0);
 
         verify(getProjects, never()).execute();
-        verify(notificationManager, never())
-                .notify(anyInt(), any(Notification.class));
+        assertNull(nm.getNotification("1", WorkerApplication.NOTIFICATION_ON_GOING_ID));
     }
 
     @Test
@@ -137,8 +125,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
         serviceController.startCommand(0, 0);
 
         verify(getProjects, never()).execute();
-        verify(notificationManager, never())
-                .notify(anyInt(), any(Notification.class));
+        assertNull(nm.getNotification("1", WorkerApplication.NOTIFICATION_ON_GOING_ID));
     }
 
     @Test
@@ -149,8 +136,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
 
         serviceController.startCommand(0, 0);
 
-        verify(notificationManager, never())
-                .notify(anyInt(), any(Notification.class));
+        assertNull(nm.getNotification("1", WorkerApplication.NOTIFICATION_ON_GOING_ID));
     }
 
     @Test
@@ -163,8 +149,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
 
         serviceController.startCommand(0, 0);
 
-        verify(notificationManager, never())
-                .notify(anyInt(), any(Notification.class));
+        assertNull(nm.getNotification("1", WorkerApplication.NOTIFICATION_ON_GOING_ID));
     }
 
     @Test
@@ -178,12 +163,7 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
 
         serviceController.startCommand(0, 0);
 
-        verify(notificationManager)
-                .notify(
-                        eq("2"),
-                        eq(WorkerApplication.NOTIFICATION_ON_GOING_ID),
-                        isA(Notification.class)
-                );
+        assertNotNull(nm.getNotification("2", WorkerApplication.NOTIFICATION_ON_GOING_ID));
     }
 
     @Test
@@ -198,18 +178,8 @@ public class ReloadNotificationServiceTest extends RobolectricTestCase {
 
         serviceController.startCommand(0, 0);
 
-        verify(notificationManager)
-                .notify(
-                        eq("2"),
-                        eq(WorkerApplication.NOTIFICATION_ON_GOING_ID),
-                        isA(Notification.class)
-                );
-        verify(notificationManager)
-                .notify(
-                        eq("3"),
-                        eq(WorkerApplication.NOTIFICATION_ON_GOING_ID),
-                        isA(Notification.class)
-                );
+        assertNotNull(nm.getNotification("2", WorkerApplication.NOTIFICATION_ON_GOING_ID));
+        assertNotNull(nm.getNotification("3", WorkerApplication.NOTIFICATION_ON_GOING_ID));
     }
 
     @SuppressLint("Registered")
