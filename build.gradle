@@ -33,6 +33,9 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
+        maven {
+            url "https://maven.google.com"
+        }
     }
 
     tasks.withType(JavaCompile) {
@@ -62,13 +65,13 @@ ext {
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
-    androidCompileSdkVersion = 25
-    androidBuildToolsVersion = '25.0.2'
+    androidCompileSdkVersion = 27
+    androidBuildToolsVersion = '27.0.2'
 
     androidMinSdkVersion = 21
     androidTargetSdkVersion = androidCompileSdkVersion
 
-    androidSupportVersion = '25.1.0'
+    androidSupportVersion = '27.0.2'
     daggerVersion = '2.8'
     butterKnifeVersion = '8.4.0'
     leakCanaryVersion = '1.5'
