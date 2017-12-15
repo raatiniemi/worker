@@ -7,12 +7,12 @@ ANDROID_SDK_TOOLS="25.2.5"
 ANDROID_BUILD_TOOLS="27.0.2"
 ANDROID_COMPILE_SDK="27"
 
-echo "ensure system is up-to-date and install android dependencies";
+echo "Ensure system is up-to-date and install Android dependencies";
 dpkg --add-architecture i386;
 apt-get -qq update -y 1>/dev/null;
 apt-get -qq install -y libstdc++6:i386 zlib1g:i386 libncurses5:i386 --no-install-recommends 1>/dev/null;
 
-echo "install android sdk tools to ${ANDROID_HOME}";
+echo "Install Android SDK tools to ${ANDROID_HOME}";
 mkdir -p "${ANDROID_HOME}";
 curl -O -Ls "http://dl.google.com/android/repository/tools_r${ANDROID_SDK_TOOLS}-linux.zip";
 unzip -qq "tools_r${ANDROID_SDK_TOOLS}-linux.zip" -d "${ANDROID_HOME}";
@@ -20,12 +20,12 @@ unzip -qq "tools_r${ANDROID_SDK_TOOLS}-linux.zip" -d "${ANDROID_HOME}";
 function accept_license_and_install {
   yes | "${ANDROID_HOME}/tools/bin/sdkmanager" $1 1>/dev/null;
   if [ $? -ne 0 ]; then
-    echo "failed to install and accept licenses for ${1}";
+    echo "Failed to install and accept licenses for ${1}";
     exit 1;
   fi
 }
 
-echo "installing sdk platforms and tools";
+echo "Installing Android SDK platforms and tools";
 accept_license_and_install "platform-tools";
 accept_license_and_install "build-tools;${ANDROID_BUILD_TOOLS}";
 accept_license_and_install "platforms;android-${ANDROID_COMPILE_SDK}";
