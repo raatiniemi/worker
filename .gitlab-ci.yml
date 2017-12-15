@@ -1,5 +1,8 @@
 image: openjdk:8
 
+variables:
+  ANDROID_HOME: "/opt/android-sdk"
+
 before_script:
   - bin/configure-container-environment
 
