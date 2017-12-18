@@ -123,38 +123,38 @@ jacoco {
 }
 
 dependencies {
-    provided deps.jsr250
+    compileOnly deps.jsr250
 
     kapt deps.daggerCompiler
     kapt deps.butterKnifeCompiler
 
-    debugCompile deps.leakCanary
+    debugImplementation deps.leakCanary
 
-    compile deps.androidSupportAppcompat
-    compile deps.androidSupportCardview
-    compile deps.androidSupportDesign
-    compile deps.androidSupportRecyclerview
-    compile deps.androidSupportAnnotations
-    compile deps.kotlin
-    compile deps.rxandroid
-    compile deps.rxrelay
-    compile deps.rxlifecycle
-    compile deps.timber
-    compile deps.eventbus
-    compile deps.advrecyclerview
-    compile deps.dagger
-    compile deps.butterKnife
-    releaseCompile deps.leakCanaryNoOp
+    implementation deps.androidSupportAppcompat
+    implementation deps.androidSupportCardview
+    implementation deps.androidSupportDesign
+    implementation deps.androidSupportRecyclerview
+    implementation deps.androidSupportAnnotations
+    implementation deps.kotlin
+    implementation deps.rxandroid
+    implementation deps.rxrelay
+    implementation deps.rxlifecycle
+    implementation deps.timber
+    implementation deps.eventbus
+    implementation deps.advrecyclerview
+    implementation deps.dagger
+    implementation deps.butterKnife
+    releaseImplementation deps.leakCanaryNoOp
 
-    testCompile deps.junit
-    testCompile deps.mockitoCore
-    testCompile deps.robolectric
+    testImplementation deps.junit
+    testImplementation deps.mockitoCore
+    testImplementation deps.robolectric
     testImplementation deps.leakCanaryNoOp
-    androidTestCompile(deps.espressoCore) {
+    androidTestImplementation(deps.espressoCore) {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     }
-    androidTestCompile(deps.androidSupportTestRunner) {
+    androidTestImplementation(deps.androidSupportTestRunner) {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
 }
