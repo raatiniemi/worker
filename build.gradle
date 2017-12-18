@@ -4,6 +4,7 @@ buildscript {
     ext.kotlinVersion = '1.1.51'
 
     repositories {
+        google()
         jcenter()
 
         mavenCentral()
@@ -11,7 +12,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.guava:guava:20.0'
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
@@ -30,11 +31,9 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         jcenter()
         mavenCentral()
-        maven {
-            url "https://maven.google.com"
-        }
     }
 
     tasks.withType(JavaCompile) {

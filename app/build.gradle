@@ -63,6 +63,7 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     testOptions {
+        unitTests.includeAndroidResources = true
         unitTests.returnDefaultValues = true
 
         unitTests.all {
@@ -149,7 +150,7 @@ dependencies {
     testCompile deps.junit
     testCompile deps.mockitoCore
     testCompile deps.robolectric
-    testCompile deps.leakCanaryNoOp
+    testImplementation deps.leakCanaryNoOp
     androidTestCompile(deps.espressoCore) {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
