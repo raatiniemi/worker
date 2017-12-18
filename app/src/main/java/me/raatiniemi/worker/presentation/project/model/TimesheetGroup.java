@@ -55,10 +55,7 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
 
     public static TimesheetGroup build(Date date, SortedSet<TimesheetItem> timesheetItems) {
         List<TimesheetItem> items = new ArrayList<>();
-        //noinspection Convert2streamapi
-        for (TimesheetItem timesheetItem : timesheetItems) {
-            items.add(timesheetItem);
-        }
+        items.addAll(timesheetItems);
 
         return new TimesheetGroup(date, items);
     }
