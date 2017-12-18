@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.fernandocejas.frodo'
 apply plugin: 'com.github.triplet.play'
@@ -125,8 +125,8 @@ jacoco {
 dependencies {
     provided deps.jsr250
 
-    apt deps.daggerCompiler
-    apt deps.butterKnifeCompiler
+    kapt deps.daggerCompiler
+    kapt deps.butterKnifeCompiler
 
     debugCompile deps.leakCanary
 

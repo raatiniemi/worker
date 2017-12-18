@@ -14,7 +14,6 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.3.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'com.fernandocejas.frodo:frodo-plugin:0.8.3'
