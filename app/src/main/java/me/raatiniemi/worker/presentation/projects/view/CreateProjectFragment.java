@@ -43,8 +43,8 @@ import me.raatiniemi.worker.presentation.util.Keyboard;
 import me.raatiniemi.worker.presentation.view.fragment.RxDialogFragment;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class CreateProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
     @SuppressWarnings({"CanBeFinal", "WeakerAccess"})

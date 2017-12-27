@@ -24,8 +24,8 @@ import org.junit.runners.JUnit4;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Time;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.util.Optional;
 import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.util.Optional;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;

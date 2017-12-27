@@ -24,8 +24,8 @@ import android.support.annotation.NonNull;
 import com.squareup.leakcanary.LeakCanary;
 
 import me.raatiniemi.worker.data.DaggerDataComponent;
-import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.data.DataComponent;
+import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
 import me.raatiniemi.worker.exception.NoApplicationInstanceException;
 import me.raatiniemi.worker.presentation.AndroidModule;

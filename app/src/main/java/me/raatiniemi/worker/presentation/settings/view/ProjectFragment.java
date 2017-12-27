@@ -35,8 +35,8 @@ import me.raatiniemi.worker.presentation.util.PreferenceUtil;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
+import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class ProjectFragment extends BasePreferenceFragment
         implements ProjectView, Preference.OnPreferenceChangeListener {
