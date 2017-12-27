@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util;
+package me.raatiniemi.worker.domain.util;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +27,11 @@ import java.util.Collection;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class HoursMinutesIntervalFormatTest {
+public class FractionIntervalFormatTest {
     private final String expected;
     private final long intervalInMilliseconds;
 
-    public HoursMinutesIntervalFormatTest(String expected, long intervalInMilliseconds) {
+    public FractionIntervalFormatTest(String expected, long intervalInMilliseconds) {
         this.expected = expected;
         this.intervalInMilliseconds = intervalInMilliseconds;
     }
@@ -41,36 +41,28 @@ public class HoursMinutesIntervalFormatTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "1m",
-                                60000L
+                                "0.25",
+                                900000L
                         },
                         {
-                                "10m",
-                                600000L
-                        },
-                        {
-                                "30m",
-                                1800000L
-                        },
-                        {
-                                "1h 0m",
+                                "1.00",
                                 3600000L
                         },
                         {
-                                "7h 30m",
-                                27000000L
+                                "1.25",
+                                4500000L
                         },
                         {
-                                "30h 0m",
+                                "2.00",
+                                7175000L
+                        },
+                        {
+                                "30.00",
                                 108000000L
                         },
                         {
-                                "56h 25m",
+                                "56.42",
                                 203100000L
-                        },
-                        {
-                                "1h 0m",
-                                3580000L
                         }
                 }
         );
@@ -78,7 +70,7 @@ public class HoursMinutesIntervalFormatTest {
 
     @Test
     public void format() {
-        DateIntervalFormat intervalFormat = new HoursMinutesIntervalFormat();
+        DateIntervalFormat intervalFormat = new FractionIntervalFormat();
 
         assertEquals(expected, intervalFormat.format(intervalInMilliseconds));
     }

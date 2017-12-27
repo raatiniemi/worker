@@ -27,8 +27,8 @@ import java.util.Locale;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
-import me.raatiniemi.worker.presentation.util.HoursMinutesIntervalFormat;
+import me.raatiniemi.worker.domain.util.DateIntervalFormat;
+import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat;
 
 public class ProjectsItem {
     private static final DateIntervalFormat intervalFormat;

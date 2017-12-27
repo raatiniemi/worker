@@ -25,9 +25,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.util.DateIntervalFormat;
+import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
-import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
-import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     private static final String LANGUAGE_TAG = "en_US";

@@ -14,12 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util;
+package me.raatiniemi.worker.domain.util;
 
 import java.util.Locale;
 
 import me.raatiniemi.worker.domain.model.CalculatedTime;
-import me.raatiniemi.worker.domain.util.CalculateTime;
 
 /**
  * Format a time interval into hours with fraction, i.e. 1.5 for one hour and 30 minutes.
