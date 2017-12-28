@@ -30,23 +30,39 @@ import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class ProjectPresenterTest {
+    private TimeSummaryPreferences timeSummaryPreferences;
     private EventBus eventBus;
     private ProjectPresenter presenter;
     private ProjectView view;
 
     @Before
     public void setUp() throws Exception {
-        TimeSummaryPreferences preferences = mock(TimeSummaryPreferences.class);
-        when(preferences.getStartingPointForTimeSummary())
-                .thenReturn(GetProjectTimeSince.MONTH);
+        timeSummaryPreferences = spy(new InMemoryTimeSummaryPreferences());
         eventBus = mock(EventBus.class);
-        presenter = new ProjectPresenter(preferences, eventBus);
+        presenter = new ProjectPresenter(timeSummaryPreferences, eventBus);
         view = mock(ProjectView.class);
+    }
+
+    @Test
+    public void changeTimeSummaryStartingPoint_withMonth() {
+        timeSummaryPreferences.useWeekForTimeSummaryStartingPoint();
+        presenter.attachView(view);
+
+        presenter.changeTimeSummaryStartingPoint(
+                GetProjectTimeSince.MONTH
+        );
+
+        verify(timeSummaryPreferences).useWeekForTimeSummaryStartingPoint();
+        verify(timeSummaryPreferences).useMonthForTimeSummaryStartingPoint();
+        verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
@@ -57,8 +73,12 @@ public class ProjectPresenterTest {
                 GetProjectTimeSince.WEEK
         );
 
+        verify(timeSummaryPreferences).useWeekForTimeSummaryStartingPoint();
+        verify(timeSummaryPreferences, never()).useMonthForTimeSummaryStartingPoint();
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
@@ -69,8 +89,12 @@ public class ProjectPresenterTest {
                 GetProjectTimeSince.MONTH
         );
 
+        verify(timeSummaryPreferences, never()).useWeekForTimeSummaryStartingPoint();
+        verify(timeSummaryPreferences, never()).useMonthForTimeSummaryStartingPoint();
         verify(eventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
@@ -80,7 +104,9 @@ public class ProjectPresenterTest {
         );
 
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
