@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Locale;
 
 import me.raatiniemi.worker.domain.model.CalculatedTime;
@@ -23,7 +25,7 @@ import me.raatiniemi.worker.domain.model.CalculatedTime;
 /**
  * Format a time interval into hours and minutes, i.e. 1h 30m.
  */
-public class HoursMinutesIntervalFormat implements DateIntervalFormat {
+public class HoursMinutesIntervalFormat implements DateIntervalFormat, CalculatedTimeFormat {
     private static final String HOURS_MINUTES_FORMAT = "%1$dh %2$dm";
     private static final String MINUTES_FORMAT = "%2$dm";
 
@@ -31,6 +33,12 @@ public class HoursMinutesIntervalFormat implements DateIntervalFormat {
     public String format(long milliseconds) {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
+        return apply(calculatedTime);
+    }
+
+    @NotNull
+    @Override
+    public String apply(@NotNull CalculatedTime calculatedTime) {
         return String.format(
                 Locale.forLanguageTag("en_US"),
                 getFormatTemplate(calculatedTime),

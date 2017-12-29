@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Locale;
 
 import me.raatiniemi.worker.domain.model.CalculatedTime;
@@ -23,7 +25,7 @@ import me.raatiniemi.worker.domain.model.CalculatedTime;
 /**
  * Format a time interval into hours with fraction, i.e. 1.5 for one hour and 30 minutes.
  */
-public class FractionIntervalFormat implements DateIntervalFormat {
+public class FractionIntervalFormat implements DateIntervalFormat, CalculatedTimeFormat {
     private static final String FRACTION_FORMAT = "%.2f";
     private static final float MINUTES_IN_HOUR = 60;
 
@@ -31,6 +33,12 @@ public class FractionIntervalFormat implements DateIntervalFormat {
     public String format(long milliseconds) {
         CalculatedTime calculatedTime = CalculateTime.calculateTime(milliseconds);
 
+        return apply(calculatedTime);
+    }
+
+    @NotNull
+    @Override
+    public String apply(@NotNull CalculatedTime calculatedTime) {
         return String.format(
                 Locale.forLanguageTag("en_US"),
                 FRACTION_FORMAT,
