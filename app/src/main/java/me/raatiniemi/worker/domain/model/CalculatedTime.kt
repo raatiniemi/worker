@@ -31,9 +31,27 @@ data class CalculatedTime(val hours: Long, val minutes: Long) {
         return hoursInMinutes + minutes
     }
 
+    operator fun plus(value: CalculatedTime): CalculatedTime {
+        var accumulatedHours = hours + value.hours
+        var accumulatedMinutes = minutes + value.minutes
+
+        if (accumulatedMinutes >= MINUTES_IN_HOUR) {
+            accumulatedHours += accumulatedMinutes / MINUTES_IN_HOUR
+            accumulatedMinutes %= MINUTES_IN_HOUR
+        }
+
+        return CalculatedTime(accumulatedHours, accumulatedMinutes)
+    }
+
     companion object {
         private val MINUTES_IN_HOUR = 60
         private val SECONDS_IN_MINUTE = 60
         private val MILLISECONDS_IN_SECOND = 1000
+
+        val empty = CalculatedTime(hours = 0, minutes = 0)
     }
+}
+
+fun Collection<CalculatedTime>.accumulated(): CalculatedTime {
+    return fold(CalculatedTime.empty) { acc, value -> acc + value }
 }
