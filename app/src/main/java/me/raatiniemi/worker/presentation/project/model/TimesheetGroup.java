@@ -24,14 +24,16 @@ import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.model.CalculatedTime;
+import me.raatiniemi.worker.domain.model.CalculatedTimeUtil;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.domain.util.DateIntervalFormat;
+import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 
 public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     private static final String LANGUAGE_TAG = "en_US";
-    private static final DateIntervalFormat intervalFormat;
+    private static final CalculatedTimeFormat intervalFormat;
 
     static {
         intervalFormat = new FractionIntervalFormat();
@@ -67,12 +69,6 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         long hours = minutes / 60;
 
         return hours / 24;
-    }
-
-    private static float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
-        String fraction = intervalFormat.format(intervalInMilliseconds);
-
-        return Float.parseFloat(fraction);
     }
 
     private static float calculateTimeDifference(String timeSummary) {
@@ -132,23 +128,17 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     }
 
     private String getTimeSummary() {
-        return String.format(
-                Locale.forLanguageTag(LANGUAGE_TAG),
-                "%.2f",
-                calculateTimeIntervalSummary()
-        );
+        return intervalFormat.apply(accumulatedCalculatedTime());
     }
 
-    private float calculateTimeIntervalSummary() {
-        float interval = 0;
+    private CalculatedTime accumulatedCalculatedTime() {
+        List<CalculatedTime> times = new ArrayList<>();
 
         for (TimesheetItem item : items) {
-            interval += calculateFractionFromMilliseconds(
-                    item.getCalculateIntervalInMilliseconds()
-            );
+            times.add(item.getCalculatedTime());
         }
 
-        return interval;
+        return CalculatedTimeUtil.accumulated(times);
     }
 
     public List<TimesheetAdapterResult> buildItemResultsWithGroupIndex(int groupIndex) {

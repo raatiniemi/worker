@@ -14,6 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+@file:JvmName("CalculatedTimeUtil")
+
 package me.raatiniemi.worker.domain.model
 
 data class CalculatedTime(val hours: Long, val minutes: Long) {

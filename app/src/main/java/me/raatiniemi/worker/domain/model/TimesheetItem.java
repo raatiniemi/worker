@@ -38,13 +38,12 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Time time;
-    private final long calculatedIntervalInMilliseconds;
+    private final CalculatedTime calculatedTime;
 
     private TimesheetItem(Time time) {
         this.time = time;
 
-        CalculatedTime calculatedTime = CalculateTime.calculateTime(time.getInterval());
-        calculatedIntervalInMilliseconds = calculatedTime.asMilliseconds();
+        calculatedTime = CalculateTime.calculateTime(time.getInterval());
     }
 
     private static Date buildDateFromMilliseconds(long milliseconds) {
@@ -101,8 +100,8 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
         return time.isRegistered();
     }
 
-    public long getCalculateIntervalInMilliseconds() {
-        return calculatedIntervalInMilliseconds;
+    public CalculatedTime getCalculatedTime() {
+        return calculatedTime;
     }
 
     @Override
