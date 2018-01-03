@@ -71,28 +71,30 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return hours / 24;
     }
 
-    private static float calculateTimeDifference(String timeSummary) {
-        return Float.parseFloat(timeSummary) - 8;
+    private CalculatedTime calculateTimeDifference(CalculatedTime accumulated) {
+        return accumulated.minus(new CalculatedTime(8, 0));
     }
 
-    private static String getFormattedTimeDifference(float difference) {
+    private static String getFormattedTimeDifference(CalculatedTime difference) {
         return String.format(
                 Locale.forLanguageTag(LANGUAGE_TAG),
                 getTimeDifferenceFormat(difference),
-                difference
+                intervalFormat.apply(difference)
         );
     }
 
-    private static String getTimeDifferenceFormat(float difference) {
-        if (0 == Float.compare(0, difference)) {
+    private static String getTimeDifferenceFormat(CalculatedTime difference) {
+        // TODO: Should be replaced with `isEmpty`?
+        if (0 == difference.asMilliseconds()) {
             return "";
         }
 
-        if (0 < difference) {
-            return " (+%.2f)";
+        // TODO: Should be replaced with method on `CalculatedTime`.
+        if (0 <= difference.getHours() && 0 <= difference.getMinutes()) {
+            return " (+%s)";
         }
 
-        return " (%.2f)";
+        return " (%s)";
     }
 
     public long getId() {
@@ -121,14 +123,11 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     }
 
     public String getTimeSummaryWithDifference() {
-        String timeSummary = getTimeSummary();
+        CalculatedTime accumulated = accumulatedCalculatedTime();
+        String timeSummary = getTimeSummary(accumulated);
 
-        float difference = calculateTimeDifference(timeSummary);
+        CalculatedTime difference = calculateTimeDifference(accumulated);
         return timeSummary + getFormattedTimeDifference(difference);
-    }
-
-    private String getTimeSummary() {
-        return intervalFormat.apply(accumulatedCalculatedTime());
     }
 
     private CalculatedTime accumulatedCalculatedTime() {
@@ -139,6 +138,10 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         }
 
         return CalculatedTimeUtil.accumulated(times);
+    }
+
+    private String getTimeSummary(CalculatedTime accumulatedCalculatedTime) {
+        return intervalFormat.apply(accumulatedCalculatedTime);
     }
 
     public List<TimesheetAdapterResult> buildItemResultsWithGroupIndex(int groupIndex) {

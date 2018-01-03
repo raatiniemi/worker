@@ -18,6 +18,8 @@
 
 package me.raatiniemi.worker.domain.model
 
+import java.lang.Math.abs
+
 data class CalculatedTime(val hours: Long, val minutes: Long) {
     fun asMilliseconds(): Long {
         return calculateSeconds() * MILLISECONDS_IN_SECOND
@@ -43,6 +45,25 @@ data class CalculatedTime(val hours: Long, val minutes: Long) {
         }
 
         return CalculatedTime(accumulatedHours, accumulatedMinutes)
+    }
+
+    operator fun minus(value: CalculatedTime): CalculatedTime {
+        val milliseconds = asMilliseconds() - value.asMilliseconds()
+
+        val seconds = abs(milliseconds) / MILLISECONDS_IN_SECOND
+        var minutes = seconds / SECONDS_IN_MINUTE % MINUTES_IN_HOUR
+        var hours = seconds / SECONDS_IN_MINUTE / MINUTES_IN_HOUR
+
+        val isNewValueNegative = milliseconds < 0
+        if (isNewValueNegative) {
+            // TODO: Improve the way we handle negative values.
+            // Instead of having to prefix both hours and minutes with a sign,
+            // it should be stored in another property.
+            minutes *= -1
+            hours *= -1
+        }
+
+        return CalculatedTime(hours = hours, minutes = minutes)
     }
 
     companion object {
