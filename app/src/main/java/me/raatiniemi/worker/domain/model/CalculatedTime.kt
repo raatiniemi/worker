@@ -21,6 +21,9 @@ package me.raatiniemi.worker.domain.model
 import java.lang.Math.abs
 
 data class CalculatedTime(val hours: Long, val minutes: Long) {
+    @get:JvmName("isEmpty")
+    val empty = hours == 0L && minutes == 0L
+
     fun asMilliseconds(): Long {
         return calculateSeconds() * MILLISECONDS_IN_SECOND
     }

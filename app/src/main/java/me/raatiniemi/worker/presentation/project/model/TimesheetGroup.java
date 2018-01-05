@@ -84,8 +84,7 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     }
 
     private static String getTimeDifferenceFormat(CalculatedTime difference) {
-        // TODO: Should be replaced with `isEmpty`?
-        if (0 == difference.asMilliseconds()) {
+        if (difference.isEmpty()) {
             return "";
         }
 
