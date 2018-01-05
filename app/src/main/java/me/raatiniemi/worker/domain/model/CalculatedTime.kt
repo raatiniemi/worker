@@ -24,6 +24,9 @@ data class CalculatedTime(val hours: Long, val minutes: Long) {
     @get:JvmName("isEmpty")
     val empty = hours == 0L && minutes == 0L
 
+    @get:JvmName("isPositive")
+    val positive = hours >= 0L && minutes >= 0L
+
     fun asMilliseconds(): Long {
         return calculateSeconds() * MILLISECONDS_IN_SECOND
     }

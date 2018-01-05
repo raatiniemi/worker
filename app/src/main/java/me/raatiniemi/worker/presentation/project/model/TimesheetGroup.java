@@ -88,8 +88,7 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
             return "";
         }
 
-        // TODO: Should be replaced with method on `CalculatedTime`.
-        if (0 <= difference.getHours() && 0 <= difference.getMinutes()) {
+        if (difference.isPositive()) {
             return " (+%s)";
         }
 
