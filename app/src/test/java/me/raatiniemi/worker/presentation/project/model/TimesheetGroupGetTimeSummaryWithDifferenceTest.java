@@ -76,14 +76,14 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
                                 }
                         },
                         {
-                                "8.76 (+0.76)",
+                                "8.77 (+0.77)",
                                 new TimesheetItem[]{
                                         buildTimesheetItemWithInterval(13956031),
                                         buildTimesheetItemWithInterval(17594386)
                                 }
                         },
                         {
-                                "7.86 (-0.14)",
+                                "7.87 (-0.13)",
                                 new TimesheetItem[]{
                                         buildTimesheetItemWithInterval(11661632),
                                         buildTimesheetItemWithInterval(16707601)

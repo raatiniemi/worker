@@ -24,14 +24,16 @@ import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.model.CalculatedTime;
+import me.raatiniemi.worker.domain.model.CalculatedTimeUtil;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
+import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
-import me.raatiniemi.worker.presentation.util.DateIntervalFormat;
-import me.raatiniemi.worker.presentation.util.FractionIntervalFormat;
 
 public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     private static final String LANGUAGE_TAG = "en_US";
-    private static final DateIntervalFormat intervalFormat;
+    private static final CalculatedTimeFormat intervalFormat;
 
     static {
         intervalFormat = new FractionIntervalFormat();
@@ -69,34 +71,28 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return hours / 24;
     }
 
-    private static float calculateFractionFromMilliseconds(long intervalInMilliseconds) {
-        String fraction = intervalFormat.format(intervalInMilliseconds);
-
-        return Float.parseFloat(fraction);
+    private CalculatedTime calculateTimeDifference(CalculatedTime accumulated) {
+        return accumulated.minus(new CalculatedTime(8, 0));
     }
 
-    private static float calculateTimeDifference(String timeSummary) {
-        return Float.parseFloat(timeSummary) - 8;
-    }
-
-    private static String getFormattedTimeDifference(float difference) {
+    private static String getFormattedTimeDifference(CalculatedTime difference) {
         return String.format(
                 Locale.forLanguageTag(LANGUAGE_TAG),
                 getTimeDifferenceFormat(difference),
-                difference
+                intervalFormat.apply(difference)
         );
     }
 
-    private static String getTimeDifferenceFormat(float difference) {
-        if (0 == Float.compare(0, difference)) {
+    private static String getTimeDifferenceFormat(CalculatedTime difference) {
+        if (difference.isEmpty()) {
             return "";
         }
 
-        if (0 < difference) {
-            return " (+%.2f)";
+        if (difference.isPositive()) {
+            return " (+%s)";
         }
 
-        return " (%.2f)";
+        return " (%s)";
     }
 
     public long getId() {
@@ -125,30 +121,25 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     }
 
     public String getTimeSummaryWithDifference() {
-        String timeSummary = getTimeSummary();
+        CalculatedTime accumulated = accumulatedCalculatedTime();
+        String timeSummary = getTimeSummary(accumulated);
 
-        float difference = calculateTimeDifference(timeSummary);
+        CalculatedTime difference = calculateTimeDifference(accumulated);
         return timeSummary + getFormattedTimeDifference(difference);
     }
 
-    private String getTimeSummary() {
-        return String.format(
-                Locale.forLanguageTag(LANGUAGE_TAG),
-                "%.2f",
-                calculateTimeIntervalSummary()
-        );
-    }
-
-    private float calculateTimeIntervalSummary() {
-        float interval = 0;
+    private CalculatedTime accumulatedCalculatedTime() {
+        List<CalculatedTime> times = new ArrayList<>();
 
         for (TimesheetItem item : items) {
-            interval += calculateFractionFromMilliseconds(
-                    item.getCalculateIntervalInMilliseconds()
-            );
+            times.add(item.getCalculatedTime());
         }
 
-        return interval;
+        return CalculatedTimeUtil.accumulated(times);
+    }
+
+    private String getTimeSummary(CalculatedTime accumulatedCalculatedTime) {
+        return intervalFormat.apply(accumulatedCalculatedTime);
     }
 
     public List<TimesheetAdapterResult> buildItemResultsWithGroupIndex(int groupIndex) {

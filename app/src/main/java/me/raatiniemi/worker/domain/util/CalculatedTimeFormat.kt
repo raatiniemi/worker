@@ -14,18 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util;
+package me.raatiniemi.worker.domain.util
+
+import me.raatiniemi.worker.domain.model.CalculatedTime
 
 /**
- * Interface for different date interval formatter implementations.
+ * Interface for different calculated time formatter.
  */
 @FunctionalInterface
-public interface DateIntervalFormat {
+interface CalculatedTimeFormat {
     /**
-     * Format an interval in milliseconds.
+     * Applies format to calculated time.
      *
-     * @param milliseconds Interval in milliseconds to format.
-     * @return Formatted interval.
+     * @param calculatedTime Calculated time to apply format.
+     * @return Formatted calculated time.
      */
-    String format(long milliseconds);
+    fun apply(calculatedTime: CalculatedTime): String
 }
