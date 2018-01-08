@@ -33,10 +33,10 @@ import me.raatiniemi.worker.presentation.model.ExpandableItem;
 
 public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     private static final String LANGUAGE_TAG = "en_US";
-    private static final CalculatedTimeFormat intervalFormat;
+    private static final CalculatedTimeFormat formatter;
 
     static {
-        intervalFormat = new FractionIntervalFormat();
+        formatter = new FractionIntervalFormat();
     }
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG));
@@ -75,12 +75,8 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return accumulated.minus(new CalculatedTime(8, 0));
     }
 
-    private static String getFormattedTimeDifference(CalculatedTime difference) {
-        return String.format(
-                Locale.forLanguageTag(LANGUAGE_TAG),
-                getTimeDifferenceFormat(difference),
-                intervalFormat.apply(difference)
-        );
+    private static String formatTimeDifference(String format, String difference) {
+        return String.format(Locale.forLanguageTag(LANGUAGE_TAG), format, difference);
     }
 
     private static String getTimeDifferenceFormat(CalculatedTime difference) {
@@ -121,11 +117,20 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     }
 
     public String getTimeSummaryWithDifference() {
-        CalculatedTime accumulated = accumulatedCalculatedTime();
-        String timeSummary = getTimeSummary(accumulated);
+        return getTimeSummaryWithDifference(formatter);
+    }
 
-        CalculatedTime difference = calculateTimeDifference(accumulated);
-        return timeSummary + getFormattedTimeDifference(difference);
+    String getTimeSummaryWithDifference(CalculatedTimeFormat formatter) {
+        CalculatedTime accumulated = accumulatedCalculatedTime();
+        String timeSummary = formatter.apply(accumulated);
+
+        CalculatedTime calculatedDifference = calculateTimeDifference(accumulated);
+        String timeDifference = formatTimeDifference(
+                getTimeDifferenceFormat(calculatedDifference),
+                formatter.apply(calculatedDifference)
+        );
+
+        return timeSummary + timeDifference;
     }
 
     private CalculatedTime accumulatedCalculatedTime() {
@@ -136,10 +141,6 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         }
 
         return CalculatedTimeUtil.accumulated(times);
-    }
-
-    private String getTimeSummary(CalculatedTime accumulatedCalculatedTime) {
-        return intervalFormat.apply(accumulatedCalculatedTime);
     }
 
     public List<TimesheetAdapterResult> buildItemResultsWithGroupIndex(int groupIndex) {

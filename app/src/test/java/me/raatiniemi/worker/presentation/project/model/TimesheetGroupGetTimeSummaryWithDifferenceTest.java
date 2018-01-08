@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
+import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
+import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
@@ -34,13 +37,16 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
     private final String expected;
+    private final CalculatedTimeFormat formatter;
     private final TimesheetGroup item;
 
     public TimesheetGroupGetTimeSummaryWithDifferenceTest(
             String expected,
+            CalculatedTimeFormat formatter,
             TimesheetItem... times
     ) {
         this.expected = expected;
+        this.formatter = formatter;
 
         TreeSet<TimesheetItem> items = new TreeSet<>(Arrays.asList(times));
         item = TimesheetGroup.build(new Date(), items);
@@ -52,24 +58,28 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
                 new Object[][]{
                         {
                                 "1.00 (-7.00)",
+                                new FractionIntervalFormat(),
                                 new TimesheetItem[]{
                                         buildTimesheetItemWithInterval(3600000)
                                 }
                         },
                         {
                                 "8.00",
+                                new FractionIntervalFormat(),
                                 new TimesheetItem[]{
                                         buildTimesheetItemWithInterval(28800000)
                                 }
                         },
                         {
                                 "9.00 (+1.00)",
+                                new FractionIntervalFormat(),
                                 new TimesheetItem[]{
                                         buildTimesheetItemWithInterval(32400000)
                                 }
                         },
                         {
                                 "9.12 (+1.12)",
+                                new FractionIntervalFormat(),
                                 new TimesheetItem[]{
                                         buildTimesheetItemWithInterval(14380327),
                                         buildTimesheetItemWithInterval(18407820)
@@ -77,6 +87,7 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
                         },
                         {
                                 "8.77 (+0.77)",
+                                new FractionIntervalFormat(),
                                 new TimesheetItem[]{
                                         buildTimesheetItemWithInterval(13956031),
                                         buildTimesheetItemWithInterval(17594386)
@@ -84,6 +95,52 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
                         },
                         {
                                 "7.87 (-0.13)",
+                                new FractionIntervalFormat(),
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(11661632),
+                                        buildTimesheetItemWithInterval(16707601)
+                                }
+                        },
+                        {
+                                "1:00 (-7:00)",
+                                new DigitalHoursMinutesIntervalFormat(),
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(3600000)
+                                }
+                        },
+                        {
+                                "8:00",
+                                new DigitalHoursMinutesIntervalFormat(),
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(28800000)
+                                }
+                        },
+                        {
+                                "9:00 (+1:00)",
+                                new DigitalHoursMinutesIntervalFormat(),
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(32400000)
+                                }
+                        },
+                        {
+                                "9:07 (+1:07)",
+                                new DigitalHoursMinutesIntervalFormat(),
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(14380327),
+                                        buildTimesheetItemWithInterval(18407820)
+                                }
+                        },
+                        {
+                                "8:46 (+0:46)",
+                                new DigitalHoursMinutesIntervalFormat(),
+                                new TimesheetItem[]{
+                                        buildTimesheetItemWithInterval(13956031),
+                                        buildTimesheetItemWithInterval(17594386)
+                                }
+                        },
+                        {
+                                "7:52 (-0:08)",
+                                new DigitalHoursMinutesIntervalFormat(),
                                 new TimesheetItem[]{
                                         buildTimesheetItemWithInterval(11661632),
                                         buildTimesheetItemWithInterval(16707601)
@@ -104,6 +161,6 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
 
     @Test
     public void getTimeSummaryWithDifference() {
-        assertEquals(expected, item.getTimeSummaryWithDifference());
+        assertEquals(expected, item.getTimeSummaryWithDifference(formatter));
     }
 }
