@@ -23,17 +23,17 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.util.CalculateTime;
-import me.raatiniemi.worker.domain.util.DateIntervalFormat;
+import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 
 public final class TimesheetItem implements Comparable<TimesheetItem> {
     private static final String TIME_SEPARATOR = " - ";
     private static final Comparator<TimesheetItem> comparator;
-    private static final DateIntervalFormat intervalFormat;
+    private static final CalculatedTimeFormat formatter;
 
     static {
         comparator = new TimesheetItemComparator();
-        intervalFormat = new FractionIntervalFormat();
+        formatter = new FractionIntervalFormat();
     }
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
@@ -93,7 +93,11 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
     }
 
     public String getTimeSummary() {
-        return intervalFormat.format(time.getInterval());
+        return getTimeSummaryWithFormatter(formatter);
+    }
+
+    String getTimeSummaryWithFormatter(CalculatedTimeFormat formatter) {
+        return formatter.apply(getCalculatedTime());
     }
 
     public boolean isRegistered() {

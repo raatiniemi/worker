@@ -24,17 +24,26 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
+import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
+import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
+import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetItemGetTimeSummaryTest {
+public class TimesheetItemGetTimeSummaryWithFormatterTest {
     private final String expected;
+    private final CalculatedTimeFormat formatter;
     private final Time time;
 
-    public TimesheetItemGetTimeSummaryTest(String expected, Time time) {
+    public TimesheetItemGetTimeSummaryWithFormatterTest(
+            String expected,
+            CalculatedTimeFormat formatter,
+            Time time
+    ) {
         this.expected = expected;
+        this.formatter = formatter;
         this.time = time;
     }
 
@@ -44,12 +53,28 @@ public class TimesheetItemGetTimeSummaryTest {
                 new Object[][]{
                         {
                                 "1.00",
+                                new FractionIntervalFormat(),
                                 TimeFactory.builder()
                                         .stopInMilliseconds(3600000)
                                         .build()
                         },
                         {
                                 "9.00",
+                                new FractionIntervalFormat(),
+                                TimeFactory.builder()
+                                        .stopInMilliseconds(32400000)
+                                        .build()
+                        },
+                        {
+                                "1:00",
+                                new DigitalHoursMinutesIntervalFormat(),
+                                TimeFactory.builder()
+                                        .stopInMilliseconds(3600000)
+                                        .build()
+                        },
+                        {
+                                "9:00",
+                                new DigitalHoursMinutesIntervalFormat(),
                                 TimeFactory.builder()
                                         .stopInMilliseconds(32400000)
                                         .build()
@@ -62,6 +87,6 @@ public class TimesheetItemGetTimeSummaryTest {
     public void getTimeSummary() {
         TimesheetItem item = TimesheetItem.with(time);
 
-        assertEquals(expected, item.getTimeSummary());
+        assertEquals(expected, item.getTimeSummaryWithFormatter(formatter));
     }
 }
