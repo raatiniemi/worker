@@ -32,6 +32,7 @@ import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.PreferenceUtil;
+import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
@@ -42,6 +43,7 @@ public class ProjectFragment extends BasePreferenceFragment
         implements ProjectView, Preference.OnPreferenceChangeListener {
     private static final String CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out";
     private static final String TIME_SUMMARY_KEY = "settings_project_time_summary";
+    private static final String TIME_SHEET_SUMMARY_FORMAT_KEY = "settings_project_time_sheet_summary_format";
     private static final String ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
     private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
 
@@ -56,6 +58,10 @@ public class ProjectFragment extends BasePreferenceFragment
     @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
     @Inject
     TimeSummaryPreferences timeSummaryPreferences;
+
+    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
+    @Inject
+    TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
 
     @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
     @Inject
@@ -84,6 +90,16 @@ public class ProjectFragment extends BasePreferenceFragment
             timeSummary.setOnPreferenceChangeListener(this);
         } catch (ClassCastException e) {
             Timber.w(e, "Unable to set listener for 'time_summary'");
+        }
+
+        try {
+            int timeSheetSummaryFormatValue = timeSheetSummaryFormatPreferences.getTimeSheetSummaryFormat();
+
+            ListPreference timeSheetSummaryFormat = (ListPreference) findPreference(TIME_SHEET_SUMMARY_FORMAT_KEY);
+            timeSheetSummaryFormat.setValue(String.valueOf(timeSheetSummaryFormatValue));
+            timeSheetSummaryFormat.setOnPreferenceChangeListener(this);
+        } catch (ClassCastException e) {
+            Timber.w(e, "Unable to set listener for 'timesheet_summary_format'");
         }
 
         populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY,
@@ -120,6 +136,7 @@ public class ProjectFragment extends BasePreferenceFragment
                 toggleConfirmClockOut(preference);
                 return true;
             case TIME_SUMMARY_KEY:
+            case TIME_SHEET_SUMMARY_FORMAT_KEY:
                 return true;
             case ONGOING_NOTIFICATION_ENABLE_KEY:
                 toggleOngoingNotification(preference);
@@ -169,6 +186,9 @@ public class ProjectFragment extends BasePreferenceFragment
         if (TIME_SUMMARY_KEY.equals(preference.getKey())) {
             changeTimeSummaryStartingPoint(newValue);
             return true;
+        } else if (TIME_SHEET_SUMMARY_FORMAT_KEY.equals(preference.getKey())) {
+            changeTimeSheetSummaryFormat(newValue);
+            return true;
         }
         return false;
     }
@@ -216,6 +236,53 @@ public class ProjectFragment extends BasePreferenceFragment
         Snackbar.make(
                 contentView,
                 R.string.error_message_change_time_summary_starting_point,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    private void changeTimeSheetSummaryFormat(Object newValue) {
+        int newFormat = Integer.parseInt((String) newValue);
+        presenter.changeTimeSheetSummaryFormat(newFormat);
+    }
+
+    @Override
+    public void showChangeTimeSheetSummaryToFractionSuccessMessage() {
+        View contentView = getActivity().findViewById(android.R.id.content);
+        if (isNull(contentView)) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.message_change_time_sheet_summary_format_fraction,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
+    public void showChangeTimeSheetSummaryToDigitalClockSuccessMessage() {
+        View contentView = getActivity().findViewById(android.R.id.content);
+        if (isNull(contentView)) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.message_change_time_sheet_summary_format_digital_clock,
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
+    public void showChangeTimeSheetSummaryFormatErrorMessage() {
+        View contentView = getActivity().findViewById(android.R.id.content);
+        if (isNull(contentView)) {
+            return;
+        }
+
+        Snackbar.make(
+                contentView,
+                R.string.error_message_change_time_sheet_summary_format,
                 Snackbar.LENGTH_LONG
         ).show();
     }

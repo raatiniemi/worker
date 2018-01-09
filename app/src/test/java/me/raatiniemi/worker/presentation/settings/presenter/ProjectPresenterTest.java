@@ -25,28 +25,52 @@ import org.junit.runners.JUnit4;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.ProjectView;
+import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class ProjectPresenterTest {
+    private TimeSummaryPreferences timeSummaryPreferences;
+    private TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
     private EventBus eventBus;
     private ProjectPresenter presenter;
     private ProjectView view;
 
     @Before
     public void setUp() throws Exception {
-        TimeSummaryPreferences preferences = mock(TimeSummaryPreferences.class);
-        when(preferences.getStartingPointForTimeSummary())
-                .thenReturn(GetProjectTimeSince.MONTH);
+        timeSummaryPreferences = spy(new InMemoryTimeSummaryPreferences());
+        timeSheetSummaryFormatPreferences = spy(new InMemoryTimeSheetSummaryFormatPreferences());
         eventBus = mock(EventBus.class);
-        presenter = new ProjectPresenter(preferences, eventBus);
+        presenter = new ProjectPresenter(
+                timeSummaryPreferences,
+                timeSheetSummaryFormatPreferences,
+                eventBus
+        );
         view = mock(ProjectView.class);
+    }
+
+    @Test
+    public void changeTimeSummaryStartingPoint_withMonth() {
+        timeSummaryPreferences.useWeekForTimeSummaryStartingPoint();
+        presenter.attachView(view);
+
+        presenter.changeTimeSummaryStartingPoint(
+                GetProjectTimeSince.MONTH
+        );
+
+        verify(timeSummaryPreferences).useWeekForTimeSummaryStartingPoint();
+        verify(timeSummaryPreferences).useMonthForTimeSummaryStartingPoint();
+        verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
@@ -57,8 +81,12 @@ public class ProjectPresenterTest {
                 GetProjectTimeSince.WEEK
         );
 
+        verify(timeSummaryPreferences).useWeekForTimeSummaryStartingPoint();
+        verify(timeSummaryPreferences, never()).useMonthForTimeSummaryStartingPoint();
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
@@ -69,8 +97,12 @@ public class ProjectPresenterTest {
                 GetProjectTimeSince.MONTH
         );
 
+        verify(timeSummaryPreferences, never()).useWeekForTimeSummaryStartingPoint();
+        verify(timeSummaryPreferences, never()).useMonthForTimeSummaryStartingPoint();
         verify(eventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
@@ -80,7 +112,9 @@ public class ProjectPresenterTest {
         );
 
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
+        verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+        verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
     }
 
     @Test
@@ -97,5 +131,76 @@ public class ProjectPresenterTest {
         presenter.changeTimeSummaryStartingPoint(0);
 
         verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_withDigitalClock() {
+        timeSheetSummaryFormatPreferences.useFractionAsTimeSheetSummaryFormat();
+        presenter.attachView(view);
+
+        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+
+        verify(timeSheetSummaryFormatPreferences).useDigitalClockAsTimeSheetSummaryFormat();
+        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        verify(view).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_withFraction() {
+        presenter.attachView(view);
+
+        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+
+        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
+        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_withPreviousValue() {
+        presenter.attachView(view);
+
+        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+
+        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
+        verify(timeSheetSummaryFormatPreferences, never()).useFractionAsTimeSheetSummaryFormat();
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_withoutAttachedView() {
+        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+
+        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
+        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_invalidFormat() {
+        presenter.attachView(view);
+
+        presenter.changeTimeSheetSummaryFormat(0);
+
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_invalidFormatWithoutAttachedView() {
+        presenter.changeTimeSheetSummaryFormat(0);
+
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
     }
 }

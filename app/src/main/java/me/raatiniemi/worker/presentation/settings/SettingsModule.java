@@ -24,14 +24,22 @@ import dagger.Module;
 import dagger.Provides;
 import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
+import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 @Module
 public class SettingsModule {
     @Provides
     @Singleton
-    ProjectPresenter providesProjectPresenter(TimeSummaryPreferences preferences) {
-        return new ProjectPresenter(preferences, EventBus.getDefault());
+    ProjectPresenter providesProjectPresenter(
+            TimeSummaryPreferences timeSummaryPreferences,
+            TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences
+    ) {
+        return new ProjectPresenter(
+                timeSummaryPreferences,
+                timeSheetSummaryFormatPreferences,
+                EventBus.getDefault()
+        );
     }
 
     @Provides

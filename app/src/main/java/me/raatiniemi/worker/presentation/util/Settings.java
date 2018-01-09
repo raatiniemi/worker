@@ -23,7 +23,11 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 /**
  * Communicate with the shared preferences.
  */
-public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutPreferences, OngoingNotificationPreferences, TimeSummaryPreferences {
+public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutPreferences, OngoingNotificationPreferences, TimeSummaryPreferences, TimeSheetSummaryFormatPreferences {
+    // TODO: Should time sheet summary format constants be moved to a better location?
+    public static final int TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK = 1;
+    public static final int TIME_SHEET_SUMMARY_FORMAT_FRACTION = 2;
+
     /**
      * Preference key for hiding registered time.
      */
@@ -49,6 +53,11 @@ public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutP
      * Preference key to check which starting point to use for time summary.
      */
     private static final String PREF_TIME_SUMMARY = "pref_time_summary";
+
+    /**
+     * Preference key to check which format to use for time sheet summary.
+     */
+    private static final String PREF_TIME_SHEET_SUMMARY_FORMAT = "pref_time_sheet_summary_format";
 
     private final SharedPreferences preferences;
 
@@ -134,6 +143,26 @@ public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutP
     public void useMonthForTimeSummaryStartingPoint() {
         preferences.edit()
                 .putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH)
+                .apply();
+    }
+
+    @Override
+    public int getTimeSheetSummaryFormat() {
+        return preferences.getInt(PREF_TIME_SHEET_SUMMARY_FORMAT, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+    }
+
+    @Override
+    public void useFractionAsTimeSheetSummaryFormat() {
+        preferences.edit()
+                .putInt(PREF_TIME_SHEET_SUMMARY_FORMAT, TIME_SHEET_SUMMARY_FORMAT_FRACTION)
+                .apply();
+
+    }
+
+    @Override
+    public void useDigitalClockAsTimeSheetSummaryFormat() {
+        preferences.edit()
+                .putInt(PREF_TIME_SHEET_SUMMARY_FORMAT, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK)
                 .apply();
     }
 }

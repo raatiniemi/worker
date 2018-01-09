@@ -1,1 +1,1 @@
-Fix issue in which the active projects is not properly refreshed.
+display time sheet summary using digital clock format, the previous fraction format can still be enabled from the project preferences.

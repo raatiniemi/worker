@@ -26,6 +26,7 @@ import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 @Module
@@ -57,6 +58,12 @@ public class PreferenceModule {
     @Provides
     @Singleton
     TimeSummaryPreferences providesTimeSummaryPreferences() {
+        return settings;
+    }
+
+    @Provides
+    @Singleton
+    TimeSheetSummaryFormatPreferences providesTimeSheetSummaryFormatPreferences() {
         return settings;
     }
 }

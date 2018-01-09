@@ -24,4 +24,12 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string-array name="project_time_sheet_summary_format_alternative_text">
+        <item>@string/activity_settings_project_time_sheet_summary_format_digital</item>
+        <item>@string/activity_settings_project_time_sheet_summary_format_fraction</item>
+    </string-array>
+    <string-array name="project_time_sheet_summary_format_alternative_value">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>
