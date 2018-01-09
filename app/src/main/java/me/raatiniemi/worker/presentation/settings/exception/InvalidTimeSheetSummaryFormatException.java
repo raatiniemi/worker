@@ -14,12 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util
+package me.raatiniemi.worker.presentation.settings.exception;
 
-interface TimeSheetSummaryFormatPreferences {
-    fun getTimeSheetSummaryFormat(): Int
-
-    fun useDigitalClockAsTimeSheetSummaryFormat()
-
-    fun useFractionAsTimeSheetSummaryFormat()
+public class InvalidTimeSheetSummaryFormatException extends RuntimeException {
+    public InvalidTimeSheetSummaryFormatException(String message) {
+        super(message);
+    }
 }

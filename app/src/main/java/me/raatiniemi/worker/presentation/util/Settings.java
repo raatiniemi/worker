@@ -25,8 +25,8 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
  */
 public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutPreferences, OngoingNotificationPreferences, TimeSummaryPreferences, TimeSheetSummaryFormatPreferences {
     // TODO: Should time sheet summary format constants be moved to a better location?
-    public static final int TIME_SHEET_SUMMARY_FORMAT_FRACTION = 1;
-    public static final int TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK = 2;
+    public static final int TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK = 1;
+    public static final int TIME_SHEET_SUMMARY_FORMAT_FRACTION = 2;
 
     /**
      * Preference key for hiding registered time.
@@ -148,7 +148,7 @@ public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutP
 
     @Override
     public int getTimeSheetSummaryFormat() {
-        return preferences.getInt(PREF_TIME_SHEET_SUMMARY_FORMAT, TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+        return preferences.getInt(PREF_TIME_SHEET_SUMMARY_FORMAT, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
     }
 
     @Override

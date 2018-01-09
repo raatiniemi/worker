@@ -25,6 +25,8 @@ import org.junit.runners.JUnit4;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.ProjectView;
+import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 
 import static org.mockito.Matchers.any;
@@ -36,6 +38,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(JUnit4.class)
 public class ProjectPresenterTest {
     private TimeSummaryPreferences timeSummaryPreferences;
+    private TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
     private EventBus eventBus;
     private ProjectPresenter presenter;
     private ProjectView view;
@@ -43,8 +46,13 @@ public class ProjectPresenterTest {
     @Before
     public void setUp() throws Exception {
         timeSummaryPreferences = spy(new InMemoryTimeSummaryPreferences());
+        timeSheetSummaryFormatPreferences = spy(new InMemoryTimeSheetSummaryFormatPreferences());
         eventBus = mock(EventBus.class);
-        presenter = new ProjectPresenter(timeSummaryPreferences, eventBus);
+        presenter = new ProjectPresenter(
+                timeSummaryPreferences,
+                timeSheetSummaryFormatPreferences,
+                eventBus
+        );
         view = mock(ProjectView.class);
     }
 
@@ -123,5 +131,76 @@ public class ProjectPresenterTest {
         presenter.changeTimeSummaryStartingPoint(0);
 
         verify(view, never()).showChangeTimeSummaryStartingPointErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_withDigitalClock() {
+        timeSheetSummaryFormatPreferences.useFractionAsTimeSheetSummaryFormat();
+        presenter.attachView(view);
+
+        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+
+        verify(timeSheetSummaryFormatPreferences).useDigitalClockAsTimeSheetSummaryFormat();
+        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        verify(view).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_withFraction() {
+        presenter.attachView(view);
+
+        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+
+        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
+        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_withPreviousValue() {
+        presenter.attachView(view);
+
+        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+
+        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
+        verify(timeSheetSummaryFormatPreferences, never()).useFractionAsTimeSheetSummaryFormat();
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_withoutAttachedView() {
+        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+
+        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
+        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_invalidFormat() {
+        presenter.attachView(view);
+
+        presenter.changeTimeSheetSummaryFormat(0);
+
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view).showChangeTimeSheetSummaryFormatErrorMessage();
+    }
+
+    @Test
+    public void changeTimesheetSummaryFormat_invalidFormatWithoutAttachedView() {
+        presenter.changeTimeSheetSummaryFormat(0);
+
+        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
     }
 }

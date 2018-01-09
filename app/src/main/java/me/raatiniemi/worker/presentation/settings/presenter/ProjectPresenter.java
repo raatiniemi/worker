@@ -21,33 +21,42 @@ import org.greenrobot.eventbus.EventBus;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.presenter.BasePresenter;
+import me.raatiniemi.worker.presentation.settings.exception.InvalidTimeSheetSummaryFormatException;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.ProjectView;
+import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
 public class ProjectPresenter extends BasePresenter<ProjectView> {
-    private final TimeSummaryPreferences preferences;
+    private final TimeSummaryPreferences timeSummaryPreferences;
+    private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
     private final EventBus eventBus;
 
-    public ProjectPresenter(TimeSummaryPreferences preferences, EventBus eventBus) {
-        this.preferences = preferences;
+    public ProjectPresenter(
+            TimeSummaryPreferences timeSummaryPreferences,
+            TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences,
+            EventBus eventBus
+    ) {
+        this.timeSummaryPreferences = timeSummaryPreferences;
+        this.timeSheetSummaryFormatPreferences = timeSheetSummaryFormatPreferences;
         this.eventBus = eventBus;
     }
 
     public void changeTimeSummaryStartingPoint(int newStartingPoint) {
         try {
-            int currentStartingPoint = preferences.getStartingPointForTimeSummary();
+            int currentStartingPoint = timeSummaryPreferences.getStartingPointForTimeSummary();
             if (currentStartingPoint == newStartingPoint) {
                 return;
             }
 
             switch (newStartingPoint) {
                 case GetProjectTimeSince.WEEK:
-                    preferences.useWeekForTimeSummaryStartingPoint();
+                    timeSummaryPreferences.useWeekForTimeSummaryStartingPoint();
                     break;
                 case GetProjectTimeSince.MONTH:
-                    preferences.useMonthForTimeSummaryStartingPoint();
+                    timeSummaryPreferences.useMonthForTimeSummaryStartingPoint();
                     break;
                 default:
                     throw new InvalidStartingPointException(
@@ -69,6 +78,43 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
             Timber.w(e, "Unable to set new starting point");
 
             performWithView(ProjectView::showChangeTimeSummaryStartingPointErrorMessage);
+        }
+    }
+
+    public void changeTimeSheetSummaryFormat(int newFormat) {
+        int currentFormat = timeSheetSummaryFormatPreferences.getTimeSheetSummaryFormat();
+        if (currentFormat == newFormat) {
+            return;
+        }
+
+        try {
+            switch (newFormat) {
+                case Settings.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK:
+                    timeSheetSummaryFormatPreferences.useDigitalClockAsTimeSheetSummaryFormat();
+                    break;
+
+                case Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION:
+                    timeSheetSummaryFormatPreferences.useFractionAsTimeSheetSummaryFormat();
+                    break;
+
+                default:
+                    throw new InvalidTimeSheetSummaryFormatException(
+                            "Summary format '" + newFormat + "' is not valid"
+                    );
+            }
+
+            performWithView(view -> {
+                if (Settings.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK == newFormat) {
+                    view.showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+                    return;
+                }
+
+                view.showChangeTimeSheetSummaryToFractionSuccessMessage();
+            });
+        } catch (InvalidTimeSheetSummaryFormatException e) {
+            Timber.w(e, "Unable to set new format");
+
+            performWithView(ProjectView::showChangeTimeSheetSummaryFormatErrorMessage);
         }
     }
 }
