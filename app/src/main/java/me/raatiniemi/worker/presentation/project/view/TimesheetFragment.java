@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.presentation.project.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,12 +41,17 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
+import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
+import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
+import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
+import me.raatiniemi.worker.presentation.util.Settings;
+import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
 import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import timber.log.Timber;
@@ -57,6 +63,9 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 public class TimesheetFragment extends RxFragment implements SelectionListener {
     @Inject
     HideRegisteredTimePreferences hideRegisteredTimePreferences;
+
+    @Inject
+    TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
 
     @Inject
     GetTimesheetViewModel.ViewModel getTimesheetViewModel;
@@ -166,7 +175,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        adapter = new TimesheetAdapter(this);
+        adapter = new TimesheetAdapter(getCalculatedTimeFormat(), this);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
@@ -264,6 +273,16 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         super.onDestroy();
 
         eventBus.unregister(this);
+    }
+
+    @NonNull
+    private CalculatedTimeFormat getCalculatedTimeFormat() {
+        int format = timeSheetSummaryFormatPreferences.getTimeSheetSummaryFormat();
+        if (Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION == format) {
+            return new FractionIntervalFormat();
+        }
+
+        return new DigitalHoursMinutesIntervalFormat();
     }
 
     private void showGetTimesheetErrorMessage() {

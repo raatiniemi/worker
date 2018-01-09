@@ -92,11 +92,7 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
         return buildDateFromMilliseconds(time.getStopInMilliseconds());
     }
 
-    public String getTimeSummary() {
-        return getTimeSummaryWithFormatter(formatter);
-    }
-
-    String getTimeSummaryWithFormatter(CalculatedTimeFormat formatter) {
+    public String getTimeSummaryWithFormatter(CalculatedTimeFormat formatter) {
         return formatter.apply(getCalculatedTime());
     }
 

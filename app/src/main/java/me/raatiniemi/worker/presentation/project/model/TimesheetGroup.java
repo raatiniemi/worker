@@ -116,11 +116,7 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return registered;
     }
 
-    public String getTimeSummaryWithDifference() {
-        return getTimeSummaryWithDifference(formatter);
-    }
-
-    String getTimeSummaryWithDifference(CalculatedTimeFormat formatter) {
+    public String getTimeSummaryWithDifference(CalculatedTimeFormat formatter) {
         CalculatedTime accumulated = accumulatedCalculatedTime();
         String timeSummary = formatter.apply(accumulated);
 

@@ -25,7 +25,9 @@ import java.util.Collections;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
 import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
@@ -40,9 +42,14 @@ class TimesheetAdapter extends ExpandableListAdapter<
         GroupItemViewHolder,
         ChildItemViewHolder
         > {
+    private final CalculatedTimeFormat formatter;
     private final SelectionManager<TimesheetAdapterResult> selectionManager;
 
-    TimesheetAdapter(SelectionListener selectionListener) {
+    TimesheetAdapter(
+            CalculatedTimeFormat formatter,
+            SelectionListener selectionListener
+    ) {
+        this.formatter = formatter;
         selectionManager = new SelectionManagerAdapterDecorator<>(this, selectionListener);
 
         setHasStableIds(true);
@@ -80,7 +87,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetGroup groupItem = get(group);
 
         vh.title.setText(groupItem.getTitle());
-        vh.summarize.setText(groupItem.getTimeSummaryWithDifference());
+        vh.summarize.setText(groupItem.getTimeSummaryWithDifference(formatter));
 
         vh.letter.setImageDrawable(
                 LetterDrawable.build(groupItem.getFirstLetterFromTitle())
@@ -161,7 +168,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         }
 
         vh.title.setText(item.getTitle());
-        vh.summarize.setText(item.getTimeSummary());
+        vh.summarize.setText(item.getTimeSummaryWithFormatter(formatter));
     }
 
     @Override
