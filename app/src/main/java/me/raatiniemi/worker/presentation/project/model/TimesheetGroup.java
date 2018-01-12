@@ -28,16 +28,10 @@ import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.model.CalculatedTimeUtil;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
-import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 
 public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
     private static final String LANGUAGE_TAG = "en_US";
-    private static final CalculatedTimeFormat formatter;
-
-    static {
-        formatter = new FractionIntervalFormat();
-    }
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG));
     private final Date date;
