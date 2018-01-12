@@ -234,10 +234,18 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
                 .compose(bindToLifecycle())
                 .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
-                        group -> adapter.add(group),
-                        Timber::e,
-                        // TODO: Improve infinite scrolling.
-                        this::finishLoading
+                        group -> {
+                            adapter.add(group);
+
+                            // TODO: Call `finishLoading` when all items in buffer have been added.
+                            // The call to `finishLoading` will be called for each of the added
+                            // groups, i.e. there's a window in where we can load the same segment
+                            // multiple times due to the disconnect between finish loading and the
+                            // user attempts scroll (causing another load to happen). However, this
+                            // seems to be fairly theoretical, at least now, but should be improved.
+                            finishLoading();
+                        },
+                        Timber::e
                 );
         getTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
