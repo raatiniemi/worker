@@ -43,6 +43,12 @@ public final class RxUtil {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static <T> Observable.Transformer<T, T> applySchedulersWithBackpressureBuffer() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .onBackpressureBuffer()
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     @NonNull
     public static <T> Observable.Transformer<T, T> redirectErrors(
             @Nullable PublishSubject<Throwable> subject

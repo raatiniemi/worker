@@ -56,7 +56,7 @@ interface RemoveTimesheetViewModel {
                     val times = results.map { it.time }.toList()
                     useCase.execute(times)
 
-                    Observable.from(results)
+                    Observable.from(results.sorted().reversed())
                 } catch (e: Exception) {
                     Observable.error(e)
                 }

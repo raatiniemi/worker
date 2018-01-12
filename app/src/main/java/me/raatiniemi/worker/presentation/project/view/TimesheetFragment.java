@@ -57,7 +57,7 @@ import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
-import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
+import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulersWithBackpressureBuffer;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimesheetFragment extends RxFragment implements SelectionListener {
@@ -232,35 +232,48 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
 
         getTimesheetViewModel.success()
                 .compose(bindToLifecycle())
-                .compose(applySchedulers())
+                .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
-                        group -> adapter.add(group),
-                        e -> {
+                        group -> {
+                            adapter.add(group);
+
+                            // TODO: Call `finishLoading` when all items in buffer have been added.
+                            // The call to `finishLoading` will be called for each of the added
+                            // groups, i.e. there's a window in where we can load the same segment
+                            // multiple times due to the disconnect between finish loading and the
+                            // user attempts scroll (causing another load to happen). However, this
+                            // seems to be fairly theoretical, at least now, but should be improved.
+                            finishLoading();
                         },
-                        // TODO: Improve infinite scrolling.
-                        this::finishLoading
+                        Timber::e
                 );
         getTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showGetTimesheetErrorMessage());
         registerTimesheetViewModel.success()
                 .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe(result -> {
-                    if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
-                        adapter.remove(result);
-                        return;
-                    }
+                .compose(applySchedulersWithBackpressureBuffer())
+                .subscribe(
+                        result -> {
+                            if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+                                adapter.remove(result);
+                                return;
+                            }
 
-                    adapter.set(result);
-                });
+                            adapter.set(result);
+                        },
+                        Timber::e
+                );
         registerTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showRegisterErrorMessage());
         removeTimesheetViewModel.success()
                 .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe(result -> adapter.remove(result));
+                .compose(applySchedulersWithBackpressureBuffer())
+                .subscribe(
+                        result -> adapter.remove(result),
+                        Timber::e
+                );
         removeTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showDeleteErrorMessage());
