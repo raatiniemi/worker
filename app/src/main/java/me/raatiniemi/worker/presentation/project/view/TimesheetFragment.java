@@ -235,8 +235,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
                 .compose(applySchedulers())
                 .subscribe(
                         group -> adapter.add(group),
-                        e -> {
-                        },
+                        Timber::e,
                         // TODO: Improve infinite scrolling.
                         this::finishLoading
                 );
@@ -246,21 +245,27 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         registerTimesheetViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
-                .subscribe(result -> {
-                    if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
-                        adapter.remove(result);
-                        return;
-                    }
+                .subscribe(
+                        result -> {
+                            if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+                                adapter.remove(result);
+                                return;
+                            }
 
-                    adapter.set(result);
-                });
+                            adapter.set(result);
+                        },
+                        Timber::e
+                );
         registerTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showRegisterErrorMessage());
         removeTimesheetViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
-                .subscribe(result -> adapter.remove(result));
+                .subscribe(
+                        result -> adapter.remove(result),
+                        Timber::e
+                );
         removeTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showDeleteErrorMessage());
