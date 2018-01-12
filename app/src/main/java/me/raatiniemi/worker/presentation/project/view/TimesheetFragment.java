@@ -57,7 +57,7 @@ import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
-import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
+import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulersWithBackpressureBuffer;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimesheetFragment extends RxFragment implements SelectionListener {
@@ -232,7 +232,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
 
         getTimesheetViewModel.success()
                 .compose(bindToLifecycle())
-                .compose(applySchedulers())
+                .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
                         group -> adapter.add(group),
                         Timber::e,
@@ -244,7 +244,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
                 .subscribe(e -> showGetTimesheetErrorMessage());
         registerTimesheetViewModel.success()
                 .compose(bindToLifecycle())
-                .compose(applySchedulers())
+                .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
                         result -> {
                             if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
@@ -261,7 +261,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
                 .subscribe(e -> showRegisterErrorMessage());
         removeTimesheetViewModel.success()
                 .compose(bindToLifecycle())
-                .compose(applySchedulers())
+                .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
                         result -> adapter.remove(result),
                         Timber::e
