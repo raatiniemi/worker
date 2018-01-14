@@ -127,4 +127,7 @@
     <string name="error_notification_clock_out_title">Failed to clock out project</string>
     <string name="error_notification_clock_out_message">An internal error has occurred.</string>
 
+    <string name="notification_channel_ongoing_title">Ongoing</string>
+    <string name="notification_channel_ongoing_description">Shows while a project is either active or paused.</string>
+
 </resources>
