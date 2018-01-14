@@ -16,11 +16,15 @@
 
 package me.raatiniemi.worker.presentation.settings.view;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
@@ -111,10 +115,22 @@ public class ProjectFragment extends BasePreferenceFragment
             if (nonNull(preference)) {
                 preference.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary);
             }
+
+            preference.setEnabled(isOngoingChannelEnabled());
         }
 
         populateCheckBoxPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY,
                 ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isOngoingChannelEnabled() {
+        try {
+            NotificationManager nm = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+            return null == nm || !Notifications.Companion.isOngoingChannelDisabled(nm);
+        } catch (ClassCastException e) {
+            return true;
+        }
     }
 
     private void populateCheckBoxPreference(
