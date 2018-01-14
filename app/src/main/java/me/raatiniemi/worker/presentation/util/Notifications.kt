@@ -47,6 +47,13 @@ class Notifications {
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
+        fun isOngoingChannelDisabled(notificationManager: NotificationManager): Boolean {
+            val channel = notificationManager.getNotificationChannel(ongoingId)
+
+            return NotificationManager.IMPORTANCE_NONE == channel.importance
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
         fun ongoingChannel(resources: Resources): NotificationChannel {
             val channel = NotificationChannel(
                     ongoingId,
