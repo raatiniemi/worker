@@ -75,6 +75,13 @@ class Notifications {
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
+        fun isBackupChannelDisabled(notificationManager: NotificationManager): Boolean {
+            val channel = notificationManager.getNotificationChannel(backupId)
+
+            return NotificationManager.IMPORTANCE_NONE == channel.importance
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
         fun backupChannel(resources: Resources): NotificationChannel {
             val channel = NotificationChannel(
                     backupId,

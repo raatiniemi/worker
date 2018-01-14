@@ -21,12 +21,14 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.strategy.StorageRestoreStrategy;
 import me.raatiniemi.worker.domain.interactor.RestoreBackup;
 import me.raatiniemi.worker.domain.interactor.RestoreStrategy;
+import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import me.raatiniemi.worker.presentation.view.notification.RestoreNotification;
 import timber.log.Timber;
@@ -78,11 +80,22 @@ public class RestoreService extends IntentService {
             // The notification manager won't be available if a
             // ClassCastException have been thrown.
             if (nonNull(manager) && nonNull(notification)) {
-                manager.notify(
-                        WorkerApplication.NOTIFICATION_RESTORE_SERVICE_ID,
-                        notification
-                );
+                notify(manager, notification);
             }
         }
+    }
+
+    private void notify(@NonNull NotificationManager manager, @NonNull Notification notification) {
+        if (Notifications.Companion.isChannelsAvailable()) {
+            if (Notifications.Companion.isBackupChannelDisabled(manager)) {
+                Timber.d("Backup notification channel is disabled, ignoring notification");
+                return;
+            }
+        }
+
+        manager.notify(
+                WorkerApplication.NOTIFICATION_RESTORE_SERVICE_ID,
+                notification
+        );
     }
 }
