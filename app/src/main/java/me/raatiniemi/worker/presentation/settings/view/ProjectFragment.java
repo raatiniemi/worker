@@ -30,6 +30,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
+import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.PreferenceUtil;
 import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
@@ -38,6 +39,7 @@ import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class ProjectFragment extends BasePreferenceFragment
         implements ProjectView, Preference.OnPreferenceChangeListener {
@@ -104,6 +106,12 @@ public class ProjectFragment extends BasePreferenceFragment
 
         populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY,
                 ongoingNotificationPreferences.isOngoingNotificationEnabled());
+        if (Notifications.Companion.isChannelsAvailable()) {
+            Preference preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY);
+            if (nonNull(preference)) {
+                preference.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary);
+            }
+        }
 
         populateCheckBoxPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY,
                 ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled());
