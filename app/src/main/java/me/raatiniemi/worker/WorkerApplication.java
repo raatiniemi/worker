@@ -17,9 +17,13 @@
 package me.raatiniemi.worker;
 
 import android.app.Application;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -39,6 +43,7 @@ import me.raatiniemi.worker.presentation.projects.ProjectsModule;
 import me.raatiniemi.worker.presentation.settings.DaggerSettingsComponent;
 import me.raatiniemi.worker.presentation.settings.SettingsComponent;
 import me.raatiniemi.worker.presentation.settings.SettingsModule;
+import me.raatiniemi.worker.presentation.util.Notifications;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
@@ -120,6 +125,10 @@ public class WorkerApplication extends Application {
                 .build();
 
         if (!isUnitTesting()) {
+            if (Notifications.Companion.isChannelsAvailable()) {
+                registerNotificationChannel();
+            }
+
             LeakCanary.install(this);
             ReloadNotificationService.startServiceWithContext(this);
         }
@@ -127,6 +136,33 @@ public class WorkerApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void registerNotificationChannel() {
+        try {
+            NotificationManager notificationManager = getNotificationManager();
+            Notifications.Companion.createChannel(
+                    notificationManager,
+                    Notifications.Companion.ongoingChannel(getResources())
+            );
+            Notifications.Companion.createChannel(
+                    notificationManager,
+                    Notifications.Companion.backupChannel(getResources())
+            );
+        } catch (ClassCastException | NullPointerException e) {
+            Timber.e(e);
+        }
+    }
+
+    @NonNull
+    private NotificationManager getNotificationManager() {
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (null == nm) {
+            throw new NullPointerException("Unable to get NotificationManager");
+        }
+
+        return nm;
     }
 
     public static synchronized WorkerApplication getInstance() {

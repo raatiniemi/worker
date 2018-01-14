@@ -16,11 +16,15 @@
 
 package me.raatiniemi.worker.presentation.settings.view;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
@@ -30,6 +34,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
+import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.PreferenceUtil;
 import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
@@ -38,6 +43,7 @@ import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class ProjectFragment extends BasePreferenceFragment
         implements ProjectView, Preference.OnPreferenceChangeListener {
@@ -104,9 +110,27 @@ public class ProjectFragment extends BasePreferenceFragment
 
         populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY,
                 ongoingNotificationPreferences.isOngoingNotificationEnabled());
+        if (Notifications.Companion.isChannelsAvailable()) {
+            Preference preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY);
+            if (nonNull(preference)) {
+                preference.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary);
+            }
+
+            preference.setEnabled(isOngoingChannelEnabled());
+        }
 
         populateCheckBoxPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY,
                 ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isOngoingChannelEnabled() {
+        try {
+            NotificationManager nm = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+            return null == nm || !Notifications.Companion.isOngoingChannelDisabled(nm);
+        } catch (ClassCastException e) {
+            return true;
+        }
     }
 
     private void populateCheckBoxPreference(

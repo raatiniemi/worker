@@ -91,7 +91,7 @@ public class PauseService extends OngoingService {
     private void sendErrorNotification(long projectId) {
         sendNotification(
                 projectId,
-                ErrorNotification.build(
+                ErrorNotification.buildOngoing(
                         this,
                         getString(R.string.error_notification_pause_title),
                         getString(R.string.error_notification_pause_message)

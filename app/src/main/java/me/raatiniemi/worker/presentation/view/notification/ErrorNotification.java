@@ -18,9 +18,9 @@ package me.raatiniemi.worker.presentation.view.notification;
 
 import android.app.Notification;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.presentation.util.Notifications;
 
 public class ErrorNotification {
     private static final int SMALL_ICON = R.drawable.ic_error_notification;
@@ -28,12 +28,24 @@ public class ErrorNotification {
     private ErrorNotification() {
     }
 
-    public static Notification build(
+    public static Notification buildOngoing(
             Context context,
             String title,
             String text
     ) {
-        return new NotificationCompat.Builder(context)
+        return Notifications.Companion.ongoingBuilder(context)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(SMALL_ICON)
+                .build();
+    }
+
+    public static Notification buildBackup(
+            Context context,
+            String title,
+            String text
+    ) {
+        return Notifications.Companion.backupBuilder(context)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(SMALL_ICON)

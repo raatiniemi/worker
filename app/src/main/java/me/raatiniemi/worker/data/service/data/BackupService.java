@@ -21,6 +21,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,6 +30,7 @@ import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.strategy.StorageBackupStrategy;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.domain.interactor.CreateBackup;
+import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.view.notification.BackupNotification;
 import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
 import timber.log.Timber;
@@ -69,7 +71,7 @@ public class BackupService extends IntentService {
             Timber.w(e, "Unable to backup");
 
             // TODO: Display what was the cause of the backup failure.
-            notification = ErrorNotification.build(
+            notification = ErrorNotification.buildBackup(
                     this,
                     getString(R.string.error_notification_backup_title),
                     getString(R.string.error_notification_backup_message)
@@ -81,11 +83,22 @@ public class BackupService extends IntentService {
             // The notification manager won't be available if a
             // ClassCastException have been thrown.
             if (nonNull(manager) && nonNull(notification)) {
-                manager.notify(
-                        WorkerApplication.NOTIFICATION_BACKUP_SERVICE_ID,
-                        notification
-                );
+                notify(manager, notification);
             }
         }
+    }
+
+    private void notify(@NonNull NotificationManager manager, @NonNull Notification notification) {
+        if (Notifications.Companion.isChannelsAvailable()) {
+            if (Notifications.Companion.isBackupChannelDisabled(manager)) {
+                Timber.d("Backup notification channel is disabled, ignoring notification");
+                return;
+            }
+        }
+
+        manager.notify(
+                WorkerApplication.NOTIFICATION_BACKUP_SERVICE_ID,
+                notification
+        );
     }
 }

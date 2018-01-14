@@ -31,7 +31,9 @@ import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
+import timber.log.Timber;
 
 public abstract class OngoingService extends IntentService {
     @SuppressWarnings("WeakerAccess")
@@ -82,6 +84,13 @@ public abstract class OngoingService extends IntentService {
 
     void sendNotification(long projectId, Notification notification) {
         NotificationManager manager = getNotificationManager();
+        if (Notifications.Companion.isChannelsAvailable()) {
+            if (Notifications.Companion.isOngoingChannelDisabled(manager)) {
+                Timber.d("Ongoing notification channel is disabled, ignoring notification");
+                return;
+            }
+        }
+
         manager.notify(
                 buildNotificationTag(projectId),
                 WorkerApplication.NOTIFICATION_ON_GOING_ID,
