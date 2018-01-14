@@ -32,6 +32,10 @@ class Notifications {
         private val ongoingTitle = R.string.notification_channel_ongoing_title
         private val ongoingDescription = R.string.notification_channel_ongoing_description
 
+        private val backupId = "backup"
+        private val backupTitle = R.string.notification_channel_backup_title
+        private val backupDescription = R.string.notification_channel_backup_description
+
         val isChannelsAvailable: Boolean
             get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 
@@ -48,6 +52,19 @@ class Notifications {
                     NotificationManager.IMPORTANCE_LOW
             )
             channel.description = resources.getString(ongoingDescription)
+            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+
+            return channel
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun backupChannel(resources: Resources): NotificationChannel {
+            val channel = NotificationChannel(
+                    backupId,
+                    resources.getString(backupTitle),
+                    NotificationManager.IMPORTANCE_LOW
+            )
+            channel.description = resources.getString(backupDescription)
             channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
 
             return channel

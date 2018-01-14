@@ -130,4 +130,7 @@
     <string name="notification_channel_ongoing_title">Ongoing</string>
     <string name="notification_channel_ongoing_description">Shows while a project is either active or paused.</string>
 
+    <string name="notification_channel_backup_title">Backup</string>
+    <string name="notification_channel_backup_description">Shows when performing either backup or restore.</string>
+
 </resources>

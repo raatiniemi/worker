@@ -146,6 +146,10 @@ public class WorkerApplication extends Application {
                     notificationManager,
                     Notifications.Companion.ongoingChannel(getResources())
             );
+            Notifications.Companion.createChannel(
+                    notificationManager,
+                    Notifications.Companion.backupChannel(getResources())
+            );
         } catch (ClassCastException | NullPointerException e) {
             Timber.e(e);
         }
