@@ -68,7 +68,7 @@ public class ClockOutService extends OngoingService {
     private void sendErrorNotification(long projectId) {
         sendNotification(
                 projectId,
-                ErrorNotification.build(
+                ErrorNotification.buildOngoing(
                         this,
                         getString(R.string.error_notification_clock_out_title),
                         getString(R.string.error_notification_clock_out_message)

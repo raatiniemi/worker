@@ -21,11 +21,24 @@ import android.content.Context;
 import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.presentation.util.Notifications;
 
 public class ErrorNotification {
     private static final int SMALL_ICON = R.drawable.ic_error_notification;
 
     private ErrorNotification() {
+    }
+
+    public static Notification buildOngoing(
+            Context context,
+            String title,
+            String text
+    ) {
+        return Notifications.Companion.ongoingBuilder(context)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(SMALL_ICON)
+                .build();
     }
 
     public static Notification build(
