@@ -69,7 +69,7 @@ public class BackupService extends IntentService {
             Timber.w(e, "Unable to backup");
 
             // TODO: Display what was the cause of the backup failure.
-            notification = ErrorNotification.build(
+            notification = ErrorNotification.buildBackup(
                     this,
                     getString(R.string.error_notification_backup_title),
                     getString(R.string.error_notification_backup_message)

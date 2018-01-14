@@ -20,10 +20,10 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.projects.view.ProjectsActivity;
+import me.raatiniemi.worker.presentation.util.Notifications;
 
 public class BackupNotification {
     private static final int TITLE = R.string.notification_backup_title;
@@ -35,7 +35,7 @@ public class BackupNotification {
     }
 
     public static Notification build(Context context) {
-        return new NotificationCompat.Builder(context)
+        return Notifications.Companion.backupBuilder(context)
                 .setContentTitle(context.getString(TITLE))
                 .setContentText(context.getString(MESSAGE))
                 .setSmallIcon(SMALL_ICON)

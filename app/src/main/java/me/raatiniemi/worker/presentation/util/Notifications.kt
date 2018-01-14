@@ -79,5 +79,13 @@ class Notifications {
 
             return channel
         }
+
+        fun backupBuilder(context: Context): NotificationCompat.Builder {
+            if (isChannelsAvailable) {
+                return NotificationCompat.Builder(context, backupId)
+            }
+
+            return NotificationCompat.Builder(context)
+        }
     }
 }

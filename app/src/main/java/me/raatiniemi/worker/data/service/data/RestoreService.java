@@ -66,7 +66,7 @@ public class RestoreService extends IntentService {
             Timber.w(e, "Unable to restore backup: ");
 
             // TODO: Display what was the cause of the restore failure.
-            notification = ErrorNotification.build(
+            notification = ErrorNotification.buildBackup(
                     this,
                     getString(R.string.error_notification_restore_title),
                     getString(R.string.error_notification_restore_message)
