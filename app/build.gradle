@@ -6,7 +6,6 @@ buildscript {
 
     dependencies {
         classpath 'com.google.guava:guava:22.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         classpath 'com.fernandocejas.frodo:frodo-plugin:0.8.3'
         classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
