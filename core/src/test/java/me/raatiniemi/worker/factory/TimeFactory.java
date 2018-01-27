@@ -1,7 +1,5 @@
 package me.raatiniemi.worker.factory;
 
-import android.support.annotation.NonNull;
-
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Time;
 
@@ -10,12 +8,10 @@ public class TimeFactory extends Time.Builder {
         super(projectId);
     }
 
-    @NonNull
     public static TimeFactory builder(Long projectId) {
         return new TimeFactory(projectId);
     }
 
-    @NonNull
     public static TimeFactory builder() {
         return builder(1L);
     }
