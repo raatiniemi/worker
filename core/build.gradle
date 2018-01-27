@@ -1,0 +1,7 @@
+apply plugin: 'java-library'
+
+sourceCompatibility = sourceCompatibilityVersion
+targetCompatibility = targetCompatibilityVersion
+
+dependencies {
+}
