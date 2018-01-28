@@ -58,12 +58,6 @@ ext {
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
-    androidCompileSdkVersion = 27
-    androidBuildToolsVersion = '27.0.2'
-
-    androidMinSdkVersion = 21
-    androidTargetSdkVersion = androidCompileSdkVersion
-
     androidSupportVersion = '27.0.2'
     daggerVersion = '2.13'
     butterKnifeVersion = '8.8.1'

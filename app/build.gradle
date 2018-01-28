@@ -7,13 +7,13 @@ apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 
 android {
-    compileSdkVersion androidCompileSdkVersion
-    buildToolsVersion androidBuildToolsVersion
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
 
     defaultConfig {
         applicationId "me.raatiniemi.worker"
-        minSdkVersion androidMinSdkVersion
-        targetSdkVersion androidTargetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 27
         versionName projectVersion
         versionCode projectVersionCode
 
