@@ -58,8 +58,6 @@ ext {
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
-    leakCanaryVersion = '1.5.4'
-
     deps = [
             jsr250                    : 'javax.annotation:jsr250-api:1.0',
 
@@ -89,8 +87,8 @@ ext {
             butterKnifeCompiler       : 'com.jakewharton:butterknife-compiler:8.8.1',
 
             // leakcanary
-            leakCanary                : "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
-            leakCanaryNoOp            : "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion",
+            leakCanary                : 'com.squareup.leakcanary:leakcanary-android:1.5.4',
+            leakCanaryNoOp            : 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4',
 
             // test
             junit                     : 'junit:junit:4.12',
