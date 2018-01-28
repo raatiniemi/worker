@@ -58,7 +58,6 @@ ext {
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 
-    butterKnifeVersion = '8.8.1'
     leakCanaryVersion = '1.5.4'
 
     deps = [
@@ -86,8 +85,8 @@ ext {
             daggerCompiler            : 'com.google.dagger:dagger-compiler:2.13',
 
             // butter knife
-            butterKnife               : "com.jakewharton:butterknife:$butterKnifeVersion",
-            butterKnifeCompiler       : "com.jakewharton:butterknife-compiler:$butterKnifeVersion",
+            butterKnife               : 'com.jakewharton:butterknife:8.8.1',
+            butterKnifeCompiler       : 'com.jakewharton:butterknife-compiler:8.8.1',
 
             // leakcanary
             leakCanary                : "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion",
