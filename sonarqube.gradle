@@ -29,6 +29,9 @@ sonarqube {
 
 project(':app') {
     sonarqube {
+        def javaBinaries = 'build/intermediates/classes/release'
+        def kotlinBinaries = 'build/tmp/kotlin-classes/release'
+
         properties {
             properties['sonar.java.source'] = sourceCompatibilityVersion
             properties['sonar.java.target'] = targetCompatibilityVersion
@@ -36,8 +39,8 @@ project(':app') {
             properties['sonar.sources'] = 'src/main'
             properties['sonar.tests'] = 'src/test,src/androidTest'
 
-            properties['sonar.java.binaries'] = 'build/intermediates/classes/release,build/tmp/kotlin-classes/release'
-            properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release,build/tmp/kotlin-classes/release'
+            properties['sonar.java.binaries'] = "$javaBinaries,$kotlinBinaries"
+            properties['sonar.java.test.binaries'] = "$javaBinaries,$kotlinBinaries"
 
             properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
             properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
