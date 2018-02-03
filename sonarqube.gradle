@@ -24,18 +24,24 @@ sonarqube {
 
         properties['sonar.sourceEncoding'] = 'UTF-8'
         properties['sonar.scm.provider'] = 'git'
+    }
+}
 
-        properties['sonar.java.source'] = sourceCompatibilityVersion
-        properties['sonar.java.target'] = targetCompatibilityVersion
+project(':app') {
+    sonarqube {
+        properties {
+            properties['sonar.java.source'] = sourceCompatibilityVersion
+            properties['sonar.java.target'] = targetCompatibilityVersion
 
-        properties['sonar.sources'] = 'src/main/java'
-        properties['sonar.tests'] = 'src/test/java,src/androidTest/java'
+            properties['sonar.sources'] = 'src/main/java'
+            properties['sonar.tests'] = 'src/test/java,src/androidTest/java'
 
-        properties['sonar.java.binaries'] = 'build/intermediates/classes/release'
-        properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release'
+            properties['sonar.java.binaries'] = 'build/intermediates/classes/release'
+            properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release'
 
-        properties['sonar.junit.reportsPath'] = 'build/test-results/testReleaseUnitTest'
-        properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
-        properties['sonar.java.coveragePlugin'] = 'jacoco'
+            properties['sonar.junit.reportsPath'] = 'build/test-results/testReleaseUnitTest'
+            properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
+            properties['sonar.java.coveragePlugin'] = 'jacoco'
+        }
     }
 }
