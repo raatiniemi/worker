@@ -5,7 +5,7 @@ if [ -z $SONAR_HOST_URL ]; then
 fi;
 
 GRADLE_RUNNER="$(dirname $0)/gradle";
-TASKS="sonarqube -Dsonar.host.url=${SONAR_HOST_URL}";
+TASKS="test sonarqube -Dsonar.host.url=${SONAR_HOST_URL}";
 
 $GRADLE_RUNNER $TASKS;
 exit $?;

@@ -99,8 +99,6 @@ if (System.getenv("PLAY_KEY_PATH")) {
     }
 }
 
-tasks.sonarqube.dependsOn 'test'
-
 sonarqube {
     properties {
         properties['sonar.projectKey'] = 'worker:android'
