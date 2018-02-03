@@ -105,10 +105,6 @@ sonarqube {
     properties {
         def binaries = "${buildDir}/intermediates/classes/release"
 
-        def androidPath = android.sdkDirectory.getPath()
-        def libraries = "${androidPath}/platforms/${android.compileSdkVersion}/android.jar," +
-                "${androidPath}/extras/**/*.jar"
-
         properties['sonar.projectKey'] = 'worker:android'
         properties['sonar.projectName'] = 'worker'
         properties['sonar.projectVersion'] = projectVersion
@@ -124,9 +120,6 @@ sonarqube {
 
         properties['sonar.java.binaries'] = binaries
         properties['sonar.java.test.binaries'] = binaries
-
-        properties['sonar.java.libraries'] = libraries
-        properties['sonar.java.test.libraries'] = libraries
 
         properties['sonar.junit.reportsPath'] = "${buildDir}/test-results/testReleaseUnitTest"
         properties['sonar.jacoco.reportPaths'] = fileTree(dir: buildDir, includes: ['**/*.exec', '**/*.ec'])
