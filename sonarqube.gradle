@@ -33,8 +33,8 @@ project(':app') {
             properties['sonar.java.source'] = sourceCompatibilityVersion
             properties['sonar.java.target'] = targetCompatibilityVersion
 
-            properties['sonar.sources'] = 'src/main/java'
-            properties['sonar.tests'] = 'src/test/java,src/androidTest/java'
+            properties['sonar.sources'] = 'src/main'
+            properties['sonar.tests'] = 'src/test,src/androidTest'
 
             properties['sonar.java.binaries'] = 'build/intermediates/classes/release'
             properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release'
