@@ -16,7 +16,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        mavenCentral()
     }
 
     tasks.withType(JavaCompile) {
