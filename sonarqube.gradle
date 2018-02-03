@@ -39,7 +39,7 @@ project(':app') {
             properties['sonar.java.binaries'] = 'build/intermediates/classes/release,build/tmp/kotlin-classes/release'
             properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release,build/tmp/kotlin-classes/release'
 
-            properties['sonar.junit.reportsPath'] = 'build/test-results/testReleaseUnitTest'
+            properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
             properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
             properties['sonar.java.coveragePlugin'] = 'jacoco'
         }
