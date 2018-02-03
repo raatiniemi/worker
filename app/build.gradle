@@ -99,10 +99,6 @@ if (System.getenv("PLAY_KEY_PATH")) {
     }
 }
 
-Closure<String> combineSourceSetDirectories = { sourceSet ->
-    return (sourceSet.java.srcDirs + sourceSet.res.srcDirs).join(',')
-}
-
 tasks.sonarqube.dependsOn 'test'
 
 sonarqube {
@@ -123,7 +119,7 @@ sonarqube {
         properties['sonar.java.source'] = sourceCompatibilityVersion
         properties['sonar.java.target'] = targetCompatibilityVersion
 
-        properties['sonar.sources'] = combineSourceSetDirectories android.sourceSets.main
+        properties['sonar.sources'] = 'src/main/java'
         properties['sonar.tests'] = 'src/test/java,src/androidTest/java'
 
         properties['sonar.java.binaries'] = binaries
