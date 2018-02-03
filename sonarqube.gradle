@@ -43,7 +43,7 @@ project(':app') {
             properties['sonar.java.test.binaries'] = "$javaBinaries,$kotlinBinaries"
 
             properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
-            properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
+            properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec'])
         }
     }
 }
