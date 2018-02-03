@@ -41,7 +41,6 @@ project(':app') {
 
             properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
             properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
-            properties['sonar.java.coveragePlugin'] = 'jacoco'
         }
     }
 }
