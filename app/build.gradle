@@ -103,8 +103,6 @@ tasks.sonarqube.dependsOn 'test'
 
 sonarqube {
     properties {
-        def binaries = "${buildDir}/intermediates/classes/release"
-
         properties['sonar.projectKey'] = 'worker:android'
         properties['sonar.projectName'] = 'worker'
         properties['sonar.projectVersion'] = projectVersion
@@ -118,8 +116,8 @@ sonarqube {
         properties['sonar.sources'] = 'src/main/java'
         properties['sonar.tests'] = 'src/test/java,src/androidTest/java'
 
-        properties['sonar.java.binaries'] = binaries
-        properties['sonar.java.test.binaries'] = binaries
+        properties['sonar.java.binaries'] = 'build/intermediates/classes/release'
+        properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release'
 
         properties['sonar.junit.reportsPath'] = "${buildDir}/test-results/testReleaseUnitTest"
         properties['sonar.jacoco.reportPaths'] = fileTree(dir: buildDir, includes: ['**/*.exec', '**/*.ec'])
