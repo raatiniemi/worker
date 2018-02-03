@@ -18,7 +18,7 @@ apply plugin: 'org.sonarqube'
 
 sonarqube {
     properties {
-        properties['sonar.projectKey'] = 'worker:android'
+        properties['sonar.projectKey'] = 'me.raatiniemi.worker'
         properties['sonar.projectName'] = 'worker'
         properties['sonar.projectVersion'] = projectVersion
 
