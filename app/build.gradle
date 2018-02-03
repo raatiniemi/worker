@@ -9,12 +9,10 @@ buildscript {
 
     dependencies {
         classpath 'com.google.guava:guava:22.0'
-        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
         classpath 'com.fernandocejas.frodo:frodo-plugin:0.8.3'
         classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
-        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6'
     }
 }
 
@@ -24,7 +22,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.fernandocejas.frodo'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'jacoco'
-apply plugin: 'org.sonarqube'
 
 android {
     compileSdkVersion 27
@@ -96,30 +93,6 @@ android {
 if (System.getenv("PLAY_KEY_PATH")) {
     play {
         jsonFile = file(System.getenv("PLAY_KEY_PATH"))
-    }
-}
-
-sonarqube {
-    properties {
-        properties['sonar.projectKey'] = 'worker:android'
-        properties['sonar.projectName'] = 'worker'
-        properties['sonar.projectVersion'] = projectVersion
-
-        properties['sonar.sourceEncoding'] = 'UTF-8'
-        properties['sonar.scm.provider'] = 'git'
-
-        properties['sonar.java.source'] = sourceCompatibilityVersion
-        properties['sonar.java.target'] = targetCompatibilityVersion
-
-        properties['sonar.sources'] = 'src/main/java'
-        properties['sonar.tests'] = 'src/test/java,src/androidTest/java'
-
-        properties['sonar.java.binaries'] = 'build/intermediates/classes/release'
-        properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release'
-
-        properties['sonar.junit.reportsPath'] = 'build/test-results/testReleaseUnitTest'
-        properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
-        properties['sonar.java.coveragePlugin'] = 'jacoco'
     }
 }
 

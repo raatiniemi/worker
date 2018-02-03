@@ -1,0 +1,41 @@
+/*
+ * Copyright (C) 2018 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+        properties['sonar.projectKey'] = 'worker:android'
+        properties['sonar.projectName'] = 'worker'
+        properties['sonar.projectVersion'] = projectVersion
+
+        properties['sonar.sourceEncoding'] = 'UTF-8'
+        properties['sonar.scm.provider'] = 'git'
+
+        properties['sonar.java.source'] = sourceCompatibilityVersion
+        properties['sonar.java.target'] = targetCompatibilityVersion
+
+        properties['sonar.sources'] = 'src/main/java'
+        properties['sonar.tests'] = 'src/test/java,src/androidTest/java'
+
+        properties['sonar.java.binaries'] = 'build/intermediates/classes/release'
+        properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release'
+
+        properties['sonar.junit.reportsPath'] = 'build/test-results/testReleaseUnitTest'
+        properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
+        properties['sonar.java.coveragePlugin'] = 'jacoco'
+    }
+}
