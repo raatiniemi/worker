@@ -119,8 +119,8 @@ sonarqube {
         properties['sonar.java.binaries'] = 'build/intermediates/classes/release'
         properties['sonar.java.test.binaries'] = 'build/intermediates/classes/release'
 
-        properties['sonar.junit.reportsPath'] = "${buildDir}/test-results/testReleaseUnitTest"
-        properties['sonar.jacoco.reportPaths'] = fileTree(dir: buildDir, includes: ['**/*.exec', '**/*.ec'])
+        properties['sonar.junit.reportsPath'] = 'build/test-results/testReleaseUnitTest'
+        properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec', '**/*.ec'])
         properties['sonar.java.coveragePlugin'] = 'jacoco'
     }
 }
