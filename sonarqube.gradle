@@ -1,0 +1,52 @@
+/*
+ * Copyright (C) 2018 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+        properties['sonar.projectKey'] = 'me.raatiniemi.worker'
+        properties['sonar.projectName'] = 'worker'
+        properties['sonar.projectVersion'] = projectVersion
+
+        properties['sonar.sourceEncoding'] = 'UTF-8'
+        properties['sonar.scm.provider'] = 'git'
+    }
+}
+
+project(':app') {
+    sonarqube {
+        def javaBinaries = 'build/intermediates/classes/release'
+        def kotlinBinaries = 'build/tmp/kotlin-classes/release'
+
+        properties {
+            properties['sonar.java.source'] = sourceCompatibilityVersion
+            properties['sonar.java.target'] = targetCompatibilityVersion
+
+            properties['sonar.sources'] = 'src/main'
+            properties['sonar.tests'] = 'src/test,src/androidTest'
+
+            properties['sonar.java.binaries'] = "$javaBinaries,$kotlinBinaries"
+            properties['sonar.java.test.binaries'] = "$javaBinaries,$kotlinBinaries"
+
+            properties['sonar.java.libraries'] += 'build/generated/*.jar'
+            properties['sonar.java.test.libraries'] += 'build/generated/*.jar'
+
+            properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
+            properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec'])
+        }
+    }
+}
