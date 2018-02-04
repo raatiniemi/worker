@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.model.CalculatedTime;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
 import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
