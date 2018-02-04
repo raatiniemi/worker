@@ -21,7 +21,6 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimesheetItem
 import me.raatiniemi.worker.factory.TimeFactory
 import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -71,7 +70,7 @@ class RegisterTimesheetViewModelTest {
 
         vm.register(results)
 
-        success.assertValueCount(1)
+        success.assertReceivedOnNext(results)
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()
@@ -92,8 +91,7 @@ class RegisterTimesheetViewModelTest {
 
         vm.register(results)
 
-        assertEquals(results, success.onNextEvents)
-        success.assertValueCount(2)
+        success.assertReceivedOnNext(results.sorted().reversed())
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()
