@@ -91,7 +91,7 @@ class RegisterTimesheetViewModelTest {
 
         vm.register(results)
 
-        success.assertReceivedOnNext(results)
+        success.assertReceivedOnNext(results.sorted().reversed())
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()

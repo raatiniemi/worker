@@ -62,7 +62,7 @@ interface RegisterTimesheetViewModel {
                             }
                             .toList()
 
-                    Observable.from(items)
+                    Observable.from(items.sorted().reversed())
                 } catch (e: Exception) {
                     Observable.error(e)
                 }
