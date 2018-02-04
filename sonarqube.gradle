@@ -42,6 +42,9 @@ project(':app') {
             properties['sonar.java.binaries'] = "$javaBinaries,$kotlinBinaries"
             properties['sonar.java.test.binaries'] = "$javaBinaries,$kotlinBinaries"
 
+            properties['sonar.java.libraries'] += 'build/generated/*.jar'
+            properties['sonar.java.test.libraries'] += 'build/generated/*.jar'
+
             properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
             properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec'])
         }
