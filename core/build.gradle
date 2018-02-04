@@ -1,0 +1,18 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'jacoco'
+
+sourceCompatibility = sourceCompatibilityVersion
+targetCompatibility = targetCompatibilityVersion
+
+jacoco {
+    toolVersion = '0.7.8'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.6.2'
+}
