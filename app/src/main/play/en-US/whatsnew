@@ -1,2 +1,1 @@
-display time sheet summary using digital clock format, the previous fraction format can still be enabled from the project preferences.
-for devices running Android Oreo (8.0) or later, notifications can be configured through notification channels.
+properly remove registered items from time sheet view when items have been registered, if registered items should be hidden.
