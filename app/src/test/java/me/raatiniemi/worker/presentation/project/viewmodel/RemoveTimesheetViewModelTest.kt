@@ -66,7 +66,7 @@ class RemoveTimesheetViewModelTest {
         vm.remove(results)
 
         verify(useCase).execute(eq(listOf(time)))
-        success.assertValueCount(1)
+        success.assertReceivedOnNext(results)
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()
@@ -83,7 +83,7 @@ class RemoveTimesheetViewModelTest {
         vm.remove(results)
 
         verify(useCase).execute(eq(listOf(time, time)))
-        success.assertValueCount(2)
+        success.assertReceivedOnNext(results.reversed())
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()
