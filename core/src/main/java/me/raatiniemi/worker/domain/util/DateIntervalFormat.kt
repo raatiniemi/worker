@@ -14,18 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.util;
+package me.raatiniemi.worker.domain.util
 
 /**
  * Interface for different date interval formatter implementations.
  */
 @FunctionalInterface
-public interface DateIntervalFormat {
+interface DateIntervalFormat {
     /**
      * Format an interval in milliseconds.
      *
      * @param milliseconds Interval in milliseconds to format.
      * @return Formatted interval.
      */
-    String format(long milliseconds);
+    fun format(milliseconds: Long): String
 }
