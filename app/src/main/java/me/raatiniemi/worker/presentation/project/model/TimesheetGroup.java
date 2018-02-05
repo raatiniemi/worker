@@ -24,10 +24,10 @@ import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import me.raatiniemi.worker.domain.model.CalculatedTime;
-import me.raatiniemi.worker.domain.model.CalculatedTimeUtil;
+import me.raatiniemi.worker.domain.model.HoursMinutes;
+import me.raatiniemi.worker.domain.model.HoursMinutesUtil;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 
 public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
@@ -65,15 +65,15 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return hours / 24;
     }
 
-    private CalculatedTime calculateTimeDifference(CalculatedTime accumulated) {
-        return accumulated.minus(new CalculatedTime(8, 0));
+    private HoursMinutes calculateTimeDifference(HoursMinutes accumulated) {
+        return accumulated.minus(new HoursMinutes(8, 0));
     }
 
     private static String formatTimeDifference(String format, String difference) {
         return String.format(Locale.forLanguageTag(LANGUAGE_TAG), format, difference);
     }
 
-    private static String getTimeDifferenceFormat(CalculatedTime difference) {
+    private static String getTimeDifferenceFormat(HoursMinutes difference) {
         if (difference.isEmpty()) {
             return "";
         }
@@ -110,11 +110,11 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return registered;
     }
 
-    public String getTimeSummaryWithDifference(CalculatedTimeFormat formatter) {
-        CalculatedTime accumulated = accumulatedCalculatedTime();
+    public String getTimeSummaryWithDifference(HoursMinutesFormat formatter) {
+        HoursMinutes accumulated = accumulatedHoursMinutes();
         String timeSummary = formatter.apply(accumulated);
 
-        CalculatedTime calculatedDifference = calculateTimeDifference(accumulated);
+        HoursMinutes calculatedDifference = calculateTimeDifference(accumulated);
         String timeDifference = formatTimeDifference(
                 getTimeDifferenceFormat(calculatedDifference),
                 formatter.apply(calculatedDifference)
@@ -123,14 +123,14 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return timeSummary + timeDifference;
     }
 
-    private CalculatedTime accumulatedCalculatedTime() {
-        List<CalculatedTime> times = new ArrayList<>();
+    private HoursMinutes accumulatedHoursMinutes() {
+        List<HoursMinutes> times = new ArrayList<>();
 
         for (TimesheetItem item : items) {
-            times.add(item.getCalculatedTime());
+            times.add(item.getHoursMinutes());
         }
 
-        return CalculatedTimeUtil.accumulated(times);
+        return HoursMinutesUtil.accumulated(times);
     }
 
     public List<TimesheetAdapterResult> buildItemResultsWithGroupIndex(int groupIndex) {

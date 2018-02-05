@@ -41,9 +41,9 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel;
@@ -175,7 +175,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        adapter = new TimesheetAdapter(getCalculatedTimeFormat(), this);
+        adapter = new TimesheetAdapter(getHoursMinutesFormat(), this);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
@@ -289,7 +289,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     }
 
     @NonNull
-    private CalculatedTimeFormat getCalculatedTimeFormat() {
+    private HoursMinutesFormat getHoursMinutesFormat() {
         int format = timeSheetSummaryFormatPreferences.getTimeSheetSummaryFormat();
         if (Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION == format) {
             return new FractionIntervalFormat();

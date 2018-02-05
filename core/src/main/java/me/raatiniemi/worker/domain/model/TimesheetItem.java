@@ -23,13 +23,13 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.util.CalculateTime;
-import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 
 public final class TimesheetItem implements Comparable<TimesheetItem> {
     private static final String TIME_SEPARATOR = " - ";
     private static final Comparator<TimesheetItem> comparator;
-    private static final CalculatedTimeFormat formatter;
+    private static final HoursMinutesFormat formatter;
 
     static {
         comparator = new TimesheetItemComparator();
@@ -38,12 +38,12 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Time time;
-    private final CalculatedTime calculatedTime;
+    private final HoursMinutes hoursMinutes;
 
     private TimesheetItem(Time time) {
         this.time = time;
 
-        calculatedTime = CalculateTime.calculateTime(time.getInterval());
+        hoursMinutes = CalculateTime.calculateHoursMinutes(time.getInterval());
     }
 
     private static Date buildDateFromMilliseconds(long milliseconds) {
@@ -92,16 +92,16 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
         return buildDateFromMilliseconds(time.getStopInMilliseconds());
     }
 
-    public String getTimeSummaryWithFormatter(CalculatedTimeFormat formatter) {
-        return formatter.apply(getCalculatedTime());
+    public String getTimeSummaryWithFormatter(HoursMinutesFormat formatter) {
+        return formatter.apply(getHoursMinutes());
     }
 
     public boolean isRegistered() {
         return time.isRegistered();
     }
 
-    public CalculatedTime getCalculatedTime() {
-        return calculatedTime;
+    public HoursMinutes getHoursMinutes() {
+        return hoursMinutes;
     }
 
     @Override

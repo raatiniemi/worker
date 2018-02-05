@@ -16,18 +16,18 @@
 
 package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.model.CalculatedTime
+import me.raatiniemi.worker.domain.model.HoursMinutes
 
 /**
- * Interface for different calculated time formatter.
+ * Interface for different hours and minutes formatter.
  */
 @FunctionalInterface
-interface CalculatedTimeFormat {
+interface HoursMinutesFormat {
     /**
      * Applies format to calculated time.
      *
-     * @param calculatedTime Calculated time to apply format.
-     * @return Formatted calculated time.
+     * @param hoursMinutes Hours and minutes to apply format.
+     * @return Formatted hours and minutes.
      */
-    fun apply(calculatedTime: CalculatedTime): String
+    fun apply(hoursMinutes: HoursMinutes): String
 }

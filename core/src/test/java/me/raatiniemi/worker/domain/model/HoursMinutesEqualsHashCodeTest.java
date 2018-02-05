@@ -29,66 +29,66 @@ import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
-public class CalculatedTimeEqualsHashCodeTest {
+public class HoursMinutesEqualsHashCodeTest {
     private final String message;
     private final Boolean expected;
-    private final CalculatedTime calculatedTime;
+    private final HoursMinutes hoursMinutes;
     private final Object compareTo;
 
-    public CalculatedTimeEqualsHashCodeTest(
+    public HoursMinutesEqualsHashCodeTest(
             String message,
             Boolean expected,
-            CalculatedTime calculatedTime,
+            HoursMinutes hoursMinutes,
             Object compareTo
     ) {
         this.message = message;
         this.expected = expected;
-        this.calculatedTime = calculatedTime;
+        this.hoursMinutes = hoursMinutes;
         this.compareTo = compareTo;
     }
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        CalculatedTime calculatedTime = createCalculatedTime(3, 15);
+        HoursMinutes hoursMinutes = createHoursMinutes(3, 15);
 
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "With same instance",
                                 Boolean.TRUE,
-                                calculatedTime,
-                                calculatedTime
+                                hoursMinutes,
+                                hoursMinutes
                         },
                         {
                                 "With null",
                                 Boolean.FALSE,
-                                calculatedTime,
+                                hoursMinutes,
                                 null
                         },
                         {
                                 "Same hour and minutes",
                                 Boolean.TRUE,
-                                calculatedTime,
-                                createCalculatedTime(3, 15)
+                                hoursMinutes,
+                                createHoursMinutes(3, 15)
                         },
                         {
                                 "Different hour",
                                 Boolean.FALSE,
-                                calculatedTime,
-                                createCalculatedTime(4, 15)
+                                hoursMinutes,
+                                createHoursMinutes(4, 15)
                         },
                         {
                                 "Different minute",
                                 Boolean.FALSE,
-                                calculatedTime,
-                                createCalculatedTime(3, 16)
+                                hoursMinutes,
+                                createHoursMinutes(3, 16)
                         }
                 }
         );
     }
 
-    private static CalculatedTime createCalculatedTime(int hours, int minutes) {
-        return new CalculatedTime(hours, minutes);
+    private static HoursMinutes createHoursMinutes(int hours, int minutes) {
+        return new HoursMinutes(hours, minutes);
     }
 
     @Test
@@ -106,17 +106,17 @@ public class CalculatedTimeEqualsHashCodeTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, calculatedTime.equals(compareTo));
+        assertTrue(message, hoursMinutes.equals(compareTo));
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, calculatedTime.hashCode() == compareTo.hashCode());
+        assertTrue(message, hoursMinutes.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, calculatedTime.equals(compareTo));
+        assertFalse(message, hoursMinutes.equals(compareTo));
 
         validateHashCodeWhenNotEqual();
     }
@@ -126,6 +126,6 @@ public class CalculatedTimeEqualsHashCodeTest {
             return;
         }
 
-        assertFalse(message, calculatedTime.hashCode() == compareTo.hashCode());
+        assertFalse(message, hoursMinutes.hashCode() == compareTo.hashCode());
     }
 }
