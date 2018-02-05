@@ -43,7 +43,7 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
     private TimesheetItem(Time time) {
         this.time = time;
 
-        hoursMinutes = CalculateTime.calculateTime(time.getInterval());
+        hoursMinutes = CalculateTime.calculateHoursMinutes(time.getInterval());
     }
 
     private static Date buildDateFromMilliseconds(long milliseconds) {

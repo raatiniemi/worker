@@ -31,12 +31,12 @@ public class CalculateTime {
         this.milliseconds = milliseconds;
     }
 
-    public static HoursMinutes calculateTime(long milliseconds) {
+    public static HoursMinutes calculateHoursMinutes(long milliseconds) {
         CalculateTime calculateTime = new CalculateTime(milliseconds);
-        return calculateTime.calculateTime();
+        return calculateTime.calculateHoursMinutes();
     }
 
-    private HoursMinutes calculateTime() {
+    private HoursMinutes calculateHoursMinutes() {
         long minutes = calculateMinutes();
         long hours = calculateHours();
 

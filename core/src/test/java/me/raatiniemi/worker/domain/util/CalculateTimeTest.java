@@ -96,6 +96,6 @@ public class CalculateTimeTest {
 
     @Test
     public void calculateTime() {
-        assertEquals(expected, CalculateTime.calculateTime(milliseconds));
+        assertEquals(expected, CalculateTime.calculateHoursMinutes(milliseconds));
     }
 }

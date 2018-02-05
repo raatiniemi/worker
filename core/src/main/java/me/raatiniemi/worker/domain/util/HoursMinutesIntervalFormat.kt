@@ -24,7 +24,7 @@ import java.util.*
  */
 class HoursMinutesIntervalFormat : DateIntervalFormat, HoursMinutesFormat {
     override fun format(milliseconds: Long): String {
-        val hoursMinutes = CalculateTime.calculateTime(milliseconds)
+        val hoursMinutes = CalculateTime.calculateHoursMinutes(milliseconds)
 
         return apply(hoursMinutes)
     }
