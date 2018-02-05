@@ -23,13 +23,13 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.util.CalculateTime;
-import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 
 public final class TimesheetItem implements Comparable<TimesheetItem> {
     private static final String TIME_SEPARATOR = " - ";
     private static final Comparator<TimesheetItem> comparator;
-    private static final CalculatedTimeFormat formatter;
+    private static final HoursMinutesFormat formatter;
 
     static {
         comparator = new TimesheetItemComparator();
@@ -92,7 +92,7 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
         return buildDateFromMilliseconds(time.getStopInMilliseconds());
     }
 
-    public String getTimeSummaryWithFormatter(CalculatedTimeFormat formatter) {
+    public String getTimeSummaryWithFormatter(HoursMinutesFormat formatter) {
         return formatter.apply(getHoursMinutes());
     }
 

@@ -22,7 +22,7 @@ import java.util.*
 /**
  * Format a time interval into hours with fraction, i.e. 1.5 for one hour and 30 minutes.
  */
-class FractionIntervalFormat : DateIntervalFormat, CalculatedTimeFormat {
+class FractionIntervalFormat : DateIntervalFormat, HoursMinutesFormat {
     override fun format(milliseconds: Long): String {
         val hoursMinutes = CalculateTime.calculateTime(milliseconds)
 

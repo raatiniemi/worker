@@ -26,7 +26,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.presentation.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.presentation.project.model.TimesheetGroup;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
@@ -41,11 +41,11 @@ class TimesheetAdapter extends ExpandableListAdapter<
         GroupItemViewHolder,
         ChildItemViewHolder
         > {
-    private final CalculatedTimeFormat formatter;
+    private final HoursMinutesFormat formatter;
     private final SelectionManager<TimesheetAdapterResult> selectionManager;
 
     TimesheetAdapter(
-            CalculatedTimeFormat formatter,
+            HoursMinutesFormat formatter,
             SelectionListener selectionListener
     ) {
         this.formatter = formatter;

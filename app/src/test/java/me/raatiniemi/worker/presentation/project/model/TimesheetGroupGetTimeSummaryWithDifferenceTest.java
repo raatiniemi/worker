@@ -27,9 +27,9 @@ import java.util.Date;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.factory.TimeFactory;
 
 import static junit.framework.Assert.assertEquals;
@@ -37,12 +37,12 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
     private final String expected;
-    private final CalculatedTimeFormat formatter;
+    private final HoursMinutesFormat formatter;
     private final TimesheetGroup item;
 
     public TimesheetGroupGetTimeSummaryWithDifferenceTest(
             String expected,
-            CalculatedTimeFormat formatter,
+            HoursMinutesFormat formatter,
             TimesheetItem... times
     ) {
         this.expected = expected;

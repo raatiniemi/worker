@@ -23,7 +23,7 @@ import java.util.*
 /**
  * Format a time interval into digital hours and minutes, i.e. 1:30.
  */
-class DigitalHoursMinutesIntervalFormat : CalculatedTimeFormat {
+class DigitalHoursMinutesIntervalFormat : HoursMinutesFormat {
     override fun apply(hoursMinutes: HoursMinutes): String {
         return String.format(
                 Locale.forLanguageTag("en_US"),

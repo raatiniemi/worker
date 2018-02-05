@@ -27,7 +27,7 @@ import java.util.TreeSet;
 import me.raatiniemi.worker.domain.model.HoursMinutes;
 import me.raatiniemi.worker.domain.model.HoursMinutesUtil;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.domain.util.CalculatedTimeFormat;
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.presentation.model.ExpandableItem;
 
 public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
@@ -110,7 +110,7 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         return registered;
     }
 
-    public String getTimeSummaryWithDifference(CalculatedTimeFormat formatter) {
+    public String getTimeSummaryWithDifference(HoursMinutesFormat formatter) {
         HoursMinutes accumulated = accumulatedHoursMinutes();
         String timeSummary = formatter.apply(accumulated);
 
