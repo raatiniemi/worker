@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.model.CalculatedTime
+import me.raatiniemi.worker.domain.model.HoursMinutes
 import java.util.*
 
 /**
@@ -24,17 +24,17 @@ import java.util.*
  */
 class HoursMinutesIntervalFormat : DateIntervalFormat, CalculatedTimeFormat {
     override fun format(milliseconds: Long): String {
-        val calculatedTime = CalculateTime.calculateTime(milliseconds)
+        val hoursMinutes = CalculateTime.calculateTime(milliseconds)
 
-        return apply(calculatedTime)
+        return apply(hoursMinutes)
     }
 
-    override fun apply(calculatedTime: CalculatedTime): String {
+    override fun apply(hoursMinutes: HoursMinutes): String {
         return String.format(
                 Locale.forLanguageTag("en_US"),
-                getFormatTemplate(calculatedTime),
-                calculatedTime.hours,
-                calculatedTime.minutes
+                getFormatTemplate(hoursMinutes),
+                hoursMinutes.hours,
+                hoursMinutes.minutes
         )
     }
 
@@ -42,8 +42,8 @@ class HoursMinutesIntervalFormat : DateIntervalFormat, CalculatedTimeFormat {
         private const val HOURS_MINUTES_FORMAT = "%1\$dh %2\$dm"
         private const val MINUTES_FORMAT = "%2\$dm"
 
-        private fun getFormatTemplate(calculatedTime: CalculatedTime): String {
-            if (0L == calculatedTime.hours) {
+        private fun getFormatTemplate(hoursMinutes: HoursMinutes): String {
+            if (0L == hoursMinutes.hours) {
                 return MINUTES_FORMAT
             }
 

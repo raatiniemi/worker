@@ -27,13 +27,13 @@ import java.util.Collection;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class CalculatedTimeAsMillisecondsTest {
+public class HoursMinutesAsMillisecondsTest {
     private final long expected;
-    private final CalculatedTime calculatedTime;
+    private final HoursMinutes hoursMinutes;
 
-    public CalculatedTimeAsMillisecondsTest(long expected, CalculatedTime calculatedTime) {
+    public HoursMinutesAsMillisecondsTest(long expected, HoursMinutes hoursMinutes) {
         this.expected = expected;
-        this.calculatedTime = calculatedTime;
+        this.hoursMinutes = hoursMinutes;
     }
 
     @Parameters
@@ -42,54 +42,54 @@ public class CalculatedTimeAsMillisecondsTest {
                 new Object[][]{
                         {
                                 60000L,
-                                createCalculatedTime(0, 1)
+                                createHoursMinutes(0, 1)
                         },
                         {
                                 600000L,
-                                createCalculatedTime(0, 10)
+                                createHoursMinutes(0, 10)
                         },
                         {
                                 900000L,
-                                createCalculatedTime(0, 15)
+                                createHoursMinutes(0, 15)
                         },
                         {
                                 1800000L,
-                                createCalculatedTime(0, 30)
+                                createHoursMinutes(0, 30)
                         },
                         {
                                 3600000L,
-                                createCalculatedTime(1, 0)
+                                createHoursMinutes(1, 0)
                         },
                         {
                                 4500000L,
-                                createCalculatedTime(1, 15)
+                                createHoursMinutes(1, 15)
                         },
                         {
                                 7200000L,
-                                createCalculatedTime(2, 0)
+                                createHoursMinutes(2, 0)
                         },
                         {
                                 27000000L,
-                                createCalculatedTime(7, 30)
+                                createHoursMinutes(7, 30)
                         },
                         {
                                 108000000L,
-                                createCalculatedTime(30, 0)
+                                createHoursMinutes(30, 0)
                         },
                         {
                                 203100000L,
-                                createCalculatedTime(56, 25)
+                                createHoursMinutes(56, 25)
                         }
                 }
         );
     }
 
-    private static CalculatedTime createCalculatedTime(int hours, int minutes) {
-        return new CalculatedTime(hours, minutes);
+    private static HoursMinutes createHoursMinutes(int hours, int minutes) {
+        return new HoursMinutes(hours, minutes);
     }
 
     @Test
     public void asMilliseconds() {
-        assertEquals(expected, calculatedTime.asMilliseconds());
+        assertEquals(expected, hoursMinutes.asMilliseconds());
     }
 }

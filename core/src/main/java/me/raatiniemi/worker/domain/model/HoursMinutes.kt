@@ -14,13 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-@file:JvmName("CalculatedTimeUtil")
+@file:JvmName("HoursMinutesUtil")
 
 package me.raatiniemi.worker.domain.model
 
 import java.lang.Math.abs
 
-data class CalculatedTime(val hours: Long, val minutes: Long) {
+data class HoursMinutes(val hours: Long, val minutes: Long) {
     @get:JvmName("isEmpty")
     val empty = hours == 0L && minutes == 0L
 
@@ -41,7 +41,7 @@ data class CalculatedTime(val hours: Long, val minutes: Long) {
         return hoursInMinutes + minutes
     }
 
-    operator fun plus(value: CalculatedTime): CalculatedTime {
+    operator fun plus(value: HoursMinutes): HoursMinutes {
         var accumulatedHours = hours + value.hours
         var accumulatedMinutes = minutes + value.minutes
 
@@ -50,10 +50,10 @@ data class CalculatedTime(val hours: Long, val minutes: Long) {
             accumulatedMinutes %= MINUTES_IN_HOUR
         }
 
-        return CalculatedTime(accumulatedHours, accumulatedMinutes)
+        return HoursMinutes(accumulatedHours, accumulatedMinutes)
     }
 
-    operator fun minus(value: CalculatedTime): CalculatedTime {
+    operator fun minus(value: HoursMinutes): HoursMinutes {
         val milliseconds = asMilliseconds() - value.asMilliseconds()
 
         val seconds = abs(milliseconds) / MILLISECONDS_IN_SECOND
@@ -69,7 +69,7 @@ data class CalculatedTime(val hours: Long, val minutes: Long) {
             hours *= -1
         }
 
-        return CalculatedTime(hours = hours, minutes = minutes)
+        return HoursMinutes(hours = hours, minutes = minutes)
     }
 
     companion object {
@@ -77,10 +77,10 @@ data class CalculatedTime(val hours: Long, val minutes: Long) {
         private val SECONDS_IN_MINUTE = 60
         private val MILLISECONDS_IN_SECOND = 1000
 
-        val empty = CalculatedTime(hours = 0, minutes = 0)
+        val empty = HoursMinutes(hours = 0, minutes = 0)
     }
 }
 
-fun Collection<CalculatedTime>.accumulated(): CalculatedTime {
-    return fold(CalculatedTime.empty) { acc, value -> acc + value }
+fun Collection<HoursMinutes>.accumulated(): HoursMinutes {
+    return fold(HoursMinutes.empty) { acc, value -> acc + value }
 }

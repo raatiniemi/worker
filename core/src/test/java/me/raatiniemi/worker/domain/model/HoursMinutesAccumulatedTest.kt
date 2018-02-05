@@ -17,18 +17,16 @@
 package me.raatiniemi.worker.domain.model
 
 import junit.framework.Assert.assertEquals
-import me.raatiniemi.worker.domain.model.CalculatedTime
-import me.raatiniemi.worker.domain.model.accumulated
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
-class CalculatedTimeAccumulatedTest(
+class HoursMinutesAccumulatedTest(
         private val message: String,
-        private val expected: CalculatedTime,
-        private val values: List<CalculatedTime>
+        private val expected: HoursMinutes,
+        private val values: List<HoursMinutes>
 ) {
     companion object {
         @JvmStatic
@@ -37,28 +35,28 @@ class CalculatedTimeAccumulatedTest(
             return listOf(
                     arrayOf(
                             "With empty list of items",
-                            CalculatedTime.empty,
-                            listOf<CalculatedTime>()
+                            HoursMinutes.empty,
+                            listOf<HoursMinutes>()
                     ),
                     arrayOf(
                             "With single item",
-                            CalculatedTime(hours = 1, minutes = 0),
-                            listOf(CalculatedTime(hours = 1, minutes = 0))
+                            HoursMinutes(hours = 1, minutes = 0),
+                            listOf(HoursMinutes(hours = 1, minutes = 0))
                     ),
                     arrayOf(
                             "With multiple items",
-                            CalculatedTime(hours = 2, minutes = 0),
+                            HoursMinutes(hours = 2, minutes = 0),
                             listOf(
-                                    CalculatedTime(hours = 1, minutes = 0),
-                                    CalculatedTime(hours = 1, minutes = 0)
+                                    HoursMinutes(hours = 1, minutes = 0),
+                                    HoursMinutes(hours = 1, minutes = 0)
                             )
                     ),
                     arrayOf(
                             "With overflowing minutes",
-                            CalculatedTime(hours = 3, minutes = 15),
+                            HoursMinutes(hours = 3, minutes = 15),
                             listOf(
-                                    CalculatedTime(hours = 1, minutes = 30),
-                                    CalculatedTime(hours = 1, minutes = 45)
+                                    HoursMinutes(hours = 1, minutes = 30),
+                                    HoursMinutes(hours = 1, minutes = 45)
                             )
                     )
             )

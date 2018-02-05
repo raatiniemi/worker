@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.util;
 
-import me.raatiniemi.worker.domain.model.CalculatedTime;
+import me.raatiniemi.worker.domain.model.HoursMinutes;
 
 public class CalculateTime {
     private static final int HOURS_IN_DAY = 24;
@@ -31,12 +31,12 @@ public class CalculateTime {
         this.milliseconds = milliseconds;
     }
 
-    public static CalculatedTime calculateTime(long milliseconds) {
+    public static HoursMinutes calculateTime(long milliseconds) {
         CalculateTime calculateTime = new CalculateTime(milliseconds);
         return calculateTime.calculateTime();
     }
 
-    private CalculatedTime calculateTime() {
+    private HoursMinutes calculateTime() {
         long minutes = calculateMinutes();
         long hours = calculateHours();
 
@@ -45,7 +45,7 @@ public class CalculateTime {
             hours++;
         }
 
-        return new CalculatedTime(hours, minutes);
+        return new HoursMinutes(hours, minutes);
     }
 
     private long calculateSeconds() {

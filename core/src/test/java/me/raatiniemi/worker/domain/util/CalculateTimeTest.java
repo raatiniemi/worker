@@ -24,16 +24,16 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.model.CalculatedTime;
+import me.raatiniemi.worker.domain.model.HoursMinutes;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class CalculateTimeTest {
-    private final CalculatedTime expected;
+    private final HoursMinutes expected;
     private final long milliseconds;
 
-    public CalculateTimeTest(CalculatedTime expected, long milliseconds) {
+    public CalculateTimeTest(HoursMinutes expected, long milliseconds) {
         this.expected = expected;
         this.milliseconds = milliseconds;
     }
@@ -43,55 +43,55 @@ public class CalculateTimeTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                createCalculatedTime(0, 1),
+                                createHoursMinutes(0, 1),
                                 60000L
                         },
                         {
-                                createCalculatedTime(0, 10),
+                                createHoursMinutes(0, 10),
                                 600000L
                         },
                         {
-                                createCalculatedTime(0, 15),
+                                createHoursMinutes(0, 15),
                                 900000L
                         },
                         {
-                                createCalculatedTime(0, 30),
+                                createHoursMinutes(0, 30),
                                 1800000L
                         },
                         {
-                                createCalculatedTime(1, 0),
+                                createHoursMinutes(1, 0),
                                 3580000L
                         },
                         {
-                                createCalculatedTime(1, 0),
+                                createHoursMinutes(1, 0),
                                 3600000L
                         },
                         {
-                                createCalculatedTime(1, 15),
+                                createHoursMinutes(1, 15),
                                 4500000L
                         },
                         {
-                                createCalculatedTime(2, 0),
+                                createHoursMinutes(2, 0),
                                 7175000L
                         },
                         {
-                                createCalculatedTime(7, 30),
+                                createHoursMinutes(7, 30),
                                 27000000L
                         },
                         {
-                                createCalculatedTime(30, 0),
+                                createHoursMinutes(30, 0),
                                 108000000L
                         },
                         {
-                                createCalculatedTime(56, 25),
+                                createHoursMinutes(56, 25),
                                 203100000L
                         }
                 }
         );
     }
 
-    private static CalculatedTime createCalculatedTime(int hours, int minutes) {
-        return new CalculatedTime(hours, minutes);
+    private static HoursMinutes createHoursMinutes(int hours, int minutes) {
+        return new HoursMinutes(hours, minutes);
     }
 
     @Test

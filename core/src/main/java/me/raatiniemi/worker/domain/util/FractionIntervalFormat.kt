@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.model.CalculatedTime
+import me.raatiniemi.worker.domain.model.HoursMinutes
 import java.util.*
 
 /**
@@ -24,16 +24,16 @@ import java.util.*
  */
 class FractionIntervalFormat : DateIntervalFormat, CalculatedTimeFormat {
     override fun format(milliseconds: Long): String {
-        val calculatedTime = CalculateTime.calculateTime(milliseconds)
+        val hoursMinutes = CalculateTime.calculateTime(milliseconds)
 
-        return apply(calculatedTime)
+        return apply(hoursMinutes)
     }
 
-    override fun apply(calculatedTime: CalculatedTime): String {
+    override fun apply(hoursMinutes: HoursMinutes): String {
         return String.format(
                 Locale.forLanguageTag("en_US"),
                 FRACTION_FORMAT,
-                calculateHoursWithFraction(calculatedTime)
+                calculateHoursWithFraction(hoursMinutes)
         )
     }
 
@@ -41,8 +41,8 @@ class FractionIntervalFormat : DateIntervalFormat, CalculatedTimeFormat {
         private const val FRACTION_FORMAT = "%.2f"
         private const val MINUTES_IN_HOUR = 60f
 
-        private fun calculateHoursWithFraction(calculatedTime: CalculatedTime): Float {
-            return calculatedTime.hours + calculateFraction(calculatedTime.minutes)
+        private fun calculateHoursWithFraction(hoursMinutes: HoursMinutes): Float {
+            return hoursMinutes.hours + calculateFraction(hoursMinutes.minutes)
         }
 
         private fun calculateFraction(minutes: Long): Float {

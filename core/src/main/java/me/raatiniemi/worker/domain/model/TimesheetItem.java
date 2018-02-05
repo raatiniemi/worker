@@ -38,12 +38,12 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Time time;
-    private final CalculatedTime calculatedTime;
+    private final HoursMinutes hoursMinutes;
 
     private TimesheetItem(Time time) {
         this.time = time;
 
-        calculatedTime = CalculateTime.calculateTime(time.getInterval());
+        hoursMinutes = CalculateTime.calculateTime(time.getInterval());
     }
 
     private static Date buildDateFromMilliseconds(long milliseconds) {
@@ -93,15 +93,15 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
     }
 
     public String getTimeSummaryWithFormatter(CalculatedTimeFormat formatter) {
-        return formatter.apply(getCalculatedTime());
+        return formatter.apply(getHoursMinutes());
     }
 
     public boolean isRegistered() {
         return time.isRegistered();
     }
 
-    public CalculatedTime getCalculatedTime() {
-        return calculatedTime;
+    public HoursMinutes getHoursMinutes() {
+        return hoursMinutes;
     }
 
     @Override

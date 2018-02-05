@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.util
 
 import junit.framework.Assert.assertEquals
-import me.raatiniemi.worker.domain.model.CalculatedTime
+import me.raatiniemi.worker.domain.model.HoursMinutes
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -26,13 +26,13 @@ import org.junit.runners.Parameterized.Parameters
 @RunWith(Parameterized::class)
 class DigitalHoursMinutesIntervalFormatTest(
         private val expected: String,
-        private val calculatedTime: CalculatedTime
+        private val hoursMinutes: HoursMinutes
 ) {
     private val intervalFormat = DigitalHoursMinutesIntervalFormat()
 
     @Test
     fun format() {
-        assertEquals(expected, intervalFormat.apply(calculatedTime))
+        assertEquals(expected, intervalFormat.apply(hoursMinutes))
     }
 
     companion object {
@@ -40,16 +40,16 @@ class DigitalHoursMinutesIntervalFormatTest(
         @Parameters
         fun data(): Collection<Array<Any>> {
             return listOf(
-                    arrayOf("0:01", CalculatedTime(hours = 0, minutes = 1)),
-                    arrayOf("0:10", CalculatedTime(hours = 0, minutes = 10)),
-                    arrayOf("0:30", CalculatedTime(hours = 0, minutes = 30)),
-                    arrayOf("1:00", CalculatedTime(hours = 1, minutes = 0)),
-                    arrayOf("7:30", CalculatedTime(hours = 7, minutes = 30)),
-                    arrayOf("30:00", CalculatedTime(hours = 30, minutes = 0)),
-                    arrayOf("56:25", CalculatedTime(hours = 56, minutes = 25)),
-                    arrayOf("-0:30", CalculatedTime(hours = 0, minutes = -30)),
-                    arrayOf("-2:00", CalculatedTime(hours = -2, minutes = 0)),
-                    arrayOf("-2:30", CalculatedTime(hours = -2, minutes = -30))
+                    arrayOf("0:01", HoursMinutes(hours = 0, minutes = 1)),
+                    arrayOf("0:10", HoursMinutes(hours = 0, minutes = 10)),
+                    arrayOf("0:30", HoursMinutes(hours = 0, minutes = 30)),
+                    arrayOf("1:00", HoursMinutes(hours = 1, minutes = 0)),
+                    arrayOf("7:30", HoursMinutes(hours = 7, minutes = 30)),
+                    arrayOf("30:00", HoursMinutes(hours = 30, minutes = 0)),
+                    arrayOf("56:25", HoursMinutes(hours = 56, minutes = 25)),
+                    arrayOf("-0:30", HoursMinutes(hours = 0, minutes = -30)),
+                    arrayOf("-2:00", HoursMinutes(hours = -2, minutes = 0)),
+                    arrayOf("-2:30", HoursMinutes(hours = -2, minutes = -30))
             )
         }
     }

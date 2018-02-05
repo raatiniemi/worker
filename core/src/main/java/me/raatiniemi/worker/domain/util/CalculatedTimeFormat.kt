@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.model.CalculatedTime
+import me.raatiniemi.worker.domain.model.HoursMinutes
 
 /**
  * Interface for different calculated time formatter.
@@ -26,8 +26,8 @@ interface CalculatedTimeFormat {
     /**
      * Applies format to calculated time.
      *
-     * @param calculatedTime Calculated time to apply format.
+     * @param hoursMinutes Calculated time to apply format.
      * @return Formatted calculated time.
      */
-    fun apply(calculatedTime: CalculatedTime): String
+    fun apply(hoursMinutes: HoursMinutes): String
 }

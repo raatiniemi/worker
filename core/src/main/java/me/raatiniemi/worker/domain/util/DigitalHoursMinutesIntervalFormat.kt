@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.model.CalculatedTime
+import me.raatiniemi.worker.domain.model.HoursMinutes
 import java.lang.Math.abs
 import java.util.*
 
@@ -24,20 +24,20 @@ import java.util.*
  * Format a time interval into digital hours and minutes, i.e. 1:30.
  */
 class DigitalHoursMinutesIntervalFormat : CalculatedTimeFormat {
-    override fun apply(calculatedTime: CalculatedTime): String {
+    override fun apply(hoursMinutes: HoursMinutes): String {
         return String.format(
                 Locale.forLanguageTag("en_US"),
-                formatFor(calculatedTime),
-                abs(calculatedTime.hours),
-                padWithZeroes(abs(calculatedTime.minutes))
+                formatFor(hoursMinutes),
+                abs(hoursMinutes.hours),
+                padWithZeroes(abs(hoursMinutes.minutes))
         )
     }
 
-    private fun formatFor(calculatedTime: CalculatedTime): String {
-        // TODO: use `calculatedTime.positive` instead of checking both values.
-        // when using `calculatedTime.positive` the kotlin compiler renames the
+    private fun formatFor(hoursMinutes: HoursMinutes): String {
+        // TODO: use `hoursMinutes.positive` instead of checking both values.
+        // when using `hoursMinutes.positive` the kotlin compiler renames the
         // method to `getPositive` instead of `isPositive`.
-        if (calculatedTime.hours >= 0 && calculatedTime.minutes >= 0) {
+        if (hoursMinutes.hours >= 0 && hoursMinutes.minutes >= 0) {
             return FORMAT
         }
 
