@@ -57,7 +57,7 @@ public class GetTimesheet {
             final int offset,
             boolean hideRegisteredTime
     ) {
-        PageRequest pageRequest = PageRequest.withOffset(offset);
+        PageRequest pageRequest = PageRequest.Companion.withOffset(offset);
 
         if (hideRegisteredTime) {
             return sortedEntries(repository.getTimesheetWithoutRegisteredEntries(projectId, pageRequest));

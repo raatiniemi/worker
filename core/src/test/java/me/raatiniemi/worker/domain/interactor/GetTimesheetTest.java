@@ -44,7 +44,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class GetTimesheetTest {
-    private final PageRequest pageRequest = PageRequest.withOffset(0);
+    private final PageRequest pageRequest = PageRequest.Companion.withOffset(0);
 
     private TimesheetRepository repository;
     private GetTimesheet useCase;

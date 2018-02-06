@@ -45,7 +45,7 @@ public class QueryParameterTest extends RobolectricTestCase {
     public void appendPageRequest() {
         Uri uri = QueryParameter.appendPageRequest(
                 Uri.parse("/relative-path"),
-                PageRequest.withOffset(20)
+                PageRequest.Companion.withOffset(20)
         );
 
         assertEquals("20", uri.getQueryParameter(OFFSET));
@@ -69,7 +69,7 @@ public class QueryParameterTest extends RobolectricTestCase {
 
     @Test
     public void extractPageRequestFromUri_withoutOffset() {
-        PageRequest pageRequest = PageRequest.withMaxResults(10);
+        PageRequest pageRequest = PageRequest.Companion.withMaxResults(10);
         Uri uri = QueryParameter.appendPageRequest(Uri.parse("/uri"), pageRequest);
         Optional<PageRequest> value = QueryParameter.extractPageRequestFromUri(uri);
 
@@ -79,7 +79,7 @@ public class QueryParameterTest extends RobolectricTestCase {
 
     @Test
     public void extractPageRequestFromUri() {
-        PageRequest pageRequest = PageRequest.withOffset(10);
+        PageRequest pageRequest = PageRequest.Companion.withOffset(10);
         Uri uri = QueryParameter.appendPageRequest(Uri.parse("/uri"), pageRequest);
         Optional<PageRequest> value = QueryParameter.extractPageRequestFromUri(uri);
 

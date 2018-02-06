@@ -53,13 +53,13 @@ public final class QueryParameter {
 
         String rawOffset = uri.getQueryParameter(OFFSET);
         if (isNull(rawOffset)) {
-            PageRequest pageRequest = PageRequest.withMaxResults(limit);
+            PageRequest pageRequest = PageRequest.Companion.withMaxResults(limit);
             return Optional.of(pageRequest);
         }
 
         int offset = Integer.parseInt(rawOffset);
 
-        PageRequest pageRequest = PageRequest.withOffsetAndMaxResults(offset, limit);
+        PageRequest pageRequest = PageRequest.Companion.withOffsetAndMaxResults(offset, limit);
         return Optional.of(pageRequest);
 
     }
