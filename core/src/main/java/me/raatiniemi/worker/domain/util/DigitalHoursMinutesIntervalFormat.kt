@@ -45,8 +45,8 @@ class DigitalHoursMinutesIntervalFormat : HoursMinutesFormat {
     }
 
     companion object {
-        private val FORMAT = "%1\$s:%2\$s"
-        private val NEGATIVE_FORMAT = "-%1\$s:%2\$s"
+        private const val FORMAT = "%1\$s:%2\$s"
+        private const val NEGATIVE_FORMAT = "-%1\$s:%2\$s"
 
         private fun padWithZeroes(value: Long): String {
             return replaceSpacesWithZeroes(padWithSpaces(value.toString()))

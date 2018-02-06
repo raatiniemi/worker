@@ -73,9 +73,9 @@ data class HoursMinutes(val hours: Long, val minutes: Long) {
     }
 
     companion object {
-        private val MINUTES_IN_HOUR = 60
-        private val SECONDS_IN_MINUTE = 60
-        private val MILLISECONDS_IN_SECOND = 1000
+        private const val MINUTES_IN_HOUR = 60
+        private const val SECONDS_IN_MINUTE = 60
+        private const val MILLISECONDS_IN_SECOND = 1000
 
         val empty = HoursMinutes(hours = 0, minutes = 0)
     }

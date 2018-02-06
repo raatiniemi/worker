@@ -30,13 +30,13 @@ import me.raatiniemi.worker.R
 
 class Notifications {
     companion object {
-        private val ongoingId = "ongoing"
-        private val ongoingTitle = R.string.notification_channel_ongoing_title
-        private val ongoingDescription = R.string.notification_channel_ongoing_description
+        private const val ongoingId = "ongoing"
+        private const val ongoingTitle = R.string.notification_channel_ongoing_title
+        private const val ongoingDescription = R.string.notification_channel_ongoing_description
 
-        private val backupId = "backup"
-        private val backupTitle = R.string.notification_channel_backup_title
-        private val backupDescription = R.string.notification_channel_backup_description
+        private const val backupId = "backup"
+        private const val backupTitle = R.string.notification_channel_backup_title
+        private const val backupDescription = R.string.notification_channel_backup_description
 
         val isChannelsAvailable: Boolean
             get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
