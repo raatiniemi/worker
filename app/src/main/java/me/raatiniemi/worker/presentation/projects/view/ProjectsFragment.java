@@ -120,7 +120,7 @@ public class ProjectsFragment extends RxFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = ButterKnife.findById(view, R.id.fragment_projects);
+        recyclerView = view.findViewById(R.id.fragment_projects);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 

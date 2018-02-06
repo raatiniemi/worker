@@ -181,7 +181,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
                 = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        RecyclerView recyclerView = ButterKnife.findById(view, R.id.fragment_timesheet);
+        RecyclerView recyclerView = view.findViewById(R.id.fragment_timesheet);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
         recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(adapter));
