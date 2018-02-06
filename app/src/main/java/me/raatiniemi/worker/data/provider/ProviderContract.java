@@ -52,6 +52,9 @@ public final class ProviderContract {
     public static final String ORDER_BY_TIMESHEET = COLUMN_TIME_START + " DESC," + COLUMN_TIME_STOP + " DESC";
     static final String GROUP_BY_TIMESHEET = "strftime('%Y%m%d', " + COLUMN_TIME_START + " / 1000, 'unixepoch')";
 
+    private ProviderContract() {
+    }
+
     public static String[] getProjectColumns() {
         return new String[]{
                 BaseColumns._ID,
