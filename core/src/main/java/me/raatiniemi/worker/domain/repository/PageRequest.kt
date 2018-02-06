@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.repository
 
 data class PageRequest internal constructor(val offset: Int, val maxResults: Int) {
     companion object {
-        private const val MAX_RESULTS = 10
+        internal const val MAX_RESULTS = 10
 
         fun withOffsetAndMaxResults(offset: Int, maxResults: Int): PageRequest {
             return PageRequest(offset, maxResults)
