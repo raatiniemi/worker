@@ -23,17 +23,14 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator;
 import me.raatiniemi.worker.domain.util.CalculateTime;
-import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 
 public final class TimesheetItem implements Comparable<TimesheetItem> {
     private static final String TIME_SEPARATOR = " - ";
     private static final Comparator<TimesheetItem> comparator;
-    private static final HoursMinutesFormat formatter;
 
     static {
         comparator = new TimesheetItemComparator();
-        formatter = new FractionIntervalFormat();
     }
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
