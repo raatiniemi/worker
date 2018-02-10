@@ -58,4 +58,20 @@ class TimesheetGroupExpandableItemTest {
 
         group.set(1, items.first())
     }
+
+    @Test(expected = IndexOutOfBoundsException::class)
+    fun removeWithIndexOutOfBounds() {
+        val group = TimesheetGroup.build(Date(), TreeSet())
+
+        group.remove(1)
+    }
+
+    @Test
+    fun remove() {
+        val time = TimeFactory.builder(1L).build()
+        val items = sortedSetOf(TimesheetItem.with(time))
+        val group = TimesheetGroup.build(Date(), items)
+
+        assertEquals(items.first(), group.remove(0))
+    }
 }
