@@ -41,4 +41,21 @@ class TimesheetGroupExpandableItemTest {
 
         assertEquals(items.first(), group.get(0))
     }
+
+    @Test(expected = IndexOutOfBoundsException::class)
+    fun setWithIndexOutOfBounds() {
+        val time = TimeFactory.builder(1L).build()
+        val item = TimesheetItem.with(time)
+        val group = TimesheetGroup.build(Date(), TreeSet())
+
+        group.set(1, item)
+    }
+
+    fun set() {
+        val time = TimeFactory.builder(1L).build()
+        val items = sortedSetOf(TimesheetItem.with(time))
+        val group = TimesheetGroup.build(Date(), items)
+
+        group.set(1, items.first())
+    }
 }
