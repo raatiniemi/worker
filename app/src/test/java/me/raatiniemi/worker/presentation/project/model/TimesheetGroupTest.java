@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.Date;
+import java.util.TreeSet;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -31,7 +32,7 @@ public class TimesheetGroupTest {
         Date date = new Date();
         long days = date.getTime() / 1000 / 60 / 60 / 24;
 
-        TimesheetGroup groupItem = TimesheetGroup.build(date);
+        TimesheetGroup groupItem = TimesheetGroup.build(date, new TreeSet<>());
 
         assertEquals(days, groupItem.getId());
     }

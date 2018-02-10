@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.TreeSet;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -52,7 +53,7 @@ public class TimesheetGroupGetTitleTest {
 
     @Test
     public void getTitle() {
-        TimesheetGroup groupItem = TimesheetGroup.build(calendar.getTime());
+        TimesheetGroup groupItem = TimesheetGroup.build(calendar.getTime(), new TreeSet<>());
 
         assertEquals(expected, groupItem.getTitle());
     }

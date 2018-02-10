@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.HoursMinutes;
 import me.raatiniemi.worker.domain.model.HoursMinutesUtil;
@@ -43,10 +42,6 @@ public class TimesheetGroup implements ExpandableItem<TimesheetItem> {
         this.items = items;
 
         daysSinceUnixEpoch = calculateDaysSinceUnixEpoch(date);
-    }
-
-    public static TimesheetGroup build(Date date) {
-        return build(date, new TreeSet<>());
     }
 
     public static TimesheetGroup build(Date date, SortedSet<TimesheetItem> timesheetItems) {
