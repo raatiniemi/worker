@@ -74,4 +74,41 @@ class TimesheetGroupExpandableItemTest {
 
         assertEquals(items.first(), group.remove(0))
     }
+
+    @Test
+    fun sizeWithoutItems() {
+        val group = TimesheetGroup.build(Date(), TreeSet())
+
+        assertEquals(0, group.size())
+    }
+
+    @Test
+    fun sizeWithItem() {
+        val time = TimeFactory.builder(1L).build()
+        val items = sortedSetOf(TimesheetItem.with(time))
+        val group = TimesheetGroup.build(Date(), items)
+
+        assertEquals(1, group.size())
+    }
+
+    @Test
+    fun sizeWithItems() {
+        val time1 = TimeFactory.builder(1L)
+                .id(2L)
+                .startInMilliseconds(0L)
+                .register()
+                .build()
+        val time2 = TimeFactory.builder(2L)
+                .id(3L)
+                .startInMilliseconds(1L)
+                .stopInMilliseconds(5L)
+                .build()
+        val items = sortedSetOf(
+                TimesheetItem.with(time1),
+                TimesheetItem.with(time2)
+        )
+        val group = TimesheetGroup.build(Date(), items)
+
+        assertEquals(2, group.size())
+    }
 }
