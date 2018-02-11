@@ -55,7 +55,7 @@ public class TimesheetGroupItemBuildResultsTest {
 
     private static TimesheetGroup buildTimesheetGroupWithNumberOfItems(int numberOfItems) {
         if (0 == numberOfItems) {
-            return TimesheetGroup.build(new Date());
+            return TimesheetGroup.Companion.build(new Date(), new TreeSet<>());
         }
 
         SortedSet<TimesheetItem> items = new TreeSet<>();
@@ -67,7 +67,7 @@ public class TimesheetGroupItemBuildResultsTest {
             items.add(TimesheetItem.with(time));
         }
 
-        return TimesheetGroup.build(new Date(), items);
+        return TimesheetGroup.Companion.build(new Date(), items);
     }
 
     @Parameters

@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.TreeSet;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -35,7 +36,7 @@ public class TimesheetGroupGetFirstLetterFromTitleTest {
 
     public TimesheetGroupGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
-        item = TimesheetGroup.build(calendar.getTime());
+        item = TimesheetGroup.Companion.build(calendar.getTime(), new TreeSet<>());
     }
 
     @Parameters
