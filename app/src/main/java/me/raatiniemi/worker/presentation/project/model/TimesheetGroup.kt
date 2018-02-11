@@ -39,16 +39,7 @@ class TimesheetGroup private constructor(
 
     val isRegistered: Boolean
         get() {
-            var registered = true
-
-            for (item in items) {
-                if (!item.isRegistered) {
-                    registered = false
-                    break
-                }
-            }
-
-            return registered
+            return items.any { it.isRegistered }
         }
 
     init {
