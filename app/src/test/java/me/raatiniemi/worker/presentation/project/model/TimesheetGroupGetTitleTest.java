@@ -53,7 +53,7 @@ public class TimesheetGroupGetTitleTest {
 
     @Test
     public void getTitle() {
-        TimesheetGroup groupItem = TimesheetGroup.build(calendar.getTime(), new TreeSet<>());
+        TimesheetGroup groupItem = TimesheetGroup.Companion.build(calendar.getTime(), new TreeSet<>());
 
         assertEquals(expected, groupItem.getTitle());
     }

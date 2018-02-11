@@ -32,7 +32,7 @@ public class TimesheetGroupTest {
         Date date = new Date();
         long days = date.getTime() / 1000 / 60 / 60 / 24;
 
-        TimesheetGroup groupItem = TimesheetGroup.build(date, new TreeSet<>());
+        TimesheetGroup groupItem = TimesheetGroup.Companion.build(date, new TreeSet<>());
 
         assertEquals(days, groupItem.getId());
     }

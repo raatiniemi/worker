@@ -55,7 +55,7 @@ public class TimesheetGroupIsRegisteredTest {
         this.expected = expected;
 
         TreeSet<TimesheetItem> items = new TreeSet<>(Arrays.asList(timesheetItems));
-        item = TimesheetGroup.build(new Date(), items);
+        item = TimesheetGroup.Companion.build(new Date(), items);
     }
 
     @Parameters

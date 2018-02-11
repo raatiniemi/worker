@@ -36,7 +36,7 @@ public class TimesheetGroupGetFirstLetterFromTitleTest {
 
     public TimesheetGroupGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
-        item = TimesheetGroup.build(calendar.getTime(), new TreeSet<>());
+        item = TimesheetGroup.Companion.build(calendar.getTime(), new TreeSet<>());
     }
 
     @Parameters

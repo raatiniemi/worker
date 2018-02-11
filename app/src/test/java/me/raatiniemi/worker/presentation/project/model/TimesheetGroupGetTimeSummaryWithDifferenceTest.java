@@ -49,7 +49,7 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
         this.formatter = formatter;
 
         TreeSet<TimesheetItem> items = new TreeSet<>(Arrays.asList(times));
-        item = TimesheetGroup.build(new Date(), items);
+        item = TimesheetGroup.Companion.build(new Date(), items);
     }
 
     @Parameters
