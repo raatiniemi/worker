@@ -69,17 +69,9 @@ class TimesheetGroup private constructor(
     }
 
     fun buildItemResultsWithGroupIndex(groupIndex: Int): List<TimesheetAdapterResult> {
-        val results = ArrayList<TimesheetAdapterResult>()
-
-        var childIndex = 0
-
-        for (item in items) {
-            results.add(TimesheetAdapterResult.build(groupIndex, childIndex, item))
-
-            childIndex++
+        return items.mapIndexedTo(ArrayList()) { childIndex, item ->
+            TimesheetAdapterResult.build(groupIndex, childIndex, item)
         }
-
-        return results
     }
 
     override fun get(index: Int): TimesheetItem {
