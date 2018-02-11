@@ -35,7 +35,7 @@ class TimesheetGroup private constructor(
         get() = dateFormat.format(date)
 
     val firstLetterFromTitle: String
-        get() = title[0].toString()
+        get() = title.first().toString()
 
     val isRegistered: Boolean
         get() {
