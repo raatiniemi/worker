@@ -64,13 +64,8 @@ class TimesheetGroup private constructor(
     }
 
     private fun accumulatedHoursMinutes(): HoursMinutes {
-        val times = ArrayList<HoursMinutes>()
-
-        for (item in items) {
-            times.add(item.hoursMinutes)
-        }
-
-        return times.accumulated()
+        return items.map { it.hoursMinutes }
+                .accumulated()
     }
 
     fun buildItemResultsWithGroupIndex(groupIndex: Int): List<TimesheetAdapterResult> {
