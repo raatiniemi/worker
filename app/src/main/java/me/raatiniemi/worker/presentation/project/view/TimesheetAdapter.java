@@ -129,7 +129,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
     public void onBindChildViewHolder(ChildItemViewHolder vh, final int group, final int child, int viewType) {
         final TimesheetItem item = get(group, child);
 
-        final TimesheetAdapterResult result = TimesheetAdapterResult.build(group, child, item);
+        final TimesheetAdapterResult result = new TimesheetAdapterResult(group, child, item);
 
         // Register the long click listener on the time item.
         vh.itemView.setOnLongClickListener(view -> {

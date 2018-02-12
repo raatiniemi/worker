@@ -59,32 +59,32 @@ public class TimesheetAdapterResultComparableTest {
                         {
                                 "Equal",
                                 0,
-                                TimesheetAdapterResult.build(0, 0, item),
-                                TimesheetAdapterResult.build(0, 0, item)
+                                new TimesheetAdapterResult(0, 0, item),
+                                new TimesheetAdapterResult(0, 0, item)
                         },
                         {
                                 "lhs is more than rhs (group)",
                                 1,
-                                TimesheetAdapterResult.build(1, 0, item),
-                                TimesheetAdapterResult.build(0, 0, item)
+                                new TimesheetAdapterResult(1, 0, item),
+                                new TimesheetAdapterResult(0, 0, item)
                         },
                         {
                                 "lhs is less than rhs (group)",
                                 -1,
-                                TimesheetAdapterResult.build(0, 0, item),
-                                TimesheetAdapterResult.build(1, 0, item)
+                                new TimesheetAdapterResult(0, 0, item),
+                                new TimesheetAdapterResult(1, 0, item)
                         },
                         {
                                 "lhs is more than rhs (child)",
                                 1,
-                                TimesheetAdapterResult.build(0, 1, item),
-                                TimesheetAdapterResult.build(0, 0, item)
+                                new TimesheetAdapterResult(0, 1, item),
+                                new TimesheetAdapterResult(0, 0, item)
                         },
                         {
                                 "lhs is less than rhs (child)",
                                 -1,
-                                TimesheetAdapterResult.build(0, 0, item),
-                                TimesheetAdapterResult.build(0, 1, item)
+                                new TimesheetAdapterResult(0, 0, item),
+                                new TimesheetAdapterResult(0, 1, item)
                         }
                 }
         );

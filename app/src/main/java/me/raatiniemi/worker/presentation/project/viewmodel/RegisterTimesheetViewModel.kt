@@ -75,7 +75,7 @@ interface RegisterTimesheetViewModel {
                     .map {
                         val item = TimesheetItem.with(time)
 
-                        TimesheetAdapterResult.build(it, item)
+                        TimesheetAdapterResult(it.group, it.child, item)
                     }
                     .first()
         }

@@ -48,7 +48,7 @@ class RegisterTimesheetViewModelTest {
     fun register_withError() {
         val time = TimeFactory.builder().build()
         val item = TimesheetItem.with(time)
-        val results = listOf(TimesheetAdapterResult.build(0, 0, item))
+        val results = listOf(TimesheetAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(time))))
                 .thenThrow(DomainException::class.java)
 
@@ -64,7 +64,7 @@ class RegisterTimesheetViewModelTest {
     fun register_withItem() {
         val time = TimeFactory.builder().build()
         val item = TimesheetItem.with(time)
-        val results = listOf(TimesheetAdapterResult.build(0, 0, item))
+        val results = listOf(TimesheetAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(time))))
                 .thenReturn(listOf(time))
 
@@ -83,8 +83,8 @@ class RegisterTimesheetViewModelTest {
                 TimeFactory.builder().id(2L).build()
         )
         val results = listOf(
-                TimesheetAdapterResult.build(0, 0, TimesheetItem.with(times[0])),
-                TimesheetAdapterResult.build(0, 1, TimesheetItem.with(times[1]))
+                TimesheetAdapterResult(0, 0, TimesheetItem.with(times[0])),
+                TimesheetAdapterResult(0, 1, TimesheetItem.with(times[1]))
         )
         `when`(useCase.execute(eq(times)))
                 .thenReturn(times)

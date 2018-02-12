@@ -70,7 +70,7 @@ class TimesheetGroup private constructor(
 
     fun buildItemResultsWithGroupIndex(groupIndex: Int): List<TimesheetAdapterResult> {
         return items.mapIndexedTo(ArrayList()) { childIndex, item ->
-            TimesheetAdapterResult.build(groupIndex, childIndex, item)
+            TimesheetAdapterResult(groupIndex, childIndex, item)
         }
     }
 

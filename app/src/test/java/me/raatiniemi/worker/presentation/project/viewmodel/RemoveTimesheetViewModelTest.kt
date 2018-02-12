@@ -46,7 +46,7 @@ class RemoveTimesheetViewModelTest {
     fun remove_withError() {
         val time = TimeFactory.builder().build()
         val item = TimesheetItem.with(time)
-        val results = listOf(TimesheetAdapterResult.build(0, 0, item))
+        val results = listOf(TimesheetAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(time))))
                 .thenThrow(DomainException::class.java)
 
@@ -61,7 +61,7 @@ class RemoveTimesheetViewModelTest {
     @Test
     fun remove_withSingleItem() {
         val time = TimeFactory.builder().build()
-        val results = listOf(TimesheetAdapterResult.build(0, 0, TimesheetItem.with(time)))
+        val results = listOf(TimesheetAdapterResult(0, 0, TimesheetItem.with(time)))
 
         vm.remove(results)
 
@@ -76,8 +76,8 @@ class RemoveTimesheetViewModelTest {
     fun remove_withMultipleItems() {
         val time = TimeFactory.builder().build()
         val results = listOf(
-                TimesheetAdapterResult.build(0, 0, TimesheetItem.with(time)),
-                TimesheetAdapterResult.build(0, 1, TimesheetItem.with(time))
+                TimesheetAdapterResult(0, 0, TimesheetItem.with(time)),
+                TimesheetAdapterResult(0, 1, TimesheetItem.with(time))
         )
 
         vm.remove(results)

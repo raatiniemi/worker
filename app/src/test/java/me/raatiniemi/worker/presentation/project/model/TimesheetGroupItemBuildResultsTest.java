@@ -84,7 +84,7 @@ public class TimesheetGroupItemBuildResultsTest {
                         {
                                 "With one item",
                                 new TimesheetAdapterResult[]{
-                                        TimesheetAdapterResult.build(1, 0, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(0L).build()))
+                                        new TimesheetAdapterResult(1, 0, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(0L).build()))
                                 },
                                 1,
                                 buildTimesheetGroupWithNumberOfItems(1)
@@ -92,12 +92,12 @@ public class TimesheetGroupItemBuildResultsTest {
                         {
                                 "With multiple items",
                                 new TimesheetAdapterResult[]{
-                                        TimesheetAdapterResult.build(2, 0, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(5L).build())),
-                                        TimesheetAdapterResult.build(2, 1, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(4L).build())),
-                                        TimesheetAdapterResult.build(2, 2, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(3L).build())),
-                                        TimesheetAdapterResult.build(2, 3, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(2L).build())),
-                                        TimesheetAdapterResult.build(2, 4, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(1L).build())),
-                                        TimesheetAdapterResult.build(2, 5, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(0L).build()))
+                                        new TimesheetAdapterResult(2, 0, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(5L).build())),
+                                        new TimesheetAdapterResult(2, 1, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(4L).build())),
+                                        new TimesheetAdapterResult(2, 2, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(3L).build())),
+                                        new TimesheetAdapterResult(2, 3, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(2L).build())),
+                                        new TimesheetAdapterResult(2, 4, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(1L).build())),
+                                        new TimesheetAdapterResult(2, 5, TimesheetItem.with(TimeFactory.builder().startInMilliseconds(0L).build()))
                                 },
                                 2,
                                 buildTimesheetGroupWithNumberOfItems(6)
