@@ -31,7 +31,12 @@ import static me.raatiniemi.worker.domain.validator.ProjectName.isValid;
 /**
  * Represent a project.
  */
-public class Project extends DomainObject {
+public class Project {
+    /**
+     * Id for the domain object.
+     */
+    private final Long id;
+
     /**
      * Name for the project.
      */
@@ -50,17 +55,25 @@ public class Project extends DomainObject {
      * @throws InvalidProjectNameException If project name is null or empty.
      */
     private Project(final Long id, final String name) throws InvalidProjectNameException {
-        super(id);
-
         if (!isValid(name)) {
             throw new InvalidProjectNameException();
         }
 
+        this.id = id;
         this.name = name;
     }
 
     public static Builder builder(String projectName) {
         return new Builder(projectName);
+    }
+
+    /**
+     * Retrieve the id for the domain object.
+     *
+     * @return Id for the domain object.
+     */
+    public Long getId() {
+        return id;
     }
 
     /**

@@ -26,7 +26,12 @@ import static java.util.Objects.requireNonNull;
 /**
  * Represent a time interval registered to a project.
  */
-public class Time extends DomainObject {
+public class Time {
+    /**
+     * Id for the domain object.
+     */
+    private final Long id;
+
     /**
      * Id for the project connected to the time interval.
      */
@@ -41,12 +46,10 @@ public class Time extends DomainObject {
      */
     private final boolean registered;
 
-    private Time(Builder builder)
-            throws ClockOutBeforeClockInException {
-        super(builder.id);
-
+    private Time(Builder builder) throws ClockOutBeforeClockInException {
         validateTimeInterval(builder);
 
+        id = builder.id;
         projectId = builder.projectId;
         startInMilliseconds = builder.startInMilliseconds;
         stopInMilliseconds = builder.stopInMilliseconds;
@@ -67,6 +70,15 @@ public class Time extends DomainObject {
 
     public static Builder builder(long projectId) {
         return new Builder(projectId);
+    }
+
+    /**
+     * Retrieve the id for the domain object.
+     *
+     * @return Id for the domain object.
+     */
+    public Long getId() {
+        return id;
     }
 
     /**
