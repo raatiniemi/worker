@@ -47,25 +47,18 @@ public class Time {
     private final boolean registered;
 
     private Time(Builder builder) throws ClockOutBeforeClockInException {
-        validateTimeInterval(builder);
+        if (builder.stopInMilliseconds > 0) {
+            if (builder.stopInMilliseconds < builder.startInMilliseconds) {
+                throw new ClockOutBeforeClockInException(
+                );
+            }
+        }
 
         id = builder.id;
         projectId = builder.projectId;
         startInMilliseconds = builder.startInMilliseconds;
         stopInMilliseconds = builder.stopInMilliseconds;
         registered = builder.registered;
-    }
-
-    private static void validateTimeInterval(Builder builder)
-            throws ClockOutBeforeClockInException {
-        if (builder.stopInMilliseconds == 0) {
-            return;
-        }
-
-        if (builder.stopInMilliseconds < builder.startInMilliseconds) {
-            throw new ClockOutBeforeClockInException(
-            );
-        }
     }
 
     public static Builder builder(long projectId) {
