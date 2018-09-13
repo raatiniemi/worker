@@ -125,6 +125,8 @@ public class WorkerApplication extends Application {
                 .build();
 
         if (!isUnitTesting()) {
+            JavaAppKoinKt.start(this);
+
             if (Notifications.Companion.isChannelsAvailable()) {
                 registerNotificationChannel();
             }
