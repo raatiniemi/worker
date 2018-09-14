@@ -14,17 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker;
+package me.raatiniemi.worker
 
-import android.support.annotation.NonNull;
+import me.raatiniemi.worker.data.AndroidTestDataModule
+import me.raatiniemi.worker.data.DataModule
 
-import me.raatiniemi.worker.data.AndroidTestDataModule;
-import me.raatiniemi.worker.data.DataModule;
-
-class AndroidTestApplication extends WorkerApplication {
-    @NonNull
-    @Override
-    DataModule createDataModule() {
-        return new AndroidTestDataModule(this);
+internal class AndroidTestApplication : WorkerApplication() {
+    internal override fun createDataModule(): DataModule {
+        return AndroidTestDataModule(this)
     }
 }
