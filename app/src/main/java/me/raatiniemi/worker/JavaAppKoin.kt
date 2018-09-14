@@ -20,6 +20,7 @@ import android.app.Application
 import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.presentation.preferenceModule
 import me.raatiniemi.worker.presentation.project.projectModule
+import me.raatiniemi.worker.presentation.projects.projectsModule
 import me.raatiniemi.worker.presentation.settings.settingsModule
 import org.koin.android.ext.koin.with
 import org.koin.standalone.StandAloneContext.startKoin
@@ -29,6 +30,7 @@ fun start(app: Application) {
             preferenceModule,
             dataModule,
             projectModule,
+            projectsModule,
             settingsModule
     )) with app
 }
