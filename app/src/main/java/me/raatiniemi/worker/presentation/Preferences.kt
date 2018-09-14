@@ -14,17 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker
+package me.raatiniemi.worker.presentation
 
-import android.app.Application
-import me.raatiniemi.worker.data.dataModule
-import me.raatiniemi.worker.presentation.preferenceModule
-import org.koin.android.ext.koin.with
-import org.koin.standalone.StandAloneContext.startKoin
+import me.raatiniemi.worker.presentation.util.*
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
-fun start(app: Application) {
-    startKoin(listOf(
-            preferenceModule,
-            dataModule
-    )) with app
+class Preferences : KoinComponent {
+    private val settings: Settings by inject()
+
+    val ongoingNotification: OngoingNotificationPreferences
+        get() = settings
 }

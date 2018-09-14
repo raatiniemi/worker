@@ -105,7 +105,6 @@ public class WorkerApplication extends Application {
         PreferenceModule preferenceModule = createPreferenceModule();
         dataComponent = DaggerDataComponent.builder()
                 .dataModule(dataModule)
-                .preferenceModule(preferenceModule)
                 .build();
         projectComponent = DaggerProjectComponent.builder()
                 .androidModule(androidModule)

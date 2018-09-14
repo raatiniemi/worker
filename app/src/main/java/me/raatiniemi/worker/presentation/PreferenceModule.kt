@@ -14,17 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker
+package me.raatiniemi.worker.presentation
 
-import android.app.Application
-import me.raatiniemi.worker.data.dataModule
-import me.raatiniemi.worker.presentation.preferenceModule
-import org.koin.android.ext.koin.with
-import org.koin.standalone.StandAloneContext.startKoin
+import android.preference.PreferenceManager
+import me.raatiniemi.worker.presentation.util.Settings
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module.module
 
-fun start(app: Application) {
-    startKoin(listOf(
-            preferenceModule,
-            dataModule
-    )) with app
+val preferenceModule = module {
+    single {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext())
+
+        Settings(sharedPreferences)
+    }
 }

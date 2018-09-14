@@ -20,16 +20,11 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import me.raatiniemi.worker.data.provider.WorkerProvider;
-import me.raatiniemi.worker.data.service.ongoing.OngoingService;
-import me.raatiniemi.worker.presentation.PreferenceModule;
 
 @Singleton
 @Component(modules = {
-        DataModule.class,
-        PreferenceModule.class
+        DataModule.class
 })
 public interface DataComponent {
     void inject(WorkerProvider provider);
-
-    void inject(OngoingService service);
 }

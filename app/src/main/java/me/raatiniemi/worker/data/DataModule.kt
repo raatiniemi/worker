@@ -14,17 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker
+package me.raatiniemi.worker.data
 
-import android.app.Application
-import me.raatiniemi.worker.data.dataModule
-import me.raatiniemi.worker.presentation.preferenceModule
-import org.koin.android.ext.koin.with
-import org.koin.standalone.StandAloneContext.startKoin
+import me.raatiniemi.worker.data.repository.ProjectResolverRepository
+import me.raatiniemi.worker.data.repository.TimeResolverRepository
+import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.repository.TimeRepository
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module.module
 
-fun start(app: Application) {
-    startKoin(listOf(
-            preferenceModule,
-            dataModule
-    )) with app
+val dataModule = module {
+    single<ProjectRepository> { ProjectResolverRepository(androidContext().contentResolver) }
+
+    single<TimeRepository> { TimeResolverRepository(androidContext().contentResolver) }
 }
