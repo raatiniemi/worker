@@ -89,7 +89,7 @@ public class WorkerApplication extends Application {
                 .build();
 
         if (!isUnitTesting()) {
-            JavaAppKoinKt.start(this);
+            initializeKoin();
 
             if (Notifications.Companion.isChannelsAvailable()) {
                 registerNotificationChannel();
@@ -102,6 +102,10 @@ public class WorkerApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    protected void initializeKoin() {
+        JavaAppKoinKt.start(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
