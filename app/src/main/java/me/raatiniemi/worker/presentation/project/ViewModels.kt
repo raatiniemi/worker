@@ -14,21 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker
+package me.raatiniemi.worker.presentation.project
 
-import android.app.Application
-import me.raatiniemi.worker.data.dataModule
-import me.raatiniemi.worker.presentation.preferenceModule
-import me.raatiniemi.worker.presentation.project.projectModule
-import me.raatiniemi.worker.presentation.settings.settingsModule
-import org.koin.android.ext.koin.with
-import org.koin.standalone.StandAloneContext.startKoin
+import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel
+import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel
+import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
-fun start(app: Application) {
-    startKoin(listOf(
-            preferenceModule,
-            dataModule,
-            projectModule,
-            settingsModule
-    )) with app
+class ViewModels: KoinComponent {
+    val timeSheet: GetTimesheetViewModel.ViewModel by inject()
+
+    val registerTimesheet: RegisterTimesheetViewModel.ViewModel by inject()
+
+    val removeTimesheet: RemoveTimesheetViewModel.ViewModel by inject()
 }

@@ -22,10 +22,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import javax.inject.Inject;
-
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.WorkerApplication;
+import me.raatiniemi.worker.presentation.Preferences;
 import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
@@ -40,9 +38,8 @@ public class ProjectActivity extends BaseActivity {
      */
     private static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    HideRegisteredTimePreferences hideRegisteredTimePreferences;
+    private final Preferences preferences = new Preferences();
+    private final HideRegisteredTimePreferences hideRegisteredTimePreferences = preferences.getHideRegisteredTime();
 
     /**
      * Reference to the timesheet fragment.
@@ -84,9 +81,6 @@ public class ProjectActivity extends BaseActivity {
                     )
                     .commit();
         }
-
-        ((WorkerApplication) getApplication()).getProjectComponent()
-                .inject(this);
     }
 
     @Override

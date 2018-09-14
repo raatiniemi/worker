@@ -36,15 +36,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
+import me.raatiniemi.worker.presentation.Preferences;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.project.ViewModels;
 import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
@@ -61,23 +59,16 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulersWithB
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimesheetFragment extends RxFragment implements SelectionListener {
-    @Inject
-    HideRegisteredTimePreferences hideRegisteredTimePreferences;
+    private final Preferences preferences = new Preferences();
+    private final HideRegisteredTimePreferences hideRegisteredTimePreferences = preferences.getHideRegisteredTime();
+    private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences = preferences.getTimeSheetSummaryFormat();
 
-    @Inject
-    TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
+    private final ViewModels viewModels = new ViewModels();
+    private final GetTimesheetViewModel.ViewModel getTimesheetViewModel = viewModels.getTimeSheet();
+    private final RegisterTimesheetViewModel.ViewModel registerTimesheetViewModel = viewModels.getRegisterTimesheet();
+    private final RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel = viewModels.getRemoveTimesheet();
 
-    @Inject
-    GetTimesheetViewModel.ViewModel getTimesheetViewModel;
-
-    @Inject
-    RegisterTimesheetViewModel.ViewModel registerTimesheetViewModel;
-
-    @Inject
-    RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel;
-
-    @Inject
-    EventBus eventBus;
+    private final EventBus eventBus = EventBus.getDefault();
 
     private LinearLayoutManager linearLayoutManager;
 
@@ -158,10 +149,6 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((WorkerApplication) getActivity().getApplication())
-                .getProjectComponent()
-                .inject(this);
 
         eventBus.register(this);
     }

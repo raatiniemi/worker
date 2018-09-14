@@ -26,6 +26,9 @@ class Preferences : KoinComponent {
     val confirmClockOut: ConfirmClockOutPreferences
         get() = settings
 
+    val hideRegisteredTime: HideRegisteredTimePreferences
+        get() = settings
+
     val ongoingNotification: OngoingNotificationPreferences
         get() = settings
 

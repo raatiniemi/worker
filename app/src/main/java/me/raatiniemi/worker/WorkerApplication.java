@@ -34,9 +34,6 @@ import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
 import me.raatiniemi.worker.exception.NoApplicationInstanceException;
 import me.raatiniemi.worker.presentation.AndroidModule;
 import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.project.DaggerProjectComponent;
-import me.raatiniemi.worker.presentation.project.ProjectComponent;
-import me.raatiniemi.worker.presentation.project.ProjectModule;
 import me.raatiniemi.worker.presentation.projects.DaggerProjectsComponent;
 import me.raatiniemi.worker.presentation.projects.ProjectsComponent;
 import me.raatiniemi.worker.presentation.projects.ProjectsModule;
@@ -85,7 +82,6 @@ public class WorkerApplication extends Application {
     private static WorkerApplication instance;
 
     private DataComponent dataComponent;
-    private ProjectComponent projectComponent;
     private ProjectsComponent projectsComponent;
 
     @Override
@@ -101,12 +97,6 @@ public class WorkerApplication extends Application {
         PreferenceModule preferenceModule = createPreferenceModule();
         dataComponent = DaggerDataComponent.builder()
                 .dataModule(dataModule)
-                .build();
-        projectComponent = DaggerProjectComponent.builder()
-                .androidModule(androidModule)
-                .dataModule(dataModule)
-                .preferenceModule(preferenceModule)
-                .projectModule(new ProjectModule())
                 .build();
         projectsComponent = DaggerProjectsComponent.builder()
                 .androidModule(androidModule)
@@ -185,10 +175,6 @@ public class WorkerApplication extends Application {
 
     public DataComponent getDataComponent() {
         return dataComponent;
-    }
-
-    public ProjectComponent getProjectComponent() {
-        return projectComponent;
     }
 
     public ProjectsComponent getProjectsComponent() {
