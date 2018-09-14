@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,22 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.settings;
+package me.raatiniemi.worker.presentation.settings
 
-import javax.inject.Singleton;
+import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter
+import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
-import dagger.Component;
-import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.settings.view.DataFragment;
-import me.raatiniemi.worker.presentation.settings.view.ProjectFragment;
+class Presenters : KoinComponent {
+    val project: ProjectPresenter by inject()
 
-@Singleton
-@Component(modules = {
-        PreferenceModule.class,
-        SettingsModule.class
-})
-public interface SettingsComponent {
-    void inject(ProjectFragment fragment);
-
-    void inject(DataFragment fragment);
+    val data: DataPresenter by inject()
 }

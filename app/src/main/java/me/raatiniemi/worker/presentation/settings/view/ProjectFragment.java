@@ -28,10 +28,9 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
-import javax.inject.Inject;
-
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.WorkerApplication;
+import me.raatiniemi.worker.presentation.Preferences;
+import me.raatiniemi.worker.presentation.settings.Presenters;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.Notifications;
@@ -53,33 +52,18 @@ public class ProjectFragment extends BasePreferenceFragment
     private static final String ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
     private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    ConfirmClockOutPreferences confirmClockOutPreferences;
+    private final Preferences preferences = new Preferences();
+    private final ConfirmClockOutPreferences confirmClockOutPreferences = preferences.getConfirmClockOut();
+    private final OngoingNotificationPreferences ongoingNotificationPreferences = preferences.getOngoingNotification();
+    private final TimeSummaryPreferences timeSummaryPreferences = preferences.getTimeSummary();
+    private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences = preferences.getTimeSheetSummaryFormat();
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    OngoingNotificationPreferences ongoingNotificationPreferences;
-
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    TimeSummaryPreferences timeSummaryPreferences;
-
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
-
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    ProjectPresenter presenter;
+    private final Presenters presenters = new Presenters();
+    private final ProjectPresenter presenter = presenters.getProject();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((WorkerApplication) getActivity().getApplication())
-                .getSettingsComponent()
-                .inject(this);
 
         presenter.attachView(this);
 

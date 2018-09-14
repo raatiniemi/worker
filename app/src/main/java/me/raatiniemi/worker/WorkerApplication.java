@@ -40,9 +40,6 @@ import me.raatiniemi.worker.presentation.project.ProjectModule;
 import me.raatiniemi.worker.presentation.projects.DaggerProjectsComponent;
 import me.raatiniemi.worker.presentation.projects.ProjectsComponent;
 import me.raatiniemi.worker.presentation.projects.ProjectsModule;
-import me.raatiniemi.worker.presentation.settings.DaggerSettingsComponent;
-import me.raatiniemi.worker.presentation.settings.SettingsComponent;
-import me.raatiniemi.worker.presentation.settings.SettingsModule;
 import me.raatiniemi.worker.presentation.util.Notifications;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -90,7 +87,6 @@ public class WorkerApplication extends Application {
     private DataComponent dataComponent;
     private ProjectComponent projectComponent;
     private ProjectsComponent projectsComponent;
-    private SettingsComponent settingsComponent;
 
     @Override
     public void onCreate() {
@@ -117,10 +113,6 @@ public class WorkerApplication extends Application {
                 .dataModule(dataModule)
                 .projectsModule(new ProjectsModule())
                 .preferenceModule(preferenceModule)
-                .build();
-        settingsComponent = DaggerSettingsComponent.builder()
-                .preferenceModule(preferenceModule)
-                .settingsModule(new SettingsModule())
                 .build();
 
         if (!isUnitTesting()) {
@@ -201,10 +193,6 @@ public class WorkerApplication extends Application {
 
     public ProjectsComponent getProjectsComponent() {
         return projectsComponent;
-    }
-
-    public SettingsComponent getSettingsComponent() {
-        return settingsComponent;
     }
 
     boolean isUnitTesting() {
