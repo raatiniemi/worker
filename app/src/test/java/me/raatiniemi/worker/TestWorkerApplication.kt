@@ -14,15 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker;
+package me.raatiniemi.worker
 
-import android.annotation.SuppressLint;
+import android.annotation.SuppressLint
 
 @SuppressLint("Registered")
-@SuppressWarnings("unused")
-public class TestWorkerApplication extends WorkerApplication {
-    @Override
-    boolean isUnitTesting() {
-        return true;
+class TestWorkerApplication : WorkerApplication() {
+    internal override fun isUnitTesting(): Boolean {
+        return true
     }
 }
