@@ -88,7 +88,7 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
-def leakCanaryVersion = '1.5.4'
+def leakCanaryVersion = '1.6.1'
 
 dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
