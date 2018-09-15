@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,22 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data;
+package me.raatiniemi.worker.presentation
 
-import javax.inject.Singleton;
+import android.preference.PreferenceManager
+import me.raatiniemi.worker.presentation.util.Settings
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module.module
 
-import dagger.Component;
-import me.raatiniemi.worker.data.provider.WorkerProvider;
-import me.raatiniemi.worker.data.service.ongoing.OngoingService;
-import me.raatiniemi.worker.presentation.PreferenceModule;
+val preferenceModule = module {
+    single {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext())
 
-@Singleton
-@Component(modules = {
-        DataModule.class,
-        PreferenceModule.class
-})
-public interface DataComponent {
-    void inject(WorkerProvider provider);
-
-    void inject(OngoingService service);
+        Settings(sharedPreferences)
+    }
 }

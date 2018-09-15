@@ -27,16 +27,14 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import butterknife.Unbinder;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.projects.ViewModels;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.presentation.util.Keyboard;
@@ -47,13 +45,10 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class CreateProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    EventBus eventBus;
+    private final EventBus eventBus = EventBus.getDefault();
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    CreateProjectViewModel.ViewModel viewModel;
+    private final ViewModels viewModels = new ViewModels();
+    private final CreateProjectViewModel.ViewModel viewModel = viewModels.getCreateProject();
 
     @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
     @BindView(R.id.fragment_create_project_name)
@@ -72,10 +67,6 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((WorkerApplication) getActivity().getApplication())
-                .getProjectsComponent()
-                .inject(this);
 
         viewModel.output().createProjectSuccess()
                 .compose(bindToLifecycle())

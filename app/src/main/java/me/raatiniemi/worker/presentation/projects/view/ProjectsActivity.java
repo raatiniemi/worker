@@ -30,8 +30,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import javax.inject.Inject;
-
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
@@ -46,9 +44,7 @@ public class ProjectsActivity extends BaseActivity {
     private static final String FRAGMENT_PROJECT_LIST_TAG = "project list";
     private static final String FRAGMENT_CREATE_PROJECT_TAG = "create project";
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    EventBus eventBus;
+    private final EventBus eventBus = EventBus.getDefault();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +63,6 @@ public class ProjectsActivity extends BaseActivity {
                     .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
                     .commit();
         }
-
-        ((WorkerApplication) getApplication())
-                .getProjectsComponent()
-                .inject(this);
 
         eventBus.register(this);
     }

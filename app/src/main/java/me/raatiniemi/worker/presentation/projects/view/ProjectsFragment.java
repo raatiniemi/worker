@@ -35,15 +35,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.presentation.Preferences;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
+import me.raatiniemi.worker.presentation.projects.ViewModels;
 import me.raatiniemi.worker.presentation.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItem;
 import me.raatiniemi.worker.presentation.projects.model.ProjectsItemAdapterResult;
@@ -70,27 +68,18 @@ import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull
 public class ProjectsFragment extends RxFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
     private static final String FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at";
-    @Inject
-    ProjectsViewModel.ViewModel projectsViewModel;
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    RefreshActiveProjectsViewModel.ViewModel refreshViewModel;
-    @Inject
-    ClockActivityViewModel.ViewModel clockActivityViewModel;
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    RemoveProjectViewModel.ViewModel removeProjectViewModel;
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    EventBus eventBus;
+    private final ViewModels viewModels = new ViewModels();
+    private final ProjectsViewModel.ViewModel projectsViewModel = viewModels.getProjects();
+    private final RefreshActiveProjectsViewModel.ViewModel refreshViewModel = viewModels.getRefreshActiveProjects();
+    private final ClockActivityViewModel.ViewModel clockActivityViewModel = viewModels.getClockActivity();
+    private final RemoveProjectViewModel.ViewModel removeProjectViewModel = viewModels.getRemoveProject();
 
-    @Inject
-    TimeSummaryPreferences timeSummaryPreferences;
+    private final EventBus eventBus = EventBus.getDefault();
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    ConfirmClockOutPreferences confirmClockOutPreferences;
+    private final Preferences preferences = new Preferences();
+    private final TimeSummaryPreferences timeSummaryPreferences = preferences.getTimeSummary();
+    private final ConfirmClockOutPreferences confirmClockOutPreferences = preferences.getConfirmClockOut();
 
     private Subscription refreshProjectsSubscription;
     private RecyclerView recyclerView;
@@ -100,10 +89,6 @@ public class ProjectsFragment extends RxFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((WorkerApplication) getActivity().getApplication())
-                .getProjectsComponent()
-                .inject(this);
 
         eventBus.register(this);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,15 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker;
+package me.raatiniemi.worker.data
 
-import android.annotation.SuppressLint;
+import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.repository.TimeRepository
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 
-@SuppressLint("Registered")
-@SuppressWarnings("unused")
-public class TestWorkerApplication extends WorkerApplication {
-    @Override
-    boolean isUnitTesting() {
-        return true;
-    }
+class Repositories : KoinComponent {
+    val project: ProjectRepository by inject()
+
+    val time: TimeRepository by inject()
 }

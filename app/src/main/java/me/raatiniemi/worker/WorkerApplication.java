@@ -19,30 +19,13 @@ package me.raatiniemi.worker;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import me.raatiniemi.worker.data.DaggerDataComponent;
-import me.raatiniemi.worker.data.DataComponent;
-import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
-import me.raatiniemi.worker.exception.NoApplicationInstanceException;
-import me.raatiniemi.worker.presentation.AndroidModule;
-import me.raatiniemi.worker.presentation.PreferenceModule;
-import me.raatiniemi.worker.presentation.project.DaggerProjectComponent;
-import me.raatiniemi.worker.presentation.project.ProjectComponent;
-import me.raatiniemi.worker.presentation.project.ProjectModule;
-import me.raatiniemi.worker.presentation.projects.DaggerProjectsComponent;
-import me.raatiniemi.worker.presentation.projects.ProjectsComponent;
-import me.raatiniemi.worker.presentation.projects.ProjectsModule;
-import me.raatiniemi.worker.presentation.settings.DaggerSettingsComponent;
-import me.raatiniemi.worker.presentation.settings.SettingsComponent;
-import me.raatiniemi.worker.presentation.settings.SettingsModule;
 import me.raatiniemi.worker.presentation.util.Notifications;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -85,46 +68,13 @@ public class WorkerApplication extends Application {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
-    private static WorkerApplication instance;
-
-    private DataComponent dataComponent;
-    private ProjectComponent projectComponent;
-    private ProjectsComponent projectsComponent;
-    private SettingsComponent settingsComponent;
-
     @Override
     public void onCreate() {
         super.onCreate();
 
-        synchronized (WorkerApplication.class) {
-            instance = this;
-        }
-
-        AndroidModule androidModule = createAndroidModule();
-        DataModule dataModule = createDataModule();
-        PreferenceModule preferenceModule = createPreferenceModule();
-        dataComponent = DaggerDataComponent.builder()
-                .dataModule(dataModule)
-                .preferenceModule(preferenceModule)
-                .build();
-        projectComponent = DaggerProjectComponent.builder()
-                .androidModule(androidModule)
-                .dataModule(dataModule)
-                .preferenceModule(preferenceModule)
-                .projectModule(new ProjectModule())
-                .build();
-        projectsComponent = DaggerProjectsComponent.builder()
-                .androidModule(androidModule)
-                .dataModule(dataModule)
-                .projectsModule(new ProjectsModule())
-                .preferenceModule(preferenceModule)
-                .build();
-        settingsComponent = DaggerSettingsComponent.builder()
-                .preferenceModule(preferenceModule)
-                .settingsModule(new SettingsModule())
-                .build();
-
         if (!isUnitTesting()) {
+            initializeKoin();
+
             if (Notifications.Companion.isChannelsAvailable()) {
                 registerNotificationChannel();
             }
@@ -136,6 +86,10 @@ public class WorkerApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new DebugTree());
         }
+    }
+
+    protected void initializeKoin() {
+        JavaAppKoinKt.start(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -163,47 +117,6 @@ public class WorkerApplication extends Application {
         }
 
         return nm;
-    }
-
-    public static synchronized WorkerApplication getInstance() {
-        if (null == instance) {
-            throw new NoApplicationInstanceException();
-        }
-
-        return instance;
-    }
-
-    @NonNull
-    private AndroidModule createAndroidModule() {
-        return new AndroidModule(this);
-    }
-
-    @NonNull
-    DataModule createDataModule() {
-        return new DataModule(this);
-    }
-
-    @NonNull
-    private PreferenceModule createPreferenceModule() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        return new PreferenceModule(preferences);
-    }
-
-    public DataComponent getDataComponent() {
-        return dataComponent;
-    }
-
-    public ProjectComponent getProjectComponent() {
-        return projectComponent;
-    }
-
-    public ProjectsComponent getProjectsComponent() {
-        return projectsComponent;
-    }
-
-    public SettingsComponent getSettingsComponent() {
-        return settingsComponent;
     }
 
     boolean isUnitTesting() {

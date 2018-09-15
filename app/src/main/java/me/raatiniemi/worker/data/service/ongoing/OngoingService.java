@@ -24,40 +24,27 @@ import android.content.Intent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import javax.inject.Inject;
-
 import me.raatiniemi.worker.WorkerApplication;
+import me.raatiniemi.worker.data.Repositories;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.presentation.Preferences;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import timber.log.Timber;
 
 public abstract class OngoingService extends IntentService {
-    @SuppressWarnings("WeakerAccess")
-    @Inject
-    ProjectRepository projectRepository;
+    private final Repositories repositories = new Repositories();
+    private final ProjectRepository projectRepository = repositories.getProject();
+    private final TimeRepository timeRepository = repositories.getTime();
 
-    @SuppressWarnings("WeakerAccess")
-    @Inject
-    TimeRepository timeRepository;
-
-    @SuppressWarnings("WeakerAccess")
-    @Inject
-    OngoingNotificationPreferences ongoingNotificationPreferences;
+    private final Preferences preferences = new Preferences();
+    private final OngoingNotificationPreferences ongoingNotificationPreferences = preferences.getOngoingNotification();
 
     OngoingService(String name) {
         super(name);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        ((WorkerApplication) getApplication()).getDataComponent()
-                .inject(this);
     }
 
     private static String buildNotificationTag(long projectId) {

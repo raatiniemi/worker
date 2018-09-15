@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.exception;
+package me.raatiniemi.worker.presentation.projects
 
-public class NoApplicationInstanceException extends RuntimeException {
+import me.raatiniemi.worker.presentation.projects.viewmodel.*
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
+
+class ViewModels : KoinComponent {
+    val clockActivity: ClockActivityViewModel.ViewModel by inject()
+    val createProject: CreateProjectViewModel.ViewModel by inject()
+    val projects: ProjectsViewModel.ViewModel by inject()
+    val refreshActiveProjects: RefreshActiveProjectsViewModel.ViewModel by inject()
+    val removeProject: RemoveProjectViewModel.ViewModel by inject()
 }

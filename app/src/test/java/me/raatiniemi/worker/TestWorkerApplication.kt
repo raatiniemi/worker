@@ -14,34 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation;
+package me.raatiniemi.worker
 
-import android.content.Context;
+import android.annotation.SuppressLint
 
-import org.greenrobot.eventbus.EventBus;
-
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
-
-@Module
-public class AndroidModule {
-    private final Context context;
-
-    public AndroidModule(Context context) {
-        this.context = context;
-    }
-
-    @Provides
-    @Singleton
-    Context providesContext() {
-        return context;
-    }
-
-    @Provides
-    @Singleton
-    EventBus providesEventBus() {
-        return EventBus.getDefault();
+@SuppressLint("Registered")
+class TestWorkerApplication : WorkerApplication() {
+    internal override fun isUnitTesting(): Boolean {
+        return true
     }
 }

@@ -31,12 +31,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.inject.Inject;
-
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.BackupService;
 import me.raatiniemi.worker.data.service.data.RestoreService;
+import me.raatiniemi.worker.presentation.settings.Presenters;
 import me.raatiniemi.worker.presentation.settings.model.Backup;
 import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter;
 import me.raatiniemi.worker.presentation.util.PermissionUtil;
@@ -75,17 +73,12 @@ public class DataFragment extends BasePreferenceFragment
 
     private Snackbar snackbar;
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @Inject
-    DataPresenter presenter;
+    private final Presenters presenters = new Presenters();
+    private final DataPresenter presenter = presenters.getData();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ((WorkerApplication) getActivity().getApplication())
-                .getSettingsComponent()
-                .inject(this);
 
         presenter.attachView(this);
 
