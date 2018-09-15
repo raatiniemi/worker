@@ -4,7 +4,12 @@ variables:
   ANDROID_HOME: "/opt/android-sdk"
 
 before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
   - bin/configure-container-environment
+
+cache:
+  paths:
+    - .gradle
 
 stages:
   - build
