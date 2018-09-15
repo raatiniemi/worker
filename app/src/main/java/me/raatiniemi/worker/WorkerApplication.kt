@@ -23,9 +23,15 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 
 import com.squareup.leakcanary.LeakCanary
+import me.raatiniemi.worker.data.dataModule
 
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
+import me.raatiniemi.worker.presentation.preferenceModule
+import me.raatiniemi.worker.presentation.project.projectModule
+import me.raatiniemi.worker.presentation.projects.projectsModule
+import me.raatiniemi.worker.presentation.settings.settingsModule
 import me.raatiniemi.worker.presentation.util.Notifications
+import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -43,7 +49,13 @@ open class WorkerApplication : Application() {
         super.onCreate()
 
         if (!isUnitTesting) {
-            initializeKoin()
+            startKoin(this, listOf(
+                    preferenceModule,
+                    dataModule,
+                    projectModule,
+                    projectsModule,
+                    settingsModule
+            ))
 
             if (Notifications.isChannelsAvailable) {
                 registerNotificationChannel()
@@ -56,10 +68,6 @@ open class WorkerApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
-    }
-
-    private fun initializeKoin() {
-        start(this)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
