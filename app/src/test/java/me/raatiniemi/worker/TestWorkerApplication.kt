@@ -20,7 +20,6 @@ import android.annotation.SuppressLint
 
 @SuppressLint("Registered")
 class TestWorkerApplication : WorkerApplication() {
-    internal override fun isUnitTesting(): Boolean {
-        return true
-    }
+    override val isUnitTesting: Boolean
+        get() = true
 }

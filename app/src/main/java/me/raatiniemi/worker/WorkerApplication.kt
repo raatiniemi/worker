@@ -1,0 +1,114 @@
+/*
+ * Copyright (C) 2017 Worker Project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package me.raatiniemi.worker
+
+import android.app.Application
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
+import android.support.annotation.RequiresApi
+
+import com.squareup.leakcanary.LeakCanary
+
+import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
+import me.raatiniemi.worker.presentation.util.Notifications
+import timber.log.Timber
+import timber.log.Timber.DebugTree
+
+/**
+ * Stores application constants.
+ */
+open class WorkerApplication : Application() {
+    private val notificationManager: NotificationManager
+        get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    internal open val isUnitTesting: Boolean
+        get() = false
+
+    override fun onCreate() {
+        super.onCreate()
+
+        if (!isUnitTesting) {
+            initializeKoin()
+
+            if (Notifications.isChannelsAvailable) {
+                registerNotificationChannel()
+            }
+
+            LeakCanary.install(this)
+            ReloadNotificationService.startServiceWithContext(this)
+        }
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
+        }
+    }
+
+    private fun initializeKoin() {
+        start(this)
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private fun registerNotificationChannel() {
+        try {
+            val notificationManager = notificationManager
+            Notifications.createChannel(
+                    notificationManager,
+                    Notifications.ongoingChannel(resources)
+            )
+            Notifications.createChannel(
+                    notificationManager,
+                    Notifications.backupChannel(resources)
+            )
+        } catch (e: ClassCastException) {
+            Timber.e(e)
+        } catch (e: NullPointerException) {
+            Timber.e(e)
+        }
+    }
+
+    companion object {
+        /**
+         * Package for the application.
+         */
+        const val PACKAGE = "me.raatiniemi.worker"
+
+        /**
+         * Name of the application database.
+         */
+        const val DATABASE_NAME = "worker"
+
+        const val NOTIFICATION_BACKUP_SERVICE_ID = 1
+        const val NOTIFICATION_RESTORE_SERVICE_ID = 2
+        const val NOTIFICATION_ON_GOING_ID = 3
+
+        /**
+         * Prefix for backup directories.
+         */
+        const val STORAGE_BACKUP_DIRECTORY_PREFIX = "backup-"
+
+        /**
+         * Pattern for the backup directories.
+         */
+        const val STORAGE_BACKUP_DIRECTORY_PATTERN = WorkerApplication.STORAGE_BACKUP_DIRECTORY_PREFIX + "(\\d+)"
+
+        /**
+         * Intent action for restarting the application.
+         */
+        const val INTENT_ACTION_RESTART = "action_restart"
+    }
+}
