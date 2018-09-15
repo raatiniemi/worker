@@ -25,11 +25,7 @@ import android.support.annotation.RequiresApi;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import me.raatiniemi.worker.data.DaggerDataComponent;
-import me.raatiniemi.worker.data.DataComponent;
-import me.raatiniemi.worker.data.DataModule;
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService;
-import me.raatiniemi.worker.exception.NoApplicationInstanceException;
 import me.raatiniemi.worker.presentation.util.Notifications;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -72,21 +68,9 @@ public class WorkerApplication extends Application {
      */
     public static final String INTENT_ACTION_RESTART = "action_restart";
 
-    private static WorkerApplication instance;
-
-    private DataComponent dataComponent;
-
     @Override
     public void onCreate() {
         super.onCreate();
-
-        synchronized (WorkerApplication.class) {
-            instance = this;
-        }
-
-        dataComponent = DaggerDataComponent.builder()
-                .dataModule(createDataModule())
-                .build();
 
         if (!isUnitTesting()) {
             initializeKoin();
@@ -133,23 +117,6 @@ public class WorkerApplication extends Application {
         }
 
         return nm;
-    }
-
-    public static synchronized WorkerApplication getInstance() {
-        if (null == instance) {
-            throw new NoApplicationInstanceException();
-        }
-
-        return instance;
-    }
-
-    @NonNull
-    DataModule createDataModule() {
-        return new DataModule(this);
-    }
-
-    public DataComponent getDataComponent() {
-        return dataComponent;
     }
 
     boolean isUnitTesting() {
