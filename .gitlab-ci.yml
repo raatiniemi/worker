@@ -1,4 +1,4 @@
-image: openjdk:8
+image: gradle:4.10.1-jdk8
 
 variables:
   ANDROID_HOME: "/opt/android-sdk"
@@ -14,7 +14,7 @@ stages:
 build:
   stage: build
   script:
-    - bin/build
+    - gradle clean assemble
   artifacts:
     paths:
       - app/build/outputs/
@@ -24,7 +24,7 @@ build:
 test:
   stage: test
   script:
-    - bin/test
+    - gradle test
   artifacts:
     paths:
       - app/build/outputs/
@@ -36,7 +36,7 @@ test:
 sonar:
   stage: test
   script:
-    - bin/sonar
+    - gradle test sonarqube
   artifacts:
     paths:
       - app/build/outputs/
@@ -48,7 +48,7 @@ sonar:
 deploy:
   stage: deploy
   script:
-    - bin/deploy
+    - gradle publishApkRelease
   artifacts:
     paths:
       - app/build/outputs/

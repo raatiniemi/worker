@@ -1,4 +1,5 @@
 # Worker
+[![pipeline status](https://gitlab.com/raatiniemi/worker/badges/master/pipeline.svg)](https://gitlab.com/raatiniemi/worker/commits/master)
 ![license](https://img.shields.io/badge/license-GPLv2-blue.svg)
 
 Worker is a simple Android application for keeping track of time.

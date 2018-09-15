@@ -18,6 +18,10 @@ apply plugin: 'org.sonarqube'
 
 sonarqube {
     properties {
+        properties['sonar.organization'] = System.getenv('SONAR_ORGANIZATION')
+        properties['sonar.host.url'] = System.getenv('SONAR_HOST_URL')
+        properties['sonar.login'] = System.getenv('SONAR_LOGIN')
+
         properties['sonar.projectKey'] = 'me.raatiniemi.worker'
         properties['sonar.projectName'] = 'worker'
         properties['sonar.projectVersion'] = projectVersion
