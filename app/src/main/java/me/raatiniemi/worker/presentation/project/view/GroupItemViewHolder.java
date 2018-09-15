@@ -22,23 +22,18 @@ import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 
 class GroupItemViewHolder extends AbstractExpandableItemViewHolder {
-    @BindView(R.id.fragment_timesheet_group_item_letter)
-    ImageView letter;
-
-    @BindView(R.id.fragment_timesheet_group_item_title)
-    TextView title;
-
-    @BindView(R.id.fragment_timesheet_group_item_summarize)
-    TextView summarize;
+    final ImageView letter;
+    final TextView title;
+    final TextView summarize;
 
     GroupItemViewHolder(View view) {
         super(view);
 
-        ButterKnife.bind(this, view);
+        letter = view.findViewById(R.id.fragment_timesheet_group_item_letter);
+        title = view.findViewById(R.id.fragment_timesheet_group_item_title);
+        summarize = view.findViewById(R.id.fragment_timesheet_group_item_summarize);
     }
 }

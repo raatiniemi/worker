@@ -21,32 +21,24 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import me.raatiniemi.worker.R;
 
 class ProjectsItemViewHolder extends RecyclerView.ViewHolder {
-    @BindView(R.id.fragment_projects_item_name)
-    TextView name;
-
-    @BindView(R.id.fragment_projects_item_time)
-    TextView time;
-
-    @BindView(R.id.fragment_projects_item_action_clock_activity_toggle)
-    ImageButton clockActivityToggle;
-
-    @BindView(R.id.fragment_projects_item_action_clock_activity_at)
-    ImageButton clockActivityAt;
-
-    @BindView(R.id.fragment_projects_item_action_delete)
-    ImageButton delete;
-
-    @BindView(R.id.fragment_projects_item_clocked_in_since)
-    TextView clockedInSince;
+    final TextView name;
+    final TextView time;
+    final ImageButton clockActivityToggle;
+    final ImageButton clockActivityAt;
+    final ImageButton delete;
+    final TextView clockedInSince;
 
     ProjectsItemViewHolder(View view) {
         super(view);
 
-        ButterKnife.bind(this, view);
+        name = view.findViewById(R.id.fragment_projects_item_name);
+        time = view.findViewById(R.id.fragment_projects_item_time);
+        clockActivityToggle = view.findViewById(R.id.fragment_projects_item_action_clock_activity_toggle);
+        clockActivityAt = view.findViewById(R.id.fragment_projects_item_action_clock_activity_at);
+        delete = view.findViewById(R.id.fragment_projects_item_action_delete);
+        clockedInSince = view.findViewById(R.id.fragment_projects_item_clocked_in_since);
     }
 }
