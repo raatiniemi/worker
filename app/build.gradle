@@ -82,7 +82,7 @@ if (System.getenv("PLAY_KEY_PATH")) {
 }
 
 jacoco {
-    toolVersion = '0.7.8'
+    toolVersion = '0.8.1'
 }
 tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
