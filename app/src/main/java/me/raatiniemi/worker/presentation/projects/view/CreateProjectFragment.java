@@ -19,6 +19,8 @@ package me.raatiniemi.worker.presentation.projects.view;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +29,6 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
-import butterknife.Unbinder;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.presentation.projects.ViewModels;
@@ -50,15 +47,8 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     private final ViewModels viewModels = new ViewModels();
     private final CreateProjectViewModel.ViewModel viewModel = viewModels.getCreateProject();
 
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @BindView(R.id.fragment_create_project_name)
-    EditText projectName;
-
-    @SuppressWarnings({"CanBeFinal", "WeakerAccess"})
-    @BindView(R.id.fragment_create_project_submit)
-    TextView projectSubmit;
-
-    private Unbinder unbinder;
+    private EditText projectName;
+    private TextView projectSubmit;
 
     public static CreateProjectFragment newInstance() {
         return new CreateProjectFragment();
@@ -89,7 +79,27 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_project, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        projectName = view.findViewById(R.id.fragment_create_project_name);
+        projectName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.input().projectName(s.toString());
+            }
+        });
+
+        projectSubmit = view.findViewById(R.id.fragment_create_project_submit);
+        projectSubmit.setOnClickListener(l -> viewModel.input().createProject());
+
+        TextView dismiss = view.findViewById(R.id.fragment_create_project_dismiss);
+        dismiss.setOnClickListener(l -> dismiss());
 
         return view;
     }
@@ -107,13 +117,6 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        unbinder.unbind();
-    }
-
-    @Override
     public void onShow(DialogInterface dialog) {
         // We might have dismissed the dialog, we have to make sure that the
         // dialog and activity are still available before we can continue.
@@ -124,21 +127,6 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
 
         // Force the keyboard to show when the dialog is showing.
         Keyboard.show(getActivity());
-    }
-
-    @OnTextChanged(R.id.fragment_create_project_name)
-    void onProjectName(final CharSequence name) {
-        viewModel.input().projectName(name.toString());
-    }
-
-    @OnClick(R.id.fragment_create_project_submit)
-    void onCreateProject() {
-        viewModel.input().createProject();
-    }
-
-    @OnClick(R.id.fragment_create_project_dismiss)
-    void onDismissDialog() {
-        dismiss();
     }
 
     private void success(Project project) {
