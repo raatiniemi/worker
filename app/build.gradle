@@ -88,8 +88,10 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
+def leakCanaryVersion = '1.5.4'
+
 dependencies {
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
 
     implementation project(':core')
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -107,10 +109,10 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.0'
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.11.0'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.6.2'
     testImplementation 'org.robolectric:robolectric:3.5.1'
-    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 }
