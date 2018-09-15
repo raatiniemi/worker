@@ -32,9 +32,6 @@ import android.support.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import javax.inject.Inject;
-
-import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.util.Optional;
 
@@ -48,7 +45,6 @@ public class WorkerProvider extends ContentProvider {
 
     private static final UriMatcher uriMatcher = buildUriMatcher();
 
-    @Inject
     WorkerDatabase openHelper;
 
     private static UriMatcher buildUriMatcher() {
@@ -68,9 +64,7 @@ public class WorkerProvider extends ContentProvider {
 
     private synchronized WorkerDatabase getOpenHelper() {
         if (null == openHelper) {
-            WorkerApplication.getInstance()
-                    .getDataComponent()
-                    .inject(this);
+            openHelper = new WorkerDatabase(getContext());
         }
 
         return openHelper;
