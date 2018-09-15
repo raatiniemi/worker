@@ -1,5 +1,10 @@
 image: openjdk:8
 
+stages:
+  - build
+  - test
+  - deploy
+
 variables:
   ANDROID_HOME: "/opt/android-sdk"
 
@@ -10,11 +15,6 @@ before_script:
 cache:
   paths:
     - .gradle
-
-stages:
-  - build
-  - test
-  - deploy
 
 build:
   stage: build
