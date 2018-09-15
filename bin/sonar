@@ -1,11 +1,6 @@
 #!/bin/bash
-if [ -z $SONAR_HOST_URL ]; then
-    echo "\$SONAR_HOST_URL have not been defined";
-    exit 1;
-fi;
-
 GRADLE_RUNNER="$(dirname $0)/gradle";
-TASKS="test sonarqube -Dsonar.host.url=${SONAR_HOST_URL}";
+TASKS="test sonarqube";
 
 $GRADLE_RUNNER $TASKS;
 exit $?;
