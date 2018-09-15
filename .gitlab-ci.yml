@@ -1,4 +1,4 @@
-image: gradle:4.10.1-jdk8
+image: openjdk:8
 
 variables:
   ANDROID_HOME: "/opt/android-sdk"
