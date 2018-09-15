@@ -1,6 +1,0 @@
-#!/bin/bash
-GRADLE_RUNNER="$(dirname $0)/gradle";
-TASKS="test";
-
-$GRADLE_RUNNER $TASKS;
-exit $?;
