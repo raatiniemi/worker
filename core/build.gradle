@@ -6,7 +6,7 @@ sourceCompatibility = sourceCompatibilityVersion
 targetCompatibility = targetCompatibilityVersion
 
 jacoco {
-    toolVersion = '0.7.8'
+    toolVersion = '0.8.1'
 }
 
 dependencies {
