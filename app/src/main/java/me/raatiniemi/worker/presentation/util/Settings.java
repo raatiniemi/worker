@@ -28,37 +28,6 @@ public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutP
     public static final int TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK = 1;
     public static final int TIME_SHEET_SUMMARY_FORMAT_FRACTION = 2;
 
-    /**
-     * Preference key for hiding registered time.
-     */
-    private static final String PREF_HIDE_REGISTERED_TIME = "pref_hide_registered_time";
-
-    /**
-     * Preference key for clock out confirmation.
-     */
-    private static final String PREF_CONFIRM_CLOCK_OUT = "pref_confirm_clock_out";
-
-    /**
-     * Preference key to check if ongoing notification is enabled.
-     */
-    private static final String PREF_ONGOING_NOTIFICATION_ENABLED = "pref_ongoing_notification_enabled";
-
-    /**
-     * Preference key to check if the ongoing notification chronometer is enabled.
-     */
-    private static final String PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED
-            = "pref_ongoing_notification_chronometer_enabled";
-
-    /**
-     * Preference key to check which starting point to use for time summary.
-     */
-    private static final String PREF_TIME_SUMMARY = "pref_time_summary";
-
-    /**
-     * Preference key to check which format to use for time sheet summary.
-     */
-    private static final String PREF_TIME_SHEET_SUMMARY_FORMAT = "pref_time_sheet_summary_format";
-
     private final SharedPreferences preferences;
 
     public Settings(SharedPreferences preferences) {
@@ -67,94 +36,94 @@ public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutP
 
     @Override
     public boolean shouldHideRegisteredTime() {
-        return preferences.getBoolean(PREF_HIDE_REGISTERED_TIME, false);
+        return preferences.getBoolean(AppKeys.HIDE_REGISTERED_TIME.getRawValue(), false);
     }
 
     @Override
     public void setHideRegisteredTime(boolean newValue) {
         preferences.edit()
-                .putBoolean(PREF_HIDE_REGISTERED_TIME, newValue)
+                .putBoolean(AppKeys.HIDE_REGISTERED_TIME.getRawValue(), newValue)
                 .apply();
     }
 
     @Override
     public boolean shouldConfirmClockOut() {
-        return preferences.getBoolean(PREF_CONFIRM_CLOCK_OUT, true);
+        return preferences.getBoolean(AppKeys.CONFIRM_CLOCK_OUT.getRawValue(), true);
     }
 
     @Override
     public void setConfirmClockOut(boolean newValue) {
         preferences.edit()
-                .putBoolean(PREF_CONFIRM_CLOCK_OUT, newValue)
+                .putBoolean(AppKeys.CONFIRM_CLOCK_OUT.getRawValue(), newValue)
                 .apply();
     }
 
     @Override
     public boolean isOngoingNotificationEnabled() {
-        return preferences.getBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true);
+        return preferences.getBoolean(AppKeys.ONGOING_NOTIFICATION_ENABLED.getRawValue(), true);
     }
 
     @Override
     public void enableOngoingNotification() {
         preferences.edit()
-                .putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, true)
+                .putBoolean(AppKeys.ONGOING_NOTIFICATION_ENABLED.getRawValue(), true)
                 .apply();
     }
 
     @Override
     public void disableOngoingNotification() {
         preferences.edit()
-                .putBoolean(PREF_ONGOING_NOTIFICATION_ENABLED, false)
+                .putBoolean(AppKeys.ONGOING_NOTIFICATION_ENABLED.getRawValue(), false)
                 .apply();
     }
 
     @Override
     public boolean isOngoingNotificationChronometerEnabled() {
-        return preferences.getBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true);
+        return preferences.getBoolean(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.getRawValue(), true);
     }
 
     @Override
     public void enableOngoingNotificationChronometer() {
         preferences.edit()
-                .putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true)
+                .putBoolean(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.getRawValue(), true)
                 .apply();
     }
 
     @Override
     public void disableOngoingNotificationChronometer() {
         preferences.edit()
-                .putBoolean(PREF_ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, false)
+                .putBoolean(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.getRawValue(), false)
                 .apply();
     }
 
     @Override
     public int getStartingPointForTimeSummary() {
-        return preferences.getInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH);
+        return preferences.getInt(AppKeys.TIME_SUMMARY.getRawValue(), GetProjectTimeSince.MONTH);
     }
 
     @Override
     public void useWeekForTimeSummaryStartingPoint() {
         preferences.edit()
-                .putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.WEEK)
+                .putInt(AppKeys.TIME_SUMMARY.getRawValue(), GetProjectTimeSince.WEEK)
                 .apply();
     }
 
     @Override
     public void useMonthForTimeSummaryStartingPoint() {
         preferences.edit()
-                .putInt(PREF_TIME_SUMMARY, GetProjectTimeSince.MONTH)
+                .putInt(AppKeys.TIME_SUMMARY.getRawValue(), GetProjectTimeSince.MONTH)
                 .apply();
     }
 
     @Override
     public int getTimeSheetSummaryFormat() {
-        return preferences.getInt(PREF_TIME_SHEET_SUMMARY_FORMAT, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+        return preferences.getInt(AppKeys.TIME_SHEET_SUMMARY_FORMAT.getRawValue(), TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
     }
 
     @Override
     public void useFractionAsTimeSheetSummaryFormat() {
         preferences.edit()
-                .putInt(PREF_TIME_SHEET_SUMMARY_FORMAT, TIME_SHEET_SUMMARY_FORMAT_FRACTION)
+                .putInt(AppKeys.TIME_SHEET_SUMMARY_FORMAT.getRawValue(), TIME_SHEET_SUMMARY_FORMAT_FRACTION)
                 .apply();
 
     }
@@ -162,7 +131,7 @@ public class Settings implements HideRegisteredTimePreferences, ConfirmClockOutP
     @Override
     public void useDigitalClockAsTimeSheetSummaryFormat() {
         preferences.edit()
-                .putInt(PREF_TIME_SHEET_SUMMARY_FORMAT, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK)
+                .putInt(AppKeys.TIME_SHEET_SUMMARY_FORMAT.getRawValue(), TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK)
                 .apply();
     }
 }
