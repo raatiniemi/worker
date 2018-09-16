@@ -13,7 +13,6 @@ before_script:
   - bin/configure-container-environment
 
 cache:
-  key: "$CI_COMMIT_REF_SLUG"
   paths:
     - .gradle
 
