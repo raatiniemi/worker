@@ -23,6 +23,7 @@ build:
   artifacts:
     paths:
       - app/build/outputs/
+      - core/build/libs/
     expire_in: 1 day
   tags:
    - docker
@@ -34,6 +35,7 @@ test:
   artifacts:
     paths:
       - app/build/outputs/
+      - core/build/libs/
     expire_in: 1 day
   except:
     - tags
@@ -47,6 +49,7 @@ sonar:
   artifacts:
     paths:
       - app/build/outputs/
+      - core/build/libs/
     expire_in: 1 day
   only:
     - tags
@@ -60,6 +63,7 @@ deploy:
   artifacts:
     paths:
       - app/build/outputs/
+      - core/build/libs/
     expire_in: 1 day
   only:
     - tags
