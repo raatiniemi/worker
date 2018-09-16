@@ -19,7 +19,7 @@ cache:
 build:
   stage: build
   script:
-    - ./gradlew clean assemble
+    - ./gradlew clean assembleRelease
   artifacts:
     paths:
       - app/build/outputs/
@@ -31,7 +31,7 @@ build:
 test:
   stage: test
   script:
-    - ./gradlew test
+    - ./gradlew testReleaseUnitTest
   artifacts:
     paths:
       - app/build/outputs/
@@ -45,7 +45,7 @@ test:
 sonar:
   stage: test
   script:
-    - ./gradlew test sonarqube
+    - ./gradlew testReleaseUnitTest sonarqube
   artifacts:
     paths:
       - app/build/outputs/
