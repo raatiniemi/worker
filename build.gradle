@@ -26,27 +26,10 @@ allprojects {
     }
 }
 
-Closure<String> getVersionFromTag = {
-    def tag = 'git describe --tags --abbrev=0'.execute()
-            .getText()
-
-    return tag.toString().trim()
-}
-
-Closure<Integer> getVersionCodeFromNumberOfTags = {
-    def tags = 'git tag'.execute()
-            .getText()
-            .readLines()
-
-    return tags.size()
-}
-
 ext {
-    projectVersion = getVersionFromTag()
-    projectVersionCode = getVersionCodeFromNumberOfTags()
-
     sourceCompatibilityVersion = JavaVersion.VERSION_1_8
     targetCompatibilityVersion = JavaVersion.VERSION_1_8
 }
 
+apply from: 'versioning.gradle'
 apply from: 'sonarqube.gradle'

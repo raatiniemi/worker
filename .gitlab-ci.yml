@@ -1,33 +1,42 @@
-image: gradle:4.10.1-jdk8
-
-variables:
-  ANDROID_HOME: "/opt/android-sdk"
-
-before_script:
-  - bin/configure-container-environment
+image: raatiniemi/android-environment:26.1.1
 
 stages:
   - build
   - test
   - deploy
 
+variables:
+  ANDROID_HOME: "/opt/android-sdk"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - bin/configure-container-environment
+
+cache:
+  paths:
+    - .gradle
+
 build:
   stage: build
   script:
-    - gradle clean assemble
+    - ./gradlew clean assembleRelease
   artifacts:
     paths:
       - app/build/outputs/
+      - core/build/libs/
+    expire_in: 1 day
   tags:
    - docker
 
 test:
   stage: test
   script:
-    - gradle test
+    - ./gradlew testReleaseUnitTest
   artifacts:
     paths:
       - app/build/outputs/
+      - core/build/libs/
+    expire_in: 1 day
   except:
     - tags
   tags:
@@ -36,10 +45,12 @@ test:
 sonar:
   stage: test
   script:
-    - gradle test sonarqube
+    - ./gradlew testReleaseUnitTest sonarqube
   artifacts:
     paths:
       - app/build/outputs/
+      - core/build/libs/
+    expire_in: 1 day
   only:
     - tags
   tags:
@@ -48,10 +59,12 @@ sonar:
 deploy:
   stage: deploy
   script:
-    - gradle publishApkRelease
+    - ./gradlew publishApkRelease
   artifacts:
     paths:
       - app/build/outputs/
+      - core/build/libs/
+    expire_in: 1 day
   only:
     - tags
   tags:
