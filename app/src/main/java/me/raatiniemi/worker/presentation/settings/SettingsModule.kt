@@ -27,7 +27,7 @@ val settingsModule = module {
         val preferences = Preferences()
 
         ProjectPresenter(
-                preferences.timeSummary,
+                get(),
                 preferences.timeSheetSummaryFormat,
                 EventBus.getDefault()
         )

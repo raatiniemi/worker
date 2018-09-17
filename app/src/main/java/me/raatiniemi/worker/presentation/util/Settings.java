@@ -18,12 +18,10 @@ package me.raatiniemi.worker.presentation.util;
 
 import android.content.SharedPreferences;
 
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-
 /**
  * Communicate with the shared preferences.
  */
-public class Settings implements TimeSummaryPreferences, TimeSheetSummaryFormatPreferences {
+public class Settings implements TimeSheetSummaryFormatPreferences {
     // TODO: Should time sheet summary format constants be moved to a better location?
     public static final int TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK = 1;
     public static final int TIME_SHEET_SUMMARY_FORMAT_FRACTION = 2;
@@ -32,25 +30,6 @@ public class Settings implements TimeSummaryPreferences, TimeSheetSummaryFormatP
 
     public Settings(SharedPreferences preferences) {
         this.preferences = preferences;
-    }
-
-    @Override
-    public int getStartingPointForTimeSummary() {
-        return preferences.getInt(AppKeys.TIME_SUMMARY.getRawValue(), GetProjectTimeSince.MONTH);
-    }
-
-    @Override
-    public void useWeekForTimeSummaryStartingPoint() {
-        preferences.edit()
-                .putInt(AppKeys.TIME_SUMMARY.getRawValue(), GetProjectTimeSince.WEEK)
-                .apply();
-    }
-
-    @Override
-    public void useMonthForTimeSummaryStartingPoint() {
-        preferences.edit()
-                .putInt(AppKeys.TIME_SUMMARY.getRawValue(), GetProjectTimeSince.MONTH)
-                .apply();
     }
 
     @Override

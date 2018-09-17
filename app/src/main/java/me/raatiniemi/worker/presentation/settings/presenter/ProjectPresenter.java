@@ -24,39 +24,39 @@ import me.raatiniemi.worker.presentation.presenter.BasePresenter;
 import me.raatiniemi.worker.presentation.settings.exception.InvalidTimeSheetSummaryFormatException;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.ProjectView;
+import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
-import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
 public class ProjectPresenter extends BasePresenter<ProjectView> {
-    private final TimeSummaryPreferences timeSummaryPreferences;
+    private final KeyValueStore keyValueStore;
     private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
     private final EventBus eventBus;
 
     public ProjectPresenter(
-            TimeSummaryPreferences timeSummaryPreferences,
+            KeyValueStore keyValueStore,
             TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences,
             EventBus eventBus
     ) {
-        this.timeSummaryPreferences = timeSummaryPreferences;
+        this.keyValueStore = keyValueStore;
         this.timeSheetSummaryFormatPreferences = timeSheetSummaryFormatPreferences;
         this.eventBus = eventBus;
     }
 
     public void changeTimeSummaryStartingPoint(int newStartingPoint) {
         try {
-            int currentStartingPoint = timeSummaryPreferences.getStartingPointForTimeSummary();
+            int currentStartingPoint = keyValueStore.startingPointForTimeSummary();
             if (currentStartingPoint == newStartingPoint) {
                 return;
             }
 
             switch (newStartingPoint) {
                 case GetProjectTimeSince.WEEK:
-                    timeSummaryPreferences.useWeekForTimeSummaryStartingPoint();
+                    keyValueStore.useWeekForTimeSummaryStartingPoint();
                     break;
                 case GetProjectTimeSince.MONTH:
-                    timeSummaryPreferences.useMonthForTimeSummaryStartingPoint();
+                    keyValueStore.useMonthForTimeSummaryStartingPoint();
                     break;
                 default:
                     throw new InvalidStartingPointException(

@@ -16,32 +16,32 @@
 
 package me.raatiniemi.worker.presentation.util
 
-import android.content.SharedPreferences
+class InMemoryKeyValueStore : KeyValueStore {
+    private var store = mutableMapOf<String, Any>()
 
-class SharedKeyValueStore(private val sharedPreferences: SharedPreferences) : KeyValueStore {
     override fun set(key: String, value: Boolean) {
-        sharedPreferences.edit {
-            putBoolean(key, value)
-        }
+        store[key] = value
     }
 
     override fun set(key: String, value: Int) {
-        sharedPreferences.edit {
-            putInt(key, value)
-        }
+        store[key] = value
     }
 
     override fun bool(key: String, defaultValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(key, defaultValue)
+        val value = store[key]
+        if (value is Boolean) {
+            return value
+        }
+
+        return defaultValue
     }
 
     override fun int(key: String, defaultValue: Int): Int {
-        return sharedPreferences.getInt(key, defaultValue)
-    }
-}
+        val value = store[key]
+        if (value is Int) {
+            return value
+        }
 
-private inline fun SharedPreferences.edit(setter: SharedPreferences.Editor.() -> Unit) {
-    val editor = edit()
-    editor.setter()
-    editor.apply()
+        return defaultValue
+    }
 }

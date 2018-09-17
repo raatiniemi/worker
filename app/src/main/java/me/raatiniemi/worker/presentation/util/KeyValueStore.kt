@@ -16,10 +16,14 @@
 
 package me.raatiniemi.worker.presentation.util
 
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
+
 interface KeyValueStore {
     fun set(key: String, value: Boolean)
+    fun set(key: String, value: Int)
 
     fun bool(key: String, defaultValue: Boolean): Boolean
+    fun int(key: String, defaultValue: Int = 0): Int
 
     // TODO: Move configurations to extensions when calling code is in kotlin.
 
@@ -61,5 +65,17 @@ interface KeyValueStore {
 
     fun ongoingNotificationChronometer(): Boolean {
         return bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
+    }
+
+    fun useWeekForTimeSummaryStartingPoint() {
+        set(AppKeys.TIME_SUMMARY.rawValue, GetProjectTimeSince.WEEK)
+    }
+
+    fun useMonthForTimeSummaryStartingPoint() {
+        set(AppKeys.TIME_SUMMARY.rawValue, GetProjectTimeSince.MONTH)
+    }
+
+    fun startingPointForTimeSummary(): Int {
+        return int(AppKeys.TIME_SUMMARY.rawValue, GetProjectTimeSince.MONTH)
     }
 }

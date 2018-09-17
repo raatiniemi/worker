@@ -36,7 +36,6 @@ import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.util.PreferenceUtil;
 import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
-import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
@@ -53,7 +52,6 @@ public class ProjectFragment extends BasePreferenceFragment
 
     private final Preferences preferences = new Preferences();
     private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
-    private final TimeSummaryPreferences timeSummaryPreferences = preferences.getTimeSummary();
     private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences = preferences.getTimeSheetSummaryFormat();
 
     private final Presenters presenters = new Presenters();
@@ -70,7 +68,7 @@ public class ProjectFragment extends BasePreferenceFragment
         populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, keyValueStore.confirmClockOut());
 
         try {
-            int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
+            int startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary();
 
             ListPreference timeSummary = (ListPreference) findPreference(TIME_SUMMARY_KEY);
             timeSummary.setValue(String.valueOf(startingPointForTimeSummary));

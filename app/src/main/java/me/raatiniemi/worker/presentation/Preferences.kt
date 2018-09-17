@@ -25,9 +25,6 @@ class Preferences : KoinComponent {
 
     val keyValueStore: KeyValueStore by inject()
 
-    val timeSummary: TimeSummaryPreferences
-        get() = settings
-
     val timeSheetSummaryFormat: TimeSheetSummaryFormatPreferences
         get() = settings
 }

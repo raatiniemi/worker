@@ -52,7 +52,6 @@ import me.raatiniemi.worker.presentation.projects.viewmodel.RemoveProjectViewMod
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
 import me.raatiniemi.worker.presentation.util.KeyValueStore;
-import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
 import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
@@ -79,7 +78,6 @@ public class ProjectsFragment extends RxFragment
 
     private final Preferences preferences = new Preferences();
     private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
-    private final TimeSummaryPreferences timeSummaryPreferences = preferences.getTimeSummary();
 
     private Subscription refreshProjectsSubscription;
     private RecyclerView recyclerView;
@@ -109,7 +107,7 @@ public class ProjectsFragment extends RxFragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
-        int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
+        int startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary();
         projectsViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary);
         clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary);
 
@@ -215,7 +213,7 @@ public class ProjectsFragment extends RxFragment
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(TimeSummaryStartingPointChangeEvent event) {
-        int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
+        int startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary();
         projectsViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary);
         clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary);
 
