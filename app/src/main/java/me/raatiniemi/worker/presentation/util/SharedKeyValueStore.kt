@@ -14,26 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation
+package me.raatiniemi.worker.presentation.util
 
-import me.raatiniemi.worker.presentation.util.*
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import android.content.SharedPreferences
 
-class Preferences : KoinComponent {
-    private val settings: Settings by inject()
+class SharedKeyValueStore(private val sharedPreferences: SharedPreferences) : KeyValueStore {
+    override fun set(key: String, value: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(key, value)
+        }
+    }
 
-    val keyValueStore: KeyValueStore by inject()
+    override fun bool(key: String, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
+    }
+}
 
-    val hideRegisteredTime: HideRegisteredTimePreferences
-        get() = settings
-
-    val ongoingNotification: OngoingNotificationPreferences
-        get() = settings
-
-    val timeSummary: TimeSummaryPreferences
-        get() = settings
-
-    val timeSheetSummaryFormat: TimeSheetSummaryFormatPreferences
-        get() = settings
+private inline fun SharedPreferences.edit(setter: SharedPreferences.Editor.() -> Unit) {
+    val editor = edit()
+    editor.setter()
+    editor.apply()
 }

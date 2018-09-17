@@ -32,7 +32,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.Preferences;
 import me.raatiniemi.worker.presentation.settings.Presenters;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
-import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
+import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.PreferenceUtil;
@@ -53,7 +53,7 @@ public class ProjectFragment extends BasePreferenceFragment
     private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
 
     private final Preferences preferences = new Preferences();
-    private final ConfirmClockOutPreferences confirmClockOutPreferences = preferences.getConfirmClockOut();
+    private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
     private final OngoingNotificationPreferences ongoingNotificationPreferences = preferences.getOngoingNotification();
     private final TimeSummaryPreferences timeSummaryPreferences = preferences.getTimeSummary();
     private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences = preferences.getTimeSheetSummaryFormat();
@@ -69,8 +69,7 @@ public class ProjectFragment extends BasePreferenceFragment
 
         addPreferencesFromResource(R.xml.settings_project);
 
-        populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY,
-                confirmClockOutPreferences.shouldConfirmClockOut());
+        populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, keyValueStore.confirmClockOut());
 
         try {
             int startingPointForTimeSummary = timeSummaryPreferences.getStartingPointForTimeSummary();
@@ -158,8 +157,7 @@ public class ProjectFragment extends BasePreferenceFragment
     }
 
     private void toggleConfirmClockOut(@NonNull Preference preference) {
-        PreferenceUtil.readCheckBoxPreference(preference,
-                confirmClockOutPreferences::setConfirmClockOut);
+        PreferenceUtil.readCheckBoxPreference(preference, keyValueStore::setConfirmClockOut);
     }
 
     private void toggleOngoingNotification(@NonNull Preference preference) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,20 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util;
+package me.raatiniemi.worker.presentation.util
 
-public interface ConfirmClockOutPreferences {
-    /**
-     * Check if clock out require confirmation.
-     *
-     * @return 'true' if clock out require confirmation, otherwise 'false'.
-     */
-    boolean shouldConfirmClockOut();
+interface KeyValueStore {
+    fun set(key: String, value: Boolean)
 
-    /**
-     * Set the preference for clock out confirmation.
-     *
-     * @param newValue 'true' if clock out requires confirmation, otherwise 'false'.
-     */
-    void setConfirmClockOut(boolean newValue);
+    fun bool(key: String, defaultValue: Boolean): Boolean
+
+    // TODO: Move configurations to extensions when calling code is in kotlin.
+
+    fun setConfirmClockOut(value: Boolean) {
+        return set(AppKeys.CONFIRM_CLOCK_OUT.rawValue, value)
+    }
+
+    fun confirmClockOut(): Boolean {
+        return bool(AppKeys.CONFIRM_CLOCK_OUT.rawValue, true)
+    }
 }

@@ -50,8 +50,8 @@ import me.raatiniemi.worker.presentation.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.RefreshActiveProjectsViewModel;
 import me.raatiniemi.worker.presentation.projects.viewmodel.RemoveProjectViewModel;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.presentation.util.ConfirmClockOutPreferences;
 import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
+import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
 import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
@@ -78,8 +78,8 @@ public class ProjectsFragment extends RxFragment
     private final EventBus eventBus = EventBus.getDefault();
 
     private final Preferences preferences = new Preferences();
+    private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
     private final TimeSummaryPreferences timeSummaryPreferences = preferences.getTimeSummary();
-    private final ConfirmClockOutPreferences confirmClockOutPreferences = preferences.getConfirmClockOut();
 
     private Subscription refreshProjectsSubscription;
     private RecyclerView recyclerView;
@@ -342,7 +342,7 @@ public class ProjectsFragment extends RxFragment
         final ProjectsItem projectsItem = result.getProjectsItem();
         if (projectsItem.isActive()) {
             // Check if clock out require confirmation.
-            if (!confirmClockOutPreferences.shouldConfirmClockOut()) {
+            if (!keyValueStore.confirmClockOut()) {
                 clockActivityViewModel.input().clockOut(result, new Date());
                 return;
             }
