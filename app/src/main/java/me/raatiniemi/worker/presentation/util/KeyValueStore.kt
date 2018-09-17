@@ -78,4 +78,20 @@ interface KeyValueStore {
     fun startingPointForTimeSummary(): Int {
         return int(AppKeys.TIME_SUMMARY.rawValue, GetProjectTimeSince.MONTH)
     }
+
+    fun useFractionAsTimeSheetSummaryFormat() {
+        set(AppKeys.TIME_SHEET_SUMMARY_FORMAT.rawValue, TIME_SHEET_SUMMARY_FORMAT_FRACTION)
+    }
+
+    fun useDigitalClockAsTimeSheetSummaryFormat() {
+        set(AppKeys.TIME_SHEET_SUMMARY_FORMAT.rawValue, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK)
+    }
+
+    fun timeSheetSummaryFormat(): Int {
+        return int(AppKeys.TIME_SHEET_SUMMARY_FORMAT.rawValue, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK)
+    }
 }
+
+// TODO: Should time sheet summary format constants be moved to a better location?
+const val TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK: Int = 1
+const val TIME_SHEET_SUMMARY_FORMAT_FRACTION: Int = 2

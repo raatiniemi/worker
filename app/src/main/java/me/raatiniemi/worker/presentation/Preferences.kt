@@ -21,10 +21,5 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
 class Preferences : KoinComponent {
-    private val settings: Settings by inject()
-
     val keyValueStore: KeyValueStore by inject()
-
-    val timeSheetSummaryFormat: TimeSheetSummaryFormatPreferences
-        get() = settings
 }

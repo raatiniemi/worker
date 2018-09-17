@@ -35,7 +35,6 @@ import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.util.Notifications;
 import me.raatiniemi.worker.presentation.util.PreferenceUtil;
-import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
@@ -52,7 +51,6 @@ public class ProjectFragment extends BasePreferenceFragment
 
     private final Preferences preferences = new Preferences();
     private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
-    private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences = preferences.getTimeSheetSummaryFormat();
 
     private final Presenters presenters = new Presenters();
     private final ProjectPresenter presenter = presenters.getProject();
@@ -78,7 +76,7 @@ public class ProjectFragment extends BasePreferenceFragment
         }
 
         try {
-            int timeSheetSummaryFormatValue = timeSheetSummaryFormatPreferences.getTimeSheetSummaryFormat();
+            int timeSheetSummaryFormatValue = keyValueStore.timeSheetSummaryFormat();
 
             ListPreference timeSheetSummaryFormat = (ListPreference) findPreference(TIME_SHEET_SUMMARY_FORMAT_KEY);
             timeSheetSummaryFormat.setValue(String.valueOf(timeSheetSummaryFormatValue));
