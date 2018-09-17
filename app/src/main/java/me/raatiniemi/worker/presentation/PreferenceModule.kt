@@ -17,14 +17,15 @@
 package me.raatiniemi.worker.presentation
 
 import android.preference.PreferenceManager
-import me.raatiniemi.worker.presentation.util.Settings
+import me.raatiniemi.worker.presentation.util.KeyValueStore
+import me.raatiniemi.worker.presentation.util.SharedKeyValueStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 
 val preferenceModule = module {
-    single {
+    single<KeyValueStore> {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext())
 
-        Settings(sharedPreferences)
+        SharedKeyValueStore(sharedPreferences)
     }
 }

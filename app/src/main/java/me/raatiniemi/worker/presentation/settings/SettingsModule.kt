@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.presentation.settings
 
-import me.raatiniemi.worker.presentation.Preferences
 import me.raatiniemi.worker.presentation.settings.presenter.DataPresenter
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter
 import org.greenrobot.eventbus.EventBus
@@ -24,13 +23,7 @@ import org.koin.dsl.module.module
 
 val settingsModule = module {
     single {
-        val preferences = Preferences()
-
-        ProjectPresenter(
-                preferences.timeSummary,
-                preferences.timeSheetSummaryFormat,
-                EventBus.getDefault()
-        )
+        ProjectPresenter(get(), EventBus.getDefault())
     }
 
     single { DataPresenter(EventBus.getDefault()) }

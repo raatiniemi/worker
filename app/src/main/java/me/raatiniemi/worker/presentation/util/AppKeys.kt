@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,20 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.presentation.util;
+package me.raatiniemi.worker.presentation.util
 
-public interface HideRegisteredTimePreferences {
-    /**
-     * Check if the registered time should be hidden.
-     *
-     * @return 'true' if registered time should be hidden, otherwise 'false'.
-     */
-    boolean shouldHideRegisteredTime();
-
-    /**
-     * Set the preference indicating whether the registered time should be hidden.
-     *
-     * @param newValue 'true' if registered should be hidden, otherwise 'false'.
-     */
-    void setHideRegisteredTime(boolean newValue);
+enum class AppKeys(val rawValue: String) {
+    HIDE_REGISTERED_TIME("pref_hide_registered_time"),
+    CONFIRM_CLOCK_OUT("pref_confirm_clock_out"),
+    ONGOING_NOTIFICATION_ENABLED("pref_ongoing_notification_enabled"),
+    ONGOING_NOTIFICATION_CHRONOMETER_ENABLED("pref_ongoing_notification_chronometer_enabled"),
+    TIME_SUMMARY("pref_time_summary"),
+    TIME_SHEET_SUMMARY_FORMAT("pref_time_sheet_summary_format")
 }

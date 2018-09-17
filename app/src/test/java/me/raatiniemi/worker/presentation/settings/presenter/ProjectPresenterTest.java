@@ -25,48 +25,38 @@ import org.junit.runners.JUnit4;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.presentation.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.presentation.settings.view.ProjectView;
-import me.raatiniemi.worker.presentation.util.Settings;
-import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
-import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
+import me.raatiniemi.worker.presentation.util.InMemoryKeyValueStore;
+import me.raatiniemi.worker.presentation.util.KeyValueStore;
+import me.raatiniemi.worker.presentation.util.KeyValueStoreKt;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class ProjectPresenterTest {
-    private TimeSummaryPreferences timeSummaryPreferences;
-    private TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences;
+    private final KeyValueStore keyValueStore = new InMemoryKeyValueStore();
     private EventBus eventBus;
     private ProjectPresenter presenter;
     private ProjectView view;
 
     @Before
-    public void setUp() throws Exception {
-        timeSummaryPreferences = spy(new InMemoryTimeSummaryPreferences());
-        timeSheetSummaryFormatPreferences = spy(new InMemoryTimeSheetSummaryFormatPreferences());
+    public void setUp() {
         eventBus = mock(EventBus.class);
-        presenter = new ProjectPresenter(
-                timeSummaryPreferences,
-                timeSheetSummaryFormatPreferences,
-                eventBus
-        );
+        presenter = new ProjectPresenter(keyValueStore, eventBus);
         view = mock(ProjectView.class);
     }
 
     @Test
     public void changeTimeSummaryStartingPoint_withMonth() {
-        timeSummaryPreferences.useWeekForTimeSummaryStartingPoint();
+        keyValueStore.useWeekForTimeSummaryStartingPoint();
         presenter.attachView(view);
 
-        presenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.MONTH
-        );
+        presenter.changeTimeSummaryStartingPoint(GetProjectTimeSince.MONTH);
 
-        verify(timeSummaryPreferences).useWeekForTimeSummaryStartingPoint();
-        verify(timeSummaryPreferences).useMonthForTimeSummaryStartingPoint();
+        assertEquals(GetProjectTimeSince.MONTH, keyValueStore.startingPointForTimeSummary());
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
@@ -77,12 +67,9 @@ public class ProjectPresenterTest {
     public void changeTimeSummaryStartingPoint_withWeek() {
         presenter.attachView(view);
 
-        presenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.WEEK
-        );
+        presenter.changeTimeSummaryStartingPoint(GetProjectTimeSince.WEEK);
 
-        verify(timeSummaryPreferences).useWeekForTimeSummaryStartingPoint();
-        verify(timeSummaryPreferences, never()).useMonthForTimeSummaryStartingPoint();
+        assertEquals(GetProjectTimeSince.WEEK, keyValueStore.startingPointForTimeSummary());
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
@@ -93,12 +80,9 @@ public class ProjectPresenterTest {
     public void changeTimeSummaryStartingPoint_withPreviousValue() {
         presenter.attachView(view);
 
-        presenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.MONTH
-        );
+        presenter.changeTimeSummaryStartingPoint(GetProjectTimeSince.MONTH);
 
-        verify(timeSummaryPreferences, never()).useWeekForTimeSummaryStartingPoint();
-        verify(timeSummaryPreferences, never()).useMonthForTimeSummaryStartingPoint();
+        assertEquals(GetProjectTimeSince.MONTH, keyValueStore.startingPointForTimeSummary());
         verify(eventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
@@ -107,9 +91,7 @@ public class ProjectPresenterTest {
 
     @Test
     public void changeTimeSummaryStartingPoint_withoutAttachedView() {
-        presenter.changeTimeSummaryStartingPoint(
-                GetProjectTimeSince.WEEK
-        );
+        presenter.changeTimeSummaryStartingPoint(GetProjectTimeSince.WEEK);
 
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
@@ -135,13 +117,12 @@ public class ProjectPresenterTest {
 
     @Test
     public void changeTimesheetSummaryFormat_withDigitalClock() {
-        timeSheetSummaryFormatPreferences.useFractionAsTimeSheetSummaryFormat();
+        keyValueStore.useFractionAsTimeSheetSummaryFormat();
         presenter.attachView(view);
 
-        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+        presenter.changeTimeSheetSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
 
-        verify(timeSheetSummaryFormatPreferences).useDigitalClockAsTimeSheetSummaryFormat();
-        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK, keyValueStore.timeSheetSummaryFormat());
         verify(view).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
         verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
         verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
@@ -151,10 +132,9 @@ public class ProjectPresenterTest {
     public void changeTimesheetSummaryFormat_withFraction() {
         presenter.attachView(view);
 
-        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+        presenter.changeTimeSheetSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
 
-        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
-        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION, keyValueStore.timeSheetSummaryFormat());
         verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
         verify(view).showChangeTimeSheetSummaryToFractionSuccessMessage();
         verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
@@ -164,10 +144,9 @@ public class ProjectPresenterTest {
     public void changeTimesheetSummaryFormat_withPreviousValue() {
         presenter.attachView(view);
 
-        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+        presenter.changeTimeSheetSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
 
-        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
-        verify(timeSheetSummaryFormatPreferences, never()).useFractionAsTimeSheetSummaryFormat();
+        assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK, keyValueStore.timeSheetSummaryFormat());
         verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
         verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
         verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
@@ -175,10 +154,9 @@ public class ProjectPresenterTest {
 
     @Test
     public void changeTimesheetSummaryFormat_withoutAttachedView() {
-        presenter.changeTimeSheetSummaryFormat(Settings.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+        presenter.changeTimeSheetSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
 
-        verify(timeSheetSummaryFormatPreferences, never()).useDigitalClockAsTimeSheetSummaryFormat();
-        verify(timeSheetSummaryFormatPreferences).useFractionAsTimeSheetSummaryFormat();
+        assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION, keyValueStore.timeSheetSummaryFormat());
         verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
         verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
         verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();

@@ -21,20 +21,5 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
 class Preferences : KoinComponent {
-    private val settings: Settings by inject()
-
-    val confirmClockOut: ConfirmClockOutPreferences
-        get() = settings
-
-    val hideRegisteredTime: HideRegisteredTimePreferences
-        get() = settings
-
-    val ongoingNotification: OngoingNotificationPreferences
-        get() = settings
-
-    val timeSummary: TimeSummaryPreferences
-        get() = settings
-
-    val timeSheetSummaryFormat: TimeSheetSummaryFormatPreferences
-        get() = settings
+    val keyValueStore: KeyValueStore by inject()
 }
