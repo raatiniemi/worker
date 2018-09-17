@@ -38,4 +38,28 @@ interface KeyValueStore {
     fun confirmClockOut(): Boolean {
         return bool(AppKeys.CONFIRM_CLOCK_OUT.rawValue, true)
     }
+
+    fun enableOngoingNotification() {
+        set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
+    }
+
+    fun disableOngoingNotification() {
+        set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, false)
+    }
+
+    fun ongoingNotification(): Boolean {
+        return bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
+    }
+
+    fun enableOngoingNotificationChronometer() {
+        set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
+    }
+
+    fun disableOngoingNotificationChronometer() {
+        set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, false)
+    }
+
+    fun ongoingNotificationChronometer(): Boolean {
+        return bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
+    }
 }

@@ -31,8 +31,8 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.presentation.Preferences;
 import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.util.Notifications;
-import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import timber.log.Timber;
 
 public abstract class OngoingService extends IntentService {
@@ -41,7 +41,7 @@ public abstract class OngoingService extends IntentService {
     private final TimeRepository timeRepository = repositories.getTime();
 
     private final Preferences preferences = new Preferences();
-    private final OngoingNotificationPreferences ongoingNotificationPreferences = preferences.getOngoingNotification();
+    private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
 
     OngoingService(String name) {
         super(name);
@@ -98,11 +98,11 @@ public abstract class OngoingService extends IntentService {
     }
 
     boolean isOngoingNotificationEnabled() {
-        return ongoingNotificationPreferences.isOngoingNotificationEnabled();
+        return keyValueStore.ongoingNotification();
     }
 
     boolean isOngoingNotificationChronometerEnabled() {
-        return ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled();
+        return keyValueStore.ongoingNotificationChronometer();
     }
 
     void updateUserInterface(long projectId) {

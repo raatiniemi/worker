@@ -23,7 +23,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 /**
  * Communicate with the shared preferences.
  */
-public class Settings implements OngoingNotificationPreferences, TimeSummaryPreferences, TimeSheetSummaryFormatPreferences {
+public class Settings implements TimeSummaryPreferences, TimeSheetSummaryFormatPreferences {
     // TODO: Should time sheet summary format constants be moved to a better location?
     public static final int TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK = 1;
     public static final int TIME_SHEET_SUMMARY_FORMAT_FRACTION = 2;
@@ -32,44 +32,6 @@ public class Settings implements OngoingNotificationPreferences, TimeSummaryPref
 
     public Settings(SharedPreferences preferences) {
         this.preferences = preferences;
-    }
-
-    @Override
-    public boolean isOngoingNotificationEnabled() {
-        return preferences.getBoolean(AppKeys.ONGOING_NOTIFICATION_ENABLED.getRawValue(), true);
-    }
-
-    @Override
-    public void enableOngoingNotification() {
-        preferences.edit()
-                .putBoolean(AppKeys.ONGOING_NOTIFICATION_ENABLED.getRawValue(), true)
-                .apply();
-    }
-
-    @Override
-    public void disableOngoingNotification() {
-        preferences.edit()
-                .putBoolean(AppKeys.ONGOING_NOTIFICATION_ENABLED.getRawValue(), false)
-                .apply();
-    }
-
-    @Override
-    public boolean isOngoingNotificationChronometerEnabled() {
-        return preferences.getBoolean(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.getRawValue(), true);
-    }
-
-    @Override
-    public void enableOngoingNotificationChronometer() {
-        preferences.edit()
-                .putBoolean(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.getRawValue(), true)
-                .apply();
-    }
-
-    @Override
-    public void disableOngoingNotificationChronometer() {
-        preferences.edit()
-                .putBoolean(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.getRawValue(), false)
-                .apply();
     }
 
     @Override

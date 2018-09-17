@@ -25,9 +25,6 @@ class Preferences : KoinComponent {
 
     val keyValueStore: KeyValueStore by inject()
 
-    val ongoingNotification: OngoingNotificationPreferences
-        get() = settings
-
     val timeSummary: TimeSummaryPreferences
         get() = settings
 

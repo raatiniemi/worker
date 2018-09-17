@@ -34,7 +34,6 @@ import me.raatiniemi.worker.presentation.settings.Presenters;
 import me.raatiniemi.worker.presentation.settings.presenter.ProjectPresenter;
 import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.util.Notifications;
-import me.raatiniemi.worker.presentation.util.OngoingNotificationPreferences;
 import me.raatiniemi.worker.presentation.util.PreferenceUtil;
 import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
 import me.raatiniemi.worker.presentation.util.TimeSummaryPreferences;
@@ -54,7 +53,6 @@ public class ProjectFragment extends BasePreferenceFragment
 
     private final Preferences preferences = new Preferences();
     private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
-    private final OngoingNotificationPreferences ongoingNotificationPreferences = preferences.getOngoingNotification();
     private final TimeSummaryPreferences timeSummaryPreferences = preferences.getTimeSummary();
     private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences = preferences.getTimeSheetSummaryFormat();
 
@@ -91,8 +89,7 @@ public class ProjectFragment extends BasePreferenceFragment
             Timber.w(e, "Unable to set listener for 'timesheet_summary_format'");
         }
 
-        populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY,
-                ongoingNotificationPreferences.isOngoingNotificationEnabled());
+        populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY, keyValueStore.ongoingNotification());
         if (Notifications.Companion.isChannelsAvailable()) {
             Preference preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY);
             if (nonNull(preference)) {
@@ -102,8 +99,7 @@ public class ProjectFragment extends BasePreferenceFragment
             preference.setEnabled(isOngoingChannelEnabled());
         }
 
-        populateCheckBoxPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY,
-                ongoingNotificationPreferences.isOngoingNotificationChronometerEnabled());
+        populateCheckBoxPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY, keyValueStore.ongoingNotificationChronometer());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -163,22 +159,22 @@ public class ProjectFragment extends BasePreferenceFragment
     private void toggleOngoingNotification(@NonNull Preference preference) {
         PreferenceUtil.readCheckBoxPreference(preference, isChecked -> {
             if (isChecked) {
-                ongoingNotificationPreferences.enableOngoingNotification();
+                keyValueStore.enableOngoingNotification();
                 return;
             }
 
-            ongoingNotificationPreferences.disableOngoingNotification();
+            keyValueStore.disableOngoingNotification();
         });
     }
 
     private void toggleOngoingNotificationChronometer(@NonNull Preference preference) {
         PreferenceUtil.readCheckBoxPreference(preference, isChecked -> {
             if (isChecked) {
-                ongoingNotificationPreferences.enableOngoingNotificationChronometer();
+                keyValueStore.enableOngoingNotificationChronometer();
                 return;
             }
 
-            ongoingNotificationPreferences.disableOngoingNotificationChronometer();
+            keyValueStore.disableOngoingNotificationChronometer();
         });
     }
 
