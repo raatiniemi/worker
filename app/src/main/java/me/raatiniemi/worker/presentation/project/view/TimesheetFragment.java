@@ -46,7 +46,7 @@ import me.raatiniemi.worker.presentation.project.ViewModels;
 import me.raatiniemi.worker.presentation.project.viewmodel.GetTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RegisterTimesheetViewModel;
 import me.raatiniemi.worker.presentation.project.viewmodel.RemoveTimesheetViewModel;
-import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
+import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.util.SelectionListener;
 import me.raatiniemi.worker.presentation.util.Settings;
 import me.raatiniemi.worker.presentation.util.TimeSheetSummaryFormatPreferences;
@@ -60,7 +60,7 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 public class TimesheetFragment extends RxFragment implements SelectionListener {
     private final Preferences preferences = new Preferences();
-    private final HideRegisteredTimePreferences hideRegisteredTimePreferences = preferences.getHideRegisteredTime();
+    private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
     private final TimeSheetSummaryFormatPreferences timeSheetSummaryFormatPreferences = preferences.getTimeSheetSummaryFormat();
 
     private final ViewModels viewModels = new ViewModels();
@@ -213,7 +213,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         });
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
-        if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+        if (keyValueStore.hideRegisteredTime()) {
             getTimesheetViewModel.hideRegisteredTime();
         }
 
@@ -242,7 +242,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
                 .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
                         result -> {
-                            if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+                            if (keyValueStore.hideRegisteredTime()) {
                                 adapter.remove(result);
                                 return;
                             }
@@ -314,7 +314,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     }
 
     void refresh() {
-        if (hideRegisteredTimePreferences.shouldHideRegisteredTime()) {
+        if (keyValueStore.hideRegisteredTime()) {
             getTimesheetViewModel.hideRegisteredTime();
         } else {
             getTimesheetViewModel.showRegisteredTime();

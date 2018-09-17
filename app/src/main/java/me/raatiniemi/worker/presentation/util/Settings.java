@@ -23,7 +23,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 /**
  * Communicate with the shared preferences.
  */
-public class Settings implements HideRegisteredTimePreferences, OngoingNotificationPreferences, TimeSummaryPreferences, TimeSheetSummaryFormatPreferences {
+public class Settings implements OngoingNotificationPreferences, TimeSummaryPreferences, TimeSheetSummaryFormatPreferences {
     // TODO: Should time sheet summary format constants be moved to a better location?
     public static final int TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK = 1;
     public static final int TIME_SHEET_SUMMARY_FORMAT_FRACTION = 2;
@@ -32,18 +32,6 @@ public class Settings implements HideRegisteredTimePreferences, OngoingNotificat
 
     public Settings(SharedPreferences preferences) {
         this.preferences = preferences;
-    }
-
-    @Override
-    public boolean shouldHideRegisteredTime() {
-        return preferences.getBoolean(AppKeys.HIDE_REGISTERED_TIME.getRawValue(), false);
-    }
-
-    @Override
-    public void setHideRegisteredTime(boolean newValue) {
-        preferences.edit()
-                .putBoolean(AppKeys.HIDE_REGISTERED_TIME.getRawValue(), newValue)
-                .apply();
     }
 
     @Override

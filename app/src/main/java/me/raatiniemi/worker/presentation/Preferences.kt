@@ -25,9 +25,6 @@ class Preferences : KoinComponent {
 
     val keyValueStore: KeyValueStore by inject()
 
-    val hideRegisteredTime: HideRegisteredTimePreferences
-        get() = settings
-
     val ongoingNotification: OngoingNotificationPreferences
         get() = settings
 

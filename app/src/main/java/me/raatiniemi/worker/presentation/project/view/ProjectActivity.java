@@ -24,7 +24,7 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.presentation.Preferences;
-import me.raatiniemi.worker.presentation.util.HideRegisteredTimePreferences;
+import me.raatiniemi.worker.presentation.util.KeyValueStore;
 import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
@@ -39,7 +39,7 @@ public class ProjectActivity extends BaseActivity {
     private static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
 
     private final Preferences preferences = new Preferences();
-    private final HideRegisteredTimePreferences hideRegisteredTimePreferences = preferences.getHideRegisteredTime();
+    private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
 
     /**
      * Reference to the timesheet fragment.
@@ -91,7 +91,7 @@ public class ProjectActivity extends BaseActivity {
         // time the activity is created.
         MenuItem hideRegistered = menu.findItem(R.id.actions_project_hide_registered);
         if (nonNull(hideRegistered)) {
-            hideRegistered.setChecked(hideRegisteredTimePreferences.shouldHideRegisteredTime());
+            hideRegistered.setChecked(keyValueStore.hideRegisteredTime());
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -110,7 +110,7 @@ public class ProjectActivity extends BaseActivity {
     private void handleHideRegisteredTimeChange(MenuItem item) {
         item.setChecked(!item.isChecked());
 
-        hideRegisteredTimePreferences.setHideRegisteredTime(item.isChecked());
+        keyValueStore.setHideRegisteredTime(item.isChecked());
         getTimesheetFragment().refresh();
     }
 }

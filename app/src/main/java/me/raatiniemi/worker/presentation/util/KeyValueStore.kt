@@ -23,6 +23,14 @@ interface KeyValueStore {
 
     // TODO: Move configurations to extensions when calling code is in kotlin.
 
+    fun setHideRegisteredTime(value: Boolean) {
+        set(AppKeys.HIDE_REGISTERED_TIME.rawValue, value)
+    }
+
+    fun hideRegisteredTime(): Boolean {
+        return bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
+    }
+
     fun setConfirmClockOut(value: Boolean) {
         return set(AppKeys.CONFIRM_CLOCK_OUT.rawValue, value)
     }

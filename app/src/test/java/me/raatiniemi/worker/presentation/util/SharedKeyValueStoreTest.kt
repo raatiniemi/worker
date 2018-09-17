@@ -65,6 +65,31 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
     }
 
     @Test
+    fun hideRegisteredTime_withoutValue() {
+        val actual = keyValueStore.hideRegisteredTime()
+
+        assertFalse(actual)
+    }
+
+    @Test
+    fun hideRegisteredTime_whenDisabled() {
+        keyValueStore.setHideRegisteredTime(false)
+
+        val actual = keyValueStore.hideRegisteredTime()
+
+        assertFalse(actual)
+    }
+
+    @Test
+    fun hideRegisteredTime_whenEnabled() {
+        keyValueStore.setHideRegisteredTime(true)
+
+        val actual = keyValueStore.hideRegisteredTime()
+
+        assertTrue(actual)
+    }
+
+    @Test
     fun confirmClockOut_withoutValue() {
         val actual = keyValueStore.confirmClockOut()
 
