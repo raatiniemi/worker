@@ -32,7 +32,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
-import me.raatiniemi.worker.features.projects.model.CreateProjectEvent;
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent;
+import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectFragment;
 import me.raatiniemi.worker.features.settings.view.SettingsActivity;
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity;
 import timber.log.Timber;

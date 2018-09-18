@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.view;
+package me.raatiniemi.worker.features.projects.createproject.view;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -32,8 +32,8 @@ import org.greenrobot.eventbus.EventBus;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.projects.ViewModels;
-import me.raatiniemi.worker.features.projects.model.CreateProjectEvent;
-import me.raatiniemi.worker.features.projects.viewmodel.CreateProjectViewModel;
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent;
+import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel;
 import me.raatiniemi.worker.features.shared.view.fragment.RxDialogFragment;
 import me.raatiniemi.worker.util.Keyboard;
 import timber.log.Timber;

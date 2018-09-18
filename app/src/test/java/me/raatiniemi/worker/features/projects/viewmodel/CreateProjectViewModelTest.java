@@ -25,6 +25,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.ArgumentMatchers.any;

@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.projects
 
 import me.raatiniemi.worker.domain.interactor.*
+import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.*
 import org.koin.dsl.module.module
 
