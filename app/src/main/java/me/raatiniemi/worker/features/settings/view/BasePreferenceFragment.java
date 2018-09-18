@@ -29,7 +29,7 @@ import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
-abstract class BasePreferenceFragment extends PreferenceFragment {
+abstract public class BasePreferenceFragment extends PreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();

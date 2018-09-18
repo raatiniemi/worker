@@ -14,18 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.view;
+package me.raatiniemi.worker.features.settings.project.model;
 
-import android.support.annotation.Nullable;
-
-import me.raatiniemi.worker.features.settings.model.Backup;
-import me.raatiniemi.worker.features.shared.view.MvpView;
-
-public interface DataView extends MvpView {
-    /**
-     * Update the view with the latest backup.
-     *
-     * @param backup Latest backup.
-     */
-    void setLatestBackup(@Nullable Backup backup);
+public class TimeSummaryStartingPointChangeEvent {
 }

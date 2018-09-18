@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.presenter;
+package me.raatiniemi.worker.features.settings.project.presenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
@@ -24,9 +24,10 @@ import org.junit.runners.JUnit4;
 
 import java.io.File;
 
-import me.raatiniemi.worker.features.settings.model.Backup;
-import me.raatiniemi.worker.features.settings.model.BackupSuccessfulEvent;
-import me.raatiniemi.worker.features.settings.view.DataView;
+import me.raatiniemi.worker.features.settings.data.model.Backup;
+import me.raatiniemi.worker.features.settings.data.model.BackupSuccessfulEvent;
+import me.raatiniemi.worker.features.settings.data.presenter.DataPresenter;
+import me.raatiniemi.worker.features.settings.data.view.DataView;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;

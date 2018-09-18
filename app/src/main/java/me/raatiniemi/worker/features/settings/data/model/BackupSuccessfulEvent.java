@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.view;
+package me.raatiniemi.worker.features.settings.data.model;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
-import rx.Observable;
+public class BackupSuccessfulEvent {
+    private final Backup backup;
 
-final class ConfirmRestoreDialog {
-    private static final int TITLE = R.string.activity_settings_restore_confirm_title;
-    private static final int MESSAGE = R.string.activity_settings_restore_confirm_message;
-
-    private ConfirmRestoreDialog() {
+    public BackupSuccessfulEvent(@NonNull Backup backup) {
+        this.backup = backup;
     }
 
     @NonNull
-    static Observable<Integer> show(@NonNull Context context) {
-        return RxAlertDialog.build(context, TITLE, MESSAGE);
+    public Backup getBackup() {
+        return backup;
     }
 }

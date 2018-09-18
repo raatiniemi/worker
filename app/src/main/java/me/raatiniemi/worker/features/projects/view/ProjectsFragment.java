@@ -48,7 +48,7 @@ import me.raatiniemi.worker.features.projects.viewmodel.ClockActivityViewModel;
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.features.projects.viewmodel.RefreshActiveProjectsViewModel;
 import me.raatiniemi.worker.features.projects.viewmodel.RemoveProjectViewModel;
-import me.raatiniemi.worker.features.settings.model.TimeSummaryStartingPointChangeEvent;
+import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter;
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;

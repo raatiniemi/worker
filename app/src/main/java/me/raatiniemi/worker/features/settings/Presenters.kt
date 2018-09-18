@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.settings
 
-import me.raatiniemi.worker.features.settings.presenter.DataPresenter
-import me.raatiniemi.worker.features.settings.presenter.ProjectPresenter
+import me.raatiniemi.worker.features.settings.data.presenter.DataPresenter
+import me.raatiniemi.worker.features.settings.project.presenter.ProjectPresenter
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 

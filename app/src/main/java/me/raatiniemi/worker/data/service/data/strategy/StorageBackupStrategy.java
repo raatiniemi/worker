@@ -29,8 +29,8 @@ import me.raatiniemi.worker.data.service.data.strategy.exception.BackupException
 import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.data.util.FileUtils;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
-import me.raatiniemi.worker.features.settings.model.Backup;
-import me.raatiniemi.worker.features.settings.model.BackupSuccessfulEvent;
+import me.raatiniemi.worker.features.settings.data.model.Backup;
+import me.raatiniemi.worker.features.settings.data.model.BackupSuccessfulEvent;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 

@@ -20,6 +20,8 @@ import android.app.Fragment;
 import android.os.Bundle;
 
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.features.settings.data.view.DataFragment;
+import me.raatiniemi.worker.features.settings.project.view.ProjectFragment;
 
 public class SettingsFragment extends BasePreferenceFragment {
     /**

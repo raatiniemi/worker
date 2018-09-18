@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.view;
+package me.raatiniemi.worker.features.settings.project.view;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -31,7 +31,8 @@ import android.view.View;
 import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.features.settings.Presenters;
-import me.raatiniemi.worker.features.settings.presenter.ProjectPresenter;
+import me.raatiniemi.worker.features.settings.project.presenter.ProjectPresenter;
+import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment;
 import me.raatiniemi.worker.util.KeyValueStore;
 import me.raatiniemi.worker.util.Notifications;
 import me.raatiniemi.worker.util.PreferenceUtil;

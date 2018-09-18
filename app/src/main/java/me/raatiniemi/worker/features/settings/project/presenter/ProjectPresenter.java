@@ -14,15 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.presenter;
+package me.raatiniemi.worker.features.settings.project.presenter;
 
 import org.greenrobot.eventbus.EventBus;
 
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
-import me.raatiniemi.worker.features.settings.exception.InvalidTimeSheetSummaryFormatException;
-import me.raatiniemi.worker.features.settings.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.features.settings.view.ProjectView;
+import me.raatiniemi.worker.features.settings.project.exception.InvalidTimeSheetSummaryFormatException;
+import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent;
+import me.raatiniemi.worker.features.settings.project.view.ProjectView;
 import me.raatiniemi.worker.features.shared.presenter.BasePresenter;
 import me.raatiniemi.worker.util.KeyValueStore;
 import me.raatiniemi.worker.util.KeyValueStoreKt;

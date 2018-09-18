@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.exception;
+package me.raatiniemi.worker.features.settings.project.exception;
 
 public class InvalidTimeSheetSummaryFormatException extends RuntimeException {
     public InvalidTimeSheetSummaryFormatException(String message) {
