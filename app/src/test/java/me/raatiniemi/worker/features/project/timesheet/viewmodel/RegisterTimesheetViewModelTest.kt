@@ -14,24 +14,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.viewmodel
+package me.raatiniemi.worker.features.project.timesheet.viewmodel
 
 import me.raatiniemi.worker.domain.exception.DomainException
-import me.raatiniemi.worker.domain.interactor.RemoveTime
+import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimesheetItem
 import me.raatiniemi.worker.factory.TimeFactory
-import me.raatiniemi.worker.features.project.model.TimesheetAdapterResult
+import me.raatiniemi.worker.features.project.timesheet.model.TimesheetAdapterResult
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mockito.*
+import org.mockito.ArgumentMatchers.eq
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
-class RemoveTimesheetViewModelTest {
-    private val useCase = mock(RemoveTime::class.java)
-    private val vm = RemoveTimesheetViewModel.ViewModel(useCase)
+class RegisterTimesheetViewModelTest {
+    private val useCase = mock(MarkRegisteredTime::class.java)
+    private val vm = RegisterTimesheetViewModel.ViewModel(useCase)
 
     private val success = TestSubscriber<TimesheetAdapterResult>()
     private val errors = TestSubscriber<Throwable>()
@@ -43,14 +45,14 @@ class RemoveTimesheetViewModelTest {
     }
 
     @Test
-    fun remove_withError() {
+    fun register_withError() {
         val time = TimeFactory.builder().build()
         val item = TimesheetItem.with(time)
         val results = listOf(TimesheetAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(time))))
                 .thenThrow(DomainException::class.java)
 
-        vm.remove(results)
+        vm.register(results)
 
         success.assertNoValues()
         success.assertNoTerminalEvent()
@@ -59,13 +61,15 @@ class RemoveTimesheetViewModelTest {
     }
 
     @Test
-    fun remove_withSingleItem() {
+    fun register_withItem() {
         val time = TimeFactory.builder().build()
-        val results = listOf(TimesheetAdapterResult(0, 0, TimesheetItem.with(time)))
+        val item = TimesheetItem.with(time)
+        val results = listOf(TimesheetAdapterResult(0, 0, item))
+        `when`(useCase.execute(eq(listOf(time))))
+                .thenReturn(listOf(time))
 
-        vm.remove(results)
+        vm.register(results)
 
-        verify(useCase).execute(eq(listOf(time)))
         success.assertReceivedOnNext(results)
         success.assertNoTerminalEvent()
         errors.assertNoValues()
@@ -73,17 +77,21 @@ class RemoveTimesheetViewModelTest {
     }
 
     @Test
-    fun remove_withMultipleItems() {
-        val time = TimeFactory.builder().build()
-        val results = listOf(
-                TimesheetAdapterResult(0, 0, TimesheetItem.with(time)),
-                TimesheetAdapterResult(0, 1, TimesheetItem.with(time))
+    fun register_withItems() {
+        val times = listOf(
+                TimeFactory.builder().id(1L).build(),
+                TimeFactory.builder().id(2L).build()
         )
+        val results = listOf(
+                TimesheetAdapterResult(0, 0, TimesheetItem.with(times[0])),
+                TimesheetAdapterResult(0, 1, TimesheetItem.with(times[1]))
+        )
+        `when`(useCase.execute(eq(times)))
+                .thenReturn(times)
 
-        vm.remove(results)
+        vm.register(results)
 
-        verify(useCase).execute(eq(listOf(time, time)))
-        success.assertReceivedOnNext(results.reversed())
+        success.assertReceivedOnNext(results.sorted().reversed())
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()

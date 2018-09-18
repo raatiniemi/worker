@@ -16,9 +16,9 @@
 
 package me.raatiniemi.worker.features.project
 
-import me.raatiniemi.worker.features.project.viewmodel.GetTimesheetViewModel
-import me.raatiniemi.worker.features.project.viewmodel.RegisterTimesheetViewModel
-import me.raatiniemi.worker.features.project.viewmodel.RemoveTimesheetViewModel
+import me.raatiniemi.worker.features.project.timesheet.viewmodel.GetTimesheetViewModel
+import me.raatiniemi.worker.features.project.timesheet.viewmodel.RegisterTimesheetViewModel
+import me.raatiniemi.worker.features.project.timesheet.viewmodel.RemoveTimesheetViewModel
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 

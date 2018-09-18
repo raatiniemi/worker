@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.view;
+package me.raatiniemi.worker.features.project.timesheet.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -42,9 +42,10 @@ import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.features.project.ViewModels;
-import me.raatiniemi.worker.features.project.viewmodel.GetTimesheetViewModel;
-import me.raatiniemi.worker.features.project.viewmodel.RegisterTimesheetViewModel;
-import me.raatiniemi.worker.features.project.viewmodel.RemoveTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timesheet.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timesheet.viewmodel.RegisterTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timesheet.viewmodel.RemoveTimesheetViewModel;
+import me.raatiniemi.worker.features.project.view.ProjectActivity;
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
 import me.raatiniemi.worker.features.shared.view.fragment.RxFragment;
@@ -311,7 +312,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         loading = false;
     }
 
-    void refresh() {
+    public void refresh() {
         if (keyValueStore.hideRegisteredTime()) {
             getTimesheetViewModel.hideRegisteredTime();
         } else {

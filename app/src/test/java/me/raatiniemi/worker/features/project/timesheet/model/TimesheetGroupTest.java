@@ -14,23 +14,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.view;
+package me.raatiniemi.worker.features.project.timesheet.model;
 
-import android.view.View;
-import android.widget.TextView;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
+import java.util.Date;
+import java.util.TreeSet;
 
-import me.raatiniemi.worker.R;
+import static junit.framework.Assert.assertEquals;
 
-class ChildItemViewHolder extends AbstractExpandableItemViewHolder {
-    final TextView title;
-    final TextView summarize;
+@RunWith(JUnit4.class)
+public class TimesheetGroupTest {
+    @Test
+    public void getId() {
+        Date date = new Date();
+        long days = date.getTime() / 1000 / 60 / 60 / 24;
 
-    ChildItemViewHolder(View view) {
-        super(view);
+        TimesheetGroup groupItem = TimesheetGroup.Companion.build(date, new TreeSet<>());
 
-        title = view.findViewById(R.id.fragment_timesheet_child_item_title);
-        summarize = view.findViewById(R.id.fragment_timesheet_child_item_summarize);
+        assertEquals(days, groupItem.getId());
     }
 }

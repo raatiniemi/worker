@@ -14,10 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.viewmodel
+package me.raatiniemi.worker.features.project.timesheet.viewmodel
 
 import me.raatiniemi.worker.domain.interactor.RemoveTime
-import me.raatiniemi.worker.features.project.model.TimesheetAdapterResult
+import me.raatiniemi.worker.features.project.timesheet.model.TimesheetAdapterResult
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable

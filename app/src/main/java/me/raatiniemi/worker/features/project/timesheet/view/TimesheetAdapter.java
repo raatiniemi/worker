@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Worker Project
+ * Copyright (C) 2018 Worker Project
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.view;
+package me.raatiniemi.worker.features.project.timesheet.view;
 
 import android.graphics.Point;
 import android.view.LayoutInflater;
@@ -27,8 +27,8 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
-import me.raatiniemi.worker.features.project.model.TimesheetAdapterResult;
-import me.raatiniemi.worker.features.project.model.TimesheetGroup;
+import me.raatiniemi.worker.features.project.timesheet.model.TimesheetAdapterResult;
+import me.raatiniemi.worker.features.project.timesheet.model.TimesheetGroup;
 import me.raatiniemi.worker.features.shared.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable;
 import me.raatiniemi.worker.util.SelectionListener;

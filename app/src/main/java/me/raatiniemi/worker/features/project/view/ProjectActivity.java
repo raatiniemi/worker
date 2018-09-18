@@ -24,6 +24,7 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.features.project.timesheet.view.TimesheetFragment;
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity;
 import me.raatiniemi.worker.util.KeyValueStore;
 
@@ -31,7 +32,7 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class ProjectActivity extends BaseActivity {
-    static final String MESSAGE_PROJECT_ID = "project id";
+    public static final String MESSAGE_PROJECT_ID = "project id";
 
     /**
      * Tag for the timesheet fragment.
