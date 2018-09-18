@@ -21,15 +21,13 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.support.annotation.RequiresApi
-
 import com.squareup.leakcanary.LeakCanary
 import me.raatiniemi.worker.data.dataModule
-
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
+import me.raatiniemi.worker.features.project.projectModule
+import me.raatiniemi.worker.features.projects.projectsModule
+import me.raatiniemi.worker.features.settings.settingsModule
 import me.raatiniemi.worker.presentation.preferenceModule
-import me.raatiniemi.worker.presentation.project.projectModule
-import me.raatiniemi.worker.presentation.projects.projectsModule
-import me.raatiniemi.worker.presentation.settings.settingsModule
 import me.raatiniemi.worker.presentation.util.Notifications
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber

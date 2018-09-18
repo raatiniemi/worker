@@ -27,7 +27,7 @@ import android.support.v4.app.NotificationCompat;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.project.view.ProjectActivity;
+import me.raatiniemi.worker.features.project.view.ProjectActivity;
 import me.raatiniemi.worker.presentation.util.Notifications;
 
 abstract class OngoingNotification {

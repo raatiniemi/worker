@@ -22,7 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.projects.view.ProjectsActivity;
+import me.raatiniemi.worker.features.projects.view.ProjectsActivity;
 import me.raatiniemi.worker.presentation.util.Notifications;
 
 public class BackupNotification {
