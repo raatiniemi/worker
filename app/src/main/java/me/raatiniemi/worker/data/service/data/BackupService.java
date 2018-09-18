@@ -30,9 +30,9 @@ import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.service.data.strategy.StorageBackupStrategy;
 import me.raatiniemi.worker.domain.interactor.BackupStrategy;
 import me.raatiniemi.worker.domain.interactor.CreateBackup;
-import me.raatiniemi.worker.presentation.util.Notifications;
-import me.raatiniemi.worker.presentation.view.notification.BackupNotification;
-import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
+import me.raatiniemi.worker.features.shared.view.notification.BackupNotification;
+import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification;
+import me.raatiniemi.worker.util.Notifications;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.nonNull;

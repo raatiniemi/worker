@@ -24,7 +24,7 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
+import me.raatiniemi.worker.features.shared.view.notification.PauseNotification;
 import timber.log.Timber;
 
 public class ReloadNotificationService extends OngoingService {

@@ -26,8 +26,8 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockIn;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
-import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
+import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification;
+import me.raatiniemi.worker.features.shared.view.notification.PauseNotification;
 import timber.log.Timber;
 
 public class ResumeService extends OngoingService {

@@ -24,15 +24,15 @@ import android.content.Intent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.Repositories;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.presentation.Preferences;
-import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.util.KeyValueStore;
-import me.raatiniemi.worker.presentation.util.Notifications;
+import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.util.KeyValueStore;
+import me.raatiniemi.worker.util.Notifications;
 import timber.log.Timber;
 
 public abstract class OngoingService extends IntentService {

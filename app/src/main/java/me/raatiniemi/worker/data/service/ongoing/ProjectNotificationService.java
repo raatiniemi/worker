@@ -23,7 +23,7 @@ import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.interactor.IsProjectActive;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.view.notification.PauseNotification;
+import me.raatiniemi.worker.features.shared.view.notification.PauseNotification;
 import timber.log.Timber;
 
 public class ProjectNotificationService extends OngoingService {
