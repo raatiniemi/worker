@@ -35,8 +35,8 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
-import static me.raatiniemi.worker.presentation.util.RxUtil.redirectErrors;
+import static me.raatiniemi.worker.util.RxUtil.hideErrors;
+import static me.raatiniemi.worker.util.RxUtil.redirectErrors;
 
 public interface ClockActivityViewModel {
     interface Input {

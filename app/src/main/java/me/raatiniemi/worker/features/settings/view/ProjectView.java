@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.settings.view;
 
-import me.raatiniemi.worker.presentation.view.MvpView;
+import me.raatiniemi.worker.features.shared.view.MvpView;
 
 public interface ProjectView extends MvpView {
     /**

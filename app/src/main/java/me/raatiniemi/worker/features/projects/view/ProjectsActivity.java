@@ -34,7 +34,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.features.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.features.settings.view.SettingsActivity;
-import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
+import me.raatiniemi.worker.features.shared.view.activity.BaseActivity;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;

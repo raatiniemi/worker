@@ -36,6 +36,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
@@ -44,18 +45,17 @@ import me.raatiniemi.worker.features.project.ViewModels;
 import me.raatiniemi.worker.features.project.viewmodel.GetTimesheetViewModel;
 import me.raatiniemi.worker.features.project.viewmodel.RegisterTimesheetViewModel;
 import me.raatiniemi.worker.features.project.viewmodel.RemoveTimesheetViewModel;
-import me.raatiniemi.worker.presentation.Preferences;
-import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.util.KeyValueStore;
-import me.raatiniemi.worker.presentation.util.KeyValueStoreKt;
-import me.raatiniemi.worker.presentation.util.SelectionListener;
-import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
-import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
+import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
+import me.raatiniemi.worker.features.shared.view.fragment.RxFragment;
+import me.raatiniemi.worker.util.KeyValueStore;
+import me.raatiniemi.worker.util.KeyValueStoreKt;
+import me.raatiniemi.worker.util.SelectionListener;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.R.drawable.list_item_divider;
-import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulersWithBackpressureBuffer;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.RxUtil.applySchedulersWithBackpressureBuffer;
 
 public class TimesheetFragment extends RxFragment implements SelectionListener {
     private final Preferences preferences = new Preferences();

@@ -29,11 +29,11 @@ import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.features.project.model.TimesheetAdapterResult;
 import me.raatiniemi.worker.features.project.model.TimesheetGroup;
-import me.raatiniemi.worker.presentation.util.SelectionListener;
-import me.raatiniemi.worker.presentation.util.SelectionManager;
-import me.raatiniemi.worker.presentation.util.SelectionManagerAdapterDecorator;
-import me.raatiniemi.worker.presentation.view.adapter.ExpandableListAdapter;
-import me.raatiniemi.worker.presentation.view.widget.LetterDrawable;
+import me.raatiniemi.worker.features.shared.view.adapter.ExpandableListAdapter;
+import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable;
+import me.raatiniemi.worker.util.SelectionListener;
+import me.raatiniemi.worker.util.SelectionManager;
+import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator;
 
 class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetItem,

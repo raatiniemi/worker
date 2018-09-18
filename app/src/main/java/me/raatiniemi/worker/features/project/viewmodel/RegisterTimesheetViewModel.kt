@@ -20,8 +20,8 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.Time
 import me.raatiniemi.worker.domain.model.TimesheetItem
 import me.raatiniemi.worker.features.project.model.TimesheetAdapterResult
-import me.raatiniemi.worker.presentation.util.RxUtil.hideErrors
-import me.raatiniemi.worker.presentation.util.RxUtil.redirectErrors
+import me.raatiniemi.worker.util.RxUtil.hideErrors
+import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 

@@ -23,7 +23,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
+import me.raatiniemi.worker.features.shared.view.activity.BaseActivity;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 

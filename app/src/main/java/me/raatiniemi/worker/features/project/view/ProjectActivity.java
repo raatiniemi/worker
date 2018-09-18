@@ -22,10 +22,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.Preferences;
-import me.raatiniemi.worker.presentation.util.KeyValueStore;
-import me.raatiniemi.worker.presentation.view.activity.BaseActivity;
+import me.raatiniemi.worker.features.shared.view.activity.BaseActivity;
+import me.raatiniemi.worker.util.KeyValueStore;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;

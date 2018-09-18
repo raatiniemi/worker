@@ -29,8 +29,8 @@ import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
-import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
-import static me.raatiniemi.worker.presentation.util.RxUtil.redirectErrors;
+import static me.raatiniemi.worker.util.RxUtil.hideErrors;
+import static me.raatiniemi.worker.util.RxUtil.redirectErrors;
 
 public interface CreateProjectViewModel {
     interface Input {

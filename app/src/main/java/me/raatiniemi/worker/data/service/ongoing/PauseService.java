@@ -26,8 +26,8 @@ import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
-import me.raatiniemi.worker.presentation.view.notification.ResumeNotification;
+import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification;
+import me.raatiniemi.worker.features.shared.view.notification.ResumeNotification;
 import timber.log.Timber;
 
 public class PauseService extends OngoingService {

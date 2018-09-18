@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.settings.view;
 import android.support.annotation.Nullable;
 
 import me.raatiniemi.worker.features.settings.model.Backup;
-import me.raatiniemi.worker.presentation.view.MvpView;
+import me.raatiniemi.worker.features.shared.view.MvpView;
 
 public interface DataView extends MvpView {
     /**

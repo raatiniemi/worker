@@ -26,14 +26,14 @@ import me.raatiniemi.worker.data.util.ExternalStorage;
 import me.raatiniemi.worker.features.settings.model.Backup;
 import me.raatiniemi.worker.features.settings.model.BackupSuccessfulEvent;
 import me.raatiniemi.worker.features.settings.view.DataView;
-import me.raatiniemi.worker.presentation.presenter.BasePresenter;
-import me.raatiniemi.worker.presentation.util.RxUtil;
+import me.raatiniemi.worker.features.shared.presenter.BasePresenter;
+import me.raatiniemi.worker.util.RxUtil;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
+import static me.raatiniemi.worker.util.RxUtil.unsubscribeIfNotNull;
 
 public class DataPresenter extends BasePresenter<DataView> {
     private Subscription getLatestBackupSubscription;

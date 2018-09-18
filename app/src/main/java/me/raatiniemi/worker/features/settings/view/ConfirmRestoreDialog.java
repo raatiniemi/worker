@@ -20,7 +20,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
+import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
 import rx.Observable;
 
 final class ConfirmRestoreDialog {

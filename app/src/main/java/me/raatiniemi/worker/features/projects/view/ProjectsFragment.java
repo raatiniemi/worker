@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService;
 import me.raatiniemi.worker.domain.model.Project;
@@ -48,21 +49,20 @@ import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel;
 import me.raatiniemi.worker.features.projects.viewmodel.RefreshActiveProjectsViewModel;
 import me.raatiniemi.worker.features.projects.viewmodel.RemoveProjectViewModel;
 import me.raatiniemi.worker.features.settings.model.TimeSummaryStartingPointChangeEvent;
-import me.raatiniemi.worker.presentation.Preferences;
-import me.raatiniemi.worker.presentation.model.OngoingNotificationActionEvent;
-import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
-import me.raatiniemi.worker.presentation.util.KeyValueStore;
-import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
-import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
-import me.raatiniemi.worker.presentation.view.fragment.RxFragment;
+import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter;
+import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
+import me.raatiniemi.worker.features.shared.view.fragment.RxFragment;
+import me.raatiniemi.worker.util.HintedImageButtonListener;
+import me.raatiniemi.worker.util.KeyValueStore;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
-import static me.raatiniemi.worker.presentation.util.RxUtil.unsubscribeIfNotNull;
+import static me.raatiniemi.worker.util.RxUtil.applySchedulers;
+import static me.raatiniemi.worker.util.RxUtil.unsubscribeIfNotNull;
 
 public class ProjectsFragment extends RxFragment
         implements OnProjectActionListener, SimpleListAdapter.OnItemClickListener {

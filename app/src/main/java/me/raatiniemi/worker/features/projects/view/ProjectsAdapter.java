@@ -24,8 +24,8 @@ import android.view.ViewGroup;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;
-import me.raatiniemi.worker.presentation.util.HintedImageButtonListener;
-import me.raatiniemi.worker.presentation.view.adapter.SimpleListAdapter;
+import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter;
+import me.raatiniemi.worker.util.HintedImageButtonListener;
 
 /**
  * Adapter for listing available projects.

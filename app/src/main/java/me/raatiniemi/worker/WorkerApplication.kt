@@ -27,8 +27,7 @@ import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 import me.raatiniemi.worker.features.project.projectModule
 import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
-import me.raatiniemi.worker.presentation.preferenceModule
-import me.raatiniemi.worker.presentation.util.Notifications
+import me.raatiniemi.worker.util.Notifications
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree

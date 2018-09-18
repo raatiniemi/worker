@@ -28,18 +28,18 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.features.settings.Presenters;
 import me.raatiniemi.worker.features.settings.presenter.ProjectPresenter;
-import me.raatiniemi.worker.presentation.Preferences;
-import me.raatiniemi.worker.presentation.util.KeyValueStore;
-import me.raatiniemi.worker.presentation.util.Notifications;
-import me.raatiniemi.worker.presentation.util.PreferenceUtil;
+import me.raatiniemi.worker.util.KeyValueStore;
+import me.raatiniemi.worker.util.Notifications;
+import me.raatiniemi.worker.util.PreferenceUtil;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.PresenterUtil.detachViewIfNotNull;
 
 public class ProjectFragment extends BasePreferenceFragment
         implements ProjectView, Preference.OnPreferenceChangeListener {

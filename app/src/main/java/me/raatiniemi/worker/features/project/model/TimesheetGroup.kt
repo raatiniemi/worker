@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.TimesheetItem
 import me.raatiniemi.worker.domain.model.accumulated
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
-import me.raatiniemi.worker.presentation.model.ExpandableItem
+import me.raatiniemi.worker.features.shared.model.ExpandableItem
 import java.text.SimpleDateFormat
 import java.util.*
 

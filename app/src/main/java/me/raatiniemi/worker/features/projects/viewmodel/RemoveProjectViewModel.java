@@ -26,7 +26,7 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-import static me.raatiniemi.worker.presentation.util.RxUtil.hideErrors;
+import static me.raatiniemi.worker.util.RxUtil.hideErrors;
 
 public interface RemoveProjectViewModel {
     interface Input {

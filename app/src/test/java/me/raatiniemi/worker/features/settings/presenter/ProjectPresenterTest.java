@@ -25,9 +25,9 @@ import org.junit.runners.JUnit4;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.features.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.features.settings.view.ProjectView;
-import me.raatiniemi.worker.presentation.util.InMemoryKeyValueStore;
-import me.raatiniemi.worker.presentation.util.KeyValueStore;
-import me.raatiniemi.worker.presentation.util.KeyValueStoreKt;
+import me.raatiniemi.worker.util.InMemoryKeyValueStore;
+import me.raatiniemi.worker.util.KeyValueStore;
+import me.raatiniemi.worker.util.KeyValueStoreKt;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;

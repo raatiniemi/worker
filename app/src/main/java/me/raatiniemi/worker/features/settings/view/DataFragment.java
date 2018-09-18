@@ -37,15 +37,15 @@ import me.raatiniemi.worker.data.service.data.RestoreService;
 import me.raatiniemi.worker.features.settings.Presenters;
 import me.raatiniemi.worker.features.settings.model.Backup;
 import me.raatiniemi.worker.features.settings.presenter.DataPresenter;
-import me.raatiniemi.worker.presentation.util.PermissionUtil;
-import me.raatiniemi.worker.presentation.view.dialog.RxAlertDialog;
+import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
+import me.raatiniemi.worker.util.PermissionUtil;
 import timber.log.Timber;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static me.raatiniemi.worker.presentation.util.PresenterUtil.detachViewIfNotNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
+import static me.raatiniemi.worker.util.PresenterUtil.detachViewIfNotNull;
 
 public class DataFragment extends BasePreferenceFragment
         implements DataView, ActivityCompat.OnRequestPermissionsResultCallback {

@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 import java.util.Calendar;
 
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.presentation.view.fragment.DateTimePickerFragment;
+import me.raatiniemi.worker.features.shared.view.fragment.DateTimePickerFragment;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;

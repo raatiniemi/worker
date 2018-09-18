@@ -23,9 +23,9 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.features.settings.exception.InvalidTimeSheetSummaryFormatException;
 import me.raatiniemi.worker.features.settings.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.features.settings.view.ProjectView;
-import me.raatiniemi.worker.presentation.presenter.BasePresenter;
-import me.raatiniemi.worker.presentation.util.KeyValueStore;
-import me.raatiniemi.worker.presentation.util.KeyValueStoreKt;
+import me.raatiniemi.worker.features.shared.presenter.BasePresenter;
+import me.raatiniemi.worker.util.KeyValueStore;
+import me.raatiniemi.worker.util.KeyValueStoreKt;
 import timber.log.Timber;
 
 public class ProjectPresenter extends BasePresenter<ProjectView> {

@@ -34,12 +34,12 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.projects.ViewModels;
 import me.raatiniemi.worker.features.projects.model.CreateProjectEvent;
 import me.raatiniemi.worker.features.projects.viewmodel.CreateProjectViewModel;
-import me.raatiniemi.worker.presentation.util.Keyboard;
-import me.raatiniemi.worker.presentation.view.fragment.RxDialogFragment;
+import me.raatiniemi.worker.features.shared.view.fragment.RxDialogFragment;
+import me.raatiniemi.worker.util.Keyboard;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.presentation.util.RxUtil.applySchedulers;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static me.raatiniemi.worker.util.RxUtil.applySchedulers;
 
 public class CreateProjectFragment extends RxDialogFragment implements DialogInterface.OnShowListener {
     private final EventBus eventBus = EventBus.getDefault();

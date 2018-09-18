@@ -24,7 +24,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
-import me.raatiniemi.worker.presentation.view.notification.ErrorNotification;
+import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification;
 import timber.log.Timber;
 
 public class ClockOutService extends OngoingService {
