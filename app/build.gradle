@@ -101,7 +101,7 @@ dependencies {
     implementation 'com.android.support:support-annotations:27.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
-    implementation 'org.koin:koin-android:1.0.0-RC-3'
+    implementation 'org.koin:koin-android:1.0.0'
 
     implementation 'io.reactivex:rxandroid:1.2.0'
     implementation 'com.jakewharton.rxrelay:rxrelay:1.2.0'
