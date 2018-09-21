@@ -18,8 +18,6 @@ package me.raatiniemi.worker.features.projects.viewmodel;
 
 import android.support.annotation.NonNull;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -83,7 +81,6 @@ public interface ProjectsViewModel {
         }
 
         @NonNull
-        @RxLogObservable
         private Observable<List<Project>> executeGetProjects() {
             return Observable.defer(() -> {
                 try {
@@ -127,14 +124,12 @@ public interface ProjectsViewModel {
 
         @NonNull
         @Override
-        @RxLogObservable
         public Observable<List<ProjectsItem>> projects() {
             return projects;
         }
 
         @NonNull
         @Override
-        @RxLogObservable
         public Observable<Throwable> projectsError() {
             return projectsError;
         }

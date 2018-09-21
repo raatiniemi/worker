@@ -23,7 +23,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
 import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -40,7 +39,6 @@ public class RxDialogFragment extends BaseDialogFragment implements LifecyclePro
 
     @Nonnull
     @Override
-    @RxLogObservable
     public Observable<FragmentEvent> lifecycle() {
         return lifecycle.asObservable();
     }

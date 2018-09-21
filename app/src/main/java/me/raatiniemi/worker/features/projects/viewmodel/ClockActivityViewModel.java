@@ -18,8 +18,6 @@ package me.raatiniemi.worker.features.projects.viewmodel;
 
 import android.support.annotation.NonNull;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -114,7 +112,6 @@ public interface ClockActivityViewModel {
         }
 
         @NonNull
-        @RxLogObservable
         private Observable<ProjectsItemAdapterResult> executeUseCase(@NonNull CombinedResult combinedResult) {
             try {
                 Project project = executeClockActivityChange(combinedResult);
@@ -161,14 +158,12 @@ public interface ClockActivityViewModel {
 
         @NonNull
         @Override
-        @RxLogObservable
         public Observable<ProjectsItemAdapterResult> clockInSuccess() {
             return clockInSuccess;
         }
 
         @NonNull
         @Override
-        @RxLogObservable
         public Observable<ProjectsItemAdapterResult> clockOutSuccess() {
             return clockOutSuccess;
         }
@@ -188,14 +183,12 @@ public interface ClockActivityViewModel {
 
         @NonNull
         @Override
-        @RxLogObservable
         public Observable<Throwable> clockInError() {
             return clockInError;
         }
 
         @NonNull
         @Override
-        @RxLogObservable
         public Observable<Throwable> clockOutError() {
             return clockOutError;
         }

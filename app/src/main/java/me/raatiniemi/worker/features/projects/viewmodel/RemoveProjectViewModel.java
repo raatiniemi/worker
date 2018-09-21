@@ -18,8 +18,6 @@ package me.raatiniemi.worker.features.projects.viewmodel;
 
 import android.support.annotation.NonNull;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
-
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;
@@ -94,14 +92,12 @@ public interface RemoveProjectViewModel {
 
         @NonNull
         @Override
-        @RxLogObservable
         public Observable<ProjectsItemAdapterResult> removeProjectSuccess() {
             return removeProjectSuccess;
         }
 
         @NonNull
         @Override
-        @RxLogObservable
         public Observable<ProjectsItemAdapterResult> removeProjectError() {
             return removeProjectError;
         }
