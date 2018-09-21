@@ -21,7 +21,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.support.annotation.RequiresApi
-import com.squareup.leakcanary.LeakCanary
 import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 import me.raatiniemi.worker.features.project.projectModule
@@ -58,7 +57,6 @@ open class WorkerApplication : Application() {
                 registerNotificationChannel()
             }
 
-            LeakCanary.install(this)
             ReloadNotificationService.startServiceWithContext(this)
         }
 
