@@ -59,7 +59,7 @@ project(':app') {
             properties['sonar.java.target'] = targetCompatibilityVersion
 
             properties['sonar.sources'] = 'src/main'
-            properties['sonar.tests'] = 'src/test,src/androidTest'
+            properties['sonar.tests'] = 'src/test'
 
             properties['sonar.java.binaries'] = "$javaBinaries,$kotlinBinaries"
             properties['sonar.java.test.binaries'] = "$javaBinaries,$kotlinBinaries"
