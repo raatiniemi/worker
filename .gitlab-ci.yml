@@ -38,7 +38,7 @@ test:
       - core/build/libs/
     expire_in: 1 day
   except:
-    - tags
+    - master
   tags:
     - docker
 
@@ -52,7 +52,7 @@ sonar:
       - core/build/libs/
     expire_in: 1 day
   only:
-    - tags
+    - master
   tags:
     - docker
 
