@@ -14,12 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-String versionFromTag = {
-    def tag = 'git describe --tags --abbrev=0'.execute()
-            .getText()
-
-    return tag.toString().trim()
-}()
+apply plugin: 'com.cinnober.gradle.semver-git'
 
 Integer versionCodeFromNumberOfTags = {
     def tags = 'git tag'.execute()
@@ -30,6 +25,6 @@ Integer versionCodeFromNumberOfTags = {
 }()
 
 ext {
-    projectVersion = versionFromTag
+    projectVersion = project.version
     projectVersionCode = versionCodeFromNumberOfTags
 }
