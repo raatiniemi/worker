@@ -6,7 +6,6 @@
 [![code test coverage](https://sonarcloud.io/api/project_badges/measure?project=me.raatiniemi.worker&metric=coverage)](https://sonarcloud.io/dashboard?id=me.raatiniemi.worker)
 [![technical dept](https://sonarcloud.io/api/project_badges/measure?project=me.raatiniemi.worker&metric=sqale_index)](https://sonarcloud.io/dashboard?id=me.raatiniemi.worker)
 
-
 Worker is a simple Android application for keeping track of time.
 
 [Introducing Worker](http://raatiniemi.me/thoughts/introducing-worker/)
