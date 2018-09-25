@@ -1,6 +1,11 @@
 # Worker
-[![pipeline status](https://gitlab.com/raatiniemi/worker/badges/master/pipeline.svg)](https://gitlab.com/raatiniemi/worker/commits/master)
+
 [![license](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
+[![pipeline status](https://gitlab.com/raatiniemi/worker/badges/master/pipeline.svg)](https://gitlab.com/raatiniemi/worker/commits/master)
+[![quality gate](https://sonarcloud.io/api/project_badges/measure?project=me.raatiniemi.worker&metric=alert_status)](https://sonarcloud.io/dashboard?id=me.raatiniemi.worker)
+[![code test coverage](https://sonarcloud.io/api/project_badges/measure?project=me.raatiniemi.worker&metric=coverage)](https://sonarcloud.io/dashboard?id=me.raatiniemi.worker)
+[![technical dept](https://sonarcloud.io/api/project_badges/measure?project=me.raatiniemi.worker&metric=sqale_index)](https://sonarcloud.io/dashboard?id=me.raatiniemi.worker)
+
 
 Worker is a simple Android application for keeping track of time.
 
