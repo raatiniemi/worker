@@ -11,6 +11,7 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.triplet.play'
 
 android {
@@ -93,6 +94,8 @@ if (System.getenv("PLAY_KEY_PATH")) {
 }
 
 dependencies {
+    kapt 'androidx.room:room-compiler:2.1.0-alpha02'
+
     implementation project(':core')
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -100,6 +103,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation 'androidx.room:room-runtime:2.1.0-alpha02'
 
     implementation 'org.koin:koin-android:1.0.1'
 
