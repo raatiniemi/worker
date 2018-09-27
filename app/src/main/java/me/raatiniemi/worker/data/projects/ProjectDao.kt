@@ -14,22 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data
+package me.raatiniemi.worker.data.projects
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import me.raatiniemi.worker.data.projects.ProjectDao
-import me.raatiniemi.worker.data.projects.ProjectEntity
-import me.raatiniemi.worker.data.projects.TimeIntervalEntity
+import androidx.room.*
 
-@Database(
-        entities = [
-            ProjectEntity::class,
-            TimeIntervalEntity::class
-        ],
-        version = 3,
-        exportSchema = true
-)
-abstract class Database : RoomDatabase() {
-    abstract fun projects(): ProjectDao
+@Dao
+interface ProjectDao {
+    @Query("SELECT * FROM projects ORDER BY name ASC")
+    fun findAll(): List<ProjectEntity>
+
+    @Query("SELECT * FROM projects WHERE name = :name LIMIT 1")
+    fun findByName(name: String): ProjectEntity?
+
+    @Query("SELECT * FROM projects WHERE _id = :id LIMIT 1")
+    fun findById(id: Long): ProjectEntity?
+
+    @Insert(onConflict = OnConflictStrategy.ROLLBACK)
+    fun add(project: ProjectEntity): Long
+
+    @Delete
+    fun remove(project: ProjectEntity)
 }

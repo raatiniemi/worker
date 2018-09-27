@@ -16,7 +16,8 @@
 
 package me.raatiniemi.worker.data
 
-import me.raatiniemi.worker.data.repository.ProjectResolverRepository
+import androidx.room.Room
+import me.raatiniemi.worker.data.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.repository.TimeIntervalResolverRepository
 import me.raatiniemi.worker.data.repository.TimesheetResolverRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
@@ -26,7 +27,24 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 
 val dataModule = module {
-    single<ProjectRepository> { ProjectResolverRepository(androidContext().contentResolver) }
+    single {
+        // Use an in memory database for now. When using the real database we need to
+        // migrate the existing data to the new scheme.
+        Room.inMemoryDatabaseBuilder(androidContext(), Database::class.java)
+                // TODO: Remove `allowMainThreadQueries` when more code is migrated to coroutines.
+                // Using Room with RxJava 1 seem to not work properly in regards to main thread,
+                // etc. Therefor should we allow for main thread queries until more of the app have
+                // been migrated to use coroutines.
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build()
+    }
+
+    single<ProjectRepository> {
+        val database: Database = get()
+
+        ProjectRoomRepository(database.projects())
+    }
 
     single<TimeIntervalRepository> { TimeIntervalResolverRepository(androidContext().contentResolver) }
 

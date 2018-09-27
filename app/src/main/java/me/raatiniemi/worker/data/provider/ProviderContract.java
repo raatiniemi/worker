@@ -38,7 +38,7 @@ public final class ProviderContract {
     static final String TABLE_PROJECT = "project";
     static final String TABLE_TIME = "time";
 
-    public static final String COLUMN_PROJECT_NAME = "name";
+    static final String COLUMN_PROJECT_NAME = "name";
     static final String COLUMN_PROJECT_DESCRIPTION = "description";
     static final String COLUMN_PROJECT_ARCHIVED = "archived";
 
@@ -47,7 +47,6 @@ public final class ProviderContract {
     public static final String COLUMN_TIME_STOP = "stop";
     public static final String COLUMN_TIME_REGISTERED = "registered";
 
-    public static final String ORDER_BY_PROJECT = BaseColumns._ID + " ASC";
     public static final String ORDER_BY_PROJECT_TIME = COLUMN_TIME_STOP + " ASC," + COLUMN_TIME_START + " ASC";
     public static final String ORDER_BY_TIMESHEET = COLUMN_TIME_START + " DESC," + COLUMN_TIME_STOP + " DESC";
     static final String GROUP_BY_TIMESHEET = "strftime('%Y%m%d', " + COLUMN_TIME_START + " / 1000, 'unixepoch')";
@@ -55,14 +54,14 @@ public final class ProviderContract {
     private ProviderContract() {
     }
 
-    public static String[] getProjectColumns() {
+    static String[] getProjectColumns() {
         return new String[]{
                 BaseColumns._ID,
                 COLUMN_PROJECT_NAME
         };
     }
 
-    public static Uri getProjectStreamUri() {
+    static Uri getProjectStreamUri() {
         return URI_STREAM_PROJECT;
     }
 
