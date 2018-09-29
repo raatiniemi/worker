@@ -32,10 +32,8 @@ class ProjectDaoTest : BaseDaoTest() {
 
     @Test
     fun findAll_withProject() {
-        projects.add(ProjectEntity(name = "Name"))
-        val expected = listOf(
-                ProjectEntity(id = 1, name = "Name")
-        )
+        projects.add(projectEntity())
+        val expected = listOf(projectEntity { id = 1 })
 
         val actual = projects.findAll()
 
@@ -44,13 +42,22 @@ class ProjectDaoTest : BaseDaoTest() {
 
     @Test
     fun findAll_withProjects() {
-        projects.add(ProjectEntity(name = "Name #3"))
-        projects.add(ProjectEntity(name = "Name #1"))
-        projects.add(ProjectEntity(name = "Name #2"))
+        projects.add(projectEntity { name = "Name #3" })
+        projects.add(projectEntity { name = "Name #1" })
+        projects.add(projectEntity { name = "Name #2" })
         val expected = listOf(
-                ProjectEntity(id = 2, name = "Name #1"),
-                ProjectEntity(id = 3, name = "Name #2"),
-                ProjectEntity(id = 1, name = "Name #3")
+                projectEntity {
+                    id = 2
+                    name = "Name #1"
+                },
+                projectEntity {
+                    id = 3
+                    name = "Name #2"
+                },
+                projectEntity {
+                    id = 1
+                    name = "Name #3"
+                }
         )
 
         val actual = projects.findAll()
@@ -67,8 +74,8 @@ class ProjectDaoTest : BaseDaoTest() {
 
     @Test
     fun findByName_withProject() {
-        projects.add(ProjectEntity(name = "Name"))
-        val expected = ProjectEntity(id = 1, name = "Name")
+        projects.add(projectEntity())
+        val expected = projectEntity { id = 1 }
 
         val actual = projects.findByName(name = "Name")
 
@@ -77,10 +84,13 @@ class ProjectDaoTest : BaseDaoTest() {
 
     @Test
     fun findByName_withProjects() {
-        projects.add(ProjectEntity(name = "Name #3"))
-        projects.add(ProjectEntity(name = "Name #1"))
-        projects.add(ProjectEntity(name = "Name #2"))
-        val expected = ProjectEntity(id = 3, name = "Name #2")
+        projects.add(projectEntity { name = "Name #3" })
+        projects.add(projectEntity { name = "Name #1" })
+        projects.add(projectEntity { name = "Name #2" })
+        val expected = projectEntity {
+            id = 3
+            name = "Name #2"
+        }
 
         val actual = projects.findByName(name = "Name #2")
 
@@ -96,8 +106,8 @@ class ProjectDaoTest : BaseDaoTest() {
 
     @Test
     fun findById_withProject() {
-        projects.add(ProjectEntity(name = "Name"))
-        val expected = ProjectEntity(id = 1, name = "Name")
+        projects.add(projectEntity())
+        val expected = projectEntity { id = 1 }
 
         val actual = projects.findById(id = 1)
 
@@ -106,10 +116,13 @@ class ProjectDaoTest : BaseDaoTest() {
 
     @Test
     fun findById_withProjects() {
-        projects.add(ProjectEntity(name = "Name #3"))
-        projects.add(ProjectEntity(name = "Name #1"))
-        projects.add(ProjectEntity(name = "Name #2"))
-        val expected = ProjectEntity(id = 3, name = "Name #2")
+        projects.add(projectEntity { name = "Name #3" })
+        projects.add(projectEntity { name = "Name #1" })
+        projects.add(projectEntity { name = "Name #2" })
+        val expected = projectEntity {
+            id = 3
+            name = "Name #2"
+        }
 
         val actual = projects.findById(id = 3)
 
@@ -118,15 +131,18 @@ class ProjectDaoTest : BaseDaoTest() {
 
     @Test
     fun remove_withoutProjects() {
-        val entity = ProjectEntity(id = 1, name = "Name")
+        val entity = projectEntity()
 
         projects.remove(entity)
     }
 
     @Test
     fun remove_withProject() {
-        projects.add(ProjectEntity(name = "Name"))
-        val entity = ProjectEntity(id = 1, name = "Name")
+        projects.add(projectEntity())
+        val entity = projectEntity {
+            id = 1
+            name = "Name"
+        }
 
         projects.remove(entity)
 
@@ -136,13 +152,22 @@ class ProjectDaoTest : BaseDaoTest() {
 
     @Test
     fun remove_withProjects() {
-        projects.add(ProjectEntity(name = "Name #3"))
-        projects.add(ProjectEntity(name = "Name #1"))
-        projects.add(ProjectEntity(name = "Name #2"))
-        val entity = ProjectEntity(id = 3, name = "Name #2")
+        projects.add(projectEntity { name = "Name #3" })
+        projects.add(projectEntity { name = "Name #1" })
+        projects.add(projectEntity { name = "Name #2" })
+        val entity = projectEntity {
+            id = 3
+            name = "Name #2"
+        }
         val expected = listOf(
-                ProjectEntity(id = 2, name = "Name #1"),
-                ProjectEntity(id = 1, name = "Name #3")
+                projectEntity {
+                    id = 2
+                    name = "Name #1"
+                },
+                projectEntity {
+                    id = 1
+                    name = "Name #3"
+                }
         )
 
         projects.remove(entity)
