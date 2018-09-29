@@ -16,38 +16,13 @@
 
 package me.raatiniemi.worker.data.projects
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import me.raatiniemi.worker.data.Database
-import org.junit.After
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ProjectDaoTest {
-    private lateinit var database: Database
-
-    @Before
-    fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        database = Room.inMemoryDatabaseBuilder(context, Database::class.java)
-                .allowMainThreadQueries()
-                .build()
-    }
-
-    @After
-    fun tearDown() {
-        database.close()
-    }
-
-    private val projects: ProjectDao by lazy {
-        database.projects()
-    }
-
+class ProjectDaoTest : BaseDaoTest() {
     @Test
     fun findAll_withoutProjects() {
         val actual = projects.findAll()
