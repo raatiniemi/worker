@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.projects
 
 import android.content.Context
+import androidx.annotation.CallSuper
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import me.raatiniemi.worker.data.Database
@@ -26,8 +27,9 @@ import org.junit.Before
 open class BaseDaoTest {
     private lateinit var database: Database
 
+    @CallSuper
     @Before
-    fun setUp() {
+    open fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(context, Database::class.java)
                 .allowMainThreadQueries()
@@ -41,5 +43,9 @@ open class BaseDaoTest {
 
     internal val projects: ProjectDao by lazy {
         database.projects()
+    }
+
+    internal val timeIntervals: TimeIntervalDao by lazy {
+        database.timeIntervals()
     }
 }

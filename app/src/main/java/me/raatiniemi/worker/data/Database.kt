@@ -20,6 +20,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import me.raatiniemi.worker.data.projects.ProjectDao
 import me.raatiniemi.worker.data.projects.ProjectEntity
+import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeIntervalEntity
 
 @Database(
@@ -32,4 +33,5 @@ import me.raatiniemi.worker.data.projects.TimeIntervalEntity
 )
 abstract class Database : RoomDatabase() {
     abstract fun projects(): ProjectDao
+    abstract fun timeIntervals(): TimeIntervalDao
 }
