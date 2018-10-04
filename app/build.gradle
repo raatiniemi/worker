@@ -1,3 +1,4 @@
+//noinspection GradleDependency
 buildscript {
     repositories {
         google()
@@ -69,6 +70,9 @@ android {
                     'src/main/res-screen/settings'
             ]
         }
+        androidTest {
+            assets.srcDirs += files("$projectDir/schemas".toString())
+        }
     }
 
     lintOptions {
@@ -132,4 +136,5 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.0.0'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.ext:junit:1.0.0'
+    androidTestImplementation 'androidx.room:room-testing:2.1.0-alpha02'
 }
