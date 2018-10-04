@@ -16,11 +16,8 @@
 
 package me.raatiniemi.worker.data.projects
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
 
 @Entity(
         tableName = "time_intervals",
@@ -31,6 +28,9 @@ import androidx.room.PrimaryKey
                     childColumns = ["project_id"],
                     onDelete = CASCADE
             )
+        ],
+        indices = [
+            Index(name = "index_project_id", value = ["project_id"])
         ]
 )
 data class TimeIntervalEntity(

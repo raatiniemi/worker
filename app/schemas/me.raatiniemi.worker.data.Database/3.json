@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "e7c7ab0bb75fa3c9529ead4dfce17778",
+    "identityHash": "8ea26c66f295bf29d6b70461e00b8439",
     "entities": [
       {
         "tableName": "projects",
@@ -80,7 +80,16 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_project_id",
+            "unique": false,
+            "columnNames": [
+              "project_id"
+            ],
+            "createSql": "CREATE  INDEX `index_project_id` ON `${TABLE_NAME}` (`project_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "projects",
@@ -98,7 +107,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e7c7ab0bb75fa3c9529ead4dfce17778\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8ea26c66f295bf29d6b70461e00b8439\")"
     ]
   }
 }
