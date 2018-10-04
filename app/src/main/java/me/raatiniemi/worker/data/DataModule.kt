@@ -17,6 +17,9 @@
 package me.raatiniemi.worker.data
 
 import androidx.room.Room
+import me.raatiniemi.worker.WorkerApplication.Companion.DATABASE_NAME
+import me.raatiniemi.worker.data.migrations.Migration1To2
+import me.raatiniemi.worker.data.migrations.Migration2To3
 import me.raatiniemi.worker.data.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.repository.TimeIntervalRoomRepository
 import me.raatiniemi.worker.data.repository.TimesheetRoomRepository
@@ -28,15 +31,13 @@ import org.koin.dsl.module.module
 
 val dataModule = module {
     single {
-        // Use an in memory database for now. When using the real database we need to
-        // migrate the existing data to the new scheme.
-        Room.inMemoryDatabaseBuilder(androidContext(), Database::class.java)
+        Room.databaseBuilder(androidContext(), Database::class.java, DATABASE_NAME)
                 // TODO: Remove `allowMainThreadQueries` when more code is migrated to coroutines.
                 // Using Room with RxJava 1 seem to not work properly in regards to main thread,
                 // etc. Therefor should we allow for main thread queries until more of the app have
                 // been migrated to use coroutines.
                 .allowMainThreadQueries()
-                .fallbackToDestructiveMigration()
+                .addMigrations(Migration1To2(), Migration2To3())
                 .build()
     }
 
