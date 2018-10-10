@@ -2,7 +2,7 @@
 
 buildscript {
     ext.nextVersion = 'patch'
-    ext.kotlinVersion = '1.2.30'
+    ext.kotlinVersion = '1.2.61'
 
     repositories {
         google()
