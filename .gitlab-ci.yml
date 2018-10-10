@@ -28,6 +28,18 @@ build:
   tags:
    - docker
 
+lint:
+  stage: test
+  script:
+    - ./gradlew lintRelease
+  artifacts:
+    paths:
+      - app/build/outputs/
+      - core/build/libs/
+    expire_in: 1 day
+  tags:
+    - docker
+
 test:
   stage: test
   script:
