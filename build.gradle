@@ -37,4 +37,5 @@ ext {
 }
 
 apply from: 'versioning.gradle'
+apply from: 'jacoco.gradle'
 apply from: 'sonarqube.gradle'

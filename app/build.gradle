@@ -12,7 +12,6 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.triplet.play'
-apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 28
@@ -88,13 +87,6 @@ if (System.getenv("PLAY_KEY_PATH")) {
     play {
         jsonFile = file(System.getenv("PLAY_KEY_PATH"))
     }
-}
-
-jacoco {
-    toolVersion = '0.8.1'
-}
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
 }
 
 dependencies {
