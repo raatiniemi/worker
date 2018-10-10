@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_create_project"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -26,7 +27,9 @@
         android:textSize="@dimen/fragment_dialog_text_size"
         android:hint="@string/fragment_create_project_name_hint"
         android:backgroundTint="@color/accent"
-        >
+        android:importantForAutofill="no"
+        android:inputType="text"
+        tools:ignore="UnusedAttribute">
 
         <requestFocus />
 
