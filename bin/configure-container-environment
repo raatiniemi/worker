@@ -7,8 +7,8 @@ if [ -z $ANDROID_HOME ]; then
   exit 1;
 fi
 
-ANDROID_BUILD_TOOLS="27.0.3";
-ANDROID_COMPILE_SDK="27";
+ANDROID_BUILD_TOOLS="28.0.2";
+ANDROID_COMPILE_SDK="28";
 
 function accept_license_and_install {
   yes | "${ANDROID_HOME}/tools/bin/sdkmanager" $1 1>/dev/null;
