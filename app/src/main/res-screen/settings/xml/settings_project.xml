@@ -25,7 +25,8 @@
 
         <CheckBoxPreference
             android:key="settings_project_confirm_clock_out"
-            android:title="@string/activity_settings_project_confirm_clock_out"
+            android:title="@string/activity_settings_project_confirm_clock_out_title"
+            android:summary="@string/activity_settings_project_confirm_clock_out_summary"
             />
 
         <ListPreference
@@ -57,7 +58,8 @@
 
         <CheckBoxPreference
             android:key="settings_project_ongoing_notification_chronometer"
-            android:title="@string/activity_settings_project_ongoing_notification_chronometer"
+            android:title="@string/activity_settings_project_ongoing_notification_chronometer_title"
+            android:summary="@string/activity_settings_project_ongoing_notification_chronometer_summary"
             />
 
     </PreferenceCategory>
