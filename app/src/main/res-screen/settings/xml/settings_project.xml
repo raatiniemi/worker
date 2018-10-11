@@ -59,6 +59,7 @@
         <CheckBoxPreference
             android:key="settings_project_ongoing_notification_chronometer"
             android:title="@string/activity_settings_project_ongoing_notification_chronometer"
+            android:summary="@string/activity_settings_project_ongoing_notification_chronometer_summary"
             />
 
     </PreferenceCategory>
