@@ -62,7 +62,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
 
     @NonNull
     @Override
-    public ProjectsItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ProjectsItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
@@ -70,7 +70,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ProjectsItemViewHolder vh, int index) {
+    public void onBindViewHolder(@NonNull final ProjectsItemViewHolder vh, int index) {
         final ProjectsItem item = get(index);
         final ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(index, item);
 
