@@ -73,7 +73,7 @@
     <string name="activity_settings_project_ongoing_notification">Ongoing notification</string>
     <string name="activity_settings_project_ongoing_notification_enable">Enable</string>
     <string name="activity_settings_project_ongoing_notification_enable_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
-    <string name="activity_settings_project_ongoing_notification_chronometer">Notification timer</string>
+    <string name="activity_settings_project_ongoing_notification_chronometer_title">Notification timer</string>
     <string name="activity_settings_project_ongoing_notification_chronometer_summary">Include notification timer for total time worked today, or length of current break (depends on project state).</string>
     <string name="activity_settings_data">Data</string>
     <string name="activity_settings_backup">Backup</string>
