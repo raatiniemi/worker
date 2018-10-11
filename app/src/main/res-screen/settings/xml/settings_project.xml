@@ -26,6 +26,7 @@
         <CheckBoxPreference
             android:key="settings_project_confirm_clock_out"
             android:title="@string/activity_settings_project_confirm_clock_out"
+            android:summary="@string/activity_settings_project_confirm_clock_out_summary"
             />
 
         <ListPreference
