@@ -60,7 +60,7 @@
     <string name="activity_settings_preferences">Preferences</string>
     <string name="activity_settings_project">Project</string>
     <string name="activity_settings_project_general">General</string>
-    <string name="activity_settings_project_confirm_clock_out">Confirm clock out</string>
+    <string name="activity_settings_project_confirm_clock_out_title">Confirm clock out</string>
     <string name="activity_settings_project_confirm_clock_out_summary">Require confirmation when clocking out to prevent accidental clocking out. Clock out from ongoing notification is not yet supported.</string>
     <string name="activity_settings_project_time_summary_title">Time summary</string>
     <string name="activity_settings_project_time_summary_summary">Starting point for the collection of registered time used for the time summary.</string>
