@@ -91,7 +91,7 @@ class TimesheetGroup private constructor(
     }
 
     companion object {
-        private val LANGUAGE_TAG = "en_US"
+        private const val LANGUAGE_TAG = "en_US"
 
         fun build(date: Date, timesheetItems: SortedSet<TimesheetItem>): TimesheetGroup {
             val items = ArrayList<TimesheetItem>()
