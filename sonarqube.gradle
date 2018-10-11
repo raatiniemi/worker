@@ -51,8 +51,11 @@ project(':core') {
 
 project(':app') {
     sonarqube {
-        def javaBinaries = 'build/intermediates/classes/release'
-        def kotlinBinaries = 'build/tmp/kotlin-classes/release'
+        def javaDirectory = 'build/intermediates/javac'
+        def kotlinDirectory = "build/tmp/kotlin-classes"
+
+        def binaries = "$javaDirectory/release,$kotlinDirectory/release"
+        def testBinaries = "$javaDirectory/releaseUnitTest,$kotlinDirectory/releaseUnitTest"
 
         properties {
             properties['sonar.java.source'] = sourceCompatibilityVersion
@@ -61,8 +64,8 @@ project(':app') {
             properties['sonar.sources'] = 'src/main'
             properties['sonar.tests'] = 'src/test'
 
-            properties['sonar.java.binaries'] = "$javaBinaries,$kotlinBinaries"
-            properties['sonar.java.test.binaries'] = "$javaBinaries,$kotlinBinaries"
+            properties['sonar.java.binaries'] = binaries
+            properties['sonar.java.test.binaries'] = testBinaries
 
             properties['sonar.java.libraries'] += 'build/generated/*.jar'
             properties['sonar.java.test.libraries'] += 'build/generated/*.jar'
