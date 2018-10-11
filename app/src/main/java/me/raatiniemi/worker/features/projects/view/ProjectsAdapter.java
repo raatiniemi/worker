@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.projects.view;
 
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
         return R.layout.fragment_projects_item;
     }
 
+    @NonNull
     @Override
     public ProjectsItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());

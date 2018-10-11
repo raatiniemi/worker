@@ -182,7 +182,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         );
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 // Make sure we're not loading data before checking the position.
                 if (!loading) {
                     // Retrieve positional data, needed for the calculation on whether
