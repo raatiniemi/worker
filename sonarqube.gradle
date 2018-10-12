@@ -57,7 +57,6 @@ project(':app') {
         def binaries = "$javaDirectory/release,$kotlinDirectory/release"
         def testBinaries = "$javaDirectory/releaseUnitTest,$kotlinDirectory/releaseUnitTest"
 
-        def libraries = 'build/intermediates/transforms/dexBuilder/release/*.jar'
 
         properties {
             properties['sonar.java.source'] = sourceCompatibilityVersion
@@ -68,9 +67,6 @@ project(':app') {
 
             properties['sonar.java.binaries'] = binaries
             properties['sonar.java.test.binaries'] = testBinaries
-
-            properties['sonar.java.libraries'] += libraries
-            properties['sonar.java.test.libraries'] += libraries
 
             properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
             properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec'])
