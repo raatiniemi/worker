@@ -52,7 +52,7 @@ public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemR
                                 mockProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
-                                "Clock out at given date and time",
+                                "Clock out %s at given date and time",
                                 mockProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }

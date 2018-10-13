@@ -101,7 +101,7 @@ public class ProjectsItem {
 
     public String getHelpTextForClockActivityAt(Resources resources) {
         if (isActive()) {
-            return resources.getString(R.string.fragment_projects_item_clock_out_at);
+            return resources.getString(R.string.fragment_projects_item_clock_out_at, project.getName());
         }
 
         return resources.getString(R.string.fragment_projects_item_clock_in_at, project.getName());
