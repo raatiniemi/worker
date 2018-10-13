@@ -20,17 +20,21 @@ import android.content.res.Resources;
 
 import me.raatiniemi.worker.R;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 abstract class ProjectsItemResourceTest {
     Resources getResources() {
         Resources resources = mock(Resources.class);
-        when(resources.getString(R.string.fragment_projects_item_clock_in)).thenReturn("Clock in now");
-        when(resources.getString(R.string.fragment_projects_item_clock_out)).thenReturn("Clock out now");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_in), anyString())).thenReturn("Clock in %s");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_out), anyString())).thenReturn("Clock out %s");
 
-        when(resources.getString(R.string.fragment_projects_item_clock_in_at)).thenReturn("Clock in at given date and time");
-        when(resources.getString(R.string.fragment_projects_item_clock_out_at)).thenReturn("Clock out at given date and time");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_in_at), anyString())).thenReturn("Clock in %s at");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_out_at), anyString())).thenReturn("Clock out %s at");
+
+        when(resources.getString(eq(R.string.fragment_projects_item_delete), anyString())).thenReturn("Delete %s");
 
         when(resources.getString(R.string.fragment_projects_item_clocked_in_since)).thenReturn("Since %s (%s)");
 

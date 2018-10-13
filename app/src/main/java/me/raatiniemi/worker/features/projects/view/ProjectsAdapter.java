@@ -62,7 +62,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
 
     @NonNull
     @Override
-    public ProjectsItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ProjectsItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(viewType, viewGroup, false);
 
@@ -70,7 +70,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
     }
 
     @Override
-    public void onBindViewHolder(final ProjectsItemViewHolder vh, int index) {
+    public void onBindViewHolder(@NonNull final ProjectsItemViewHolder vh, int index) {
         final ProjectsItem item = get(index);
         final ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(index, item);
 
@@ -95,6 +95,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
         vh.clockActivityAt.setOnClickListener(view -> onProjectActionListener.onClockActivityAt(result));
         vh.clockActivityAt.setOnLongClickListener(hintedImageButtonListener);
 
+        vh.delete.setContentDescription(item.getHelpTextForDelete(resources));
         vh.delete.setOnClickListener(view -> onProjectActionListener.onDelete(result));
         vh.delete.setOnLongClickListener(hintedImageButtonListener);
     }

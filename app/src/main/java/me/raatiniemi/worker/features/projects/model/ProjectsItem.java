@@ -93,18 +93,22 @@ public class ProjectsItem {
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
         if (isActive()) {
-            return resources.getString(R.string.fragment_projects_item_clock_out);
+            return resources.getString(R.string.fragment_projects_item_clock_out, project.getName());
         }
 
-        return resources.getString(R.string.fragment_projects_item_clock_in);
+        return resources.getString(R.string.fragment_projects_item_clock_in, project.getName());
     }
 
     public String getHelpTextForClockActivityAt(Resources resources) {
         if (isActive()) {
-            return resources.getString(R.string.fragment_projects_item_clock_out_at);
+            return resources.getString(R.string.fragment_projects_item_clock_out_at, project.getName());
         }
 
-        return resources.getString(R.string.fragment_projects_item_clock_in_at);
+        return resources.getString(R.string.fragment_projects_item_clock_in_at, project.getName());
+    }
+
+    public String getHelpTextForDelete(Resources resources) {
+        return resources.getString(R.string.fragment_projects_item_delete, project.getName());
     }
 
     public String getClockedInSince(Resources resources) {

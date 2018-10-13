@@ -48,11 +48,11 @@ public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemR
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Clock in at given date and time",
+                                "Clock in %s at",
                                 mockProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
-                                "Clock out at given date and time",
+                                "Clock out %s at",
                                 mockProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
@@ -61,6 +61,7 @@ public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemR
 
     private static Project mockProjectWithActiveIndicator(boolean isProjectActive) {
         Project project = mock(Project.class);
+        when(project.getName()).thenReturn("project #1");
         when(project.isActive()).thenReturn(isProjectActive);
 
         return project;
