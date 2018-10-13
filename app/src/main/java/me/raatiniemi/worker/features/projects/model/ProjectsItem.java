@@ -104,7 +104,7 @@ public class ProjectsItem {
             return resources.getString(R.string.fragment_projects_item_clock_out_at);
         }
 
-        return resources.getString(R.string.fragment_projects_item_clock_in_at);
+        return resources.getString(R.string.fragment_projects_item_clock_in_at, project.getName());
     }
 
     public String getClockedInSince(Resources resources) {
