@@ -28,11 +28,11 @@ import static org.mockito.Mockito.when;
 abstract class ProjectsItemResourceTest {
     Resources getResources() {
         Resources resources = mock(Resources.class);
-        when(resources.getString(eq(R.string.fragment_projects_item_clock_in), anyString())).thenReturn("Clock in %s now");
-        when(resources.getString(eq(R.string.fragment_projects_item_clock_out), anyString())).thenReturn("Clock out %s now");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_in), anyString())).thenReturn("Clock in %s");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_out), anyString())).thenReturn("Clock out %s");
 
-        when(resources.getString(eq(R.string.fragment_projects_item_clock_in_at), anyString())).thenReturn("Clock in %s at given date and time");
-        when(resources.getString(eq(R.string.fragment_projects_item_clock_out_at), anyString())).thenReturn("Clock out %s at given date and time");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_in_at), anyString())).thenReturn("Clock in %s at");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_out_at), anyString())).thenReturn("Clock out %s at");
 
         when(resources.getString(R.string.fragment_projects_item_clocked_in_since)).thenReturn("Since %s (%s)");
 

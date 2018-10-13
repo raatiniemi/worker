@@ -48,11 +48,11 @@ public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemR
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Clock in %s at given date and time",
+                                "Clock in %s at",
                                 mockProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
-                                "Clock out %s at given date and time",
+                                "Clock out %s at",
                                 mockProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
