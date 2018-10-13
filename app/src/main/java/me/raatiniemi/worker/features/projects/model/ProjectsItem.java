@@ -96,7 +96,7 @@ public class ProjectsItem {
             return resources.getString(R.string.fragment_projects_item_clock_out);
         }
 
-        return resources.getString(R.string.fragment_projects_item_clock_in);
+        return resources.getString(R.string.fragment_projects_item_clock_in, project.getName());
     }
 
     public String getHelpTextForClockActivityAt(Resources resources) {

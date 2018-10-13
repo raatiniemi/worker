@@ -14,7 +14,7 @@
     <string name="menu_actions_project_timesheet_delete">Delete</string>
 
     <string name="fragment_projects_item_clocked_in_since" formatted="false">Since %s (%s)</string>
-    <string name="fragment_projects_item_clock_in">Clock in now</string>
+    <string name="fragment_projects_item_clock_in">Clock in %s now</string>
     <string name="fragment_projects_item_clock_in_at">Clock in at given date and time</string>
     <string name="fragment_projects_item_clock_out">Clock out now</string>
     <string name="fragment_projects_item_clock_out_at">Clock out at given date and time</string>

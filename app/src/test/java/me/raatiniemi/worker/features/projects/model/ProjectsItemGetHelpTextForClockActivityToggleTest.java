@@ -48,7 +48,7 @@ public class ProjectsItemGetHelpTextForClockActivityToggleTest extends ProjectsI
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "Clock in now",
+                                "Clock in %s now",
                                 mockProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
@@ -61,6 +61,7 @@ public class ProjectsItemGetHelpTextForClockActivityToggleTest extends ProjectsI
 
     private static Project mockProjectWithActiveIndicator(boolean isProjectActive) {
         Project project = mock(Project.class);
+        when(project.getName()).thenReturn("project #1");
         when(project.isActive()).thenReturn(isProjectActive);
 
         return project;

@@ -20,13 +20,15 @@ import android.content.res.Resources;
 
 import me.raatiniemi.worker.R;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 abstract class ProjectsItemResourceTest {
     Resources getResources() {
         Resources resources = mock(Resources.class);
-        when(resources.getString(R.string.fragment_projects_item_clock_in)).thenReturn("Clock in now");
+        when(resources.getString(eq(R.string.fragment_projects_item_clock_in), anyString())).thenReturn("Clock in %s now");
         when(resources.getString(R.string.fragment_projects_item_clock_out)).thenReturn("Clock out now");
 
         when(resources.getString(R.string.fragment_projects_item_clock_in_at)).thenReturn("Clock in at given date and time");
