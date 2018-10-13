@@ -79,11 +79,11 @@
     <string name="activity_settings_backup">Backup</string>
     <string name="activity_settings_backup_unable_to_find">Unable to locate latest backup.</string>
     <string name="activity_settings_backup_none_available">No backup have been performed.</string>
-    <string name="activity_settings_backup_performed_at" formatted="false">Last backup was performed at %s.</string>
+    <string name="activity_settings_backup_performed_at">Last backup was performed at %s.</string>
     <string name="activity_settings_restore">Restore</string>
     <string name="activity_settings_restore_unable_to_find">Unable to restore, failed to locate backups.</string>
     <string name="activity_settings_restore_none_available">Nothing to restore, no backup is available.</string>
-    <string name="activity_settings_restore_from" formatted="false">Restore backup from %s.\nAfter restore you have to restart the application.</string>
+    <string name="activity_settings_restore_from">Restore backup from %s.\nAfter restore you have to restart the application.</string>
 
     <string name="notification_backup_title">Backup complete</string>
     <string name="notification_backup_message">Backup to external storage was successful.</string>
