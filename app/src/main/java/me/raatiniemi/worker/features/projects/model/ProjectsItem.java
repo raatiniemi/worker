@@ -93,7 +93,7 @@ public class ProjectsItem {
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
         if (isActive()) {
-            return resources.getString(R.string.fragment_projects_item_clock_out);
+            return resources.getString(R.string.fragment_projects_item_clock_out, project.getName());
         }
 
         return resources.getString(R.string.fragment_projects_item_clock_in, project.getName());

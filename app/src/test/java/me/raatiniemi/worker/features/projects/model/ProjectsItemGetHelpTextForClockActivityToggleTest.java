@@ -52,7 +52,7 @@ public class ProjectsItemGetHelpTextForClockActivityToggleTest extends ProjectsI
                                 mockProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
-                                "Clock out now",
+                                "Clock out %s now",
                                 mockProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
