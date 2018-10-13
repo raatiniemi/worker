@@ -107,6 +107,10 @@ public class ProjectsItem {
         return resources.getString(R.string.fragment_projects_item_clock_in_at, project.getName());
     }
 
+    public String getHelpTextForDelete(Resources resources) {
+        return resources.getString(R.string.fragment_projects_item_delete, project.getName());
+    }
+
     public String getClockedInSince(Resources resources) {
         if (!isActive()) {
             return null;

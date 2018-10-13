@@ -95,6 +95,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
         vh.clockActivityAt.setOnClickListener(view -> onProjectActionListener.onClockActivityAt(result));
         vh.clockActivityAt.setOnLongClickListener(hintedImageButtonListener);
 
+        vh.delete.setContentDescription(item.getHelpTextForDelete(resources));
         vh.delete.setOnClickListener(view -> onProjectActionListener.onDelete(result));
         vh.delete.setOnLongClickListener(hintedImageButtonListener);
     }

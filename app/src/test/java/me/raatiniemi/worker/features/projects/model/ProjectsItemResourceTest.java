@@ -34,6 +34,8 @@ abstract class ProjectsItemResourceTest {
         when(resources.getString(eq(R.string.fragment_projects_item_clock_in_at), anyString())).thenReturn("Clock in %s at");
         when(resources.getString(eq(R.string.fragment_projects_item_clock_out_at), anyString())).thenReturn("Clock out %s at");
 
+        when(resources.getString(eq(R.string.fragment_projects_item_delete), anyString())).thenReturn("Delete %s");
+
         when(resources.getString(R.string.fragment_projects_item_clocked_in_since)).thenReturn("Since %s (%s)");
 
         return resources;

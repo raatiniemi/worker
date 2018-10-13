@@ -18,7 +18,7 @@
     <string name="fragment_projects_item_clock_in_at">Clock in %s at</string>
     <string name="fragment_projects_item_clock_out">Clock out %s</string>
     <string name="fragment_projects_item_clock_out_at">Clock out %s at</string>
-    <string name="fragment_projects_item_delete">Delete project</string>
+    <string name="fragment_projects_item_delete">Delete %s</string>
 
     <string name="fragment_create_project_title">Create project</string>
     <string name="fragment_create_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
