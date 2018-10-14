@@ -87,16 +87,12 @@ public class ProjectFragment extends BasePreferenceFragment
         }
 
         populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY, keyValueStore.ongoingNotification());
-        if (Notifications.Companion.isChannelsAvailable()) {
-            Preference preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY);
-            if (nonNull(preference)) {
-                preference.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary);
-            }
-
-            preference.setEnabled(isOngoingChannelEnabled());
+        Preference preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY);
+        if (nonNull(preference)) {
+            preference.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary);
         }
 
-        populateCheckBoxPreference(ONGOING_NOTIFICATION_CHRONOMETER_KEY, keyValueStore.ongoingNotificationChronometer());
+        preference.setEnabled(isOngoingChannelEnabled());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

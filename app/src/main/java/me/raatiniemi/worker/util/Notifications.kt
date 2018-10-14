@@ -23,8 +23,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.res.Resources
-import android.os.Build
-import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import me.raatiniemi.worker.R
 
@@ -38,22 +36,16 @@ class Notifications {
         private const val backupTitle = R.string.notification_channel_backup_title
         private const val backupDescription = R.string.notification_channel_backup_description
 
-        val isChannelsAvailable: Boolean
-            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-
-        @RequiresApi(Build.VERSION_CODES.O)
         fun createChannel(notificationManager: NotificationManager, channel: NotificationChannel) {
             notificationManager.createNotificationChannel(channel)
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         fun isOngoingChannelDisabled(notificationManager: NotificationManager): Boolean {
             val channel = notificationManager.getNotificationChannel(ongoingId)
 
             return NotificationManager.IMPORTANCE_NONE == channel.importance
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         fun ongoingChannel(resources: Resources): NotificationChannel {
             val channel = NotificationChannel(
                     ongoingId,
@@ -67,21 +59,15 @@ class Notifications {
         }
 
         fun ongoingBuilder(context: Context): NotificationCompat.Builder {
-            if (isChannelsAvailable) {
-                return NotificationCompat.Builder(context, ongoingId)
-            }
-
-            return NotificationCompat.Builder(context)
+            return NotificationCompat.Builder(context, ongoingId)
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         fun isBackupChannelDisabled(notificationManager: NotificationManager): Boolean {
             val channel = notificationManager.getNotificationChannel(backupId)
 
             return NotificationManager.IMPORTANCE_NONE == channel.importance
         }
 
-        @RequiresApi(Build.VERSION_CODES.O)
         fun backupChannel(resources: Resources): NotificationChannel {
             val channel = NotificationChannel(
                     backupId,
@@ -95,11 +81,7 @@ class Notifications {
         }
 
         fun backupBuilder(context: Context): NotificationCompat.Builder {
-            if (isChannelsAvailable) {
-                return NotificationCompat.Builder(context, backupId)
-            }
-
-            return NotificationCompat.Builder(context)
+            return NotificationCompat.Builder(context, backupId)
         }
     }
 }

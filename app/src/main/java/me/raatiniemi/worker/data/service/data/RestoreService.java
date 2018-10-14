@@ -86,11 +86,9 @@ public class RestoreService extends IntentService {
     }
 
     private void notify(@NonNull NotificationManager manager, @NonNull Notification notification) {
-        if (Notifications.Companion.isChannelsAvailable()) {
-            if (Notifications.Companion.isBackupChannelDisabled(manager)) {
-                Timber.d("Backup notification channel is disabled, ignoring notification");
-                return;
-            }
+        if (Notifications.Companion.isBackupChannelDisabled(manager)) {
+            Timber.d("Backup notification channel is disabled, ignoring notification");
+            return;
         }
 
         manager.notify(

@@ -19,8 +19,6 @@ package me.raatiniemi.worker
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
-import android.support.annotation.RequiresApi
 import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 import me.raatiniemi.worker.features.project.projectModule
@@ -53,10 +51,7 @@ open class WorkerApplication : Application() {
                     settingsModule
             ))
 
-            if (Notifications.isChannelsAvailable) {
-                registerNotificationChannel()
-            }
-
+            registerNotificationChannel()
             ReloadNotificationService.startServiceWithContext(this)
         }
 
@@ -65,7 +60,6 @@ open class WorkerApplication : Application() {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private fun registerNotificationChannel() {
         try {
             val notificationManager = notificationManager
