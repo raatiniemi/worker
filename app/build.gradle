@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "me.raatiniemi.worker"
-        minSdkVersion 21
+        minSdkVersion 27
         targetSdkVersion 28
         versionName projectVersion
         versionCode projectVersionCode
