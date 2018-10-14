@@ -71,11 +71,9 @@ public abstract class OngoingService extends IntentService {
 
     void sendNotification(long projectId, Notification notification) {
         NotificationManager manager = getNotificationManager();
-        if (Notifications.Companion.isChannelsAvailable()) {
-            if (Notifications.Companion.isOngoingChannelDisabled(manager)) {
-                Timber.d("Ongoing notification channel is disabled, ignoring notification");
-                return;
-            }
+        if (Notifications.Companion.isOngoingChannelDisabled(manager)) {
+            Timber.d("Ongoing notification channel is disabled, ignoring notification");
+            return;
         }
 
         manager.notify(
