@@ -1,2 +1,3 @@
 improved internal management of user settings
 included project name in project action help text
+reduced compiled app size with over 50% (2.5MB -> 1.2MB)
