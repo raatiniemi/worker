@@ -1,0 +1,17 @@
+#!/bin/bash
+PROJECT_DIRECTORY="$(dirname $0)/..";
+APK_DIRECTORY="${PROJECT_DIRECTORY}/app/build/outputs/apk";
+RELEASE_APK="${APK_DIRECTORY}/release/app-release.apk";
+
+GCLOUD=$(which gcloud);
+if [ -z "${GCLOUD}" ]; then
+  echo "Unable to find gcloud binary";
+  exit 1;
+fi;
+
+$GCLOUD firebase test android run \
+  --type robo \
+  --app $RELEASE_APK \
+  --device model=Nexus6P,version=27,locale=en,orientation=portrait \
+  --timeout 90s;
+exit $?;

@@ -68,6 +68,23 @@ sonar:
   tags:
     - docker
 
+integration test:
+  image: google/cloud-sdk:latest
+  stage: test
+  before_script:
+    - bin/configure-gcloud-environment
+  script:
+    - bin/run-integration-test
+  artifacts:
+    paths:
+      - app/build/outputs/
+      - core/build/libs/
+    expire_in: 1 day
+  only:
+    - master
+  tags:
+    - docker
+
 deploy:
   stage: deploy
   script:
