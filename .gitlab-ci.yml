@@ -10,7 +10,7 @@ variables:
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
-  - bin/configure-container-environment
+  - bin/configure-android-environment
 
 cache:
   paths:
@@ -58,6 +58,23 @@ sonar:
   stage: test
   script:
     - ./gradlew testReleaseUnitTest sonarqube
+  artifacts:
+    paths:
+      - app/build/outputs/
+      - core/build/libs/
+    expire_in: 1 day
+  only:
+    - master
+  tags:
+    - docker
+
+integration test:
+  image: google/cloud-sdk:latest
+  stage: test
+  before_script:
+    - bin/configure-gcloud-environment
+  script:
+    - bin/run-integration-test
   artifacts:
     paths:
       - app/build/outputs/

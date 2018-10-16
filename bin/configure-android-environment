@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script will configure the CI container environment, instead of keeping a
+# This script will configure the CI android environment, instead of keeping a
 # list of commands within the `.gitlab-ci.yml`.
 
 if [ -z $ANDROID_HOME ]; then
