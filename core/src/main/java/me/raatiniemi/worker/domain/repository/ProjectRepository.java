@@ -33,7 +33,7 @@ public interface ProjectRepository {
      * @return Project with name, or null.
      * @throws DomainException If domain rules are violated.
      */
-    Optional<Project> findProjectByName(String projectName) throws DomainException;
+    Optional<Project> findByName(String projectName) throws DomainException;
 
     /**
      * Get projects.

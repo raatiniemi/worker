@@ -88,7 +88,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public Optional<Project> findProjectByName(String projectName) throws InvalidProjectNameException {
+    public Optional<Project> findByName(String projectName) throws InvalidProjectNameException {
         requireNonNull(projectName);
 
         final Cursor cursor = getContentResolver().query(

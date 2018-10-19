@@ -59,7 +59,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findProjectByName_withNullCursor() throws InvalidProjectNameException {
+    public void findByName_withNullCursor() throws InvalidProjectNameException {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectStreamUri(),
@@ -70,13 +70,13 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(null);
 
-        Optional<Project> value = repository.findProjectByName("Name");
+        Optional<Project> value = repository.findByName("Name");
 
         assertFalse(value.isPresent());
     }
 
     @Test
-    public void findProjectByName_withEmptyCursor() throws InvalidProjectNameException {
+    public void findByName_withEmptyCursor() throws InvalidProjectNameException {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
@@ -88,14 +88,14 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        Optional<Project> value = repository.findProjectByName("Name");
+        Optional<Project> value = repository.findByName("Name");
 
         assertFalse(value.isPresent());
         verify(cursor).close();
     }
 
     @Test
-    public void findProjectByName_withProject() throws InvalidProjectNameException {
+    public void findByName_withProject() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
@@ -107,7 +107,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        Optional<Project> value = repository.findProjectByName("Name");
+        Optional<Project> value = repository.findByName("Name");
 
         assertTrue(value.isPresent());
         verify(cursor).close();

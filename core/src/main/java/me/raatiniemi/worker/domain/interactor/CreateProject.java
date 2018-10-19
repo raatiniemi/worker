@@ -63,7 +63,7 @@ public class CreateProject {
     }
 
     private boolean isProjectNameInUse(String projectName) throws DomainException {
-        Optional<Project> value = repository.findProjectByName(projectName);
+        Optional<Project> value = repository.findByName(projectName);
 
         return value.isPresent();
     }
