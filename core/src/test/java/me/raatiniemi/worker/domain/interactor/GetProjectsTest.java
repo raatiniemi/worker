@@ -61,7 +61,7 @@ public class GetProjectsTest {
         projects.add(buildProject(1L, "Project #1"));
         projects.add(buildProject(2L, "Project #2"));
 
-        when(projectRepository.get())
+        when(projectRepository.findAll())
                 .thenReturn(projects);
 
         GetProjects getProjects = new GetProjects(
@@ -72,7 +72,7 @@ public class GetProjectsTest {
 
         assertEquals(projects, actual);
 
-        verify(projectRepository, times(1)).get();
+        verify(projectRepository, times(1)).findAll();
         verify(timeRepository, times(2)).getProjectTimeSinceBeginningOfMonth(anyLong());
     }
 }

@@ -40,7 +40,7 @@ public class GetProject {
      * @throws DomainException If domain rules are violated.
      */
     public Project execute(long projectId) throws DomainException {
-        Optional<Project> value = projectRepository.get(projectId);
+        Optional<Project> value = projectRepository.findById(projectId);
         if (value.isPresent()) {
             return value.get();
         }

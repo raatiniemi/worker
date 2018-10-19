@@ -85,7 +85,7 @@ public class ClockActivityChange {
     }
 
     private Project reloadProjectWithRegisteredTime(Project project) throws DomainException {
-        Optional<Project> value = projectRepository.get(project.getId());
+        Optional<Project> value = projectRepository.findById(project.getId());
         if (value.isPresent()) {
             return populateProjectWithRegisteredTime(value.get());
         }

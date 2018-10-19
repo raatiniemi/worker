@@ -50,7 +50,7 @@ public class CreateProjectTest {
         Project project = Project.builder("Project Name")
                 .build();
 
-        when(projectRepository.findProjectByName(eq("Project Name")))
+        when(projectRepository.findByName(eq("Project Name")))
                 .thenReturn(Optional.of(project));
 
         createProject.execute(project);
@@ -60,7 +60,7 @@ public class CreateProjectTest {
     public void execute() throws DomainException {
         Project project = Project.builder("Project Name")
                 .build();
-        when(projectRepository.findProjectByName(eq("Project Name")))
+        when(projectRepository.findByName(eq("Project Name")))
                 .thenReturn(Optional.empty());
         when(projectRepository.add(eq(project)))
                 .thenReturn(Optional.of(project));
@@ -74,7 +74,7 @@ public class CreateProjectTest {
     public void execute_with() throws DomainException {
         Project project = Project.builder("Project Name")
                 .build();
-        when(projectRepository.findProjectByName(eq("Project Name")))
+        when(projectRepository.findByName(eq("Project Name")))
                 .thenReturn(Optional.empty());
         when(projectRepository.add(eq(project)))
                 .thenReturn(Optional.empty());

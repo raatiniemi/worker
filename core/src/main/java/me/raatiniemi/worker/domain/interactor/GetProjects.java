@@ -58,7 +58,7 @@ public class GetProjects {
      * @throws DomainException If domain rules are violated.
      */
     public List<Project> execute() throws DomainException {
-        List<Project> projects = projectRepository.get();
+        List<Project> projects = projectRepository.findAll();
 
         for (Project project : projects) {
             // Populate the project with the registered time.

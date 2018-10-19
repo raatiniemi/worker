@@ -75,7 +75,7 @@ public class ClockActivityChangeTest {
     @Test
     public void execute_clockInProject() throws DomainException {
         Project project = buildProject();
-        when(projectRepository.get(1L))
+        when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
         when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<>());
@@ -83,14 +83,14 @@ public class ClockActivityChangeTest {
         clockActivityChange.execute(project, new Date());
 
         verify(clockIn).execute(eq(1L), any(Date.class));
-        verify(projectRepository).get(eq(1L));
+        verify(projectRepository).findById(eq(1L));
         verify(timeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
     }
 
     @Test(expected = NoProjectException.class)
     public void execute_clockInWithoutValidProject() throws DomainException {
         Project project = buildProject();
-        when(projectRepository.get(1L))
+        when(projectRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
         clockActivityChange.execute(project, new Date());
@@ -112,7 +112,7 @@ public class ClockActivityChangeTest {
                 .stopInMilliseconds(0L)
                 .build();
         project.addTime(Collections.singletonList(time));
-        when(projectRepository.get(1L))
+        when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
         when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<>());
@@ -120,7 +120,7 @@ public class ClockActivityChangeTest {
         clockActivityChange.execute(project, new Date());
 
         verify(clockOut).execute(eq(1L), any(Date.class));
-        verify(projectRepository).get(eq(1L));
+        verify(projectRepository).findById(eq(1L));
         verify(timeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
     }
 
@@ -131,7 +131,7 @@ public class ClockActivityChangeTest {
                 .stopInMilliseconds(0L)
                 .build();
         project.addTime(Collections.singletonList(time));
-        when(projectRepository.get(1L))
+        when(projectRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
         clockActivityChange.execute(project, new Date());

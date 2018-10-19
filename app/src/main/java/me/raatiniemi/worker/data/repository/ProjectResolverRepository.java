@@ -88,7 +88,20 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public Optional<Project> findProjectByName(String projectName) throws InvalidProjectNameException {
+    public List<Project> findAll() throws InvalidProjectNameException {
+        final Cursor cursor = getContentResolver().query(
+                ProviderContract.getProjectStreamUri(),
+                ProviderContract.getProjectColumns(),
+                null,
+                null,
+                ProviderContract.ORDER_BY_PROJECT
+        );
+
+        return fetch(cursor);
+    }
+
+    @Override
+    public Optional<Project> findByName(String projectName) throws InvalidProjectNameException {
         requireNonNull(projectName);
 
         final Cursor cursor = getContentResolver().query(
@@ -102,20 +115,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public List<Project> get() throws InvalidProjectNameException {
-        final Cursor cursor = getContentResolver().query(
-                ProviderContract.getProjectStreamUri(),
-                ProviderContract.getProjectColumns(),
-                null,
-                null,
-                ProviderContract.ORDER_BY_PROJECT
-        );
-
-        return fetch(cursor);
-    }
-
-    @Override
-    public Optional<Project> get(final long id) throws InvalidProjectNameException {
+    public Optional<Project> findById(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemUri(id),
                 ProviderContract.getProjectColumns(),
@@ -134,7 +134,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
                 ProviderContract.getProjectStreamUri(),
                 contentValuesMapper.transform(project)
         );
-        return get(Long.parseLong(ProviderContract.getProjectItemId(uri)));
+        return findById(Long.parseLong(ProviderContract.getProjectItemId(uri)));
     }
 
     @Override
