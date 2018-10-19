@@ -47,7 +47,7 @@ public class GetProjectTest {
     public void execute() throws DomainException {
         Project project = Project.builder("Name")
                 .build();
-        when(projectRepository.get(eq(1L)))
+        when(projectRepository.findById(eq(1L)))
                 .thenReturn(Optional.of(project));
 
         project = getProject.execute(1L);
@@ -57,7 +57,7 @@ public class GetProjectTest {
 
     @Test(expected = NoProjectException.class)
     public void execute_withoutProject() throws DomainException {
-        when(projectRepository.get(eq(1L)))
+        when(projectRepository.findById(eq(1L)))
                 .thenReturn(Optional.empty());
 
         getProject.execute(1L);

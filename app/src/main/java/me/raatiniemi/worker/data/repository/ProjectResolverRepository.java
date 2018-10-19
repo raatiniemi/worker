@@ -115,7 +115,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public Optional<Project> get(final long id) throws InvalidProjectNameException {
+    public Optional<Project> findById(final long id) throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemUri(id),
                 ProviderContract.getProjectColumns(),
@@ -134,7 +134,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
                 ProviderContract.getProjectStreamUri(),
                 contentValuesMapper.transform(project)
         );
-        return get(Long.parseLong(ProviderContract.getProjectItemId(uri)));
+        return findById(Long.parseLong(ProviderContract.getProjectItemId(uri)));
     }
 
     @Override

@@ -50,7 +50,7 @@ public interface ProjectRepository {
      * @return Project, or null if none was found.
      * @throws DomainException If domain rules are violated.
      */
-    Optional<Project> get(long id) throws DomainException;
+    Optional<Project> findById(long id) throws DomainException;
 
     /**
      * Add a new project.
