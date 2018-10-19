@@ -88,6 +88,19 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
+    public List<Project> findAll() throws InvalidProjectNameException {
+        final Cursor cursor = getContentResolver().query(
+                ProviderContract.getProjectStreamUri(),
+                ProviderContract.getProjectColumns(),
+                null,
+                null,
+                ProviderContract.ORDER_BY_PROJECT
+        );
+
+        return fetch(cursor);
+    }
+
+    @Override
     public Optional<Project> findByName(String projectName) throws InvalidProjectNameException {
         requireNonNull(projectName);
 
@@ -99,19 +112,6 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
                 null
         );
         return fetchRow(cursor);
-    }
-
-    @Override
-    public List<Project> findAll() throws InvalidProjectNameException {
-        final Cursor cursor = getContentResolver().query(
-                ProviderContract.getProjectStreamUri(),
-                ProviderContract.getProjectColumns(),
-                null,
-                null,
-                ProviderContract.ORDER_BY_PROJECT
-        );
-
-        return fetch(cursor);
     }
 
     @Override

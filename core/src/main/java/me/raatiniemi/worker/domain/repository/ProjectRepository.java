@@ -27,6 +27,14 @@ import me.raatiniemi.worker.util.Optional;
  */
 public interface ProjectRepository {
     /**
+     * Get projects.
+     *
+     * @return Projects.
+     * @throws DomainException If domain rules are violated.
+     */
+    List<Project> findAll() throws DomainException;
+
+    /**
      * Find project by name.
      *
      * @param projectName Project name to search for.
@@ -34,14 +42,6 @@ public interface ProjectRepository {
      * @throws DomainException If domain rules are violated.
      */
     Optional<Project> findByName(String projectName) throws DomainException;
-
-    /**
-     * Get projects.
-     *
-     * @return Projects.
-     * @throws DomainException If domain rules are violated.
-     */
-    List<Project> findAll() throws DomainException;
 
     /**
      * Get project by id.

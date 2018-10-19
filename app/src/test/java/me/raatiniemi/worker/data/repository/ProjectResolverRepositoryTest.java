@@ -59,61 +59,6 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findByName_withNullCursor() throws InvalidProjectNameException {
-        when(
-                contentResolver.query(
-                        ProviderContract.getProjectStreamUri(),
-                        ProviderContract.getProjectColumns(),
-                        ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
-                        new String[]{"Name"},
-                        null
-                )
-        ).thenReturn(null);
-
-        Optional<Project> value = repository.findByName("Name");
-
-        assertFalse(value.isPresent());
-    }
-
-    @Test
-    public void findByName_withEmptyCursor() throws InvalidProjectNameException {
-        Cursor cursor = CursorFactory.buildEmpty();
-        when(
-                contentResolver.query(
-                        ProviderContract.getProjectStreamUri(),
-                        ProviderContract.getProjectColumns(),
-                        ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
-                        new String[]{"Name"},
-                        null
-                )
-        ).thenReturn(cursor);
-
-        Optional<Project> value = repository.findByName("Name");
-
-        assertFalse(value.isPresent());
-        verify(cursor).close();
-    }
-
-    @Test
-    public void findByName_withProject() throws InvalidProjectNameException {
-        Cursor cursor = buildCursorWithNumberOfItems(1);
-        when(
-                contentResolver.query(
-                        ProviderContract.getProjectStreamUri(),
-                        ProviderContract.getProjectColumns(),
-                        ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
-                        new String[]{"Name"},
-                        null
-                )
-        ).thenReturn(cursor);
-
-        Optional<Project> value = repository.findByName("Name");
-
-        assertTrue(value.isPresent());
-        verify(cursor).close();
-    }
-
-    @Test
     public void findAll_withNullCursor() throws InvalidProjectNameException {
         when(
                 contentResolver.query(
@@ -185,6 +130,61 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
         assertTrue(5 == projects.size());
         assertTrue("Failed to close cursor", cursor.isClosed());
+    }
+
+    @Test
+    public void findByName_withNullCursor() throws InvalidProjectNameException {
+        when(
+                contentResolver.query(
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
+                        ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
+                        new String[]{"Name"},
+                        null
+                )
+        ).thenReturn(null);
+
+        Optional<Project> value = repository.findByName("Name");
+
+        assertFalse(value.isPresent());
+    }
+
+    @Test
+    public void findByName_withEmptyCursor() throws InvalidProjectNameException {
+        Cursor cursor = CursorFactory.buildEmpty();
+        when(
+                contentResolver.query(
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
+                        ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
+                        new String[]{"Name"},
+                        null
+                )
+        ).thenReturn(cursor);
+
+        Optional<Project> value = repository.findByName("Name");
+
+        assertFalse(value.isPresent());
+        verify(cursor).close();
+    }
+
+    @Test
+    public void findByName_withProject() throws InvalidProjectNameException {
+        Cursor cursor = buildCursorWithNumberOfItems(1);
+        when(
+                contentResolver.query(
+                        ProviderContract.getProjectStreamUri(),
+                        ProviderContract.getProjectColumns(),
+                        ProviderContract.COLUMN_PROJECT_NAME + "=? COLLATE NOCASE",
+                        new String[]{"Name"},
+                        null
+                )
+        ).thenReturn(cursor);
+
+        Optional<Project> value = repository.findByName("Name");
+
+        assertTrue(value.isPresent());
+        verify(cursor).close();
     }
 
     @Test
