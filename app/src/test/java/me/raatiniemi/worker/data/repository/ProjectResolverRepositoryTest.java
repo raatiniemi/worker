@@ -109,7 +109,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
         List<Project> projects = repository.findAll();
 
-        assertTrue(1 == projects.size());
+        assertEquals(1, projects.size());
         verify(cursor).close();
     }
 
@@ -128,7 +128,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
         List<Project> projects = repository.findAll();
 
-        assertTrue(5 == projects.size());
+        assertEquals(5, projects.size());
         assertTrue("Failed to close cursor", cursor.isClosed());
     }
 
