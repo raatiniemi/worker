@@ -102,7 +102,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public List<Project> get() throws InvalidProjectNameException {
+    public List<Project> findAll() throws InvalidProjectNameException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectStreamUri(),
                 ProviderContract.getProjectColumns(),

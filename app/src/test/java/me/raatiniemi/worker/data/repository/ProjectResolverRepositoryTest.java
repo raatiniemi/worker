@@ -114,7 +114,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void get_projectsWithNullCursor() throws InvalidProjectNameException {
+    public void findAll_withNullCursor() throws InvalidProjectNameException {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectStreamUri(),
@@ -125,13 +125,13 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(null);
 
-        List<Project> projects = repository.get();
+        List<Project> projects = repository.findAll();
 
         assertTrue(projects.isEmpty());
     }
 
     @Test
-    public void get_projectsWithEmptyCursor() throws InvalidProjectNameException {
+    public void findAll_withEmptyCursor() throws InvalidProjectNameException {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
@@ -143,14 +143,14 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<Project> projects = repository.get();
+        List<Project> projects = repository.findAll();
 
         assertTrue(projects.isEmpty());
         verify(cursor).close();
     }
 
     @Test
-    public void get_projectsWithRow() throws InvalidProjectNameException {
+    public void findAll_withRow() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
@@ -162,14 +162,14 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<Project> projects = repository.get();
+        List<Project> projects = repository.findAll();
 
         assertTrue(1 == projects.size());
         verify(cursor).close();
     }
 
     @Test
-    public void get_projectsWithRows() throws InvalidProjectNameException {
+    public void findAll_withRows() throws InvalidProjectNameException {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
                 contentResolver.query(
@@ -181,7 +181,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<Project> projects = repository.get();
+        List<Project> projects = repository.findAll();
 
         assertTrue(5 == projects.size());
         assertTrue("Failed to close cursor", cursor.isClosed());

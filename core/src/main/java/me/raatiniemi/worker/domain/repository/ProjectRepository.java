@@ -41,7 +41,7 @@ public interface ProjectRepository {
      * @return Projects.
      * @throws DomainException If domain rules are violated.
      */
-    List<Project> get() throws DomainException;
+    List<Project> findAll() throws DomainException;
 
     /**
      * Get project by id.
