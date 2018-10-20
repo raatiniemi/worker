@@ -22,15 +22,15 @@ import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 
 /**
- * Handle transformation from {@link Cursor} to {@link Time}.
+ * Handle transformation from {@link Cursor} to {@link TimeInterval}.
  */
-public class TimeCursorMapper implements CursorMapper<Time> {
+public class TimeCursorMapper implements CursorMapper<TimeInterval> {
     @Override
     @NonNull
-    public Time transform(@NonNull Cursor cursor) throws ClockOutBeforeClockInException {
+    public TimeInterval transform(@NonNull Cursor cursor) throws ClockOutBeforeClockInException {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_PROJECT_ID));
         long start = cursor.getLong(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_START));
@@ -40,7 +40,7 @@ public class TimeCursorMapper implements CursorMapper<Time> {
         long stop = !cursor.isNull(stopIndex) ? cursor.getLong(stopIndex) : 0;
         long registered = cursor.getLong(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_REGISTERED));
 
-        Time.Builder builder = Time.builder(projectId)
+        TimeInterval.Builder builder = TimeInterval.builder(projectId)
                 .id(id)
                 .startInMilliseconds(start)
                 .stopInMilliseconds(stop);

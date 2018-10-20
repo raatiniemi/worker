@@ -32,7 +32,7 @@ import me.raatiniemi.worker.data.service.ongoing.PauseService;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
@@ -73,8 +73,8 @@ public class PauseNotification extends OngoingNotification {
         try {
             long accumulatedTime = 0L;
 
-            for (Time time : getRegisteredTime()) {
-                accumulatedTime += time.getTime();
+            for (TimeInterval timeInterval : getRegisteredTime()) {
+                accumulatedTime += timeInterval.getTime();
             }
 
             registeredTime = includeActiveTime(accumulatedTime);
@@ -84,7 +84,7 @@ public class PauseNotification extends OngoingNotification {
         }
     }
 
-    private List<Time> getRegisteredTime() throws DomainException {
+    private List<TimeInterval> getRegisteredTime() throws DomainException {
         GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(
                 getTimeRepository()
         );
@@ -111,18 +111,18 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private long includeActiveTime(long registeredTime) throws DomainException {
-        Optional<Time> value = getActiveTimeForProject();
+        Optional<TimeInterval> value = getActiveTimeIntervalForProject();
         if (value.isPresent()) {
-            Time activeTime = value.get();
-            return registeredTime + activeTime.getInterval();
+            TimeInterval activeTimeInterval = value.get();
+            return registeredTime + activeTimeInterval.getInterval();
         }
 
         return registeredTime;
     }
 
-    private Optional<Time> getActiveTimeForProject() throws DomainException {
+    private Optional<TimeInterval> getActiveTimeIntervalForProject() throws DomainException {
         return getTimeRepository()
-                .getActiveTimeForProject(getProject().getId());
+                .getActiveTimeIntervalForProject(getProject().getId());
     }
 
     @Override

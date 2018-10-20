@@ -20,7 +20,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.util.Optional;
 
@@ -42,14 +42,14 @@ public class ClockOut {
      * @throws InactiveProjectException If project is inactive.
      */
     public void execute(long projectId, Date date) throws DomainException {
-        Optional<Time> value = timeRepository.getActiveTimeForProject(projectId);
+        Optional<TimeInterval> value = timeRepository.getActiveTimeIntervalForProject(projectId);
         if (!value.isPresent()) {
             throw new InactiveProjectException();
         }
 
-        Time time = value.get();
+        TimeInterval timeInterval = value.get();
         timeRepository.update(
-                time.clockOutAt(date)
+                timeInterval.clockOutAt(date)
         );
     }
 }

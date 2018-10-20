@@ -29,8 +29,8 @@ import java.util.Collection;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
@@ -39,10 +39,10 @@ import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class TimeCursorMapperTest {
-    private final Time expected;
+    private final TimeInterval expected;
     private final Cursor cursor;
 
-    public TimeCursorMapperTest(Time expected, Cursor cursor) {
+    public TimeCursorMapperTest(TimeInterval expected, Cursor cursor) {
         this.expected = expected;
         this.cursor = cursor;
     }
@@ -52,7 +52,7 @@ public class TimeCursorMapperTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                TimeFactory.builder(1L)
+                                TimeIntervalFactory.builder(1L)
                                         .id(1L)
                                         .startInMilliseconds(1L)
                                         .stopInMilliseconds(0L)
@@ -60,7 +60,7 @@ public class TimeCursorMapperTest {
                                 createCursor(null, 0)
                         },
                         {
-                                TimeFactory.builder(1L)
+                                TimeIntervalFactory.builder(1L)
                                         .id(1L)
                                         .startInMilliseconds(1L)
                                         .stopInMilliseconds(2L)
@@ -68,7 +68,7 @@ public class TimeCursorMapperTest {
                                 createCursor(2L, 0)
                         },
                         {
-                                TimeFactory.builder(1L)
+                                TimeIntervalFactory.builder(1L)
                                         .id(1L)
                                         .startInMilliseconds(1L)
                                         .stopInMilliseconds(2L)
@@ -108,7 +108,7 @@ public class TimeCursorMapperTest {
     @Test
     public void transform() throws ClockOutBeforeClockInException {
         TimeCursorMapper mapper = new TimeCursorMapper();
-        Time actual = mapper.transform(cursor);
+        TimeInterval actual = mapper.transform(cursor);
 
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getProjectId(), actual.getProjectId());

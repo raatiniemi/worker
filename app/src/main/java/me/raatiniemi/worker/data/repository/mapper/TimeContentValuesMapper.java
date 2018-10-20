@@ -20,15 +20,15 @@ import android.content.ContentValues;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 
 /**
- * Handle transformation from {@link Time} to {@link ContentValues}.
+ * Handle transformation from {@link TimeInterval} to {@link ContentValues}.
  */
-public class TimeContentValuesMapper implements ContentValuesMapper<Time> {
+public class TimeContentValuesMapper implements ContentValuesMapper<TimeInterval> {
     @NonNull
     @Override
-    public ContentValues transform(@NonNull Time entity) {
+    public ContentValues transform(@NonNull TimeInterval entity) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ProviderContract.COLUMN_TIME_PROJECT_ID, entity.getProjectId());
         contentValues.put(ProviderContract.COLUMN_TIME_START, entity.getStartInMilliseconds());

@@ -22,7 +22,7 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
 /**
@@ -73,8 +73,8 @@ public class GetProjectTimeSince {
      * @return Registered time for the project since the starting point.
      * @throws DomainException If domain rules are violated.
      */
-    public List<Time> execute(Project project, int startingPoint) throws DomainException {
-        return timeRepository.findProjectTimeSinceStartingPointInMilliseconds(
+    public List<TimeInterval> execute(Project project, int startingPoint) throws DomainException {
+        return timeRepository.findProjectTimeIntervalSinceStartingPointInMilliseconds(
                 project,
                 getMillisecondsForStartingPoint(startingPoint)
         );

@@ -34,35 +34,35 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
     }
 
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
-    private final Time time;
+    private final TimeInterval timeInterval;
     private final HoursMinutes hoursMinutes;
 
-    private TimesheetItem(Time time) {
-        this.time = time;
+    private TimesheetItem(TimeInterval timeInterval) {
+        this.timeInterval = timeInterval;
 
-        hoursMinutes = CalculateTime.Companion.calculateHoursMinutes(time.getInterval());
+        hoursMinutes = CalculateTime.Companion.calculateHoursMinutes(timeInterval.getInterval());
     }
 
     private static Date buildDateFromMilliseconds(long milliseconds) {
         return new Date(milliseconds);
     }
 
-    public static TimesheetItem with(Time time) {
+    public static TimesheetItem with(TimeInterval time) {
         return new TimesheetItem(time);
     }
 
-    public Time asTime() {
-        return time;
+    public TimeInterval asTimeInterval() {
+        return timeInterval;
     }
 
     public long getId() {
-        return time.getId();
+        return timeInterval.getId();
     }
 
     public String getTitle() {
         StringBuilder title = buildTitleFromStartTime();
 
-        if (!time.isActive()) {
+        if (!timeInterval.isActive()) {
             appendStopTimeWithSeparator(title);
         }
 
@@ -77,7 +77,7 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
     }
 
     private Date buildDateFromStartTime() {
-        return buildDateFromMilliseconds(time.getStartInMilliseconds());
+        return buildDateFromMilliseconds(timeInterval.getStartInMilliseconds());
     }
 
     private void appendStopTimeWithSeparator(StringBuilder title) {
@@ -86,7 +86,7 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
     }
 
     private Date buildDateFromStopTime() {
-        return buildDateFromMilliseconds(time.getStopInMilliseconds());
+        return buildDateFromMilliseconds(timeInterval.getStopInMilliseconds());
     }
 
     public String getTimeSummaryWithFormatter(HoursMinutesFormat formatter) {
@@ -94,7 +94,7 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
     }
 
     public boolean isRegistered() {
-        return time.isRegistered();
+        return timeInterval.isRegistered();
     }
 
     public HoursMinutes getHoursMinutes() {
@@ -112,12 +112,12 @@ public final class TimesheetItem implements Comparable<TimesheetItem> {
         }
 
         TimesheetItem that = (TimesheetItem) o;
-        return time.equals(that.time);
+        return timeInterval.equals(that.timeInterval);
     }
 
     @Override
     public int hashCode() {
-        return time.hashCode();
+        return timeInterval.hashCode();
     }
 
     @Override

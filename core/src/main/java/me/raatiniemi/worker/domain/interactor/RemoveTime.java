@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.interactor;
 
 import java.util.List;
 
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
 /**
@@ -44,7 +44,7 @@ public class RemoveTime {
      *
      * @param time Time to remove.
      */
-    public void execute(final Time time) {
+    public void execute(final TimeInterval time) {
         timeRepository.remove(time.getId());
     }
 
@@ -53,7 +53,7 @@ public class RemoveTime {
      *
      * @param items Items to remove.
      */
-    public void execute(List<Time> items) {
+    public void execute(List<TimeInterval> items) {
         timeRepository.remove(items);
     }
 }

@@ -18,12 +18,12 @@ package me.raatiniemi.worker.domain.comparator;
 
 import java.util.Comparator;
 
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 
 public class TimesheetItemComparator implements Comparator<TimesheetItem> {
-    private static boolean isActive(Time time) {
-        return 0 == time.getStopInMilliseconds();
+    private static boolean isActive(TimeInterval timeInterval) {
+        return 0 == timeInterval.getStopInMilliseconds();
     }
 
     private static boolean isBefore(long lhs, long rhs) {
@@ -34,7 +34,7 @@ public class TimesheetItemComparator implements Comparator<TimesheetItem> {
         return lhs > rhs;
     }
 
-    private static int compare(Time lhs, Time rhs) {
+    private static int compare(TimeInterval lhs, TimeInterval rhs) {
         if (lhs.getStopInMilliseconds() != rhs.getStopInMilliseconds()) {
             if (isActive(lhs)) {
                 return -1;
@@ -66,6 +66,6 @@ public class TimesheetItemComparator implements Comparator<TimesheetItem> {
 
     @Override
     public int compare(TimesheetItem o1, TimesheetItem o2) {
-        return compare(o1.asTime(), o2.asTime());
+        return compare(o1.asTimeInterval(), o2.asTimeInterval());
     }
 }

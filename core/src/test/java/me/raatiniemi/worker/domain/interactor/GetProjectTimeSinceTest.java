@@ -77,7 +77,7 @@ public class GetProjectTimeSinceTest {
         getProjectTimeSince.execute(project, GetProjectTimeSince.DAY);
 
         verify(timeRepository)
-                .findProjectTimeSinceStartingPointInMilliseconds(
+                .findProjectTimeIntervalSinceStartingPointInMilliseconds(
                         eq(project),
                         eq(getMillisecondsForStartingPoint(GetProjectTimeSince.DAY))
                 );
@@ -88,7 +88,7 @@ public class GetProjectTimeSinceTest {
         getProjectTimeSince.execute(project, GetProjectTimeSince.WEEK);
 
         verify(timeRepository)
-                .findProjectTimeSinceStartingPointInMilliseconds(
+                .findProjectTimeIntervalSinceStartingPointInMilliseconds(
                         eq(project),
                         eq(getMillisecondsForStartingPoint(GetProjectTimeSince.WEEK))
                 );
@@ -99,7 +99,7 @@ public class GetProjectTimeSinceTest {
         getProjectTimeSince.execute(project, GetProjectTimeSince.MONTH);
 
         verify(timeRepository)
-                .findProjectTimeSinceStartingPointInMilliseconds(
+                .findProjectTimeIntervalSinceStartingPointInMilliseconds(
                         eq(project),
                         eq(getMillisecondsForStartingPoint(GetProjectTimeSince.MONTH))
                 );

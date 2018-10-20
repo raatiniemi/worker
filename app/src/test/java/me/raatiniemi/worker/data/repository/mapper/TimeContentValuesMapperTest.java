@@ -24,8 +24,8 @@ import org.junit.Test;
 
 import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -51,11 +51,11 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
     @Test
     public void transform_withTime() {
         ContentValues expected = createContentValues(0L);
-        Time time = TimeFactory.builder(1L)
+        TimeInterval timeInterval = TimeIntervalFactory.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(1L)
                 .build();
-        ContentValues contentValues = mapper.transform(time);
+        ContentValues contentValues = mapper.transform(timeInterval);
 
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.
@@ -69,12 +69,12 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
     @Test
     public void transform_withRegisteredTime() {
         ContentValues expected = createContentValues(1L);
-        Time time = TimeFactory.builder(1L)
+        TimeInterval timeInterval = TimeIntervalFactory.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(1L)
                 .register()
                 .build();
-        ContentValues contentValues = mapper.transform(time);
+        ContentValues contentValues = mapper.transform(timeInterval);
 
         // the id column should not be mapped since that would introduce the
         // possibility of the id being modified.

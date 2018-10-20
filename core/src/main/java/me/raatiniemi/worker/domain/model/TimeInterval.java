@@ -26,7 +26,7 @@ import static java.util.Objects.requireNonNull;
 /**
  * Represent a time interval registered to a project.
  */
-public class Time {
+public class TimeInterval {
     /**
      * Id for the domain object.
      */
@@ -46,7 +46,7 @@ public class Time {
      */
     private final boolean registered;
 
-    private Time(Builder builder) throws ClockOutBeforeClockInException {
+    private TimeInterval(Builder builder) throws ClockOutBeforeClockInException {
         if (builder.stopInMilliseconds > 0) {
             if (builder.stopInMilliseconds < builder.startInMilliseconds) {
                 throw new ClockOutBeforeClockInException(
@@ -100,7 +100,7 @@ public class Time {
         return registered;
     }
 
-    public Time markAsRegistered() throws ClockOutBeforeClockInException {
+    public TimeInterval markAsRegistered() throws ClockOutBeforeClockInException {
         if (isRegistered()) {
             return this;
         }
@@ -113,7 +113,7 @@ public class Time {
                 .build();
     }
 
-    public Time unmarkRegistered() throws ClockOutBeforeClockInException {
+    public TimeInterval unmarkRegistered() throws ClockOutBeforeClockInException {
         if (!isRegistered()) {
             return this;
         }
@@ -132,7 +132,7 @@ public class Time {
      * @throws NullPointerException           If date argument is null.
      * @throws ClockOutBeforeClockInException If clock out occur before clock in.
      */
-    public Time clockOutAt(final Date date) throws ClockOutBeforeClockInException {
+    public TimeInterval clockOutAt(final Date date) throws ClockOutBeforeClockInException {
         requireNonNull(date, "Date is not allowed to be null");
 
         Builder builder = builder(getProjectId())
@@ -198,16 +198,16 @@ public class Time {
             return true;
         }
 
-        if (!(o instanceof Time)) {
+        if (!(o instanceof TimeInterval)) {
             return false;
         }
 
-        Time time = (Time) o;
-        return Objects.equals(getId(), time.getId())
-                && getProjectId() == time.getProjectId()
-                && getStartInMilliseconds() == time.getStartInMilliseconds()
-                && getStopInMilliseconds() == time.getStopInMilliseconds()
-                && isRegistered() == time.isRegistered();
+        TimeInterval timeInterval = (TimeInterval) o;
+        return Objects.equals(getId(), timeInterval.getId())
+                && getProjectId() == timeInterval.getProjectId()
+                && getStartInMilliseconds() == timeInterval.getStartInMilliseconds()
+                && getStopInMilliseconds() == timeInterval.getStopInMilliseconds()
+                && isRegistered() == timeInterval.isRegistered();
     }
 
     @Override
@@ -252,8 +252,8 @@ public class Time {
             return this;
         }
 
-        public Time build() throws ClockOutBeforeClockInException {
-            return new Time(this);
+        public TimeInterval build() throws ClockOutBeforeClockInException {
+            return new TimeInterval(this);
         }
     }
 }

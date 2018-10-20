@@ -26,7 +26,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockActivityChange;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;
 import rx.Observable;
@@ -115,7 +115,7 @@ public interface ClockActivityViewModel {
         private Observable<ProjectsItemAdapterResult> executeUseCase(@NonNull CombinedResult combinedResult) {
             try {
                 Project project = executeClockActivityChange(combinedResult);
-                List<Time> registeredTime = getRegisteredTimeForProject(project);
+                List<TimeInterval> registeredTime = getRegisteredTimeForProject(project);
 
                 ProjectsItem projectsItem = new ProjectsItem(project, registeredTime);
                 return Observable.just(buildResult(combinedResult.result, projectsItem));
@@ -132,7 +132,7 @@ public interface ClockActivityViewModel {
         }
 
         @NonNull
-        private List<Time> getRegisteredTimeForProject(@NonNull Project project) throws DomainException {
+        private List<TimeInterval> getRegisteredTimeForProject(@NonNull Project project) throws DomainException {
             return getProjectTimeSince.execute(project, startingPoint);
         }
 

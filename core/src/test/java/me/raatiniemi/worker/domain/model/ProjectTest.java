@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -89,15 +89,15 @@ public class ProjectTest {
 
         project.addTime(
                 Arrays.asList(
-                        TimeFactory.builder()
+                        TimeIntervalFactory.builder()
                                 .build(),
-                        TimeFactory.builder()
+                        TimeIntervalFactory.builder()
                                 .build()
                 )
         );
 
-        List<Time> times = project.getRegisteredTime();
-        assertEquals(2, times.size());
+        List<TimeInterval> timeIntervals = project.getTimeIntervals();
+        assertEquals(2, timeIntervals.size());
     }
 
     @Test(expected = NullPointerException.class)
@@ -115,9 +115,9 @@ public class ProjectTest {
         Project project = createProjectBuilder()
                 .build();
 
-        List<Time> times = new ArrayList<>();
-        project.addTime(times);
+        List<TimeInterval> timeIntervals = new ArrayList<>();
+        project.addTime(timeIntervals);
 
-        assertTrue(project.getRegisteredTime().isEmpty());
+        assertTrue(project.getTimeIntervals().isEmpty());
     }
 }

@@ -73,6 +73,6 @@ public class GetProjectsTest {
         assertEquals(projects, actual);
 
         verify(projectRepository, times(1)).findAll();
-        verify(timeRepository, times(2)).getProjectTimeSinceBeginningOfMonth(anyLong());
+        verify(timeRepository, times(2)).getProjectTimeIntervalSinceBeginningOfMonth(anyLong());
     }
 }

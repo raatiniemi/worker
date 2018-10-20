@@ -33,7 +33,7 @@ import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.repository.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
@@ -55,15 +55,15 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @NonNull
-    private Optional<Time> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+    private Optional<TimeInterval> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
         if (isNull(cursor)) {
             return Optional.empty();
         }
 
         try {
             if (cursor.moveToFirst()) {
-                Time result = cursorMapper.transform(cursor);
-                return Optional.of(result);
+                TimeInterval timeInterval = cursorMapper.transform(cursor);
+                return Optional.of(timeInterval);
             }
 
             return Optional.empty();
@@ -73,7 +73,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @NonNull
-    private Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
+    private Optional<TimeInterval> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getTimeItemUri(id),
                 ProviderContract.getTimeColumns(),
@@ -119,7 +119,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
 
         Set<TimesheetItem> items = new LinkedHashSet<>();
         for (String id : ids) {
-            Optional<Time> value = getSegmentItemForTimesheet(id);
+            Optional<TimeInterval> value = getSegmentItemForTimesheet(id);
             if (value.isPresent()) {
                 items.add(TimesheetItem.with(value.get()));
             }
@@ -129,7 +129,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @NonNull
-    private Optional<Time> getSegmentItemForTimesheet(@NonNull final String id) {
+    private Optional<TimeInterval> getSegmentItemForTimesheet(@NonNull final String id) {
         try {
             return get(Long.valueOf(id));
         } catch (DomainException e) {

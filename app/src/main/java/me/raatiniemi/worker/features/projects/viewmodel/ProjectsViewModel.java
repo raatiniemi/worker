@@ -25,7 +25,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -93,13 +93,13 @@ public interface ProjectsViewModel {
 
         @NonNull
         private ProjectsItem populateItemWithRegisteredTime(@NonNull Project project) {
-            List<Time> registeredTime = getRegisteredTime(project);
+            List<TimeInterval> registeredTime = getRegisteredTime(project);
 
             return new ProjectsItem(project, registeredTime);
         }
 
         @NonNull
-        private List<Time> getRegisteredTime(@NonNull Project project) {
+        private List<TimeInterval> getRegisteredTime(@NonNull Project project) {
             try {
                 return getProjectTimeSince.execute(project, startingPoint);
             } catch (DomainException e) {

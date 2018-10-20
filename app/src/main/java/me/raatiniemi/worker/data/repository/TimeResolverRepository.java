@@ -37,7 +37,7 @@ import me.raatiniemi.worker.data.repository.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.util.Optional;
 
@@ -53,35 +53,35 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     }
 
     @NonNull
-    private List<Time> fetch(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
-        List<Time> results = new ArrayList<>();
+    private List<TimeInterval> fetch(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+        List<TimeInterval> timeIntervals = new ArrayList<>();
         if (isNull(cursor)) {
-            return results;
+            return timeIntervals;
         }
 
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    results.add(cursorMapper.transform(cursor));
+                    timeIntervals.add(cursorMapper.transform(cursor));
                 } while (cursor.moveToNext());
             }
         } finally {
             cursor.close();
         }
 
-        return results;
+        return timeIntervals;
     }
 
     @NonNull
-    private Optional<Time> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+    private Optional<TimeInterval> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
         if (isNull(cursor)) {
             return Optional.empty();
         }
 
         try {
             if (cursor.moveToFirst()) {
-                Time result = cursorMapper.transform(cursor);
-                return Optional.of(result);
+                TimeInterval timeInterval = cursorMapper.transform(cursor);
+                return Optional.of(timeInterval);
             }
 
             return Optional.empty();
@@ -91,7 +91,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     }
 
     @Override
-    public List<Time> findProjectTimeSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException {
+    public List<TimeInterval> findProjectTimeIntervalSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException {
         requireNonNull(project);
 
         Cursor cursor = getContentResolver().query(
@@ -105,7 +105,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     }
 
     @Override
-    public Optional<Time> get(final long id) throws ClockOutBeforeClockInException {
+    public Optional<TimeInterval> get(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getTimeItemUri(id),
                 ProviderContract.getTimeColumns(),
@@ -117,10 +117,10 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     }
 
     @Override
-    public Optional<Time> add(final Time time) throws ClockOutBeforeClockInException {
-        requireNonNull(time);
+    public Optional<TimeInterval> add(final TimeInterval timeInterval) throws ClockOutBeforeClockInException {
+        requireNonNull(timeInterval);
 
-        final ContentValues values = contentValuesMapper.transform(time);
+        final ContentValues values = contentValuesMapper.transform(timeInterval);
 
         final Uri uri = getContentResolver().insert(
                 ProviderContract.getTimeStreamUri(),
@@ -130,30 +130,30 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     }
 
     @Override
-    public Optional<Time> update(final Time time) throws ClockOutBeforeClockInException {
-        requireNonNull(time);
+    public Optional<TimeInterval> update(final TimeInterval timeInterval) throws ClockOutBeforeClockInException {
+        requireNonNull(timeInterval);
 
         getContentResolver().update(
-                ProviderContract.getTimeItemUri(time.getId()),
-                contentValuesMapper.transform(time),
+                ProviderContract.getTimeItemUri(timeInterval.getId()),
+                contentValuesMapper.transform(timeInterval),
                 null,
                 null
         );
 
-        return get(time.getId());
+        return get(timeInterval.getId());
     }
 
     @Override
-    public List<Time> update(List<Time> times) throws ClockOutBeforeClockInException {
-        requireNonNull(times);
+    public List<TimeInterval> update(List<TimeInterval> timeIntervals) throws ClockOutBeforeClockInException {
+        requireNonNull(timeIntervals);
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
-        for (Time time : times) {
-            Uri uri = ProviderContract.getTimeItemUri(time.getId());
+        for (TimeInterval timeInterval : timeIntervals) {
+            Uri uri = ProviderContract.getTimeItemUri(timeInterval.getId());
 
             ContentProviderOperation operation = ContentProviderOperation.newUpdate(uri)
-                    .withValues(contentValuesMapper.transform(time))
+                    .withValues(contentValuesMapper.transform(timeInterval))
                     .build();
             batch.add(operation);
         }
@@ -164,15 +164,15 @@ public class TimeResolverRepository extends ContentResolverRepository implements
             throw new ContentResolverApplyBatchException(e);
         }
 
-        List<Time> updatedTimes = new ArrayList<>();
-        for (Time time : times) {
-            Optional<Time> value = get(time.getId());
+        List<TimeInterval> updatedTimeIntervals = new ArrayList<>();
+        for (TimeInterval timeInterval : timeIntervals) {
+            Optional<TimeInterval> value = get(timeInterval.getId());
             if (value.isPresent()) {
-                updatedTimes.add(value.get());
+                updatedTimeIntervals.add(value.get());
             }
         }
 
-        return updatedTimes;
+        return updatedTimeIntervals;
     }
 
     @Override
@@ -185,13 +185,13 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     }
 
     @Override
-    public void remove(List<Time> times) {
-        requireNonNull(times);
+    public void remove(List<TimeInterval> timeIntervals) {
+        requireNonNull(timeIntervals);
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
-        for (Time time : times) {
-            Uri uri = ProviderContract.getTimeItemUri(time.getId());
+        for (TimeInterval timeInterval : timeIntervals) {
+            Uri uri = ProviderContract.getTimeItemUri(timeInterval.getId());
             batch.add(ContentProviderOperation.newDelete(uri).build());
         }
 
@@ -203,7 +203,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     }
 
     @Override
-    public List<Time> getProjectTimeSinceBeginningOfMonth(long projectId)
+    public List<TimeInterval> getProjectTimeIntervalSinceBeginningOfMonth(long projectId)
             throws ClockOutBeforeClockInException {
         // Reset the calendar to retrieve timestamp
         // of the beginning of the month.
@@ -224,7 +224,7 @@ public class TimeResolverRepository extends ContentResolverRepository implements
     }
 
     @Override
-    public Optional<Time> getActiveTimeForProject(long projectId)
+    public Optional<TimeInterval> getActiveTimeIntervalForProject(long projectId)
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(projectId),

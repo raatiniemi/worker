@@ -63,7 +63,7 @@ public class GetProjects {
         for (Project project : projects) {
             // Populate the project with the registered time.
             project.addTime(
-                    timeRepository.getProjectTimeSinceBeginningOfMonth(project.getId())
+                    timeRepository.getProjectTimeIntervalSinceBeginningOfMonth(project.getId())
             );
         }
 

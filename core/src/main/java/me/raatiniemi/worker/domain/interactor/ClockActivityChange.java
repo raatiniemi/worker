@@ -97,7 +97,7 @@ public class ClockActivityChange {
         // Reload the project and populate it with the registered time.
         // TODO: Migrate populate time to separate use case?
         project.addTime(
-                timeRepository.getProjectTimeSinceBeginningOfMonth(
+                timeRepository.getProjectTimeIntervalSinceBeginningOfMonth(
                         project.getId()
                 )
         );

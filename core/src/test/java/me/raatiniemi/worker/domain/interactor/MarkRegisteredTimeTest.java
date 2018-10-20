@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -44,146 +44,146 @@ public class MarkRegisteredTimeTest {
 
     @Test
     public void execute_withMultipleUnregisteredItems() throws DomainException {
-        List<Time> timeToUpdate = new ArrayList<>();
-        timeToUpdate.add(
-                TimeFactory.builder()
+        List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
 
         MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
-        markRegisteredTime.execute(timeToUpdate);
+        markRegisteredTime.execute(timeIntervalsToUpdate);
 
-        List<Time> expectedTime = new ArrayList<>();
-        expectedTime.add(
-                TimeFactory.builder()
+        List<TimeInterval> expectedTimeIntevals = new ArrayList<>();
+        expectedTimeIntevals.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeIntevals.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeIntevals.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeIntevals.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        verify(timeRepository, times(1)).update(expectedTime);
+        verify(timeRepository, times(1)).update(expectedTimeIntevals);
     }
 
     @Test
     public void execute_withMultipleRegisteredItems() throws DomainException {
-        List<Time> timeToUpdate = new ArrayList<>();
-        timeToUpdate.add(
-                TimeFactory.builder()
+        List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
 
         MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
-        markRegisteredTime.execute(timeToUpdate);
+        markRegisteredTime.execute(timeIntervalsToUpdate);
 
-        List<Time> expectedTime = new ArrayList<>();
-        expectedTime.add(
-                TimeFactory.builder()
+        List<TimeInterval> expectedTimeInterval = new ArrayList<>();
+        expectedTimeInterval.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeInterval.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeInterval.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeInterval.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
-        verify(timeRepository, times(1)).update(expectedTime);
+        verify(timeRepository, times(1)).update(expectedTimeInterval);
     }
 
     @Test
     public void execute_withMultipleItems() throws DomainException {
-        List<Time> timeToUpdate = new ArrayList<>();
-        timeToUpdate.add(
-                TimeFactory.builder()
+        List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        timeToUpdate.add(
-                TimeFactory.builder()
+        timeIntervalsToUpdate.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
 
         MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
-        markRegisteredTime.execute(timeToUpdate);
+        markRegisteredTime.execute(timeIntervalsToUpdate);
 
-        List<Time> expectedTime = new ArrayList<>();
-        expectedTime.add(
-                TimeFactory.builder()
+        List<TimeInterval> expectedTimeInterval = new ArrayList<>();
+        expectedTimeInterval.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeInterval.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeInterval.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
 
-        expectedTime.add(
-                TimeFactory.builder()
+        expectedTimeInterval.add(
+                TimeIntervalFactory.builder()
                         .register()
                         .build()
         );
-        verify(timeRepository, times(1)).update(expectedTime);
+        verify(timeRepository, times(1)).update(expectedTimeInterval);
     }
 }

@@ -20,7 +20,7 @@ import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 import me.raatiniemi.worker.util.Optional;
 
@@ -42,13 +42,13 @@ public class ClockIn {
      * @throws ActiveProjectException If project is active.
      */
     public void execute(long projectId, Date date) throws DomainException {
-        Optional<Time> value = timeRepository.getActiveTimeForProject(projectId);
+        Optional<TimeInterval> value = timeRepository.getActiveTimeIntervalForProject(projectId);
         if (value.isPresent()) {
             throw new ActiveProjectException();
         }
 
         timeRepository.add(
-                Time.builder(projectId)
+                TimeInterval.builder(projectId)
                         .startInMilliseconds(date.getTime())
                         .build()
         );

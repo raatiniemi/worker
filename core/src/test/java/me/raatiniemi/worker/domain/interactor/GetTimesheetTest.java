@@ -34,7 +34,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -51,7 +51,7 @@ public class GetTimesheetTest {
 
     private static TimesheetItem buildTimesheetItemWithInterval(long startInMilliseconds, long stopInMilliseconds) {
         return TimesheetItem.with(
-                TimeFactory.builder()
+                TimeIntervalFactory.builder()
                         .startInMilliseconds(startInMilliseconds)
                         .stopInMilliseconds(stopInMilliseconds)
                         .build()

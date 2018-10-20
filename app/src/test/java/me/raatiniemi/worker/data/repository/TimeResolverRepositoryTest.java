@@ -29,7 +29,7 @@ import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -71,9 +71,9 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(null);
 
-        List<Time> time = repository.findProjectTimeSinceStartingPointInMilliseconds(project, 1234567890);
+        List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
 
-        assertTrue(time.isEmpty());
+        assertTrue(timeIntervals.isEmpty());
     }
 
     @Test
@@ -89,9 +89,9 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<Time> time = repository.findProjectTimeSinceStartingPointInMilliseconds(project, 1234567890);
+        List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
 
-        assertTrue(time.isEmpty());
+        assertTrue(timeIntervals.isEmpty());
         verify(cursor).close();
     }
 
@@ -108,9 +108,9 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<Time> time = repository.findProjectTimeSinceStartingPointInMilliseconds(project, 1234567890);
+        List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
 
-        assertTrue(1 == time.size());
+        assertTrue(1 == timeIntervals.size());
         verify(cursor).close();
     }
 
@@ -127,9 +127,9 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<Time> time = repository.findProjectTimeSinceStartingPointInMilliseconds(project, 1234567890);
+        List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
 
-        assertTrue(5 == time.size());
+        assertTrue(5 == timeIntervals.size());
         verify(cursor).close();
     }
 }

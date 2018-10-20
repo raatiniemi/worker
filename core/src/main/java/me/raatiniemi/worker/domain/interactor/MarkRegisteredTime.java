@@ -21,7 +21,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
 
 /**
@@ -45,29 +45,29 @@ public class MarkRegisteredTime {
         this.timeRepository = timeRepository;
     }
 
-    private static List<Time> collectTimeToUpdate(List<Time> times)
+    private static List<TimeInterval> collectTimeToUpdate(List<TimeInterval> timeIntervals)
             throws ClockOutBeforeClockInException {
-        List<Time> timeToUpdate = new ArrayList<>();
+        List<TimeInterval> timeIntervalToUpdate = new ArrayList<>();
 
-        boolean shouldMarkAsRegistered = shouldMarkAsRegistered(times);
-        for (Time time : times) {
+        boolean shouldMarkAsRegistered = shouldMarkAsRegistered(timeIntervals);
+        for (TimeInterval timeInterval : timeIntervals) {
             if (shouldMarkAsRegistered) {
-                timeToUpdate.add(time.markAsRegistered());
+                timeIntervalToUpdate.add(timeInterval.markAsRegistered());
                 continue;
             }
 
-            timeToUpdate.add(time.unmarkRegistered());
+            timeIntervalToUpdate.add(timeInterval.unmarkRegistered());
         }
 
-        return timeToUpdate;
+        return timeIntervalToUpdate;
     }
 
-    private static boolean shouldMarkAsRegistered(List<Time> times) {
-        return !times.get(0).isRegistered();
+    private static boolean shouldMarkAsRegistered(List<TimeInterval> timeIntervals) {
+        return !timeIntervals.get(0).isRegistered();
     }
 
-    public List<Time> execute(List<Time> times) throws DomainException {
-        List<Time> timeToUpdate = collectTimeToUpdate(times);
+    public List<TimeInterval> execute(List<TimeInterval> timeIntervals) throws DomainException {
+        List<TimeInterval> timeToUpdate = collectTimeToUpdate(timeIntervals);
         return timeRepository.update(timeToUpdate);
     }
 }

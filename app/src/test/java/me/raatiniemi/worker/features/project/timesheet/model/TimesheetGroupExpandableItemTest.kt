@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project.timesheet.model
 
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.factory.TimeFactory
+import me.raatiniemi.worker.factory.TimeIntervalFactory
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,8 +35,8 @@ class TimesheetGroupExpandableItemTest {
 
     @Test
     fun get() {
-        val time = TimeFactory.builder(1L).build()
-        val items = sortedSetOf(TimesheetItem.with(time))
+        val timeInterval = TimeIntervalFactory.builder(1L).build()
+        val items = sortedSetOf(TimesheetItem.with(timeInterval))
         val group = TimesheetGroup.build(Date(), items)
 
         assertEquals(items.first(), group.get(0))
@@ -44,16 +44,16 @@ class TimesheetGroupExpandableItemTest {
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun setWithIndexOutOfBounds() {
-        val time = TimeFactory.builder(1L).build()
-        val item = TimesheetItem.with(time)
+        val timeInterval = TimeIntervalFactory.builder(1L).build()
+        val item = TimesheetItem.with(timeInterval)
         val group = TimesheetGroup.build(Date(), TreeSet())
 
         group.set(1, item)
     }
 
     fun set() {
-        val time = TimeFactory.builder(1L).build()
-        val items = sortedSetOf(TimesheetItem.with(time))
+        val timeInterval = TimeIntervalFactory.builder(1L).build()
+        val items = sortedSetOf(TimesheetItem.with(timeInterval))
         val group = TimesheetGroup.build(Date(), items)
 
         group.set(1, items.first())
@@ -68,8 +68,8 @@ class TimesheetGroupExpandableItemTest {
 
     @Test
     fun remove() {
-        val time = TimeFactory.builder(1L).build()
-        val items = sortedSetOf(TimesheetItem.with(time))
+        val timeInterval = TimeIntervalFactory.builder(1L).build()
+        val items = sortedSetOf(TimesheetItem.with(timeInterval))
         val group = TimesheetGroup.build(Date(), items)
 
         assertEquals(items.first(), group.remove(0))
@@ -84,8 +84,8 @@ class TimesheetGroupExpandableItemTest {
 
     @Test
     fun sizeWithItem() {
-        val time = TimeFactory.builder(1L).build()
-        val items = sortedSetOf(TimesheetItem.with(time))
+        val timeInterval = TimeIntervalFactory.builder(1L).build()
+        val items = sortedSetOf(TimesheetItem.with(timeInterval))
         val group = TimesheetGroup.build(Date(), items)
 
         assertEquals(1, group.size())
@@ -93,19 +93,19 @@ class TimesheetGroupExpandableItemTest {
 
     @Test
     fun sizeWithItems() {
-        val time1 = TimeFactory.builder(1L)
+        val timeInterval1 = TimeIntervalFactory.builder(1L)
                 .id(2L)
                 .startInMilliseconds(0L)
                 .register()
                 .build()
-        val time2 = TimeFactory.builder(2L)
+        val timeInterval2 = TimeIntervalFactory.builder(2L)
                 .id(3L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(5L)
                 .build()
         val items = sortedSetOf(
-                TimesheetItem.with(time1),
-                TimesheetItem.with(time2)
+                TimesheetItem.with(timeInterval1),
+                TimesheetItem.with(timeInterval2)
         )
         val group = TimesheetGroup.build(Date(), items)
 

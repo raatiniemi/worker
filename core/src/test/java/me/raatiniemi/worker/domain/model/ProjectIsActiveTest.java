@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -35,12 +35,12 @@ import static junit.framework.Assert.assertTrue;
 public class ProjectIsActiveTest {
     private final String message;
     private final boolean expected;
-    private final List<Time> times;
+    private final List<TimeInterval> timeIntervals;
 
-    public ProjectIsActiveTest(String message, boolean expected, List<Time> times) {
+    public ProjectIsActiveTest(String message, boolean expected, List<TimeInterval> timeIntervals) {
         this.message = message;
         this.expected = expected;
-        this.times = times;
+        this.timeIntervals = timeIntervals;
     }
 
     @Parameters
@@ -56,7 +56,7 @@ public class ProjectIsActiveTest {
                                 "Without active item",
                                 Boolean.FALSE,
                                 Collections.singletonList(
-                                        TimeFactory.builder()
+                                        TimeIntervalFactory.builder()
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 )
@@ -65,7 +65,7 @@ public class ProjectIsActiveTest {
                                 "With active item",
                                 Boolean.TRUE,
                                 Collections.singletonList(
-                                        TimeFactory.builder()
+                                        TimeIntervalFactory.builder()
                                                 .stopInMilliseconds(0L)
                                                 .build()
                                 )
@@ -78,7 +78,7 @@ public class ProjectIsActiveTest {
     public void isActive() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        project.addTime(times);
+        project.addTime(timeIntervals);
 
         assertTrue(message, expected == project.isActive());
     }

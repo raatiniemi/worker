@@ -17,51 +17,51 @@
 package me.raatiniemi.worker.factory;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 
-public class TimeFactory extends Time.Builder {
-    private TimeFactory(long projectId) {
+public class TimeIntervalFactory extends TimeInterval.Builder {
+    private TimeIntervalFactory(long projectId) {
         super(projectId);
     }
 
-    public static TimeFactory builder(Long projectId) {
-        return new TimeFactory(projectId);
+    public static TimeIntervalFactory builder(Long projectId) {
+        return new TimeIntervalFactory(projectId);
     }
 
-    public static TimeFactory builder() {
+    public static TimeIntervalFactory builder() {
         return builder(1L);
     }
 
     @Override
-    public TimeFactory id(Long id) {
+    public TimeIntervalFactory id(Long id) {
         super.id(id);
 
         return this;
     }
 
     @Override
-    public TimeFactory startInMilliseconds(long startInMilliseconds) {
+    public TimeIntervalFactory startInMilliseconds(long startInMilliseconds) {
         super.startInMilliseconds(startInMilliseconds);
 
         return this;
     }
 
     @Override
-    public TimeFactory stopInMilliseconds(long stopInMilliseconds) {
+    public TimeIntervalFactory stopInMilliseconds(long stopInMilliseconds) {
         super.stopInMilliseconds(stopInMilliseconds);
 
         return this;
     }
 
     @Override
-    public TimeFactory register() {
+    public TimeIntervalFactory register() {
         super.register();
 
         return this;
     }
 
     @Override
-    public Time build() {
+    public TimeInterval build() {
         try {
             return super.build();
         } catch (ClockOutBeforeClockInException e) {

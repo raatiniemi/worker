@@ -25,9 +25,9 @@ import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
 import static org.mockito.Matchers.isA;
@@ -46,7 +46,7 @@ public class ClockOutTest {
 
     @Test(expected = InactiveProjectException.class)
     public void execute_withoutActiveTime() throws DomainException {
-        when(timeRepository.getActiveTimeForProject(1L))
+        when(timeRepository.getActiveTimeIntervalForProject(1L))
                 .thenReturn(Optional.empty());
 
         ClockOut clockOut = new ClockOut(timeRepository);
@@ -55,15 +55,15 @@ public class ClockOutTest {
 
     @Test
     public void execute() throws DomainException {
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(Optional.of(time));
+        when(timeRepository.getActiveTimeIntervalForProject(1L))
+                .thenReturn(Optional.of(timeInterval));
 
         ClockOut clockOut = new ClockOut(timeRepository);
         clockOut.execute(1L, new Date());
 
-        verify(timeRepository).update(isA(Time.class));
+        verify(timeRepository).update(isA(TimeInterval.class));
     }
 }

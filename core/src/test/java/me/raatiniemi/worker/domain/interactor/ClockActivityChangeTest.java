@@ -31,10 +31,10 @@ import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
 import static org.mockito.Matchers.any;
@@ -77,14 +77,14 @@ public class ClockActivityChangeTest {
         Project project = buildProject();
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
-        when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
+        when(timeRepository.getProjectTimeIntervalSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
         verify(clockIn).execute(eq(1L), any(Date.class));
         verify(projectRepository).findById(eq(1L));
-        verify(timeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
+        verify(timeRepository).getProjectTimeIntervalSinceBeginningOfMonth(eq(1L));
     }
 
     @Test(expected = NoProjectException.class)
@@ -108,29 +108,29 @@ public class ClockActivityChangeTest {
     @Test
     public void execute_clockOutProject() throws DomainException {
         Project project = buildProject();
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        project.addTime(Collections.singletonList(time));
+        project.addTime(Collections.singletonList(timeInterval));
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
-        when(timeRepository.getProjectTimeSinceBeginningOfMonth(1L))
+        when(timeRepository.getProjectTimeIntervalSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
         verify(clockOut).execute(eq(1L), any(Date.class));
         verify(projectRepository).findById(eq(1L));
-        verify(timeRepository).getProjectTimeSinceBeginningOfMonth(eq(1L));
+        verify(timeRepository).getProjectTimeIntervalSinceBeginningOfMonth(eq(1L));
     }
 
     @Test(expected = NoProjectException.class)
     public void execute_clockOutWithoutProject() throws DomainException {
         Project project = buildProject();
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        project.addTime(Collections.singletonList(time));
+        project.addTime(Collections.singletonList(timeInterval));
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
@@ -140,10 +140,10 @@ public class ClockActivityChangeTest {
     @Test(expected = InactiveProjectException.class)
     public void execute_clockOutInactiveProject() throws DomainException {
         Project project = buildProject();
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        project.addTime(Collections.singletonList(time));
+        project.addTime(Collections.singletonList(timeInterval));
         doThrow(InactiveProjectException.class)
                 .when(clockOut).execute(eq(1L), any(Date.class));
 

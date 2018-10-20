@@ -22,9 +22,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
 import static junit.framework.Assert.assertFalse;
@@ -43,7 +43,7 @@ public class IsProjectActiveTest {
 
     @Test
     public void execute_withoutTime() throws DomainException {
-        when(timeRepository.getActiveTimeForProject(1L))
+        when(timeRepository.getActiveTimeIntervalForProject(1L))
                 .thenReturn(Optional.empty());
 
         IsProjectActive isProjectActive = new IsProjectActive(timeRepository);
@@ -52,11 +52,11 @@ public class IsProjectActiveTest {
 
     @Test
     public void execute_withActiveTime() throws DomainException {
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(Optional.of(time));
+        when(timeRepository.getActiveTimeIntervalForProject(1L))
+                .thenReturn(Optional.of(timeInterval));
 
         IsProjectActive isProjectActive = new IsProjectActive(timeRepository);
         assertTrue(isProjectActive.execute(1L));

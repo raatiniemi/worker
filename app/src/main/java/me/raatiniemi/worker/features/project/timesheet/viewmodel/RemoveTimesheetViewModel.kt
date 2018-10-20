@@ -53,7 +53,7 @@ interface RemoveTimesheetViewModel {
         private fun executeUseCase(results: List<TimesheetAdapterResult>): Observable<TimesheetAdapterResult> {
             return Observable.defer<TimesheetAdapterResult> {
                 try {
-                    val times = results.map { it.time }.toList()
+                    val times = results.map { it.timeInterval }.toList()
                     useCase.execute(times)
 
                     Observable.from(results.sorted().reversed())
