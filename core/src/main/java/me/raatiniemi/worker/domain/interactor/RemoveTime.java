@@ -18,25 +18,25 @@ package me.raatiniemi.worker.domain.interactor;
 
 import java.util.List;
 
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 /**
  * Use case for removing registered time.
  */
 public class RemoveTime {
     /**
-     * Time repository.
+     * Time interval repository.
      */
-    private final TimeRepository timeRepository;
+    private final TimeIntervalRepository timeIntervalRepository;
 
     /**
      * Constructor.
      *
-     * @param timeRepository Time repository.
+     * @param timeIntervalRepository Time interval repository.
      */
-    public RemoveTime(TimeRepository timeRepository) {
-        this.timeRepository = timeRepository;
+    public RemoveTime(TimeIntervalRepository timeIntervalRepository) {
+        this.timeIntervalRepository = timeIntervalRepository;
     }
 
     /**
@@ -44,8 +44,8 @@ public class RemoveTime {
      *
      * @param time Time to remove.
      */
-    public void execute(final Time time) {
-        timeRepository.remove(time.getId());
+    public void execute(final TimeInterval time) {
+        timeIntervalRepository.remove(time.getId());
     }
 
     /**
@@ -53,7 +53,7 @@ public class RemoveTime {
      *
      * @param items Items to remove.
      */
-    public void execute(List<Time> items) {
-        timeRepository.remove(items);
+    public void execute(List<TimeInterval> items) {
+        timeIntervalRepository.remove(items);
     }
 }

@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.project.timesheet.model
 
-import me.raatiniemi.worker.domain.model.Time
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
 
 data class TimesheetAdapterResult(
@@ -24,8 +24,8 @@ data class TimesheetAdapterResult(
         val child: Int,
         private val item: TimesheetItem
 ) : Comparable<TimesheetAdapterResult> {
-    val time: Time
-        get() = item.asTime()
+    val timeInterval: TimeInterval
+        get() = item.asTimeInterval()
 
     override fun compareTo(other: TimesheetAdapterResult): Int {
         if (group == other.group) {

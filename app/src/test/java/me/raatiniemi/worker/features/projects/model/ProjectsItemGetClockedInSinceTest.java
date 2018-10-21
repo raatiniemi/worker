@@ -28,8 +28,8 @@ import java.util.GregorianCalendar;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -41,16 +41,16 @@ import static org.mockito.Mockito.when;
 public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest {
     private final String message;
     private final String expected;
-    private final Time[] registeredTime;
+    private final TimeInterval[] timeIntervals;
 
     public ProjectsItemGetClockedInSinceTest(
             String message,
             String expected,
-            Time... registeredTime
+            TimeInterval... timeIntervals
     ) {
         this.message = message;
         this.expected = expected;
-        this.registeredTime = registeredTime;
+        this.timeIntervals = timeIntervals;
     }
 
     @Parameters
@@ -65,8 +65,8 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
                         {
                                 "Without active time",
                                 null,
-                                new Time[]{
-                                        TimeFactory.builder()
+                                new TimeInterval[]{
+                                        TimeIntervalFactory.builder()
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 }
@@ -74,7 +74,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
                         {
                                 "With an hour elapsed",
                                 "Since 15:14 (1h 0m)",
-                                new Time[]{
+                                new TimeInterval[]{
                                         mockActiveTimeWithElapsedTimeInSecondsAndClockedInTime(
                                                 3600L,
                                                 new GregorianCalendar(2016, 1, 28, 15, 14)
@@ -84,7 +84,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
                         {
                                 "With half an hour elapsed",
                                 "Since 20:25 (30m)",
-                                new Time[]{
+                                new TimeInterval[]{
                                         mockActiveTimeWithElapsedTimeInSecondsAndClockedInTime(
                                                 1800L,
                                                 new GregorianCalendar(2016, 1, 28, 20, 25)
@@ -95,22 +95,22 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
         );
     }
 
-    private static Time mockActiveTimeWithElapsedTimeInSecondsAndClockedInTime(
+    private static TimeInterval mockActiveTimeWithElapsedTimeInSecondsAndClockedInTime(
             long elapsedTimeInSeconds,
             Calendar clockedInTime
     ) {
-        Time time = mock(Time.class);
+        TimeInterval timeInterval = mock(TimeInterval.class);
 
-        when(time.isActive())
+        when(timeInterval.isActive())
                 .thenReturn(true);
 
-        when(time.getInterval())
+        when(timeInterval.getInterval())
                 .thenReturn(elapsedTimeInSeconds * 1000);
 
-        when(time.getStartInMilliseconds())
+        when(timeInterval.getStartInMilliseconds())
                 .thenReturn(clockedInTime.getTimeInMillis());
 
-        return time;
+        return timeInterval;
     }
 
     @Test
@@ -118,11 +118,11 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
         Project project = Project.builder("Project name")
                 .build();
         ProjectsItem projectsItem = new ProjectsItem(project);
-        if (isNull(registeredTime)) {
+        if (isNull(timeIntervals)) {
             assertNull(message, projectsItem.getClockedInSince(getResources()));
             return;
         }
-        project.addTime(Arrays.asList(registeredTime));
+        project.addTime(Arrays.asList(timeIntervals));
 
         assertEquals(expected, projectsItem.getClockedInSince(getResources()));
     }

@@ -22,8 +22,8 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 /**
  * Get the registered time for a project since a defined starting point, i.e. {@link #DAY},
@@ -34,10 +34,10 @@ public class GetProjectTimeSince {
     public static final int WEEK = 1;
     public static final int MONTH = 2;
 
-    private final TimeRepository timeRepository;
+    private final TimeIntervalRepository timeIntervalRepository;
 
-    public GetProjectTimeSince(TimeRepository timeRepository) {
-        this.timeRepository = timeRepository;
+    public GetProjectTimeSince(TimeIntervalRepository timeIntervalRepository) {
+        this.timeIntervalRepository = timeIntervalRepository;
     }
 
     private static long getMillisecondsForStartingPoint(int startingPoint) {
@@ -73,8 +73,8 @@ public class GetProjectTimeSince {
      * @return Registered time for the project since the starting point.
      * @throws DomainException If domain rules are violated.
      */
-    public List<Time> execute(Project project, int startingPoint) throws DomainException {
-        return timeRepository.findProjectTimeSinceStartingPointInMilliseconds(
+    public List<TimeInterval> execute(Project project, int startingPoint) throws DomainException {
+        return timeIntervalRepository.findProjectTimeIntervalSinceStartingPointInMilliseconds(
                 project,
                 getMillisecondsForStartingPoint(startingPoint)
         );

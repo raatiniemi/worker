@@ -45,7 +45,7 @@ public class Project {
     /**
      * Time registered for the project.
      */
-    private final List<Time> registeredTime = new ArrayList<>();
+    private final List<TimeInterval> timeIntervals = new ArrayList<>();
 
     /**
      * Constructor.
@@ -90,25 +90,25 @@ public class Project {
      *
      * @return Project time.
      */
-    public List<Time> getRegisteredTime() {
-        return Collections.unmodifiableList(registeredTime);
+    public List<TimeInterval> getTimeIntervals() {
+        return Collections.unmodifiableList(timeIntervals);
     }
 
     /**
      * Add time for the project from a list.
      *
-     * @param time Time to add to the project.
+     * @param timeIntervals Time to add to the project.
      */
-    public void addTime(final List<Time> time) {
-        requireNonNull(time, "Time is not allowed to be null");
+    public void addTime(final List<TimeInterval> timeIntervals) {
+        requireNonNull(timeIntervals, "Time is not allowed to be null");
 
         // If the list with items are empty, there's no
         // need to attempt to add them.
-        if (time.isEmpty()) {
+        if (timeIntervals.isEmpty()) {
             return;
         }
 
-        registeredTime.addAll(time);
+        this.timeIntervals.addAll(timeIntervals);
     }
 
     /**
@@ -117,11 +117,11 @@ public class Project {
      * @return Elapsed time in milliseconds, zero if project is not active.
      */
     public long getElapsed() {
-        Optional<Time> value = getActiveTime();
+        Optional<TimeInterval> value = getActiveTimeInterval();
         if (value.isPresent()) {
-            Time time = value.get();
+            TimeInterval timeInterval = value.get();
 
-            return time.getInterval();
+            return timeInterval.getInterval();
         }
 
         return 0L;
@@ -132,14 +132,14 @@ public class Project {
      *
      * @return Active time, or empty optional if project is not active.
      */
-    private Optional<Time> getActiveTime() {
-        if (registeredTime.isEmpty()) {
+    private Optional<TimeInterval> getActiveTimeInterval() {
+        if (timeIntervals.isEmpty()) {
             return Optional.empty();
         }
 
-        Time time = registeredTime.get(0);
-        if (time.isActive()) {
-            return Optional.of(time);
+        TimeInterval timeInterval = timeIntervals.get(0);
+        if (timeInterval.isActive()) {
+            return Optional.of(timeInterval);
         }
 
         return Optional.empty();
@@ -152,12 +152,12 @@ public class Project {
      */
     public Date getClockedInSince() {
         // Retrieve the last time, i.e. the active time session.
-        Optional<Time> value = getActiveTime();
+        Optional<TimeInterval> value = getActiveTimeInterval();
         if (value.isPresent()) {
-            Time time = value.get();
+            TimeInterval timeInterval = value.get();
 
             // TODO: Do not instantiate inside method, return value from get start?
-            return new Date(time.getStartInMilliseconds());
+            return new Date(timeInterval.getStartInMilliseconds());
         }
 
         return null;
@@ -169,7 +169,7 @@ public class Project {
      * @return True if the project is active, otherwise false.
      */
     public boolean isActive() {
-        Optional<Time> value = getActiveTime();
+        Optional<TimeInterval> value = getActiveTimeInterval();
 
         return value.isPresent();
     }
@@ -187,7 +187,7 @@ public class Project {
         Project project = (Project) o;
         return Objects.equals(getId(), project.getId())
                 && getName().equals(project.getName())
-                && getRegisteredTime().equals(project.getRegisteredTime());
+                && getTimeIntervals().equals(project.getTimeIntervals());
     }
 
     @Override
@@ -195,7 +195,7 @@ public class Project {
         int result = 17;
         result = 31 * result + Objects.hashCode(getId());
         result = 31 * result + getName().hashCode();
-        result = 31 * result + getRegisteredTime().hashCode();
+        result = 31 * result + getTimeIntervals().hashCode();
         return result;
     }
 

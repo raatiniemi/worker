@@ -20,13 +20,13 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.util.Optional;
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
  */
-public interface TimeRepository {
+public interface TimeIntervalRepository {
     /**
      * Find registered project time since starting point.
      *
@@ -35,7 +35,7 @@ public interface TimeRepository {
      * @return Registered time for project since starting point.
      * @throws DomainException If domain rules are violated.
      */
-    List<Time> findProjectTimeSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException;
+    List<TimeInterval> findProjectTimeIntervalSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException;
 
     /**
      * Get time by id.
@@ -44,34 +44,34 @@ public interface TimeRepository {
      * @return Time, or null if none was found.
      * @throws DomainException If domain rules are violated.
      */
-    Optional<Time> get(long id) throws DomainException;
+    Optional<TimeInterval> get(long id) throws DomainException;
 
     /**
      * Add time.
      *
-     * @param time Time to add.
+     * @param timeInterval Time to add.
      * @return Added time.
      * @throws DomainException If domain rules are violated.
      */
-    Optional<Time> add(Time time) throws DomainException;
+    Optional<TimeInterval> add(TimeInterval timeInterval) throws DomainException;
 
     /**
      * Update time.
      *
-     * @param time Time to update.
+     * @param timeInterval Time to update.
      * @return Updated time.
      * @throws DomainException If domain rules are violated.
      */
-    Optional<Time> update(Time time) throws DomainException;
+    Optional<TimeInterval> update(TimeInterval timeInterval) throws DomainException;
 
     /**
      * Update items.
      *
-     * @param times Items to update.
+     * @param timeIntervals Items to update.
      * @return Updated items.
      * @throws DomainException If domain rules are violated.
      */
-    List<Time> update(List<Time> times) throws DomainException;
+    List<TimeInterval> update(List<TimeInterval> timeIntervals) throws DomainException;
 
     /**
      * Remove time by id.
@@ -83,9 +83,9 @@ public interface TimeRepository {
     /**
      * Remove multiple items.
      *
-     * @param times Items to remove.
+     * @param timeIntervals Items to remove.
      */
-    void remove(List<Time> times);
+    void remove(List<TimeInterval> timeIntervals);
 
     /**
      * Get the time registered for a project since the beginning of the current month.
@@ -94,7 +94,7 @@ public interface TimeRepository {
      * @return Registered time for project.
      * @throws DomainException If domain rules are violated.
      */
-    List<Time> getProjectTimeSinceBeginningOfMonth(long projectId) throws DomainException;
+    List<TimeInterval> getProjectTimeIntervalSinceBeginningOfMonth(long projectId) throws DomainException;
 
     /**
      * Get active time for project.
@@ -103,5 +103,5 @@ public interface TimeRepository {
      * @return Active time for project, or null if project is inactive.
      * @throws DomainException If domain rules are violated.
      */
-    Optional<Time> getActiveTimeForProject(long projectId) throws DomainException;
+    Optional<TimeInterval> getActiveTimeIntervalForProject(long projectId) throws DomainException;
 }

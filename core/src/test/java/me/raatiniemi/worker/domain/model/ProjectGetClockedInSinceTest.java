@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -38,12 +38,12 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 public class ProjectGetClockedInSinceTest {
     private final String message;
     private final Date expected;
-    private final List<Time> times;
+    private final List<TimeInterval> timeIntervals;
 
-    public ProjectGetClockedInSinceTest(String message, Date expected, List<Time> times) {
+    public ProjectGetClockedInSinceTest(String message, Date expected, List<TimeInterval> timeIntervals) {
         this.message = message;
         this.expected = expected;
-        this.times = times;
+        this.timeIntervals = timeIntervals;
     }
 
     @Parameters
@@ -59,7 +59,7 @@ public class ProjectGetClockedInSinceTest {
                                 "Without active item",
                                 null,
                                 Collections.singletonList(
-                                        TimeFactory.builder()
+                                        TimeIntervalFactory.builder()
                                                 .stopInMilliseconds(1L)
                                                 .build())
                         },
@@ -67,7 +67,7 @@ public class ProjectGetClockedInSinceTest {
                                 "With active item",
                                 new Date(50000L),
                                 Collections.singletonList(
-                                        TimeFactory.builder()
+                                        TimeIntervalFactory.builder()
                                                 .startInMilliseconds(50000L)
                                                 .build()
                                 )
@@ -80,7 +80,7 @@ public class ProjectGetClockedInSinceTest {
     public void getClockedInSince() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        project.addTime(times);
+        project.addTime(timeIntervals);
 
         if (isNull(expected)) {
             assertNull(message, project.getClockedInSince());

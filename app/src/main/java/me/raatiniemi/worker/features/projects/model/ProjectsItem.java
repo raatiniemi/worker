@@ -26,7 +26,7 @@ import java.util.Locale;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.util.DateIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat;
 
@@ -41,20 +41,20 @@ public class ProjectsItem {
     private final Project project;
     private final long registeredTimeSummary;
 
-    public ProjectsItem(Project project, List<Time> registeredTime) {
+    public ProjectsItem(Project project, List<TimeInterval> registeredTime) {
         this.project = project;
 
         registeredTimeSummary = calculateSummaryFromRegisteredTime(registeredTime);
     }
 
     public ProjectsItem(Project project) {
-        this(project, project.getRegisteredTime());
+        this(project, project.getTimeIntervals());
     }
 
-    private static long calculateSummaryFromRegisteredTime(List<Time> registeredTime) {
+    private static long calculateSummaryFromRegisteredTime(List<TimeInterval> registeredTime) {
         long timeSummary = 0;
 
-        for (Time interval : registeredTime) {
+        for (TimeInterval interval : registeredTime) {
             timeSummary += interval.getTime();
         }
 

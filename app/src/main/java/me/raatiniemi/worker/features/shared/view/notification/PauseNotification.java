@@ -26,14 +26,14 @@ import java.util.Date;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.repository.TimeResolverRepository;
+import me.raatiniemi.worker.data.repository.TimeIntervalResolverRepository;
 import me.raatiniemi.worker.data.service.ongoing.ClockOutService;
 import me.raatiniemi.worker.data.service.ongoing.PauseService;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
 
@@ -51,7 +51,7 @@ public class PauseNotification extends OngoingNotification {
 
     private boolean useChronometer;
     private long registeredTime;
-    private TimeResolverRepository repository;
+    private TimeIntervalResolverRepository repository;
 
     private PauseNotification(Context context, Project project, boolean useChronometer) {
         super(context, project);
@@ -73,8 +73,8 @@ public class PauseNotification extends OngoingNotification {
         try {
             long accumulatedTime = 0L;
 
-            for (Time time : getRegisteredTime()) {
-                accumulatedTime += time.getTime();
+            for (TimeInterval timeInterval : getRegisteredTime()) {
+                accumulatedTime += timeInterval.getTime();
             }
 
             registeredTime = includeActiveTime(accumulatedTime);
@@ -84,9 +84,9 @@ public class PauseNotification extends OngoingNotification {
         }
     }
 
-    private List<Time> getRegisteredTime() throws DomainException {
+    private List<TimeInterval> getRegisteredTime() throws DomainException {
         GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(
-                getTimeRepository()
+                getTimeIntervalRepository()
         );
 
         return registeredTimeUseCase.execute(
@@ -95,34 +95,34 @@ public class PauseNotification extends OngoingNotification {
         );
     }
 
-    private TimeRepository getTimeRepository() {
+    private TimeIntervalRepository getTimeIntervalRepository() {
         if (isNull(repository)) {
             // TODO: Implement proper dependency injection.
             // Adding a `null`-check to the application instance assignment is causing the
             // `ReloadNotificationService`-test to fail due to invalid thread for context.
-            repository = new TimeResolverRepository(getContext().getContentResolver());
+            repository = new TimeIntervalResolverRepository(getContext().getContentResolver());
         }
 
         return repository;
     }
 
-    private static GetProjectTimeSince buildRegisteredTimeUseCase(TimeRepository repository) {
+    private static GetProjectTimeSince buildRegisteredTimeUseCase(TimeIntervalRepository repository) {
         return new GetProjectTimeSince(repository);
     }
 
     private long includeActiveTime(long registeredTime) throws DomainException {
-        Optional<Time> value = getActiveTimeForProject();
+        Optional<TimeInterval> value = getActiveTimeIntervalForProject();
         if (value.isPresent()) {
-            Time activeTime = value.get();
-            return registeredTime + activeTime.getInterval();
+            TimeInterval activeTimeInterval = value.get();
+            return registeredTime + activeTimeInterval.getInterval();
         }
 
         return registeredTime;
     }
 
-    private Optional<Time> getActiveTimeForProject() throws DomainException {
-        return getTimeRepository()
-                .getActiveTimeForProject(getProject().getId());
+    private Optional<TimeInterval> getActiveTimeIntervalForProject() throws DomainException {
+        return getTimeIntervalRepository()
+                .getActiveTimeIntervalForProject(getProject().getId());
     }
 
     @Override

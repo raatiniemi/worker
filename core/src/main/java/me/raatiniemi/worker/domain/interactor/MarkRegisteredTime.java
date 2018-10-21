@@ -21,8 +21,8 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 /**
  * Use case for marking time as registered.
@@ -32,42 +32,42 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
  */
 public class MarkRegisteredTime {
     /**
-     * Time repository.
+     * Time interval repository.
      */
-    private final TimeRepository timeRepository;
+    private final TimeIntervalRepository timeIntervalRepository;
 
     /**
      * Constructor.
      *
-     * @param timeRepository Time repository.
+     * @param timeIntervalRepository Time interval repository.
      */
-    public MarkRegisteredTime(TimeRepository timeRepository) {
-        this.timeRepository = timeRepository;
+    public MarkRegisteredTime(TimeIntervalRepository timeIntervalRepository) {
+        this.timeIntervalRepository = timeIntervalRepository;
     }
 
-    private static List<Time> collectTimeToUpdate(List<Time> times)
+    private static List<TimeInterval> collectTimeToUpdate(List<TimeInterval> timeIntervals)
             throws ClockOutBeforeClockInException {
-        List<Time> timeToUpdate = new ArrayList<>();
+        List<TimeInterval> timeIntervalToUpdate = new ArrayList<>();
 
-        boolean shouldMarkAsRegistered = shouldMarkAsRegistered(times);
-        for (Time time : times) {
+        boolean shouldMarkAsRegistered = shouldMarkAsRegistered(timeIntervals);
+        for (TimeInterval timeInterval : timeIntervals) {
             if (shouldMarkAsRegistered) {
-                timeToUpdate.add(time.markAsRegistered());
+                timeIntervalToUpdate.add(timeInterval.markAsRegistered());
                 continue;
             }
 
-            timeToUpdate.add(time.unmarkRegistered());
+            timeIntervalToUpdate.add(timeInterval.unmarkRegistered());
         }
 
-        return timeToUpdate;
+        return timeIntervalToUpdate;
     }
 
-    private static boolean shouldMarkAsRegistered(List<Time> times) {
-        return !times.get(0).isRegistered();
+    private static boolean shouldMarkAsRegistered(List<TimeInterval> timeIntervals) {
+        return !timeIntervals.get(0).isRegistered();
     }
 
-    public List<Time> execute(List<Time> times) throws DomainException {
-        List<Time> timeToUpdate = collectTimeToUpdate(times);
-        return timeRepository.update(timeToUpdate);
+    public List<TimeInterval> execute(List<TimeInterval> timeIntervals) throws DomainException {
+        List<TimeInterval> timeToUpdate = collectTimeToUpdate(timeIntervals);
+        return timeIntervalRepository.update(timeToUpdate);
     }
 }

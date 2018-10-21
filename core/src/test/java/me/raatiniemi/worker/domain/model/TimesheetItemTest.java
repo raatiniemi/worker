@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -28,20 +28,20 @@ import static junit.framework.Assert.assertTrue;
 public class TimesheetItemTest {
     @Test
     public void asTime() {
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .build();
-        TimesheetItem item = TimesheetItem.with(time);
+        TimesheetItem item = TimesheetItem.with(timeInterval);
 
-        assertTrue(time == item.asTime());
+        assertTrue(timeInterval == item.asTimeInterval());
     }
 
     @Test
     public void getId() {
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .id(1L)
                 .build();
-        TimesheetItem item = TimesheetItem.with(time);
+        TimesheetItem item = TimesheetItem.with(timeInterval);
 
-        assertTrue(time.getId() == item.getId());
+        assertTrue(timeInterval.getId() == item.getId());
     }
 }

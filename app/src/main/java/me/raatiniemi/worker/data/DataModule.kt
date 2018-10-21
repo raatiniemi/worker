@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.data
 
 import me.raatiniemi.worker.data.repository.ProjectResolverRepository
-import me.raatiniemi.worker.data.repository.TimeResolverRepository
+import me.raatiniemi.worker.data.repository.TimeIntervalResolverRepository
 import me.raatiniemi.worker.data.repository.TimesheetResolverRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.domain.repository.TimeRepository
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimesheetRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
@@ -28,7 +28,7 @@ import org.koin.dsl.module.module
 val dataModule = module {
     single<ProjectRepository> { ProjectResolverRepository(androidContext().contentResolver) }
 
-    single<TimeRepository> { TimeResolverRepository(androidContext().contentResolver) }
+    single<TimeIntervalRepository> { TimeIntervalResolverRepository(androidContext().contentResolver) }
 
     single<TimesheetRepository> { TimesheetResolverRepository(androidContext().contentResolver) }
 }

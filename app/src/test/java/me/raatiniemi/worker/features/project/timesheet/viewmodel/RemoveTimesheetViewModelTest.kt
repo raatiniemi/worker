@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.project.timesheet.viewmodel
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.factory.TimeFactory
+import me.raatiniemi.worker.factory.TimeIntervalFactory
 import me.raatiniemi.worker.features.project.timesheet.model.TimesheetAdapterResult
 import org.junit.Before
 import org.junit.Test
@@ -44,10 +44,10 @@ class RemoveTimesheetViewModelTest {
 
     @Test
     fun remove_withError() {
-        val time = TimeFactory.builder().build()
-        val item = TimesheetItem.with(time)
+        val timeInterval = TimeIntervalFactory.builder().build()
+        val item = TimesheetItem.with(timeInterval)
         val results = listOf(TimesheetAdapterResult(0, 0, item))
-        `when`(useCase.execute(eq(listOf(time))))
+        `when`(useCase.execute(eq(listOf(timeInterval))))
                 .thenThrow(DomainException::class.java)
 
         vm.remove(results)
@@ -60,12 +60,12 @@ class RemoveTimesheetViewModelTest {
 
     @Test
     fun remove_withSingleItem() {
-        val time = TimeFactory.builder().build()
-        val results = listOf(TimesheetAdapterResult(0, 0, TimesheetItem.with(time)))
+        val timeInterval = TimeIntervalFactory.builder().build()
+        val results = listOf(TimesheetAdapterResult(0, 0, TimesheetItem.with(timeInterval)))
 
         vm.remove(results)
 
-        verify(useCase).execute(eq(listOf(time)))
+        verify(useCase).execute(eq(listOf(timeInterval)))
         success.assertReceivedOnNext(results)
         success.assertNoTerminalEvent()
         errors.assertNoValues()
@@ -74,15 +74,15 @@ class RemoveTimesheetViewModelTest {
 
     @Test
     fun remove_withMultipleItems() {
-        val time = TimeFactory.builder().build()
+        val timeInterval = TimeIntervalFactory.builder().build()
         val results = listOf(
-                TimesheetAdapterResult(0, 0, TimesheetItem.with(time)),
-                TimesheetAdapterResult(0, 1, TimesheetItem.with(time))
+                TimesheetAdapterResult(0, 0, TimesheetItem.with(timeInterval)),
+                TimesheetAdapterResult(0, 1, TimesheetItem.with(timeInterval))
         )
 
         vm.remove(results)
 
-        verify(useCase).execute(eq(listOf(time, time)))
+        verify(useCase).execute(eq(listOf(timeInterval, timeInterval)))
         success.assertReceivedOnNext(results.reversed())
         success.assertNoTerminalEvent()
         errors.assertNoValues()

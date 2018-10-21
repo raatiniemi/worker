@@ -24,7 +24,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -34,24 +34,24 @@ import static me.raatiniemi.worker.util.NullUtil.isNull;
 public class TimeEqualsHashCodeTest {
     private final String message;
     private final Boolean expected;
-    private final Time time;
+    private final TimeInterval timeInterval;
     private final Object compareTo;
 
     public TimeEqualsHashCodeTest(
             String message,
             Boolean expected,
-            Time time,
+            TimeInterval timeInterval,
             Object compareTo
     ) {
         this.message = message;
         this.expected = expected;
-        this.time = time;
+        this.timeInterval = timeInterval;
         this.compareTo = compareTo;
     }
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .build();
 
         return Arrays.asList(
@@ -59,57 +59,57 @@ public class TimeEqualsHashCodeTest {
                         {
                                 "With same instance",
                                 Boolean.TRUE,
-                                time,
-                                time
+                                timeInterval,
+                                timeInterval
                         },
                         {
                                 "With null",
                                 Boolean.FALSE,
-                                time,
+                                timeInterval,
                                 null
                         },
                         {
                                 "With incompatible object",
                                 Boolean.FALSE,
-                                time,
+                                timeInterval,
                                 ""
                         },
                         {
                                 "With different project id",
                                 Boolean.FALSE,
-                                time,
-                                TimeFactory.builder(2L)
+                                timeInterval,
+                                TimeIntervalFactory.builder(2L)
                                         .build()
                         },
                         {
                                 "With different id",
                                 Boolean.FALSE,
-                                time,
-                                TimeFactory.builder()
+                                timeInterval,
+                                TimeIntervalFactory.builder()
                                         .id(2L)
                                         .build()
                         },
                         {
                                 "With different start in milliseconds",
                                 Boolean.FALSE,
-                                time,
-                                TimeFactory.builder()
+                                timeInterval,
+                                TimeIntervalFactory.builder()
                                         .startInMilliseconds(2L)
                                         .build()
                         },
                         {
                                 "With different stop in milliseconds",
                                 Boolean.FALSE,
-                                time,
-                                TimeFactory.builder()
+                                timeInterval,
+                                TimeIntervalFactory.builder()
                                         .stopInMilliseconds(1L)
                                         .build()
                         },
                         {
                                 "With different register status",
                                 Boolean.FALSE,
-                                time,
-                                TimeFactory.builder()
+                                timeInterval,
+                                TimeIntervalFactory.builder()
                                         .register()
                                         .build()
                         }
@@ -132,17 +132,17 @@ public class TimeEqualsHashCodeTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, time.equals(compareTo));
+        assertTrue(message, timeInterval.equals(compareTo));
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, time.hashCode() == compareTo.hashCode());
+        assertTrue(message, timeInterval.hashCode() == compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, time.equals(compareTo));
+        assertFalse(message, timeInterval.equals(compareTo));
 
         validateHashCodeWhenNotEqual();
     }
@@ -152,6 +152,6 @@ public class TimeEqualsHashCodeTest {
             return;
         }
 
-        assertFalse(message, time.hashCode() == compareTo.hashCode());
+        assertFalse(message, timeInterval.hashCode() == compareTo.hashCode());
     }
 }

@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.project.timesheet.viewmodel
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.factory.TimeFactory
+import me.raatiniemi.worker.factory.TimeIntervalFactory
 import me.raatiniemi.worker.features.project.timesheet.model.TimesheetAdapterResult
 import org.junit.Before
 import org.junit.Test
@@ -46,10 +46,10 @@ class RegisterTimesheetViewModelTest {
 
     @Test
     fun register_withError() {
-        val time = TimeFactory.builder().build()
-        val item = TimesheetItem.with(time)
+        val timeInterval = TimeIntervalFactory.builder().build()
+        val item = TimesheetItem.with(timeInterval)
         val results = listOf(TimesheetAdapterResult(0, 0, item))
-        `when`(useCase.execute(eq(listOf(time))))
+        `when`(useCase.execute(eq(listOf(timeInterval))))
                 .thenThrow(DomainException::class.java)
 
         vm.register(results)
@@ -62,11 +62,11 @@ class RegisterTimesheetViewModelTest {
 
     @Test
     fun register_withItem() {
-        val time = TimeFactory.builder().build()
-        val item = TimesheetItem.with(time)
+        val timeInterval = TimeIntervalFactory.builder().build()
+        val item = TimesheetItem.with(timeInterval)
         val results = listOf(TimesheetAdapterResult(0, 0, item))
-        `when`(useCase.execute(eq(listOf(time))))
-                .thenReturn(listOf(time))
+        `when`(useCase.execute(eq(listOf(timeInterval))))
+                .thenReturn(listOf(timeInterval))
 
         vm.register(results)
 
@@ -79,8 +79,8 @@ class RegisterTimesheetViewModelTest {
     @Test
     fun register_withItems() {
         val times = listOf(
-                TimeFactory.builder().id(1L).build(),
-                TimeFactory.builder().id(2L).build()
+                TimeIntervalFactory.builder().id(1L).build(),
+                TimeIntervalFactory.builder().id(2L).build()
         )
         val results = listOf(
                 TimesheetAdapterResult(0, 0, TimesheetItem.with(times[0])),

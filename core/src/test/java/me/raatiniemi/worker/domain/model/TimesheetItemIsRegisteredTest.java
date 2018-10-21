@@ -24,7 +24,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertTrue;
 
@@ -32,16 +32,16 @@ import static junit.framework.Assert.assertTrue;
 public class TimesheetItemIsRegisteredTest {
     private final String message;
     private final boolean expected;
-    private final Time time;
+    private final TimeInterval timeInterval;
 
     public TimesheetItemIsRegisteredTest(
             String message,
             boolean expected,
-            Time time
+            TimeInterval timeInterval
     ) {
         this.message = message;
         this.expected = expected;
-        this.time = time;
+        this.timeInterval = timeInterval;
     }
 
     @Parameters
@@ -51,14 +51,14 @@ public class TimesheetItemIsRegisteredTest {
                         {
                                 "is registered",
                                 Boolean.TRUE,
-                                TimeFactory.builder()
+                                TimeIntervalFactory.builder()
                                         .register()
                                         .build()
                         },
                         {
                                 "is not registered",
                                 Boolean.FALSE,
-                                TimeFactory.builder()
+                                TimeIntervalFactory.builder()
                                         .build()
                         }
                 }
@@ -67,7 +67,7 @@ public class TimesheetItemIsRegisteredTest {
 
     @Test
     public void isRegistered() {
-        TimesheetItem item = TimesheetItem.with(time);
+        TimesheetItem item = TimesheetItem.with(timeInterval);
 
         assertTrue(message, expected == item.isRegistered());
     }

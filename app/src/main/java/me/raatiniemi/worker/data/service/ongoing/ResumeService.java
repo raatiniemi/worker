@@ -70,7 +70,7 @@ public class ResumeService extends OngoingService {
     }
 
     ClockIn buildClockInUseCase() {
-        return new ClockIn(getTimeRepository());
+        return new ClockIn(getTimeIntervalRepository());
     }
 
     GetProject buildGetProjectUseCase() {

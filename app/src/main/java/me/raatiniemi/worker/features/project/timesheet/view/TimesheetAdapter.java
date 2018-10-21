@@ -221,7 +221,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
     }
 
     public void set(TimesheetAdapterResult result) {
-        set(result.getGroup(), result.getChild(), TimesheetItem.with(result.getTime()));
+        set(result.getGroup(), result.getChild(), TimesheetItem.with(result.getTimeInterval()));
     }
 
     boolean haveSelectedItems() {

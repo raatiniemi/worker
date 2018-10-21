@@ -28,7 +28,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
@@ -40,12 +40,12 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class GetProjectsTest {
     private ProjectRepository projectRepository;
-    private TimeRepository timeRepository;
+    private TimeIntervalRepository timeIntervalRepository;
 
     @Before
     public void setUp() {
         projectRepository = mock(ProjectRepository.class);
-        timeRepository = mock(TimeRepository.class);
+        timeIntervalRepository = mock(TimeIntervalRepository.class);
     }
 
     private Project buildProject(Long id, String name)
@@ -66,13 +66,13 @@ public class GetProjectsTest {
 
         GetProjects getProjects = new GetProjects(
                 projectRepository,
-                timeRepository
+                timeIntervalRepository
         );
         List<Project> actual = getProjects.execute();
 
         assertEquals(projects, actual);
 
         verify(projectRepository, times(1)).findAll();
-        verify(timeRepository, times(2)).getProjectTimeSinceBeginningOfMonth(anyLong());
+        verify(timeIntervalRepository, times(2)).getProjectTimeIntervalSinceBeginningOfMonth(anyLong());
     }
 }

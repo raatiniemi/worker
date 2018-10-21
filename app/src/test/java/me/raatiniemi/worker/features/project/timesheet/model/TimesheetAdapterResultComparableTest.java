@@ -24,9 +24,9 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.model.Time;
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -51,8 +51,8 @@ public class TimesheetAdapterResultComparableTest {
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        Time time = TimeFactory.builder().build();
-        TimesheetItem item = TimesheetItem.with(time);
+        TimeInterval timeInterval = TimeIntervalFactory.builder().build();
+        TimesheetItem item = TimesheetItem.with(timeInterval);
 
         return Arrays.asList(
                 new Object[][]{

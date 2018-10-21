@@ -66,7 +66,7 @@ public class ProjectNotificationService extends OngoingService {
     }
 
     IsProjectActive buildIsProjectActiveUseCase() {
-        return new IsProjectActive(getTimeRepository());
+        return new IsProjectActive(getTimeIntervalRepository());
     }
 
     GetProject buildGetProjectUseCase() {

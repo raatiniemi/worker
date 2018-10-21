@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -111,7 +111,7 @@ public class ProjectEqualsHashCodeTest {
 
         project.addTime(
                 Collections.singletonList(
-                        TimeFactory.builder()
+                        TimeIntervalFactory.builder()
                                 .build()
                 )
         );

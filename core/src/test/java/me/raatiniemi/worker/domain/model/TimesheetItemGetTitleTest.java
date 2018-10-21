@@ -26,7 +26,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -37,16 +37,16 @@ public class TimesheetItemGetTitleTest {
 
     private final String message;
     private final String expected;
-    private final Time time;
+    private final TimeInterval timeInterval;
 
     public TimesheetItemGetTitleTest(
             String message,
             String expected,
-            Time time
+            TimeInterval timeInterval
     ) {
         this.message = message;
         this.expected = expected;
-        this.time = time;
+        this.timeInterval = timeInterval;
     }
 
     @Parameters
@@ -54,16 +54,16 @@ public class TimesheetItemGetTitleTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                "active time",
+                                "active time interval",
                                 "08:00",
-                                TimeFactory.builder()
+                                TimeIntervalFactory.builder()
                                         .startInMilliseconds(START.getTimeInMillis())
                                         .build()
                         },
                         {
-                                "inactive time",
+                                "inactive time interval",
                                 "08:00 - 11:30",
-                                TimeFactory.builder()
+                                TimeIntervalFactory.builder()
                                         .startInMilliseconds(START.getTimeInMillis())
                                         .stopInMilliseconds(STOP.getTimeInMillis())
                                         .build()
@@ -74,7 +74,7 @@ public class TimesheetItemGetTitleTest {
 
     @Test
     public void getTitle() {
-        TimesheetItem item = TimesheetItem.with(time);
+        TimesheetItem item = TimesheetItem.with(timeInterval);
 
         assertEquals(message, expected, item.getTitle());
     }

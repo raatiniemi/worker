@@ -22,9 +22,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
 import static junit.framework.Assert.assertFalse;
@@ -34,31 +34,31 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class IsProjectActiveTest {
-    private TimeRepository timeRepository;
+    private TimeIntervalRepository timeIntervalRepository;
 
     @Before
     public void setUp() throws Exception {
-        timeRepository = mock(TimeRepository.class);
+        timeIntervalRepository = mock(TimeIntervalRepository.class);
     }
 
     @Test
     public void execute_withoutTime() throws DomainException {
-        when(timeRepository.getActiveTimeForProject(1L))
+        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
                 .thenReturn(Optional.empty());
 
-        IsProjectActive isProjectActive = new IsProjectActive(timeRepository);
+        IsProjectActive isProjectActive = new IsProjectActive(timeIntervalRepository);
         assertFalse(isProjectActive.execute(1L));
     }
 
     @Test
     public void execute_withActiveTime() throws DomainException {
-        Time time = TimeFactory.builder()
+        TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        when(timeRepository.getActiveTimeForProject(1L))
-                .thenReturn(Optional.of(time));
+        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
+                .thenReturn(Optional.of(timeInterval));
 
-        IsProjectActive isProjectActive = new IsProjectActive(timeRepository);
+        IsProjectActive isProjectActive = new IsProjectActive(timeIntervalRepository);
         assertTrue(isProjectActive.execute(1L));
     }
 }

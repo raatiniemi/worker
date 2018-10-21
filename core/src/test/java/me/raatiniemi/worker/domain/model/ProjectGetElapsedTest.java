@@ -28,7 +28,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.factory.TimeFactory;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -38,12 +38,12 @@ import static org.mockito.Mockito.when;
 public class ProjectGetElapsedTest {
     private final String message;
     private final long expected;
-    private final List<Time> times;
+    private final List<TimeInterval> timeIntervals;
 
-    public ProjectGetElapsedTest(String message, long expected, List<Time> times) {
+    public ProjectGetElapsedTest(String message, long expected, List<TimeInterval> timeIntervals) {
         this.message = message;
         this.expected = expected;
-        this.times = times;
+        this.timeIntervals = timeIntervals;
     }
 
     @Parameters
@@ -59,7 +59,7 @@ public class ProjectGetElapsedTest {
                                 "without active item",
                                 0L,
                                 Collections.singletonList(
-                                        TimeFactory.builder()
+                                        TimeIntervalFactory.builder()
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 )
@@ -76,23 +76,23 @@ public class ProjectGetElapsedTest {
         );
     }
 
-    private static Time mockActiveTimeWithElapsedTime() {
-        Time time = mock(Time.class);
+    private static TimeInterval mockActiveTimeWithElapsedTime() {
+        TimeInterval timeInterval = mock(TimeInterval.class);
 
-        when(time.isActive())
+        when(timeInterval.isActive())
                 .thenReturn(true);
 
-        when(time.getInterval())
+        when(timeInterval.getInterval())
                 .thenReturn(50000L);
 
-        return time;
+        return timeInterval;
     }
 
     @Test
     public void getElapsed() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        project.addTime(times);
+        project.addTime(timeIntervals);
 
         assertEquals(message, expected, project.getElapsed());
     }

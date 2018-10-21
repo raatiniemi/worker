@@ -17,19 +17,19 @@
 package me.raatiniemi.worker.domain.interactor;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.model.Time;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.util.Optional;
 
 public class IsProjectActive {
-    private final TimeRepository timeRepository;
+    private final TimeIntervalRepository timeIntervalRepository;
 
-    public IsProjectActive(TimeRepository timeRepository) {
-        this.timeRepository = timeRepository;
+    public IsProjectActive(TimeIntervalRepository timeIntervalRepository) {
+        this.timeIntervalRepository = timeIntervalRepository;
     }
 
     public boolean execute(long projectId) throws DomainException {
-        Optional<Time> value = timeRepository.getActiveTimeForProject(projectId);
+        Optional<TimeInterval> value = timeIntervalRepository.getActiveTimeIntervalForProject(projectId);
 
         return value.isPresent();
     }

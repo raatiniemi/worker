@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project.timesheet.viewmodel
 
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
-import me.raatiniemi.worker.domain.model.Time
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
 import me.raatiniemi.worker.features.project.timesheet.model.TimesheetAdapterResult
 import me.raatiniemi.worker.util.RxUtil.hideErrors
@@ -55,7 +55,7 @@ interface RegisterTimesheetViewModel {
         private fun executeUseCase(results: List<TimesheetAdapterResult>): Observable<TimesheetAdapterResult> {
             return Observable.defer<TimesheetAdapterResult> {
                 try {
-                    val times = results.map { it.time }.toList()
+                    val times = results.map { it.timeInterval }.toList()
                     val items = useCase.execute(times)
                             .map {
                                 mapUpdateToSelectedItems(it, results)
@@ -69,9 +69,9 @@ interface RegisterTimesheetViewModel {
             }
         }
 
-        private fun mapUpdateToSelectedItems(time: Time, selectedItems: List<TimesheetAdapterResult>): TimesheetAdapterResult {
+        private fun mapUpdateToSelectedItems(time: TimeInterval, selectedItems: List<TimesheetAdapterResult>): TimesheetAdapterResult {
             return selectedItems
-                    .filter { it.time.id == time.id }
+                    .filter { it.timeInterval.id == time.id }
                     .map {
                         val item = TimesheetItem.with(time)
 
