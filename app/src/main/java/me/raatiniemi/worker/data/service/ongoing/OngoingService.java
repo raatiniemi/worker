@@ -29,7 +29,7 @@ import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.Repositories;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.util.KeyValueStore;
 import me.raatiniemi.worker.util.Notifications;
@@ -38,7 +38,7 @@ import timber.log.Timber;
 public abstract class OngoingService extends IntentService {
     private final Repositories repositories = new Repositories();
     private final ProjectRepository projectRepository = repositories.getProject();
-    private final TimeRepository timeRepository = repositories.getTime();
+    private final TimeIntervalRepository timeIntervalRepository = repositories.getTimeInterval();
 
     private final Preferences preferences = new Preferences();
     private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
@@ -65,8 +65,8 @@ public abstract class OngoingService extends IntentService {
         return projectRepository;
     }
 
-    TimeRepository getTimeRepository() {
-        return timeRepository;
+    TimeIntervalRepository getTimeIntervalRepository() {
+        return timeIntervalRepository;
     }
 
     void sendNotification(long projectId, Notification notification) {

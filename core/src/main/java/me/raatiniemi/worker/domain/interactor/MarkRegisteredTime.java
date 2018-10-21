@@ -22,7 +22,7 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 /**
  * Use case for marking time as registered.
@@ -32,17 +32,17 @@ import me.raatiniemi.worker.domain.repository.TimeRepository;
  */
 public class MarkRegisteredTime {
     /**
-     * Time repository.
+     * Time interval repository.
      */
-    private final TimeRepository timeRepository;
+    private final TimeIntervalRepository timeIntervalRepository;
 
     /**
      * Constructor.
      *
-     * @param timeRepository Time repository.
+     * @param timeIntervalRepository Time interval repository.
      */
-    public MarkRegisteredTime(TimeRepository timeRepository) {
-        this.timeRepository = timeRepository;
+    public MarkRegisteredTime(TimeIntervalRepository timeIntervalRepository) {
+        this.timeIntervalRepository = timeIntervalRepository;
     }
 
     private static List<TimeInterval> collectTimeToUpdate(List<TimeInterval> timeIntervals)
@@ -68,6 +68,6 @@ public class MarkRegisteredTime {
 
     public List<TimeInterval> execute(List<TimeInterval> timeIntervals) throws DomainException {
         List<TimeInterval> timeToUpdate = collectTimeToUpdate(timeIntervals);
-        return timeRepository.update(timeToUpdate);
+        return timeIntervalRepository.update(timeToUpdate);
     }
 }

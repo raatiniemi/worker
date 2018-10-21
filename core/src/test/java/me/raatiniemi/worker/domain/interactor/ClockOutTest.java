@@ -26,7 +26,7 @@ import java.util.Date;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
@@ -37,19 +37,19 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class ClockOutTest {
-    private TimeRepository timeRepository;
+    private TimeIntervalRepository timeIntervalRepository;
 
     @Before
     public void setUp() {
-        timeRepository = mock(TimeRepository.class);
+        timeIntervalRepository = mock(TimeIntervalRepository.class);
     }
 
     @Test(expected = InactiveProjectException.class)
     public void execute_withoutActiveTime() throws DomainException {
-        when(timeRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
                 .thenReturn(Optional.empty());
 
-        ClockOut clockOut = new ClockOut(timeRepository);
+        ClockOut clockOut = new ClockOut(timeIntervalRepository);
         clockOut.execute(1L, new Date());
     }
 
@@ -58,12 +58,12 @@ public class ClockOutTest {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        when(timeRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
                 .thenReturn(Optional.of(timeInterval));
 
-        ClockOut clockOut = new ClockOut(timeRepository);
+        ClockOut clockOut = new ClockOut(timeIntervalRepository);
         clockOut.execute(1L, new Date());
 
-        verify(timeRepository).update(isA(TimeInterval.class));
+        verify(timeIntervalRepository).update(isA(TimeInterval.class));
     }
 }

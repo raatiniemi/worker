@@ -38,17 +38,17 @@ import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
-public class TimeResolverRepository extends ContentResolverRepository implements TimeRepository {
+public class TimeIntervalResolverRepository extends ContentResolverRepository implements TimeIntervalRepository {
     private final TimeCursorMapper cursorMapper = new TimeCursorMapper();
     private final TimeContentValuesMapper contentValuesMapper = new TimeContentValuesMapper();
 
-    public TimeResolverRepository(@NonNull ContentResolver contentResolver) {
+    public TimeIntervalResolverRepository(@NonNull ContentResolver contentResolver) {
         super(contentResolver);
     }
 

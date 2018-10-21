@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.util.Optional;
 
 /**
@@ -35,9 +35,9 @@ public class ClockActivityChange {
     private final ProjectRepository projectRepository;
 
     /**
-     * Time repository.
+     * Time interval repository.
      */
-    private final TimeRepository timeRepository;
+    private final TimeIntervalRepository timeIntervalRepository;
     private final ClockIn clockIn;
     private final ClockOut clockOut;
 
@@ -45,18 +45,18 @@ public class ClockActivityChange {
      * Constructor.
      *
      * @param projectRepository Project repository.
-     * @param timeRepository    Time repository.
+     * @param timeIntervalRepository Time interval repository.
      * @param clockIn           Use case for clocking in projects.
      * @param clockOut          Use case for clocking out projects.
      */
     public ClockActivityChange(
             ProjectRepository projectRepository,
-            TimeRepository timeRepository,
+            TimeIntervalRepository timeIntervalRepository,
             ClockIn clockIn,
             ClockOut clockOut
     ) {
         this.projectRepository = projectRepository;
-        this.timeRepository = timeRepository;
+        this.timeIntervalRepository = timeIntervalRepository;
         this.clockIn = clockIn;
         this.clockOut = clockOut;
     }
@@ -97,7 +97,7 @@ public class ClockActivityChange {
         // Reload the project and populate it with the registered time.
         // TODO: Migrate populate time to separate use case?
         project.addTime(
-                timeRepository.getProjectTimeIntervalSinceBeginningOfMonth(
+                timeIntervalRepository.getProjectTimeIntervalSinceBeginningOfMonth(
                         project.getId()
                 )
         );

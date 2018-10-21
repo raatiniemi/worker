@@ -58,7 +58,7 @@ public class ClockOutService extends OngoingService {
     }
 
     ClockOut buildClockOutUseCase() {
-        return new ClockOut(getTimeRepository());
+        return new ClockOut(getTimeIntervalRepository());
     }
 
     private void dismissPauseNotification(long projectId) {

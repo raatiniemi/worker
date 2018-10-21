@@ -21,7 +21,7 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 /**
  * Use case for getting projects.
@@ -33,22 +33,22 @@ public class GetProjects {
     private final ProjectRepository projectRepository;
 
     /**
-     * Time repository.
+     * Time interval repository.
      */
-    private final TimeRepository timeRepository;
+    private final TimeIntervalRepository timeIntervalRepository;
 
     /**
      * Constructor.
      *
      * @param projectRepository Project repository.
-     * @param timeRepository    Time repository.
+     * @param timeIntervalRepository    Time interval repository.
      */
     public GetProjects(
             ProjectRepository projectRepository,
-            TimeRepository timeRepository
+            TimeIntervalRepository timeIntervalRepository
     ) {
         this.projectRepository = projectRepository;
-        this.timeRepository = timeRepository;
+        this.timeIntervalRepository = timeIntervalRepository;
     }
 
     /**
@@ -63,7 +63,7 @@ public class GetProjects {
         for (Project project : projects) {
             // Populate the project with the registered time.
             project.addTime(
-                    timeRepository.getProjectTimeIntervalSinceBeginningOfMonth(project.getId())
+                    timeIntervalRepository.getProjectTimeIntervalSinceBeginningOfMonth(project.getId())
             );
         }
 

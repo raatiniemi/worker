@@ -70,7 +70,7 @@ public class PauseService extends OngoingService {
     }
 
     ClockOut buildClockOutUseCase() {
-        return new ClockOut(getTimeRepository());
+        return new ClockOut(getTimeIntervalRepository());
     }
 
     GetProject buildGetProjectUseCase() {

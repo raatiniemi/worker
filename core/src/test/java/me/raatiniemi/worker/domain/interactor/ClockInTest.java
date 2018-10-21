@@ -26,7 +26,7 @@ import java.util.Date;
 import me.raatiniemi.worker.domain.exception.ActiveProjectException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
@@ -37,11 +37,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(JUnit4.class)
 public class ClockInTest {
-    private TimeRepository timeRepository;
+    private TimeIntervalRepository timeIntervalRepository;
 
     @Before
     public void setUp() {
-        timeRepository = mock(TimeRepository.class);
+        timeIntervalRepository = mock(TimeIntervalRepository.class);
     }
 
     @Test(expected = ActiveProjectException.class)
@@ -49,21 +49,21 @@ public class ClockInTest {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        when(timeRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
                 .thenReturn(Optional.of(timeInterval));
 
-        ClockIn clockIn = new ClockIn(timeRepository);
+        ClockIn clockIn = new ClockIn(timeIntervalRepository);
         clockIn.execute(1L, new Date());
     }
 
     @Test
     public void execute() throws DomainException {
-        when(timeRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
                 .thenReturn(Optional.empty());
 
-        ClockIn clockIn = new ClockIn(timeRepository);
+        ClockIn clockIn = new ClockIn(timeIntervalRepository);
         clockIn.execute(1L, new Date());
 
-        verify(timeRepository).add(isA(TimeInterval.class));
+        verify(timeIntervalRepository).add(isA(TimeInterval.class));
     }
 }

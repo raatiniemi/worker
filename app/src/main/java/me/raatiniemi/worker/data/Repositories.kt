@@ -17,12 +17,12 @@
 package me.raatiniemi.worker.data
 
 import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.domain.repository.TimeRepository
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
 class Repositories : KoinComponent {
     val project: ProjectRepository by inject()
 
-    val time: TimeRepository by inject()
+    val timeInterval: TimeIntervalRepository by inject()
 }

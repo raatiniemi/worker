@@ -36,9 +36,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class TimeResolverRepositoryTest extends RobolectricTestCase {
+public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
     private ContentResolver contentResolver;
-    private TimeResolverRepository repository;
+    private TimeIntervalResolverRepository repository;
     private Project project;
 
     private static Cursor buildCursorWithNumberOfItems(int numberOfItems) {
@@ -52,7 +52,7 @@ public class TimeResolverRepositoryTest extends RobolectricTestCase {
     @Before
     public void setUp() throws Exception {
         contentResolver = mock(ContentResolver.class);
-        repository = new TimeResolverRepository(contentResolver);
+        repository = new TimeIntervalResolverRepository(contentResolver);
 
         project = Project.builder("Name")
                 .id(1L)

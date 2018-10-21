@@ -26,7 +26,7 @@ import me.raatiniemi.worker.util.Optional;
 /**
  * Represent a unified interface for working with time intervals using different data sources.
  */
-public interface TimeRepository {
+public interface TimeIntervalRepository {
     /**
      * Find registered project time since starting point.
      *

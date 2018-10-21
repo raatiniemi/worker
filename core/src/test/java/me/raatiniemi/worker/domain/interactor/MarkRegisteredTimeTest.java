@@ -26,7 +26,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static org.mockito.Mockito.mock;
@@ -35,11 +35,11 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class MarkRegisteredTimeTest {
-    private TimeRepository timeRepository;
+    private TimeIntervalRepository timeIntervalRepository;
 
     @Before
     public void setUp() {
-        timeRepository = mock(TimeRepository.class);
+        timeIntervalRepository = mock(TimeIntervalRepository.class);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class MarkRegisteredTimeTest {
                         .build()
         );
 
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
+        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeIntervalRepository);
         markRegisteredTime.execute(timeIntervalsToUpdate);
 
         List<TimeInterval> expectedTimeIntevals = new ArrayList<>();
@@ -86,7 +86,7 @@ public class MarkRegisteredTimeTest {
                         .register()
                         .build()
         );
-        verify(timeRepository, times(1)).update(expectedTimeIntevals);
+        verify(timeIntervalRepository, times(1)).update(expectedTimeIntevals);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class MarkRegisteredTimeTest {
                         .build()
         );
 
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
+        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeIntervalRepository);
         markRegisteredTime.execute(timeIntervalsToUpdate);
 
         List<TimeInterval> expectedTimeInterval = new ArrayList<>();
@@ -133,7 +133,7 @@ public class MarkRegisteredTimeTest {
                 TimeIntervalFactory.builder()
                         .build()
         );
-        verify(timeRepository, times(1)).update(expectedTimeInterval);
+        verify(timeIntervalRepository, times(1)).update(expectedTimeInterval);
     }
 
     @Test
@@ -159,7 +159,7 @@ public class MarkRegisteredTimeTest {
                         .build()
         );
 
-        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeRepository);
+        MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeIntervalRepository);
         markRegisteredTime.execute(timeIntervalsToUpdate);
 
         List<TimeInterval> expectedTimeInterval = new ArrayList<>();
@@ -184,6 +184,6 @@ public class MarkRegisteredTimeTest {
                         .register()
                         .build()
         );
-        verify(timeRepository, times(1)).update(expectedTimeInterval);
+        verify(timeIntervalRepository, times(1)).update(expectedTimeInterval);
     }
 }

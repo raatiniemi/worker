@@ -33,7 +33,7 @@ import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnit4.class)
 public class ClockActivityChangeTest {
     private ProjectRepository projectRepository;
-    private TimeRepository timeRepository;
+    private TimeIntervalRepository timeIntervalRepository;
     private ClockIn clockIn;
     private ClockOut clockOut;
     private ClockActivityChange clockActivityChange;
@@ -61,12 +61,12 @@ public class ClockActivityChangeTest {
     @Before
     public void setUp() {
         projectRepository = mock(ProjectRepository.class);
-        timeRepository = mock(TimeRepository.class);
+        timeIntervalRepository = mock(TimeIntervalRepository.class);
         clockIn = mock(ClockIn.class);
         clockOut = mock(ClockOut.class);
         clockActivityChange = new ClockActivityChange(
                 projectRepository,
-                timeRepository,
+                timeIntervalRepository,
                 clockIn,
                 clockOut
         );
@@ -77,14 +77,14 @@ public class ClockActivityChangeTest {
         Project project = buildProject();
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
-        when(timeRepository.getProjectTimeIntervalSinceBeginningOfMonth(1L))
+        when(timeIntervalRepository.getProjectTimeIntervalSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
         verify(clockIn).execute(eq(1L), any(Date.class));
         verify(projectRepository).findById(eq(1L));
-        verify(timeRepository).getProjectTimeIntervalSinceBeginningOfMonth(eq(1L));
+        verify(timeIntervalRepository).getProjectTimeIntervalSinceBeginningOfMonth(eq(1L));
     }
 
     @Test(expected = NoProjectException.class)
@@ -114,14 +114,14 @@ public class ClockActivityChangeTest {
         project.addTime(Collections.singletonList(timeInterval));
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
-        when(timeRepository.getProjectTimeIntervalSinceBeginningOfMonth(1L))
+        when(timeIntervalRepository.getProjectTimeIntervalSinceBeginningOfMonth(1L))
                 .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
         verify(clockOut).execute(eq(1L), any(Date.class));
         verify(projectRepository).findById(eq(1L));
-        verify(timeRepository).getProjectTimeIntervalSinceBeginningOfMonth(eq(1L));
+        verify(timeIntervalRepository).getProjectTimeIntervalSinceBeginningOfMonth(eq(1L));
     }
 
     @Test(expected = NoProjectException.class)

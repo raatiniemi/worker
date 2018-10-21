@@ -26,7 +26,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static org.mockito.Matchers.eq;
@@ -35,13 +35,13 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class RemoveTimeTest {
-    private TimeRepository timeRepository;
+    private TimeIntervalRepository timeIntervalRepository;
     private RemoveTime removeTime;
 
     @Before
     public void setUp() {
-        timeRepository = mock(TimeRepository.class);
-        removeTime = new RemoveTime(timeRepository);
+        timeIntervalRepository = mock(TimeIntervalRepository.class);
+        removeTime = new RemoveTime(timeIntervalRepository);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class RemoveTimeTest {
 
         removeTime.execute(timeInterval);
 
-        verify(timeRepository).remove(eq(1L));
+        verify(timeIntervalRepository).remove(eq(1L));
     }
 
     @Test
@@ -64,6 +64,6 @@ public class RemoveTimeTest {
 
         removeTime.execute(items);
 
-        verify(timeRepository).remove(eq(items));
+        verify(timeIntervalRepository).remove(eq(items));
     }
 }

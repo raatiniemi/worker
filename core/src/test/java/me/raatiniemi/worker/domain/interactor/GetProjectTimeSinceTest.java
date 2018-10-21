@@ -26,7 +26,7 @@ import java.util.Calendar;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.TimeRepository;
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -34,7 +34,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class GetProjectTimeSinceTest {
-    private TimeRepository timeRepository;
+    private TimeIntervalRepository timeIntervalRepository;
     private GetProjectTimeSince getProjectTimeSince;
     private Project project;
 
@@ -65,8 +65,8 @@ public class GetProjectTimeSinceTest {
 
     @Before
     public void setUp() throws Exception {
-        timeRepository = mock(TimeRepository.class);
-        getProjectTimeSince = new GetProjectTimeSince(timeRepository);
+        timeIntervalRepository = mock(TimeIntervalRepository.class);
+        getProjectTimeSince = new GetProjectTimeSince(timeIntervalRepository);
         project = Project.builder("Name")
                 .id(1L)
                 .build();
@@ -76,7 +76,7 @@ public class GetProjectTimeSinceTest {
     public void execute_withDay() throws DomainException {
         getProjectTimeSince.execute(project, GetProjectTimeSince.DAY);
 
-        verify(timeRepository)
+        verify(timeIntervalRepository)
                 .findProjectTimeIntervalSinceStartingPointInMilliseconds(
                         eq(project),
                         eq(getMillisecondsForStartingPoint(GetProjectTimeSince.DAY))
@@ -87,7 +87,7 @@ public class GetProjectTimeSinceTest {
     public void execute_withWeek() throws DomainException {
         getProjectTimeSince.execute(project, GetProjectTimeSince.WEEK);
 
-        verify(timeRepository)
+        verify(timeIntervalRepository)
                 .findProjectTimeIntervalSinceStartingPointInMilliseconds(
                         eq(project),
                         eq(getMillisecondsForStartingPoint(GetProjectTimeSince.WEEK))
@@ -98,7 +98,7 @@ public class GetProjectTimeSinceTest {
     public void execute_withMonth() throws DomainException {
         getProjectTimeSince.execute(project, GetProjectTimeSince.MONTH);
 
-        verify(timeRepository)
+        verify(timeIntervalRepository)
                 .findProjectTimeIntervalSinceStartingPointInMilliseconds(
                         eq(project),
                         eq(getMillisecondsForStartingPoint(GetProjectTimeSince.MONTH))
