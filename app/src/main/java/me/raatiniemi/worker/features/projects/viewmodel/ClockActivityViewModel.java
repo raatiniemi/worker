@@ -117,7 +117,7 @@ public interface ClockActivityViewModel {
                 Project project = executeClockActivityChange(combinedResult);
                 List<TimeInterval> registeredTime = getRegisteredTimeForProject(project);
 
-                ProjectsItem projectsItem = new ProjectsItem(project, registeredTime);
+                ProjectsItem projectsItem = ProjectsItem.from(project, registeredTime);
                 return Observable.just(buildResult(combinedResult.result, projectsItem));
             } catch (Exception e) {
                 return Observable.error(e);

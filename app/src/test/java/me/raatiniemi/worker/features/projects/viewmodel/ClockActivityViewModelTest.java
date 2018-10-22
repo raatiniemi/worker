@@ -68,7 +68,7 @@ public class ClockActivityViewModelTest {
     @Test
     public void clockIn_withError() throws DomainException {
         Project project = mockProjectWithStatus(false);
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         doThrow(ClockOutBeforeClockInException.class)
                 .when(clockActivityChange).execute(any(), any());
@@ -89,7 +89,7 @@ public class ClockActivityViewModelTest {
     public void clockIn() throws DomainException {
         Project activeProject = mockProjectWithStatus(true);
         Project project = mockProjectWithStatus(false);
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(activeProject);
@@ -113,7 +113,7 @@ public class ClockActivityViewModelTest {
     public void clockIn_withDifferentStartingPoint() throws DomainException {
         Project activeProject = mockProjectWithStatus(true);
         Project project = mockProjectWithStatus(false);
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(activeProject);
@@ -138,7 +138,7 @@ public class ClockActivityViewModelTest {
     public void clockIn_withInvalidStartingPoint() throws DomainException {
         Project activeProject = mockProjectWithStatus(true);
         Project project = mockProjectWithStatus(false);
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(activeProject);
@@ -162,7 +162,7 @@ public class ClockActivityViewModelTest {
     @Test
     public void clockOut_withError() throws DomainException {
         Project project = mockProjectWithStatus(true);
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         doThrow(ClockOutBeforeClockInException.class)
                 .when(clockActivityChange).execute(any(), any());
@@ -183,7 +183,7 @@ public class ClockActivityViewModelTest {
     public void clockOut() throws DomainException {
         Project activeProject = mockProjectWithStatus(true);
         Project project = mockProjectWithStatus(false);
-        ProjectsItem projectsItem = new ProjectsItem(activeProject);
+        ProjectsItem projectsItem = ProjectsItem.from(activeProject);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(project);
@@ -207,7 +207,7 @@ public class ClockActivityViewModelTest {
     public void clockOut_withDifferentStartingPoint() throws DomainException {
         Project activeProject = mockProjectWithStatus(true);
         Project project = mockProjectWithStatus(false);
-        ProjectsItem projectsItem = new ProjectsItem(activeProject);
+        ProjectsItem projectsItem = ProjectsItem.from(activeProject);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(project);
@@ -232,7 +232,7 @@ public class ClockActivityViewModelTest {
     public void clockOut_withInvalidStartingPoint() throws DomainException {
         Project activeProject = mockProjectWithStatus(true);
         Project project = mockProjectWithStatus(false);
-        ProjectsItem projectsItem = new ProjectsItem(activeProject);
+        ProjectsItem projectsItem = ProjectsItem.from(activeProject);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(clockActivityChange.execute(any(), any()))
                 .thenReturn(project);

@@ -117,7 +117,7 @@ public class ProjectsItemGetClockedInSinceTest extends ProjectsItemResourceTest 
     public void getClockedInSince() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
         if (isNull(timeIntervals)) {
             assertNull(message, projectsItem.getClockedInSince(getResources()));
             return;

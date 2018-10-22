@@ -56,7 +56,7 @@ public class ProjectsItemEqualsHashCodeTest {
         Project project = Project.builder("Name")
                 .id(1L)
                 .build();
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
         return Arrays.asList(
                 new Object[][]{
                         {
@@ -81,7 +81,7 @@ public class ProjectsItemEqualsHashCodeTest {
                                 "With different project",
                                 Boolean.FALSE,
                                 projectsItem,
-                                new ProjectsItem(
+                                ProjectsItem.from(
                                         Project.builder("Project name")
                                                 .id(2L)
                                                 .build()

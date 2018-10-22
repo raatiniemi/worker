@@ -55,7 +55,7 @@ public class RemoveProjectViewModelTest {
     @Test
     public void deleteProject_withError() throws InvalidProjectNameException {
         Project project = Project.builder("Name").build();
-        ProjectsItem item = new ProjectsItem(project);
+        ProjectsItem item = ProjectsItem.from(project);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);
         doThrow(RuntimeException.class)
                 .when(removeProject).execute(any());
@@ -70,7 +70,7 @@ public class RemoveProjectViewModelTest {
     @Test
     public void deleteProject() throws InvalidProjectNameException {
         Project project = Project.builder("Name").build();
-        ProjectsItem item = new ProjectsItem(project);
+        ProjectsItem item = ProjectsItem.from(project);
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);
 
         vm.input().remove(result);

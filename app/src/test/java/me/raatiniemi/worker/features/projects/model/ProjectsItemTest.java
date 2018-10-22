@@ -32,7 +32,7 @@ public class ProjectsItemTest {
     public void asProject() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
 
         assertTrue(project == projectsItem.asProject());
     }
@@ -41,7 +41,7 @@ public class ProjectsItemTest {
     public void getTitle() throws InvalidProjectNameException {
         Project project = Project.builder("Project name")
                 .build();
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
 
         assertEquals("Project name", projectsItem.getTitle());
     }

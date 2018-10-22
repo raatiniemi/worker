@@ -29,7 +29,7 @@ internal class ProjectsItemGetHelpTextForDeleteTest : ProjectsItemResourceTest()
     @Throws(InvalidProjectNameException::class)
     fun getHelpTextForDelete() {
         val project = Project.builder("project #1").build()
-        val projectsItem = ProjectsItem(project)
+        val projectsItem = ProjectsItem.from(project)
 
         assertEquals("Delete %s", projectsItem.getHelpTextForDelete(resources))
     }

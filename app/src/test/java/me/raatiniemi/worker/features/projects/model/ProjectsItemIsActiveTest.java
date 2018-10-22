@@ -65,7 +65,7 @@ public class ProjectsItemIsActiveTest {
 
     @Test
     public void isActive() {
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
 
         assertTrue(expected == projectsItem.isActive());
     }

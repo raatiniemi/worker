@@ -84,7 +84,7 @@ public class ProjectsItemGetTimeSummaryTest {
         Project project = Project.builder("Project name")
                 .build();
         project.addTime(Arrays.asList(timeIntervals));
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
 
         assertEquals(expected, projectsItem.getTimeSummary());
     }

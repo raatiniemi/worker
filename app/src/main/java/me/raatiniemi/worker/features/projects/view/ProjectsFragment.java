@@ -198,7 +198,7 @@ public class ProjectsFragment extends RxFragment
     }
 
     private void addCreatedProject(@NonNull Project project) {
-        ProjectsItem item = new ProjectsItem(project);
+        ProjectsItem item = ProjectsItem.from(project);
         int position = adapter.add(item);
 
         recyclerView.scrollToPosition(position);

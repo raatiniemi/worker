@@ -41,14 +41,18 @@ public class ProjectsItem {
     private final Project project;
     private final long registeredTimeSummary;
 
-    public ProjectsItem(Project project, List<TimeInterval> registeredTime) {
+    private ProjectsItem(Project project, List<TimeInterval> registeredTime) {
         this.project = project;
 
         registeredTimeSummary = calculateSummaryFromRegisteredTime(registeredTime);
     }
 
-    public ProjectsItem(Project project) {
-        this(project, project.getTimeIntervals());
+    public static ProjectsItem from(Project project, List<TimeInterval> registeredTime) {
+        return new ProjectsItem(project, registeredTime);
+    }
+
+    public static ProjectsItem from(Project project) {
+        return ProjectsItem.from(project, project.getTimeIntervals());
     }
 
     private static long calculateSummaryFromRegisteredTime(List<TimeInterval> registeredTime) {

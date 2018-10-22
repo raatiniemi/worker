@@ -69,7 +69,7 @@ public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemR
 
     @Test
     public void getHelpTextForClockActivityAt() {
-        ProjectsItem projectsItem = new ProjectsItem(project);
+        ProjectsItem projectsItem = ProjectsItem.from(project);
 
         assertEquals(expected, projectsItem.getHelpTextForClockActivityAt(getResources()));
     }
