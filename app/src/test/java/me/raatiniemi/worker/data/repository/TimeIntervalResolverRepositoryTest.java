@@ -31,6 +31,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -110,7 +111,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
 
         List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
 
-        assertTrue(1 == timeIntervals.size());
+        assertEquals(1, timeIntervals.size());
         verify(cursor).close();
     }
 
@@ -129,7 +130,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
 
         List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
 
-        assertTrue(5 == timeIntervals.size());
+        assertEquals(5, timeIntervals.size());
         verify(cursor).close();
     }
 }
