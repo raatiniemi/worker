@@ -38,6 +38,15 @@ public interface TimeIntervalRepository {
     List<TimeInterval> findProjectTimeIntervalSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException;
 
     /**
+     * Get the time registered for a project since the beginning of the current month.
+     *
+     * @param projectId Id for the project.
+     * @return Registered time for project.
+     * @throws DomainException If domain rules are violated.
+     */
+    List<TimeInterval> getProjectTimeIntervalSinceBeginningOfMonth(long projectId) throws DomainException;
+
+    /**
      * Get time by id.
      *
      * @param id Id for the time.
@@ -45,6 +54,15 @@ public interface TimeIntervalRepository {
      * @throws DomainException If domain rules are violated.
      */
     Optional<TimeInterval> findById(long id) throws DomainException;
+
+    /**
+     * Get active time for project.
+     *
+     * @param projectId Id for project.
+     * @return Active time for project, or null if project is inactive.
+     * @throws DomainException If domain rules are violated.
+     */
+    Optional<TimeInterval> getActiveTimeIntervalForProject(long projectId) throws DomainException;
 
     /**
      * Add time.
@@ -86,22 +104,4 @@ public interface TimeIntervalRepository {
      * @param timeIntervals Items to remove.
      */
     void remove(List<TimeInterval> timeIntervals);
-
-    /**
-     * Get the time registered for a project since the beginning of the current month.
-     *
-     * @param projectId Id for the project.
-     * @return Registered time for project.
-     * @throws DomainException If domain rules are violated.
-     */
-    List<TimeInterval> getProjectTimeIntervalSinceBeginningOfMonth(long projectId) throws DomainException;
-
-    /**
-     * Get active time for project.
-     *
-     * @param projectId Id for project.
-     * @return Active time for project, or null if project is inactive.
-     * @throws DomainException If domain rules are violated.
-     */
-    Optional<TimeInterval> getActiveTimeIntervalForProject(long projectId) throws DomainException;
 }
