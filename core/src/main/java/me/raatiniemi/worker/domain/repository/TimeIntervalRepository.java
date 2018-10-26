@@ -44,7 +44,7 @@ public interface TimeIntervalRepository {
      * @return Time, or null if none was found.
      * @throws DomainException If domain rules are violated.
      */
-    Optional<TimeInterval> get(long id) throws DomainException;
+    Optional<TimeInterval> findById(long id) throws DomainException;
 
     /**
      * Add time.

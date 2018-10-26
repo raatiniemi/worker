@@ -105,7 +105,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public Optional<TimeInterval> get(final long id) throws ClockOutBeforeClockInException {
+    public Optional<TimeInterval> findById(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getTimeItemUri(id),
                 ProviderContract.getTimeColumns(),
@@ -126,7 +126,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
                 ProviderContract.getTimeStreamUri(),
                 values
         );
-        return get(Long.parseLong(ProviderContract.getTimeItemId(uri)));
+        return findById(Long.parseLong(ProviderContract.getTimeItemId(uri)));
     }
 
     @Override
@@ -140,7 +140,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
                 null
         );
 
-        return get(timeInterval.getId());
+        return findById(timeInterval.getId());
     }
 
     @Override
@@ -166,7 +166,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
 
         List<TimeInterval> updatedTimeIntervals = new ArrayList<>();
         for (TimeInterval timeInterval : timeIntervals) {
-            Optional<TimeInterval> value = get(timeInterval.getId());
+            Optional<TimeInterval> value = findById(timeInterval.getId());
             if (value.isPresent()) {
                 updatedTimeIntervals.add(value.get());
             }
