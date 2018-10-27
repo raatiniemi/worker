@@ -68,7 +68,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                         ProviderContract.getTimeColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
-                        null
+                        ProviderContract.ORDER_BY_PROJECT_TIME
                 )
         ).thenReturn(null);
 
@@ -86,7 +86,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                         ProviderContract.getTimeColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
-                        null
+                        ProviderContract.ORDER_BY_PROJECT_TIME
                 )
         ).thenReturn(cursor);
 
@@ -105,7 +105,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                         ProviderContract.getTimeColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
-                        null
+                        ProviderContract.ORDER_BY_PROJECT_TIME
                 )
         ).thenReturn(cursor);
 
@@ -124,7 +124,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                         ProviderContract.getTimeColumns(),
                         ProviderContract.COLUMN_TIME_START + ">=?",
                         new String[]{"1234567890"},
-                        null
+                        ProviderContract.ORDER_BY_PROJECT_TIME
                 )
         ).thenReturn(cursor);
 

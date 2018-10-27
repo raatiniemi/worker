@@ -99,7 +99,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
                 ProviderContract.getTimeColumns(),
                 ProviderContract.COLUMN_TIME_START + ">=?",
                 new String[]{String.valueOf(milliseconds)},
-                null
+                ProviderContract.ORDER_BY_PROJECT_TIME
         );
         return fetch(cursor);
     }
