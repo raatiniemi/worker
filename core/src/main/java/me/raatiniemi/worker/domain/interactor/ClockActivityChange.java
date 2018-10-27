@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -94,11 +95,19 @@ public class ClockActivityChange {
     }
 
     private Project populateProjectWithRegisteredTime(Project project) throws DomainException {
+        // Reset the calendar to retrieve timestamp of the beginning of the month.
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
         // Reload the project and populate it with the registered time.
         // TODO: Migrate populate time to separate use case?
         project.addTime(
-                timeIntervalRepository.getProjectTimeIntervalSinceBeginningOfMonth(
-                        project.getId()
+                timeIntervalRepository.getProjectTimeIntervalSince(
+                        project.getId(),
+                        calendar.getTimeInMillis()
                 )
         );
 

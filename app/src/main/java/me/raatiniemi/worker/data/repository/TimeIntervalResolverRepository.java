@@ -27,7 +27,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
@@ -105,21 +104,13 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public List<TimeInterval> getProjectTimeIntervalSinceBeginningOfMonth(long projectId)
+    public List<TimeInterval> getProjectTimeIntervalSince(long projectId, long milliseconds)
             throws ClockOutBeforeClockInException {
-        // Reset the calendar to retrieve timestamp
-        // of the beginning of the month.
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(projectId),
                 ProviderContract.getTimeColumns(),
                 ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
-                new String[]{String.valueOf(calendar.getTimeInMillis())},
+                new String[]{String.valueOf(milliseconds)},
                 ProviderContract.ORDER_BY_PROJECT_TIME
         );
         return fetch(cursor);
