@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.model
 
-import junit.framework.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -75,6 +75,6 @@ class HoursMinutesPlusTest(
     fun plus() {
         val actual = lhs + rhs
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 }
