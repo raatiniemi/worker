@@ -71,8 +71,8 @@ public class GetProjects {
         for (Project project : projects) {
             // Populate the project with the registered time.
             project.addTime(
-                    timeIntervalRepository.getProjectTimeIntervalSince(
-                            project.getId(),
+                    timeIntervalRepository.findProjectTimeIntervalSinceStartingPointInMilliseconds(
+                            project,
                             calendar.getTimeInMillis()
                     )
             );

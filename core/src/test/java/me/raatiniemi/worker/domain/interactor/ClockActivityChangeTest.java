@@ -78,14 +78,14 @@ public class ClockActivityChangeTest {
         Project project = buildProject();
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
-        when(timeIntervalRepository.getProjectTimeIntervalSince(eq(1L), anyLong()))
+        when(timeIntervalRepository.findProjectTimeIntervalSinceStartingPointInMilliseconds(eq(project), anyLong()))
                 .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
         verify(clockIn).execute(eq(1L), any(Date.class));
         verify(projectRepository).findById(eq(1L));
-        verify(timeIntervalRepository).getProjectTimeIntervalSince(eq(1L), anyLong());
+        verify(timeIntervalRepository).findProjectTimeIntervalSinceStartingPointInMilliseconds(eq(project), anyLong());
     }
 
     @Test(expected = NoProjectException.class)
@@ -115,14 +115,14 @@ public class ClockActivityChangeTest {
         project.addTime(Collections.singletonList(timeInterval));
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
-        when(timeIntervalRepository.getProjectTimeIntervalSince(eq(1L), anyLong()))
+        when(timeIntervalRepository.findProjectTimeIntervalSinceStartingPointInMilliseconds(eq(project), anyLong()))
                 .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
         verify(clockOut).execute(eq(1L), any(Date.class));
         verify(projectRepository).findById(eq(1L));
-        verify(timeIntervalRepository).getProjectTimeIntervalSince(eq(1L), anyLong());
+        verify(timeIntervalRepository).findProjectTimeIntervalSinceStartingPointInMilliseconds(eq(project), anyLong());
     }
 
     @Test(expected = NoProjectException.class)

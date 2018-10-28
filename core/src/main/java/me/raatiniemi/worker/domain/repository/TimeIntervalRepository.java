@@ -38,16 +38,6 @@ public interface TimeIntervalRepository {
     List<TimeInterval> findProjectTimeIntervalSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException;
 
     /**
-     * Get the time registered for a project since time interval in milliseconds.
-     *
-     * @param projectId Id for the project.
-     * @param milliseconds Starting point in milliseconds.
-     * @return Registered time for project.
-     * @throws DomainException If domain rules are violated.
-     */
-    List<TimeInterval> getProjectTimeIntervalSince(long projectId, long milliseconds) throws DomainException;
-
-    /**
      * Get time by id.
      *
      * @param id Id for the time.

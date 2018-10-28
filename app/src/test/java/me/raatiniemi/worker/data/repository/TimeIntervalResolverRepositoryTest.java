@@ -66,7 +66,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
                         ProviderContract.getTimeColumns(),
-                        ProviderContract.COLUMN_TIME_START + ">=?",
+                        ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                         new String[]{"1234567890"},
                         ProviderContract.ORDER_BY_PROJECT_TIME
                 )
@@ -84,7 +84,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
                         ProviderContract.getTimeColumns(),
-                        ProviderContract.COLUMN_TIME_START + ">=?",
+                        ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                         new String[]{"1234567890"},
                         ProviderContract.ORDER_BY_PROJECT_TIME
                 )
@@ -103,7 +103,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
                         ProviderContract.getTimeColumns(),
-                        ProviderContract.COLUMN_TIME_START + ">=?",
+                        ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                         new String[]{"1234567890"},
                         ProviderContract.ORDER_BY_PROJECT_TIME
                 )
@@ -122,7 +122,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
                         ProviderContract.getTimeColumns(),
-                        ProviderContract.COLUMN_TIME_START + ">=?",
+                        ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                         new String[]{"1234567890"},
                         ProviderContract.ORDER_BY_PROJECT_TIME
                 )

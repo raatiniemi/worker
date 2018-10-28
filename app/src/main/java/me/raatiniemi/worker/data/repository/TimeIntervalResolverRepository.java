@@ -96,19 +96,6 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
         Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(project.getId()),
                 ProviderContract.getTimeColumns(),
-                ProviderContract.COLUMN_TIME_START + ">=?",
-                new String[]{String.valueOf(milliseconds)},
-                ProviderContract.ORDER_BY_PROJECT_TIME
-        );
-        return fetch(cursor);
-    }
-
-    @Override
-    public List<TimeInterval> getProjectTimeIntervalSince(long projectId, long milliseconds)
-            throws ClockOutBeforeClockInException {
-        final Cursor cursor = getContentResolver().query(
-                ProviderContract.getProjectItemTimeUri(projectId),
-                ProviderContract.getTimeColumns(),
                 ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                 new String[]{String.valueOf(milliseconds)},
                 ProviderContract.ORDER_BY_PROJECT_TIME

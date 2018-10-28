@@ -105,8 +105,8 @@ public class ClockActivityChange {
         // Reload the project and populate it with the registered time.
         // TODO: Migrate populate time to separate use case?
         project.addTime(
-                timeIntervalRepository.getProjectTimeIntervalSince(
-                        project.getId(),
+                timeIntervalRepository.findProjectTimeIntervalSinceStartingPointInMilliseconds(
+                        project,
                         calendar.getTimeInMillis()
                 )
         );
