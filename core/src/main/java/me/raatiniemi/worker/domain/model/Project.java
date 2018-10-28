@@ -112,22 +112,6 @@ public class Project {
     }
 
     /**
-     * Retrieve the elapsed time for an active project.
-     *
-     * @return Elapsed time in milliseconds, zero if project is not active.
-     */
-    public long getElapsed() {
-        Optional<TimeInterval> value = getActiveTimeInterval();
-        if (value.isPresent()) {
-            TimeInterval timeInterval = value.get();
-
-            return timeInterval.getInterval();
-        }
-
-        return 0L;
-    }
-
-    /**
      * Retrieve the active time, if available.
      *
      * @return Active time, or empty optional if project is not active.
