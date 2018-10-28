@@ -27,9 +27,10 @@ import java.util.Collection;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(Parameterized.class)
 public class ProjectsItemEqualsHashCodeTest {
@@ -106,17 +107,17 @@ public class ProjectsItemEqualsHashCodeTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, projectsItem.equals(compareTo));
+        assertEquals(message, projectsItem, compareTo);
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, projectsItem.hashCode() == compareTo.hashCode());
+        assertEquals(message, projectsItem.hashCode(), compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, projectsItem.equals(compareTo));
+        assertNotEquals(message, projectsItem, compareTo);
 
         validateHashCodeWhenNotEqual();
     }

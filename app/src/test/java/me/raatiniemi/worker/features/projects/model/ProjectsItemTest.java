@@ -24,7 +24,7 @@ import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertSame;
 
 @RunWith(JUnit4.class)
 public class ProjectsItemTest {
@@ -34,7 +34,7 @@ public class ProjectsItemTest {
                 .build();
         ProjectsItem projectsItem = ProjectsItem.from(project);
 
-        assertTrue(project == projectsItem.asProject());
+        assertSame(project, projectsItem.asProject());
     }
 
     @Test
