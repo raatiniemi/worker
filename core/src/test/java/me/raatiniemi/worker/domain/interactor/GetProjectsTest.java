@@ -31,6 +31,7 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 import static junit.framework.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -73,6 +74,6 @@ public class GetProjectsTest {
         assertEquals(projects, actual);
 
         verify(projectRepository, times(1)).findAll();
-        verify(timeIntervalRepository, times(2)).getProjectTimeIntervalSinceBeginningOfMonth(anyLong());
+        verify(timeIntervalRepository, times(2)).findAll(any(Project.class), anyLong());
     }
 }

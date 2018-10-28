@@ -74,7 +74,7 @@ public class GetProjectTimeSince {
      * @throws DomainException If domain rules are violated.
      */
     public List<TimeInterval> execute(Project project, int startingPoint) throws DomainException {
-        return timeIntervalRepository.findProjectTimeIntervalSinceStartingPointInMilliseconds(
+        return timeIntervalRepository.findAll(
                 project,
                 getMillisecondsForStartingPoint(startingPoint)
         );

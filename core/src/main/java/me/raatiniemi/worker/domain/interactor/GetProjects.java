@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
+import java.util.Calendar;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -60,10 +61,20 @@ public class GetProjects {
     public List<Project> execute() throws DomainException {
         List<Project> projects = projectRepository.findAll();
 
+        // Reset the calendar to retrieve timestamp of the beginning of the month.
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
         for (Project project : projects) {
             // Populate the project with the registered time.
             project.addTime(
-                    timeIntervalRepository.getProjectTimeIntervalSinceBeginningOfMonth(project.getId())
+                    timeIntervalRepository.findAll(
+                            project,
+                            calendar.getTimeInMillis()
+                    )
             );
         }
 

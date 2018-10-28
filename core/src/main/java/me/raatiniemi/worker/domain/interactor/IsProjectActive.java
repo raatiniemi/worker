@@ -29,7 +29,7 @@ public class IsProjectActive {
     }
 
     public boolean execute(long projectId) throws DomainException {
-        Optional<TimeInterval> value = timeIntervalRepository.getActiveTimeIntervalForProject(projectId);
+        Optional<TimeInterval> value = timeIntervalRepository.findActiveByProjectId(projectId);
 
         return value.isPresent();
     }

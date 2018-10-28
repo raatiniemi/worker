@@ -37,6 +37,7 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
@@ -77,14 +78,14 @@ public class ClockActivityChangeTest {
         Project project = buildProject();
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
-        when(timeIntervalRepository.getProjectTimeIntervalSinceBeginningOfMonth(1L))
+        when(timeIntervalRepository.findAll(eq(project), anyLong()))
                 .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
         verify(clockIn).execute(eq(1L), any(Date.class));
         verify(projectRepository).findById(eq(1L));
-        verify(timeIntervalRepository).getProjectTimeIntervalSinceBeginningOfMonth(eq(1L));
+        verify(timeIntervalRepository).findAll(eq(project), anyLong());
     }
 
     @Test(expected = NoProjectException.class)
@@ -114,14 +115,14 @@ public class ClockActivityChangeTest {
         project.addTime(Collections.singletonList(timeInterval));
         when(projectRepository.findById(1L))
                 .thenReturn(Optional.of(project));
-        when(timeIntervalRepository.getProjectTimeIntervalSinceBeginningOfMonth(1L))
+        when(timeIntervalRepository.findAll(eq(project), anyLong()))
                 .thenReturn(new ArrayList<>());
 
         clockActivityChange.execute(project, new Date());
 
         verify(clockOut).execute(eq(1L), any(Date.class));
         verify(projectRepository).findById(eq(1L));
-        verify(timeIntervalRepository).getProjectTimeIntervalSinceBeginningOfMonth(eq(1L));
+        verify(timeIntervalRepository).findAll(eq(project), anyLong());
     }
 
     @Test(expected = NoProjectException.class)

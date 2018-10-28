@@ -27,7 +27,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
@@ -91,25 +90,38 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public List<TimeInterval> findProjectTimeIntervalSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException {
+    public List<TimeInterval> findAll(Project project, long milliseconds) throws DomainException {
         requireNonNull(project);
 
         Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(project.getId()),
                 ProviderContract.getTimeColumns(),
-                ProviderContract.COLUMN_TIME_START + ">=?",
+                ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
                 new String[]{String.valueOf(milliseconds)},
-                null
+                ProviderContract.ORDER_BY_PROJECT_TIME
         );
         return fetch(cursor);
     }
 
     @Override
-    public Optional<TimeInterval> get(final long id) throws ClockOutBeforeClockInException {
+    public Optional<TimeInterval> findById(final long id) throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getTimeItemUri(id),
                 ProviderContract.getTimeColumns(),
                 null,
+                null,
+                null
+        );
+        return fetchRow(cursor);
+    }
+
+    @Override
+    public Optional<TimeInterval> findActiveByProjectId(long projectId)
+            throws ClockOutBeforeClockInException {
+        final Cursor cursor = getContentResolver().query(
+                ProviderContract.getProjectItemTimeUri(projectId),
+                ProviderContract.getTimeColumns(),
+                ProviderContract.COLUMN_TIME_STOP + " = 0",
                 null,
                 null
         );
@@ -126,7 +138,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
                 ProviderContract.getTimeStreamUri(),
                 values
         );
-        return get(Long.parseLong(ProviderContract.getTimeItemId(uri)));
+        return findById(Long.parseLong(ProviderContract.getTimeItemId(uri)));
     }
 
     @Override
@@ -140,7 +152,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
                 null
         );
 
-        return get(timeInterval.getId());
+        return findById(timeInterval.getId());
     }
 
     @Override
@@ -166,7 +178,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
 
         List<TimeInterval> updatedTimeIntervals = new ArrayList<>();
         for (TimeInterval timeInterval : timeIntervals) {
-            Optional<TimeInterval> value = get(timeInterval.getId());
+            Optional<TimeInterval> value = findById(timeInterval.getId());
             if (value.isPresent()) {
                 updatedTimeIntervals.add(value.get());
             }
@@ -200,39 +212,5 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
         } catch (RemoteException | OperationApplicationException e) {
             throw new ContentResolverApplyBatchException(e);
         }
-    }
-
-    @Override
-    public List<TimeInterval> getProjectTimeIntervalSinceBeginningOfMonth(long projectId)
-            throws ClockOutBeforeClockInException {
-        // Reset the calendar to retrieve timestamp
-        // of the beginning of the month.
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
-        final Cursor cursor = getContentResolver().query(
-                ProviderContract.getProjectItemTimeUri(projectId),
-                ProviderContract.getTimeColumns(),
-                ProviderContract.COLUMN_TIME_START + ">=? OR " + ProviderContract.COLUMN_TIME_STOP + " = 0",
-                new String[]{String.valueOf(calendar.getTimeInMillis())},
-                ProviderContract.ORDER_BY_PROJECT_TIME
-        );
-        return fetch(cursor);
-    }
-
-    @Override
-    public Optional<TimeInterval> getActiveTimeIntervalForProject(long projectId)
-            throws ClockOutBeforeClockInException {
-        final Cursor cursor = getContentResolver().query(
-                ProviderContract.getProjectItemTimeUri(projectId),
-                ProviderContract.getTimeColumns(),
-                ProviderContract.COLUMN_TIME_STOP + " = 0",
-                null,
-                null
-        );
-        return fetchRow(cursor);
     }
 }
