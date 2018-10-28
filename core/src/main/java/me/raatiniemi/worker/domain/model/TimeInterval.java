@@ -165,13 +165,15 @@ public class TimeInterval {
      * @return Registered time in milliseconds, or zero if interval is active.
      */
     public long getTime() {
-        long time = 0L;
-
-        if (!isActive()) {
-            time = getStopInMilliseconds() - getStartInMilliseconds();
+        if (isActive()) {
+            return 0L;
         }
 
-        return time;
+        return calculateInterval(stopInMilliseconds);
+    }
+
+    private long calculateInterval(long stopInMilliseconds) {
+        return stopInMilliseconds - startInMilliseconds;
     }
 
     /**
@@ -183,13 +185,11 @@ public class TimeInterval {
      * @return Interval in milliseconds.
      */
     public long getInterval() {
-        long stop = getStopInMilliseconds();
-
         if (isActive()) {
-            stop = (new Date()).getTime();
+            return calculateInterval(new Date().getTime());
         }
 
-        return stop - getStartInMilliseconds();
+        return calculateInterval(stopInMilliseconds);
     }
 
     @Override
