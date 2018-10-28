@@ -74,6 +74,6 @@ public class GetProjectsTest {
         assertEquals(projects, actual);
 
         verify(projectRepository, times(1)).findAll();
-        verify(timeIntervalRepository, times(2)).findProjectTimeIntervalSinceStartingPointInMilliseconds(any(Project.class), anyLong());
+        verify(timeIntervalRepository, times(2)).findAll(any(Project.class), anyLong());
     }
 }

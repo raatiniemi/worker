@@ -90,7 +90,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public List<TimeInterval> findProjectTimeIntervalSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException {
+    public List<TimeInterval> findAll(Project project, long milliseconds) throws DomainException {
         requireNonNull(project);
 
         Cursor cursor = getContentResolver().query(

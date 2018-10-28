@@ -72,7 +72,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(null);
 
-        List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
+        List<TimeInterval> timeIntervals = repository.findAll(project, 1234567890);
 
         assertTrue(timeIntervals.isEmpty());
     }
@@ -90,7 +90,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
+        List<TimeInterval> timeIntervals = repository.findAll(project, 1234567890);
 
         assertTrue(timeIntervals.isEmpty());
         verify(cursor).close();
@@ -109,7 +109,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
+        List<TimeInterval> timeIntervals = repository.findAll(project, 1234567890);
 
         assertEquals(1, timeIntervals.size());
         verify(cursor).close();
@@ -128,7 +128,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
                 )
         ).thenReturn(cursor);
 
-        List<TimeInterval> timeIntervals = repository.findProjectTimeIntervalSinceStartingPointInMilliseconds(project, 1234567890);
+        List<TimeInterval> timeIntervals = repository.findAll(project, 1234567890);
 
         assertEquals(5, timeIntervals.size());
         verify(cursor).close();

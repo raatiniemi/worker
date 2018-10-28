@@ -28,14 +28,14 @@ import me.raatiniemi.worker.util.Optional;
  */
 public interface TimeIntervalRepository {
     /**
-     * Find registered project time since starting point.
+     * Find time intervals for project since starting point, or active time interval.
      *
      * @param project Project for which to use as filter.
      * @param milliseconds Starting point in milliseconds.
-     * @return Registered time for project since starting point.
+     * @return Time intervals, or active time interval, for project since starting point.
      * @throws DomainException If domain rules are violated.
      */
-    List<TimeInterval> findProjectTimeIntervalSinceStartingPointInMilliseconds(Project project, long milliseconds) throws DomainException;
+    List<TimeInterval> findAll(Project project, long milliseconds) throws DomainException;
 
     /**
      * Get time by id.
