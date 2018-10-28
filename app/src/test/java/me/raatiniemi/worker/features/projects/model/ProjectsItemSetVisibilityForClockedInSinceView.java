@@ -72,7 +72,7 @@ public class ProjectsItemSetVisibilityForClockedInSinceView {
     }
 
     @Test
-    public void getClockedInSince() throws InvalidProjectNameException {
+    public void getClockedInSince() {
         ProjectsItem projectsItem = ProjectsItem.from(project);
         TextView textView = mock(TextView.class);
 
