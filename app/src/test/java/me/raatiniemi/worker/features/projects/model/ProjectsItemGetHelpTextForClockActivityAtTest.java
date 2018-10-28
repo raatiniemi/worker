@@ -21,14 +21,17 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
 public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemResourceTest {
@@ -44,25 +47,35 @@ public class ProjectsItemGetHelpTextForClockActivityAtTest extends ProjectsItemR
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters() {
+    public static Collection<Object[]> getParameters() throws InvalidProjectNameException {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 "Clock in %s at",
-                                mockProjectWithActiveIndicator(Boolean.FALSE)
+                                buildProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
                                 "Clock out %s at",
-                                mockProjectWithActiveIndicator(Boolean.TRUE)
+                                buildProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
         );
     }
 
-    private static Project mockProjectWithActiveIndicator(boolean isProjectActive) {
-        Project project = mock(Project.class);
-        when(project.getName()).thenReturn("project #1");
-        when(project.isActive()).thenReturn(isProjectActive);
+    private static Project buildProjectWithActiveIndicator(boolean isProjectActive)
+            throws InvalidProjectNameException {
+        Project project = Project.builder("Project #1").build();
+
+        if (isProjectActive) {
+            List<TimeInterval> timeIntervals = new ArrayList<>();
+            timeIntervals.add(
+                    TimeIntervalFactory.builder(1L)
+                            .startInMilliseconds(1)
+                            .stopInMilliseconds(0)
+                            .build()
+            );
+            project.addTime(timeIntervals);
+        }
 
         return project;
     }

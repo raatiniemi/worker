@@ -21,14 +21,17 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
-import static junit.framework.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class ProjectsItemIsActiveTest {
@@ -41,24 +44,35 @@ public class ProjectsItemIsActiveTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters() {
+    public static Collection<Object[]> getParameters() throws InvalidProjectNameException {
         return Arrays.asList(
                 new Object[][]{
                         {
                                 Boolean.FALSE,
-                                mockProjectWithActiveIndicator(Boolean.FALSE)
+                                buildProjectWithActiveIndicator(Boolean.FALSE)
                         },
                         {
                                 Boolean.TRUE,
-                                mockProjectWithActiveIndicator(Boolean.TRUE)
+                                buildProjectWithActiveIndicator(Boolean.TRUE)
                         }
                 }
         );
     }
 
-    private static Project mockProjectWithActiveIndicator(boolean isProjectActive) {
-        Project project = mock(Project.class);
-        when(project.isActive()).thenReturn(isProjectActive);
+    private static Project buildProjectWithActiveIndicator(boolean isProjectActive)
+            throws InvalidProjectNameException {
+        Project project = Project.builder("Project #1").build();
+
+        if (isProjectActive) {
+            List<TimeInterval> timeIntervals = new ArrayList<>();
+            timeIntervals.add(
+                    TimeIntervalFactory.builder(1L)
+                            .startInMilliseconds(1)
+                            .stopInMilliseconds(0)
+                            .build()
+            );
+            project.addTime(timeIntervals);
+        }
 
         return project;
     }
