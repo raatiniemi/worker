@@ -42,7 +42,7 @@ public class ClockIn {
      * @throws ActiveProjectException If project is active.
      */
     public void execute(long projectId, Date date) throws DomainException {
-        Optional<TimeInterval> value = timeIntervalRepository.getActiveTimeIntervalForProject(projectId);
+        Optional<TimeInterval> value = timeIntervalRepository.findActiveByProjectId(projectId);
         if (value.isPresent()) {
             throw new ActiveProjectException();
         }

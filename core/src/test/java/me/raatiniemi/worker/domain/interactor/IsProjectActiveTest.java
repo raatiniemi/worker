@@ -43,7 +43,7 @@ public class IsProjectActiveTest {
 
     @Test
     public void execute_withoutTime() throws DomainException {
-        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.empty());
 
         IsProjectActive isProjectActive = new IsProjectActive(timeIntervalRepository);
@@ -55,7 +55,7 @@ public class IsProjectActiveTest {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.of(timeInterval));
 
         IsProjectActive isProjectActive = new IsProjectActive(timeIntervalRepository);

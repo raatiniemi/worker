@@ -46,7 +46,7 @@ public class ClockOutTest {
 
     @Test(expected = InactiveProjectException.class)
     public void execute_withoutActiveTime() throws DomainException {
-        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.empty());
 
         ClockOut clockOut = new ClockOut(timeIntervalRepository);
@@ -58,7 +58,7 @@ public class ClockOutTest {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.of(timeInterval));
 
         ClockOut clockOut = new ClockOut(timeIntervalRepository);

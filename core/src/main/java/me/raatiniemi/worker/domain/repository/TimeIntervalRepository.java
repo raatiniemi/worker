@@ -53,7 +53,7 @@ public interface TimeIntervalRepository {
      * @return Active time for project, or null if project is inactive.
      * @throws DomainException If domain rules are violated.
      */
-    Optional<TimeInterval> getActiveTimeIntervalForProject(long projectId) throws DomainException;
+    Optional<TimeInterval> findActiveByProjectId(long projectId) throws DomainException;
 
     /**
      * Add time.

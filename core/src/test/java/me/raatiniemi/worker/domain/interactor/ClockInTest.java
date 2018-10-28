@@ -49,7 +49,7 @@ public class ClockInTest {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
-        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.of(timeInterval));
 
         ClockIn clockIn = new ClockIn(timeIntervalRepository);
@@ -58,7 +58,7 @@ public class ClockInTest {
 
     @Test
     public void execute() throws DomainException {
-        when(timeIntervalRepository.getActiveTimeIntervalForProject(1L))
+        when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.empty());
 
         ClockIn clockIn = new ClockIn(timeIntervalRepository);

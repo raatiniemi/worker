@@ -116,7 +116,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public Optional<TimeInterval> getActiveTimeIntervalForProject(long projectId)
+    public Optional<TimeInterval> findActiveByProjectId(long projectId)
             throws ClockOutBeforeClockInException {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(projectId),

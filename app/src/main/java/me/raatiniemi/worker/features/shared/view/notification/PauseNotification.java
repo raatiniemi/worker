@@ -122,7 +122,7 @@ public class PauseNotification extends OngoingNotification {
 
     private Optional<TimeInterval> getActiveTimeIntervalForProject() throws DomainException {
         return getTimeIntervalRepository()
-                .getActiveTimeIntervalForProject(getProject().getId());
+                .findActiveByProjectId(getProject().getId());
     }
 
     @Override
