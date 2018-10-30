@@ -107,7 +107,7 @@ public class ProjectsItem {
     }
 
     public boolean isActive() {
-        return project.isActive();
+        return activeTimeInterval != null;
     }
 
     public String getTimeSummary() {
