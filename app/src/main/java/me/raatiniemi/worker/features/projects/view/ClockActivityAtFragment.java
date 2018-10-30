@@ -20,11 +20,11 @@ import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 
+import javax.annotation.Nonnull;
+
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.shared.view.fragment.DateTimePickerFragment;
-import timber.log.Timber;
 
-import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class ClockActivityAtFragment extends DateTimePickerFragment
@@ -43,30 +43,20 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
      * @return New instance of the clock activity at fragment.
      */
     public static ClockActivityAtFragment newInstance(
-            Project project,
-            OnClockActivityAtListener onClockActivityAtListener
+            @Nonnull Project project,
+            @Nonnull OnClockActivityAtListener onClockActivityAtListener
     ) {
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
         fragment.onClockActivityAtListener = onClockActivityAtListener;
 
         // If the project is active we have to set the minimum date for clocking out.
-        if (nonNull(project) && nonNull(project.getClockedInSince())) {
+        if (nonNull(project.getClockedInSince())) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(project.getClockedInSince());
             fragment.setMinDate(calendar);
         }
 
         return fragment;
-    }
-
-    @Override
-    protected boolean isStateInvalid() {
-        if (isNull(onClockActivityAtListener)) {
-            Timber.w("No OnClockActivityAtListener have been supplied");
-            return true;
-        }
-
-        return super.isStateInvalid();
     }
 
     @Override
