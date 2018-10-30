@@ -22,10 +22,8 @@ import java.util.Calendar;
 
 import javax.annotation.Nonnull;
 
-import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.shared.view.fragment.DateTimePickerFragment;
-
-import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public class ClockActivityAtFragment extends DateTimePickerFragment
         implements DateTimePickerFragment.OnDateTimeSetListener {
@@ -38,21 +36,21 @@ public class ClockActivityAtFragment extends DateTimePickerFragment
     /**
      * Create a new instance for project clock in/out with date and time.
      *
-     * @param project                   Project used with the clock activity.
+     * @param projectsItem              Project used with the clock activity.
      * @param onClockActivityAtListener Listener for "OnClockActivityAtListener".
      * @return New instance of the clock activity at fragment.
      */
     public static ClockActivityAtFragment newInstance(
-            @Nonnull Project project,
+            @Nonnull ProjectsItem projectsItem,
             @Nonnull OnClockActivityAtListener onClockActivityAtListener
     ) {
         ClockActivityAtFragment fragment = new ClockActivityAtFragment();
         fragment.onClockActivityAtListener = onClockActivityAtListener;
 
-        // If the project is active we have to set the minimum date for clocking out.
-        if (nonNull(project.getClockedInSince())) {
+        if (projectsItem.isActive()) {
+            // TODO: Should the calendar be hidden behind a method call?
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(project.getClockedInSince());
+            calendar.setTimeInMillis(projectsItem.getClockedInSinceInMilliseconds());
             fragment.setMinDate(calendar);
         }
 

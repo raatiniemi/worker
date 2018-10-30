@@ -161,6 +161,14 @@ public class ProjectsItem {
         return timeFormat.format(project.getClockedInSince());
     }
 
+    public long getClockedInSinceInMilliseconds() {
+        if (isActive()) {
+            return activeTimeInterval.getStartInMilliseconds();
+        }
+
+        return 0;
+    }
+
     public void setVisibilityForClockedInSinceView(TextView clockedInSinceView) {
         if (isActive()) {
             showTextView(clockedInSinceView);

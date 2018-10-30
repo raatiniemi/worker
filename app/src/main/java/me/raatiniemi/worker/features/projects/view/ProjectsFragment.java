@@ -361,7 +361,7 @@ public class ProjectsFragment extends RxFragment
     public void onClockActivityAt(@NonNull final ProjectsItemAdapterResult result) {
         final ProjectsItem projectsItem = result.getProjectsItem();
         ClockActivityAtFragment fragment = ClockActivityAtFragment.newInstance(
-                projectsItem.asProject(),
+                projectsItem,
                 calendar -> {
                     if (projectsItem.isActive()) {
                         clockActivityViewModel.input().clockOut(result, calendar.getTime());
