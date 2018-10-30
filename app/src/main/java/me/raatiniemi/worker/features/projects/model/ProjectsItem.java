@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -158,7 +159,8 @@ public class ProjectsItem {
         // TODO: Handle if the time session overlap days.
         // The timestamp should include the date it was
         // checked in, e.g. 21 May 1:06PM.
-        return timeFormat.format(project.getClockedInSince());
+        Date date = new Date(getClockedInSinceInMilliseconds());
+        return timeFormat.format(date);
     }
 
     public long getClockedInSinceInMilliseconds() {

@@ -18,7 +18,6 @@ package me.raatiniemi.worker.domain.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -127,24 +126,6 @@ public class Project {
         }
 
         return Optional.empty();
-    }
-
-    /**
-     * Retrieve the date when the project was clocked in.
-     *
-     * @return Date when project was clocked in, or null if project is not active.
-     */
-    public Date getClockedInSince() {
-        // Retrieve the last time, i.e. the active time session.
-        Optional<TimeInterval> value = getActiveTimeInterval();
-        if (value.isPresent()) {
-            TimeInterval timeInterval = value.get();
-
-            // TODO: Do not instantiate inside method, return value from get start?
-            return new Date(timeInterval.getStartInMilliseconds());
-        }
-
-        return null;
     }
 
     /**
