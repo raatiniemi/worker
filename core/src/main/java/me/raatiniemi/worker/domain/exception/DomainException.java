@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.exception;
 
-public class DomainException extends Exception {
+public class DomainException extends RuntimeException {
     DomainException() {
         super();
     }
