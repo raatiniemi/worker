@@ -32,10 +32,9 @@ val projectsModule = module {
     single {
         val clockIn = ClockIn(get())
         val clockOut = ClockOut(get())
-        val clockActivityChange = ClockActivityChange(get(), get(), clockIn, clockOut)
         val getProjectTimeSince = GetProjectTimeSince(get())
 
-        ClockActivityViewModel.ViewModel(clockActivityChange, getProjectTimeSince)
+        ClockActivityViewModel.ViewModel(clockIn, clockOut, getProjectTimeSince)
     }
 
     single {

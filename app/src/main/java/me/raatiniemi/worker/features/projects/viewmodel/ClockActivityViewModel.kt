@@ -16,7 +16,8 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
-import me.raatiniemi.worker.domain.interactor.ClockActivityChange
+import me.raatiniemi.worker.domain.interactor.ClockIn
+import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
@@ -52,7 +53,8 @@ interface ClockActivityViewModel {
     }
 
     class ViewModel(
-            private val clockActivityChange: ClockActivityChange,
+            private val clockIn: ClockIn,
+            private val clockOut: ClockOut,
             private val getProjectTimeSince: GetProjectTimeSince
     ) : Input, Output, Error {
         private val input: Input
@@ -81,7 +83,7 @@ interface ClockActivityViewModel {
             Observable.zip(clockInResult, clockInDate) { result, date -> CombinedResult(result, date) }
                     .throttleFirst(500, TimeUnit.MILLISECONDS)
                     .switchMap { result ->
-                        executeUseCase(result)
+                        executeUseCase(Action.CLOCK_IN, result)
                                 .compose(redirectErrors(clockInError))
                                 .compose(hideErrors())
                     }
@@ -90,16 +92,22 @@ interface ClockActivityViewModel {
             Observable.zip(clockOutResult, clockOutDate) { result, date -> CombinedResult(result, date) }
                     .throttleFirst(500, TimeUnit.MILLISECONDS)
                     .switchMap { result ->
-                        executeUseCase(result)
+                        executeUseCase(Action.CLOCK_OUT, result)
                                 .compose(redirectErrors(clockOutError))
                                 .compose(hideErrors())
                     }
                     .subscribe(clockOutSuccess)
         }
 
-        private fun executeUseCase(combinedResult: CombinedResult): Observable<ProjectsItemAdapterResult> {
+        private fun executeUseCase(action: Action, combinedResult: CombinedResult): Observable<ProjectsItemAdapterResult> {
             return try {
-                val project = executeClockActivityChange(combinedResult)
+                val project = combinedResult.result.projectsItem.asProject()
+                val date = combinedResult.date
+
+                when (action) {
+                    Action.CLOCK_IN -> clockIn.execute(project.id, date)
+                    Action.CLOCK_OUT -> clockOut.execute(project.id, date)
+                }
                 val registeredTime = getRegisteredTimeForProject(project)
 
                 val projectsItem = ProjectsItem.from(project, registeredTime)
@@ -107,12 +115,6 @@ interface ClockActivityViewModel {
             } catch (e: Exception) {
                 Observable.error(e)
             }
-        }
-
-        private fun executeClockActivityChange(combinedResult: CombinedResult): Project {
-            val projectsItem = combinedResult.result.projectsItem
-
-            return clockActivityChange.execute(projectsItem.asProject(), combinedResult.date)
         }
 
         private fun getRegisteredTimeForProject(project: Project): List<TimeInterval> {
@@ -172,5 +174,10 @@ interface ClockActivityViewModel {
         }
 
         class CombinedResult constructor(val result: ProjectsItemAdapterResult, val date: Date)
+
+        enum class Action {
+            CLOCK_IN,
+            CLOCK_OUT
+        }
     }
 }
