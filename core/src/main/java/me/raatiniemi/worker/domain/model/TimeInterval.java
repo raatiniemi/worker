@@ -46,7 +46,7 @@ public class TimeInterval {
      */
     private final boolean registered;
 
-    private TimeInterval(Builder builder) throws ClockOutBeforeClockInException {
+    private TimeInterval(Builder builder) {
         if (builder.stopInMilliseconds > 0) {
             if (builder.stopInMilliseconds < builder.startInMilliseconds) {
                 throw new ClockOutBeforeClockInException(
@@ -100,7 +100,7 @@ public class TimeInterval {
         return registered;
     }
 
-    public TimeInterval markAsRegistered() throws ClockOutBeforeClockInException {
+    public TimeInterval markAsRegistered() {
         if (isRegistered()) {
             return this;
         }
@@ -113,7 +113,7 @@ public class TimeInterval {
                 .build();
     }
 
-    public TimeInterval unmarkRegistered() throws ClockOutBeforeClockInException {
+    public TimeInterval unmarkRegistered() {
         if (!isRegistered()) {
             return this;
         }
@@ -129,10 +129,9 @@ public class TimeInterval {
      * Set the clock out timestamp at given date.
      *
      * @param date Date at which to clock out.
-     * @throws NullPointerException           If date argument is null.
-     * @throws ClockOutBeforeClockInException If clock out occur before clock in.
+     * @throws NullPointerException If date argument is null.
      */
-    public TimeInterval clockOutAt(final Date date) throws ClockOutBeforeClockInException {
+    public TimeInterval clockOutAt(final Date date) {
         requireNonNull(date, "Date is not allowed to be null");
 
         Builder builder = builder(getProjectId())
@@ -252,7 +251,7 @@ public class TimeInterval {
             return this;
         }
 
-        public TimeInterval build() throws ClockOutBeforeClockInException {
+        public TimeInterval build() {
             return new TimeInterval(this);
         }
     }

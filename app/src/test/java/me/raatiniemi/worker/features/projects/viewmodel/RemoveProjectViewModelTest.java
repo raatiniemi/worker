@@ -55,7 +55,7 @@ public class RemoveProjectViewModelTest {
     }
 
     @Test
-    public void deleteProject_withError() throws InvalidProjectNameException {
+    public void deleteProject_withError() {
         Project project = Project.builder("Name").build();
         ProjectsItem item = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);
@@ -70,7 +70,7 @@ public class RemoveProjectViewModelTest {
     }
 
     @Test
-    public void deleteProject() throws InvalidProjectNameException {
+    public void deleteProject() {
         Project project = Project.builder("Name").build();
         ProjectsItem item = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);

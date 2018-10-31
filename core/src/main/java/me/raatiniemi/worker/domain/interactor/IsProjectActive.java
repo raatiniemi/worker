@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.util.Optional;
@@ -28,7 +27,7 @@ public class IsProjectActive {
         this.timeIntervalRepository = timeIntervalRepository;
     }
 
-    public boolean execute(long projectId) throws DomainException {
+    public boolean execute(long projectId) {
         Optional<TimeInterval> value = timeIntervalRepository.findActiveByProjectId(projectId);
 
         return value.isPresent();

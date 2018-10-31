@@ -81,7 +81,7 @@ public class CreateProjectViewModelTest {
     }
 
     @Test
-    public void createProject_withDuplicateName() throws DomainException {
+    public void createProject_withDuplicateName() {
         when(useCase.execute(any(Project.class)))
                 .thenThrow(ProjectAlreadyExistsException.class);
         vm.error().duplicateProjectNameError().subscribe(duplicateNameError);
@@ -96,7 +96,7 @@ public class CreateProjectViewModelTest {
     }
 
     @Test
-    public void createProject_withUnknownError() throws DomainException {
+    public void createProject_withUnknownError() {
         when(useCase.execute(any(Project.class)))
                 .thenThrow(RuntimeException.class);
         vm.error().createProjectError().subscribe(createProjectError);

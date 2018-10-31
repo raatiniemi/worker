@@ -18,7 +18,6 @@ package me.raatiniemi.worker.domain.interactor;
 
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 
@@ -44,9 +43,8 @@ public class GetProjects {
      * Get the projects.
      *
      * @return Projects.
-     * @throws DomainException If domain rules are violated.
      */
-    public List<Project> execute() throws DomainException {
+    public List<Project> execute() {
         return projectRepository.findAll();
     }
 }

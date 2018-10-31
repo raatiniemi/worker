@@ -61,7 +61,7 @@ public class TimeTest {
     }
 
     @Test
-    public void markAsRegistered() throws ClockOutBeforeClockInException {
+    public void markAsRegistered() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .build();
 
@@ -71,7 +71,7 @@ public class TimeTest {
     }
 
     @Test
-    public void markAsRegistered_alreadyRegistered() throws ClockOutBeforeClockInException {
+    public void markAsRegistered_alreadyRegistered() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .register()
                 .build();
@@ -82,7 +82,7 @@ public class TimeTest {
     }
 
     @Test
-    public void unmarkRegistered() throws ClockOutBeforeClockInException {
+    public void unmarkRegistered() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .register()
                 .build();
@@ -93,7 +93,7 @@ public class TimeTest {
     }
 
     @Test
-    public void unmarkRegistered_notRegistered() throws ClockOutBeforeClockInException {
+    public void unmarkRegistered_notRegistered() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .build();
 
@@ -103,7 +103,7 @@ public class TimeTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void clockOutAt_withNullDate() throws ClockOutBeforeClockInException {
+    public void clockOutAt_withNullDate() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .build();
 
@@ -111,7 +111,7 @@ public class TimeTest {
     }
 
     @Test(expected = ClockOutBeforeClockInException.class)
-    public void clockOutAt_clockOutBeforeClockIn() throws ClockOutBeforeClockInException {
+    public void clockOutAt_clockOutBeforeClockIn() {
         Date date = new Date();
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .startInMilliseconds(date.getTime() + 1)
@@ -121,7 +121,7 @@ public class TimeTest {
     }
 
     @Test
-    public void clockOutAt() throws ClockOutBeforeClockInException {
+    public void clockOutAt() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .build();
         Date date = new Date();
@@ -133,7 +133,7 @@ public class TimeTest {
     }
 
     @Test
-    public void clockOutAt_withRegistered() throws ClockOutBeforeClockInException {
+    public void clockOutAt_withRegistered() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .register()
                 .build();

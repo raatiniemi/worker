@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
@@ -47,7 +46,7 @@ public class CreateProject {
      * @param project Project to create.
      * @return Created project.
      */
-    public Project execute(final Project project) throws DomainException {
+    public Project execute(final Project project) {
         if (isProjectNameInUse(project.getName())) {
             throw new ProjectAlreadyExistsException(
                     "Project '" + project.getName() + "' already exists"
@@ -62,7 +61,7 @@ public class CreateProject {
         throw new NoProjectException();
     }
 
-    private boolean isProjectNameInUse(String projectName) throws DomainException {
+    private boolean isProjectNameInUse(String projectName) {
         Optional<Project> value = repository.findByName(projectName);
 
         return value.isPresent();

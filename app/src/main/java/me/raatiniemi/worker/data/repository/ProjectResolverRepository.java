@@ -32,7 +32,6 @@ import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.data.repository.mapper.ProjectContentValuesMapper;
 import me.raatiniemi.worker.data.repository.mapper.ProjectCursorMapper;
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.util.Optional;
@@ -49,7 +48,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @NonNull
-    private List<Project> fetch(@Nullable Cursor cursor) throws InvalidProjectNameException {
+    private List<Project> fetch(@Nullable Cursor cursor) {
         final List<Project> projects = new ArrayList<>();
         if (isNull(cursor)) {
             return projects;
@@ -69,7 +68,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @NonNull
-    private Optional<Project> fetchRow(@Nullable Cursor cursor) throws InvalidProjectNameException {
+    private Optional<Project> fetchRow(@Nullable Cursor cursor) {
         if (isNull(cursor)) {
             return Optional.empty();
         }
@@ -88,7 +87,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public List<Project> findAll() throws InvalidProjectNameException {
+    public List<Project> findAll() {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectStreamUri(),
                 ProviderContract.getProjectColumns(),
@@ -101,7 +100,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public Optional<Project> findByName(String projectName) throws InvalidProjectNameException {
+    public Optional<Project> findByName(String projectName) {
         requireNonNull(projectName);
 
         final Cursor cursor = getContentResolver().query(
@@ -115,7 +114,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public Optional<Project> findById(final long id) throws InvalidProjectNameException {
+    public Optional<Project> findById(final long id) {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemUri(id),
                 ProviderContract.getProjectColumns(),
@@ -127,7 +126,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
     }
 
     @Override
-    public Optional<Project> add(final Project project) throws InvalidProjectNameException {
+    public Optional<Project> add(final Project project) {
         requireNonNull(project);
 
         final Uri uri = getContentResolver().insert(

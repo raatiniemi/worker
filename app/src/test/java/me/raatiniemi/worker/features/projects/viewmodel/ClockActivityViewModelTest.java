@@ -31,7 +31,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockIn;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
@@ -75,7 +74,7 @@ public class ClockActivityViewModelTest {
     }
 
     @Test
-    public void clockIn_withError() throws DomainException {
+    public void clockIn_withError() {
         Project project = buildProject();
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
@@ -94,7 +93,7 @@ public class ClockActivityViewModelTest {
     }
 
     @Test
-    public void clockIn() throws DomainException {
+    public void clockIn() {
         Project project = buildProject();
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
@@ -115,7 +114,7 @@ public class ClockActivityViewModelTest {
     }
 
     @Test
-    public void clockIn_withDifferentStartingPoint() throws DomainException {
+    public void clockIn_withDifferentStartingPoint() {
         Project project = buildProject();
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
@@ -137,7 +136,7 @@ public class ClockActivityViewModelTest {
     }
 
     @Test
-    public void clockIn_withInvalidStartingPoint() throws DomainException {
+    public void clockIn_withInvalidStartingPoint() {
         Project project = buildProject();
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
@@ -159,7 +158,7 @@ public class ClockActivityViewModelTest {
     }
 
     @Test
-    public void clockOut_withError() throws DomainException {
+    public void clockOut_withError() {
         Project project = buildProject();
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
@@ -178,7 +177,7 @@ public class ClockActivityViewModelTest {
     }
 
     @Test
-    public void clockOut() throws DomainException {
+    public void clockOut() {
         Project project = buildProject();
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
@@ -199,7 +198,7 @@ public class ClockActivityViewModelTest {
     }
 
     @Test
-    public void clockOut_withDifferentStartingPoint() throws DomainException {
+    public void clockOut_withDifferentStartingPoint() {
         Project project = buildProject();
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
@@ -221,7 +220,7 @@ public class ClockActivityViewModelTest {
     }
 
     @Test
-    public void clockOut_withInvalidStartingPoint() throws DomainException {
+    public void clockOut_withInvalidStartingPoint() {
         Project project = buildProject();
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);

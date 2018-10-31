@@ -19,7 +19,6 @@ package me.raatiniemi.worker.data.repository.mapper;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.repository.mapper.EntityMapper;
 
 /**
@@ -30,5 +29,5 @@ import me.raatiniemi.worker.domain.repository.mapper.EntityMapper;
 interface CursorMapper<T> extends EntityMapper<T, Cursor> {
     @Override
     @NonNull
-    T transform(@NonNull Cursor cursor) throws DomainException;
+    T transform(@NonNull Cursor cursor);
 }

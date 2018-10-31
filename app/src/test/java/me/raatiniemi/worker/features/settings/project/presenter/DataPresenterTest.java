@@ -40,7 +40,7 @@ public class DataPresenterTest {
     private EventBus eventBus;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         eventBus = mock(EventBus.class);
         presenter = new DataPresenter(eventBus);
         view = mock(DataView.class);

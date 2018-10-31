@@ -41,9 +41,8 @@ public class Project {
      *
      * @param id   Id for the project.
      * @param name Name of the project.
-     * @throws InvalidProjectNameException If project name is null or empty.
      */
-    private Project(final Long id, final String name) throws InvalidProjectNameException {
+    private Project(final Long id, final String name) {
         if (!isValid(name)) {
             throw new InvalidProjectNameException();
         }
@@ -110,7 +109,7 @@ public class Project {
             return this;
         }
 
-        public Project build() throws InvalidProjectNameException {
+        public Project build() {
             return new Project(id, projectName);
         }
     }

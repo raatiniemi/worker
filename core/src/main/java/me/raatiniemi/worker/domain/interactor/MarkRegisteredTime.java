@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
@@ -66,7 +65,7 @@ public class MarkRegisteredTime {
         return !timeIntervals.get(0).isRegistered();
     }
 
-    public List<TimeInterval> execute(List<TimeInterval> timeIntervals) throws DomainException {
+    public List<TimeInterval> execute(List<TimeInterval> timeIntervals) {
         List<TimeInterval> timeToUpdate = collectTimeToUpdate(timeIntervals);
         return timeIntervalRepository.update(timeToUpdate);
     }

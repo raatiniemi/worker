@@ -19,7 +19,6 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.util.Optional;
@@ -39,9 +38,8 @@ public class ClockIn {
      *
      * @param projectId Id for the project to clock in.
      * @param date      Date to clock in.
-     * @throws ActiveProjectException If project is active.
      */
-    public void execute(long projectId, Date date) throws DomainException {
+    public void execute(long projectId, Date date) {
         Optional<TimeInterval> value = timeIntervalRepository.findActiveByProjectId(projectId);
         if (value.isPresent()) {
             throw new ActiveProjectException();

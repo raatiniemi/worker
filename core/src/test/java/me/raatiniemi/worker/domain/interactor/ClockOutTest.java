@@ -23,7 +23,6 @@ import org.junit.runners.JUnit4;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
@@ -45,7 +44,7 @@ public class ClockOutTest {
     }
 
     @Test(expected = InactiveProjectException.class)
-    public void execute_withoutActiveTime() throws DomainException {
+    public void execute_withoutActiveTime() {
         when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.empty());
 
@@ -54,7 +53,7 @@ public class ClockOutTest {
     }
 
     @Test
-    public void execute() throws DomainException {
+    public void execute() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();

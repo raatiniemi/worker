@@ -24,7 +24,6 @@ import org.junit.runners.JUnit4;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
@@ -45,7 +44,7 @@ public class ClockInTest {
     }
 
     @Test(expected = ActiveProjectException.class)
-    public void execute_withActiveTime() throws DomainException {
+    public void execute_withActiveTime() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();
@@ -57,7 +56,7 @@ public class ClockInTest {
     }
 
     @Test
-    public void execute() throws DomainException {
+    public void execute() {
         when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.empty());
 

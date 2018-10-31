@@ -39,9 +39,8 @@ public class ClockOut {
      *
      * @param projectId Id for the project to clock out.
      * @param date      Date to clock out.
-     * @throws InactiveProjectException If project is inactive.
      */
-    public void execute(long projectId, Date date) throws DomainException {
+    public void execute(long projectId, Date date) {
         Optional<TimeInterval> value = timeIntervalRepository.findActiveByProjectId(projectId);
         if (!value.isPresent()) {
             throw new InactiveProjectException();

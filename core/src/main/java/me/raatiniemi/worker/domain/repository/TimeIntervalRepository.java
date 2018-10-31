@@ -18,7 +18,6 @@ package me.raatiniemi.worker.domain.repository;
 
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.util.Optional;
@@ -33,54 +32,48 @@ public interface TimeIntervalRepository {
      * @param project Project for which to use as filter.
      * @param milliseconds Starting point in milliseconds.
      * @return Time intervals, or active time interval, for project since starting point.
-     * @throws DomainException If domain rules are violated.
      */
-    List<TimeInterval> findAll(Project project, long milliseconds) throws DomainException;
+    List<TimeInterval> findAll(Project project, long milliseconds);
 
     /**
      * Get time by id.
      *
      * @param id Id for the time.
      * @return Time, or null if none was found.
-     * @throws DomainException If domain rules are violated.
      */
-    Optional<TimeInterval> findById(long id) throws DomainException;
+    Optional<TimeInterval> findById(long id);
 
     /**
      * Get active time for project.
      *
      * @param projectId Id for project.
      * @return Active time for project, or null if project is inactive.
-     * @throws DomainException If domain rules are violated.
      */
-    Optional<TimeInterval> findActiveByProjectId(long projectId) throws DomainException;
+    Optional<TimeInterval> findActiveByProjectId(long projectId);
 
     /**
      * Add time.
      *
      * @param timeInterval Time to add.
      * @return Added time.
-     * @throws DomainException If domain rules are violated.
      */
-    Optional<TimeInterval> add(TimeInterval timeInterval) throws DomainException;
+    Optional<TimeInterval> add(TimeInterval timeInterval);
 
     /**
      * Update time.
      *
      * @param timeInterval Time to update.
      * @return Updated time.
-     * @throws DomainException If domain rules are violated.
      */
-    Optional<TimeInterval> update(TimeInterval timeInterval) throws DomainException;
+    Optional<TimeInterval> update(TimeInterval timeInterval);
 
     /**
      * Update items.
      *
      * @param timeIntervals Items to update.
      * @return Updated items.
-     * @throws DomainException If domain rules are violated.
      */
-    List<TimeInterval> update(List<TimeInterval> timeIntervals) throws DomainException;
+    List<TimeInterval> update(List<TimeInterval> timeIntervals);
 
     /**
      * Remove time by id.

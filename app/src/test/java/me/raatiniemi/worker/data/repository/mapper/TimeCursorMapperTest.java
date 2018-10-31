@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
@@ -106,7 +105,7 @@ public class TimeCursorMapperTest {
     }
 
     @Test
-    public void transform() throws ClockOutBeforeClockInException {
+    public void transform() {
         TimeCursorMapper mapper = new TimeCursorMapper();
         TimeInterval actual = mapper.transform(cursor);
 

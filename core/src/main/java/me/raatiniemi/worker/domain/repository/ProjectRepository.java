@@ -18,7 +18,6 @@ package me.raatiniemi.worker.domain.repository;
 
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.util.Optional;
 
@@ -30,36 +29,32 @@ public interface ProjectRepository {
      * Get projects.
      *
      * @return Projects.
-     * @throws DomainException If domain rules are violated.
      */
-    List<Project> findAll() throws DomainException;
+    List<Project> findAll();
 
     /**
      * Find project by name.
      *
      * @param projectName Project name to search for.
      * @return Project with name, or null.
-     * @throws DomainException If domain rules are violated.
      */
-    Optional<Project> findByName(String projectName) throws DomainException;
+    Optional<Project> findByName(String projectName);
 
     /**
      * Get project by id.
      *
      * @param id Id for the project.
      * @return Project, or null if none was found.
-     * @throws DomainException If domain rules are violated.
      */
-    Optional<Project> findById(long id) throws DomainException;
+    Optional<Project> findById(long id);
 
     /**
      * Add a new project.
      *
      * @param project Project to add.
      * @return Added project.
-     * @throws DomainException If domain rules are violated.
      */
-    Optional<Project> add(Project project) throws DomainException;
+    Optional<Project> add(Project project);
 
     /**
      * Remove project by id.

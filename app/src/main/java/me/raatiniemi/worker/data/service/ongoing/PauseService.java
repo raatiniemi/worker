@@ -21,7 +21,6 @@ import android.content.Intent;
 import java.util.Date;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProject;
@@ -60,7 +59,7 @@ public class PauseService extends OngoingService {
         }
     }
 
-    private void clockOutProjectNow(long projectId) throws DomainException {
+    private void clockOutProjectNow(long projectId) {
         try {
             ClockOut clockOut = buildClockOutUseCase();
             clockOut.execute(projectId, new Date());

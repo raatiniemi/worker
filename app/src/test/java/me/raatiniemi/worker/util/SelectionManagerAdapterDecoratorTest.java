@@ -34,7 +34,7 @@ public class SelectionManagerAdapterDecoratorTest extends RobolectricTestCase {
     private SelectionManager<String> selectionManager;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         adapter = mock(RecyclerView.Adapter.class);
         selectionListener = mock(SelectionListener.class);
 

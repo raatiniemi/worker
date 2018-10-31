@@ -30,7 +30,6 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
@@ -85,21 +84,21 @@ public class GetTimesheetTest {
     }
 
     @Test
-    public void execute_hideRegisteredTime() throws DomainException {
+    public void execute_hideRegisteredTime() {
         useCase.execute(1L, 0, true);
 
         verify(repository).getTimesheetWithoutRegisteredEntries(eq(1L), eq(pageRequest));
     }
 
     @Test
-    public void execute_withRegisteredTime() throws DomainException {
+    public void execute_withRegisteredTime() {
         useCase.execute(1L, 0, false);
 
         verify(repository).getTimesheet(eq(1L), eq(pageRequest));
     }
 
     @Test
-    public void execute_withSortedDatesHidingRegisteredTime() throws DomainException {
+    public void execute_withSortedDatesHidingRegisteredTime() {
         when(repository.getTimesheetWithoutRegisteredEntries(1L, pageRequest))
                 .thenReturn(new HashMap<Date, Set<TimesheetItem>>() {{
                     put(new Date(1L), getShuffledSet());
@@ -117,7 +116,7 @@ public class GetTimesheetTest {
     }
 
     @Test
-    public void execute_withSortedDatesWithRegisteredTime() throws DomainException {
+    public void execute_withSortedDatesWithRegisteredTime() {
         when(repository.getTimesheet(1L, pageRequest))
                 .thenReturn(new HashMap<Date, Set<TimesheetItem>>() {{
                     put(new Date(1L), getShuffledSet());

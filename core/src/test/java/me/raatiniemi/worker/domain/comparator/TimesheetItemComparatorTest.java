@@ -24,7 +24,6 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
@@ -50,7 +49,7 @@ public class TimesheetItemComparatorTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters() throws ClockOutBeforeClockInException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {

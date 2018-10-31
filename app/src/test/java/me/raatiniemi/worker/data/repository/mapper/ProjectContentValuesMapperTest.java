@@ -23,7 +23,6 @@ import org.junit.Test;
 
 import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertEquals;
@@ -37,13 +36,13 @@ public class ProjectContentValuesMapperTest extends RobolectricTestCase {
         return contentValues;
     }
 
-    private static Project createProject() throws InvalidProjectNameException {
+    private static Project createProject() {
         return Project.builder("Name")
                 .build();
     }
 
     @Test
-    public void transform() throws InvalidProjectNameException {
+    public void transform() {
         ProjectContentValuesMapper entityMapper = new ProjectContentValuesMapper();
 
         ContentValues expected = createContentValues();

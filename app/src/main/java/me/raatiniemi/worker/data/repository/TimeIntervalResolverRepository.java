@@ -34,7 +34,6 @@ import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchE
 import me.raatiniemi.worker.data.repository.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.repository.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
@@ -52,7 +51,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @NonNull
-    private List<TimeInterval> fetch(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+    private List<TimeInterval> fetch(@Nullable Cursor cursor) {
         List<TimeInterval> timeIntervals = new ArrayList<>();
         if (isNull(cursor)) {
             return timeIntervals;
@@ -72,7 +71,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @NonNull
-    private Optional<TimeInterval> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+    private Optional<TimeInterval> fetchRow(@Nullable Cursor cursor) {
         if (isNull(cursor)) {
             return Optional.empty();
         }
@@ -90,7 +89,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public List<TimeInterval> findAll(Project project, long milliseconds) throws DomainException {
+    public List<TimeInterval> findAll(Project project, long milliseconds) {
         requireNonNull(project);
 
         Cursor cursor = getContentResolver().query(
@@ -104,7 +103,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public Optional<TimeInterval> findById(final long id) throws ClockOutBeforeClockInException {
+    public Optional<TimeInterval> findById(final long id) {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getTimeItemUri(id),
                 ProviderContract.getTimeColumns(),
@@ -129,7 +128,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public Optional<TimeInterval> add(final TimeInterval timeInterval) throws ClockOutBeforeClockInException {
+    public Optional<TimeInterval> add(final TimeInterval timeInterval) {
         requireNonNull(timeInterval);
 
         final ContentValues values = contentValuesMapper.transform(timeInterval);
@@ -142,7 +141,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public Optional<TimeInterval> update(final TimeInterval timeInterval) throws ClockOutBeforeClockInException {
+    public Optional<TimeInterval> update(final TimeInterval timeInterval) {
         requireNonNull(timeInterval);
 
         getContentResolver().update(
@@ -156,7 +155,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public List<TimeInterval> update(List<TimeInterval> timeIntervals) throws ClockOutBeforeClockInException {
+    public List<TimeInterval> update(List<TimeInterval> timeIntervals) {
         requireNonNull(timeIntervals);
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();

@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 
@@ -39,7 +38,7 @@ public class RemoveProjectTest {
     }
 
     @Test
-    public void execute() throws DomainException {
+    public void execute() {
         Project project = Project.builder("Project name")
                 .id(1L)
                 .build();

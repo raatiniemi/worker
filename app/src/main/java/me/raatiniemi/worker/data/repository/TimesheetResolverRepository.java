@@ -31,7 +31,6 @@ import java.util.Set;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.repository.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
@@ -55,7 +54,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @NonNull
-    private Optional<TimeInterval> fetchRow(@Nullable Cursor cursor) throws ClockOutBeforeClockInException {
+    private Optional<TimeInterval> fetchRow(@Nullable Cursor cursor) {
         if (isNull(cursor)) {
             return Optional.empty();
         }
@@ -73,7 +72,7 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
     }
 
     @NonNull
-    private Optional<TimeInterval> get(final long id) throws ClockOutBeforeClockInException {
+    private Optional<TimeInterval> get(final long id) {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getTimeItemUri(id),
                 ProviderContract.getTimeColumns(),

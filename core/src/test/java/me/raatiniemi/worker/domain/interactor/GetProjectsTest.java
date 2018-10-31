@@ -24,7 +24,6 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
@@ -52,7 +51,7 @@ public class GetProjectsTest {
     }
 
     @Test
-    public void execute() throws DomainException {
+    public void execute() {
         List<Project> projects = new ArrayList<>();
         projects.add(buildProject(1L, "Project #1"));
         projects.add(buildProject(2L, "Project #2"));

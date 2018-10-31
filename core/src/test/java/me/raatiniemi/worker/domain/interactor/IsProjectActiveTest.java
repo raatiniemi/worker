@@ -37,12 +37,12 @@ public class IsProjectActiveTest {
     private TimeIntervalRepository timeIntervalRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         timeIntervalRepository = mock(TimeIntervalRepository.class);
     }
 
     @Test
-    public void execute_withoutTime() throws DomainException {
+    public void execute_withoutTime() {
         when(timeIntervalRepository.findActiveByProjectId(1L))
                 .thenReturn(Optional.empty());
 
@@ -51,7 +51,7 @@ public class IsProjectActiveTest {
     }
 
     @Test
-    public void execute_withActiveTime() throws DomainException {
+    public void execute_withActiveTime() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .stopInMilliseconds(0L)
                 .build();

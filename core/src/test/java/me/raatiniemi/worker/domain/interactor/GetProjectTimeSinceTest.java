@@ -23,7 +23,6 @@ import org.junit.runners.JUnit4;
 
 import java.util.Calendar;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
@@ -64,7 +63,7 @@ public class GetProjectTimeSinceTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         timeIntervalRepository = mock(TimeIntervalRepository.class);
         getProjectTimeSince = new GetProjectTimeSince(timeIntervalRepository);
         project = Project.builder("Name")
@@ -73,7 +72,7 @@ public class GetProjectTimeSinceTest {
     }
 
     @Test
-    public void execute_withDay() throws DomainException {
+    public void execute_withDay() {
         getProjectTimeSince.execute(project, GetProjectTimeSince.DAY);
 
         verify(timeIntervalRepository)
@@ -84,7 +83,7 @@ public class GetProjectTimeSinceTest {
     }
 
     @Test
-    public void execute_withWeek() throws DomainException {
+    public void execute_withWeek() {
         getProjectTimeSince.execute(project, GetProjectTimeSince.WEEK);
 
         verify(timeIntervalRepository)
@@ -95,7 +94,7 @@ public class GetProjectTimeSinceTest {
     }
 
     @Test
-    public void execute_withMonth() throws DomainException {
+    public void execute_withMonth() {
         getProjectTimeSince.execute(project, GetProjectTimeSince.MONTH);
 
         verify(timeIntervalRepository)
@@ -106,7 +105,7 @@ public class GetProjectTimeSinceTest {
     }
 
     @Test(expected = InvalidStartingPointException.class)
-    public void execute_withInvalidStartingPoint() throws DomainException {
+    public void execute_withInvalidStartingPoint() {
         getProjectTimeSince.execute(project, -1);
     }
 }

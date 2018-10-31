@@ -24,7 +24,6 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
@@ -43,7 +42,7 @@ public class MarkRegisteredTimeTest {
     }
 
     @Test
-    public void execute_withMultipleUnregisteredItems() throws DomainException {
+    public void execute_withMultipleUnregisteredItems() {
         List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
         timeIntervalsToUpdate.add(
                 TimeIntervalFactory.builder()
@@ -90,7 +89,7 @@ public class MarkRegisteredTimeTest {
     }
 
     @Test
-    public void execute_withMultipleRegisteredItems() throws DomainException {
+    public void execute_withMultipleRegisteredItems() {
         List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
         timeIntervalsToUpdate.add(
                 TimeIntervalFactory.builder()
@@ -137,7 +136,7 @@ public class MarkRegisteredTimeTest {
     }
 
     @Test
-    public void execute_withMultipleItems() throws DomainException {
+    public void execute_withMultipleItems() {
         List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
         timeIntervalsToUpdate.add(
                 TimeIntervalFactory.builder()

@@ -22,7 +22,6 @@ import java.util.Date;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.exception.ActiveProjectException;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.ClockIn;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -60,7 +59,7 @@ public class ResumeService extends OngoingService {
         }
     }
 
-    private void clockInProjectNow(long projectId) throws DomainException {
+    private void clockInProjectNow(long projectId) {
         try {
             ClockIn clockIn = buildClockInUseCase();
             clockIn.execute(projectId, new Date());

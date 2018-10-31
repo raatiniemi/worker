@@ -27,7 +27,6 @@ import java.util.List;
 
 import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 
@@ -51,7 +50,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         contentResolver = mock(ContentResolver.class);
         repository = new TimeIntervalResolverRepository(contentResolver);
 
@@ -61,7 +60,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findProjectTimeSinceStartingPointInMilliseconds_withNullCursor() throws DomainException {
+    public void findProjectTimeSinceStartingPointInMilliseconds_withNullCursor() {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectItemTimeUri(1),
@@ -78,7 +77,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findProjectTimeSinceStartingPointInMilliseconds_withEmptyCursor() throws DomainException {
+    public void findProjectTimeSinceStartingPointInMilliseconds_withEmptyCursor() {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
@@ -97,7 +96,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findProjectTimeSinceStartingPointInMilliseconds_withRow() throws DomainException {
+    public void findProjectTimeSinceStartingPointInMilliseconds_withRow() {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
@@ -116,7 +115,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findProjectTimeSinceStartingPointInMilliseconds_withRows() throws DomainException {
+    public void findProjectTimeSinceStartingPointInMilliseconds_withRows() {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
                 contentResolver.query(

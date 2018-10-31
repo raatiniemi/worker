@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
@@ -44,7 +43,7 @@ public class GetProjectTest {
     }
 
     @Test
-    public void execute() throws DomainException {
+    public void execute() {
         Project project = Project.builder("Name")
                 .build();
         when(projectRepository.findById(eq(1L)))
@@ -56,7 +55,7 @@ public class GetProjectTest {
     }
 
     @Test(expected = NoProjectException.class)
-    public void execute_withoutProject() throws DomainException {
+    public void execute_withoutProject() {
         when(projectRepository.findById(eq(1L)))
                 .thenReturn(Optional.empty());
 

@@ -19,7 +19,6 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.Calendar;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
@@ -71,9 +70,8 @@ public class GetProjectTimeSince {
      * @param project       Project for which to get the registered time.
      * @param startingPoint Starting point, i.e. {@link #DAY}, {@link #WEEK}, or {@link #MONTH}.
      * @return Registered time for the project since the starting point.
-     * @throws DomainException If domain rules are violated.
      */
-    public List<TimeInterval> execute(Project project, int startingPoint) throws DomainException {
+    public List<TimeInterval> execute(Project project, int startingPoint) {
         return timeIntervalRepository.findAll(
                 project,
                 getMillisecondsForStartingPoint(startingPoint)

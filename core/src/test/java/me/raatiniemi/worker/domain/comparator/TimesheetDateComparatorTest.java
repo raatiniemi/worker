@@ -30,7 +30,7 @@ public class TimesheetDateComparatorTest {
     private TimesheetDateComparator comparator;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         comparator = new TimesheetDateComparator();
     }
 

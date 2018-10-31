@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.domain.repository.mapper;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
-
 /**
  * Interface for transforming to domain entity from another data source.
  * <p/>
@@ -36,7 +34,6 @@ public interface EntityMapper<T, F> {
      *
      * @param from Data to be transformed.
      * @return Transformed data.
-     * @throws DomainException If data violate domain rules.
      */
-    T transform(F from) throws DomainException;
+    T transform(F from);
 }

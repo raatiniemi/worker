@@ -21,7 +21,6 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 
 /**
@@ -30,7 +29,7 @@ import me.raatiniemi.worker.domain.model.TimeInterval;
 public class TimeCursorMapper implements CursorMapper<TimeInterval> {
     @Override
     @NonNull
-    public TimeInterval transform(@NonNull Cursor cursor) throws ClockOutBeforeClockInException {
+    public TimeInterval transform(@NonNull Cursor cursor) {
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(BaseColumns._ID));
         long projectId = cursor.getLong(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_PROJECT_ID));
         long start = cursor.getLong(cursor.getColumnIndexOrThrow(ProviderContract.COLUMN_TIME_START));

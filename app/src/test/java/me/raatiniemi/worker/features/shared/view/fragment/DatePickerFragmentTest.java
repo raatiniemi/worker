@@ -29,7 +29,7 @@ public class DatePickerFragmentTest extends RobolectricTestCase {
     private Calendar nextYear;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         fragment = DatePickerFragment.newInstance(
                 (view, year, month, dayOfMonth) -> {
                 }

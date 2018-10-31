@@ -84,7 +84,7 @@ public class PauseNotification extends OngoingNotification {
         }
     }
 
-    private List<TimeInterval> getRegisteredTime() throws DomainException {
+    private List<TimeInterval> getRegisteredTime() {
         GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(
                 getTimeIntervalRepository()
         );
@@ -110,7 +110,7 @@ public class PauseNotification extends OngoingNotification {
         return new GetProjectTimeSince(repository);
     }
 
-    private long includeActiveTime(long registeredTime) throws DomainException {
+    private long includeActiveTime(long registeredTime) {
         Optional<TimeInterval> value = getActiveTimeIntervalForProject();
         if (value.isPresent()) {
             TimeInterval activeTimeInterval = value.get();
@@ -120,7 +120,7 @@ public class PauseNotification extends OngoingNotification {
         return registeredTime;
     }
 
-    private Optional<TimeInterval> getActiveTimeIntervalForProject() throws DomainException {
+    private Optional<TimeInterval> getActiveTimeIntervalForProject() {
         return getTimeIntervalRepository()
                 .findActiveByProjectId(getProject().getId());
     }

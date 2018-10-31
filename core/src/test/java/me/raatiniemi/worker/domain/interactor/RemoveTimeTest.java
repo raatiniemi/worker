@@ -24,7 +24,6 @@ import org.junit.runners.JUnit4;
 import java.util.Collections;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.factory.TimeIntervalFactory;
@@ -45,7 +44,7 @@ public class RemoveTimeTest {
     }
 
     @Test
-    public void execute_withItem() throws DomainException {
+    public void execute_withItem() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .id(1L)
                 .build();
@@ -56,7 +55,7 @@ public class RemoveTimeTest {
     }
 
     @Test
-    public void execute_withItems() throws DomainException {
+    public void execute_withItems() {
         TimeInterval timeInterval = TimeIntervalFactory.builder()
                 .id(1L)
                 .build();

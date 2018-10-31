@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
@@ -46,7 +45,7 @@ public class CreateProjectTest {
     }
 
     @Test(expected = ProjectAlreadyExistsException.class)
-    public void execute_withExistingProject() throws DomainException {
+    public void execute_withExistingProject() {
         Project project = Project.builder("Project Name")
                 .build();
 
@@ -57,7 +56,7 @@ public class CreateProjectTest {
     }
 
     @Test
-    public void execute() throws DomainException {
+    public void execute() {
         Project project = Project.builder("Project Name")
                 .build();
         when(projectRepository.findByName(eq("Project Name")))
@@ -71,7 +70,7 @@ public class CreateProjectTest {
     }
 
     @Test(expected = NoProjectException.class)
-    public void execute_with() throws DomainException {
+    public void execute_with() {
         Project project = Project.builder("Project Name")
                 .build();
         when(projectRepository.findByName(eq("Project Name")))

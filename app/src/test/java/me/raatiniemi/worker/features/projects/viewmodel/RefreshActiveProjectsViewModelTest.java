@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import rx.observers.TestSubscriber;
 
@@ -65,7 +64,7 @@ public class RefreshActiveProjectsViewModelTest {
     }
 
     @Test
-    public void positionsForActiveProjects_withoutActiveProjects() throws DomainException {
+    public void positionsForActiveProjects_withoutActiveProjects() {
         vm.output().positionsForActiveProjects()
                 .subscribe(positionsForActiveProjects);
 
@@ -76,7 +75,7 @@ public class RefreshActiveProjectsViewModelTest {
     }
 
     @Test
-    public void positionsForActiveProjects_withActiveProject() throws DomainException {
+    public void positionsForActiveProjects_withActiveProject() {
         vm.output().positionsForActiveProjects()
                 .subscribe(positionsForActiveProjects);
 

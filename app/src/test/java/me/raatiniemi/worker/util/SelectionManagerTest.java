@@ -33,7 +33,7 @@ public class SelectionManagerTest {
     private SelectionManager<String> selectionManager;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         selectionManager = new SelectionManager<>();
     }
 

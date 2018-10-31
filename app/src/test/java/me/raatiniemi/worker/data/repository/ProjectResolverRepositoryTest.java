@@ -59,7 +59,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findAll_withNullCursor() throws InvalidProjectNameException {
+    public void findAll_withNullCursor() {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectStreamUri(),
@@ -76,7 +76,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findAll_withEmptyCursor() throws InvalidProjectNameException {
+    public void findAll_withEmptyCursor() {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
@@ -95,7 +95,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findAll_withRow() throws InvalidProjectNameException {
+    public void findAll_withRow() {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
@@ -114,7 +114,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findAll_withRows() throws InvalidProjectNameException {
+    public void findAll_withRows() {
         Cursor cursor = buildCursorWithNumberOfItems(5);
         when(
                 contentResolver.query(
@@ -133,7 +133,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findByName_withNullCursor() throws InvalidProjectNameException {
+    public void findByName_withNullCursor() {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectStreamUri(),
@@ -150,7 +150,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findByName_withEmptyCursor() throws InvalidProjectNameException {
+    public void findByName_withEmptyCursor() {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
@@ -169,7 +169,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findByName_withProject() throws InvalidProjectNameException {
+    public void findByName_withProject() {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
@@ -188,7 +188,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findById_withNullCursor() throws InvalidProjectNameException {
+    public void findById_withNullCursor() {
         when(
                 contentResolver.query(
                         ProviderContract.getProjectItemUri(1),
@@ -205,7 +205,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findById_withoutRow() throws InvalidProjectNameException {
+    public void findById_withoutRow() {
         Cursor cursor = CursorFactory.buildEmpty();
         when(
                 contentResolver.query(
@@ -224,7 +224,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void findById_withRow() throws InvalidProjectNameException {
+    public void findById_withRow() {
         Cursor cursor = buildCursorWithNumberOfItems(1);
         when(
                 contentResolver.query(
@@ -243,7 +243,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
     }
 
     @Test
-    public void add() throws InvalidProjectNameException {
+    public void add() {
         Project project = Project.builder("Name")
                 .build();
         Cursor cursor = buildCursorWithNumberOfItems(1);

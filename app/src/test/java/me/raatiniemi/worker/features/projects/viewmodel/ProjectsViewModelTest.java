@@ -26,7 +26,6 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
@@ -49,7 +48,7 @@ public class ProjectsViewModelTest {
     private GetProjectTimeSince getProjectTimeSince;
     private ProjectsViewModel.ViewModel vm;
 
-    private List<Project> getProjects() throws InvalidProjectNameException {
+    private List<Project> getProjects() {
         Project project = Project.builder("Name")
                 .build();
 
@@ -67,7 +66,7 @@ public class ProjectsViewModelTest {
     }
 
     @Test
-    public void projects_withGetProjectsError() throws DomainException {
+    public void projects_withGetProjectsError() {
         when(getProjects.execute())
                 .thenThrow(DomainException.class);
         vm.error().projectsError().subscribe(projectsError);
@@ -80,7 +79,7 @@ public class ProjectsViewModelTest {
     }
 
     @Test
-    public void projects_withGetProjectTimeSinceError() throws DomainException {
+    public void projects_withGetProjectTimeSinceError() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), eq(GetProjectTimeSince.MONTH)))
@@ -95,7 +94,7 @@ public class ProjectsViewModelTest {
     }
 
     @Test
-    public void projects() throws DomainException {
+    public void projects() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
@@ -112,7 +111,7 @@ public class ProjectsViewModelTest {
     }
 
     @Test
-    public void projects_withWeekAsTimeSummaryStartingPoint() throws DomainException {
+    public void projects_withWeekAsTimeSummaryStartingPoint() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
@@ -130,7 +129,7 @@ public class ProjectsViewModelTest {
     }
 
     @Test
-    public void projects_withInvalidTimeSummaryStartingPoint() throws DomainException {
+    public void projects_withInvalidTimeSummaryStartingPoint() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
         when(getProjectTimeSince.execute(any(Project.class), anyInt()))
@@ -148,7 +147,7 @@ public class ProjectsViewModelTest {
     }
 
     @Test
-    public void projects_withoutProjects() throws DomainException {
+    public void projects_withoutProjects() {
         when(getProjects.execute())
                 .thenReturn(Collections.emptyList());
         vm.error().projectsError().subscribe(projectsError);

@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 
 import static junit.framework.Assert.assertEquals;
@@ -46,7 +45,7 @@ public class ProjectCursorMapperTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters() throws InvalidProjectNameException {
+    public static Collection<Object[]> getParameters() {
         return Arrays.asList(
                 new Object[][]{
                         {
@@ -57,7 +56,7 @@ public class ProjectCursorMapperTest {
         );
     }
 
-    private static Project createProject() throws InvalidProjectNameException {
+    private static Project createProject() {
         return Project.builder("Name")
                 .id(1L)
                 .build();
@@ -76,7 +75,7 @@ public class ProjectCursorMapperTest {
     }
 
     @Test
-    public void transform() throws InvalidProjectNameException {
+    public void transform() {
         ProjectCursorMapper mapper = new ProjectCursorMapper();
         Project actual = mapper.transform(cursor);
 
