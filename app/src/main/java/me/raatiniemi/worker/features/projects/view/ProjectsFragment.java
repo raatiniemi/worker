@@ -31,6 +31,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -198,7 +199,7 @@ public class ProjectsFragment extends RxFragment
     }
 
     private void addCreatedProject(@NonNull Project project) {
-        ProjectsItem item = ProjectsItem.from(project);
+        ProjectsItem item = ProjectsItem.from(project, Collections.emptyList());
         int position = adapter.add(item);
 
         recyclerView.scrollToPosition(position);

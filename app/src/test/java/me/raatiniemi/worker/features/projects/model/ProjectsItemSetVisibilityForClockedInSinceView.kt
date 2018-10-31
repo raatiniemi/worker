@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.projects.model
 import android.view.View
 import android.widget.TextView
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.factory.TimeIntervalFactory
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,11 +31,12 @@ import java.util.*
 @RunWith(Parameterized::class)
 class ProjectsItemSetVisibilityForClockedInSinceView(
         private val expectedViewVisibility: Int,
-        private val project: Project
+        private val timeIntervals: List<TimeInterval>
 ) {
     @Test
     fun getClockedInSince() {
-        val projectsItem = ProjectsItem.from(project)
+        val project = Project.builder("Project #1").build()
+        val projectsItem = ProjectsItem.from(project, timeIntervals)
         val textView = mock(TextView::class.java)
 
         projectsItem.setVisibilityForClockedInSinceView(textView)
@@ -49,29 +51,25 @@ class ProjectsItemSetVisibilityForClockedInSinceView(
             get() = Arrays.asList(
                     arrayOf(
                             View.GONE,
-                            buildProjectWithActiveIndicator(false)
+                            getTimeIntervals(false)
                     ),
                     arrayOf(
                             View.VISIBLE,
-                            buildProjectWithActiveIndicator(true)
+                            getTimeIntervals(true)
                     )
             )
 
-        private fun buildProjectWithActiveIndicator(isProjectActive: Boolean): Project {
-            val project = Project.builder("Project #1").build()
-
+        private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
-                val timeIntervals = listOf(
+                return listOf(
                         TimeIntervalFactory.builder(1L)
                                 .startInMilliseconds(1)
                                 .stopInMilliseconds(0)
                                 .build()
                 )
-
-                project.addTime(timeIntervals)
             }
 
-            return project
+            return emptyList()
         }
     }
 }

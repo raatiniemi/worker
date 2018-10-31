@@ -49,14 +49,13 @@ class ProjectsItemGetClockedInSinceTest(
     }
 
     private fun assertWithoutTimeIntervals() {
-        val projectsItem = ProjectsItem.from(project)
+        val projectsItem = ProjectsItem.from(project, emptyList())
 
         assertNull(message, projectsItem.getClockedInSince(resources))
     }
 
     private fun assertWithTimeIntervals() {
-        project.addTime(timeIntervals)
-        val projectsItem = ProjectsItem.from(project)
+        val projectsItem = ProjectsItem.from(project, timeIntervals)
 
         assertEquals(expected, projectsItem.getClockedInSince(resources))
     }

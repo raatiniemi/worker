@@ -16,15 +16,10 @@
 
 package me.raatiniemi.worker.domain.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.util.Optional;
 
-import static java.util.Objects.requireNonNull;
 import static me.raatiniemi.worker.domain.validator.ProjectName.isValid;
 
 /**
@@ -40,11 +35,6 @@ public class Project {
      * Name for the project.
      */
     private final String name;
-
-    /**
-     * Time registered for the project.
-     */
-    private final List<TimeInterval> timeIntervals = new ArrayList<>();
 
     /**
      * Constructor.
@@ -84,61 +74,6 @@ public class Project {
         return name;
     }
 
-    /**
-     * Getter method for the project time.
-     *
-     * @return Project time.
-     */
-    public List<TimeInterval> getTimeIntervals() {
-        return Collections.unmodifiableList(timeIntervals);
-    }
-
-    /**
-     * Add time for the project from a list.
-     *
-     * @param timeIntervals Time to add to the project.
-     */
-    public void addTime(final List<TimeInterval> timeIntervals) {
-        requireNonNull(timeIntervals, "Time is not allowed to be null");
-
-        // If the list with items are empty, there's no
-        // need to attempt to add them.
-        if (timeIntervals.isEmpty()) {
-            return;
-        }
-
-        this.timeIntervals.addAll(timeIntervals);
-    }
-
-    /**
-     * Retrieve the active time, if available.
-     *
-     * @return Active time, or empty optional if project is not active.
-     */
-    private Optional<TimeInterval> getActiveTimeInterval() {
-        if (timeIntervals.isEmpty()) {
-            return Optional.empty();
-        }
-
-        TimeInterval timeInterval = timeIntervals.get(0);
-        if (timeInterval.isActive()) {
-            return Optional.of(timeInterval);
-        }
-
-        return Optional.empty();
-    }
-
-    /**
-     * Check if the project is active.
-     *
-     * @return True if the project is active, otherwise false.
-     */
-    public boolean isActive() {
-        Optional<TimeInterval> value = getActiveTimeInterval();
-
-        return value.isPresent();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -151,8 +86,7 @@ public class Project {
 
         Project project = (Project) o;
         return Objects.equals(getId(), project.getId())
-                && getName().equals(project.getName())
-                && getTimeIntervals().equals(project.getTimeIntervals());
+                && getName().equals(project.getName());
     }
 
     @Override
@@ -160,7 +94,6 @@ public class Project {
         int result = 17;
         result = 31 * result + Objects.hashCode(getId());
         result = 31 * result + getName().hashCode();
-        result = 31 * result + getTimeIntervals().hashCode();
         return result;
     }
 

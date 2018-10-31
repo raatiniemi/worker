@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.projects.model
 
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.factory.TimeIntervalFactory
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -28,11 +29,12 @@ import java.util.*
 @RunWith(Parameterized::class)
 class ProjectsItemGetHelpTextForClockActivityToggleTest(
         private val expected: String,
-        private val project: Project
+        private val timeIntervals: List<TimeInterval>
 ) : ProjectsItemResourceTest() {
     @Test
     fun getHelpTextForClockActivityToggle() {
-        val projectsItem = ProjectsItem.from(project)
+        val project = Project.builder("Project #1").build()
+        val projectsItem = ProjectsItem.from(project, timeIntervals)
 
         assertEquals(expected, projectsItem.getHelpTextForClockActivityToggle(resources))
     }
@@ -44,29 +46,25 @@ class ProjectsItemGetHelpTextForClockActivityToggleTest(
             get() = Arrays.asList(
                     arrayOf(
                             "Clock in %s",
-                            createProjectWithActiveIndicator(false)
+                            getTimeIntervals(false)
                     ),
                     arrayOf(
                             "Clock out %s",
-                            createProjectWithActiveIndicator(true)
+                            getTimeIntervals(true)
                     )
             )
 
-        private fun createProjectWithActiveIndicator(isProjectActive: Boolean): Project {
-            val project = Project.builder("Project #1").build()
-
+        private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
-                val timeIntervals = listOf(
+                return listOf(
                         TimeIntervalFactory.builder(1L)
                                 .startInMilliseconds(1)
                                 .stopInMilliseconds(0)
                                 .build()
                 )
-
-                project.addTime(timeIntervals)
             }
 
-            return project
+            return emptyList()
         }
     }
 }

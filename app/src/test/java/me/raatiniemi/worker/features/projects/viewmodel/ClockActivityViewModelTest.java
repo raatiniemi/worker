@@ -76,8 +76,8 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockIn_withError() throws DomainException {
-        Project project = buildProjectWithActiveIndicator(false);
-        ProjectsItem projectsItem = ProjectsItem.from(project);
+        Project project = buildProject();
+        ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         doThrow(ClockOutBeforeClockInException.class).when(clockIn).execute(eq(1L), any());
 
@@ -95,8 +95,8 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockIn() throws DomainException {
-        Project project = buildProjectWithActiveIndicator(false);
-        ProjectsItem projectsItem = ProjectsItem.from(project);
+        Project project = buildProject();
+        ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.MONTH)))
                 .thenReturn(getActiveTimeIntervals());
@@ -116,8 +116,8 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockIn_withDifferentStartingPoint() throws DomainException {
-        Project project = buildProjectWithActiveIndicator(false);
-        ProjectsItem projectsItem = ProjectsItem.from(project);
+        Project project = buildProject();
+        ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.DAY)))
                 .thenReturn(getActiveTimeIntervals());
@@ -138,8 +138,8 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockIn_withInvalidStartingPoint() throws DomainException {
-        Project project = buildProjectWithActiveIndicator(false);
-        ProjectsItem projectsItem = ProjectsItem.from(project);
+        Project project = buildProject();
+        ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.MONTH)))
                 .thenReturn(getActiveTimeIntervals());
@@ -160,8 +160,8 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockOut_withError() throws DomainException {
-        Project project = buildProjectWithActiveIndicator(true);
-        ProjectsItem projectsItem = ProjectsItem.from(project);
+        Project project = buildProject();
+        ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         doThrow(ClockOutBeforeClockInException.class).when(clockOut).execute(eq(1L), any());
 
@@ -179,8 +179,8 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockOut() throws DomainException {
-        Project project = buildProjectWithActiveIndicator(true);
-        ProjectsItem projectsItem = ProjectsItem.from(project);
+        Project project = buildProject();
+        ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.MONTH)))
                 .thenReturn(Collections.emptyList());
@@ -200,8 +200,8 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockOut_withDifferentStartingPoint() throws DomainException {
-        Project project = buildProjectWithActiveIndicator(true);
-        ProjectsItem projectsItem = ProjectsItem.from(project);
+        Project project = buildProject();
+        ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.DAY)))
                 .thenReturn(Collections.emptyList());
@@ -222,8 +222,8 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockOut_withInvalidStartingPoint() throws DomainException {
-        Project project = buildProjectWithActiveIndicator(true);
-        ProjectsItem projectsItem = ProjectsItem.from(project);
+        Project project = buildProject();
+        ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.MONTH)))
                 .thenReturn(Collections.emptyList());
@@ -243,16 +243,10 @@ public class ClockActivityViewModelTest {
     }
 
     @Nonnull
-    private Project buildProjectWithActiveIndicator(boolean isProjectActive) {
-        Project project = Project.builder("Project #1")
+    private Project buildProject() {
+        return Project.builder("Project #1")
                 .id(1L)
                 .build();
-
-        if (isProjectActive) {
-            project.addTime(getActiveTimeIntervals());
-        }
-
-        return project;
     }
 
     @NonNull

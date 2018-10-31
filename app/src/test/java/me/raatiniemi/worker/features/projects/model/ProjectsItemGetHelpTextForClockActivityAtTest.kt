@@ -24,16 +24,16 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import java.util.*
 
 @RunWith(Parameterized::class)
 class ProjectsItemGetHelpTextForClockActivityAtTest(
         private val expected: String,
-        private val project: Project
+        private val timeIntervals: List<TimeInterval>
 ) : ProjectsItemResourceTest() {
     @Test
     fun getHelpTextForClockActivityAt() {
-        val projectsItem = ProjectsItem.from(project)
+        val project = Project.builder("Project #1").build()
+        val projectsItem = ProjectsItem.from(project, timeIntervals)
 
         assertEquals(expected, projectsItem.getHelpTextForClockActivityAt(resources))
     }
@@ -45,29 +45,25 @@ class ProjectsItemGetHelpTextForClockActivityAtTest(
             get() = listOf(
                     arrayOf(
                             "Clock in %s at",
-                            buildProjectWithActiveIndicator(false)
+                            getTimeIntervals(false)
                     ),
                     arrayOf(
                             "Clock out %s at",
-                            buildProjectWithActiveIndicator(true)
+                            getTimeIntervals(true)
                     )
             )
 
-        private fun buildProjectWithActiveIndicator(isProjectActive: Boolean): Project {
-            val project = Project.builder("Project #1").build()
-
+        private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
-                val timeIntervals = ArrayList<TimeInterval>()
-                timeIntervals.add(
+                return listOf(
                         TimeIntervalFactory.builder(1L)
                                 .startInMilliseconds(1)
                                 .stopInMilliseconds(0)
                                 .build()
                 )
-                project.addTime(timeIntervals)
             }
 
-            return project
+            return emptyList()
         }
     }
 }

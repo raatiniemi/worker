@@ -78,7 +78,7 @@ class ProjectsItemEqualsHashCodeTest(
                 val project = Project.builder("Name")
                         .id(1L)
                         .build()
-                val projectsItem = ProjectsItem.from(project)
+                val projectsItem = ProjectsItem.from(project, emptyList())
 
                 return listOf(
                         arrayOf(
@@ -106,7 +106,8 @@ class ProjectsItemEqualsHashCodeTest(
                                 ProjectsItem.from(
                                         Project.builder("Project name")
                                                 .id(2L)
-                                                .build()
+                                                .build(),
+                                        emptyList()
                                 )
                         )
                 )

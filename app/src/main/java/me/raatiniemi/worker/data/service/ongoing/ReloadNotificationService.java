@@ -68,7 +68,7 @@ public class ReloadNotificationService extends OngoingService {
     }
 
     GetProjects buildGetProjectsUseCase() {
-        return new GetProjects(getProjectRepository(), getTimeIntervalRepository());
+        return new GetProjects(getProjectRepository());
     }
 
     private IsProjectActive buildIsProjectActiveUseCase() {

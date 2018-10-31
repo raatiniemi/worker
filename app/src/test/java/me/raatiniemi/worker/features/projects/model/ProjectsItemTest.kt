@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.features.projects.model
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.model.Project
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
@@ -27,21 +26,19 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class ProjectsItemTest {
     @Test
-    @Throws(InvalidProjectNameException::class)
     fun asProject() {
         val project = Project.builder("Project name")
                 .build()
-        val projectsItem = ProjectsItem.from(project)
+        val projectsItem = ProjectsItem.from(project, emptyList())
 
         assertSame(project, projectsItem.asProject())
     }
 
     @Test
-    @Throws(InvalidProjectNameException::class)
     fun getTitle() {
         val project = Project.builder("Project name")
                 .build()
-        val projectsItem = ProjectsItem.from(project)
+        val projectsItem = ProjectsItem.from(project, emptyList())
 
         assertEquals("Project name", projectsItem.title)
     }

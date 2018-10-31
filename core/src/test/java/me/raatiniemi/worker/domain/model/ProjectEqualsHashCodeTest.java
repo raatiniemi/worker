@@ -23,10 +23,8 @@ import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -93,29 +91,9 @@ public class ProjectEqualsHashCodeTest {
                                 Project.builder("Project name")
                                         .id(2L)
                                         .build()
-                        },
-                        {
-                                "With different registered time",
-                                Boolean.FALSE,
-                                project,
-                                buildProjectWithRegisteredTime()
                         }
                 }
         );
-    }
-
-    private static Project buildProjectWithRegisteredTime() throws DomainException {
-        Project project = Project.builder("Project name")
-                .id(1L)
-                .build();
-
-        project.addTime(
-                Collections.singletonList(
-                        TimeIntervalFactory.builder()
-                                .build()
-                )
-        );
-        return project;
     }
 
     @Test

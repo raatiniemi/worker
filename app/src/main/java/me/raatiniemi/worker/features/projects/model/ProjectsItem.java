@@ -57,10 +57,6 @@ public class ProjectsItem {
         return new ProjectsItem(project, registeredTime);
     }
 
-    public static ProjectsItem from(Project project) {
-        return ProjectsItem.from(project, project.getTimeIntervals());
-    }
-
     private static long calculateSummaryFromRegisteredTime(List<TimeInterval> registeredTime) {
         long timeSummary = 0;
 
