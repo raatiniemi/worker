@@ -18,12 +18,15 @@ package me.raatiniemi.worker.features.projects
 
 import me.raatiniemi.worker.domain.interactor.*
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
-import me.raatiniemi.worker.features.projects.viewmodel.*
+import me.raatiniemi.worker.features.projects.viewmodel.ClockActivityViewModel
+import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
+import me.raatiniemi.worker.features.projects.viewmodel.RefreshActiveProjectsViewModel
+import me.raatiniemi.worker.features.projects.viewmodel.RemoveProjectViewModel
 import org.koin.dsl.module.module
 
 val projectsModule = module {
     single {
-        val getProjects = GetProjects(get(), get())
+        val getProjects = GetProjects(get())
         val getProjectTimeSince = GetProjectTimeSince(get())
 
         ProjectsViewModel.ViewModel(getProjects, getProjectTimeSince)
@@ -32,10 +35,9 @@ val projectsModule = module {
     single {
         val clockIn = ClockIn(get())
         val clockOut = ClockOut(get())
-        val clockActivityChange = ClockActivityChange(get(), get(), clockIn, clockOut)
         val getProjectTimeSince = GetProjectTimeSince(get())
 
-        ClockActivityViewModel.ViewModel(clockActivityChange, getProjectTimeSince)
+        ClockActivityViewModel.ViewModel(clockIn, clockOut, getProjectTimeSince)
     }
 
     single {

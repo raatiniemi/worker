@@ -21,8 +21,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
@@ -40,15 +44,17 @@ public class ProjectsItem {
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"));
     private final Project project;
     private final long registeredTimeSummary;
+    private final TimeInterval activeTimeInterval;
 
-    public ProjectsItem(Project project, List<TimeInterval> registeredTime) {
+    private ProjectsItem(Project project, List<TimeInterval> registeredTime) {
         this.project = project;
 
         registeredTimeSummary = calculateSummaryFromRegisteredTime(registeredTime);
+        activeTimeInterval = findActiveTimeInterval(registeredTime);
     }
 
-    public ProjectsItem(Project project) {
-        this(project, project.getTimeIntervals());
+    public static ProjectsItem from(Project project, List<TimeInterval> registeredTime) {
+        return new ProjectsItem(project, registeredTime);
     }
 
     private static long calculateSummaryFromRegisteredTime(List<TimeInterval> registeredTime) {
@@ -59,6 +65,21 @@ public class ProjectsItem {
         }
 
         return timeSummary;
+    }
+
+    @Nullable
+    private static TimeInterval findActiveTimeInterval(@Nonnull List<TimeInterval> registeredTime) {
+        for (TimeInterval timeInterval : registeredTime) {
+            if (timeInterval.isActive()) {
+                return timeInterval;
+            }
+        }
+
+        return null;
+    }
+
+    private static String formattedElapsedTime(long elapsedTimeInMilliseconds) {
+        return intervalFormat.format(elapsedTimeInMilliseconds);
     }
 
     private static void showTextView(TextView textView) {
@@ -82,13 +103,19 @@ public class ProjectsItem {
     }
 
     public boolean isActive() {
-        return project.isActive();
+        return activeTimeInterval != null;
     }
 
     public String getTimeSummary() {
-        long registeredTimeWithElapsed = registeredTimeSummary + project.getElapsed();
+        return intervalFormat.format(calculateTimeSummary());
+    }
 
-        return intervalFormat.format(registeredTimeWithElapsed);
+    private long calculateTimeSummary() {
+        if (isActive()) {
+            return registeredTimeSummary + activeTimeInterval.getInterval();
+        }
+
+        return registeredTimeSummary;
     }
 
     public String getHelpTextForClockActivityToggle(Resources resources) {
@@ -120,7 +147,7 @@ public class ProjectsItem {
                 Locale.forLanguageTag("en_US"),
                 getClockedInSinceFormatTemplate(resources),
                 getFormattedClockedInSince(),
-                getFormattedElapsedTime()
+                formattedElapsedTime(activeTimeInterval.getInterval())
         );
     }
 
@@ -128,11 +155,16 @@ public class ProjectsItem {
         // TODO: Handle if the time session overlap days.
         // The timestamp should include the date it was
         // checked in, e.g. 21 May 1:06PM.
-        return timeFormat.format(project.getClockedInSince());
+        Date date = new Date(getClockedInSinceInMilliseconds());
+        return timeFormat.format(date);
     }
 
-    private String getFormattedElapsedTime() {
-        return intervalFormat.format(project.getElapsed());
+    public long getClockedInSinceInMilliseconds() {
+        if (isActive()) {
+            return activeTimeInterval.getStartInMilliseconds();
+        }
+
+        return 0;
     }
 
     public void setVisibilityForClockedInSinceView(TextView clockedInSinceView) {

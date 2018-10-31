@@ -23,6 +23,7 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
+import me.raatiniemi.worker.domain.interactor.IsProjectActive;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification;
 import timber.log.Timber;
@@ -44,6 +45,7 @@ public class ReloadNotificationService extends OngoingService {
         }
 
         GetProjects getProjects = buildGetProjectsUseCase();
+        IsProjectActive isProjectActive = buildIsProjectActiveUseCase();
         try {
             List<Project> projects = getProjects.execute();
             if (projects.isEmpty()) {
@@ -52,7 +54,7 @@ public class ReloadNotificationService extends OngoingService {
 
             //noinspection Convert2streamapi
             for (Project project : projects) {
-                if (project.isActive()) {
+                if (isProjectActive.execute(project.getId())) {
                     sendPauseNotification(project);
                 }
             }
@@ -66,7 +68,11 @@ public class ReloadNotificationService extends OngoingService {
     }
 
     GetProjects buildGetProjectsUseCase() {
-        return new GetProjects(getProjectRepository(), getTimeIntervalRepository());
+        return new GetProjects(getProjectRepository());
+    }
+
+    private IsProjectActive buildIsProjectActiveUseCase() {
+        return new IsProjectActive(getTimeIntervalRepository());
     }
 
     private void sendPauseNotification(Project project) {

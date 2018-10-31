@@ -16,13 +16,11 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
-import java.util.Calendar;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 /**
  * Use case for getting projects.
@@ -34,22 +32,12 @@ public class GetProjects {
     private final ProjectRepository projectRepository;
 
     /**
-     * Time interval repository.
-     */
-    private final TimeIntervalRepository timeIntervalRepository;
-
-    /**
      * Constructor.
+     *  @param projectRepository Project repository.
      *
-     * @param projectRepository Project repository.
-     * @param timeIntervalRepository    Time interval repository.
      */
-    public GetProjects(
-            ProjectRepository projectRepository,
-            TimeIntervalRepository timeIntervalRepository
-    ) {
+    public GetProjects(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
-        this.timeIntervalRepository = timeIntervalRepository;
     }
 
     /**
@@ -59,25 +47,6 @@ public class GetProjects {
      * @throws DomainException If domain rules are violated.
      */
     public List<Project> execute() throws DomainException {
-        List<Project> projects = projectRepository.findAll();
-
-        // Reset the calendar to retrieve timestamp of the beginning of the month.
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
-        for (Project project : projects) {
-            // Populate the project with the registered time.
-            project.addTime(
-                    timeIntervalRepository.findAll(
-                            project,
-                            calendar.getTimeInMillis()
-                    )
-            );
-        }
-
-        return projects;
+        return projectRepository.findAll();
     }
 }

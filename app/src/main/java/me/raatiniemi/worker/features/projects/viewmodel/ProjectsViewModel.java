@@ -95,7 +95,7 @@ public interface ProjectsViewModel {
         private ProjectsItem populateItemWithRegisteredTime(@NonNull Project project) {
             List<TimeInterval> registeredTime = getRegisteredTime(project);
 
-            return new ProjectsItem(project, registeredTime);
+            return ProjectsItem.from(project, registeredTime);
         }
 
         @NonNull

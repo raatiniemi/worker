@@ -20,16 +20,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class ProjectTest {
@@ -79,45 +73,5 @@ public class ProjectTest {
                 .build();
 
         assertEquals("Project name", project.getName());
-    }
-
-    @Test
-    public void addTime_withList() throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .id(1L)
-                .build();
-
-        project.addTime(
-                Arrays.asList(
-                        TimeIntervalFactory.builder()
-                                .build(),
-                        TimeIntervalFactory.builder()
-                                .build()
-                )
-        );
-
-        List<TimeInterval> timeIntervals = project.getTimeIntervals();
-        assertEquals(2, timeIntervals.size());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void addTime_withNullList()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        project.addTime(null);
-    }
-
-    @Test
-    public void addTime_withEmptyTimeList()
-            throws InvalidProjectNameException {
-        Project project = createProjectBuilder()
-                .build();
-
-        List<TimeInterval> timeIntervals = new ArrayList<>();
-        project.addTime(timeIntervals);
-
-        assertTrue(project.getTimeIntervals().isEmpty());
     }
 }
