@@ -24,9 +24,9 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(Parameterized.class)
 public class ProjectEqualsHashCodeTest {
@@ -108,17 +108,17 @@ public class ProjectEqualsHashCodeTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, project.equals(compareTo));
+        assertEquals(message, project, compareTo);
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, project.hashCode() == compareTo.hashCode());
+        assertEquals(message, project.hashCode(), compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, project.equals(compareTo));
+        assertNotEquals(message, project, compareTo);
 
         validateHashCodeWhenNotEqual();
     }
@@ -128,6 +128,6 @@ public class ProjectEqualsHashCodeTest {
             return;
         }
 
-        assertFalse(message, project.hashCode() == compareTo.hashCode());
+        assertNotEquals(message, project.hashCode(), compareTo.hashCode());
     }
 }
