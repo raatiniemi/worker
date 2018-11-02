@@ -20,7 +20,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertSame;
 
 @RunWith(JUnit4.class)
 public class TimesheetItemTest {
@@ -29,7 +30,7 @@ public class TimesheetItemTest {
         TimeInterval timeInterval = TimeInterval.builder(1L).build();
         TimesheetItem item = TimesheetItem.with(timeInterval);
 
-        assertTrue(timeInterval == item.asTimeInterval());
+        assertSame(timeInterval, item.asTimeInterval());
     }
 
     @Test
@@ -39,6 +40,6 @@ public class TimesheetItemTest {
                 .build();
         TimesheetItem item = TimesheetItem.with(timeInterval);
 
-        assertTrue(timeInterval.getId() == item.getId());
+        assertEquals(timeInterval.getId(), Long.valueOf(item.getId()));
     }
 }

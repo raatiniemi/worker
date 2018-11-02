@@ -24,7 +24,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimesheetItemIsRegisteredTest {
@@ -67,6 +67,6 @@ public class TimesheetItemIsRegisteredTest {
     public void isRegistered() {
         TimesheetItem item = TimesheetItem.with(timeInterval);
 
-        assertTrue(message, expected == item.isRegistered());
+        assertEquals(message, expected, item.isRegistered());
     }
 }

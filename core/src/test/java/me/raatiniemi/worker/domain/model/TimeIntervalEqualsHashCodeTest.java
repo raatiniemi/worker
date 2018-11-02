@@ -24,9 +24,9 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.assertEquals;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(Parameterized.class)
 public class TimeIntervalEqualsHashCodeTest {
@@ -130,17 +130,17 @@ public class TimeIntervalEqualsHashCodeTest {
     }
 
     private void assertEqual() {
-        assertTrue(message, timeInterval.equals(compareTo));
+        assertEquals(message, timeInterval, compareTo);
 
         validateHashCodeWhenEqual();
     }
 
     private void validateHashCodeWhenEqual() {
-        assertTrue(message, timeInterval.hashCode() == compareTo.hashCode());
+        assertEquals(message, timeInterval.hashCode(), compareTo.hashCode());
     }
 
     private void assertNotEqual() {
-        assertFalse(message, timeInterval.equals(compareTo));
+        assertNotEquals(message, timeInterval, compareTo);
 
         validateHashCodeWhenNotEqual();
     }
@@ -150,6 +150,6 @@ public class TimeIntervalEqualsHashCodeTest {
             return;
         }
 
-        assertFalse(message, timeInterval.hashCode() == compareTo.hashCode());
+        assertNotEquals(message, timeInterval.hashCode(), compareTo.hashCode());
     }
 }
