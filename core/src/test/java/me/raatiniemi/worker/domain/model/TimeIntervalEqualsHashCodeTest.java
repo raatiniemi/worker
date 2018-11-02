@@ -31,13 +31,13 @@ import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 
 @RunWith(Parameterized.class)
-public class TimeEqualsHashCodeTest {
+public class TimeIntervalEqualsHashCodeTest {
     private final String message;
     private final Boolean expected;
     private final TimeInterval timeInterval;
     private final Object compareTo;
 
-    public TimeEqualsHashCodeTest(
+    public TimeIntervalEqualsHashCodeTest(
             String message,
             Boolean expected,
             TimeInterval timeInterval,
