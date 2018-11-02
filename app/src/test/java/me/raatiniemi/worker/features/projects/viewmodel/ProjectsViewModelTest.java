@@ -49,8 +49,7 @@ public class ProjectsViewModelTest {
     private ProjectsViewModel.ViewModel vm;
 
     private List<Project> getProjects() {
-        Project project = Project.builder("Name")
-                .build();
+        Project project = Project.from("Name");
 
         return Collections.singletonList(project);
     }

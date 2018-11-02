@@ -35,7 +35,7 @@ class ProjectsItemSetVisibilityForClockedInSinceView(
 ) {
     @Test
     fun getClockedInSince() {
-        val project = Project.builder("Project #1").build()
+        val project = Project.from("Project #1")
         val projectsItem = ProjectsItem.from(project, timeIntervals)
         val textView = mock(TextView::class.java)
 

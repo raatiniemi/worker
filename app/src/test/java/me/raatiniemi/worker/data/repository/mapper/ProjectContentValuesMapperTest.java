@@ -36,17 +36,12 @@ public class ProjectContentValuesMapperTest extends RobolectricTestCase {
         return contentValues;
     }
 
-    private static Project createProject() {
-        return Project.builder("Name")
-                .build();
-    }
-
     @Test
     public void transform() {
         ProjectContentValuesMapper entityMapper = new ProjectContentValuesMapper();
 
         ContentValues expected = createContentValues();
-        Project project = createProject();
+        Project project = Project.from("Name");
         ContentValues contentValues = entityMapper.transform(project);
 
         // the id column should not be mapped since that would introduce the
@@ -55,7 +50,7 @@ public class ProjectContentValuesMapperTest extends RobolectricTestCase {
         assertEquals(expected.get(ProviderContract.COLUMN_PROJECT_NAME), contentValues.get(ProviderContract.COLUMN_PROJECT_NAME));
 
         expected = createContentValues();
-        project = createProject();
+        project = Project.from("Name");
         contentValues = entityMapper.transform(project);
 
         // the id column should not be mapped since that would introduce the

@@ -54,9 +54,7 @@ public class TimeIntervalResolverRepositoryTest extends RobolectricTestCase {
         contentResolver = mock(ContentResolver.class);
         repository = new TimeIntervalResolverRepository(contentResolver);
 
-        project = Project.builder("Name")
-                .id(1L)
-                .build();
+        project = Project.from(1L, "Name");
     }
 
     @Test

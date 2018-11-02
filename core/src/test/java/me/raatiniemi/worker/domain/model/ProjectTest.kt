@@ -25,14 +25,9 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class ProjectTest {
-    private fun createProjectBuilder(): Project.Builder {
-        return Project.builder("Project name")
-    }
-
     @Test
     fun builder_withDefaultValues() {
-        val project = createProjectBuilder()
-                .build()
+        val project = Project.from("Project name")
 
         assertNull(project.id)
         assertEquals("Project name", project.name)
@@ -40,9 +35,7 @@ class ProjectTest {
 
     @Test
     fun builder_withValues() {
-        val project = createProjectBuilder()
-                .id(2L)
-                .build()
+        val project = Project.from(2L, "Project name")
 
         assertEquals("Project name", project.name)
         assertEquals(java.lang.Long.valueOf(2L), project.id)
@@ -50,14 +43,12 @@ class ProjectTest {
 
     @Test(expected = InvalidProjectNameException::class)
     fun project_withEmptyName() {
-        Project.builder("")
-                .build()
+        Project.from("")
     }
 
     @Test
     fun getName() {
-        val project = createProjectBuilder()
-                .build()
+        val project = Project.from("Project name")
 
         assertEquals("Project name", project.name)
     }

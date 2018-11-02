@@ -29,23 +29,15 @@ data class Project(val id: Long?, val name: String) {
         }
     }
 
-    class Builder internal constructor(private val projectName: String) {
-        private var id: Long? = null
-
-        fun id(id: Long?): Builder {
-            this.id = id
-            return this
-        }
-
-        fun build(): Project {
-            return Project(id, projectName)
-        }
-    }
-
     companion object {
         @JvmStatic
-        fun builder(projectName: String): Builder {
-            return Builder(projectName)
+        fun from(id: Long?, projectName: String): Project {
+            return Project(id, projectName)
+        }
+
+        @JvmStatic
+        fun from(projectName: String): Project {
+            return Project(null, projectName)
         }
     }
 }

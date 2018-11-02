@@ -36,7 +36,7 @@ class ProjectsItemGetClockedInSinceTest(
         private val expected: String?,
         private val timeIntervals: List<TimeInterval>?
 ) : ProjectsItemResourceTest() {
-    private val project = Project.builder("Project name").build()
+    private val project = Project.from("Project name")
 
     @Test
     fun getClockedInSince() {

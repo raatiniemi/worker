@@ -89,8 +89,7 @@ public interface CreateProjectViewModel {
         @NonNull
         private Observable<Project> executeUseCase(@NonNull String name) {
             try {
-                Project project = Project.builder(name)
-                        .build();
+                Project project = Project.from(name);
 
                 return Observable.just(useCase.execute(project));
             } catch (Exception e) {

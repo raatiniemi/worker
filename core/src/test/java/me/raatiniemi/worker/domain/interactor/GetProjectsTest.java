@@ -42,17 +42,11 @@ public class GetProjectsTest {
         projectRepository = mock(ProjectRepository.class);
     }
 
-    private Project buildProject(Long id, String name) {
-        return Project.builder(name)
-                .id(id)
-                .build();
-    }
-
     @Test
     public void execute() {
         List<Project> projects = new ArrayList<>();
-        projects.add(buildProject(1L, "Project #1"));
-        projects.add(buildProject(2L, "Project #2"));
+        projects.add(Project.from(1L, "Project #1"));
+        projects.add(Project.from(2L, "Project #2"));
 
         when(projectRepository.findAll())
                 .thenReturn(projects);

@@ -23,7 +23,6 @@ import org.junit.runners.JUnit4;
 
 import java.util.Collections;
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
@@ -56,7 +55,7 @@ public class RemoveProjectViewModelTest {
 
     @Test
     public void deleteProject_withError() {
-        Project project = Project.builder("Name").build();
+        Project project = Project.from("Name");
         ProjectsItem item = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);
         doThrow(RuntimeException.class)
@@ -71,7 +70,7 @@ public class RemoveProjectViewModelTest {
 
     @Test
     public void deleteProject() {
-        Project project = Project.builder("Name").build();
+        Project project = Project.from("Name");
         ProjectsItem item = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);
 
