@@ -26,7 +26,6 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -45,7 +44,7 @@ public class RemoveTimeTest {
 
     @Test
     public void execute_withItem() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .id(1L)
                 .build();
 
@@ -56,7 +55,7 @@ public class RemoveTimeTest {
 
     @Test
     public void execute_withItems() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .id(1L)
                 .build();
         List<TimeInterval> items = Collections.singletonList(timeInterval);

@@ -20,7 +20,6 @@ import android.view.View
 import android.widget.TextView
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.factory.TimeIntervalFactory
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -62,7 +61,7 @@ class ProjectsItemSetVisibilityForClockedInSinceView(
         private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
                 return listOf(
-                        TimeIntervalFactory.builder(1L)
+                        TimeInterval.builder(1L)
                                 .startInMilliseconds(1)
                                 .stopInMilliseconds(0)
                                 .build()

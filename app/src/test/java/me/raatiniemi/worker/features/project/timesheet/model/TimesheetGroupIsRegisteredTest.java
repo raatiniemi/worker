@@ -28,7 +28,6 @@ import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -38,10 +37,10 @@ public class TimesheetGroupIsRegisteredTest {
     private final static TimesheetItem REGISTERED_TIME;
 
     static {
-        TimeInterval notRegistered = TimeIntervalFactory.builder().build();
+        TimeInterval notRegistered = TimeInterval.builder(1L).build();
         NOT_REGISTERED_TIME = TimesheetItem.with(notRegistered);
 
-        TimeInterval registered = TimeIntervalFactory.builder().register().build();
+        TimeInterval registered = TimeInterval.builder(1L).register().build();
         REGISTERED_TIME = TimesheetItem.with(registered);
     }
 

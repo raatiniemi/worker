@@ -20,16 +20,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
-
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class TimesheetItemTest {
     @Test
     public void asTime() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
-                .build();
+        TimeInterval timeInterval = TimeInterval.builder(1L).build();
         TimesheetItem item = TimesheetItem.with(timeInterval);
 
         assertTrue(timeInterval == item.asTimeInterval());
@@ -37,7 +34,7 @@ public class TimesheetItemTest {
 
     @Test
     public void getId() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .id(1L)
                 .build();
         TimesheetItem item = TimesheetItem.with(timeInterval);

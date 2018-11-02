@@ -24,8 +24,6 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
@@ -52,7 +50,7 @@ public class TimesheetItemEqualsHashCodeTest {
     @Parameters
     public static Collection<Object[]> getParameters() {
         TimesheetItem timesheetItem = TimesheetItem.with(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
 
@@ -81,7 +79,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 Boolean.FALSE,
                                 timesheetItem,
                                 TimesheetItem.with(
-                                        TimeIntervalFactory.builder(2L)
+                                        TimeInterval.builder(2L)
                                                 .build()
                                 )
                         },
@@ -90,7 +88,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 Boolean.FALSE,
                                 timesheetItem,
                                 TimesheetItem.with(
-                                        TimeIntervalFactory.builder()
+                                        TimeInterval.builder(1L)
                                                 .id(2L)
                                                 .build()
                                 )
@@ -100,7 +98,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 Boolean.FALSE,
                                 timesheetItem,
                                 TimesheetItem.with(
-                                        TimeIntervalFactory.builder()
+                                        TimeInterval.builder(1L)
                                                 .startInMilliseconds(2L)
                                                 .build()
                                 )
@@ -110,7 +108,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 Boolean.FALSE,
                                 timesheetItem,
                                 TimesheetItem.with(
-                                        TimeIntervalFactory.builder()
+                                        TimeInterval.builder(1L)
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 )
@@ -120,7 +118,7 @@ public class TimesheetItemEqualsHashCodeTest {
                                 Boolean.FALSE,
                                 timesheetItem,
                                 TimesheetItem.with(
-                                        TimeIntervalFactory.builder()
+                                        TimeInterval.builder(1L)
                                                 .register()
                                                 .build()
                                 )

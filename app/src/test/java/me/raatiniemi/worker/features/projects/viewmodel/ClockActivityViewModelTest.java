@@ -34,7 +34,6 @@ import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;
 import rx.observers.TestSubscriber;
@@ -243,7 +242,7 @@ public class ClockActivityViewModelTest {
     private List<TimeInterval> getActiveTimeIntervals() {
         List<TimeInterval> timeIntervals = new ArrayList<>();
         timeIntervals.add(
-                TimeIntervalFactory.builder(1L)
+                TimeInterval.builder(1L)
                         .startInMilliseconds(1)
                         .stopInMilliseconds(0)
                         .build()

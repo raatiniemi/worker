@@ -27,7 +27,6 @@ import java.util.Collection;
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -54,28 +53,28 @@ public class TimesheetItemGetTimeSummaryWithFormatterTest {
                         {
                                 "1.00",
                                 new FractionIntervalFormat(),
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .stopInMilliseconds(3600000)
                                         .build()
                         },
                         {
                                 "9.00",
                                 new FractionIntervalFormat(),
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .stopInMilliseconds(32400000)
                                         .build()
                         },
                         {
                                 "1:00",
                                 new DigitalHoursMinutesIntervalFormat(),
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .stopInMilliseconds(3600000)
                                         .build()
                         },
                         {
                                 "9:00",
                                 new DigitalHoursMinutesIntervalFormat(),
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .stopInMilliseconds(32400000)
                                         .build()
                         }

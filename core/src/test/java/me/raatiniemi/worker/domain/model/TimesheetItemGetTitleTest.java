@@ -26,8 +26,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
-
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
@@ -56,14 +54,14 @@ public class TimesheetItemGetTitleTest {
                         {
                                 "active time interval",
                                 "08:00",
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .startInMilliseconds(START.getTimeInMillis())
                                         .build()
                         },
                         {
                                 "inactive time interval",
                                 "08:00 - 11:30",
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .startInMilliseconds(START.getTimeInMillis())
                                         .stopInMilliseconds(STOP.getTimeInMillis())
                                         .build()

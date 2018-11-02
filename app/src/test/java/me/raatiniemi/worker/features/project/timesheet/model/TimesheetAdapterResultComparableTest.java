@@ -26,7 +26,6 @@ import java.util.Collection;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -51,7 +50,7 @@ public class TimesheetAdapterResultComparableTest {
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder().build();
+        TimeInterval timeInterval = TimeInterval.builder(1L).build();
         TimesheetItem item = TimesheetItem.with(timeInterval);
 
         return Arrays.asList(

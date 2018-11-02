@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.projects.model
 
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.factory.TimeIntervalFactory
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -56,7 +55,7 @@ class ProjectsItemGetHelpTextForClockActivityAtTest(
         private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
                 return listOf(
-                        TimeIntervalFactory.builder(1L)
+                        TimeInterval.builder(1L)
                                 .startInMilliseconds(1)
                                 .stopInMilliseconds(0)
                                 .build()

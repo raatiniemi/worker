@@ -24,8 +24,6 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
@@ -51,7 +49,7 @@ public class TimeIntervalEqualsHashCodeTest {
 
     @Parameters
     public static Collection<Object[]> getParameters() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .build();
 
         return Arrays.asList(
@@ -78,14 +76,14 @@ public class TimeIntervalEqualsHashCodeTest {
                                 "With different project id",
                                 Boolean.FALSE,
                                 timeInterval,
-                                TimeIntervalFactory.builder(2L)
+                                TimeInterval.builder(2L)
                                         .build()
                         },
                         {
                                 "With different id",
                                 Boolean.FALSE,
                                 timeInterval,
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .id(2L)
                                         .build()
                         },
@@ -93,7 +91,7 @@ public class TimeIntervalEqualsHashCodeTest {
                                 "With different start in milliseconds",
                                 Boolean.FALSE,
                                 timeInterval,
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .startInMilliseconds(2L)
                                         .build()
                         },
@@ -101,7 +99,7 @@ public class TimeIntervalEqualsHashCodeTest {
                                 "With different stop in milliseconds",
                                 Boolean.FALSE,
                                 timeInterval,
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .stopInMilliseconds(1L)
                                         .build()
                         },
@@ -109,7 +107,7 @@ public class TimeIntervalEqualsHashCodeTest {
                                 "With different register status",
                                 Boolean.FALSE,
                                 timeInterval,
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .register()
                                         .build()
                         }

@@ -26,11 +26,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -152,7 +152,7 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
 
     private static TimesheetItem buildTimesheetItemWithInterval(long interval) {
         return TimesheetItem.with(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .startInMilliseconds(1L)
                         .stopInMilliseconds(interval)
                         .build()

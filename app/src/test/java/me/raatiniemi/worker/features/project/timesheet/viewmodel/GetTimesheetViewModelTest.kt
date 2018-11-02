@@ -18,8 +18,8 @@ package me.raatiniemi.worker.features.project.timesheet.viewmodel
 
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.GetTimesheet
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.factory.TimeIntervalFactory
 import me.raatiniemi.worker.features.project.timesheet.model.TimesheetGroup
 import org.junit.Before
 import org.junit.Test
@@ -126,7 +126,7 @@ class GetTimesheetViewModelTest {
 
     private val timesheetItems: TreeSet<TimesheetItem>
         get() {
-            val timeInterval = TimeIntervalFactory.builder(1L).build()
+            val timeInterval = TimeInterval.builder(1L).build()
             val item = TimesheetItem.with(timeInterval)
 
             return TreeSet(setOf(item))

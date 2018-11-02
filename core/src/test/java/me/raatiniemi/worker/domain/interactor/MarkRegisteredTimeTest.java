@@ -26,7 +26,6 @@ import java.util.List;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -45,69 +44,69 @@ public class MarkRegisteredTimeTest {
     public void execute_withMultipleUnregisteredItems() {
         List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
 
         MarkRegisteredTime markRegisteredTime = new MarkRegisteredTime(timeIntervalRepository);
         markRegisteredTime.execute(timeIntervalsToUpdate);
 
-        List<TimeInterval> expectedTimeIntevals = new ArrayList<>();
-        expectedTimeIntevals.add(
-                TimeIntervalFactory.builder()
+        List<TimeInterval> expectedTimeIntervals = new ArrayList<>();
+        expectedTimeIntervals.add(
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
-        expectedTimeIntevals.add(
-                TimeIntervalFactory.builder()
+        expectedTimeIntervals.add(
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
-        expectedTimeIntevals.add(
-                TimeIntervalFactory.builder()
+        expectedTimeIntervals.add(
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
-        expectedTimeIntevals.add(
-                TimeIntervalFactory.builder()
+        expectedTimeIntervals.add(
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
-        verify(timeIntervalRepository, times(1)).update(expectedTimeIntevals);
+        verify(timeIntervalRepository, times(1)).update(expectedTimeIntervals);
     }
 
     @Test
     public void execute_withMultipleRegisteredItems() {
         List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
@@ -117,19 +116,19 @@ public class MarkRegisteredTimeTest {
 
         List<TimeInterval> expectedTimeInterval = new ArrayList<>();
         expectedTimeInterval.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
         expectedTimeInterval.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
         expectedTimeInterval.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
         expectedTimeInterval.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
         verify(timeIntervalRepository, times(1)).update(expectedTimeInterval);
@@ -139,21 +138,21 @@ public class MarkRegisteredTimeTest {
     public void execute_withMultipleItems() {
         List<TimeInterval> timeIntervalsToUpdate = new ArrayList<>();
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
         timeIntervalsToUpdate.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
@@ -163,23 +162,23 @@ public class MarkRegisteredTimeTest {
 
         List<TimeInterval> expectedTimeInterval = new ArrayList<>();
         expectedTimeInterval.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
         expectedTimeInterval.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
         expectedTimeInterval.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );
 
         expectedTimeInterval.add(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .register()
                         .build()
         );

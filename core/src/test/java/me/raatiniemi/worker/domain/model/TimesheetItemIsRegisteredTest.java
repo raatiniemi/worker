@@ -24,8 +24,6 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
-
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
@@ -51,14 +49,14 @@ public class TimesheetItemIsRegisteredTest {
                         {
                                 "is registered",
                                 Boolean.TRUE,
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .register()
                                         .build()
                         },
                         {
                                 "is not registered",
                                 Boolean.FALSE,
-                                TimeIntervalFactory.builder()
+                                TimeInterval.builder(1L)
                                         .build()
                         }
                 }

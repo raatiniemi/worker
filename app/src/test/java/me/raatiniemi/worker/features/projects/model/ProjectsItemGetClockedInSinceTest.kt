@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.projects.model
 
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.factory.TimeIntervalFactory
 import me.raatiniemi.worker.util.NullUtil.isNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -74,7 +73,7 @@ class ProjectsItemGetClockedInSinceTest(
                             "Without active time",
                             null,
                             listOf(
-                                    TimeIntervalFactory.builder()
+                                    TimeInterval.builder(1L)
                                             .stopInMilliseconds(1L)
                                             .build()
                             )

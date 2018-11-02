@@ -23,7 +23,6 @@ import org.junit.runners.JUnit4;
 import java.util.Date;
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -34,8 +33,7 @@ import static junit.framework.Assert.assertTrue;
 public class TimeIntervalTest {
     @Test
     public void Builder_withDefaultValues() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder(1L)
-                .build();
+        TimeInterval timeInterval = TimeInterval.builder(1L).build();
 
         assertNull(timeInterval.getId());
         assertEquals(1L, timeInterval.getProjectId());
@@ -46,7 +44,7 @@ public class TimeIntervalTest {
 
     @Test
     public void Builder_withValues() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder(1L)
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .id(2L)
                 .startInMilliseconds(3L)
                 .stopInMilliseconds(4L)
@@ -62,7 +60,7 @@ public class TimeIntervalTest {
 
     @Test
     public void markAsRegistered() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .build();
 
         assertFalse(timeInterval.isRegistered());
@@ -72,7 +70,7 @@ public class TimeIntervalTest {
 
     @Test
     public void markAsRegistered_alreadyRegistered() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .register()
                 .build();
 
@@ -83,7 +81,7 @@ public class TimeIntervalTest {
 
     @Test
     public void unmarkRegistered() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .register()
                 .build();
 
@@ -94,7 +92,7 @@ public class TimeIntervalTest {
 
     @Test
     public void unmarkRegistered_notRegistered() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .build();
 
         assertFalse(timeInterval.isRegistered());
@@ -104,7 +102,7 @@ public class TimeIntervalTest {
 
     @Test(expected = NullPointerException.class)
     public void clockOutAt_withNullDate() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .build();
 
         timeInterval.clockOutAt(null);
@@ -113,7 +111,7 @@ public class TimeIntervalTest {
     @Test(expected = ClockOutBeforeClockInException.class)
     public void clockOutAt_clockOutBeforeClockIn() {
         Date date = new Date();
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .startInMilliseconds(date.getTime() + 1)
                 .build();
 
@@ -122,7 +120,7 @@ public class TimeIntervalTest {
 
     @Test
     public void clockOutAt() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .build();
         Date date = new Date();
 
@@ -134,7 +132,7 @@ public class TimeIntervalTest {
 
     @Test
     public void clockOutAt_withRegistered() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .register()
                 .build();
         Date date = new Date();
@@ -147,7 +145,7 @@ public class TimeIntervalTest {
 
     @Test
     public void isActive_whenActive() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .build();
 
         assertTrue(timeInterval.isActive());
@@ -155,7 +153,7 @@ public class TimeIntervalTest {
 
     @Test
     public void isActive_whenInactive() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .stopInMilliseconds(1L)
                 .build();
 
@@ -164,7 +162,7 @@ public class TimeIntervalTest {
 
     @Test
     public void getTime_whenActive() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .startInMilliseconds(1L)
                 .build();
 
@@ -173,7 +171,7 @@ public class TimeIntervalTest {
 
     @Test
     public void getTime_whenInactive() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(11L)
                 .build();
@@ -183,7 +181,7 @@ public class TimeIntervalTest {
 
     @Test
     public void getInterval_whenActive() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .startInMilliseconds(1L)
                 .build();
 
@@ -194,7 +192,7 @@ public class TimeIntervalTest {
 
     @Test
     public void getInterval_whenInactive() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(11L)
                 .build();
