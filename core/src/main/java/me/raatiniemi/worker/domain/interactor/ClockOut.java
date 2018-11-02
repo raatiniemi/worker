@@ -18,7 +18,6 @@ package me.raatiniemi.worker.domain.interactor;
 
 import java.util.Date;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
