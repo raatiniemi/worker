@@ -31,7 +31,7 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
-public class TimeTest {
+public class TimeIntervalTest {
     @Test
     public void Builder_withDefaultValues() {
         TimeInterval timeInterval = TimeIntervalFactory.builder(1L)
