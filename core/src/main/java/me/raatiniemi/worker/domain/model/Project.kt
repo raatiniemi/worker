@@ -18,36 +18,15 @@ package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.validator.ProjectName.isValid
-import java.util.*
 
 /**
  * Represent a project.
  */
-class Project private constructor(val id: Long?, val name: String) {
+data class Project(val id: Long?, val name: String) {
     init {
         if (!isValid(name)) {
             throw InvalidProjectNameException()
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        if (other !is Project) {
-            return false
-        }
-
-        return id == other.id && name == other.name
-    }
-
-    override fun hashCode(): Int {
-        var result = 17
-        result = 31 * result + Objects.hashCode(id)
-        result = 31 * result + name.hashCode()
-
-        return result
     }
 
     class Builder internal constructor(private val projectName: String) {
