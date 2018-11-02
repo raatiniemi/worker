@@ -33,7 +33,6 @@ import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.repository.exception.ContentResolverApplyBatchException;
 import me.raatiniemi.worker.data.repository.mapper.TimeContentValuesMapper;
 import me.raatiniemi.worker.data.repository.mapper.TimeCursorMapper;
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
@@ -115,8 +114,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public Optional<TimeInterval> findActiveByProjectId(long projectId)
-            throws ClockOutBeforeClockInException {
+    public Optional<TimeInterval> findActiveByProjectId(long projectId) {
         final Cursor cursor = getContentResolver().query(
                 ProviderContract.getProjectItemTimeUri(projectId),
                 ProviderContract.getTimeColumns(),

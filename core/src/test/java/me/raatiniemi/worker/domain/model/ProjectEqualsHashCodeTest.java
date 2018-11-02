@@ -24,8 +24,6 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
-
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
@@ -50,8 +48,7 @@ public class ProjectEqualsHashCodeTest {
     }
 
     @Parameters
-    public static Collection<Object[]> getParameters()
-            throws DomainException {
+    public static Collection<Object[]> getParameters() {
         Project project = Project.builder("Project name")
                 .id(1L)
                 .build();

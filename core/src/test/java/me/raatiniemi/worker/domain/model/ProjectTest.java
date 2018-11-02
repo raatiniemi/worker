@@ -32,8 +32,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void Builder_withDefaultValues()
-            throws InvalidProjectNameException {
+    public void Builder_withDefaultValues() {
         Project project = createProjectBuilder()
                 .build();
 
@@ -42,8 +41,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void Builder_withValues()
-            throws InvalidProjectNameException {
+    public void Builder_withValues() {
         Project project = createProjectBuilder()
                 .id(2L)
                 .build();
@@ -53,22 +51,19 @@ public class ProjectTest {
     }
 
     @Test(expected = InvalidProjectNameException.class)
-    public void Project_withNullName()
-            throws InvalidProjectNameException {
+    public void Project_withNullName() {
         Project.builder(null)
                 .build();
     }
 
     @Test(expected = InvalidProjectNameException.class)
-    public void Project_withEmptyName()
-            throws InvalidProjectNameException {
+    public void Project_withEmptyName() {
         Project.builder("")
                 .build();
     }
 
     @Test
-    public void getName()
-            throws InvalidProjectNameException {
+    public void getName() {
         Project project = createProjectBuilder()
                 .build();
 

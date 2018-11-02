@@ -19,7 +19,6 @@ package me.raatiniemi.worker.domain.interactor;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
@@ -44,8 +43,7 @@ public class MarkRegisteredTime {
         this.timeIntervalRepository = timeIntervalRepository;
     }
 
-    private static List<TimeInterval> collectTimeToUpdate(List<TimeInterval> timeIntervals)
-            throws ClockOutBeforeClockInException {
+    private static List<TimeInterval> collectTimeToUpdate(List<TimeInterval> timeIntervals) {
         List<TimeInterval> timeIntervalToUpdate = new ArrayList<>();
 
         boolean shouldMarkAsRegistered = shouldMarkAsRegistered(timeIntervals);

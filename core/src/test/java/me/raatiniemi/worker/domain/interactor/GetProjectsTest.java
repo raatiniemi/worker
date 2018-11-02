@@ -24,7 +24,6 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 
@@ -43,8 +42,7 @@ public class GetProjectsTest {
         projectRepository = mock(ProjectRepository.class);
     }
 
-    private Project buildProject(Long id, String name)
-            throws InvalidProjectNameException {
+    private Project buildProject(Long id, String name) {
         return Project.builder(name)
                 .id(id)
                 .build();
