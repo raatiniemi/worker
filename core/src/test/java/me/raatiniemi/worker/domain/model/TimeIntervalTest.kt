@@ -92,13 +92,6 @@ class TimeIntervalTest {
         assertFalse(t2.isRegistered)
     }
 
-    @Test(expected = NullPointerException::class)
-    fun clockOutAt_withNullDate() {
-        val timeInterval = TimeInterval.builder(1L).build()
-
-        timeInterval.clockOutAt(null)
-    }
-
     @Test(expected = ClockOutBeforeClockInException::class)
     fun clockOutAt_clockOutBeforeClockIn() {
         val date = Date()
