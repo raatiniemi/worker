@@ -104,9 +104,12 @@ interface ClockActivityViewModel {
                 val project = combinedResult.result.projectsItem.asProject()
                 val date = combinedResult.date
 
+                val projectId = project.id
+                        ?: throw NullPointerException("No project id is available")
+
                 when (action) {
-                    Action.CLOCK_IN -> clockIn.execute(project.id, date)
-                    Action.CLOCK_OUT -> clockOut.execute(project.id, date)
+                    Action.CLOCK_IN -> clockIn.execute(projectId, date)
+                    Action.CLOCK_OUT -> clockOut.execute(projectId, date)
                 }
                 val registeredTime = getRegisteredTimeForProject(project)
 

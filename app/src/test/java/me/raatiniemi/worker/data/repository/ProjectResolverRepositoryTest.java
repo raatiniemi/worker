@@ -28,7 +28,6 @@ import java.util.List;
 import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.repository.mapper.ProjectContentValuesMapper;
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.util.Optional;
 
@@ -244,8 +243,7 @@ public class ProjectResolverRepositoryTest extends RobolectricTestCase {
 
     @Test
     public void add() {
-        Project project = Project.builder("Name")
-                .build();
+        Project project = Project.from("Name");
         Cursor cursor = buildCursorWithNumberOfItems(1);
         // insert...
         when(

@@ -14,30 +14,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.model
+package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
+import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class ProjectsItemTest {
+class ProjectTest {
     @Test
-    fun asProject() {
+    fun builder_withDefaultValues() {
         val project = Project.from("Project name")
-        val projectsItem = ProjectsItem.from(project, emptyList())
 
-        assertSame(project, projectsItem.asProject())
+        assertNull(project.id)
+        assertEquals("Project name", project.name)
     }
 
     @Test
-    fun getTitle() {
-        val project = Project.from("Project name")
-        val projectsItem = ProjectsItem.from(project, emptyList())
+    fun builder_withValues() {
+        val project = Project.from(2L, "Project name")
 
-        assertEquals("Project name", projectsItem.title)
+        assertEquals("Project name", project.name)
+        assertEquals(java.lang.Long.valueOf(2L), project.id)
+    }
+
+    @Test(expected = InvalidProjectNameException::class)
+    fun project_withEmptyName() {
+        Project.from("")
+    }
+
+    @Test
+    fun getName() {
+        val project = Project.from("Project name")
+
+        assertEquals("Project name", project.name)
     }
 }

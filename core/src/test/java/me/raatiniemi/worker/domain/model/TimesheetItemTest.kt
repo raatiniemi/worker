@@ -14,9 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.model
+package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.model.Project
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Test
@@ -24,20 +23,22 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class ProjectsItemTest {
+class TimesheetItemTest {
     @Test
-    fun asProject() {
-        val project = Project.from("Project name")
-        val projectsItem = ProjectsItem.from(project, emptyList())
+    fun asTime() {
+        val timeInterval = TimeInterval.builder(1L).build()
+        val item = TimesheetItem.with(timeInterval)
 
-        assertSame(project, projectsItem.asProject())
+        assertSame(timeInterval, item.asTimeInterval())
     }
 
     @Test
-    fun getTitle() {
-        val project = Project.from("Project name")
-        val projectsItem = ProjectsItem.from(project, emptyList())
+    fun getId() {
+        val timeInterval = TimeInterval.builder(1L)
+                .id(1L)
+                .build()
+        val item = TimesheetItem.with(timeInterval)
 
-        assertEquals("Project name", projectsItem.title)
+        assertEquals(timeInterval.id, item.id)
     }
 }

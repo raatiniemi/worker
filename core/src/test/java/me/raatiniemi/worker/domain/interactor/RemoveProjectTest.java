@@ -39,9 +39,7 @@ public class RemoveProjectTest {
 
     @Test
     public void execute() {
-        Project project = Project.builder("Project name")
-                .id(1L)
-                .build();
+        Project project = Project.from(1L, "Project name");
 
         RemoveProject removeProject = new RemoveProject(projectRepository);
         removeProject.execute(project);

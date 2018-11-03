@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.projects.model
 
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.factory.TimeIntervalFactory
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +31,7 @@ class ProjectsItemGetTimeSummaryTest(
 ) {
     @Test
     fun getTimeSummary() {
-        val project = Project.builder("Project name").build()
+        val project = Project.from("Project name")
         val projectsItem = ProjectsItem.from(project, timeIntervals)
 
         assertEquals(expected, projectsItem.timeSummary)
@@ -46,7 +45,7 @@ class ProjectsItemGetTimeSummaryTest(
                     arrayOf(
                             "1h 0m",
                             listOf(
-                                    TimeIntervalFactory.builder()
+                                    TimeInterval.builder(1L)
                                             .stopInMilliseconds(3600000)
                                             .build()
                             )
@@ -54,7 +53,7 @@ class ProjectsItemGetTimeSummaryTest(
                     arrayOf(
                             "2h 30m",
                             listOf(
-                                    TimeIntervalFactory.builder()
+                                    TimeInterval.builder(1L)
                                             .stopInMilliseconds(9000000)
                                             .build()
                             )
@@ -62,10 +61,10 @@ class ProjectsItemGetTimeSummaryTest(
                     arrayOf(
                             "3h 30m",
                             listOf(
-                                    TimeIntervalFactory.builder()
+                                    TimeInterval.builder(1L)
                                             .stopInMilliseconds(3600000)
                                             .build(),
-                                    TimeIntervalFactory.builder()
+                                    TimeInterval.builder(1L)
                                             .stopInMilliseconds(9000000)
                                             .build()
                             )

@@ -75,9 +75,7 @@ class ProjectsItemEqualsHashCodeTest(
         val parameters: Collection<Array<Any?>>
             @Parameters
             get() {
-                val project = Project.builder("Name")
-                        .id(1L)
-                        .build()
+                val project = Project.from(1L, "Name")
                 val projectsItem = ProjectsItem.from(project, emptyList())
 
                 return listOf(
@@ -104,9 +102,7 @@ class ProjectsItemEqualsHashCodeTest(
                                 false,
                                 projectsItem,
                                 ProjectsItem.from(
-                                        Project.builder("Project name")
-                                                .id(2L)
-                                                .build(),
+                                        Project.from(2L, "Project name"),
                                         emptyList()
                                 )
                         )

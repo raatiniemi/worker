@@ -30,7 +30,6 @@ import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -60,7 +59,7 @@ public class TimesheetGroupItemBuildResultsTest {
 
         SortedSet<TimesheetItem> items = new TreeSet<>();
         for (long i = 0; i < numberOfItems; i++) {
-            TimeInterval timeInterval = TimeIntervalFactory.builder()
+            TimeInterval timeInterval = TimeInterval.builder(1L)
                     .startInMilliseconds(i)
                     .build();
 
@@ -84,7 +83,7 @@ public class TimesheetGroupItemBuildResultsTest {
                         {
                                 "With one item",
                                 new TimesheetAdapterResult[]{
-                                        new TimesheetAdapterResult(1, 0, TimesheetItem.with(TimeIntervalFactory.builder().startInMilliseconds(0L).build()))
+                                        new TimesheetAdapterResult(1, 0, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
                                 },
                                 1,
                                 buildTimesheetGroupWithNumberOfItems(1)
@@ -92,12 +91,12 @@ public class TimesheetGroupItemBuildResultsTest {
                         {
                                 "With multiple items",
                                 new TimesheetAdapterResult[]{
-                                        new TimesheetAdapterResult(2, 0, TimesheetItem.with(TimeIntervalFactory.builder().startInMilliseconds(5L).build())),
-                                        new TimesheetAdapterResult(2, 1, TimesheetItem.with(TimeIntervalFactory.builder().startInMilliseconds(4L).build())),
-                                        new TimesheetAdapterResult(2, 2, TimesheetItem.with(TimeIntervalFactory.builder().startInMilliseconds(3L).build())),
-                                        new TimesheetAdapterResult(2, 3, TimesheetItem.with(TimeIntervalFactory.builder().startInMilliseconds(2L).build())),
-                                        new TimesheetAdapterResult(2, 4, TimesheetItem.with(TimeIntervalFactory.builder().startInMilliseconds(1L).build())),
-                                        new TimesheetAdapterResult(2, 5, TimesheetItem.with(TimeIntervalFactory.builder().startInMilliseconds(0L).build()))
+                                        new TimesheetAdapterResult(2, 0, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(5L).build())),
+                                        new TimesheetAdapterResult(2, 1, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(4L).build())),
+                                        new TimesheetAdapterResult(2, 2, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(3L).build())),
+                                        new TimesheetAdapterResult(2, 3, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(2L).build())),
+                                        new TimesheetAdapterResult(2, 4, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(1L).build())),
+                                        new TimesheetAdapterResult(2, 5, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
                                 },
                                 2,
                                 buildTimesheetGroupWithNumberOfItems(6)

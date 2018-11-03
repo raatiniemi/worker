@@ -14,56 +14,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.model
+package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import java.util.*
 
 @RunWith(Parameterized::class)
-class ProjectsItemIsActiveTest(
+class TimesheetItemIsRegisteredTest(
+        private val message: String,
         private val expected: Boolean,
-        private val timeIntervals: List<TimeInterval>
+        private val timeInterval: TimeInterval
 ) {
     @Test
-    fun isActive() {
-        val project = Project.from("Project #1")
-        val projectsItem = ProjectsItem.from(project, timeIntervals)
+    fun isRegistered() {
+        val item = TimesheetItem.with(timeInterval)
 
-        assertEquals(expected, projectsItem.isActive)
+        assertEquals(message, expected, item.isRegistered)
     }
 
     companion object {
         @JvmStatic
         val parameters: Collection<Array<Any>>
             @Parameters
-            get() = Arrays.asList(
+            get() = listOf(
                     arrayOf(
-                            false,
-                            getTimeIntervals(false)
+                            "is registered",
+                            true,
+                            TimeInterval.builder(1L)
+                                    .register()
+                                    .build()
                     ),
                     arrayOf(
-                            true,
-                            getTimeIntervals(true)
+                            "is not registered",
+                            false,
+                            TimeInterval.builder(1L)
+                                    .build()
                     )
             )
-
-        private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
-            if (isProjectActive) {
-                return listOf(
-                        TimeInterval.builder(1L)
-                                .startInMilliseconds(1)
-                                .stopInMilliseconds(0)
-                                .build()
-                )
-            }
-
-            return emptyList()
-        }
     }
 }

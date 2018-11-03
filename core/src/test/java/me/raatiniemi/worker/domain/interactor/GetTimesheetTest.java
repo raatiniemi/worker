@@ -30,10 +30,10 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -50,7 +50,7 @@ public class GetTimesheetTest {
 
     private static TimesheetItem buildTimesheetItemWithInterval(long startInMilliseconds, long stopInMilliseconds) {
         return TimesheetItem.with(
-                TimeIntervalFactory.builder()
+                TimeInterval.builder(1L)
                         .startInMilliseconds(startInMilliseconds)
                         .stopInMilliseconds(stopInMilliseconds)
                         .build()

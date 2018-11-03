@@ -46,8 +46,7 @@ public class CreateProjectTest {
 
     @Test(expected = ProjectAlreadyExistsException.class)
     public void execute_withExistingProject() {
-        Project project = Project.builder("Project Name")
-                .build();
+        Project project = Project.from("Project Name");
 
         when(projectRepository.findByName(eq("Project Name")))
                 .thenReturn(Optional.of(project));
@@ -57,8 +56,7 @@ public class CreateProjectTest {
 
     @Test
     public void execute() {
-        Project project = Project.builder("Project Name")
-                .build();
+        Project project = Project.from("Project Name");
         when(projectRepository.findByName(eq("Project Name")))
                 .thenReturn(Optional.empty());
         when(projectRepository.add(eq(project)))
@@ -71,8 +69,7 @@ public class CreateProjectTest {
 
     @Test(expected = NoProjectException.class)
     public void execute_with() {
-        Project project = Project.builder("Project Name")
-                .build();
+        Project project = Project.from("Project Name");
         when(projectRepository.findByName(eq("Project Name")))
                 .thenReturn(Optional.empty());
         when(projectRepository.add(eq(project)))

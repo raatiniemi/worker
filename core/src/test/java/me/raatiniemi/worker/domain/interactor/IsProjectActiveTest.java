@@ -21,10 +21,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
 import static junit.framework.Assert.assertFalse;
@@ -52,7 +50,7 @@ public class IsProjectActiveTest {
 
     @Test
     public void execute_withActiveTime() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .stopInMilliseconds(0L)
                 .build();
         when(timeIntervalRepository.findActiveByProjectId(1L))

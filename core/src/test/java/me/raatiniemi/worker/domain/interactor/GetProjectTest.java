@@ -44,8 +44,7 @@ public class GetProjectTest {
 
     @Test
     public void execute() {
-        Project project = Project.builder("Name")
-                .build();
+        Project project = Project.from("Name");
         when(projectRepository.findById(eq(1L)))
                 .thenReturn(Optional.of(project));
 

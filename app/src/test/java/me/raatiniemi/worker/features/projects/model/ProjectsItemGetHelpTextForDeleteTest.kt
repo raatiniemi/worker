@@ -26,7 +26,7 @@ import org.junit.runners.JUnit4
 class ProjectsItemGetHelpTextForDeleteTest : ProjectsItemResourceTest() {
     @Test
     fun getHelpTextForDelete() {
-        val project = Project.builder("project #1").build()
+        val project = Project.from("project #1")
         val projectsItem = ProjectsItem.from(project, emptyList())
 
         assertEquals("Delete %s", projectsItem.getHelpTextForDelete(resources))

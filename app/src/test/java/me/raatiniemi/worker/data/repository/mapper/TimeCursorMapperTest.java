@@ -29,7 +29,6 @@ import java.util.Collection;
 
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
@@ -51,7 +50,7 @@ public class TimeCursorMapperTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                TimeIntervalFactory.builder(1L)
+                                TimeInterval.builder(1L)
                                         .id(1L)
                                         .startInMilliseconds(1L)
                                         .stopInMilliseconds(0L)
@@ -59,7 +58,7 @@ public class TimeCursorMapperTest {
                                 createCursor(null, 0)
                         },
                         {
-                                TimeIntervalFactory.builder(1L)
+                                TimeInterval.builder(1L)
                                         .id(1L)
                                         .startInMilliseconds(1L)
                                         .stopInMilliseconds(2L)
@@ -67,7 +66,7 @@ public class TimeCursorMapperTest {
                                 createCursor(2L, 0)
                         },
                         {
-                                TimeIntervalFactory.builder(1L)
+                                TimeInterval.builder(1L)
                                         .id(1L)
                                         .startInMilliseconds(1L)
                                         .stopInMilliseconds(2L)

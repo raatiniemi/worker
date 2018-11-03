@@ -26,7 +26,6 @@ import java.util.Date;
 import me.raatiniemi.worker.domain.exception.InactiveProjectException;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.util.Optional;
 
 import static org.mockito.Matchers.isA;
@@ -54,7 +53,7 @@ public class ClockOutTest {
 
     @Test
     public void execute() {
-        TimeInterval timeInterval = TimeIntervalFactory.builder()
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .stopInMilliseconds(0L)
                 .build();
         when(timeIntervalRepository.findActiveByProjectId(1L))

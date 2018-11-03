@@ -25,7 +25,6 @@ import org.junit.Test;
 import me.raatiniemi.worker.RobolectricTestCase;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -51,7 +50,7 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
     @Test
     public void transform_withTime() {
         ContentValues expected = createContentValues(0L);
-        TimeInterval timeInterval = TimeIntervalFactory.builder(1L)
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(1L)
                 .build();
@@ -69,7 +68,7 @@ public class TimeContentValuesMapperTest extends RobolectricTestCase {
     @Test
     public void transform_withRegisteredTime() {
         ContentValues expected = createContentValues(1L);
-        TimeInterval timeInterval = TimeIntervalFactory.builder(1L)
+        TimeInterval timeInterval = TimeInterval.builder(1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(1L)
                 .register()

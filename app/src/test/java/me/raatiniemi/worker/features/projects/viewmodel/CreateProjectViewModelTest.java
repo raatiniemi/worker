@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;
 import me.raatiniemi.worker.domain.model.Project;
@@ -51,20 +50,6 @@ public class CreateProjectViewModelTest {
 
         useCase = mock(CreateProject.class);
         vm = new CreateProjectViewModel.ViewModel(useCase);
-    }
-
-    @Test
-    public void createProject_withNull() {
-        vm.error().invalidProjectNameError().subscribe(invalidProjectNameError);
-
-        //noinspection ConstantConditions
-        vm.input().projectName(null);
-        vm.input().createProject();
-
-        invalidProjectNameError.assertValueCount(1);
-        duplicateNameError.assertNoValues();
-        createProjectError.assertNoValues();
-        createProjectSuccess.assertNotCompleted();
     }
 
     @Test
@@ -119,17 +104,6 @@ public class CreateProjectViewModelTest {
 
         createProjectSuccess.assertValueCount(1);
         createProjectSuccess.assertNotCompleted();
-    }
-
-    @Test
-    public void isProjectNameValid_withNull() {
-        TestSubscriber<Boolean> isProjectNameValid = new TestSubscriber<>();
-        vm.output().isProjectNameValid().subscribe(isProjectNameValid);
-
-        //noinspection ConstantConditions
-        vm.input().projectName(null);
-
-        isProjectNameValid.assertValues(Boolean.FALSE, Boolean.FALSE);
     }
 
     @Test

@@ -66,9 +66,7 @@ public class GetProjectTimeSinceTest {
     public void setUp() {
         timeIntervalRepository = mock(TimeIntervalRepository.class);
         getProjectTimeSince = new GetProjectTimeSince(timeIntervalRepository);
-        project = Project.builder("Name")
-                .id(1L)
-                .build();
+        project = Project.from(1L, "Name");
     }
 
     @Test

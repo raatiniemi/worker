@@ -28,15 +28,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException;
 import me.raatiniemi.worker.domain.interactor.ClockIn;
 import me.raatiniemi.worker.domain.interactor.ClockOut;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.factory.TimeIntervalFactory;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;
 import rx.observers.TestSubscriber;
@@ -75,7 +72,7 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockIn_withError() {
-        Project project = buildProject();
+        Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         doThrow(ClockOutBeforeClockInException.class).when(clockIn).execute(eq(1L), any());
@@ -94,7 +91,7 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockIn() {
-        Project project = buildProject();
+        Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.MONTH)))
@@ -115,7 +112,7 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockIn_withDifferentStartingPoint() {
-        Project project = buildProject();
+        Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.DAY)))
@@ -137,7 +134,7 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockIn_withInvalidStartingPoint() {
-        Project project = buildProject();
+        Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.MONTH)))
@@ -159,7 +156,7 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockOut_withError() {
-        Project project = buildProject();
+        Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         doThrow(ClockOutBeforeClockInException.class).when(clockOut).execute(eq(1L), any());
@@ -178,7 +175,7 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockOut() {
-        Project project = buildProject();
+        Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.MONTH)))
@@ -199,7 +196,7 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockOut_withDifferentStartingPoint() {
-        Project project = buildProject();
+        Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.DAY)))
@@ -221,7 +218,7 @@ public class ClockActivityViewModelTest {
 
     @Test
     public void clockOut_withInvalidStartingPoint() {
-        Project project = buildProject();
+        Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
         when(getProjectTimeSince.execute(eq(project), eq(GetProjectTimeSince.MONTH)))
@@ -241,18 +238,11 @@ public class ClockActivityViewModelTest {
         verifyProjectStatus(clockOutSuccess.getOnNextEvents(), false);
     }
 
-    @Nonnull
-    private Project buildProject() {
-        return Project.builder("Project #1")
-                .id(1L)
-                .build();
-    }
-
     @NonNull
     private List<TimeInterval> getActiveTimeIntervals() {
         List<TimeInterval> timeIntervals = new ArrayList<>();
         timeIntervals.add(
-                TimeIntervalFactory.builder(1L)
+                TimeInterval.builder(1L)
                         .startInMilliseconds(1)
                         .stopInMilliseconds(0)
                         .build()

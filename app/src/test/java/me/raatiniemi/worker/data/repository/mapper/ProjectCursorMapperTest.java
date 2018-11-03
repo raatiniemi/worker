@@ -49,17 +49,11 @@ public class ProjectCursorMapperTest {
         return Arrays.asList(
                 new Object[][]{
                         {
-                                createProject(),
+                                Project.from(1L, "Name"),
                                 createCursor()
                         }
                 }
         );
-    }
-
-    private static Project createProject() {
-        return Project.builder("Name")
-                .id(1L)
-                .build();
     }
 
     private static Cursor createCursor() {
