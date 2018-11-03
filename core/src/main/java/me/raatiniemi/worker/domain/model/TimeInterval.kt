@@ -18,18 +18,17 @@ package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 import java.util.*
-import java.util.Objects.requireNonNull
 
 /**
  * Represent a time interval registered to a project.
  */
-class TimeInterval private constructor(builder: Builder) {
-    val id: Long?
-    val projectId: Long
-    val startInMilliseconds: Long
-    val stopInMilliseconds: Long
-    val isRegistered: Boolean
-
+data class TimeInterval(
+        val id: Long?,
+        val projectId: Long,
+        val startInMilliseconds: Long,
+        val stopInMilliseconds: Long,
+        val isRegistered: Boolean
+) {
     val isActive: Boolean
         get() = 0L == stopInMilliseconds
 
@@ -44,39 +43,23 @@ class TimeInterval private constructor(builder: Builder) {
         } else calculateInterval(stopInMilliseconds)
 
     init {
-        if (builder.stopInMilliseconds > 0) {
-            if (builder.stopInMilliseconds < builder.startInMilliseconds) {
-                throw ClockOutBeforeClockInException(
-                )
+        if (stopInMilliseconds > 0) {
+            if (stopInMilliseconds < startInMilliseconds) {
+                throw ClockOutBeforeClockInException()
             }
         }
-
-        id = builder.id
-        projectId = builder.projectId
-        startInMilliseconds = builder.startInMilliseconds
-        stopInMilliseconds = builder.stopInMilliseconds
-        isRegistered = builder.registered
     }
 
     fun markAsRegistered(): TimeInterval {
         return if (isRegistered) {
             this
-        } else builder(projectId)
-                .id(id)
-                .startInMilliseconds(startInMilliseconds)
-                .stopInMilliseconds(stopInMilliseconds)
-                .register()
-                .build()
+        } else copy(isRegistered = true)
     }
 
     fun unmarkRegistered(): TimeInterval {
         return if (!isRegistered) {
             this
-        } else builder(projectId)
-                .id(id)
-                .startInMilliseconds(startInMilliseconds)
-                .stopInMilliseconds(stopInMilliseconds)
-                .build()
+        } else copy(isRegistered = false)
     }
 
     /**
@@ -86,49 +69,11 @@ class TimeInterval private constructor(builder: Builder) {
      * @throws NullPointerException If date argument is null.
      */
     fun clockOutAt(date: Date): TimeInterval {
-        requireNonNull(date, "Date is not allowed to be null")
-
-        val builder = builder(projectId)
-                .id(id)
-                .startInMilliseconds(startInMilliseconds)
-                .stopInMilliseconds(date.time)
-
-        if (isRegistered) {
-            builder.register()
-        }
-
-        return builder.build()
+        return copy(stopInMilliseconds = date.time)
     }
 
     private fun calculateInterval(stopInMilliseconds: Long): Long {
         return stopInMilliseconds - startInMilliseconds
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        if (other !is TimeInterval) {
-            return false
-        }
-
-        return (id == other.id
-                && projectId == other.projectId
-                && startInMilliseconds == other.startInMilliseconds
-                && stopInMilliseconds == other.stopInMilliseconds
-                && isRegistered == other.isRegistered)
-    }
-
-    override fun hashCode(): Int {
-        var result = 17
-        result = 31 * result + Objects.hashCode(id)
-        result = 31 * result + (projectId xor projectId.ushr(32)).toInt()
-        result = 31 * result + (startInMilliseconds xor startInMilliseconds.ushr(32)).toInt()
-        result = 31 * result + (stopInMilliseconds xor stopInMilliseconds.ushr(32)).toInt()
-        result = 31 * result + if (isRegistered) 1 else 0
-
-        return result
     }
 
     class Builder(internal val projectId: Long) {
@@ -158,7 +103,7 @@ class TimeInterval private constructor(builder: Builder) {
         }
 
         fun build(): TimeInterval {
-            return TimeInterval(this)
+            return TimeInterval(id, projectId, startInMilliseconds, stopInMilliseconds, registered)
         }
     }
 
