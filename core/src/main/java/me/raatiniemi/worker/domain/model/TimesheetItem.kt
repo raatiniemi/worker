@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TimesheetItem private constructor(private val timeInterval: TimeInterval) : Comparable<TimesheetItem> {
+data class TimesheetItem(private val timeInterval: TimeInterval) : Comparable<TimesheetItem> {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
     val hoursMinutes: HoursMinutes = CalculateTime.calculateHoursMinutes(timeInterval.interval)
 
@@ -68,20 +68,6 @@ class TimesheetItem private constructor(private val timeInterval: TimeInterval) 
     fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {
         return formatter.apply(hoursMinutes)
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        if (other !is TimesheetItem) {
-            return false
-        }
-
-        return timeInterval == other.timeInterval
-    }
-
-    override fun hashCode() = timeInterval.hashCode()
 
     override fun compareTo(other: TimesheetItem): Int {
         return comparator.compare(this, other)
