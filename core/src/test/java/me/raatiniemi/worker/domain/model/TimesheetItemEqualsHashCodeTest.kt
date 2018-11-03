@@ -14,154 +14,140 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model;
+package me.raatiniemi.worker.domain.model
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import me.raatiniemi.worker.util.NullUtil.isNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import org.junit.runners.Parameterized.Parameters
 
-import java.util.Arrays;
-import java.util.Collection;
+@RunWith(Parameterized::class)
+class TimesheetItemEqualsHashCodeTest(
+        private val message: String,
+        private val expected: Boolean,
+        private val timesheetItem: TimesheetItem,
+        private val compareTo: Any?
+) {
+    @Test
+    fun equals() {
+        if (shouldBeEqual()) {
+            assertEqual()
+            return
+        }
 
-import static junit.framework.Assert.assertEquals;
-import static me.raatiniemi.worker.util.NullUtil.isNull;
-import static org.junit.Assert.assertNotEquals;
-
-@RunWith(Parameterized.class)
-public class TimesheetItemEqualsHashCodeTest {
-    private final String message;
-    private final Boolean expected;
-    private final TimesheetItem timesheetItem;
-    private final Object compareTo;
-
-    public TimesheetItemEqualsHashCodeTest(
-            String message,
-            Boolean expected,
-            TimesheetItem timesheetItem,
-            Object compareTo
-    ) {
-        this.message = message;
-        this.expected = expected;
-        this.timesheetItem = timesheetItem;
-        this.compareTo = compareTo;
+        assertNotEqual()
     }
 
-    @Parameters
-    public static Collection<Object[]> getParameters() {
-        TimesheetItem timesheetItem = TimesheetItem.with(
-                TimeInterval.builder(1L)
-                        .build()
-        );
+    private fun shouldBeEqual(): Boolean {
+        return expected
+    }
 
-        return Arrays.asList(
-                new Object[][]{
-                        {
+    private fun assertEqual() {
+        assertEquals(message, timesheetItem, compareTo)
+
+        validateHashCodeWhenEqual()
+    }
+
+    private fun validateHashCodeWhenEqual() {
+        assertEquals(message, timesheetItem.hashCode(), compareTo.hashCode())
+    }
+
+    private fun assertNotEqual() {
+        assertNotEquals(message, timesheetItem, compareTo)
+
+        validateHashCodeWhenNotEqual()
+    }
+
+    private fun validateHashCodeWhenNotEqual() {
+        if (isNull(compareTo)) {
+            return
+        }
+
+        assertNotEquals(message, timesheetItem.hashCode().toLong(), compareTo.hashCode().toLong())
+    }
+
+    companion object {
+        @JvmStatic
+        val parameters: Collection<Array<Any?>>
+            @Parameters
+            get() {
+                val timesheetItem = TimesheetItem.with(
+                        TimeInterval.builder(1L)
+                                .build()
+                )
+
+                return listOf<Array<Any?>>(
+                        arrayOf(
                                 "With same instance",
-                                Boolean.TRUE,
+                                true,
                                 timesheetItem,
                                 timesheetItem
-                        },
-                        {
+                        ),
+                        arrayOf(
                                 "With null",
-                                Boolean.FALSE,
+                                false,
                                 timesheetItem,
                                 null
-                        },
-                        {
+                        ),
+                        arrayOf(
                                 "With incompatible object",
-                                Boolean.FALSE,
+                                false,
                                 timesheetItem,
                                 ""
-                        },
-                        {
+                        ),
+                        arrayOf(
                                 "With different project id",
-                                Boolean.FALSE,
+                                false,
                                 timesheetItem,
                                 TimesheetItem.with(
                                         TimeInterval.builder(2L)
                                                 .build()
                                 )
-                        },
-                        {
+                        ),
+                        arrayOf(
                                 "With different id",
-                                Boolean.FALSE,
+                                false,
                                 timesheetItem,
                                 TimesheetItem.with(
                                         TimeInterval.builder(1L)
                                                 .id(2L)
                                                 .build()
                                 )
-                        },
-                        {
+                        ),
+                        arrayOf(
                                 "With different start in milliseconds",
-                                Boolean.FALSE,
+                                false,
                                 timesheetItem,
                                 TimesheetItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(2L)
                                                 .build()
                                 )
-                        },
-                        {
+                        ),
+                        arrayOf(
                                 "With different stop in milliseconds",
-                                Boolean.FALSE,
+                                false,
                                 timesheetItem,
                                 TimesheetItem.with(
                                         TimeInterval.builder(1L)
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 )
-                        },
-                        {
+                        ),
+                        arrayOf(
                                 "With different register status",
-                                Boolean.FALSE,
+                                false,
                                 timesheetItem,
                                 TimesheetItem.with(
                                         TimeInterval.builder(1L)
                                                 .register()
                                                 .build()
                                 )
-                        }
-                }
-        );
-    }
-
-    @Test
-    public void equals() {
-        if (shouldBeEqual()) {
-            assertEqual();
-            return;
-        }
-
-        assertNotEqual();
-    }
-
-    private Boolean shouldBeEqual() {
-        return expected;
-    }
-
-    private void assertEqual() {
-        assertEquals(message, timesheetItem, compareTo);
-
-        validateHashCodeWhenEqual();
-    }
-
-    private void validateHashCodeWhenEqual() {
-        assertEquals(message, timesheetItem.hashCode(), compareTo.hashCode());
-    }
-
-    private void assertNotEqual() {
-        assertNotEquals(message, timesheetItem, compareTo);
-
-        validateHashCodeWhenNotEqual();
-    }
-
-    private void validateHashCodeWhenNotEqual() {
-        if (isNull(compareTo)) {
-            return;
-        }
-
-        assertNotEquals(message, timesheetItem.hashCode(), compareTo.hashCode());
+                        )
+                )
+            }
     }
 }
