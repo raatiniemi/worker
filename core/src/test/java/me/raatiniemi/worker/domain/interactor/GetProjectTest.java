@@ -23,41 +23,34 @@ import org.junit.runners.JUnit4;
 
 import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.util.Optional;
 
-import static junit.framework.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static junit.framework.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
 public class GetProjectTest {
-    private ProjectRepository projectRepository;
+    private ProjectRepository repository;
     private GetProject getProject;
 
     @Before
     public void setUp() {
-        projectRepository = mock(ProjectRepository.class);
-        getProject = new GetProject(projectRepository);
+        repository = new ProjectInMemoryRepository();
+        getProject = new GetProject(repository);
     }
 
     @Test
     public void execute() {
-        Project project = Project.from("Name");
-        when(projectRepository.findById(eq(1L)))
-                .thenReturn(Optional.of(project));
+        repository.add(Project.from("Project name"));
+        Project expected = Project.from(1L, "Project name");
 
-        project = getProject.execute(1L);
+        Project actual = getProject.execute(1L);
 
-        assertNotNull(project);
+        assertEquals(expected, actual);
     }
 
     @Test(expected = NoProjectException.class)
     public void execute_withoutProject() {
-        when(projectRepository.findById(eq(1L)))
-                .thenReturn(Optional.empty());
-
         getProject.execute(1L);
     }
 }
