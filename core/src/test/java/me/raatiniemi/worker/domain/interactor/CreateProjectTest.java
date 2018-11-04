@@ -21,35 +21,31 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import me.raatiniemi.worker.domain.exception.NoProjectException;
+import java.util.Collections;
+import java.util.List;
+
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.util.Optional;
 
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
 public class CreateProjectTest {
-    private ProjectRepository projectRepository;
+    private ProjectRepository repository;
     private CreateProject createProject;
 
     @Before
     public void setUp() {
-        projectRepository = mock(ProjectRepository.class);
-        createProject = new CreateProject(projectRepository);
+        repository = new ProjectInMemoryRepository();
+        createProject = new CreateProject(repository);
     }
 
     @Test(expected = ProjectAlreadyExistsException.class)
     public void execute_withExistingProject() {
         Project project = Project.from("Project Name");
-
-        when(projectRepository.findByName(eq("Project Name")))
-                .thenReturn(Optional.of(project));
+        repository.add(project);
 
         createProject.execute(project);
     }
@@ -57,24 +53,11 @@ public class CreateProjectTest {
     @Test
     public void execute() {
         Project project = Project.from("Project Name");
-        when(projectRepository.findByName(eq("Project Name")))
-                .thenReturn(Optional.empty());
-        when(projectRepository.add(eq(project)))
-                .thenReturn(Optional.of(project));
+        List<Project> expected = Collections.singletonList(Project.from(1L, "Project Name"));
 
         createProject.execute(project);
 
-        verify(projectRepository).add(isA(Project.class));
-    }
-
-    @Test(expected = NoProjectException.class)
-    public void execute_with() {
-        Project project = Project.from("Project Name");
-        when(projectRepository.findByName(eq("Project Name")))
-                .thenReturn(Optional.empty());
-        when(projectRepository.add(eq(project)))
-                .thenReturn(Optional.empty());
-
-        createProject.execute(project);
+        List<Project> actual = repository.findAll();
+        assertEquals(expected, actual);
     }
 }
