@@ -20,7 +20,10 @@ sourceCompatibility = sourceCompatibilityVersion
 targetCompatibility = targetCompatibilityVersion
 
 dependencies {
+    compileOnly project(':core')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
+    testImplementation project(':core')
     testImplementation 'junit:junit:4.12'
 }
