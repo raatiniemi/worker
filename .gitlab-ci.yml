@@ -24,6 +24,7 @@ build:
     paths:
       - app/build/outputs/
       - core/build/libs/
+      - core-test/build/libs/
     expire_in: 1 day
   tags:
    - docker
@@ -36,6 +37,7 @@ lint:
     paths:
       - app/build/outputs/
       - core/build/libs/
+      - core-test/build/libs/
     expire_in: 1 day
   tags:
     - docker
@@ -48,6 +50,7 @@ test:
     paths:
       - app/build/outputs/
       - core/build/libs/
+      - core-test/build/libs/
     expire_in: 1 day
   except:
     - master
@@ -62,6 +65,7 @@ sonar:
     paths:
       - app/build/outputs/
       - core/build/libs/
+      - core-test/build/libs/
     expire_in: 1 day
   only:
     - master
@@ -79,6 +83,7 @@ integration test:
     paths:
       - app/build/outputs/
       - core/build/libs/
+      - core-test/build/libs/
     expire_in: 1 day
   only:
     - master
@@ -93,6 +98,7 @@ deploy:
     paths:
       - app/build/outputs/
       - core/build/libs/
+      - core-test/build/libs/
     expire_in: 1 day
   only:
     - tags
