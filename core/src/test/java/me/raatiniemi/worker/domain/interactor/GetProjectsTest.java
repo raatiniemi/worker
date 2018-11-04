@@ -25,39 +25,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 
 import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(JUnit4.class)
 public class GetProjectsTest {
-    private ProjectRepository projectRepository;
+    private ProjectRepository repository;
+    private GetProjects useCase;
 
     @Before
     public void setUp() {
-        projectRepository = mock(ProjectRepository.class);
+        repository = new ProjectInMemoryRepository();
+        useCase = new GetProjects(repository);
+    }
+
+    @Test
+    public void execute_withoutProjects() {
+        List<Project> actual = useCase.execute();
+
+        assertTrue(actual.isEmpty());
     }
 
     @Test
     public void execute() {
-        List<Project> projects = new ArrayList<>();
-        projects.add(Project.from(1L, "Project #1"));
-        projects.add(Project.from(2L, "Project #2"));
+        repository.add(Project.from("Project #1"));
+        repository.add(Project.from("Project #2"));
+        List<Project> expected = new ArrayList<>();
+        expected.add(Project.from(1L, "Project #1"));
+        expected.add(Project.from(2L, "Project #2"));
 
-        when(projectRepository.findAll())
-                .thenReturn(projects);
+        List<Project> actual = useCase.execute();
 
-        GetProjects getProjects = new GetProjects(
-                projectRepository
-        );
-        List<Project> actual = getProjects.execute();
-
-        assertEquals(projects, actual);
-
-        verify(projectRepository, times(1)).findAll();
+        assertEquals(expected, actual);
     }
 }
