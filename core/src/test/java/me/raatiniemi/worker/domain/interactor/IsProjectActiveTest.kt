@@ -17,44 +17,44 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.util.Optional
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 
 @RunWith(JUnit4::class)
 class IsProjectActiveTest {
     private lateinit var repository: TimeIntervalRepository
+    private lateinit var useCase: IsProjectActive
 
     @Before
     fun setUp() {
-        repository = mock(TimeIntervalRepository::class.java)
+        repository = TimeIntervalInMemoryRepository()
+        useCase = IsProjectActive(repository)
     }
 
     @Test
     fun execute_withoutTime() {
-        `when`(repository.findActiveByProjectId(1))
-                .thenReturn(Optional.empty())
+        val actual = useCase.execute(1)
 
-        val isProjectActive = IsProjectActive(repository)
-        assertFalse(isProjectActive.execute(1))
+        assertFalse(actual)
     }
 
     @Test
     fun execute_withActiveTime() {
         val timeInterval = TimeInterval.builder(1)
+                .id(1)
+                .startInMilliseconds(1)
                 .stopInMilliseconds(0)
                 .build()
-        `when`(repository.findActiveByProjectId(1))
-                .thenReturn(Optional.of(timeInterval))
+        repository.add(timeInterval)
 
-        val isProjectActive = IsProjectActive(repository)
-        assertTrue(isProjectActive.execute(1))
+        val actual = useCase.execute(1)
+
+        assertTrue(actual)
     }
 }
