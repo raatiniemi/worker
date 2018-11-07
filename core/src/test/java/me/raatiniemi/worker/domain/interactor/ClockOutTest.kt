@@ -17,14 +17,15 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.util.Optional
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mockito.*
 import java.util.*
 
 @RunWith(JUnit4::class)
@@ -34,28 +35,29 @@ class ClockOutTest {
 
     @Before
     fun setUp() {
-        repository = mock(TimeIntervalRepository::class.java)
+        repository = TimeIntervalInMemoryRepository()
         useCase = ClockOut(repository)
     }
 
     @Test(expected = InactiveProjectException::class)
     fun execute_withoutActiveTime() {
-        `when`(repository.findActiveByProjectId(1L))
-                .thenReturn(Optional.empty())
-
         useCase.execute(1L, Date())
     }
 
     @Test
     fun execute() {
-        val timeInterval = TimeInterval.builder(1L)
-                .stopInMilliseconds(0L)
+        val date = Date()
+        val timeInterval = TimeInterval.builder(1)
+                .id(1)
+                .startInMilliseconds(1)
+                .stopInMilliseconds(0)
                 .build()
-        `when`(repository.findActiveByProjectId(1L))
-                .thenReturn(Optional.of(timeInterval))
+        repository.add(timeInterval)
+        val expected = listOf(timeInterval.copy(stopInMilliseconds = date.time))
 
-        useCase.execute(1L, Date())
+        useCase.execute(1L, date)
 
-        verify<TimeIntervalRepository>(repository).update(isA(TimeInterval::class.java))
+        val actual = repository.findAll(Project(1, "Project name"), 0)
+        assertEquals(expected, actual)
     }
 }
