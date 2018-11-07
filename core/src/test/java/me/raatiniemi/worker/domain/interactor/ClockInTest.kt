@@ -17,45 +17,54 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.util.Optional
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mockito.*
 import java.util.*
 
 @RunWith(JUnit4::class)
 class ClockInTest {
     private lateinit var repository: TimeIntervalRepository
+    private lateinit var useCase: ClockIn
 
     @Before
     fun setUp() {
-        repository = mock(TimeIntervalRepository::class.java)
+        repository = TimeIntervalInMemoryRepository()
+        useCase = ClockIn(repository)
     }
 
     @Test(expected = ActiveProjectException::class)
     fun execute_withActiveTime() {
         val timeInterval = TimeInterval.builder(1)
+                .id(1)
+                .startInMilliseconds(1)
                 .stopInMilliseconds(0)
                 .build()
-        `when`(repository.findActiveByProjectId(1))
-                .thenReturn(Optional.of(timeInterval))
+        repository.add(timeInterval)
 
-        val clockIn = ClockIn(repository)
-        clockIn.execute(1, Date())
+        useCase.execute(1, Date())
     }
 
     @Test
     fun execute() {
-        `when`(repository.findActiveByProjectId(1))
-                .thenReturn(Optional.empty())
+        val date = Date()
+        val expected = listOf(
+                TimeInterval.builder(1)
+                        .id(1)
+                        .startInMilliseconds(date.time)
+                        .stopInMilliseconds(0)
+                        .build()
+        )
 
-        val clockIn = ClockIn(repository)
-        clockIn.execute(1, Date())
+        useCase.execute(1, date)
 
-        verify<TimeIntervalRepository>(repository).add(isA(TimeInterval::class.java))
+        val actual = repository.findAll(Project(1, "Project name"), 0)
+        assertEquals(expected, actual)
     }
 }
