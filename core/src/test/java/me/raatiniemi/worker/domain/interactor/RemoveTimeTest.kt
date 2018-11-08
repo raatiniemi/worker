@@ -16,15 +16,15 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 
 @RunWith(JUnit4::class)
 class RemoveTimeTest {
@@ -33,7 +33,7 @@ class RemoveTimeTest {
 
     @Before
     fun setUp() {
-        repository = mock(TimeIntervalRepository::class.java)
+        repository = TimeIntervalInMemoryRepository()
         useCase = RemoveTime(repository)
     }
 
@@ -41,22 +41,29 @@ class RemoveTimeTest {
     fun execute_withItem() {
         val timeInterval = TimeInterval.builder(1)
                 .id(1)
+                .startInMilliseconds(1)
+                .stopInMilliseconds(10)
                 .build()
+        repository.add(timeInterval)
 
         useCase.execute(timeInterval)
 
-        verify<TimeIntervalRepository>(repository).remove(eq(1))
+        val actual = repository.findAll(Project(1, "Project name"), 0)
+        assertEquals(emptyList<TimeInterval>(), actual)
     }
 
     @Test
     fun execute_withItems() {
         val timeInterval = TimeInterval.builder(1)
                 .id(1)
+                .startInMilliseconds(1)
+                .stopInMilliseconds(10)
                 .build()
-        val items = listOf(timeInterval)
+        repository.add(timeInterval)
 
-        useCase.execute(items)
+        useCase.execute(listOf(timeInterval))
 
-        verify<TimeIntervalRepository>(repository).remove(eq(items))
+        val actual = repository.findAll(Project(1, "Project name"), 0)
+        assertEquals(emptyList<TimeInterval>(), actual)
     }
 }
