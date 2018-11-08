@@ -18,14 +18,14 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import java.util.*
 
 @RunWith(JUnit4::class)
@@ -35,6 +35,7 @@ class GetProjectTimeSinceTest {
     private lateinit var repository: TimeIntervalRepository
     private lateinit var useCase: GetProjectTimeSince
 
+    // TODO: Use `getMillisecondsForStartingPoint` from core module.
     private fun getMillisecondsForStartingPoint(startingPoint: Int): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 0)
@@ -55,43 +56,67 @@ class GetProjectTimeSinceTest {
         return calendar.timeInMillis
     }
 
+    private fun timeIntervalAfterStartingPoint(startingPoint: Int): TimeInterval {
+        val startingPointInMilliseconds = getMillisecondsForStartingPoint(startingPoint)
+
+        return TimeInterval.builder(1)
+                .startInMilliseconds(startingPointInMilliseconds + 1)
+                .stopInMilliseconds(startingPointInMilliseconds + 10)
+                .build()
+    }
+
+    private fun timeIntervalBeforeStartingPoint(startingPoint: Int): TimeInterval {
+        val startingPointInMilliseconds = getMillisecondsForStartingPoint(startingPoint)
+
+        return TimeInterval.builder(1)
+                .startInMilliseconds(startingPointInMilliseconds - 10)
+                .stopInMilliseconds(startingPointInMilliseconds)
+                .build()
+    }
+
     @Before
     fun setUp() {
-        repository = mock(TimeIntervalRepository::class.java)
+        repository = TimeIntervalInMemoryRepository()
         useCase = GetProjectTimeSince(repository)
     }
 
     @Test
     fun execute_withDay() {
-        useCase.execute(project, GetProjectTimeSince.DAY)
+        val timeIntervalBefore = timeIntervalBeforeStartingPoint(GetProjectTimeSince.DAY)
+        val timeIntervalAfter = timeIntervalAfterStartingPoint(GetProjectTimeSince.DAY)
+        repository.add(timeIntervalBefore)
+        repository.add(timeIntervalAfter)
+        val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        verify<TimeIntervalRepository>(repository)
-                .findAll(
-                        eq<Project>(project),
-                        eq(getMillisecondsForStartingPoint(GetProjectTimeSince.DAY))
-                )
+        val actual = useCase.execute(project, GetProjectTimeSince.DAY)
+
+        assertEquals(expected, actual)
     }
 
     @Test
     fun execute_withWeek() {
-        useCase.execute(project, GetProjectTimeSince.WEEK)
+        val timeIntervalBefore = timeIntervalBeforeStartingPoint(GetProjectTimeSince.WEEK)
+        val timeIntervalAfter = timeIntervalAfterStartingPoint(GetProjectTimeSince.WEEK)
+        repository.add(timeIntervalBefore)
+        repository.add(timeIntervalAfter)
+        val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        verify<TimeIntervalRepository>(repository)
-                .findAll(
-                        eq<Project>(project),
-                        eq(getMillisecondsForStartingPoint(GetProjectTimeSince.WEEK))
-                )
+        val actual = useCase.execute(project, GetProjectTimeSince.WEEK)
+
+        assertEquals(expected, actual)
     }
 
     @Test
     fun execute_withMonth() {
-        useCase.execute(project, GetProjectTimeSince.MONTH)
+        val timeIntervalBefore = timeIntervalBeforeStartingPoint(GetProjectTimeSince.MONTH)
+        val timeIntervalAfter = timeIntervalAfterStartingPoint(GetProjectTimeSince.MONTH)
+        repository.add(timeIntervalBefore)
+        repository.add(timeIntervalAfter)
+        val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        verify<TimeIntervalRepository>(repository)
-                .findAll(
-                        eq<Project>(project),
-                        eq(getMillisecondsForStartingPoint(GetProjectTimeSince.MONTH))
-                )
+        val actual = useCase.execute(project, GetProjectTimeSince.MONTH)
+
+        assertEquals(expected, actual)
     }
 
     @Test(expected = InvalidStartingPointException::class)
