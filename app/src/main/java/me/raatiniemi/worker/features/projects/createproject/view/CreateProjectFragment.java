@@ -24,6 +24,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -93,6 +94,14 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
             public void afterTextChanged(Editable s) {
                 viewModel.input().projectName(s.toString());
             }
+        });
+        projectName.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.createProject();
+                return true;
+            }
+
+            return false;
         });
 
         projectSubmit = view.findViewById(R.id.fragment_create_project_submit);

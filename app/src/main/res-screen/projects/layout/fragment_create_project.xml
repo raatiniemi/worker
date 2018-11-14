@@ -27,6 +27,7 @@
         android:textSize="@dimen/fragment_dialog_text_size"
         android:hint="@string/fragment_create_project_name_hint"
         android:backgroundTint="@color/accent"
+        android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="text"
         tools:ignore="UnusedAttribute">
