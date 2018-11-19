@@ -16,26 +16,25 @@
 
 package me.raatiniemi.worker.util;
 
-import android.support.v7.widget.RecyclerView;
-
 import org.junit.Before;
 import org.junit.Test;
 
+import androidx.recyclerview.widget.RecyclerView;
 import me.raatiniemi.worker.RobolectricTestCase;
+import me.raatiniemi.worker.features.shared.view.adapter.EmptyRecyclerViewAdapter;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class SelectionManagerAdapterDecoratorTest extends RobolectricTestCase {
-    private RecyclerView.Adapter adapter;
+    private final RecyclerView.Adapter adapter = new EmptyRecyclerViewAdapter();
     private SelectionListener selectionListener;
 
     private SelectionManager<String> selectionManager;
 
     @Before
     public void setUp() {
-        adapter = mock(RecyclerView.Adapter.class);
         selectionListener = mock(SelectionListener.class);
 
         selectionManager = new SelectionManagerAdapterDecorator<>(
@@ -48,7 +47,6 @@ public class SelectionManagerAdapterDecoratorTest extends RobolectricTestCase {
     public void selectItem() {
         selectionManager.selectItem("selectItem");
 
-        verify(adapter).notifyDataSetChanged();
         verify(selectionListener).onSelect();
     }
 
@@ -56,7 +54,6 @@ public class SelectionManagerAdapterDecoratorTest extends RobolectricTestCase {
     public void deselectItem() {
         selectionManager.deselectItem("deselectItem");
 
-        verify(adapter).notifyDataSetChanged();
         verify(selectionListener).onDeselect();
     }
 
@@ -64,7 +61,6 @@ public class SelectionManagerAdapterDecoratorTest extends RobolectricTestCase {
     public void deselectItems() {
         selectionManager.deselectItems();
 
-        verify(adapter).notifyDataSetChanged();
         verify(selectionListener, never()).onDeselect();
     }
 }

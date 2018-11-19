@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.projects.createproject.view;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import androidx.annotation.Nullable;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.projects.ViewModels;

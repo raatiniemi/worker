@@ -16,8 +16,7 @@
 
 package me.raatiniemi.worker.util;
 
-import android.support.annotation.Nullable;
-
+import androidx.annotation.Nullable;
 import me.raatiniemi.worker.features.shared.presenter.BasePresenter;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;

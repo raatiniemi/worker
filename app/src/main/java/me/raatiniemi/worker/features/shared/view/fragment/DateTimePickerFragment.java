@@ -20,15 +20,16 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.Calendar;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.raatiniemi.worker.R;
 import timber.log.Timber;
 

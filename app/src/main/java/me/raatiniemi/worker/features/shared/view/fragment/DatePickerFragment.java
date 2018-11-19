@@ -19,10 +19,10 @@ package me.raatiniemi.worker.features.shared.view.fragment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;

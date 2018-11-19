@@ -21,10 +21,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
-import android.support.v4.app.NotificationCompat;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+import androidx.core.app.NotificationCompat;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.project.view.ProjectActivity;

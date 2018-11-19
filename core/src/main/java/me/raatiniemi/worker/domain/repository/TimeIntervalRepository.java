@@ -29,7 +29,7 @@ public interface TimeIntervalRepository {
     /**
      * Find time intervals for project since starting point, or active time interval.
      *
-     * @param project Project for which to use as filter.
+     * @param project      Project for which to use as filter.
      * @param milliseconds Starting point in milliseconds.
      * @return Time intervals, or active time interval, for project since starting point.
      */

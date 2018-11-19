@@ -19,8 +19,6 @@ package me.raatiniemi.worker.data.repository;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.util.Collections;
 import java.util.Date;
@@ -29,6 +27,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.data.repository.mapper.TimeCursorMapper;
 import me.raatiniemi.worker.domain.exception.DomainException;

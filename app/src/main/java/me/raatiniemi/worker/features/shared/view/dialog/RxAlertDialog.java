@@ -18,10 +18,10 @@ package me.raatiniemi.worker.features.shared.view.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import rx.Observable;
 import rx.subscriptions.Subscriptions;
 

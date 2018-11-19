@@ -16,11 +16,10 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel;
 
-import android.support.annotation.NonNull;
-
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;

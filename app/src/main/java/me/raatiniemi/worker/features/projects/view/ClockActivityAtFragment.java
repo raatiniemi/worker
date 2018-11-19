@@ -16,12 +16,11 @@
 
 package me.raatiniemi.worker.features.projects.view;
 
-import android.support.annotation.NonNull;
-
 import java.util.Calendar;
 
 import javax.annotation.Nonnull;
 
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.shared.view.fragment.DateTimePickerFragment;
 

@@ -16,8 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel;
 
-import android.support.annotation.NonNull;
-
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.domain.interactor.RemoveProject;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;

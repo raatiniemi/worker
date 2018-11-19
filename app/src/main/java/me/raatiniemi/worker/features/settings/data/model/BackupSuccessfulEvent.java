@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.settings.data.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class BackupSuccessfulEvent {
     private final Backup backup;

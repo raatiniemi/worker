@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.features.projects.view;
 
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;

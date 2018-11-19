@@ -16,12 +16,11 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import rx.Observable;
 import rx.subjects.PublishSubject;

@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.data.provider;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.util.Optional;
 

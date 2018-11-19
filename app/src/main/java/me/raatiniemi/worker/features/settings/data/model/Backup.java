@@ -16,11 +16,10 @@
 
 package me.raatiniemi.worker.features.settings.data.model;
 
-import android.support.annotation.Nullable;
-
 import java.io.File;
 import java.util.Date;
 
+import androidx.annotation.Nullable;
 import me.raatiniemi.worker.WorkerApplication;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;

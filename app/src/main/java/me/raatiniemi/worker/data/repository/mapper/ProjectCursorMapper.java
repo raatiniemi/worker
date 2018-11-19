@@ -18,8 +18,8 @@ package me.raatiniemi.worker.data.repository.mapper;
 
 import android.database.Cursor;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.Project;
 

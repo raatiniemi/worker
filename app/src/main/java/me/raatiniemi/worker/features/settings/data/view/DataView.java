@@ -16,8 +16,7 @@
 
 package me.raatiniemi.worker.features.settings.data.view;
 
-import android.support.annotation.Nullable;
-
+import androidx.annotation.Nullable;
 import me.raatiniemi.worker.features.settings.data.model.Backup;
 import me.raatiniemi.worker.features.shared.view.MvpView;
 

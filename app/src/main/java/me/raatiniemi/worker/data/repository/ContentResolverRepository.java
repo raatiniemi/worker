@@ -17,7 +17,8 @@
 package me.raatiniemi.worker.data.repository;
 
 import android.content.ContentResolver;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 /**
  * Base for repositories using a content a content resolver as data source.

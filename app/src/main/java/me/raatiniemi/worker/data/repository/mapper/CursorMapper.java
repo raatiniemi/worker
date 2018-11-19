@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.data.repository.mapper;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.domain.repository.mapper.EntityMapper;
 
 /**
