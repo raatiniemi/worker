@@ -16,8 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.createproject.viewmodel;
 
-import android.support.annotation.NonNull;
-
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException;
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException;
 import me.raatiniemi.worker.domain.interactor.CreateProject;

@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.features.shared.view.adapter;
 
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.ViewGroup;
 
 import org.junit.Test;
@@ -24,6 +23,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import me.raatiniemi.worker.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;

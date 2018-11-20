@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.shared.presenter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Represents an action performed with the view, if the view is available.

@@ -16,14 +16,13 @@
 
 package me.raatiniemi.worker.features.shared.view.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView.ViewHolder;
-
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import me.raatiniemi.worker.features.shared.model.ExpandableItem;
 
 /**

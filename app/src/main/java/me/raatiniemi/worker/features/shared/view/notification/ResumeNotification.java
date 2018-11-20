@@ -19,11 +19,11 @@ package me.raatiniemi.worker.features.shared.view.notification;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.v4.app.NotificationCompat;
 
 import java.util.Date;
 
+import androidx.annotation.DrawableRes;
+import androidx.core.app.NotificationCompat;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.service.ongoing.ResumeService;
 import me.raatiniemi.worker.domain.model.Project;

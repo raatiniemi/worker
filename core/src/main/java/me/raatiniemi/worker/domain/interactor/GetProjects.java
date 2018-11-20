@@ -32,8 +32,8 @@ public class GetProjects {
 
     /**
      * Constructor.
-     *  @param projectRepository Project repository.
      *
+     * @param projectRepository Project repository.
      */
     public GetProjects(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;

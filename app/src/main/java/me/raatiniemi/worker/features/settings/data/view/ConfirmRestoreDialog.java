@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.features.settings.data.view;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
 import rx.Observable;

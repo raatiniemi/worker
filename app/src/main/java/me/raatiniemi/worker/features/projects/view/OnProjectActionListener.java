@@ -16,8 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.view;
 
-import android.support.annotation.NonNull;
-
+import androidx.annotation.NonNull;
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;
 
 /**

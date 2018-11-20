@@ -16,12 +16,11 @@
 
 package me.raatiniemi.worker.features.shared.presenter;
 
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
-import android.support.annotation.UiThread;
-
 import java.lang.ref.WeakReference;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
 import me.raatiniemi.worker.features.shared.view.MvpView;
 import timber.log.Timber;
 

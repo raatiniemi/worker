@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.shared.view.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Base for the application activities.

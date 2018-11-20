@@ -17,8 +17,6 @@
 package me.raatiniemi.worker.data.util;
 
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,6 +25,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import me.raatiniemi.worker.WorkerApplication;
 import timber.log.Timber;
 

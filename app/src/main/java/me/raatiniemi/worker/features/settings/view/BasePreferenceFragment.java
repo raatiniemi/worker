@@ -19,11 +19,12 @@ package me.raatiniemi.worker.features.settings.view;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import me.raatiniemi.worker.R;
 import timber.log.Timber;
 

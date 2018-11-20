@@ -16,9 +16,9 @@
 
 package me.raatiniemi.worker.features.shared.view.adapter;
 
-import android.support.annotation.NonNull;
-
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Generic interface for working with list adapters.
