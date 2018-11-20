@@ -14,18 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.repository;
+package me.raatiniemi.worker.domain.repository
 
-import java.util.List;
-
-import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.util.Optional;
+import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.util.Optional
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
  */
-public interface TimeIntervalRepository {
+interface TimeIntervalRepository {
     /**
      * Find time intervals for project since starting point, or active time interval.
      *
@@ -33,7 +31,7 @@ public interface TimeIntervalRepository {
      * @param milliseconds Starting point in milliseconds.
      * @return Time intervals, or active time interval, for project since starting point.
      */
-    List<TimeInterval> findAll(Project project, long milliseconds);
+    fun findAll(project: Project, milliseconds: Long): List<TimeInterval>
 
     /**
      * Get time by id.
@@ -41,7 +39,7 @@ public interface TimeIntervalRepository {
      * @param id Id for the time.
      * @return Time, or null if none was found.
      */
-    Optional<TimeInterval> findById(long id);
+    fun findById(id: Long): Optional<TimeInterval>
 
     /**
      * Get active time for project.
@@ -49,7 +47,7 @@ public interface TimeIntervalRepository {
      * @param projectId Id for project.
      * @return Active time for project, or null if project is inactive.
      */
-    Optional<TimeInterval> findActiveByProjectId(long projectId);
+    fun findActiveByProjectId(projectId: Long): Optional<TimeInterval>
 
     /**
      * Add time.
@@ -57,7 +55,7 @@ public interface TimeIntervalRepository {
      * @param timeInterval Time to add.
      * @return Added time.
      */
-    Optional<TimeInterval> add(TimeInterval timeInterval);
+    fun add(timeInterval: TimeInterval): Optional<TimeInterval>
 
     /**
      * Update time.
@@ -65,7 +63,7 @@ public interface TimeIntervalRepository {
      * @param timeInterval Time to update.
      * @return Updated time.
      */
-    Optional<TimeInterval> update(TimeInterval timeInterval);
+    fun update(timeInterval: TimeInterval): Optional<TimeInterval>
 
     /**
      * Update items.
@@ -73,19 +71,19 @@ public interface TimeIntervalRepository {
      * @param timeIntervals Items to update.
      * @return Updated items.
      */
-    List<TimeInterval> update(List<TimeInterval> timeIntervals);
+    fun update(timeIntervals: List<TimeInterval>): List<TimeInterval>
 
     /**
      * Remove time by id.
      *
      * @param id Id of the time to remove.
      */
-    void remove(long id);
+    fun remove(id: Long)
 
     /**
      * Remove multiple items.
      *
      * @param timeIntervals Items to remove.
      */
-    void remove(List<TimeInterval> timeIntervals);
+    fun remove(timeIntervals: List<TimeInterval>)
 }

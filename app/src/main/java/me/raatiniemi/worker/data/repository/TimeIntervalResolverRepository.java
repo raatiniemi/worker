@@ -24,6 +24,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,8 +89,9 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
         }
     }
 
+    @NotNull
     @Override
-    public List<TimeInterval> findAll(Project project, long milliseconds) {
+    public List<TimeInterval> findAll(@NotNull Project project, long milliseconds) {
         requireNonNull(project);
 
         Cursor cursor = getContentResolver().query(
@@ -101,6 +104,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
         return fetch(cursor);
     }
 
+    @NotNull
     @Override
     public Optional<TimeInterval> findById(final long id) {
         final Cursor cursor = getContentResolver().query(
@@ -113,6 +117,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
         return fetchRow(cursor);
     }
 
+    @NotNull
     @Override
     public Optional<TimeInterval> findActiveByProjectId(long projectId) {
         final Cursor cursor = getContentResolver().query(
@@ -125,8 +130,9 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
         return fetchRow(cursor);
     }
 
+    @NotNull
     @Override
-    public Optional<TimeInterval> add(final TimeInterval timeInterval) {
+    public Optional<TimeInterval> add(@NotNull final TimeInterval timeInterval) {
         requireNonNull(timeInterval);
 
         final ContentValues values = contentValuesMapper.transform(timeInterval);
@@ -138,8 +144,9 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
         return findById(Long.parseLong(ProviderContract.getTimeItemId(uri)));
     }
 
+    @NotNull
     @Override
-    public Optional<TimeInterval> update(final TimeInterval timeInterval) {
+    public Optional<TimeInterval> update(@NotNull final TimeInterval timeInterval) {
         requireNonNull(timeInterval);
 
         getContentResolver().update(
@@ -152,8 +159,9 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
         return findById(timeInterval.getId());
     }
 
+    @NotNull
     @Override
-    public List<TimeInterval> update(List<TimeInterval> timeIntervals) {
+    public List<TimeInterval> update(@NotNull List<TimeInterval> timeIntervals) {
         requireNonNull(timeIntervals);
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
@@ -194,7 +202,7 @@ public class TimeIntervalResolverRepository extends ContentResolverRepository im
     }
 
     @Override
-    public void remove(List<TimeInterval> timeIntervals) {
+    public void remove(@NotNull List<TimeInterval> timeIntervals) {
         requireNonNull(timeIntervals);
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
