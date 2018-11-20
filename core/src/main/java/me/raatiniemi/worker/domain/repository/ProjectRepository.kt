@@ -14,23 +14,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.repository;
+package me.raatiniemi.worker.domain.repository
 
-import java.util.List;
-
-import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.util.Optional;
+import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.util.Optional
 
 /**
  * Represent a unified interface for working with projects using different data sources.
  */
-public interface ProjectRepository {
+interface ProjectRepository {
     /**
      * Get projects.
      *
      * @return Projects.
      */
-    List<Project> findAll();
+    fun findAll(): List<Project>
 
     /**
      * Find project by name.
@@ -38,7 +36,7 @@ public interface ProjectRepository {
      * @param projectName Project name to search for.
      * @return Project with name, or null.
      */
-    Optional<Project> findByName(String projectName);
+    fun findByName(projectName: String): Optional<Project>
 
     /**
      * Get project by id.
@@ -46,7 +44,7 @@ public interface ProjectRepository {
      * @param id Id for the project.
      * @return Project, or null if none was found.
      */
-    Optional<Project> findById(long id);
+    fun findById(id: Long): Optional<Project>
 
     /**
      * Add a new project.
@@ -54,14 +52,15 @@ public interface ProjectRepository {
      * @param project Project to add.
      * @return Added project.
      */
-    Optional<Project> add(Project project);
+    fun add(project: Project): Optional<Project>
 
     /**
      * Remove project by id.
-     * <p/>
+     *
+     *
      * The operation also removes time registered to the project.
      *
      * @param id Id of the project to remove.
      */
-    void remove(long id);
+    fun remove(id: Long)
 }

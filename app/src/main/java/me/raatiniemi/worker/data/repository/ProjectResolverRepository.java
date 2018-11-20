@@ -23,6 +23,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +88,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         }
     }
 
+    @NotNull
     @Override
     public List<Project> findAll() {
         final Cursor cursor = getContentResolver().query(
@@ -99,8 +102,9 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         return fetch(cursor);
     }
 
+    @NotNull
     @Override
-    public Optional<Project> findByName(String projectName) {
+    public Optional<Project> findByName(@NotNull String projectName) {
         requireNonNull(projectName);
 
         final Cursor cursor = getContentResolver().query(
@@ -113,6 +117,7 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         return fetchRow(cursor);
     }
 
+    @NotNull
     @Override
     public Optional<Project> findById(final long id) {
         final Cursor cursor = getContentResolver().query(
@@ -125,8 +130,9 @@ public class ProjectResolverRepository extends ContentResolverRepository impleme
         return fetchRow(cursor);
     }
 
+    @NotNull
     @Override
-    public Optional<Project> add(final Project project) {
+    public Optional<Project> add(@NotNull final Project project) {
         requireNonNull(project);
 
         final Uri uri = getContentResolver().insert(
