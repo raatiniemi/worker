@@ -20,6 +20,8 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -138,8 +140,12 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
         }
     }
 
+    @NotNull
     @Override
-    public Map<Date, Set<TimesheetItem>> getTimesheet(final long projectId, final PageRequest pageRequest) {
+    public Map<Date, Set<TimesheetItem>> getTimesheet(
+            final long projectId,
+            @NotNull final PageRequest pageRequest
+    ) {
         requireNonNull(pageRequest);
 
         final Uri uri = ProviderContract.getTimesheetStreamUri(projectId);
@@ -153,8 +159,12 @@ public class TimesheetResolverRepository extends ContentResolverRepository imple
         return fetchTimesheet(cursor);
     }
 
+    @NotNull
     @Override
-    public Map<Date, Set<TimesheetItem>> getTimesheetWithoutRegisteredEntries(long projectId, final PageRequest pageRequest) {
+    public Map<Date, Set<TimesheetItem>> getTimesheetWithoutRegisteredEntries(
+            long projectId,
+            @NotNull final PageRequest pageRequest
+    ) {
         requireNonNull(pageRequest);
 
         final Uri uri = ProviderContract.getTimesheetStreamUri(projectId);

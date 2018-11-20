@@ -14,15 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.repository;
+package me.raatiniemi.worker.domain.repository
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
+import me.raatiniemi.worker.domain.model.TimesheetItem
+import java.util.*
 
-import me.raatiniemi.worker.domain.model.TimesheetItem;
-
-public interface TimesheetRepository {
+interface TimesheetRepository {
     /**
      * Get timesheet segment for a project.
      *
@@ -30,7 +27,7 @@ public interface TimesheetRepository {
      * @param pageRequest Defines the page segment.
      * @return Project timesheet segment.
      */
-    Map<Date, Set<TimesheetItem>> getTimesheet(final long projectId, final PageRequest pageRequest);
+    fun getTimesheet(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimesheetItem>>
 
     /**
      * Get timesheet segment for a project, without registered entries.
@@ -39,5 +36,5 @@ public interface TimesheetRepository {
      * @param pageRequest Defines the page segment.
      * @return Project timesheet segment.
      */
-    Map<Date, Set<TimesheetItem>> getTimesheetWithoutRegisteredEntries(final long projectId, final PageRequest pageRequest);
+    fun getTimesheetWithoutRegisteredEntries(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimesheetItem>>
 }
