@@ -87,6 +87,7 @@ android {
 
 if (System.getenv("PLAY_KEY_PATH")) {
     play {
+        track = 'internal'
         jsonFile = file(System.getenv("PLAY_KEY_PATH"))
     }
 }
