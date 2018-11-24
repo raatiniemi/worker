@@ -22,17 +22,15 @@ import java.util.List;
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
 /**
- * Get the registered time for a project since a defined starting point, i.e. {@link #DAY},
- * {@link #WEEK}, or {@link #MONTH}.
+ * Get the registered time for a project since a defined starting point, i.e.
+ * {@link TimeIntervalStartingPoint#DAY}, {@link TimeIntervalStartingPoint#WEEK}, or
+ * {@link TimeIntervalStartingPoint#MONTH}.
  */
 public class GetProjectTimeSince {
-    public static final int DAY = 0;
-    public static final int WEEK = 1;
-    public static final int MONTH = 2;
-
     private final TimeIntervalRepository timeIntervalRepository;
 
     public GetProjectTimeSince(TimeIntervalRepository timeIntervalRepository) {
@@ -47,13 +45,13 @@ public class GetProjectTimeSince {
         calendar.set(Calendar.MILLISECOND, 0);
 
         switch (startingPoint) {
-            case GetProjectTimeSince.DAY:
+            case TimeIntervalStartingPoint.DAY:
                 break;
-            case GetProjectTimeSince.WEEK:
+            case TimeIntervalStartingPoint.WEEK:
                 calendar.setFirstDayOfWeek(Calendar.MONDAY);
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
                 break;
-            case GetProjectTimeSince.MONTH:
+            case TimeIntervalStartingPoint.MONTH:
                 calendar.set(Calendar.DAY_OF_MONTH, 1);
                 break;
             default:
@@ -69,7 +67,9 @@ public class GetProjectTimeSince {
      * Get the registered time for a project since the starting point.
      *
      * @param project       Project for which to get the registered time.
-     * @param startingPoint Starting point, i.e. {@link #DAY}, {@link #WEEK}, or {@link #MONTH}.
+     * @param startingPoint Starting point, i.e. {@link TimeIntervalStartingPoint#DAY},
+     *                      {@link TimeIntervalStartingPoint#WEEK},
+     *                      or {@link TimeIntervalStartingPoint#MONTH}.
      * @return Registered time for the project since the starting point.
      */
     public List<TimeInterval> execute(Project project, int startingPoint) {

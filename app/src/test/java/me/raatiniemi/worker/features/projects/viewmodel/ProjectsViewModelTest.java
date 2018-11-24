@@ -29,6 +29,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import rx.observers.TestSubscriber;
 
@@ -81,7 +82,7 @@ public class ProjectsViewModelTest {
     public void projects_withGetProjectTimeSinceError() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
-        when(getProjectTimeSince.execute(any(Project.class), eq(GetProjectTimeSince.MONTH)))
+        when(getProjectTimeSince.execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH)))
                 .thenThrow(ClockOutBeforeClockInException.class);
         vm.error().projectsError().subscribe(projectsError);
 
@@ -106,7 +107,7 @@ public class ProjectsViewModelTest {
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(GetProjectTimeSince.MONTH));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH));
     }
 
     @Test
@@ -117,14 +118,14 @@ public class ProjectsViewModelTest {
                 .thenReturn(Collections.emptyList());
         vm.error().projectsError().subscribe(projectsError);
 
-        vm.input().startingPointForTimeSummary(GetProjectTimeSince.WEEK);
+        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.WEEK);
         vm.output().projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(GetProjectTimeSince.WEEK));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.WEEK));
     }
 
     @Test
@@ -142,7 +143,7 @@ public class ProjectsViewModelTest {
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(GetProjectTimeSince.MONTH));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH));
     }
 
     @Test

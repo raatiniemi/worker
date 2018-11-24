@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.util
 
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 
 interface KeyValueStore {
     fun set(key: String, value: Boolean)
@@ -68,15 +68,15 @@ interface KeyValueStore {
     }
 
     fun useWeekForTimeSummaryStartingPoint() {
-        set(AppKeys.TIME_SUMMARY.rawValue, GetProjectTimeSince.WEEK)
+        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK)
     }
 
     fun useMonthForTimeSummaryStartingPoint() {
-        set(AppKeys.TIME_SUMMARY.rawValue, GetProjectTimeSince.MONTH)
+        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH)
     }
 
     fun startingPointForTimeSummary(): Int {
-        return int(AppKeys.TIME_SUMMARY.rawValue, GetProjectTimeSince.MONTH)
+        return int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH)
     }
 
     fun useFractionAsTimeSheetSummaryFormat() {

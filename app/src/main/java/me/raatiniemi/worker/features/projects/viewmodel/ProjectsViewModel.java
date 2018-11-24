@@ -25,6 +25,7 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -53,7 +54,7 @@ public interface ProjectsViewModel {
         private final Output output;
         private final Error error;
 
-        private int startingPoint = GetProjectTimeSince.MONTH;
+        private int startingPoint = TimeIntervalStartingPoint.MONTH;
         private final Observable<List<ProjectsItem>> projects;
         private final PublishSubject<Throwable> projectsError = PublishSubject.create();
 
@@ -111,9 +112,9 @@ public interface ProjectsViewModel {
         @Override
         public void startingPointForTimeSummary(int startingPoint) {
             switch (startingPoint) {
-                case GetProjectTimeSince.MONTH:
-                case GetProjectTimeSince.WEEK:
-                case GetProjectTimeSince.DAY:
+                case TimeIntervalStartingPoint.MONTH:
+                case TimeIntervalStartingPoint.WEEK:
+                case TimeIntervalStartingPoint.DAY:
                     this.startingPoint = startingPoint;
                     break;
                 default:

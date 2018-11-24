@@ -19,7 +19,7 @@ package me.raatiniemi.worker.util
 import android.content.Context
 import android.content.SharedPreferences
 import me.raatiniemi.worker.RobolectricTestCase
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import org.junit.Assert.*
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
@@ -168,7 +168,7 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
     fun startingPointForTimeSummary_withoutValue() {
         val actual = keyValueStore.startingPointForTimeSummary()
 
-        assertEquals(GetProjectTimeSince.MONTH, actual)
+        assertEquals(TimeIntervalStartingPoint.MONTH, actual)
     }
 
     @Test
@@ -177,7 +177,7 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
 
         val actual = keyValueStore.startingPointForTimeSummary()
 
-        assertEquals(GetProjectTimeSince.WEEK, actual)
+        assertEquals(TimeIntervalStartingPoint.WEEK, actual)
     }
 
     @Test
@@ -186,7 +186,7 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
 
         val actual = keyValueStore.startingPointForTimeSummary()
 
-        assertEquals(GetProjectTimeSince.MONTH, actual)
+        assertEquals(TimeIntervalStartingPoint.MONTH, actual)
     }
 
     @Test

@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.interactor
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -44,13 +45,13 @@ class GetProjectTimeSinceTest {
         calendar.set(Calendar.MILLISECOND, 0)
 
         when (startingPoint) {
-            GetProjectTimeSince.DAY -> {
+            TimeIntervalStartingPoint.DAY -> {
             }
-            GetProjectTimeSince.WEEK -> {
+            TimeIntervalStartingPoint.WEEK -> {
                 calendar.firstDayOfWeek = Calendar.MONDAY
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
             }
-            GetProjectTimeSince.MONTH -> calendar.set(Calendar.DAY_OF_MONTH, 1)
+            TimeIntervalStartingPoint.MONTH -> calendar.set(Calendar.DAY_OF_MONTH, 1)
             else -> throw InvalidStartingPointException(
                     "Starting point '$startingPoint' is not valid"
             )
@@ -85,39 +86,39 @@ class GetProjectTimeSinceTest {
 
     @Test
     fun execute_withDay() {
-        val timeIntervalBefore = timeIntervalBeforeStartingPoint(GetProjectTimeSince.DAY)
-        val timeIntervalAfter = timeIntervalAfterStartingPoint(GetProjectTimeSince.DAY)
+        val timeIntervalBefore = timeIntervalBeforeStartingPoint(TimeIntervalStartingPoint.DAY)
+        val timeIntervalAfter = timeIntervalAfterStartingPoint(TimeIntervalStartingPoint.DAY)
         repository.add(timeIntervalBefore)
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, GetProjectTimeSince.DAY)
+        val actual = useCase.execute(project, TimeIntervalStartingPoint.DAY)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun execute_withWeek() {
-        val timeIntervalBefore = timeIntervalBeforeStartingPoint(GetProjectTimeSince.WEEK)
-        val timeIntervalAfter = timeIntervalAfterStartingPoint(GetProjectTimeSince.WEEK)
+        val timeIntervalBefore = timeIntervalBeforeStartingPoint(TimeIntervalStartingPoint.WEEK)
+        val timeIntervalAfter = timeIntervalAfterStartingPoint(TimeIntervalStartingPoint.WEEK)
         repository.add(timeIntervalBefore)
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, GetProjectTimeSince.WEEK)
+        val actual = useCase.execute(project, TimeIntervalStartingPoint.WEEK)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun execute_withMonth() {
-        val timeIntervalBefore = timeIntervalBeforeStartingPoint(GetProjectTimeSince.MONTH)
-        val timeIntervalAfter = timeIntervalAfterStartingPoint(GetProjectTimeSince.MONTH)
+        val timeIntervalBefore = timeIntervalBeforeStartingPoint(TimeIntervalStartingPoint.MONTH)
+        val timeIntervalAfter = timeIntervalAfterStartingPoint(TimeIntervalStartingPoint.MONTH)
         repository.add(timeIntervalBefore)
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, GetProjectTimeSince.MONTH)
+        val actual = useCase.execute(project, TimeIntervalStartingPoint.MONTH)
 
         assertEquals(expected, actual)
     }

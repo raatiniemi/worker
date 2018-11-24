@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.settings.project.presenter;
 import org.greenrobot.eventbus.EventBus;
 
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.features.settings.project.exception.InvalidTimeSheetSummaryFormatException;
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.features.settings.project.view.ProjectView;
@@ -45,10 +45,10 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
             }
 
             switch (newStartingPoint) {
-                case GetProjectTimeSince.WEEK:
+                case TimeIntervalStartingPoint.WEEK:
                     keyValueStore.useWeekForTimeSummaryStartingPoint();
                     break;
-                case GetProjectTimeSince.MONTH:
+                case TimeIntervalStartingPoint.MONTH:
                     keyValueStore.useMonthForTimeSummaryStartingPoint();
                     break;
                 default:
@@ -60,7 +60,7 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
             eventBus.post(new TimeSummaryStartingPointChangeEvent());
 
             performWithView(view -> {
-                if (GetProjectTimeSince.WEEK == newStartingPoint) {
+                if (TimeIntervalStartingPoint.WEEK == newStartingPoint) {
                     view.showChangeTimeSummaryStartingPointToWeekSuccessMessage();
                     return;
                 }
