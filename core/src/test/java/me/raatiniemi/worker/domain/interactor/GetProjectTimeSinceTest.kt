@@ -20,6 +20,7 @@ import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint.getMillisecondsForStartingPoint
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -27,7 +28,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class GetProjectTimeSinceTest {
@@ -35,30 +35,6 @@ class GetProjectTimeSinceTest {
 
     private lateinit var repository: TimeIntervalRepository
     private lateinit var useCase: GetProjectTimeSince
-
-    // TODO: Use `getMillisecondsForStartingPoint` from core module.
-    private fun getMillisecondsForStartingPoint(startingPoint: Int): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        when (startingPoint) {
-            TimeIntervalStartingPoint.DAY -> {
-            }
-            TimeIntervalStartingPoint.WEEK -> {
-                calendar.firstDayOfWeek = Calendar.MONDAY
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-            }
-            TimeIntervalStartingPoint.MONTH -> calendar.set(Calendar.DAY_OF_MONTH, 1)
-            else -> throw InvalidStartingPointException(
-                    "Starting point '$startingPoint' is not valid"
-            )
-        }
-
-        return calendar.timeInMillis
-    }
 
     private fun timeIntervalAfterStartingPoint(startingPoint: Int): TimeInterval {
         val startingPointInMilliseconds = getMillisecondsForStartingPoint(startingPoint)

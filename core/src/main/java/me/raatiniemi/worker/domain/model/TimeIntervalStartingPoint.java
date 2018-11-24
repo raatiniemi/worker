@@ -16,11 +16,41 @@
 
 package me.raatiniemi.worker.domain.model;
 
+import java.util.Calendar;
+
+import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
+
 public final class TimeIntervalStartingPoint {
     public static final int DAY = 0;
     public static final int WEEK = 1;
     public static final int MONTH = 2;
 
     private TimeIntervalStartingPoint() {
+    }
+
+    public static long getMillisecondsForStartingPoint(int startingPoint) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        switch (startingPoint) {
+            case DAY:
+                break;
+            case WEEK:
+                calendar.setFirstDayOfWeek(Calendar.MONDAY);
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+                break;
+            case MONTH:
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                break;
+            default:
+                throw new InvalidStartingPointException(
+                        "Starting point '" + startingPoint + "' is not valid"
+                );
+        }
+
+        return calendar.getTimeInMillis();
     }
 }

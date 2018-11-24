@@ -16,14 +16,14 @@
 
 package me.raatiniemi.worker.domain.interactor;
 
-import java.util.Calendar;
 import java.util.List;
 
-import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
+
+import static me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint.getMillisecondsForStartingPoint;
 
 /**
  * Get the registered time for a project since a defined starting point, i.e.
@@ -35,32 +35,6 @@ public class GetProjectTimeSince {
 
     public GetProjectTimeSince(TimeIntervalRepository timeIntervalRepository) {
         this.timeIntervalRepository = timeIntervalRepository;
-    }
-
-    private static long getMillisecondsForStartingPoint(int startingPoint) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        switch (startingPoint) {
-            case TimeIntervalStartingPoint.DAY:
-                break;
-            case TimeIntervalStartingPoint.WEEK:
-                calendar.setFirstDayOfWeek(Calendar.MONDAY);
-                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-                break;
-            case TimeIntervalStartingPoint.MONTH:
-                calendar.set(Calendar.DAY_OF_MONTH, 1);
-                break;
-            default:
-                throw new InvalidStartingPointException(
-                        "Starting point '" + startingPoint + "' is not valid"
-                );
-        }
-
-        return calendar.getTimeInMillis();
     }
 
     /**
