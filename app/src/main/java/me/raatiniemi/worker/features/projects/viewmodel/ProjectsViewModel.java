@@ -21,6 +21,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
@@ -54,7 +55,7 @@ public interface ProjectsViewModel {
         private final Output output;
         private final Error error;
 
-        private int startingPoint = TimeIntervalStartingPoint.MONTH;
+        private TimeIntervalStartingPoint startingPoint = TimeIntervalStartingPoint.MONTH;
         private final Observable<List<ProjectsItem>> projects;
         private final PublishSubject<Throwable> projectsError = PublishSubject.create();
 
@@ -101,7 +102,7 @@ public interface ProjectsViewModel {
         @NonNull
         private List<TimeInterval> getRegisteredTime(@NonNull Project project) {
             try {
-                return getProjectTimeSince.execute(project, startingPoint);
+                return getProjectTimeSince.execute(project, startingPoint.getRawValue());
             } catch (DomainException e) {
                 Timber.w(e, "Unable to get registered time for project");
 
@@ -111,14 +112,10 @@ public interface ProjectsViewModel {
 
         @Override
         public void startingPointForTimeSummary(int startingPoint) {
-            switch (startingPoint) {
-                case TimeIntervalStartingPoint.MONTH:
-                case TimeIntervalStartingPoint.WEEK:
-                case TimeIntervalStartingPoint.DAY:
-                    this.startingPoint = startingPoint;
-                    break;
-                default:
-                    Timber.d("Invalid starting point supplied: %i", startingPoint);
+            try {
+                this.startingPoint = TimeIntervalStartingPoint.from(startingPoint);
+            } catch (InvalidStartingPointException e) {
+                Timber.w(e, "Invalid starting point supplied: %i", startingPoint);
             }
         }
 

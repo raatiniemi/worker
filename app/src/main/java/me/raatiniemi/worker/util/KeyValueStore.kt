@@ -68,15 +68,15 @@ interface KeyValueStore {
     }
 
     fun useWeekForTimeSummaryStartingPoint() {
-        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK)
+        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
     }
 
     fun useMonthForTimeSummaryStartingPoint() {
-        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH)
+        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
     }
 
     fun startingPointForTimeSummary(): Int {
-        return int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH)
+        return int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
     }
 
     fun useFractionAsTimeSheetSummaryFormat() {

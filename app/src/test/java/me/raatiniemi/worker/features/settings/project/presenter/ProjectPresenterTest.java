@@ -54,9 +54,9 @@ public class ProjectPresenterTest {
         keyValueStore.useWeekForTimeSummaryStartingPoint();
         presenter.attachView(view);
 
-        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH);
+        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.getRawValue());
 
-        assertEquals(TimeIntervalStartingPoint.MONTH, keyValueStore.startingPointForTimeSummary());
+        assertEquals(TimeIntervalStartingPoint.MONTH.getRawValue(), keyValueStore.startingPointForTimeSummary());
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
@@ -67,9 +67,9 @@ public class ProjectPresenterTest {
     public void changeTimeSummaryStartingPoint_withWeek() {
         presenter.attachView(view);
 
-        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK);
+        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK.getRawValue());
 
-        assertEquals(TimeIntervalStartingPoint.WEEK, keyValueStore.startingPointForTimeSummary());
+        assertEquals(TimeIntervalStartingPoint.WEEK.getRawValue(), keyValueStore.startingPointForTimeSummary());
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
@@ -80,9 +80,9 @@ public class ProjectPresenterTest {
     public void changeTimeSummaryStartingPoint_withPreviousValue() {
         presenter.attachView(view);
 
-        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH);
+        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.getRawValue());
 
-        assertEquals(TimeIntervalStartingPoint.MONTH, keyValueStore.startingPointForTimeSummary());
+        assertEquals(TimeIntervalStartingPoint.MONTH.getRawValue(), keyValueStore.startingPointForTimeSummary());
         verify(eventBus, never()).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();
         verify(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage();
@@ -91,7 +91,7 @@ public class ProjectPresenterTest {
 
     @Test
     public void changeTimeSummaryStartingPoint_withoutAttachedView() {
-        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK);
+        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK.getRawValue());
 
         verify(eventBus).post(any(TimeSummaryStartingPointChangeEvent.class));
         verify(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage();

@@ -94,7 +94,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH)))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
                 .thenReturn(getActiveTimeIntervals());
 
         vm.input().clockIn(result, new Date());
@@ -115,10 +115,10 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.DAY)))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.DAY.getRawValue())))
                 .thenReturn(getActiveTimeIntervals());
 
-        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.DAY);
+        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.getRawValue());
         vm.input().clockIn(result, new Date());
 
         clockInSuccess.assertValueCount(1);
@@ -137,7 +137,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH)))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
                 .thenReturn(getActiveTimeIntervals());
 
         vm.input().startingPointForTimeSummary(-1);
@@ -178,7 +178,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH)))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
                 .thenReturn(Collections.emptyList());
 
         vm.input().clockOut(result, new Date());
@@ -199,10 +199,10 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.DAY)))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.DAY.getRawValue())))
                 .thenReturn(Collections.emptyList());
 
-        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.DAY);
+        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.getRawValue());
         vm.input().clockOut(result, new Date());
 
         clockInSuccess.assertNoValues();
@@ -221,7 +221,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH)))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
                 .thenReturn(Collections.emptyList());
 
         vm.input().startingPointForTimeSummary(-1);

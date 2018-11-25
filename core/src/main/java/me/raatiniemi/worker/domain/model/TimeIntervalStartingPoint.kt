@@ -19,33 +19,39 @@ package me.raatiniemi.worker.domain.model
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import java.util.*
 
-object TimeIntervalStartingPoint {
-    @JvmField
-    val DAY = 0
-    @JvmField
-    val WEEK = 1
-    @JvmField
-    val MONTH = 2
+enum class TimeIntervalStartingPoint(val rawValue: Int) {
+    DAY(0), WEEK(1), MONTH(2);
 
-    @JvmStatic
-    fun getMillisecondsForStartingPoint(startingPoint: Int) = Calendar.getInstance().run {
-        set(Calendar.HOUR_OF_DAY, 0)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-
-        when (startingPoint) {
-            DAY -> {
+    companion object {
+        @JvmStatic
+        fun from(startingPoint: Int): TimeIntervalStartingPoint {
+            return when (startingPoint) {
+                DAY.rawValue -> DAY
+                WEEK.rawValue -> WEEK
+                MONTH.rawValue -> MONTH
+                else -> throw InvalidStartingPointException(
+                        "Starting point '$startingPoint' is not valid"
+                )
             }
-            WEEK -> {
-                firstDayOfWeek = Calendar.MONDAY
-                set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-            }
-            MONTH -> set(Calendar.DAY_OF_MONTH, 1)
-            else -> throw InvalidStartingPointException(
-                    "Starting point '$startingPoint' is not valid"
-            )
         }
-        timeInMillis
+
+        @JvmStatic
+        fun getMillisecondsForStartingPoint(startingPoint: Int) = Calendar.getInstance().run {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+
+            when (from(startingPoint)) {
+                DAY -> {
+                }
+                WEEK -> {
+                    firstDayOfWeek = Calendar.MONDAY
+                    set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                }
+                MONTH -> set(Calendar.DAY_OF_MONTH, 1)
+            }
+            timeInMillis
+        }
     }
 }

@@ -82,7 +82,7 @@ public class ProjectsViewModelTest {
     public void projects_withGetProjectTimeSinceError() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
-        when(getProjectTimeSince.execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH)))
+        when(getProjectTimeSince.execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
                 .thenThrow(ClockOutBeforeClockInException.class);
         vm.error().projectsError().subscribe(projectsError);
 
@@ -107,7 +107,7 @@ public class ProjectsViewModelTest {
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH.getRawValue()));
     }
 
     @Test
@@ -118,14 +118,14 @@ public class ProjectsViewModelTest {
                 .thenReturn(Collections.emptyList());
         vm.error().projectsError().subscribe(projectsError);
 
-        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.WEEK);
+        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.WEEK.getRawValue());
         vm.output().projects().subscribe(projects);
 
         projects.assertValueCount(1);
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(TimeIntervalStartingPoint.WEEK));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.WEEK.getRawValue()));
     }
 
     @Test
@@ -143,7 +143,7 @@ public class ProjectsViewModelTest {
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH.getRawValue()));
     }
 
     @Test

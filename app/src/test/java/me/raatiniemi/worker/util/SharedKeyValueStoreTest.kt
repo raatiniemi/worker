@@ -168,7 +168,7 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
     fun startingPointForTimeSummary_withoutValue() {
         val actual = keyValueStore.startingPointForTimeSummary()
 
-        assertEquals(TimeIntervalStartingPoint.MONTH, actual)
+        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, actual)
     }
 
     @Test
@@ -177,7 +177,7 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
 
         val actual = keyValueStore.startingPointForTimeSummary()
 
-        assertEquals(TimeIntervalStartingPoint.WEEK, actual)
+        assertEquals(TimeIntervalStartingPoint.WEEK.rawValue, actual)
     }
 
     @Test
@@ -186,7 +186,7 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
 
         val actual = keyValueStore.startingPointForTimeSummary()
 
-        assertEquals(TimeIntervalStartingPoint.MONTH, actual)
+        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, actual)
     }
 
     @Test

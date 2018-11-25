@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
@@ -122,7 +123,7 @@ interface ClockActivityViewModel {
         }
 
         private fun getRegisteredTimeForProject(project: Project): List<TimeInterval> {
-            return getProjectTimeSince.execute(project, startingPoint)
+            return getProjectTimeSince.execute(project, startingPoint.rawValue)
         }
 
         private fun buildResult(
@@ -151,9 +152,10 @@ interface ClockActivityViewModel {
         }
 
         override fun startingPointForTimeSummary(startingPoint: Int) {
-            when (startingPoint) {
-                TimeIntervalStartingPoint.MONTH, TimeIntervalStartingPoint.WEEK, TimeIntervalStartingPoint.DAY -> this.startingPoint = startingPoint
-                else -> Timber.d("Invalid starting point supplied: %i", startingPoint)
+            try {
+                this.startingPoint = TimeIntervalStartingPoint.from(startingPoint)
+            } catch (e: InvalidStartingPointException) {
+                Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
             }
         }
 

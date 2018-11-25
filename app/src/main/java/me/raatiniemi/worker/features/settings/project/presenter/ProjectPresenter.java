@@ -44,11 +44,11 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
                 return;
             }
 
-            switch (newStartingPoint) {
-                case TimeIntervalStartingPoint.WEEK:
+            switch (TimeIntervalStartingPoint.from(newStartingPoint)) {
+                case WEEK:
                     keyValueStore.useWeekForTimeSummaryStartingPoint();
                     break;
-                case TimeIntervalStartingPoint.MONTH:
+                case MONTH:
                     keyValueStore.useMonthForTimeSummaryStartingPoint();
                     break;
                 default:
@@ -60,7 +60,7 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
             eventBus.post(new TimeSummaryStartingPointChangeEvent());
 
             performWithView(view -> {
-                if (TimeIntervalStartingPoint.WEEK == newStartingPoint) {
+                if (TimeIntervalStartingPoint.WEEK.getRawValue() == newStartingPoint) {
                     view.showChangeTimeSummaryStartingPointToWeekSuccessMessage();
                     return;
                 }
