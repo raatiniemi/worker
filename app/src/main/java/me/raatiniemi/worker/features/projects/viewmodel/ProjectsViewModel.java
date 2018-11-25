@@ -21,10 +21,12 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import me.raatiniemi.worker.domain.exception.DomainException;
+import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.interactor.GetProjects;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -53,7 +55,7 @@ public interface ProjectsViewModel {
         private final Output output;
         private final Error error;
 
-        private int startingPoint = GetProjectTimeSince.MONTH;
+        private TimeIntervalStartingPoint startingPoint = TimeIntervalStartingPoint.MONTH;
         private final Observable<List<ProjectsItem>> projects;
         private final PublishSubject<Throwable> projectsError = PublishSubject.create();
 
@@ -110,14 +112,10 @@ public interface ProjectsViewModel {
 
         @Override
         public void startingPointForTimeSummary(int startingPoint) {
-            switch (startingPoint) {
-                case GetProjectTimeSince.MONTH:
-                case GetProjectTimeSince.WEEK:
-                case GetProjectTimeSince.DAY:
-                    this.startingPoint = startingPoint;
-                    break;
-                default:
-                    Timber.d("Invalid starting point supplied: %i", startingPoint);
+            try {
+                this.startingPoint = TimeIntervalStartingPoint.from(startingPoint);
+            } catch (InvalidStartingPointException e) {
+                Timber.w(e, "Invalid starting point supplied: %i", startingPoint);
             }
         }
 

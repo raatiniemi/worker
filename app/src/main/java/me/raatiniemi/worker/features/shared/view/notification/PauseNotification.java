@@ -33,6 +33,7 @@ import me.raatiniemi.worker.domain.exception.DomainException;
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
@@ -91,7 +92,7 @@ public class PauseNotification extends OngoingNotification {
 
         return registeredTimeUseCase.execute(
                 getProject(),
-                GetProjectTimeSince.DAY
+                TimeIntervalStartingPoint.DAY
         );
     }
 

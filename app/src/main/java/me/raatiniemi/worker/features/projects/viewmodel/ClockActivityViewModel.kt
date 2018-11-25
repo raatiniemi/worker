@@ -16,11 +16,13 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.util.RxUtil.hideErrors
@@ -61,7 +63,7 @@ interface ClockActivityViewModel {
         private val output: Output
         private val error: Error
 
-        private var startingPoint = GetProjectTimeSince.MONTH
+        private var startingPoint = TimeIntervalStartingPoint.MONTH
 
         private val clockInResult = PublishSubject.create<ProjectsItemAdapterResult>()
         private val clockInDate = PublishSubject.create<Date>()
@@ -150,9 +152,10 @@ interface ClockActivityViewModel {
         }
 
         override fun startingPointForTimeSummary(startingPoint: Int) {
-            when (startingPoint) {
-                GetProjectTimeSince.MONTH, GetProjectTimeSince.WEEK, GetProjectTimeSince.DAY -> this.startingPoint = startingPoint
-                else -> Timber.d("Invalid starting point supplied: %i", startingPoint)
+            try {
+                this.startingPoint = TimeIntervalStartingPoint.from(startingPoint)
+            } catch (e: InvalidStartingPointException) {
+                Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
             }
         }
 
