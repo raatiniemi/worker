@@ -34,7 +34,6 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItem;
 import rx.observers.TestSubscriber;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -82,7 +81,7 @@ public class ProjectsViewModelTest {
     public void projects_withGetProjectTimeSinceError() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
-        when(getProjectTimeSince.execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
+        when(getProjectTimeSince.execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH)))
                 .thenThrow(ClockOutBeforeClockInException.class);
         vm.error().projectsError().subscribe(projectsError);
 
@@ -97,7 +96,7 @@ public class ProjectsViewModelTest {
     public void projects() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
-        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
+        when(getProjectTimeSince.execute(any(Project.class), any(TimeIntervalStartingPoint.class)))
                 .thenReturn(Collections.emptyList());
         vm.error().projectsError().subscribe(projectsError);
 
@@ -107,14 +106,14 @@ public class ProjectsViewModelTest {
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH.getRawValue()));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH));
     }
 
     @Test
     public void projects_withWeekAsTimeSummaryStartingPoint() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
-        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
+        when(getProjectTimeSince.execute(any(Project.class), any(TimeIntervalStartingPoint.class)))
                 .thenReturn(Collections.emptyList());
         vm.error().projectsError().subscribe(projectsError);
 
@@ -125,14 +124,14 @@ public class ProjectsViewModelTest {
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(TimeIntervalStartingPoint.WEEK.getRawValue()));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.WEEK));
     }
 
     @Test
     public void projects_withInvalidTimeSummaryStartingPoint() {
         when(getProjects.execute())
                 .thenReturn(getProjects());
-        when(getProjectTimeSince.execute(any(Project.class), anyInt()))
+        when(getProjectTimeSince.execute(any(Project.class), any(TimeIntervalStartingPoint.class)))
                 .thenReturn(Collections.emptyList());
         vm.error().projectsError().subscribe(projectsError);
 
@@ -143,7 +142,7 @@ public class ProjectsViewModelTest {
         projects.assertCompleted();
         projectsError.assertNoValues();
         verify(getProjectTimeSince)
-                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH.getRawValue()));
+                .execute(any(Project.class), eq(TimeIntervalStartingPoint.MONTH));
     }
 
     @Test

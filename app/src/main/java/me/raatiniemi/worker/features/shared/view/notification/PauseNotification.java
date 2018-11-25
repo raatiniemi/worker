@@ -92,7 +92,7 @@ public class PauseNotification extends OngoingNotification {
 
         return registeredTimeUseCase.execute(
                 getProject(),
-                TimeIntervalStartingPoint.DAY.getRawValue()
+                TimeIntervalStartingPoint.DAY
         );
     }
 

@@ -123,7 +123,7 @@ interface ClockActivityViewModel {
         }
 
         private fun getRegisteredTimeForProject(project: Project): List<TimeInterval> {
-            return getProjectTimeSince.execute(project, startingPoint.rawValue)
+            return getProjectTimeSince.execute(project, startingPoint)
         }
 
         private fun buildResult(

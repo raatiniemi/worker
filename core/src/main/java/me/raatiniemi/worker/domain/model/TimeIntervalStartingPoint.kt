@@ -22,6 +22,24 @@ import java.util.*
 enum class TimeIntervalStartingPoint(val rawValue: Int) {
     DAY(0), WEEK(1), MONTH(2);
 
+    fun calculateMilliseconds() = Calendar.getInstance().run {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+
+        when (this@TimeIntervalStartingPoint) {
+            DAY -> {
+            }
+            WEEK -> {
+                firstDayOfWeek = Calendar.MONDAY
+                set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            }
+            MONTH -> set(Calendar.DAY_OF_MONTH, 1)
+        }
+        timeInMillis
+    }
+
     companion object {
         @JvmStatic
         fun from(startingPoint: Int): TimeIntervalStartingPoint {
@@ -33,25 +51,6 @@ enum class TimeIntervalStartingPoint(val rawValue: Int) {
                         "Starting point '$startingPoint' is not valid"
                 )
             }
-        }
-
-        @JvmStatic
-        fun getMillisecondsForStartingPoint(startingPoint: Int) = Calendar.getInstance().run {
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-
-            when (from(startingPoint)) {
-                DAY -> {
-                }
-                WEEK -> {
-                    firstDayOfWeek = Calendar.MONDAY
-                    set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                }
-                MONTH -> set(Calendar.DAY_OF_MONTH, 1)
-            }
-            timeInMillis
         }
     }
 }

@@ -102,7 +102,7 @@ public interface ProjectsViewModel {
         @NonNull
         private List<TimeInterval> getRegisteredTime(@NonNull Project project) {
             try {
-                return getProjectTimeSince.execute(project, startingPoint.getRawValue());
+                return getProjectTimeSince.execute(project, startingPoint);
             } catch (DomainException e) {
                 Timber.w(e, "Unable to get registered time for project");
 

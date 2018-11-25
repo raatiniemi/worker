@@ -94,7 +94,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH)))
                 .thenReturn(getActiveTimeIntervals());
 
         vm.input().clockIn(result, new Date());
@@ -115,7 +115,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.DAY.getRawValue())))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.DAY)))
                 .thenReturn(getActiveTimeIntervals());
 
         vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.getRawValue());
@@ -137,7 +137,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH)))
                 .thenReturn(getActiveTimeIntervals());
 
         vm.input().startingPointForTimeSummary(-1);
@@ -178,7 +178,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH)))
                 .thenReturn(Collections.emptyList());
 
         vm.input().clockOut(result, new Date());
@@ -199,7 +199,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.DAY.getRawValue())))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.DAY)))
                 .thenReturn(Collections.emptyList());
 
         vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.getRawValue());
@@ -221,7 +221,7 @@ public class ClockActivityViewModelTest {
         Project project = Project.from(1L, "Project #1");
         ProjectsItem projectsItem = ProjectsItem.from(project, getActiveTimeIntervals());
         ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, projectsItem);
-        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH.getRawValue())))
+        when(getProjectTimeSince.execute(eq(project), eq(TimeIntervalStartingPoint.MONTH)))
                 .thenReturn(Collections.emptyList());
 
         vm.input().startingPointForTimeSummary(-1);

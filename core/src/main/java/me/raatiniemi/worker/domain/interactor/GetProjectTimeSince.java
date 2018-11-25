@@ -23,8 +23,6 @@ import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 
-import static me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint.getMillisecondsForStartingPoint;
-
 /**
  * Get the registered time for a project since a defined starting point, i.e.
  * {@link TimeIntervalStartingPoint#DAY}, {@link TimeIntervalStartingPoint#WEEK}, or
@@ -46,10 +44,10 @@ public class GetProjectTimeSince {
      *                      or {@link TimeIntervalStartingPoint#MONTH}.
      * @return Registered time for the project since the starting point.
      */
-    public List<TimeInterval> execute(Project project, int startingPoint) {
+    public List<TimeInterval> execute(Project project, TimeIntervalStartingPoint startingPoint) {
         return timeIntervalRepository.findAll(
                 project,
-                getMillisecondsForStartingPoint(startingPoint)
+                startingPoint.calculateMilliseconds()
         );
     }
 }
