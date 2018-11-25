@@ -46,7 +46,10 @@ class GetProjectTimeSinceTest {
         when (startingPoint) {
             GetProjectTimeSince.DAY -> {
             }
-            GetProjectTimeSince.WEEK -> calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            GetProjectTimeSince.WEEK -> {
+                calendar.firstDayOfWeek = Calendar.MONDAY
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            }
             GetProjectTimeSince.MONTH -> calendar.set(Calendar.DAY_OF_MONTH, 1)
             else -> throw InvalidStartingPointException(
                     "Starting point '$startingPoint' is not valid"
