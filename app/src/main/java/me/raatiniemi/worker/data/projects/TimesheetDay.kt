@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Worker Project
+ * Copyright (C) 2018 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,22 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data
+package me.raatiniemi.worker.data.projects
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import me.raatiniemi.worker.data.projects.*
-
-@Database(
-        entities = [
-            ProjectEntity::class,
-            TimeIntervalEntity::class
-        ],
-        version = 3,
-        exportSchema = true
-)
-abstract class Database : RoomDatabase() {
-    abstract fun projects(): ProjectDao
-    abstract fun timeIntervals(): TimeIntervalDao
-    abstract fun timesheet(): TimesheetDao
-}
+data class TimesheetDay(val dateInMilliseconds: Long, val ids: String)

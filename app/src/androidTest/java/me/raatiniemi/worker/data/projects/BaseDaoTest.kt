@@ -48,4 +48,8 @@ open class BaseDaoTest {
     internal val timeIntervals: TimeIntervalDao by lazy {
         database.timeIntervals()
     }
+
+    internal val timesheet: TimesheetDao by lazy {
+        database.timesheet()
+    }
 }
