@@ -17,71 +17,51 @@
 package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
-import me.raatiniemi.worker.data.projects.TimeIntervalEntity
+import me.raatiniemi.worker.data.projects.toEntity
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.util.Optional
 
 class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) : TimeIntervalRepository {
-    private fun transform(entity: TimeIntervalEntity) = TimeInterval(
-            id = entity.id,
-            projectId = entity.projectId,
-            startInMilliseconds = entity.startInMilliseconds,
-            stopInMilliseconds = entity.stopInMilliseconds,
-            isRegistered = entity.registered == 1L
-    )
-
-    private fun transform(timeInterval: TimeInterval) = TimeIntervalEntity(
-            id = timeInterval.id ?: 0,
-            projectId = timeInterval.projectId,
-            startInMilliseconds = timeInterval.startInMilliseconds,
-            stopInMilliseconds = timeInterval.stopInMilliseconds,
-            registered = if (timeInterval.isRegistered) {
-                1
-            } else {
-                0
-            }
-    )
-
     override fun findAll(project: Project, milliseconds: Long): List<TimeInterval> {
         return timeIntervals.findAll(projectId = project.id!!, startInMilliseconds = milliseconds)
-                .map { transform(it) }
+                .map { it.toTimeInterval() }
                 .toList()
     }
 
     override fun findById(id: Long): Optional<TimeInterval> {
         val entity = timeIntervals.find(id) ?: return Optional.empty()
 
-        return Optional.ofNullable(transform(entity))
+        return Optional.ofNullable(entity.toTimeInterval())
     }
 
     override fun findActiveByProjectId(projectId: Long): Optional<TimeInterval> {
         val entity = timeIntervals.findActiveTime(projectId) ?: return Optional.empty()
 
-        return Optional.of(transform(entity))
+        return Optional.of(entity.toTimeInterval())
     }
 
     override fun add(timeInterval: TimeInterval): Optional<TimeInterval> {
-        val id = timeIntervals.add(transform(timeInterval))
+        val id = timeIntervals.add(timeInterval.toEntity())
 
         return findById(id)
     }
 
     override fun update(timeInterval: TimeInterval): Optional<TimeInterval> {
-        val entity = transform(timeInterval)
+        val entity = timeInterval.toEntity()
         timeIntervals.update(listOf(entity))
 
         return findById(entity.id)
     }
 
     override fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
-        val entities = timeIntervals.map { transform(it) }.toList()
+        val entities = timeIntervals.map { it.toEntity() }.toList()
         this.timeIntervals.update(entities)
 
         return timeIntervals.mapNotNull { it.id }
                 .mapNotNull { this.timeIntervals.find(it) }
-                .map { transform(it) }
+                .map { it.toTimeInterval() }
                 .toList()
     }
 
@@ -92,7 +72,7 @@ class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) : T
     }
 
     override fun remove(timeIntervals: List<TimeInterval>) {
-        val entities = timeIntervals.map { transform(it) }.toList()
+        val entities = timeIntervals.map { it.toEntity() }.toList()
 
         this.timeIntervals.remove(entities)
     }
