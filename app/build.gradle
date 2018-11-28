@@ -101,7 +101,7 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
-    implementation 'org.koin:koin-android:1.0.0'
+    implementation 'org.koin:koin-android:1.0.1'
 
     implementation 'io.reactivex:rxandroid:1.2.0'
     implementation 'com.jakewharton.rxrelay:rxrelay:1.2.0'
