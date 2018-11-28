@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data
 import androidx.room.Room
 import me.raatiniemi.worker.data.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.repository.TimeIntervalRoomRepository
-import me.raatiniemi.worker.data.repository.TimesheetResolverRepository
+import me.raatiniemi.worker.data.repository.TimesheetRoomRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimesheetRepository
@@ -52,5 +52,9 @@ val dataModule = module {
         TimeIntervalRoomRepository(database.timeIntervals())
     }
 
-    single<TimesheetRepository> { TimesheetResolverRepository(androidContext().contentResolver) }
+    single<TimesheetRepository> {
+        val database: Database = get()
+
+        TimesheetRoomRepository(database.timesheet(), database.timeIntervals())
+    }
 }
