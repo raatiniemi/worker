@@ -18,6 +18,7 @@ package me.raatiniemi.worker
 
 import android.annotation.SuppressLint
 
+@Suppress("unused")
 @SuppressLint("Registered")
 class TestWorkerApplication : WorkerApplication() {
     override val isUnitTesting: Boolean
