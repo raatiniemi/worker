@@ -47,14 +47,6 @@
             android:parentActivityName="me.raatiniemi.worker.features.projects.view.ProjectsActivity"
             />
 
-        <provider
-            android:label="@string/name"
-            android:name=".data.provider.WorkerProvider"
-            android:authorities="me.raatiniemi.worker"
-            android:syncable="false"
-            android:exported="false"
-            />
-
         <service
             android:name=".data.service.data.BackupService"
             android:exported="false"
