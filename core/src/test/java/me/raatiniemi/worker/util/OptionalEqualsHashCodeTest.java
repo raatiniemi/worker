@@ -23,9 +23,10 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(Parameterized.class)
 public class OptionalEqualsHashCodeTest {
@@ -96,27 +97,27 @@ public class OptionalEqualsHashCodeTest {
         assertNotEqual();
     }
 
-    public Boolean shouldBeEqual() {
+    private Boolean shouldBeEqual() {
         return expected;
     }
 
-    public void assertEqual() {
-        assertTrue(message, optional.equals(compareTo));
+    private void assertEqual() {
+        assertEquals(message, optional, compareTo);
 
         validateHashCodeWhenEqual();
     }
 
-    public void validateHashCodeWhenEqual() {
-        assertTrue(message, optional.hashCode() == compareTo.hashCode());
+    private void validateHashCodeWhenEqual() {
+        assertEquals(message, optional.hashCode(), compareTo.hashCode());
     }
 
-    public void assertNotEqual() {
-        assertFalse(message, optional.equals(compareTo));
+    private void assertNotEqual() {
+        assertNotEquals(message, optional, compareTo);
 
         validateHashCodeWhenNotEqual();
     }
 
-    public void validateHashCodeWhenNotEqual() {
+    private void validateHashCodeWhenNotEqual() {
         if (isNull(compareTo)) {
             return;
         }
