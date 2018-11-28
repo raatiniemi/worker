@@ -118,7 +118,7 @@ class GetTimesheetViewModelTest {
     private fun buildTimesheetSegmentWithNumberOfItems(numberOfItems: Int): SortedMap<Date, SortedSet<TimesheetItem>> {
         val segments = TreeMap<Date, SortedSet<TimesheetItem>>()
         for (i in 0 until numberOfItems) {
-            segments.put(Date(i.toLong()), timesheetItems)
+            segments[Date(i.toLong())] = timesheetItems
         }
 
         return segments
