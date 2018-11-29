@@ -2,6 +2,7 @@
 PROJECT_DIRECTORY="$(dirname $0)/..";
 APK_DIRECTORY="${PROJECT_DIRECTORY}/app/build/outputs/apk";
 RELEASE_APK="${APK_DIRECTORY}/release/app-release.apk";
+RELEASE_TEST_APK="${APK_DIRECTORY}/androidTest/release/app-release-androidTest.apk";
 
 GCLOUD=$(which gcloud);
 if [ -z "${GCLOUD}" ]; then
@@ -10,8 +11,9 @@ if [ -z "${GCLOUD}" ]; then
 fi;
 
 $GCLOUD firebase test android run \
-  --type robo \
+  --type instrumentation \
   --app $RELEASE_APK \
-  --device model=Nexus6P,version=27,locale=en,orientation=portrait \
+  --test $RELEASE_TEST_APK \
+  --device model=Pixel2,version=28,locale=en,orientation=portrait \
   --timeout 90s;
 exit $?;
