@@ -25,6 +25,10 @@ android {
         targetSdkVersion 28
         versionName projectVersion
         versionCode projectVersionCode
+
+        if (System.getenv("CI")) {
+            testBuildType 'release'
+        }
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         resConfigs "en"
