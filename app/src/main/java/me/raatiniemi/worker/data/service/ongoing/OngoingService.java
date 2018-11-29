@@ -27,12 +27,12 @@ import org.greenrobot.eventbus.EventBus;
 import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.WorkerApplication;
 import me.raatiniemi.worker.data.Repositories;
-import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.util.KeyValueStore;
 import me.raatiniemi.worker.util.Notifications;
+import me.raatiniemi.worker.util.OngoingUriCommunicator;
 import timber.log.Timber;
 
 public abstract class OngoingService extends IntentService {
@@ -52,8 +52,7 @@ public abstract class OngoingService extends IntentService {
     }
 
     long getProjectId(Intent intent) {
-        String itemId = ProviderContract.getProjectItemId(intent.getData());
-        long projectId = Long.parseLong(itemId);
+        long projectId = OngoingUriCommunicator.parseFrom(intent.getData());
         if (0 == projectId) {
             throw new IllegalArgumentException("Unable to extract project id from URI");
         }

@@ -26,7 +26,7 @@ import java.util.List;
 import androidx.annotation.DrawableRes;
 import androidx.core.app.NotificationCompat;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.data.repository.TimeIntervalResolverRepository;
+import me.raatiniemi.worker.data.Repositories;
 import me.raatiniemi.worker.data.service.ongoing.ClockOutService;
 import me.raatiniemi.worker.data.service.ongoing.PauseService;
 import me.raatiniemi.worker.domain.exception.DomainException;
@@ -38,8 +38,6 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
 
-import static me.raatiniemi.worker.util.NullUtil.isNull;
-
 /**
  * Notification for pausing or clocking out an active project.
  */
@@ -50,9 +48,11 @@ public class PauseNotification extends OngoingNotification {
 
     private static final int CLOCK_OUT_ICON = 0;
 
+    private final Repositories repositories = new Repositories();
+    private TimeIntervalRepository repository = repositories.getTimeInterval();
+
     private boolean useChronometer;
     private long registeredTime;
-    private TimeIntervalResolverRepository repository;
 
     private PauseNotification(Context context, Project project, boolean useChronometer) {
         super(context, project);
@@ -86,25 +86,12 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private List<TimeInterval> getRegisteredTime() {
-        GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(
-                getTimeIntervalRepository()
-        );
+        GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(repository);
 
         return registeredTimeUseCase.execute(
                 getProject(),
                 TimeIntervalStartingPoint.DAY
         );
-    }
-
-    private TimeIntervalRepository getTimeIntervalRepository() {
-        if (isNull(repository)) {
-            // TODO: Implement proper dependency injection.
-            // Adding a `null`-check to the application instance assignment is causing the
-            // `ReloadNotificationService`-test to fail due to invalid thread for context.
-            repository = new TimeIntervalResolverRepository(getContext().getContentResolver());
-        }
-
-        return repository;
     }
 
     private static GetProjectTimeSince buildRegisteredTimeUseCase(TimeIntervalRepository repository) {
@@ -122,8 +109,7 @@ public class PauseNotification extends OngoingNotification {
     }
 
     private Optional<TimeInterval> getActiveTimeIntervalForProject() {
-        return getTimeIntervalRepository()
-                .findActiveByProjectId(getProject().getId());
+        return repository.findActiveByProjectId(getProject().getId());
     }
 
     @Override

@@ -25,10 +25,10 @@ import android.net.Uri;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
-import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.project.view.ProjectActivity;
 import me.raatiniemi.worker.util.Notifications;
+import me.raatiniemi.worker.util.OngoingUriCommunicator;
 
 abstract class OngoingNotification {
     private static final int PENDING_INTENT_FLAG = PendingIntent.FLAG_UPDATE_CURRENT;
@@ -80,7 +80,7 @@ abstract class OngoingNotification {
     }
 
     private Uri getDataUri() {
-        return ProviderContract.getProjectItemUri(project.getId());
+        return OngoingUriCommunicator.createWith(project.getId());
     }
 
     PendingIntent buildPendingIntentWithService(Intent intent) {

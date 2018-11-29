@@ -19,11 +19,11 @@ package me.raatiniemi.worker.data.service.ongoing;
 import android.content.Context;
 import android.content.Intent;
 
-import me.raatiniemi.worker.data.provider.ProviderContract;
 import me.raatiniemi.worker.domain.interactor.GetProject;
 import me.raatiniemi.worker.domain.interactor.IsProjectActive;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification;
+import me.raatiniemi.worker.util.OngoingUriCommunicator;
 import timber.log.Timber;
 
 public class ProjectNotificationService extends OngoingService {
@@ -33,7 +33,7 @@ public class ProjectNotificationService extends OngoingService {
 
     public static void startServiceWithContext(Context context, Project project) {
         Intent intent = new Intent(context, ProjectNotificationService.class);
-        intent.setData(ProviderContract.getProjectItemUri(project.getId()));
+        intent.setData(OngoingUriCommunicator.createWith(project.getId()));
         context.startService(intent);
     }
 
