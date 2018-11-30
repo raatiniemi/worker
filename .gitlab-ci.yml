@@ -46,6 +46,8 @@ lint:
   stage: test
   script:
     - ./gradlew lintRelease
+  dependencies:
+    - build
   tags:
     - docker
 
@@ -53,6 +55,8 @@ test:
   stage: test
   script:
     - ./gradlew testReleaseUnitTest
+  dependencies:
+    - build
   except:
     - master
   tags:
@@ -62,6 +66,8 @@ sonar:
   stage: test
   script:
     - ./gradlew testReleaseUnitTest sonarqube
+  dependencies:
+    - build
   only:
     - master
   tags:
@@ -74,6 +80,9 @@ integration test:
     - bin/configure-gcloud-environment
   script:
     - bin/run-integration-test
+  dependencies:
+    - build
+    - build for android test
   only:
     - master
   tags:
@@ -83,6 +92,8 @@ deploy:
   stage: deploy
   script:
     - ./gradlew publishApkRelease
+  dependencies:
+    - build
   only:
     - tags
   tags:
