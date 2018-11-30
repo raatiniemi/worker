@@ -35,9 +35,7 @@ build for android test:
    - ./gradlew assembleAndroidTest
  artifacts:
    paths:
-     - app/build/outputs/
-     - core/build/libs/
-     - core-test/build/libs/
+     - app/build/outputs/apk/androidTest/
    expire_in: 1 day
  only:
    - master
@@ -48,12 +46,6 @@ lint:
   stage: test
   script:
     - ./gradlew lintRelease
-  artifacts:
-    paths:
-      - app/build/outputs/
-      - core/build/libs/
-      - core-test/build/libs/
-    expire_in: 1 day
   tags:
     - docker
 
@@ -61,12 +53,6 @@ test:
   stage: test
   script:
     - ./gradlew testReleaseUnitTest
-  artifacts:
-    paths:
-      - app/build/outputs/
-      - core/build/libs/
-      - core-test/build/libs/
-    expire_in: 1 day
   except:
     - master
   tags:
@@ -76,12 +62,6 @@ sonar:
   stage: test
   script:
     - ./gradlew testReleaseUnitTest sonarqube
-  artifacts:
-    paths:
-      - app/build/outputs/
-      - core/build/libs/
-      - core-test/build/libs/
-    expire_in: 1 day
   only:
     - master
   tags:
@@ -94,12 +74,6 @@ integration test:
     - bin/configure-gcloud-environment
   script:
     - bin/run-integration-test
-  artifacts:
-    paths:
-      - app/build/outputs/
-      - core/build/libs/
-      - core-test/build/libs/
-    expire_in: 1 day
   only:
     - master
   tags:
@@ -109,12 +83,6 @@ deploy:
   stage: deploy
   script:
     - ./gradlew publishApkRelease
-  artifacts:
-    paths:
-      - app/build/outputs/
-      - core/build/libs/
-      - core-test/build/libs/
-    expire_in: 1 day
   only:
     - tags
   tags:
