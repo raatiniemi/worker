@@ -16,8 +16,16 @@
 #   public *;
 #}
 
+-dontshrink
+
+# Kotlin
+-dontnote kotlin.internal.**
+-dontnote kotlin.jvm.internal.**
+-dontnote kotlin.coroutines.jvm.internal.**
+
 # RxJava/RxAndroid
 -dontwarn rx.internal.util.unsafe.**
+-dontnote rx.internal.util.**
 
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
     long producerIndex;
