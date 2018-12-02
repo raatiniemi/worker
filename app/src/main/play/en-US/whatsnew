@@ -1,6 +1,5 @@
 improved internal management of user settings
 included project name in project action help text
-reduced compiled app size with over 50% (2.5MB -> 1.2MB)
 enable users to create project via keyboard ime done action
 "restart" week time summary on monday, instead of sunday
 migrate existing database to room
