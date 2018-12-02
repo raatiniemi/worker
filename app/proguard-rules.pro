@@ -16,6 +16,8 @@
 #   public *;
 #}
 
+-dontshrink
+
 # RxJava/RxAndroid
 -dontwarn rx.internal.util.unsafe.**
 
