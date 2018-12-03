@@ -25,11 +25,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.features.projects.ViewModels;
@@ -49,7 +49,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     private final CreateProjectViewModel.ViewModel viewModel = viewModels.getCreateProject();
 
     private EditText projectName;
-    private TextView projectSubmit;
+    private AppCompatButton projectSubmit;
 
     public static CreateProjectFragment newInstance() {
         return new CreateProjectFragment();
@@ -107,7 +107,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
         projectSubmit = view.findViewById(R.id.fragment_create_project_submit);
         projectSubmit.setOnClickListener(l -> viewModel.input().createProject());
 
-        TextView dismiss = view.findViewById(R.id.fragment_create_project_dismiss);
+        AppCompatButton dismiss = view.findViewById(R.id.fragment_create_project_dismiss);
         dismiss.setOnClickListener(l -> dismiss());
 
         return view;

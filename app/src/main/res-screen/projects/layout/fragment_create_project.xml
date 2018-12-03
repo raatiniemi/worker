@@ -40,27 +40,27 @@
 
     </androidx.appcompat.widget.AppCompatEditText>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/fragment_create_project_dismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/fragment_create_project_submit"
-        android:padding="5dp"
         android:text="@string/fragment_create_project_dismiss"
+        android:background="@android:color/transparent"
         android:textAllCaps="true"
         android:textColor="@drawable/button_foreground"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/fragment_create_project_submit"
         app:layout_constraintTop_toTopOf="@id/fragment_create_project_submit" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/fragment_create_project_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:padding="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
         android:text="@string/fragment_create_project_submit"
         android:textAllCaps="true"
         android:textColor="@drawable/button_foreground"
