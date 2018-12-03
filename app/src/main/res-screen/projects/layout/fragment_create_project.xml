@@ -11,7 +11,7 @@
     android:paddingEnd="@dimen/fragment_dialog_padding_horizontal"
     android:paddingBottom="@dimen/fragment_dialog_padding_vertical">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/fragment_create_project_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/fragment_create_project_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,9 +38,9 @@
 
         <requestFocus />
 
-    </EditText>
+    </androidx.appcompat.widget.AppCompatEditText>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/fragment_create_project_dismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
         app:layout_constraintEnd_toStartOf="@id/fragment_create_project_submit"
         app:layout_constraintTop_toTopOf="@id/fragment_create_project_submit" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/fragment_create_project_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
