@@ -80,7 +80,7 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_project, container, false);
-        projectName = view.findViewById(R.id.fragment_create_project_name);
+        projectName = view.findViewById(R.id.etProjectName);
         projectName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -104,10 +104,10 @@ public class CreateProjectFragment extends RxDialogFragment implements DialogInt
             return false;
         });
 
-        projectSubmit = view.findViewById(R.id.fragment_create_project_submit);
+        projectSubmit = view.findViewById(R.id.btnCreate);
         projectSubmit.setOnClickListener(l -> viewModel.input().createProject());
 
-        AppCompatButton dismiss = view.findViewById(R.id.fragment_create_project_dismiss);
+        AppCompatButton dismiss = view.findViewById(R.id.btnDismiss);
         dismiss.setOnClickListener(l -> dismiss());
 
         return view;

@@ -12,7 +12,7 @@
     android:paddingBottom="@dimen/fragment_dialog_padding_vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_create_project_description"
+        android:id="@+id/tvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/fragment_create_project_description"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/fragment_create_project_name"
+        android:id="@+id/etProjectName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -31,9 +31,9 @@
         android:importantForAutofill="no"
         android:inputType="text"
         android:textSize="@dimen/fragment_dialog_text_size"
-        app:layout_constraintEnd_toEndOf="@id/fragment_create_project_description"
-        app:layout_constraintStart_toStartOf="@id/fragment_create_project_description"
-        app:layout_constraintTop_toBottomOf="@id/fragment_create_project_description"
+        app:layout_constraintEnd_toEndOf="@id/tvDescription"
+        app:layout_constraintStart_toStartOf="@id/tvDescription"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription"
         tools:ignore="UnusedAttribute">
 
         <requestFocus />
@@ -41,21 +41,21 @@
     </androidx.appcompat.widget.AppCompatEditText>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/fragment_create_project_dismiss"
+        android:id="@+id/btnDismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_toStartOf="@+id/fragment_create_project_submit"
+        android:layout_toStartOf="@+id/btnCreate"
         android:text="@string/fragment_create_project_dismiss"
         android:background="@android:color/transparent"
         android:textAllCaps="true"
         android:textColor="@drawable/button_foreground"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/fragment_create_project_submit"
-        app:layout_constraintTop_toTopOf="@id/fragment_create_project_submit" />
+        app:layout_constraintEnd_toStartOf="@id/btnCreate"
+        app:layout_constraintTop_toTopOf="@id/btnCreate" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/fragment_create_project_submit"
+        android:id="@+id/btnCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -65,7 +65,7 @@
         android:textAllCaps="true"
         android:textColor="@drawable/button_foreground"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/fragment_create_project_name"
-        app:layout_constraintTop_toBottomOf="@id/fragment_create_project_name" />
+        app:layout_constraintEnd_toEndOf="@id/etProjectName"
+        app:layout_constraintTop_toBottomOf="@id/etProjectName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
