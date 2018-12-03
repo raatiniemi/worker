@@ -1,72 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_create_project"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/fragment_dialog_padding_vertical"
-    android:paddingBottom="@dimen/fragment_dialog_padding_vertical"
+    android:orientation="vertical"
     android:paddingStart="@dimen/fragment_dialog_padding_horizontal"
+    android:paddingTop="@dimen/fragment_dialog_padding_vertical"
     android:paddingEnd="@dimen/fragment_dialog_padding_horizontal"
-    >
+    android:paddingBottom="@dimen/fragment_dialog_padding_vertical">
 
-    <TextView
-        android:id="@+id/fragment_create_project_description"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDescription"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/fragment_create_project_description"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/fragment_create_project_name"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etProjectName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:textSize="@dimen/fragment_dialog_text_size"
-        android:hint="@string/fragment_create_project_name_hint"
         android:backgroundTint="@color/accent"
+        android:hint="@string/fragment_create_project_name_hint"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="text"
+        android:textSize="@dimen/fragment_dialog_text_size"
+        app:layout_constraintEnd_toEndOf="@id/tvDescription"
+        app:layout_constraintStart_toStartOf="@id/tvDescription"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription"
         tools:ignore="UnusedAttribute">
 
         <requestFocus />
 
-    </EditText>
+    </androidx.appcompat.widget.AppCompatEditText>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnDismiss"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        >
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@+id/btnCreate"
+        android:text="@string/fragment_create_project_dismiss"
+        android:background="@android:color/transparent"
+        android:textAllCaps="true"
+        android:textColor="@drawable/button_foreground"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btnCreate"
+        app:layout_constraintTop_toTopOf="@id/btnCreate" />
 
-        <TextView
-            android:id="@+id/fragment_create_project_dismiss"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
-            android:layout_toStartOf="@+id/fragment_create_project_submit"
-            android:padding="5dp"
-            android:text="@string/fragment_create_project_dismiss"
-            android:textColor="@drawable/button_foreground"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:text="@string/fragment_create_project_submit"
+        android:textAllCaps="true"
+        android:textColor="@drawable/button_foreground"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/etProjectName"
+        app:layout_constraintTop_toBottomOf="@id/etProjectName" />
 
-        <TextView
-            android:id="@+id/fragment_create_project_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:padding="5dp"
-            android:text="@string/fragment_create_project_submit"
-            android:textColor="@drawable/button_foreground"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            />
-
-    </RelativeLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
