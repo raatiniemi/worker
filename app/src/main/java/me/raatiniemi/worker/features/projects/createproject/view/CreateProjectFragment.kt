@@ -18,8 +18,6 @@ package me.raatiniemi.worker.features.projects.createproject.view
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +28,7 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.shared.view.fragment.RxDialogFragment
+import me.raatiniemi.worker.features.shared.view.onChange
 import me.raatiniemi.worker.util.Keyboard
 import me.raatiniemi.worker.util.NullUtil.isNull
 import me.raatiniemi.worker.util.RxUtil.applySchedulers
@@ -72,15 +71,7 @@ class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener
         dialog.setTitle(R.string.fragment_create_project_title)
         dialog.setOnShowListener(this)
 
-        etProjectName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable) {
-                vm.input.projectName(s.toString())
-            }
-        })
+        etProjectName.onChange { vm.input.projectName(it) }
         etProjectName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 vm.createProject()
