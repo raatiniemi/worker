@@ -44,20 +44,20 @@ class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        vm.output().createProjectSuccess()
+        vm.output.createProjectSuccess
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { success(it) }
 
-        vm.error().invalidProjectNameError()
+        vm.error.invalidProjectNameError
                 .compose(bindToLifecycle())
                 .subscribe { showInvalidNameError() }
 
-        vm.error().duplicateProjectNameError()
+        vm.error.duplicateProjectNameError
                 .compose(bindToLifecycle())
                 .subscribe { showDuplicateNameError() }
 
-        vm.error().createProjectError()
+        vm.error.createProjectError
                 .compose(bindToLifecycle())
                 .subscribe { showUnknownError() }
     }
@@ -78,7 +78,7 @@ class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable) {
-                vm.input().projectName(s.toString())
+                vm.input.projectName(s.toString())
             }
         })
         etProjectName.setOnEditorActionListener { _, actionId, _ ->
@@ -89,10 +89,10 @@ class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener
             false
         }
 
-        btnCreate.setOnClickListener { vm.input().createProject() }
+        btnCreate.setOnClickListener { vm.input.createProject() }
         btnDismiss.setOnClickListener { dismiss() }
 
-        vm.output().isProjectNameValid
+        vm.output.isProjectNameValid
                 .compose(bindToLifecycle())
                 .subscribe { btnCreate.isEnabled = it }
     }
