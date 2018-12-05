@@ -16,18 +16,16 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
@@ -37,12 +35,14 @@ class CreateProjectViewModelTest {
     private val createProjectError: TestSubscriber<CreateProjectEditTextActions.UnknownErrorMessage> = TestSubscriber()
     private val createProjectSuccess: TestSubscriber<Project> = TestSubscriber()
 
+    private val repository = ProjectInMemoryRepository()
+
     private lateinit var useCase: CreateProject
     private lateinit var vm: CreateProjectViewModel.ViewModel
 
     @Before
     fun setUp() {
-        useCase = mock(CreateProject::class.java)
+        useCase = CreateProject(repository)
         vm = CreateProjectViewModel.ViewModel(useCase)
     }
 
@@ -61,8 +61,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun createProject_withDuplicateName() {
-        `when`(useCase.execute(any(Project::class.java)))
-                .thenThrow(ProjectAlreadyExistsException::class.java)
+        repository.add(Project(id = null, name = "Name"))
         vm.error.duplicateProjectNameError.subscribe(duplicateNameError)
 
         vm.input.projectName("Name")
@@ -75,21 +74,6 @@ class CreateProjectViewModelTest {
     }
 
     @Test
-    fun createProject_withUnknownError() {
-        `when`(useCase.execute(any(Project::class.java)))
-                .thenThrow(RuntimeException::class.java)
-        vm.error.createProjectError.subscribe(createProjectError)
-
-        vm.input.projectName("Name")
-        vm.input.createProject()
-
-        invalidProjectNameError.assertNoValues()
-        duplicateNameError.assertNoValues()
-        createProjectError.assertValueCount(1)
-        createProjectSuccess.assertNotCompleted()
-    }
-
-    @Test
     fun createProject_withValidName() {
         vm.output.createProjectSuccess.subscribe(createProjectSuccess)
 
@@ -98,6 +82,7 @@ class CreateProjectViewModelTest {
 
         createProjectSuccess.assertValueCount(1)
         createProjectSuccess.assertNotCompleted()
+        assertEquals(listOf(Project(id = 1, name = "Name")), repository.findAll())
     }
 
     @Test
