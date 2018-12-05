@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.projects.viewmodel
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import org.junit.Before
 import org.junit.Test
@@ -31,9 +32,9 @@ import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class CreateProjectViewModelTest {
-    private val invalidProjectNameError: TestSubscriber<String> = TestSubscriber()
-    private val duplicateNameError: TestSubscriber<String> = TestSubscriber()
-    private val createProjectError: TestSubscriber<String> = TestSubscriber()
+    private val invalidProjectNameError: TestSubscriber<CreateProjectEditTextActions.InvalidProjectNameErrorMessage> = TestSubscriber()
+    private val duplicateNameError: TestSubscriber<CreateProjectEditTextActions.DuplicateNameErrorMessage> = TestSubscriber()
+    private val createProjectError: TestSubscriber<CreateProjectEditTextActions.UnknownErrorMessage> = TestSubscriber()
     private val createProjectSuccess: TestSubscriber<Project> = TestSubscriber()
 
     private lateinit var useCase: CreateProject

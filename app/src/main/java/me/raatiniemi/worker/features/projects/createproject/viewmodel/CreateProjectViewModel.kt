@@ -21,6 +21,7 @@ import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.validator.ProjectName
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
@@ -41,11 +42,11 @@ interface CreateProjectViewModel {
     }
 
     interface Error {
-        val invalidProjectNameError: Observable<String>
+        val invalidProjectNameError: Observable<CreateProjectEditTextActions.InvalidProjectNameErrorMessage>
 
-        val duplicateProjectNameError: Observable<String>
+        val duplicateProjectNameError: Observable<CreateProjectEditTextActions.DuplicateNameErrorMessage>
 
-        val createProjectError: Observable<String>
+        val createProjectError: Observable<CreateProjectEditTextActions.UnknownErrorMessage>
     }
 
     class ViewModel(private val useCase: CreateProject) : Input, Output, Error {
@@ -65,25 +66,28 @@ interface CreateProjectViewModel {
 
         private val _createProjectError = PublishSubject.create<Throwable>()
 
-        override val invalidProjectNameError: Observable<String> = _createProjectError
+        override val invalidProjectNameError: Observable<CreateProjectEditTextActions.InvalidProjectNameErrorMessage> =
+                _createProjectError
                 .filter { isInvalidProjectNameError(it) }
-                .map { it.message }
+                        .map { CreateProjectEditTextActions.InvalidProjectNameErrorMessage }
 
         private fun isInvalidProjectNameError(e: Throwable): Boolean {
             return e is InvalidProjectNameException
         }
 
-        override val duplicateProjectNameError: Observable<String> = _createProjectError
+        override val duplicateProjectNameError: Observable<CreateProjectEditTextActions.DuplicateNameErrorMessage> =
+                _createProjectError
                 .filter { isDuplicateProjectNameError(it) }
-                .map { it.message }
+                        .map { CreateProjectEditTextActions.DuplicateNameErrorMessage }
 
         private fun isDuplicateProjectNameError(e: Throwable): Boolean {
             return e is ProjectAlreadyExistsException
         }
 
-        override val createProjectError: Observable<String> = _createProjectError
+        override val createProjectError: Observable<CreateProjectEditTextActions.UnknownErrorMessage> =
+                _createProjectError
                 .filter { isUnknownError(it) }
-                .map { it.message }
+                        .map { CreateProjectEditTextActions.UnknownErrorMessage }
 
         private fun isUnknownError(e: Throwable): Boolean {
             return !isInvalidProjectNameError(e) && !isDuplicateProjectNameError(e)

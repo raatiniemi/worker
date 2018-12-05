@@ -50,15 +50,15 @@ class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener
 
         vm.error.invalidProjectNameError
                 .compose(bindToLifecycle())
-                .subscribe { showInvalidNameError() }
+                .subscribe { it.action(context, etProjectName) }
 
         vm.error.duplicateProjectNameError
                 .compose(bindToLifecycle())
-                .subscribe { showDuplicateNameError() }
+                .subscribe { it.action(context, etProjectName) }
 
         vm.error.createProjectError
                 .compose(bindToLifecycle())
-                .subscribe { showUnknownError() }
+                .subscribe { it.action(context, etProjectName) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -104,18 +104,6 @@ class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener
         eventBus.post(CreateProjectEvent(project))
 
         dismiss()
-    }
-
-    private fun showInvalidNameError() {
-        etProjectName.error = getString(R.string.error_message_project_name_missing)
-    }
-
-    private fun showDuplicateNameError() {
-        etProjectName.error = getString(R.string.error_message_project_name_already_exists)
-    }
-
-    private fun showUnknownError() {
-        etProjectName.error = getString(R.string.error_message_unknown)
     }
 
     companion object {
