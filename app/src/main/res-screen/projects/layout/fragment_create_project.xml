@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_create_project"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:paddingStart="@dimen/fragment_dialog_padding_horizontal"
     android:paddingTop="@dimen/fragment_dialog_padding_vertical"
     android:paddingEnd="@dimen/fragment_dialog_padding_horizontal"
@@ -33,8 +31,7 @@
         android:textSize="@dimen/fragment_dialog_text_size"
         app:layout_constraintEnd_toEndOf="@id/tvDescription"
         app:layout_constraintStart_toStartOf="@id/tvDescription"
-        app:layout_constraintTop_toBottomOf="@id/tvDescription"
-        tools:ignore="UnusedAttribute">
+        app:layout_constraintTop_toBottomOf="@id/tvDescription">
 
         <requestFocus />
 
@@ -58,7 +55,6 @@
         android:id="@+id/btnCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
         android:text="@string/fragment_create_project_submit"
