@@ -22,14 +22,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_create_project.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
+import me.raatiniemi.worker.features.shared.view.CoroutineScopedDialogFragment
 import me.raatiniemi.worker.features.shared.view.onChange
 import me.raatiniemi.worker.util.Keyboard
 import me.raatiniemi.worker.util.NullUtil.isNull
@@ -37,7 +36,7 @@ import org.greenrobot.eventbus.EventBus
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class CreateProjectFragment : DialogFragment(), DialogInterface.OnShowListener {
+class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.OnShowListener {
     private val eventBus = EventBus.getDefault()
     private val vm: CreateProjectViewModel.ViewModel by viewModel()
 
@@ -75,7 +74,7 @@ class CreateProjectFragment : DialogFragment(), DialogInterface.OnShowListener {
         etProjectName.onChange { vm.input.projectName.value = it }
         etProjectName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                GlobalScope.launch {
+                launch {
                     vm.createProject()
                 }
                 return@setOnEditorActionListener true
@@ -84,7 +83,7 @@ class CreateProjectFragment : DialogFragment(), DialogInterface.OnShowListener {
         }
 
         btnCreate.setOnClickListener {
-            GlobalScope.launch {
+            launch {
                 vm.input.createProject()
             }
         }
