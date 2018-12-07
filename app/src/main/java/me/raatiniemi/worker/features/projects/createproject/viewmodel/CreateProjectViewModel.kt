@@ -16,108 +16,82 @@
 
 package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
-import me.raatiniemi.worker.util.RxUtil.hideErrors
-import me.raatiniemi.worker.util.RxUtil.redirectErrors
-import rx.Observable
-import rx.subjects.BehaviorSubject
-import rx.subjects.PublishSubject
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
 interface CreateProjectViewModel {
     interface Input {
-        fun projectName(name: String)
+        val projectName: MutableLiveData<String>
 
-        fun createProject()
+        suspend fun createProject()
     }
 
     interface Output {
-        val isProjectNameValid: Observable<Boolean>
+        val isCreateEnabled: LiveData<Boolean>
 
-        val createProjectSuccess: Observable<Project>
+        val project: LiveData<Project>
     }
 
     interface Error {
-        val invalidProjectNameError: Observable<CreateProjectEditTextActions.InvalidProjectNameErrorMessage>
-
-        val duplicateProjectNameError: Observable<CreateProjectEditTextActions.DuplicateNameErrorMessage>
-
-        val createProjectError: Observable<CreateProjectEditTextActions.UnknownErrorMessage>
+        val viewActions: ConsumableLiveData<CreateProjectEditTextActions>
     }
 
-    class ViewModel(private val useCase: CreateProject) : Input, Output, Error {
+    class ViewModel(private val useCase: CreateProject) : Input, Output, Error, androidx.lifecycle.ViewModel() {
         val input: Input = this
         val output: Output = this
         val error: Error = this
 
-        private val _projectName = PublishSubject.create<String>()
-
-        private val _isProjectNameValid = BehaviorSubject.create(false)
-        override val isProjectNameValid: Observable<Boolean> = _isProjectNameValid
-
-        private val _createProject = PublishSubject.create<Void>()
-
-        private val _createProjectSuccess = PublishSubject.create<Project>()
-        override val createProjectSuccess: Observable<Project> = _createProjectSuccess.asObservable()
-
-        private val _createProjectError = PublishSubject.create<Throwable>()
-
-        override val invalidProjectNameError: Observable<CreateProjectEditTextActions.InvalidProjectNameErrorMessage> =
-                _createProjectError
-                .filter { isInvalidProjectNameError(it) }
-                        .map { CreateProjectEditTextActions.InvalidProjectNameErrorMessage }
-
-        private fun isInvalidProjectNameError(e: Throwable): Boolean {
-            return e is InvalidProjectNameException
+        override val projectName = MutableLiveData<String>().apply {
+            value = ""
         }
 
-        override val duplicateProjectNameError: Observable<CreateProjectEditTextActions.DuplicateNameErrorMessage> =
-                _createProjectError
-                .filter { isDuplicateProjectNameError(it) }
-                        .map { CreateProjectEditTextActions.DuplicateNameErrorMessage }
-
-        private fun isDuplicateProjectNameError(e: Throwable): Boolean {
-            return e is ProjectAlreadyExistsException
-        }
-
-        override val createProjectError: Observable<CreateProjectEditTextActions.UnknownErrorMessage> =
-                _createProjectError
-                .filter { isUnknownError(it) }
-                        .map { CreateProjectEditTextActions.UnknownErrorMessage }
-
-        private fun isUnknownError(e: Throwable): Boolean {
-            return !isInvalidProjectNameError(e) && !isDuplicateProjectNameError(e)
-        }
-
-        init {
-            _projectName.map(ProjectName::isValid)
-                    .subscribe(_isProjectNameValid)
-
-            _createProject.withLatestFrom(_projectName) { _, name -> name }
-                    .switchMap { name ->
-                        executeUseCase(name)
-                                .compose(redirectErrors(_createProjectError))
-                                .compose(hideErrors())
-                    }
-                    .subscribe(_createProjectSuccess)
-        }
-
-        private fun executeUseCase(name: String): Observable<Project> {
-            return try {
-                val project = Project.from(name)
-
-                Observable.just(useCase.execute(project))
-            } catch (e: Exception) {
-                Observable.error(e)
+        override val isCreateEnabled: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+            addSource(projectName) {
+                value = ProjectName.isValid(it)
             }
         }
 
-        override fun projectName(name: String) = _projectName.onNext(name)
+        private val _project = MutableLiveData<Project>()
+        override val project: LiveData<Project> = _project
 
-        override fun createProject() = _createProject.onNext(null)
+        override val viewActions = ConsumableLiveData<CreateProjectEditTextActions>()
+
+        override suspend fun createProject() {
+            withContext(Dispatchers.IO) {
+                try {
+                    val project = executeUseCase()
+
+                    _project.postValue(project)
+                } catch (e: Exception) {
+                    handle(exception = e)
+                }
+            }
+        }
+
+        private fun executeUseCase(): Project {
+            val project = Project.from(projectName.value ?: "")
+
+            return useCase.execute(project)
+        }
+
+        private fun handle(exception: Exception) {
+            val action = when (exception) {
+                is InvalidProjectNameException -> CreateProjectEditTextActions.InvalidProjectNameErrorMessage
+                is ProjectAlreadyExistsException -> CreateProjectEditTextActions.DuplicateNameErrorMessage
+                else -> CreateProjectEditTextActions.UnknownErrorMessage
+            }
+
+            viewActions.postValue(action)
+        }
     }
 }

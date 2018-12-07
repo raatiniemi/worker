@@ -16,24 +16,25 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class CreateProjectViewModelTest {
-    private val invalidProjectNameError: TestSubscriber<CreateProjectEditTextActions.InvalidProjectNameErrorMessage> = TestSubscriber()
-    private val duplicateNameError: TestSubscriber<CreateProjectEditTextActions.DuplicateNameErrorMessage> = TestSubscriber()
-    private val createProjectError: TestSubscriber<CreateProjectEditTextActions.UnknownErrorMessage> = TestSubscriber()
-    private val createProjectSuccess: TestSubscriber<Project> = TestSubscriber()
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
 
     private val repository = ProjectInMemoryRepository()
 
@@ -47,61 +48,63 @@ class CreateProjectViewModelTest {
     }
 
     @Test
-    fun createProject_withEmptyName() {
-        vm.error.invalidProjectNameError.subscribe(invalidProjectNameError)
+    fun `createProject with empty name`() = runBlocking {
+        vm.input.projectName.value = ""
 
-        vm.input.projectName("")
         vm.input.createProject()
 
-        invalidProjectNameError.assertValueCount(1)
-        duplicateNameError.assertNoValues()
-        createProjectError.assertNoValues()
-        createProjectSuccess.assertNotCompleted()
+        vm.error.viewActions.observeForever {
+            assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
+        }
     }
 
     @Test
-    fun createProject_withDuplicateName() {
+    fun `createProject with duplicated name`() = runBlocking {
         repository.add(Project(id = null, name = "Name"))
-        vm.error.duplicateProjectNameError.subscribe(duplicateNameError)
+        vm.input.projectName.value = "Name"
 
-        vm.input.projectName("Name")
         vm.input.createProject()
 
-        invalidProjectNameError.assertNoValues()
-        duplicateNameError.assertValueCount(1)
-        createProjectError.assertNoValues()
-        createProjectSuccess.assertNotCompleted()
+        vm.error.viewActions.observeForever {
+            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+        }
     }
 
     @Test
-    fun createProject_withValidName() {
-        vm.output.createProjectSuccess.subscribe(createProjectSuccess)
+    fun `createProject with valid name`() = runBlocking {
+        vm.input.projectName.value = "Name"
 
-        vm.input.projectName("Name")
         vm.input.createProject()
 
-        createProjectSuccess.assertValueCount(1)
-        createProjectSuccess.assertNotCompleted()
-        assertEquals(listOf(Project(id = 1, name = "Name")), repository.findAll())
+        vm.error.viewActions.observeForever {
+            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+        }
+        val actual = repository.findAll()
+        assertEquals(listOf(Project(id = 1, name = "Name")), actual)
     }
 
     @Test
-    fun isProjectNameValid_withEmptyName() {
-        val isProjectNameValid = TestSubscriber<Boolean>()
-        vm.output.isProjectNameValid.subscribe(isProjectNameValid)
-
-        vm.input.projectName("")
-
-        isProjectNameValid.assertValues(false, false)
+    fun `isCreateEnabled with initial value`() {
+        vm.output.isCreateEnabled.observeForever {
+            assertFalse(it)
+        }
     }
 
     @Test
-    fun isProjectNameValid_withValidName() {
-        val isProjectNameValid = TestSubscriber<Boolean>()
-        vm.output.isProjectNameValid.subscribe(isProjectNameValid)
+    fun `isCreateEnabled with empty name`() {
+        vm.input.projectName.value = ""
 
-        vm.input.projectName("Name")
+        vm.output.isCreateEnabled.observeForever {
+            assertFalse(it)
+        }
+    }
 
-        isProjectNameValid.assertValues(false, true)
+    @Test
+    fun `isCreateEnabled with valid name`() {
+        vm.input.projectName.value = "Name"
+
+        vm.output.isCreateEnabled.observeForever {
+            assertTrue(it)
+        }
     }
 }

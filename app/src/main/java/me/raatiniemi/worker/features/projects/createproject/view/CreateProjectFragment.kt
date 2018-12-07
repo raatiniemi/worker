@@ -22,44 +22,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_create_project.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
-import me.raatiniemi.worker.features.shared.view.fragment.RxDialogFragment
 import me.raatiniemi.worker.features.shared.view.onChange
 import me.raatiniemi.worker.util.Keyboard
 import me.raatiniemi.worker.util.NullUtil.isNull
-import me.raatiniemi.worker.util.RxUtil.applySchedulers
 import org.greenrobot.eventbus.EventBus
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener {
+class CreateProjectFragment : DialogFragment(), DialogInterface.OnShowListener {
     private val eventBus = EventBus.getDefault()
-    private val vm: CreateProjectViewModel.ViewModel by inject()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        vm.output.createProjectSuccess
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe { success(it) }
-
-        vm.error.invalidProjectNameError
-                .compose(bindToLifecycle())
-                .subscribe { it.action(context, etProjectName) }
-
-        vm.error.duplicateProjectNameError
-                .compose(bindToLifecycle())
-                .subscribe { it.action(context, etProjectName) }
-
-        vm.error.createProjectError
-                .compose(bindToLifecycle())
-                .subscribe { it.action(context, etProjectName) }
-    }
+    private val vm: CreateProjectViewModel.ViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_create_project, container, false)
@@ -71,21 +51,44 @@ class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener
         dialog.setTitle(R.string.fragment_create_project_title)
         dialog.setOnShowListener(this)
 
-        etProjectName.onChange { vm.input.projectName(it) }
+        observeViewModel()
+        bindUserInterfaceToViewModel()
+    }
+
+    private fun observeViewModel() {
+        vm.isCreateEnabled.observe(this, Observer {
+            btnCreate.isEnabled = it
+        })
+
+        vm.project.observe(this, Observer {
+            eventBus.post(CreateProjectEvent(it))
+
+            dismiss()
+        })
+
+        vm.error.viewActions.observeAndConsume(this, Observer {
+            it.action(requireContext(), etProjectName)
+        })
+    }
+
+    private fun bindUserInterfaceToViewModel() {
+        etProjectName.onChange { vm.input.projectName.value = it }
         etProjectName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                vm.createProject()
+                GlobalScope.launch {
+                    vm.createProject()
+                }
                 return@setOnEditorActionListener true
             }
             false
         }
 
-        btnCreate.setOnClickListener { vm.input.createProject() }
+        btnCreate.setOnClickListener {
+            GlobalScope.launch {
+                vm.input.createProject()
+            }
+        }
         btnDismiss.setOnClickListener { dismiss() }
-
-        vm.output.isProjectNameValid
-                .compose(bindToLifecycle())
-                .subscribe { btnCreate.isEnabled = it }
     }
 
     override fun onShow(dialog: DialogInterface?) {
@@ -97,13 +100,7 @@ class CreateProjectFragment : RxDialogFragment(), DialogInterface.OnShowListener
         }
 
         // Force the keyboard to show when the dialog is showing.
-        Keyboard.show(activity)
-    }
-
-    private fun success(project: Project) {
-        eventBus.post(CreateProjectEvent(project))
-
-        dismiss()
+        Keyboard.show(requireContext())
     }
 
     companion object {
