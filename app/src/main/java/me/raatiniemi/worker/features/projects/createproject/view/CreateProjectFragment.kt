@@ -30,6 +30,7 @@ import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectE
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedDialogFragment
 import me.raatiniemi.worker.features.shared.view.onChange
+import me.raatiniemi.worker.features.shared.view.onClick
 import me.raatiniemi.worker.util.Keyboard
 import me.raatiniemi.worker.util.NullUtil.isNull
 import org.greenrobot.eventbus.EventBus
@@ -82,11 +83,7 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
             false
         }
 
-        btnCreate.setOnClickListener {
-            launch {
-                vm.input.createProject()
-            }
-        }
+        btnCreate.onClick { vm.input.createProject() }
         btnDismiss.setOnClickListener { dismiss() }
     }
 
