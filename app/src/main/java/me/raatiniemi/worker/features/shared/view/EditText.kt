@@ -16,8 +16,38 @@
 
 package me.raatiniemi.worker.features.shared.view
 
+import android.view.KeyEvent
 import android.widget.EditText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import me.raatiniemi.worker.BuildConfig
 
 fun EditText.onChange(onTextChanged: (String) -> Unit) {
     addTextChangedListener(onChangeTextWatcher { onTextChanged(it) })
 }
+
+fun EditText.on(action: EditorAction, cb: suspend () -> Unit) {
+    // TODO: Replace use of GlobalScope with activity/fragment coroutine scope.
+    setOnEditorActionListener { _, actionId, event ->
+        if (BuildConfig.DEBUG) {
+            if (event.isEnterKey) {
+                GlobalScope.launch(Dispatchers.Default) { cb() }
+                return@setOnEditorActionListener true
+            }
+        }
+
+        val configuration = EditorAction.from(actionId)
+        if (configuration == action) {
+            GlobalScope.launch(Dispatchers.Default) { cb() }
+            return@setOnEditorActionListener true
+        }
+        return@setOnEditorActionListener false
+    }
+}
+
+private val KeyEvent?.isEnterKey: Boolean
+    get() {
+        this ?: return false
+        return keyCode == KeyEvent.KEYCODE_ENTER
+    }
