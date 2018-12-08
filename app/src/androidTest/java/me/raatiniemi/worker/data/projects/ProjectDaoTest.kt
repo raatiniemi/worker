@@ -83,6 +83,29 @@ class ProjectDaoTest : BaseDaoTest() {
     }
 
     @Test
+    fun findByName_withLowercaseProjectName() {
+        projects.add(projectEntity())
+        val expected = projectEntity { id = 1 }
+
+        val actual = projects.findByName(name = "name")
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findByName_withLowercaseProjectNameUsingSpecialCharacters() {
+        projects.add(projectEntity { name = "ÅÄÖ" })
+        val expected = projectEntity {
+            id = 1
+            name = "ÅÄÖ"
+        }
+
+        val actual = projects.findByName(name = "åäö")
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun findByName_withProjects() {
         projects.add(projectEntity { name = "Name #3" })
         projects.add(projectEntity { name = "Name #1" })
