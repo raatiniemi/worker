@@ -23,7 +23,7 @@ interface ProjectDao {
     @Query("SELECT * FROM projects ORDER BY name ASC")
     fun findAll(): List<ProjectEntity>
 
-    @Query("SELECT * FROM projects WHERE name = :name LIMIT 1")
+    @Query("SELECT * FROM projects WHERE UPPER(name) = UPPER(:name) LIMIT 1")
     fun findByName(name: String): ProjectEntity?
 
     @Query("SELECT * FROM projects WHERE _id = :id LIMIT 1")
