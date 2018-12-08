@@ -132,7 +132,7 @@ public class ProjectsActivity extends BaseActivity {
     private void openCreateProject() {
         CreateProjectFragment createProjectFragment = CreateProjectFragment.newInstance();
 
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .add(createProjectFragment, FRAGMENT_CREATE_PROJECT_TAG)
                 .commit();
     }

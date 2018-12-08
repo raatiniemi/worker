@@ -14,18 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.createproject.model;
+package me.raatiniemi.worker.features.projects.createproject.model
 
-import me.raatiniemi.worker.domain.model.Project;
+import me.raatiniemi.worker.domain.model.Project
 
-public class CreateProjectEvent {
-    private final Project project;
-
-    public CreateProjectEvent(Project project) {
-        this.project = project;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-}
+data class CreateProjectEvent(val project: Project)

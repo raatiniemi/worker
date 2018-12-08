@@ -16,14 +16,15 @@
 
 package me.raatiniemi.worker.features.projects
 
-import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
-import me.raatiniemi.worker.features.projects.viewmodel.*
+import me.raatiniemi.worker.features.projects.viewmodel.ClockActivityViewModel
+import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
+import me.raatiniemi.worker.features.projects.viewmodel.RefreshActiveProjectsViewModel
+import me.raatiniemi.worker.features.projects.viewmodel.RemoveProjectViewModel
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
 class ViewModels : KoinComponent {
     val clockActivity: ClockActivityViewModel.ViewModel by inject()
-    val createProject: CreateProjectViewModel.ViewModel by inject()
     val projects: ProjectsViewModel.ViewModel by inject()
     val refreshActiveProjects: RefreshActiveProjectsViewModel.ViewModel by inject()
     val removeProject: RemoveProjectViewModel.ViewModel by inject()
