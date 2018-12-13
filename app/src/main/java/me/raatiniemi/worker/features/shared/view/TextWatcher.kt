@@ -21,8 +21,12 @@ import android.text.TextWatcher
 
 inline fun onChangeTextWatcher(crossinline onTextChanged: (text: String) -> Unit): TextWatcher =
         object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                // only the `onTextChanged` is used for the `onChangeTextWatcher`.
+            }
+            override fun afterTextChanged(s: Editable) {
+                // only the `onTextChanged` is used for the `onChangeTextWatcher`.
+            }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 onTextChanged(s.toString())
             }
