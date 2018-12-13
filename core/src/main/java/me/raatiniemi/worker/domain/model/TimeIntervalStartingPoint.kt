@@ -29,8 +29,7 @@ enum class TimeIntervalStartingPoint(val rawValue: Int) {
         set(Calendar.MILLISECOND, 0)
 
         when (this@TimeIntervalStartingPoint) {
-            DAY -> {
-            }
+            DAY -> Unit
             WEEK -> {
                 firstDayOfWeek = Calendar.MONDAY
                 set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
