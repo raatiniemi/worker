@@ -18,24 +18,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etProjectName"
-        android:layout_width="match_parent"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilProjectName"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="@color/accent"
-        android:hint="@string/fragment_create_project_name_hint"
-        android:imeOptions="actionDone"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:textSize="@dimen/fragment_dialog_text_size"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/tvDescription"
         app:layout_constraintStart_toStartOf="@id/tvDescription"
         app:layout_constraintTop_toBottomOf="@id/tvDescription">
 
-        <requestFocus />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etProjectName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent"
+            android:hint="@string/fragment_create_project_name_hint"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:textSize="@dimen/fragment_dialog_text_size">
 
-    </androidx.appcompat.widget.AppCompatEditText>
+            <requestFocus />
+
+        </androidx.appcompat.widget.AppCompatEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnDismiss"
@@ -57,7 +65,7 @@
         android:layout_marginTop="5dp"
         android:text="@string/fragment_create_project_submit"
         android:textColor="@drawable/button_foreground"
-        app:layout_constraintEnd_toEndOf="@id/etProjectName"
-        app:layout_constraintTop_toBottomOf="@id/etProjectName" />
+        app:layout_constraintEnd_toEndOf="@id/tilProjectName"
+        app:layout_constraintTop_toBottomOf="@id/tilProjectName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
