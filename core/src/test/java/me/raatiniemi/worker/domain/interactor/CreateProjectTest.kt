@@ -29,11 +29,14 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class CreateProjectTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
+
+    private lateinit var findProject: FindProject
     private lateinit var createProject: CreateProject
 
     @Before
     fun setUp() {
-        createProject = CreateProject(repository)
+        findProject = FindProject(repository)
+        createProject = CreateProject(findProject, repository)
     }
 
     @Test(expected = ProjectAlreadyExistsException::class)
@@ -47,7 +50,7 @@ class CreateProjectTest {
     @Test
     fun execute() {
         val project = Project.from("Project Name")
-        val expected = listOf(Project.from(1L, "Project Name"))
+        val expected = listOf(project.copy(id = 1))
 
         createProject.execute(project)
 

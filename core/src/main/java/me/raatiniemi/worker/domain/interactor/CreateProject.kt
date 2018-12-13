@@ -24,7 +24,7 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
 /**
  * Use case for creating a project.
  */
-class CreateProject(private val repository: ProjectRepository) {
+class CreateProject(val findProject: FindProject, private val repository: ProjectRepository) {
     /**
      * Create the project.
      *
@@ -45,8 +45,6 @@ class CreateProject(private val repository: ProjectRepository) {
     }
 
     private fun isProjectNameInUse(projectName: String): Boolean {
-        val value = repository.findByName(projectName)
-
-        return value.isPresent
+        return null != findProject(projectName)
     }
 }

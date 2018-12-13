@@ -48,6 +48,6 @@ val projectsModule = module {
     single { RefreshActiveProjectsViewModel.ViewModel() }
 
     viewModel {
-        CreateProjectViewModel.ViewModel(CreateProject(get()))
+        CreateProjectViewModel.ViewModel(CreateProject(FindProject(get()), get()))
     }
 }

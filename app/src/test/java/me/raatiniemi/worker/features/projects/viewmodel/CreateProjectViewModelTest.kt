@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.projects.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.CreateProject
+import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
@@ -38,12 +39,14 @@ class CreateProjectViewModelTest {
 
     private val repository = ProjectInMemoryRepository()
 
+    private lateinit var findProject: FindProject
     private lateinit var useCase: CreateProject
     private lateinit var vm: CreateProjectViewModel.ViewModel
 
     @Before
     fun setUp() {
-        useCase = CreateProject(repository)
+        findProject = FindProject(repository)
+        useCase = CreateProject(findProject, repository)
         vm = CreateProjectViewModel.ViewModel(useCase)
     }
 
