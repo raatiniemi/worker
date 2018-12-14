@@ -41,22 +41,22 @@ class CreateProjectViewModelTest {
 
     private lateinit var findProject: FindProject
     private lateinit var useCase: CreateProject
-    private lateinit var vm: CreateProjectViewModel.ViewModel
+    private lateinit var vm: CreateProjectViewModel
 
     @Before
     fun setUp() {
         findProject = FindProject(repository)
         useCase = CreateProject(findProject, repository)
-        vm = CreateProjectViewModel.ViewModel(useCase)
+        vm = CreateProjectViewModel(useCase)
     }
 
     @Test
     fun `createProject with empty name`() = runBlocking {
-        vm.input.projectName.value = ""
+        vm.projectName.value = ""
 
-        vm.input.createProject()
+        vm.createProject()
 
-        vm.error.viewActions.observeForever {
+        vm.viewActions.observeForever {
             assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
         }
     }
@@ -64,22 +64,22 @@ class CreateProjectViewModelTest {
     @Test
     fun `createProject with duplicated name`() = runBlocking {
         repository.add(Project(id = null, name = "Name"))
-        vm.input.projectName.value = "Name"
+        vm.projectName.value = "Name"
 
-        vm.input.createProject()
+        vm.createProject()
 
-        vm.error.viewActions.observeForever {
+        vm.viewActions.observeForever {
             assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
         }
     }
 
     @Test
     fun `createProject with valid name`() = runBlocking {
-        vm.input.projectName.value = "Name"
+        vm.projectName.value = "Name"
 
-        vm.input.createProject()
+        vm.createProject()
 
-        vm.error.viewActions.observeForever {
+        vm.viewActions.observeForever {
             assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
         }
         val actual = repository.findAll()
@@ -88,25 +88,25 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `isCreateEnabled with initial value`() {
-        vm.output.isCreateEnabled.observeForever {
+        vm.isCreateEnabled.observeForever {
             assertFalse(it)
         }
     }
 
     @Test
     fun `isCreateEnabled with empty name`() {
-        vm.input.projectName.value = ""
+        vm.projectName.value = ""
 
-        vm.output.isCreateEnabled.observeForever {
+        vm.isCreateEnabled.observeForever {
             assertFalse(it)
         }
     }
 
     @Test
     fun `isCreateEnabled with valid name`() {
-        vm.input.projectName.value = "Name"
+        vm.projectName.value = "Name"
 
-        vm.output.isCreateEnabled.observeForever {
+        vm.isCreateEnabled.observeForever {
             assertTrue(it)
         }
     }

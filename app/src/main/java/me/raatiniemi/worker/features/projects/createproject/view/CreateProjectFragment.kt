@@ -35,7 +35,7 @@ import timber.log.Timber
 
 class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.OnShowListener {
     private val eventBus = EventBus.getDefault()
-    private val vm: CreateProjectViewModel.ViewModel by viewModel()
+    private val vm: CreateProjectViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_create_project, container, false)
@@ -62,18 +62,18 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
             dismiss()
         })
 
-        vm.error.viewActions.observeAndConsume(this, Observer {
+        vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireContext(), etProjectName)
         })
     }
 
     private fun bindUserInterfaceToViewModel() {
-        etProjectName.onChange { vm.input.projectName.value = it }
+        etProjectName.onChange { vm.projectName.value = it }
         etProjectName.on(EditorAction.DONE) {
             vm.createProject()
         }
 
-        btnCreate.onClick { vm.input.createProject() }
+        btnCreate.onClick { vm.createProject() }
         btnDismiss.setOnClickListener { dismiss() }
     }
 
