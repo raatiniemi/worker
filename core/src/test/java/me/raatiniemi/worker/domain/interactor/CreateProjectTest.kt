@@ -40,20 +40,18 @@ class CreateProjectTest {
     }
 
     @Test(expected = ProjectAlreadyExistsException::class)
-    fun `execute withExistingProject`() {
+    fun `invoke with existing project`() {
         val project = Project.from("Project Name")
         repository.add(project)
 
-        createProject.execute(project)
+        createProject("Project Name")
     }
 
     @Test
     fun execute() {
-        val project = Project.from("Project Name")
-        val expected = listOf(project.copy(id = 1))
+        createProject("Project Name")
 
-        createProject.execute(project)
-
+        val expected = listOf(Project(id = 1, name = "Project Name"))
         val actual = repository.findAll()
         assertEquals(expected, actual)
     }

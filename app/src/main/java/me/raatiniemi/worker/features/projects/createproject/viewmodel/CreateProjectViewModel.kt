@@ -59,9 +59,7 @@ class CreateProjectViewModel(private val createProject: CreateProject) : ViewMod
     }
 
     private fun executeUseCase(): Project {
-        val project = Project.from(projectName.value ?: "")
-
-        return createProject.execute(project)
+        return createProject(projectName.value ?: "")
     }
 
     private fun handle(exception: Exception) {
