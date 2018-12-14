@@ -30,7 +30,7 @@ import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
-class CreateProjectViewModel(private val useCase: CreateProject) : ViewModel() {
+class CreateProjectViewModel(private val createProject: CreateProject) : ViewModel() {
     val projectName = MutableLiveData<String>().apply {
         value = ""
     }
@@ -61,7 +61,7 @@ class CreateProjectViewModel(private val useCase: CreateProject) : ViewModel() {
     private fun executeUseCase(): Project {
         val project = Project.from(projectName.value ?: "")
 
-        return useCase.execute(project)
+        return createProject.execute(project)
     }
 
     private fun handle(exception: Exception) {
