@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -43,11 +43,11 @@ class CreateProjectViewModel(private val createProject: CreateProject) : ViewMod
             _projectName.value = value
         }
 
-    val isCreateEnabled: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        addSource(_projectName) {
-            value = ProjectName.isValid(it)
-        }
+    private val isProjectNameValid = Transformations.map(_projectName) {
+        ProjectName.isValid(it)
     }
+
+    val isCreateEnabled: LiveData<Boolean> = isProjectNameValid
 
     private val _project = MutableLiveData<Project>()
     val project: LiveData<Project> = _project
