@@ -16,17 +16,26 @@
 
 package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
+import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
+import me.raatiniemi.worker.features.shared.model.debounce
+import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 
-class CreateProjectViewModel(private val createProject: CreateProject) : ViewModel() {
+class CreateProjectViewModel(
+        private val createProject: CreateProject,
+        private val findProject: FindProject
+) : CoroutineScopedViewModel() {
     private val _projectName = MutableLiveData<String>().apply {
         value = ""
     }
@@ -44,8 +53,28 @@ class CreateProjectViewModel(private val createProject: CreateProject) : ViewMod
         ProjectName.isValid(it)
     }
 
+    private val isProjectNameAvailable: LiveData<CreateProjectEditTextActions?> =
+            Transformations.map(_projectName.debounce(context = this)) {
+                if (it.isNullOrBlank()) {
+                    return@map null
+                }
+
+                findProject(it) ?: return@map null
+
+                CreateProjectEditTextActions.DuplicateNameErrorMessage
+            }
+
     private val _viewActions = MutableLiveData<CreateProjectEditTextActions?>()
-    val viewActions: LiveData<CreateProjectEditTextActions?> = _viewActions
+    val viewActions: LiveData<CreateProjectEditTextActions?> =
+            MediatorLiveData<CreateProjectEditTextActions?>().apply {
+                addSource(_viewActions) {
+                    value = it
+                }
+
+                addSource(isProjectNameAvailable) {
+                    value = it
+                }
+            }
 
     val isCreateEnabled: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
         addSource(isProjectNameValid) {

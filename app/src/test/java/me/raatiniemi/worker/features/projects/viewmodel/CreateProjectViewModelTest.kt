@@ -40,14 +40,14 @@ class CreateProjectViewModelTest {
     private val repository = ProjectInMemoryRepository()
 
     private lateinit var findProject: FindProject
-    private lateinit var useCase: CreateProject
+    private lateinit var createProject: CreateProject
     private lateinit var vm: CreateProjectViewModel
 
     @Before
     fun setUp() {
         findProject = FindProject(repository)
-        useCase = CreateProject(findProject, repository)
-        vm = CreateProjectViewModel(useCase)
+        createProject = CreateProject(findProject, repository)
+        vm = CreateProjectViewModel(createProject, findProject)
     }
 
     @Test
