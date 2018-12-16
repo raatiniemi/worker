@@ -52,7 +52,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `createProject with empty name`() = runBlocking {
-        vm.projectName.value = ""
+        vm.projectName = ""
 
         vm.createProject()
 
@@ -64,7 +64,7 @@ class CreateProjectViewModelTest {
     @Test
     fun `createProject with duplicated name`() = runBlocking {
         repository.add(Project(id = null, name = "Name"))
-        vm.projectName.value = "Name"
+        vm.projectName = "Name"
 
         vm.createProject()
 
@@ -75,7 +75,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `createProject with valid name`() = runBlocking {
-        vm.projectName.value = "Name"
+        vm.projectName = "Name"
 
         vm.createProject()
 
@@ -95,7 +95,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `isCreateEnabled with empty name`() {
-        vm.projectName.value = ""
+        vm.projectName = ""
 
         vm.isCreateEnabled.observeForever {
             assertFalse(it)
@@ -104,7 +104,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `isCreateEnabled with valid name`() {
-        vm.projectName.value = "Name"
+        vm.projectName = "Name"
 
         vm.isCreateEnabled.observeForever {
             assertTrue(it)

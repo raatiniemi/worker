@@ -31,12 +31,20 @@ import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectE
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
 class CreateProjectViewModel(private val createProject: CreateProject) : ViewModel() {
-    val projectName = MutableLiveData<String>().apply {
+    private val _projectName = MutableLiveData<String>().apply {
         value = ""
     }
 
+    var projectName: String
+        get() {
+            return _projectName.value ?: ""
+        }
+        set(value) {
+            _projectName.value = value
+        }
+
     val isCreateEnabled: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        addSource(projectName) {
+        addSource(_projectName) {
             value = ProjectName.isValid(it)
         }
     }
@@ -59,7 +67,7 @@ class CreateProjectViewModel(private val createProject: CreateProject) : ViewMod
     }
 
     private fun executeUseCase(): Project {
-        return createProject(projectName.value ?: "")
+        return createProject(projectName)
     }
 
     private fun handle(exception: Exception) {
