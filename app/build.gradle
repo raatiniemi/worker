@@ -151,10 +151,7 @@ dependencies {
     implementation 'com.trello:rxlifecycle-android:1.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'org.greenrobot:eventbus:3.0.0'
-    implementation ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.11.0') {
-        exclude group: 'com.android.support', module: 'appcompat-v7'
-        exclude group: 'com.android.support', module: 'recyclerview-v7'
-    }
+    implementation 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:1.0.0'
 
     testImplementation project(':core-test')
     testImplementation 'junit:junit:4.12'
