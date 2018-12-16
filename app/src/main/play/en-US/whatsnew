@@ -1,5 +1,2 @@
-improved internal management of user settings
-included project name in project action help text
-enable users to create project via keyboard ime done action
-"restart" week time summary on monday, instead of sunday
-migrate existing database to room
+convert "create project" view to kotlin
+add live feedback for project name availability
