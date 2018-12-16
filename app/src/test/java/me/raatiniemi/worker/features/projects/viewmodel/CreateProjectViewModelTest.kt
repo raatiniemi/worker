@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.projects.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.CreateProject
+import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
@@ -38,22 +39,24 @@ class CreateProjectViewModelTest {
 
     private val repository = ProjectInMemoryRepository()
 
-    private lateinit var useCase: CreateProject
-    private lateinit var vm: CreateProjectViewModel.ViewModel
+    private lateinit var findProject: FindProject
+    private lateinit var createProject: CreateProject
+    private lateinit var vm: CreateProjectViewModel
 
     @Before
     fun setUp() {
-        useCase = CreateProject(repository)
-        vm = CreateProjectViewModel.ViewModel(useCase)
+        findProject = FindProject(repository)
+        createProject = CreateProject(findProject, repository)
+        vm = CreateProjectViewModel(createProject, findProject)
     }
 
     @Test
     fun `createProject with empty name`() = runBlocking {
-        vm.input.projectName.value = ""
+        vm.projectName = ""
 
-        vm.input.createProject()
+        vm.createProject()
 
-        vm.error.viewActions.observeForever {
+        vm.viewActions.observeForever {
             assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
         }
     }
@@ -61,23 +64,23 @@ class CreateProjectViewModelTest {
     @Test
     fun `createProject with duplicated name`() = runBlocking {
         repository.add(Project(id = null, name = "Name"))
-        vm.input.projectName.value = "Name"
+        vm.projectName = "Name"
 
-        vm.input.createProject()
+        vm.createProject()
 
-        vm.error.viewActions.observeForever {
+        vm.viewActions.observeForever {
             assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
         }
     }
 
     @Test
     fun `createProject with valid name`() = runBlocking {
-        vm.input.projectName.value = "Name"
+        vm.projectName = "Name"
 
-        vm.input.createProject()
+        vm.createProject()
 
-        vm.error.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+        vm.viewActions.observeForever {
+            assertNull(it)
         }
         val actual = repository.findAll()
         assertEquals(listOf(Project(id = 1, name = "Name")), actual)
@@ -85,26 +88,55 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `isCreateEnabled with initial value`() {
-        vm.output.isCreateEnabled.observeForever {
+        vm.isCreateEnabled.observeForever {
             assertFalse(it)
         }
     }
 
     @Test
     fun `isCreateEnabled with empty name`() {
-        vm.input.projectName.value = ""
+        vm.projectName = ""
 
-        vm.output.isCreateEnabled.observeForever {
+        vm.isCreateEnabled.observeForever {
             assertFalse(it)
         }
     }
 
     @Test
     fun `isCreateEnabled with valid name`() {
-        vm.input.projectName.value = "Name"
+        vm.projectName = "Name"
 
-        vm.output.isCreateEnabled.observeForever {
+        vm.isCreateEnabled.observeForever {
             assertTrue(it)
+        }
+    }
+
+    @Test
+    fun `isCreateEnabled with invalid name`() = runBlocking {
+        vm.projectName = ""
+
+        vm.createProject()
+
+        vm.viewActions.observeForever {
+            assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
+        }
+        vm.isCreateEnabled.observeForever {
+            assertFalse(it)
+        }
+    }
+
+    @Test
+    fun `isCreateEnabled with duplicated name`() = runBlocking {
+        repository.add(Project(id = null, name = "Name"))
+        vm.projectName = "Name"
+
+        vm.createProject()
+
+        vm.viewActions.observeForever {
+            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+        }
+        vm.isCreateEnabled.observeForever {
+            assertFalse(it)
         }
     }
 }

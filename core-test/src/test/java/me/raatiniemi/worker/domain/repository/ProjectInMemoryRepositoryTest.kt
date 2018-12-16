@@ -93,6 +93,17 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
+    fun `findByName with lowercase project name`() {
+        repository.add(Project.from("Project #1"))
+        val expected = Project(1, "Project #1")
+
+        val actual = repository.findByName("project #1")
+
+        assertTrue(actual.isPresent)
+        assertEquals(expected, actual.get())
+    }
+
+    @Test
     fun `findById withoutProject`() {
         val actual = repository.findById(1)
 

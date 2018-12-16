@@ -16,43 +16,50 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class CreateProjectTest {
+class FindProjectTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
-
     private lateinit var findProject: FindProject
-    private lateinit var createProject: CreateProject
 
     @Before
     fun setUp() {
         findProject = FindProject(repository)
-        createProject = CreateProject(findProject, repository)
-    }
-
-    @Test(expected = ProjectAlreadyExistsException::class)
-    fun `invoke with existing project`() {
-        val project = Project.from("Project Name")
-        repository.add(project)
-
-        createProject("Project Name")
     }
 
     @Test
-    fun execute() {
-        createProject("Project Name")
+    fun `invoke without projects`() {
+        val actual = findProject("Name")
 
-        val expected = listOf(Project(id = 1, name = "Project Name"))
-        val actual = repository.findAll()
+        assertNull(actual)
+    }
+
+    @Test
+    fun `invoke with projects`() {
+        val expected = Project(id = 1, name = "Name")
+        repository.add(expected)
+
+        val actual = findProject("Name")
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `invoke with lowercase project name`() {
+        val expected = Project(id = 1, name = "Name")
+        repository.add(expected)
+
+        val actual = findProject("name")
+
         assertEquals(expected, actual)
     }
 }

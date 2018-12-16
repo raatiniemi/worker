@@ -27,7 +27,7 @@ class ProjectInMemoryRepository : ProjectRepository {
     override fun findAll(): List<Project> = projects.sortedBy { it.id }
 
     override fun findByName(projectName: String): Optional<Project> {
-        val project = projects.firstOrNull { it.name == projectName }
+        val project = projects.firstOrNull { it.name.equals(projectName, true) }
 
         return Optional.ofNullable(project)
     }
