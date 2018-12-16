@@ -28,7 +28,6 @@ import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
-import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
 class CreateProjectViewModel(private val createProject: CreateProject) : ViewModel() {
     private val _projectName = MutableLiveData<String>().apply {
@@ -41,18 +40,20 @@ class CreateProjectViewModel(private val createProject: CreateProject) : ViewMod
         }
         set(value) {
             _projectName.value = value
+            _viewActions.value = null
         }
 
     private val isProjectNameValid = Transformations.map(_projectName) {
         ProjectName.isValid(it)
     }
 
+    private val _viewActions = MutableLiveData<CreateProjectEditTextActions?>()
+    val viewActions: LiveData<CreateProjectEditTextActions?> = _viewActions
+
     val isCreateEnabled: LiveData<Boolean> = isProjectNameValid
 
     private val _project = MutableLiveData<Project>()
     val project: LiveData<Project> = _project
-
-    val viewActions = ConsumableLiveData<CreateProjectEditTextActions>()
 
     suspend fun createProject() {
         withContext(Dispatchers.IO) {
@@ -77,6 +78,6 @@ class CreateProjectViewModel(private val createProject: CreateProject) : ViewMod
             else -> CreateProjectEditTextActions.UnknownErrorMessage
         }
 
-        viewActions.postValue(action)
+        _viewActions.postValue(action)
     }
 }

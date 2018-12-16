@@ -80,7 +80,7 @@ class CreateProjectViewModelTest {
         vm.createProject()
 
         vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+            assertNull(it)
         }
         val actual = repository.findAll()
         assertEquals(listOf(Project(id = 1, name = "Name")), actual)

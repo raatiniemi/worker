@@ -56,8 +56,8 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
             btnCreate.isEnabled = it
         })
 
-        vm.viewActions.observeAndConsume(this, Observer {
-            it.action(requireContext(), etProjectName)
+        vm.viewActions.observe(this, Observer {
+            it?.apply { action(requireContext(), etProjectName) }
         })
 
         // TODO: replace use of event bus with interface.
