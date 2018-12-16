@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
@@ -50,7 +47,15 @@ class CreateProjectViewModel(private val createProject: CreateProject) : ViewMod
     private val _viewActions = MutableLiveData<CreateProjectEditTextActions?>()
     val viewActions: LiveData<CreateProjectEditTextActions?> = _viewActions
 
-    val isCreateEnabled: LiveData<Boolean> = isProjectNameValid
+    val isCreateEnabled: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        addSource(isProjectNameValid) {
+            value = it && viewActions.value == null
+        }
+
+        addSource(viewActions) {
+            value = it == null && isProjectNameValid.value ?: false
+        }
+    }
 
     private val _project = MutableLiveData<Project>()
     val project: LiveData<Project> = _project

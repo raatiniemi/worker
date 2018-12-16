@@ -110,4 +110,33 @@ class CreateProjectViewModelTest {
             assertTrue(it)
         }
     }
+
+    @Test
+    fun `isCreateEnabled with invalid name`() = runBlocking {
+        vm.projectName = ""
+
+        vm.createProject()
+
+        vm.viewActions.observeForever {
+            assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
+        }
+        vm.isCreateEnabled.observeForever {
+            assertFalse(it)
+        }
+    }
+
+    @Test
+    fun `isCreateEnabled with duplicated name`() = runBlocking {
+        repository.add(Project(id = null, name = "Name"))
+        vm.projectName = "Name"
+
+        vm.createProject()
+
+        vm.viewActions.observeForever {
+            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+        }
+        vm.isCreateEnabled.observeForever {
+            assertFalse(it)
+        }
+    }
 }
