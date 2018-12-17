@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_projects_item"
+    android:id="@+id/cvProjectsItem"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/projects_item_card_view_margin_vertical"
@@ -17,31 +17,31 @@
         >
 
         <RelativeLayout
-            android:id="@+id/fragment_projects_item_content"
+            android:id="@+id/rlTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"
             >
 
             <TextView
-                android:id="@+id/fragment_projects_item_name"
+                android:id="@+id/tvName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/fragment_projects_item_time"
+                android:layout_toStartOf="@+id/tvTimeSummary"
                 android:textStyle="bold"
                 tools:text="Project name"
                 />
 
             <TextView
-                android:id="@+id/fragment_projects_item_time"
+                android:id="@+id/tvTimeSummary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/fragment_projects_item_name"
-                android:layout_alignBottom="@+id/fragment_projects_item_name"
+                android:layout_alignTop="@+id/tvName"
+                android:layout_alignBottom="@+id/tvName"
                 android:layout_marginStart="@dimen/projects_item_time_margin_start"
                 android:textColor="@color/textSecondary"
                 tools:text="24h 25m"
@@ -50,10 +50,10 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/fragment_projects_item_toolbar"
+            android:id="@+id/rlBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_projects_item_content"
+            android:layout_below="@+id/rlTop"
             android:paddingLeft="2dp"
             android:paddingStart="2dp"
             android:paddingRight="2dp"
@@ -64,7 +64,7 @@
             >
 
             <ImageButton
-                android:id="@+id/fragment_projects_item_action_clock_activity_toggle"
+                android:id="@+id/ibClockActivityToggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -79,10 +79,10 @@
                 />
 
             <ImageButton
-                android:id="@+id/fragment_projects_item_action_clock_activity_at"
+                android:id="@+id/ibClockActivityAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/fragment_projects_item_action_clock_activity_toggle"
+                android:layout_toEndOf="@+id/ibClockActivityToggle"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginRight="4dp"
@@ -94,10 +94,10 @@
                 />
 
             <ImageButton
-                android:id="@+id/fragment_projects_item_action_delete"
+                android:id="@+id/ibDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/fragment_projects_item_action_clock_activity_at"
+                android:layout_toEndOf="@+id/ibClockActivityAt"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginRight="4dp"
@@ -109,10 +109,10 @@
                 />
 
             <TextView
-                android:id="@+id/fragment_projects_item_clocked_in_since"
+                android:id="@+id/tvClockedInSince"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_toEndOf="@+id/fragment_projects_item_action_delete"
+                android:layout_toEndOf="@+id/ibDelete"
                 android:layout_alignParentEnd="true"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"
