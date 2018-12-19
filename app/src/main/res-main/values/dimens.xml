@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="projects_item_card_view_margin_horizontal">10dp</dimen>
-    <dimen name="projects_item_card_view_margin_vertical">5dp</dimen>
-
-    <dimen name="projects_item_time_margin_start">20dp</dimen>
-
     <dimen name="fragment_dialog_padding_horizontal">25dp</dimen>
     <dimen name="fragment_dialog_padding_vertical">20dp</dimen>
     <dimen name="fragment_dialog_text_size">14sp</dimen>

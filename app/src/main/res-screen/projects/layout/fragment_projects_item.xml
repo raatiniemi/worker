@@ -1,132 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cvProjectsItem"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/projects_item_card_view_margin_vertical"
-    android:layout_marginBottom="@dimen/projects_item_card_view_margin_vertical"
-    android:layout_marginLeft="@dimen/projects_item_card_view_margin_horizontal"
-    android:layout_marginRight="@dimen/projects_item_card_view_margin_horizontal"
-    >
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="10dp">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/rlTop"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
-            >
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ivDivider"
+            tools:text="Project name" />
 
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/tvTimeSummary"
-                android:textStyle="bold"
-                tools:text="Project name"
-                />
-
-            <TextView
-                android:id="@+id/tvTimeSummary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/tvName"
-                android:layout_alignBottom="@+id/tvName"
-                android:layout_marginStart="@dimen/projects_item_time_margin_start"
-                android:textColor="@color/textSecondary"
-                tools:text="24h 25m"
-                />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rlBottom"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvTimeSummary"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rlTop"
-            android:paddingLeft="2dp"
-            android:paddingStart="2dp"
-            android:paddingRight="2dp"
-            android:paddingEnd="2dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
+            android:layout_marginEnd="14dp"
+            android:textColor="@color/textSecondary"
+            app:layout_constraintBottom_toBottomOf="@+id/tvName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/tvName"
+            app:layout_constraintTop_toTopOf="@id/tvName"
+            tools:text="24h 25m" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
             android:background="@drawable/projects_item_toolbar_divider"
-            >
+            app:layout_constraintTop_toBottomOf="@id/tvName"
+            app:layout_constraintBottom_toTopOf="@id/ibClockActivityToggle"/>
 
-            <ImageButton
-                android:id="@+id/ibClockActivityToggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginEnd="4dp"
-                android:padding="8dp"
-                android:contentDescription="@string/fragment_projects_item_clock_in"
-                android:background="@drawable/projects_item_action_clock_activity_toggle_background"
-                android:src="@drawable/projects_item_action_clock_activity_toggle"
-                />
+        <ImageButton
+            android:id="@+id/ibClockActivityToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/projects_item_action_clock_activity_toggle_background"
+            android:contentDescription="@string/fragment_projects_item_clock_in"
+            android:padding="8dp"
+            android:src="@drawable/projects_item_action_clock_activity_toggle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivDivider" />
 
-            <ImageButton
-                android:id="@+id/ibClockActivityAt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/ibClockActivityToggle"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginEnd="4dp"
-                android:padding="8dp"
-                android:contentDescription="@string/fragment_projects_item_clock_in_at"
-                android:background="@android:color/transparent"
-                android:src="@drawable/projects_item_action_clock_activity_at"
-                />
 
-            <ImageButton
-                android:id="@+id/ibDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/ibClockActivityAt"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginEnd="4dp"
-                android:padding="8dp"
-                android:contentDescription="@string/fragment_projects_item_delete"
-                android:background="@android:color/transparent"
-                android:src="@drawable/projects_item_action_delete"
-                />
+        <ImageButton
+            android:id="@+id/ibClockActivityAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/fragment_projects_item_clock_in_at"
+            android:padding="8dp"
+            android:src="@drawable/projects_item_action_clock_activity_at"
+            app:layout_constraintBottom_toBottomOf="@id/ibClockActivityToggle"
+            app:layout_constraintStart_toEndOf="@id/ibClockActivityToggle"
+            app:layout_constraintTop_toTopOf="@id/ibClockActivityToggle" />
 
-            <TextView
-                android:id="@+id/tvClockedInSince"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_toEndOf="@+id/ibDelete"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginEnd="4dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:gravity="end|center_vertical"
-                android:textColor="@color/textSecondary"
-                tools:text="Since 07:45 (8h 50m)"
-                />
+        <ImageButton
+            android:id="@+id/ibDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="6dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/fragment_projects_item_delete"
+            android:padding="8dp"
+            android:src="@drawable/projects_item_action_delete"
+            app:layout_constraintBottom_toBottomOf="@id/ibClockActivityToggle"
+            app:layout_constraintStart_toEndOf="@id/ibClockActivityAt"
+            app:layout_constraintTop_toTopOf="@id/ibClockActivityToggle" />
 
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvClockedInSince"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:gravity="end|center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@color/textSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/ibClockActivityToggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/ibDelete"
+            app:layout_constraintTop_toTopOf="@id/ibClockActivityToggle"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Since 07:45 (8h 50m)" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

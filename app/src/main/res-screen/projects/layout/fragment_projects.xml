@@ -5,7 +5,7 @@
     android:id="@+id/fragment_projects"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/projects_item_card_view_margin_vertical"
-    android:paddingBottom="@dimen/projects_item_card_view_margin_vertical"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
     tools:listitem="@layout/fragment_projects_item"
     />
