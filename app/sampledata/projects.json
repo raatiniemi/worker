@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "name": "Project #1",
+      "time_summary": "3h 23m",
+      "clocked_in_since": "Since 14:30 (4m)"
+    },
+    {
+      "name": "Project #2",
+      "time_summary": "4h 13m",
+      "clocked_in_since": "Since 18:34 (36m)"
+    },
+    {
+      "name": "Project #3",
+      "time_summary": "1h 54m",
+      "clocked_in_since": "Since 08:34 (41m)"
+    },
+    {
+      "name": "Project #4",
+      "time_summary": "8h 0m",
+      "clocked_in_since": "Since 09:17 (23m)"
+    }
+  ]
+}

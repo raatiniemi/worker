@@ -25,7 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/ivDivider"
-            tools:text="Project name" />
+            tools:text="@sample/projects.json/data/name" />
 
         <TextView
             android:id="@+id/tvTimeSummary"
@@ -38,7 +38,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@id/tvName"
             app:layout_constraintTop_toTopOf="@id/tvName"
-            tools:text="24h 25m" />
+            tools:text="@sample/projects.json/data/time_summary" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivDivider"
@@ -110,7 +110,7 @@
             app:layout_constraintStart_toEndOf="@+id/ibDelete"
             app:layout_constraintTop_toTopOf="@id/ibClockActivityToggle"
             app:layout_constraintVertical_bias="0.0"
-            tools:text="Since 07:45 (8h 50m)" />
+            tools:text="@sample/projects.json/data/clocked_in_since" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
