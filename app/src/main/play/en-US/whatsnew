@@ -1,2 +1,1 @@
-convert "create project" view to kotlin
-add live feedback for project name availability
+add ripple effects to project actions.
