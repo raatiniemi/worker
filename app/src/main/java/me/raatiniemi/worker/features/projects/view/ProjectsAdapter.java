@@ -72,7 +72,7 @@ class ProjectsAdapter extends SimpleListAdapter<ProjectsItem, ProjectsItemViewHo
     @Override
     public void onBindViewHolder(@NonNull final ProjectsItemViewHolder vh, int index) {
         final ProjectsItem item = get(index);
-        final ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(index, item);
+        final ProjectsItemAdapterResult result = new ProjectsItemAdapterResult(index, item);
 
         vh.name.setText(item.getTitle());
         vh.time.setText(item.getTimeSummary());

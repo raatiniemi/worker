@@ -130,7 +130,7 @@ interface ClockActivityViewModel {
                 result: ProjectsItemAdapterResult,
                 projectsItem: ProjectsItem
         ): ProjectsItemAdapterResult {
-            return ProjectsItemAdapterResult.build(result.position, projectsItem)
+            return ProjectsItemAdapterResult(result.position, projectsItem)
         }
 
         override fun clockIn(result: ProjectsItemAdapterResult, date: Date) {

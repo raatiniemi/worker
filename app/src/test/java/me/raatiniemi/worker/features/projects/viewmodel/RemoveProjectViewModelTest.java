@@ -57,7 +57,7 @@ public class RemoveProjectViewModelTest {
     public void deleteProject_withError() {
         Project project = Project.from("Name");
         ProjectsItem item = ProjectsItem.from(project, Collections.emptyList());
-        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);
+        ProjectsItemAdapterResult result = new ProjectsItemAdapterResult(0, item);
         doThrow(RuntimeException.class)
                 .when(removeProject).execute(any());
 
@@ -72,7 +72,7 @@ public class RemoveProjectViewModelTest {
     public void deleteProject() {
         Project project = Project.from("Name");
         ProjectsItem item = ProjectsItem.from(project, Collections.emptyList());
-        ProjectsItemAdapterResult result = ProjectsItemAdapterResult.build(0, item);
+        ProjectsItemAdapterResult result = new ProjectsItemAdapterResult(0, item);
 
         vm.input().remove(result);
 
