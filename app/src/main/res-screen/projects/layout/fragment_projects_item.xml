@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="6dp"
-            android:background="@android:color/transparent"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:contentDescription="@string/fragment_projects_item_delete"
             android:padding="8dp"
             android:src="@drawable/projects_item_action_delete"
