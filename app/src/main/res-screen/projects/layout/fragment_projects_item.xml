@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
-            android:background="@android:color/transparent"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:contentDescription="@string/fragment_projects_item_clock_in_at"
             android:padding="8dp"
             android:src="@drawable/projects_item_action_clock_activity_at"
