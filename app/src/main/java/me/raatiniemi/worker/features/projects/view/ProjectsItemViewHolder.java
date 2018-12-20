@@ -34,11 +34,11 @@ class ProjectsItemViewHolder extends RecyclerView.ViewHolder {
     ProjectsItemViewHolder(View view) {
         super(view);
 
-        name = view.findViewById(R.id.fragment_projects_item_name);
-        time = view.findViewById(R.id.fragment_projects_item_time);
-        clockActivityToggle = view.findViewById(R.id.fragment_projects_item_action_clock_activity_toggle);
-        clockActivityAt = view.findViewById(R.id.fragment_projects_item_action_clock_activity_at);
-        delete = view.findViewById(R.id.fragment_projects_item_action_delete);
-        clockedInSince = view.findViewById(R.id.fragment_projects_item_clocked_in_since);
+        name = view.findViewById(R.id.tvName);
+        time = view.findViewById(R.id.tvTimeSummary);
+        clockActivityToggle = view.findViewById(R.id.ibClockActivityToggle);
+        clockActivityAt = view.findViewById(R.id.ibClockActivityAt);
+        delete = view.findViewById(R.id.ibDelete);
+        clockedInSince = view.findViewById(R.id.tvClockedInSince);
     }
 }
