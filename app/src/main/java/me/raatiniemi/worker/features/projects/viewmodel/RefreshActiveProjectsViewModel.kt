@@ -16,55 +16,30 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
-import androidx.annotation.NonNull
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-interface RefreshActiveProjectsViewModel {
-    interface Input {
-        fun projects(@NonNull projects: List<ProjectsItem>)
+class RefreshActiveProjectsViewModel {
+    private val projects = PublishSubject.create<List<ProjectsItem>>()
+    private val positions = PublishSubject.create<List<Int>>()
+
+    init {
+        projects.map { getPositionsForActiveProjects(it) }
+                .compose(hideErrors())
+                .subscribe(positions)
     }
 
-    interface Output {
-        fun positionsForActiveProjects(): Observable<List<Int>>
+    private fun getPositionsForActiveProjects(items: List<ProjectsItem>) =
+            items.filter { it.isActive }
+                    .map { items.indexOf(it) }
+
+    fun projects(projects: List<ProjectsItem>) {
+        this.projects.onNext(projects)
     }
 
-    class ViewModel : Input, Output {
-        private val input: Input
-        private val output: Output
-
-        private val projects = PublishSubject.create<List<ProjectsItem>>()
-        private val positions = PublishSubject.create<List<Int>>()
-
-        init {
-            input = this
-            output = this
-
-            projects.map { getPositionsForActiveProjects(it) }
-                    .compose(hideErrors())
-                    .subscribe(positions)
-        }
-
-        private fun getPositionsForActiveProjects(items: List<ProjectsItem>) =
-                items.filter { it.isActive }
-                        .map { items.indexOf(it) }
-
-        override fun projects(projects: List<ProjectsItem>) {
-            this.projects.onNext(projects)
-        }
-
-        override fun positionsForActiveProjects(): Observable<List<Int>> {
-            return positions.asObservable()
-        }
-
-        fun input(): Input {
-            return input
-        }
-
-        fun output(): Output {
-            return output
-        }
+    fun positionsForActiveProjects(): Observable<List<Int>> {
+        return positions.asObservable()
     }
 }

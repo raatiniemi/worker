@@ -26,6 +26,6 @@ import org.koin.standalone.inject
 class ViewModels : KoinComponent {
     val clockActivity: ClockActivityViewModel.ViewModel by inject()
     val projects: ProjectsViewModel.ViewModel by inject()
-    val refreshActiveProjects: RefreshActiveProjectsViewModel.ViewModel by inject()
+    val refreshActiveProjects: RefreshActiveProjectsViewModel by inject()
     val removeProject: RemoveProjectViewModel.ViewModel by inject()
 }

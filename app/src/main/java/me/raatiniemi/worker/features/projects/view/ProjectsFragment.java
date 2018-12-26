@@ -72,7 +72,7 @@ public class ProjectsFragment extends RxFragment
 
     private final ViewModels viewModels = new ViewModels();
     private final ProjectsViewModel.ViewModel projectsViewModel = viewModels.getProjects();
-    private final RefreshActiveProjectsViewModel.ViewModel refreshViewModel = viewModels.getRefreshActiveProjects();
+    private final RefreshActiveProjectsViewModel refreshViewModel = viewModels.getRefreshActiveProjects();
     private final ClockActivityViewModel.ViewModel clockActivityViewModel = viewModels.getClockActivity();
     private final RemoveProjectViewModel.ViewModel removeProjectViewModel = viewModels.getRemoveProject();
 
@@ -167,16 +167,16 @@ public class ProjectsFragment extends RxFragment
     public void onResume() {
         super.onResume();
 
-        refreshViewModel.output().positionsForActiveProjects()
+        refreshViewModel.positionsForActiveProjects()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe(this::refreshPositions);
 
         refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(interval -> refreshViewModel.input().projects(adapter.getItems()));
+                .subscribe(interval -> refreshViewModel.projects(adapter.getItems()));
 
-        refreshViewModel.input().projects(adapter.getItems());
+        refreshViewModel.projects(adapter.getItems());
     }
 
     @Override

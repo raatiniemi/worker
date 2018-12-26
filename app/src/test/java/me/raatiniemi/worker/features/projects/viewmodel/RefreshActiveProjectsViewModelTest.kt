@@ -29,7 +29,7 @@ import rx.observers.TestSubscriber
 class RefreshActiveProjectsViewModelTest {
     private val positionsForActiveProjects: TestSubscriber<List<Int>> = TestSubscriber()
 
-    private lateinit var vm: RefreshActiveProjectsViewModel.ViewModel
+    private lateinit var vm: RefreshActiveProjectsViewModel
 
     private fun getProjectsItem(isActive: Boolean): ProjectsItem {
         val projectsItem = mock(ProjectsItem::class.java)
@@ -41,15 +41,15 @@ class RefreshActiveProjectsViewModelTest {
 
     @Before
     fun setUp() {
-        vm = RefreshActiveProjectsViewModel.ViewModel()
+        vm = RefreshActiveProjectsViewModel()
     }
 
     @Test
     fun `positionsForActiveProjects without projects`() {
-        vm.output().positionsForActiveProjects()
+        vm.positionsForActiveProjects()
                 .subscribe(positionsForActiveProjects)
 
-        vm.input().projects(emptyList())
+        vm.projects(emptyList())
 
         positionsForActiveProjects.assertValue(emptyList())
         positionsForActiveProjects.assertNotCompleted()
@@ -57,10 +57,10 @@ class RefreshActiveProjectsViewModelTest {
 
     @Test
     fun `positionsForActiveProjects without active projects`() {
-        vm.output().positionsForActiveProjects()
+        vm.positionsForActiveProjects()
                 .subscribe(positionsForActiveProjects)
 
-        vm.input().projects(listOf(getProjectsItem(false)))
+        vm.projects(listOf(getProjectsItem(false)))
 
         positionsForActiveProjects.assertValue(emptyList())
         positionsForActiveProjects.assertNotCompleted()
@@ -68,14 +68,14 @@ class RefreshActiveProjectsViewModelTest {
 
     @Test
     fun `positionsForActiveProjects with active project`() {
-        vm.output().positionsForActiveProjects()
+        vm.positionsForActiveProjects()
                 .subscribe(positionsForActiveProjects)
         val projectItems = listOf(
                 getProjectsItem(false),
                 getProjectsItem(true)
         )
 
-        vm.input().projects(projectItems)
+        vm.projects(projectItems)
 
         positionsForActiveProjects.assertValue(listOf(1))
         positionsForActiveProjects.assertNotCompleted()
