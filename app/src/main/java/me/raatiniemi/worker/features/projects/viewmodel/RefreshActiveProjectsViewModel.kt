@@ -16,12 +16,13 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.lifecycle.ViewModel
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-class RefreshActiveProjectsViewModel {
+class RefreshActiveProjectsViewModel: ViewModel() {
     private val projects = PublishSubject.create<List<ProjectsItem>>()
     private val positions = PublishSubject.create<List<Int>>()
 

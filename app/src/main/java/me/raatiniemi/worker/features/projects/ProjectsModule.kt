@@ -45,7 +45,9 @@ val projectsModule = module {
         RemoveProjectViewModel.ViewModel(RemoveProject(get()))
     }
 
-    single { RefreshActiveProjectsViewModel() }
+    viewModel {
+        RefreshActiveProjectsViewModel()
+    }
 
     viewModel {
         val findProject = FindProject(get())

@@ -49,6 +49,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import rx.Observable
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -60,8 +61,9 @@ import java.util.concurrent.TimeUnit
 class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
     private val eventBus = EventBus.getDefault()
 
+    private val refreshViewModel: RefreshActiveProjectsViewModel by viewModel()
+
     private val projectsViewModel: ProjectsViewModel.ViewModel by inject()
-    private val refreshViewModel: RefreshActiveProjectsViewModel by inject()
     private val clockActivityViewModel: ClockActivityViewModel.ViewModel by inject()
     private val removeProjectViewModel: RemoveProjectViewModel.ViewModel by inject()
     private val keyValueStore: KeyValueStore by inject()
