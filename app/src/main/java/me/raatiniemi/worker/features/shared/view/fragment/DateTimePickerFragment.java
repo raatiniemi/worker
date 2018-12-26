@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.features.shared.view.fragment;
 
 import android.app.DatePickerDialog;
-import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.widget.DatePicker;
@@ -30,6 +29,7 @@ import java.util.Calendar;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import me.raatiniemi.worker.R;
 import timber.log.Timber;
 

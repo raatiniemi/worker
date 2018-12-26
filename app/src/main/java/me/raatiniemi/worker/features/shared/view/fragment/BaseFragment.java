@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.shared.view.fragment;
 
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 /**
  * Base for the application fragments.

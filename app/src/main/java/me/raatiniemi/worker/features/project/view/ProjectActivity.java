@@ -74,7 +74,7 @@ public class ProjectActivity extends BaseActivity {
         setContentView(R.layout.activity_project);
 
         if (isNull(savedInstanceState)) {
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(
                             R.id.fragment_container,
                             getTimesheetFragment(),

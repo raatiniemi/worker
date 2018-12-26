@@ -61,7 +61,7 @@ public class ProjectsActivity extends BaseActivity {
         if (isNull(savedInstanceState)) {
             ProjectsFragment fragment = new ProjectsFragment();
 
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
                     .commit();
         }

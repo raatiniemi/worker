@@ -76,7 +76,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
         eventBus.register(this)
 
-        adapter = ProjectsAdapter(resources, this, HintedImageButtonListener(activity))
+        adapter = ProjectsAdapter(resources, this, HintedImageButtonListener(requireActivity()))
         adapter.setOnItemClickListener(this)
     }
 
@@ -200,7 +200,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun showGetProjectsErrorMessage() {
         Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                requireActivity().findViewById(android.R.id.content),
                 R.string.error_message_get_projects,
                 Snackbar.LENGTH_SHORT
         ).show()
@@ -233,7 +233,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun updateNotificationForProject(project: ProjectsItem) {
         ProjectNotificationService.startServiceWithContext(
-                activity,
+                requireActivity(),
                 project.asProject()
         )
     }
@@ -244,7 +244,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun showClockInErrorMessage() {
         Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                requireActivity().findViewById(android.R.id.content),
                 R.string.error_message_clock_in,
                 Snackbar.LENGTH_SHORT
         ).show()
@@ -252,7 +252,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun showClockOutErrorMessage() {
         Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                requireActivity().findViewById(android.R.id.content),
                 R.string.error_message_clock_out,
                 Snackbar.LENGTH_SHORT
         ).show()
@@ -270,7 +270,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun showDeleteProjectSuccessMessage() {
         Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                requireActivity().findViewById(android.R.id.content),
                 R.string.message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show()
@@ -278,7 +278,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun showDeleteProjectErrorMessage() {
         Snackbar.make(
-                activity.findViewById(android.R.id.content),
+                requireActivity().findViewById(android.R.id.content),
                 R.string.error_message_project_deleted,
                 Snackbar.LENGTH_SHORT
         ).show()
@@ -298,14 +298,14 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
             val (id) = item.asProject()
 
             val intent = ProjectActivity.newIntent(
-                    activity,
+                    requireActivity(),
                     id
             )
             startActivity(intent)
         } catch (e: IndexOutOfBoundsException) {
             Timber.w(e, "Unable to get project position")
             Snackbar.make(
-                    activity.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     R.string.error_message_unable_to_find_project,
                     Snackbar.LENGTH_SHORT
             ).show()
@@ -322,7 +322,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 return
             }
 
-            ConfirmClockOutDialog.show(activity)
+            ConfirmClockOutDialog.show(requireActivity())
                     .filter { RxAlertDialog.isPositive(it) }
                     .subscribe(
                             { clockActivityViewModel.input().clockOut(result, Date()) },
@@ -347,13 +347,13 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
             clockActivityViewModel.input().clockIn(result, calendar.time)
         }
 
-        fragmentManager.beginTransaction()
+        childFragmentManager.beginTransaction()
                 .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
                 .commit()
     }
 
     override fun onDelete(@NonNull result: ProjectsItemAdapterResult) {
-        RemoveProjectDialog.show(activity)
+        RemoveProjectDialog.show(requireActivity())
                 .filter { RxAlertDialog.isPositive(it) }
                 .subscribe(
                         {
