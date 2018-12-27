@@ -60,7 +60,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private val refreshViewModel: RefreshActiveProjectsViewModel by viewModel()
 
-    private val projectsViewModel: ProjectsViewModel.ViewModel by inject()
+    private val projectsViewModel: ProjectsViewModel by inject()
     private val clockActivityViewModel: ClockActivityViewModel.ViewModel by inject()
     private val removeProjectViewModel: RemoveProjectViewModel.ViewModel by inject()
     private val keyValueStore: KeyValueStore by inject()
@@ -91,15 +91,15 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         recyclerView.adapter = adapter
 
         val startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary()
-        projectsViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary)
+        projectsViewModel.startingPointForTimeSummary(startingPointForTimeSummary)
         clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary)
 
-        projectsViewModel.output().projects()
+        projectsViewModel.projects()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { adapter.add(it) }
 
-        projectsViewModel.error().projectsError()
+        projectsViewModel.projectsError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { showGetProjectsErrorMessage() }
@@ -204,7 +204,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
         val startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary()
-        projectsViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary)
+        projectsViewModel.startingPointForTimeSummary(startingPointForTimeSummary)
         clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary)
 
         reloadProjects()
@@ -222,7 +222,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         adapter.clear()
 
         // TODO: Move to input event for view model.
-        projectsViewModel.output().projects()
+        projectsViewModel.projects()
                 .compose(bindToLifecycle())
                 .subscribe { adapter.add(it) }
     }

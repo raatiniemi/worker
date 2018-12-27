@@ -31,83 +31,55 @@ import rx.Observable.defer
 import rx.subjects.PublishSubject
 import timber.log.Timber
 
-interface ProjectsViewModel {
-    interface Input {
-        fun startingPointForTimeSummary(startingPoint: Int)
+class ProjectsViewModel(
+        private val getProjects: GetProjects,
+        private val getProjectTimeSince: GetProjectTimeSince
+) {
+    private var startingPoint = TimeIntervalStartingPoint.MONTH
+    private val projects: Observable<List<ProjectsItem>>
+    private val projectsError = PublishSubject.create<Throwable>()
+
+    init {
+        projects = executeGetProjects()
+                .flatMap { Observable.from(it) }
+                .map { populateItemWithRegisteredTime(it) }
+                .compose(redirectErrors(projectsError))
+                .compose(hideErrors())
+                .toList()
     }
 
-    interface Output {
-        fun projects(): Observable<List<ProjectsItem>>
+    private fun executeGetProjects(): Observable<List<Project>> = defer<List<Project>> {
+        return@defer try {
+            Observable.just(getProjects.execute())
+        } catch (e: DomainException) {
+            Observable.error(e)
+        }
     }
 
-    interface Error {
-        fun projectsError(): Observable<Throwable>
+    private fun populateItemWithRegisteredTime(project: Project): ProjectsItem {
+        val registeredTime = getRegisteredTime(project)
+
+        return ProjectsItem.from(project, registeredTime)
     }
 
-    class ViewModel(
-            private val getProjects: GetProjects,
-            private val getProjectTimeSince: GetProjectTimeSince
-    ) : Input, Output, Error {
-        private val input: Input
-        private val output: Output
-        private val error: Error
-
-        private var startingPoint = TimeIntervalStartingPoint.MONTH
-        private val projects: Observable<List<ProjectsItem>>
-        private val projectsError = PublishSubject.create<Throwable>()
-
-        init {
-            input = this
-            output = this
-            error = this
-
-            projects = executeGetProjects()
-                    .flatMap { Observable.from(it) }
-                    .map { populateItemWithRegisteredTime(it) }
-                    .compose(redirectErrors(projectsError))
-                    .compose(hideErrors())
-                    .toList()
+    private fun getRegisteredTime(project: Project): List<TimeInterval> {
+        return try {
+            getProjectTimeSince.execute(project, startingPoint)
+        } catch (e: DomainException) {
+            Timber.w(e, "Unable to get registered time for project")
+            emptyList()
         }
-
-        private fun executeGetProjects(): Observable<List<Project>> = defer<List<Project>> {
-            return@defer try {
-                Observable.just(getProjects.execute())
-            } catch (e: DomainException) {
-                Observable.error(e)
-            }
-        }
-
-        private fun populateItemWithRegisteredTime(project: Project): ProjectsItem {
-            val registeredTime = getRegisteredTime(project)
-
-            return ProjectsItem.from(project, registeredTime)
-        }
-
-        private fun getRegisteredTime(project: Project): List<TimeInterval> {
-            return try {
-                getProjectTimeSince.execute(project, startingPoint)
-            } catch (e: DomainException) {
-                Timber.w(e, "Unable to get registered time for project")
-                emptyList()
-            }
-        }
-
-        override fun startingPointForTimeSummary(startingPoint: Int) {
-            try {
-                this.startingPoint = TimeIntervalStartingPoint.from(startingPoint)
-            } catch (e: InvalidStartingPointException) {
-                Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
-            }
-        }
-
-        override fun projects(): Observable<List<ProjectsItem>> = projects
-
-        override fun projectsError(): Observable<Throwable> = projectsError
-
-        fun input(): Input = input
-
-        fun output(): Output = output
-
-        fun error(): Error = error
     }
+
+    fun startingPointForTimeSummary(startingPoint: Int) {
+        try {
+            this.startingPoint = TimeIntervalStartingPoint.from(startingPoint)
+        } catch (e: InvalidStartingPointException) {
+            Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
+        }
+    }
+
+    fun projects(): Observable<List<ProjectsItem>> = projects
+
+    fun projectsError(): Observable<Throwable> = projectsError
 }

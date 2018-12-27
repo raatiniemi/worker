@@ -40,7 +40,7 @@ class ProjectsViewModelTest {
 
     private lateinit var getProjects: GetProjects
     private lateinit var getProjectTimeSince: GetProjectTimeSince
-    private lateinit var vm: ProjectsViewModel.ViewModel
+    private lateinit var vm: ProjectsViewModel
 
     private fun getProjects(): List<Project> {
         val project = Project.from("Name")
@@ -52,16 +52,16 @@ class ProjectsViewModelTest {
     fun setUp() {
         getProjects = mock(GetProjects::class.java)
         getProjectTimeSince = mock(GetProjectTimeSince::class.java)
-        vm = ProjectsViewModel.ViewModel(getProjects, getProjectTimeSince)
+        vm = ProjectsViewModel(getProjects, getProjectTimeSince)
     }
 
     @Test
     fun projects_withGetProjectsError() {
         `when`(getProjects.execute())
                 .thenThrow(DomainException::class.java)
-        vm.error().projectsError().subscribe(projectsError)
+        vm.projectsError().subscribe(projectsError)
 
-        vm.output().projects().subscribe(projects)
+        vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
@@ -74,9 +74,9 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), eq(TimeIntervalStartingPoint.MONTH)))
                 .thenThrow(ClockOutBeforeClockInException::class.java)
-        vm.error().projectsError().subscribe(projectsError)
+        vm.projectsError().subscribe(projectsError)
 
-        vm.output().projects().subscribe(projects)
+        vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
@@ -89,9 +89,9 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
                 .thenReturn(emptyList<TimeInterval>())
-        vm.error().projectsError().subscribe(projectsError)
+        vm.projectsError().subscribe(projectsError)
 
-        vm.output().projects().subscribe(projects)
+        vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
@@ -106,10 +106,10 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
                 .thenReturn(emptyList<TimeInterval>())
-        vm.error().projectsError().subscribe(projectsError)
+        vm.projectsError().subscribe(projectsError)
 
-        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.WEEK.rawValue)
-        vm.output().projects().subscribe(projects)
+        vm.startingPointForTimeSummary(TimeIntervalStartingPoint.WEEK.rawValue)
+        vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
@@ -124,10 +124,10 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
                 .thenReturn(emptyList<TimeInterval>())
-        vm.error().projectsError().subscribe(projectsError)
+        vm.projectsError().subscribe(projectsError)
 
-        vm.input().startingPointForTimeSummary(-1)
-        vm.output().projects().subscribe(projects)
+        vm.startingPointForTimeSummary(-1)
+        vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
@@ -140,9 +140,9 @@ class ProjectsViewModelTest {
     fun projects_withoutProjects() {
         `when`(getProjects.execute())
                 .thenReturn(emptyList())
-        vm.error().projectsError().subscribe(projectsError)
+        vm.projectsError().subscribe(projectsError)
 
-        vm.output().projects().subscribe(projects)
+        vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
