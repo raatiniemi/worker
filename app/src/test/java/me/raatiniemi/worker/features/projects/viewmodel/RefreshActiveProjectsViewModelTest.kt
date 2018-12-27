@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -24,8 +26,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 
 @RunWith(JUnit4::class)
 class RefreshActiveProjectsViewModelTest {
@@ -35,12 +35,19 @@ class RefreshActiveProjectsViewModelTest {
 
     private lateinit var vm: RefreshActiveProjectsViewModel
 
-    private fun getProjectsItem(isActive: Boolean): ProjectsItem {
-        val projectsItem = mock(ProjectsItem::class.java)
-        `when`(projectsItem.isActive)
-                .thenReturn(isActive)
+    private fun getProjectsItem(project: Project, isActive: Boolean = false): ProjectsItem {
+        val registeredTime = if (isActive) {
+            listOf(
+                    timeInterval {
+                        projectId = project.id ?: 0
+                        startInMilliseconds = 1
+                    }
+            )
+        } else {
+            emptyList()
+        }
 
-        return projectsItem
+        return ProjectsItem.from(project, registeredTime)
     }
 
     @Before
@@ -60,7 +67,7 @@ class RefreshActiveProjectsViewModelTest {
     @Test
     fun `activePositions without active projects`() {
         val projects = listOf(
-                getProjectsItem(false)
+                getProjectsItem(Project.from(1, "Project Name"))
         )
 
         vm.projects(projects)
@@ -73,8 +80,8 @@ class RefreshActiveProjectsViewModelTest {
     @Test
     fun `activePositions with active project`() {
         val projectItems = listOf(
-                getProjectsItem(false),
-                getProjectsItem(true)
+                getProjectsItem(Project.from(1, "Project Name #1")),
+                getProjectsItem(Project.from(2, "Project Name #2"), true)
         )
 
         vm.projects(projectItems)
