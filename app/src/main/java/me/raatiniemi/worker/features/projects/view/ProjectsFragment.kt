@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -44,19 +45,15 @@ import me.raatiniemi.worker.features.shared.view.fragment.RxFragment
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.RxUtil.applySchedulers
-import me.raatiniemi.worker.util.RxUtil.unsubscribeIfNotNull
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import rx.Observable
-import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
 import timber.log.Timber
 import java.util.*
-import java.util.concurrent.TimeUnit
+import kotlin.concurrent.schedule
 
 class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
     private val eventBus = EventBus.getDefault()
@@ -68,10 +65,10 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     private val removeProjectViewModel: RemoveProjectViewModel.ViewModel by inject()
     private val keyValueStore: KeyValueStore by inject()
 
+    private var refreshActiveProjectsTimer: Timer? = null
+
     private lateinit var adapter: ProjectsAdapter
     private lateinit var recyclerView: RecyclerView
-
-    private var refreshProjectsSubscription: Subscription? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,27 +142,40 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                     restoreProjectAtPreviousPosition(result)
                     showDeleteProjectErrorMessage()
                 }
+
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        refreshViewModel.activePositions.observe(this, Observer {
+            refreshPositions(it)
+        })
     }
 
     override fun onResume() {
         super.onResume()
 
-        refreshViewModel.positionsForActiveProjects()
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe { this.refreshPositions(it) }
+        startRefreshTimer()
+    }
 
-        refreshProjectsSubscription = Observable.interval(60, TimeUnit.SECONDS, Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { refreshViewModel.projects(adapter.items) }
+    private fun startRefreshTimer() {
+        cancelRefreshTimer()
 
-        refreshViewModel.projects(adapter.items)
+        refreshActiveProjectsTimer = Timer()
+        refreshActiveProjectsTimer?.schedule(Date(), 60_000) {
+            refreshViewModel.projects(adapter.items)
+        }
     }
 
     override fun onPause() {
         super.onPause()
 
-        unsubscribeIfNotNull(refreshProjectsSubscription)
+        cancelRefreshTimer()
+    }
+
+    private fun cancelRefreshTimer() {
+        refreshActiveProjectsTimer?.cancel()
+        refreshActiveProjectsTimer = null
     }
 
     override fun onDestroy() {

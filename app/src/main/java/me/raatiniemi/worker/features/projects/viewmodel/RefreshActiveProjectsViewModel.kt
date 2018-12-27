@@ -16,31 +16,22 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
-import me.raatiniemi.worker.util.RxUtil.hideErrors
-import rx.Observable
-import rx.subjects.PublishSubject
 
 class RefreshActiveProjectsViewModel: ViewModel() {
-    private val projects = PublishSubject.create<List<ProjectsItem>>()
-    private val positions = PublishSubject.create<List<Int>>()
+    private val _projects = MutableLiveData<List<ProjectsItem>>()
+    val projects: LiveData<List<ProjectsItem>> = _projects
 
-    init {
-        projects.map { getPositionsForActiveProjects(it) }
-                .compose(hideErrors())
-                .subscribe(positions)
+    val activePositions: LiveData<List<Int>> = Transformations.map(projects) { items ->
+        items.filter { it.isActive }
+                .map { items.indexOf(it) }
     }
-
-    private fun getPositionsForActiveProjects(items: List<ProjectsItem>) =
-            items.filter { it.isActive }
-                    .map { items.indexOf(it) }
 
     fun projects(projects: List<ProjectsItem>) {
-        this.projects.onNext(projects)
-    }
-
-    fun positionsForActiveProjects(): Observable<List<Int>> {
-        return positions.asObservable()
+        _projects.postValue(projects)
     }
 }

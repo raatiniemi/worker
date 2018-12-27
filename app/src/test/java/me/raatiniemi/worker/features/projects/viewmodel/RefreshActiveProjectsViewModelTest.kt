@@ -16,18 +16,22 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
+import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
-import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class RefreshActiveProjectsViewModelTest {
-    private val positionsForActiveProjects: TestSubscriber<List<Int>> = TestSubscriber()
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
 
     private lateinit var vm: RefreshActiveProjectsViewModel
 
@@ -45,31 +49,29 @@ class RefreshActiveProjectsViewModelTest {
     }
 
     @Test
-    fun `positionsForActiveProjects without projects`() {
-        vm.positionsForActiveProjects()
-                .subscribe(positionsForActiveProjects)
-
+    fun `activePositions without projects`() {
         vm.projects(emptyList())
 
-        positionsForActiveProjects.assertValue(emptyList())
-        positionsForActiveProjects.assertNotCompleted()
+        vm.activePositions.observeForever {
+            assertEquals(emptyList<Int>(), it)
+        }
     }
 
     @Test
-    fun `positionsForActiveProjects without active projects`() {
-        vm.positionsForActiveProjects()
-                .subscribe(positionsForActiveProjects)
+    fun `activePositions without active projects`() {
+        val projects = listOf(
+                getProjectsItem(false)
+        )
 
-        vm.projects(listOf(getProjectsItem(false)))
+        vm.projects(projects)
 
-        positionsForActiveProjects.assertValue(emptyList())
-        positionsForActiveProjects.assertNotCompleted()
+        vm.activePositions.observeForever {
+            assertEquals(emptyList<Int>(), it)
+        }
     }
 
     @Test
-    fun `positionsForActiveProjects with active project`() {
-        vm.positionsForActiveProjects()
-                .subscribe(positionsForActiveProjects)
+    fun `activePositions with active project`() {
         val projectItems = listOf(
                 getProjectsItem(false),
                 getProjectsItem(true)
@@ -77,7 +79,8 @@ class RefreshActiveProjectsViewModelTest {
 
         vm.projects(projectItems)
 
-        positionsForActiveProjects.assertValue(listOf(1))
-        positionsForActiveProjects.assertNotCompleted()
+        vm.activePositions.observeForever {
+            assertEquals(listOf(1), it)
+        }
     }
 }
