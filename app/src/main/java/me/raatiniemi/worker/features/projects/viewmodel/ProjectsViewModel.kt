@@ -26,16 +26,34 @@ import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import rx.Observable
 import rx.Observable.defer
 import timber.log.Timber
 
 class ProjectsViewModel(
+        private val keyValueStore: KeyValueStore,
         private val getProjects: GetProjects,
         private val getProjectTimeSince: GetProjectTimeSince
 ) {
-    private var startingPoint = TimeIntervalStartingPoint.MONTH
+    private val startingPoint: TimeIntervalStartingPoint
+        get() {
+            val defaultValue = TimeIntervalStartingPoint.MONTH
+            val startingPoint = keyValueStore.int(
+                    AppKeys.TIME_SUMMARY.rawValue,
+                    defaultValue.rawValue
+            )
+
+            return try {
+                TimeIntervalStartingPoint.from(startingPoint)
+            } catch (e: InvalidStartingPointException) {
+                Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
+                defaultValue
+            }
+        }
+
     private val projects: Observable<List<ProjectsItem>>
 
     val viewActions = ConsumableLiveData<ProjectsViewActions>()
@@ -69,14 +87,6 @@ class ProjectsViewModel(
         } catch (e: DomainException) {
             Timber.w(e, "Unable to get registered time for project")
             emptyList()
-        }
-    }
-
-    fun startingPointForTimeSummary(startingPoint: Int) {
-        try {
-            this.startingPoint = TimeIntervalStartingPoint.from(startingPoint)
-        } catch (e: InvalidStartingPointException) {
-            Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
         }
     }
 

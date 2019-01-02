@@ -26,6 +26,8 @@ import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
+import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -45,6 +47,7 @@ class ProjectsViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     private val projects: TestSubscriber<List<ProjectsItem>> = TestSubscriber()
+    private val keyValueStore = InMemoryKeyValueStore()
 
     private lateinit var getProjects: GetProjects
     private lateinit var getProjectTimeSince: GetProjectTimeSince
@@ -60,7 +63,7 @@ class ProjectsViewModelTest {
     fun setUp() {
         getProjects = mock(GetProjects::class.java)
         getProjectTimeSince = mock(GetProjectTimeSince::class.java)
-        vm = ProjectsViewModel(getProjects, getProjectTimeSince)
+        vm = ProjectsViewModel(keyValueStore, getProjects, getProjectTimeSince)
     }
 
     @Test
@@ -117,8 +120,8 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
                 .thenReturn(emptyList<TimeInterval>())
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
 
-        vm.startingPointForTimeSummary(TimeIntervalStartingPoint.WEEK.rawValue)
         vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
@@ -136,8 +139,8 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
                 .thenReturn(emptyList<TimeInterval>())
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
 
-        vm.startingPointForTimeSummary(-1)
         vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)

@@ -30,7 +30,7 @@ val projectsModule = module {
         val getProjects = GetProjects(get())
         val getProjectTimeSince = GetProjectTimeSince(get())
 
-        ProjectsViewModel(getProjects, getProjectTimeSince)
+        ProjectsViewModel(get(), getProjects, getProjectTimeSince)
     }
 
     single {
