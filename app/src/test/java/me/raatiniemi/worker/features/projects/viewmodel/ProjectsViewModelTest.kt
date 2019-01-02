@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
@@ -24,7 +25,11 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
+import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -35,8 +40,11 @@ import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class ProjectsViewModelTest {
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
+
     private val projects: TestSubscriber<List<ProjectsItem>> = TestSubscriber()
-    private val projectsError: TestSubscriber<Throwable> = TestSubscriber()
 
     private lateinit var getProjects: GetProjects
     private lateinit var getProjectTimeSince: GetProjectTimeSince
@@ -59,13 +67,14 @@ class ProjectsViewModelTest {
     fun projects_withGetProjectsError() {
         `when`(getProjects.execute())
                 .thenThrow(DomainException::class.java)
-        vm.projectsError().subscribe(projectsError)
 
         vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
-        projectsError.assertValueCount(1)
+        vm.viewActions.observeForever {
+            assertEquals(ProjectsViewActions.ShowUnableToGetProjectsErrorMessage, it)
+        }
     }
 
     @Test
@@ -74,13 +83,14 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), eq(TimeIntervalStartingPoint.MONTH)))
                 .thenThrow(ClockOutBeforeClockInException::class.java)
-        vm.projectsError().subscribe(projectsError)
 
         vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
-        projectsError.assertNoValues()
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -89,13 +99,14 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
                 .thenReturn(emptyList<TimeInterval>())
-        vm.projectsError().subscribe(projectsError)
 
         vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
-        projectsError.assertNoValues()
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
         verify(getProjectTimeSince)
                 .execute(any(Project::class.java), eq(TimeIntervalStartingPoint.MONTH))
     }
@@ -106,14 +117,15 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
                 .thenReturn(emptyList<TimeInterval>())
-        vm.projectsError().subscribe(projectsError)
 
         vm.startingPointForTimeSummary(TimeIntervalStartingPoint.WEEK.rawValue)
         vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
-        projectsError.assertNoValues()
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
         verify(getProjectTimeSince)
                 .execute(any(Project::class.java), eq(TimeIntervalStartingPoint.WEEK))
     }
@@ -124,14 +136,15 @@ class ProjectsViewModelTest {
                 .thenReturn(getProjects())
         `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
                 .thenReturn(emptyList<TimeInterval>())
-        vm.projectsError().subscribe(projectsError)
 
         vm.startingPointForTimeSummary(-1)
         vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
-        projectsError.assertNoValues()
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
         verify(getProjectTimeSince)
                 .execute(any(Project::class.java), eq(TimeIntervalStartingPoint.MONTH))
     }
@@ -140,12 +153,13 @@ class ProjectsViewModelTest {
     fun projects_withoutProjects() {
         `when`(getProjects.execute())
                 .thenReturn(emptyList())
-        vm.projectsError().subscribe(projectsError)
 
         vm.projects().subscribe(projects)
 
         projects.assertValueCount(1)
         projects.assertCompleted()
-        projectsError.assertNoValues()
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 }

@@ -24,11 +24,11 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
+import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.RxUtil.hideErrors
-import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.Observable.defer
-import rx.subjects.PublishSubject
 import timber.log.Timber
 
 class ProjectsViewModel(
@@ -37,13 +37,13 @@ class ProjectsViewModel(
 ) {
     private var startingPoint = TimeIntervalStartingPoint.MONTH
     private val projects: Observable<List<ProjectsItem>>
-    private val projectsError = PublishSubject.create<Throwable>()
+
+    val viewActions = ConsumableLiveData<ProjectsViewActions>()
 
     init {
         projects = executeGetProjects()
                 .flatMap { Observable.from(it) }
                 .map { populateItemWithRegisteredTime(it) }
-                .compose(redirectErrors(projectsError))
                 .compose(hideErrors())
                 .toList()
     }
@@ -52,6 +52,7 @@ class ProjectsViewModel(
         return@defer try {
             Observable.just(getProjects.execute())
         } catch (e: DomainException) {
+            viewActions.postValue(ProjectsViewActions.ShowUnableToGetProjectsErrorMessage)
             Observable.error(e)
         }
     }
@@ -80,6 +81,4 @@ class ProjectsViewModel(
     }
 
     fun projects(): Observable<List<ProjectsItem>> = projects
-
-    fun projectsError(): Observable<Throwable> = projectsError
 }
