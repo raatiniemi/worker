@@ -63,21 +63,25 @@ internal class ProjectsViewModel(
 
     suspend fun loadProjects() = withContext(Dispatchers.IO) {
         try {
-            getProjects()
-                    .map { populateItemWithRegisteredTime(it) }
-                    .let { _projects.postValue(it) }
+            val projects = getProjects()
+                    .map { project ->
+                        val registeredTime = loadRegisteredTimeForProject(project)
+
+                        ProjectsItem.from(project, registeredTime)
+                    }
+
+            _projects.postValue(projects)
         } catch (e: DomainException) {
             viewActions.postValue(ProjectsViewActions.ShowUnableToGetProjectsErrorMessage)
         }
     }
 
-    private fun populateItemWithRegisteredTime(project: Project) = getRegisteredTime(project)
-            .let { ProjectsItem.from(project, it) }
-
-    private fun getRegisteredTime(project: Project): List<TimeInterval> = try {
-        getProjectTimeSince(project, startingPoint)
-    } catch (e: DomainException) {
-        Timber.w(e, "Unable to get registered time for project")
-        emptyList()
+    private fun loadRegisteredTimeForProject(project: Project): List<TimeInterval> {
+        return try {
+            getProjectTimeSince(project, startingPoint)
+        } catch (e: DomainException) {
+            Timber.w(e, "Unable to get registered time for project")
+            emptyList()
+        }
     }
 }
