@@ -16,6 +16,10 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
@@ -26,18 +30,16 @@ import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.RxUtil.hideErrors
-import rx.Observable
-import rx.Observable.defer
 import timber.log.Timber
 
-class ProjectsViewModel(
+internal class ProjectsViewModel(
         private val keyValueStore: KeyValueStore,
         private val getProjects: GetProjects,
         private val getProjectTimeSince: GetProjectTimeSince
-) {
+) : CoroutineScopedViewModel() {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
@@ -54,41 +56,28 @@ class ProjectsViewModel(
             }
         }
 
-    private val projects: Observable<List<ProjectsItem>>
+    private val _projects = MutableLiveData<List<ProjectsItem>>()
+    val projects: LiveData<List<ProjectsItem>> = _projects
 
     val viewActions = ConsumableLiveData<ProjectsViewActions>()
 
-    init {
-        projects = executeGetProjects()
-                .flatMap { Observable.from(it) }
-                .map { populateItemWithRegisteredTime(it) }
-                .compose(hideErrors())
-                .toList()
-    }
-
-    private fun executeGetProjects(): Observable<List<Project>> = defer<List<Project>> {
-        return@defer try {
-            Observable.just(getProjects.execute())
+    suspend fun loadProjects() = withContext(Dispatchers.IO) {
+        try {
+            getProjects.execute()
+                    .map { populateItemWithRegisteredTime(it) }
+                    .let { _projects.postValue(it) }
         } catch (e: DomainException) {
             viewActions.postValue(ProjectsViewActions.ShowUnableToGetProjectsErrorMessage)
-            Observable.error(e)
         }
     }
 
-    private fun populateItemWithRegisteredTime(project: Project): ProjectsItem {
-        val registeredTime = getRegisteredTime(project)
+    private fun populateItemWithRegisteredTime(project: Project) = getRegisteredTime(project)
+            .let { ProjectsItem.from(project, it) }
 
-        return ProjectsItem.from(project, registeredTime)
+    private fun getRegisteredTime(project: Project): List<TimeInterval> = try {
+        getProjectTimeSince.execute(project, startingPoint)
+    } catch (e: DomainException) {
+        Timber.w(e, "Unable to get registered time for project")
+        emptyList()
     }
-
-    private fun getRegisteredTime(project: Project): List<TimeInterval> {
-        return try {
-            getProjectTimeSince.execute(project, startingPoint)
-        } catch (e: DomainException) {
-            Timber.w(e, "Unable to get registered time for project")
-            emptyList()
-        }
-    }
-
-    fun projects(): Observable<List<ProjectsItem>> = projects
 }

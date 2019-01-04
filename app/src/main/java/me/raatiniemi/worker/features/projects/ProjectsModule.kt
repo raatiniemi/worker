@@ -26,7 +26,7 @@ import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 val projectsModule = module {
-    single {
+    viewModel {
         val getProjects = GetProjects(get())
         val getProjectTimeSince = GetProjectTimeSince(get())
 

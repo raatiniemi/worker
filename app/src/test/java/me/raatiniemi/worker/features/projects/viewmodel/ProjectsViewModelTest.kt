@@ -17,28 +17,20 @@
 package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
-import me.raatiniemi.worker.domain.exception.DomainException
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.GetProjects
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
-import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.*
-import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class ProjectsViewModelTest {
@@ -46,123 +38,60 @@ class ProjectsViewModelTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val projects: TestSubscriber<List<ProjectsItem>> = TestSubscriber()
     private val keyValueStore = InMemoryKeyValueStore()
+    private val projectRepository = ProjectInMemoryRepository()
+    private val timeIntervalRepository = TimeIntervalInMemoryRepository()
 
     private lateinit var getProjects: GetProjects
     private lateinit var getProjectTimeSince: GetProjectTimeSince
     private lateinit var vm: ProjectsViewModel
 
-    private fun getProjects(): List<Project> {
-        val project = Project.from("Name")
-
-        return listOf(project)
-    }
-
     @Before
     fun setUp() {
-        getProjects = mock(GetProjects::class.java)
-        getProjectTimeSince = mock(GetProjectTimeSince::class.java)
+        getProjects = GetProjects(projectRepository)
+        getProjectTimeSince = GetProjectTimeSince(timeIntervalRepository)
         vm = ProjectsViewModel(keyValueStore, getProjects, getProjectTimeSince)
     }
 
     @Test
-    fun projects_withGetProjectsError() {
-        `when`(getProjects.execute())
-                .thenThrow(DomainException::class.java)
+    fun `load projects without projects`() = runBlocking {
+        vm.loadProjects()
 
-        vm.projects().subscribe(projects)
-
-        projects.assertValueCount(1)
-        projects.assertCompleted()
-        vm.viewActions.observeForever {
-            assertEquals(ProjectsViewActions.ShowUnableToGetProjectsErrorMessage, it)
+        vm.projects.observeForever {
+            assertEquals(emptyList<ProjectsItem>(), it)
         }
     }
 
     @Test
-    fun projects_withGetProjectTimeSinceError() {
-        `when`(getProjects.execute())
-                .thenReturn(getProjects())
-        `when`(getProjectTimeSince.execute(any(Project::class.java), eq(TimeIntervalStartingPoint.MONTH)))
-                .thenThrow(ClockOutBeforeClockInException::class.java)
+    fun `load projects with project`() = runBlocking {
+        val project = Project.from("Project #1")
+        projectRepository.add(project)
+        val expected = listOf(
+                ProjectsItem.from(project.copy(id = 1), emptyList())
+        )
 
-        vm.projects().subscribe(projects)
+        vm.loadProjects()
 
-        projects.assertValueCount(1)
-        projects.assertCompleted()
-        vm.viewActions.observeForever {
-            assertNull(it)
+        vm.projects.observeForever {
+            assertEquals(expected, it)
         }
     }
 
     @Test
-    fun projects() {
-        `when`(getProjects.execute())
-                .thenReturn(getProjects())
-        `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
-                .thenReturn(emptyList<TimeInterval>())
+    fun `load projects with projects`() = runBlocking {
+        val project1 = Project.from("Project #1")
+        val project2 = Project.from("Project #2")
+        projectRepository.add(project1)
+        projectRepository.add(project2)
+        val expected = listOf(
+                ProjectsItem.from(project1.copy(id = 1), emptyList()),
+                ProjectsItem.from(project2.copy(id = 2), emptyList())
+        )
 
-        vm.projects().subscribe(projects)
+        vm.loadProjects()
 
-        projects.assertValueCount(1)
-        projects.assertCompleted()
-        vm.viewActions.observeForever {
-            assertNull(it)
-        }
-        verify(getProjectTimeSince)
-                .execute(any(Project::class.java), eq(TimeIntervalStartingPoint.MONTH))
-    }
-
-    @Test
-    fun projects_withWeekAsTimeSummaryStartingPoint() {
-        `when`(getProjects.execute())
-                .thenReturn(getProjects())
-        `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
-                .thenReturn(emptyList<TimeInterval>())
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
-
-        vm.projects().subscribe(projects)
-
-        projects.assertValueCount(1)
-        projects.assertCompleted()
-        vm.viewActions.observeForever {
-            assertNull(it)
-        }
-        verify(getProjectTimeSince)
-                .execute(any(Project::class.java), eq(TimeIntervalStartingPoint.WEEK))
-    }
-
-    @Test
-    fun projects_withInvalidTimeSummaryStartingPoint() {
-        `when`(getProjects.execute())
-                .thenReturn(getProjects())
-        `when`(getProjectTimeSince.execute(any(Project::class.java), any(TimeIntervalStartingPoint::class.java)))
-                .thenReturn(emptyList<TimeInterval>())
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
-
-        vm.projects().subscribe(projects)
-
-        projects.assertValueCount(1)
-        projects.assertCompleted()
-        vm.viewActions.observeForever {
-            assertNull(it)
-        }
-        verify(getProjectTimeSince)
-                .execute(any(Project::class.java), eq(TimeIntervalStartingPoint.MONTH))
-    }
-
-    @Test
-    fun projects_withoutProjects() {
-        `when`(getProjects.execute())
-                .thenReturn(emptyList())
-
-        vm.projects().subscribe(projects)
-
-        projects.assertValueCount(1)
-        projects.assertCompleted()
-        vm.viewActions.observeForever {
-            assertNull(it)
+        vm.projects.observeForever {
+            assertEquals(expected, it)
         }
     }
 }

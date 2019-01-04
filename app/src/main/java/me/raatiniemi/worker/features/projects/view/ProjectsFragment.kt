@@ -26,6 +26,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
@@ -58,9 +60,9 @@ import kotlin.concurrent.schedule
 class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
     private val eventBus = EventBus.getDefault()
 
+    private val projectsViewModel: ProjectsViewModel by viewModel()
     private val refreshViewModel: RefreshActiveProjectsViewModel by viewModel()
 
-    private val projectsViewModel: ProjectsViewModel by inject()
     private val clockActivityViewModel: ClockActivityViewModel.ViewModel by inject()
     private val removeProjectViewModel: RemoveProjectViewModel.ViewModel by inject()
     private val keyValueStore: KeyValueStore by inject()
@@ -92,11 +94,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
         val startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary()
         clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary)
-
-        projectsViewModel.projects()
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe { adapter.add(it) }
 
         clockActivityViewModel.output().clockInSuccess()
                 .compose(bindToLifecycle())
@@ -138,9 +135,14 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 }
 
         observeViewModel()
+        loadProjectsViaViewModel()
     }
 
     private fun observeViewModel() {
+        projectsViewModel.projects.observe(this, Observer {
+            adapter.add(it)
+        })
+
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
@@ -148,6 +150,13 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         refreshViewModel.activePositions.observe(this, Observer {
             refreshPositions(it)
         })
+    }
+
+    private fun loadProjectsViaViewModel() {
+        // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
+        GlobalScope.launch {
+            projectsViewModel.loadProjects()
+        }
     }
 
     override fun onResume() {
@@ -210,10 +219,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     private fun reloadProjects() {
         adapter.clear()
 
-        // TODO: Move to input event for view model.
-        projectsViewModel.projects()
-                .compose(bindToLifecycle())
-                .subscribe { adapter.add(it) }
+        loadProjectsViaViewModel()
     }
 
     private fun refreshPositions(positions: List<Int>) {
