@@ -75,7 +75,7 @@ internal class ProjectsViewModel(
             .let { ProjectsItem.from(project, it) }
 
     private fun getRegisteredTime(project: Project): List<TimeInterval> = try {
-        getProjectTimeSince.execute(project, startingPoint)
+        getProjectTimeSince(project, startingPoint)
     } catch (e: DomainException) {
         Timber.w(e, "Unable to get registered time for project")
         emptyList()

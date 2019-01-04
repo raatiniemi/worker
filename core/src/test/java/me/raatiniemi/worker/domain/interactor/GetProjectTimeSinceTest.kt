@@ -32,7 +32,7 @@ class GetProjectTimeSinceTest {
     private val project = Project.from(1, "Name")
 
     private lateinit var repository: TimeIntervalRepository
-    private lateinit var useCase: GetProjectTimeSince
+    private lateinit var getProjectTimeSince: GetProjectTimeSince
 
     private fun timeIntervalAfterStartingPoint(startingPoint: TimeIntervalStartingPoint): TimeInterval {
         val startingPointInMilliseconds = startingPoint.calculateMilliseconds()
@@ -55,7 +55,7 @@ class GetProjectTimeSinceTest {
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        useCase = GetProjectTimeSince(repository)
+        getProjectTimeSince = GetProjectTimeSince(repository)
     }
 
     @Test
@@ -66,7 +66,7 @@ class GetProjectTimeSinceTest {
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, TimeIntervalStartingPoint.DAY)
+        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.DAY)
 
         assertEquals(expected, actual)
     }
@@ -79,7 +79,7 @@ class GetProjectTimeSinceTest {
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, TimeIntervalStartingPoint.WEEK)
+        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.WEEK)
 
         assertEquals(expected, actual)
     }
@@ -92,7 +92,7 @@ class GetProjectTimeSinceTest {
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, TimeIntervalStartingPoint.MONTH)
+        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.MONTH)
 
         assertEquals(expected, actual)
     }
