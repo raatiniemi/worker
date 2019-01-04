@@ -14,37 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor;
+package me.raatiniemi.worker.domain.interactor
 
-import java.util.List;
-
-import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 /**
  * Use case for getting projects.
  */
-public class GetProjects {
-    /**
-     * Project repository.
-     */
-    private final ProjectRepository projectRepository;
-
-    /**
-     * Constructor.
-     *
-     * @param projectRepository Project repository.
-     */
-    public GetProjects(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
-    }
-
-    /**
-     * Get the projects.
-     *
-     * @return Projects.
-     */
-    public List<Project> execute() {
-        return projectRepository.findAll();
-    }
+class GetProjects(private val repository: ProjectRepository) {
+    operator fun invoke() = repository.findAll()
 }

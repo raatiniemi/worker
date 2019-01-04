@@ -63,7 +63,7 @@ internal class ProjectsViewModel(
 
     suspend fun loadProjects() = withContext(Dispatchers.IO) {
         try {
-            getProjects.execute()
+            getProjects()
                     .map { populateItemWithRegisteredTime(it) }
                     .let { _projects.postValue(it) }
         } catch (e: DomainException) {

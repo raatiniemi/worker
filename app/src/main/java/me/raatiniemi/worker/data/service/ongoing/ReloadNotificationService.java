@@ -47,7 +47,7 @@ public class ReloadNotificationService extends OngoingService {
         GetProjects getProjects = buildGetProjectsUseCase();
         IsProjectActive isProjectActive = buildIsProjectActiveUseCase();
         try {
-            List<Project> projects = getProjects.execute();
+            List<Project> projects = getProjects.invoke();
             if (projects.isEmpty()) {
                 return;
             }
