@@ -41,7 +41,7 @@ val projectsModule = module {
         ClockActivityViewModel.ViewModel(clockIn, clockOut, getProjectTimeSince)
     }
 
-    single {
+    viewModel {
         RemoveProjectViewModel(RemoveProject(get()))
     }
 

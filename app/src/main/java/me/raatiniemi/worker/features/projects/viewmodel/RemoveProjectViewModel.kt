@@ -16,13 +16,14 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.lifecycle.ViewModel
 import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-class RemoveProjectViewModel(private val removeProject: RemoveProject) {
+class RemoveProjectViewModel(private val removeProject: RemoveProject) : ViewModel() {
     val removeProjectSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
     val removeProjectError: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
 
