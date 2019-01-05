@@ -119,11 +119,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 .compose(applySchedulers())
                 .subscribe { showClockOutErrorMessage() }
 
-        removeProjectViewModel.removeProjectSuccess
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe { (_, _) -> showDeleteProjectSuccessMessage() }
-
         removeProjectViewModel.removeProjectError
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -271,14 +266,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         adapter.add(result.position, result.projectsItem)
 
         recyclerView.scrollToPosition(result.position)
-    }
-
-    private fun showDeleteProjectSuccessMessage() {
-        Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                R.string.message_project_deleted,
-                Snackbar.LENGTH_SHORT
-        ).show()
     }
 
     private fun showDeleteProjectErrorMessage() {
