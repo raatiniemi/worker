@@ -121,12 +121,12 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 .compose(applySchedulers())
                 .subscribe { showClockOutErrorMessage() }
 
-        removeProjectViewModel.removeProjectSuccess()
+        removeProjectViewModel.removeProjectSuccess
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { (_, _) -> showDeleteProjectSuccessMessage() }
 
-        removeProjectViewModel.removeProjectError()
+        removeProjectViewModel.removeProjectError
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { result ->
