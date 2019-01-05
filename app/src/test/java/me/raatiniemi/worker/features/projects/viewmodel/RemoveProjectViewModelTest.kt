@@ -18,20 +18,18 @@ package me.raatiniemi.worker.features.projects.viewmodel
 
 import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.doThrow
-import org.mockito.Mockito.mock
 import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class RemoveProjectViewModelTest {
+    private val repository = ProjectInMemoryRepository()
     private val removeProjectSuccess: TestSubscriber<ProjectsItemAdapterResult> = TestSubscriber()
     private val removeProjectError: TestSubscriber<ProjectsItemAdapterResult> = TestSubscriber()
 
@@ -40,7 +38,7 @@ class RemoveProjectViewModelTest {
 
     @Before
     fun setUp() {
-        removeProject = mock(RemoveProject::class.java)
+        removeProject = RemoveProject(repository)
         vm = RemoveProjectViewModel(removeProject)
 
         vm.removeProjectSuccess.subscribe(removeProjectSuccess)
@@ -48,12 +46,10 @@ class RemoveProjectViewModelTest {
     }
 
     @Test
-    fun deleteProject_withError() {
+    fun `remove project without project`() {
         val project = Project.from("Name")
-        val item = ProjectsItem.from(project, emptyList<TimeInterval>())
+        val item = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, item)
-        doThrow(RuntimeException::class.java)
-                .`when`<RemoveProject>(removeProject).execute(any())
 
         vm.remove(result)
 
@@ -63,10 +59,11 @@ class RemoveProjectViewModelTest {
     }
 
     @Test
-    fun deleteProject() {
-        val project = Project.from("Name")
-        val item = ProjectsItem.from(project, emptyList<TimeInterval>())
+    fun `remove project with project`() {
+        val project = Project(null, "Name")
+        val item = ProjectsItem.from(project.copy(1), emptyList())
         val result = ProjectsItemAdapterResult(0, item)
+        repository.add(project)
 
         vm.remove(result)
 

@@ -48,7 +48,7 @@ class RemoveProjectViewModel(private val removeProject: RemoveProject) {
     private fun executeUseCase(result: ProjectsItemAdapterResult): Observable<ProjectsItemAdapterResult> {
         return try {
             val projectsItem = result.projectsItem
-            removeProject.execute(projectsItem.asProject())
+            removeProject(projectsItem.asProject())
 
             Observable.just(result)
         } catch (e: Exception) {
