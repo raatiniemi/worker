@@ -42,7 +42,7 @@ val projectsModule = module {
     }
 
     single {
-        RemoveProjectViewModel.ViewModel(RemoveProject(get()))
+        RemoveProjectViewModel(RemoveProject(get()))
     }
 
     viewModel {

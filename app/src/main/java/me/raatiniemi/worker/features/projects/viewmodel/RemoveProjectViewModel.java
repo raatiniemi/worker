@@ -25,95 +25,53 @@ import rx.subjects.PublishSubject;
 
 import static me.raatiniemi.worker.util.RxUtil.hideErrors;
 
-public interface RemoveProjectViewModel {
-    interface Input {
-        void remove(@NonNull ProjectsItemAdapterResult result);
+public class RemoveProjectViewModel {
+    private final PublishSubject<ProjectsItemAdapterResult> removeProjectSuccess = PublishSubject.create();
+    private final PublishSubject<ProjectsItemAdapterResult> removeProjectError = PublishSubject.create();
+    private final PublishSubject<ProjectsItemAdapterResult> project = PublishSubject.create();
+
+    private final RemoveProject removeProject;
+
+    public RemoveProjectViewModel(@NonNull RemoveProject removeProject) {
+        this.removeProject = removeProject;
+
+        project
+                .switchMap(result -> executeUseCase(result)
+                        .compose(redirectErrorToSubject(result))
+                        .compose(hideErrors())
+                )
+                .subscribe(removeProjectSuccess);
     }
 
-    interface Output {
-        @NonNull
-        Observable<ProjectsItemAdapterResult> removeProjectSuccess();
+    @NonNull
+    private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> redirectErrorToSubject(@NonNull ProjectsItemAdapterResult result) {
+        return source -> source.doOnError(e -> removeProjectError.onNext(result))
+                .onErrorResumeNext(Observable.empty());
     }
 
-    interface Error {
-        @NonNull
-        Observable<ProjectsItemAdapterResult> removeProjectError();
+    @NonNull
+    private Observable<ProjectsItemAdapterResult> executeUseCase(@NonNull ProjectsItemAdapterResult result) {
+        try {
+            ProjectsItem projectsItem = result.getProjectsItem();
+            removeProject.execute(projectsItem.asProject());
+
+            return Observable.just(result);
+        } catch (Exception e) {
+            return Observable.error(e);
+        }
     }
 
-    class ViewModel implements Input, Output, Error {
-        private final Input input;
-        private final Output output;
-        private final Error error;
+    public void remove(@NonNull ProjectsItemAdapterResult result) {
+        project.onNext(result);
+    }
 
-        private final PublishSubject<ProjectsItemAdapterResult> removeProjectSuccess = PublishSubject.create();
-        private final PublishSubject<ProjectsItemAdapterResult> removeProjectError = PublishSubject.create();
-        private final PublishSubject<ProjectsItemAdapterResult> project = PublishSubject.create();
+    @NonNull
+    public Observable<ProjectsItemAdapterResult> removeProjectSuccess() {
+        return removeProjectSuccess;
+    }
 
-        private final RemoveProject removeProject;
-
-        public ViewModel(@NonNull RemoveProject removeProject) {
-            input = this;
-            output = this;
-            error = this;
-
-            this.removeProject = removeProject;
-
-            project
-                    .switchMap(result -> executeUseCase(result)
-                            .compose(redirectErrorToSubject(result))
-                            .compose(hideErrors())
-                    )
-                    .subscribe(removeProjectSuccess);
-        }
-
-        @NonNull
-        private Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> redirectErrorToSubject(@NonNull ProjectsItemAdapterResult result) {
-            return source -> source.doOnError(e -> removeProjectError.onNext(result))
-                    .onErrorResumeNext(Observable.empty());
-        }
-
-        @NonNull
-        private Observable<ProjectsItemAdapterResult> executeUseCase(@NonNull ProjectsItemAdapterResult result) {
-            try {
-                ProjectsItem projectsItem = result.getProjectsItem();
-                removeProject.execute(projectsItem.asProject());
-
-                return Observable.just(result);
-            } catch (Exception e) {
-                return Observable.error(e);
-            }
-        }
-
-        @Override
-        public void remove(@NonNull ProjectsItemAdapterResult result) {
-            project.onNext(result);
-        }
-
-        @NonNull
-        @Override
-        public Observable<ProjectsItemAdapterResult> removeProjectSuccess() {
-            return removeProjectSuccess;
-        }
-
-        @NonNull
-        @Override
-        public Observable<ProjectsItemAdapterResult> removeProjectError() {
-            return removeProjectError;
-        }
-
-        @NonNull
-        public Input input() {
-            return input;
-        }
-
-        @NonNull
-        public Output output() {
-            return output;
-        }
-
-        @NonNull
-        public Error error() {
-            return error;
-        }
+    @NonNull
+    public Observable<ProjectsItemAdapterResult> removeProjectError() {
+        return removeProjectError;
     }
 }

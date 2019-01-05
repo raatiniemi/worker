@@ -36,7 +36,7 @@ import static org.mockito.Mockito.mock;
 @RunWith(JUnit4.class)
 public class RemoveProjectViewModelTest {
     private RemoveProject removeProject;
-    private RemoveProjectViewModel.ViewModel vm;
+    private RemoveProjectViewModel vm;
 
     private TestSubscriber<ProjectsItemAdapterResult> removeProjectSuccess;
     private TestSubscriber<ProjectsItemAdapterResult> removeProjectError;
@@ -44,13 +44,13 @@ public class RemoveProjectViewModelTest {
     @Before
     public void setUp() {
         removeProject = mock(RemoveProject.class);
-        vm = new RemoveProjectViewModel.ViewModel(removeProject);
+        vm = new RemoveProjectViewModel(removeProject);
 
         removeProjectSuccess = new TestSubscriber<>();
-        vm.output().removeProjectSuccess().subscribe(removeProjectSuccess);
+        vm.removeProjectSuccess().subscribe(removeProjectSuccess);
 
         removeProjectError = new TestSubscriber<>();
-        vm.error().removeProjectError().subscribe(removeProjectError);
+        vm.removeProjectError().subscribe(removeProjectError);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class RemoveProjectViewModelTest {
         doThrow(RuntimeException.class)
                 .when(removeProject).execute(any());
 
-        vm.input().remove(result);
+        vm.remove(result);
 
         removeProjectSuccess.assertNoValues();
         removeProjectSuccess.assertNoTerminalEvent();
@@ -74,7 +74,7 @@ public class RemoveProjectViewModelTest {
         ProjectsItem item = ProjectsItem.from(project, Collections.emptyList());
         ProjectsItemAdapterResult result = new ProjectsItemAdapterResult(0, item);
 
-        vm.input().remove(result);
+        vm.remove(result);
 
         removeProjectSuccess.assertValue(result);
         removeProjectSuccess.assertNoTerminalEvent();

@@ -64,7 +64,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     private val refreshViewModel: RefreshActiveProjectsViewModel by viewModel()
 
     private val clockActivityViewModel: ClockActivityViewModel.ViewModel by inject()
-    private val removeProjectViewModel: RemoveProjectViewModel.ViewModel by inject()
+    private val removeProjectViewModel: RemoveProjectViewModel by inject()
     private val keyValueStore: KeyValueStore by inject()
 
     private var refreshActiveProjectsTimer: Timer? = null
@@ -121,12 +121,12 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 .compose(applySchedulers())
                 .subscribe { showClockOutErrorMessage() }
 
-        removeProjectViewModel.output().removeProjectSuccess()
+        removeProjectViewModel.removeProjectSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { (_, _) -> showDeleteProjectSuccessMessage() }
 
-        removeProjectViewModel.error().removeProjectError()
+        removeProjectViewModel.removeProjectError()
                 .compose(bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { result ->
@@ -366,7 +366,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                         {
                             deleteProjectAtPosition(result.position)
 
-                            removeProjectViewModel.input().remove(result)
+                            removeProjectViewModel.remove(result)
                         },
                         { Timber.w(it) }
                 )
