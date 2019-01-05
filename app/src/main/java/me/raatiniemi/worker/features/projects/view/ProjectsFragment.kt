@@ -20,8 +20,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -81,7 +79,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         adapter.setOnItemClickListener(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_projects, container, false)
     }
 
@@ -196,7 +194,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         addCreatedProject(event.project)
     }
 
-    private fun addCreatedProject(@NonNull project: Project) {
+    private fun addCreatedProject(project: Project) {
         val item = ProjectsItem.from(project, emptyList())
         val position = adapter.add(item)
 
@@ -291,7 +289,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         ).show()
     }
 
-    override fun onItemClick(@NonNull view: View) {
+    override fun onItemClick(view: View) {
         // Retrieve the position for the project from the RecyclerView.
         val position = recyclerView.getChildAdapterPosition(view)
         if (RecyclerView.NO_POSITION == position) {
@@ -320,7 +318,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     }
 
-    override fun onClockActivityToggle(@NonNull result: ProjectsItemAdapterResult) {
+    override fun onClockActivityToggle(result: ProjectsItemAdapterResult) {
         val projectsItem = result.projectsItem
         if (projectsItem.isActive) {
             // Check if clock out require confirmation.
@@ -341,7 +339,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         clockActivityViewModel.input().clockIn(result, Date())
     }
 
-    override fun onClockActivityAt(@NonNull result: ProjectsItemAdapterResult) {
+    override fun onClockActivityAt(result: ProjectsItemAdapterResult) {
         val projectsItem = result.projectsItem
         val fragment = ClockActivityAtFragment.newInstance(
                 projectsItem
@@ -359,7 +357,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 .commit()
     }
 
-    override fun onDelete(@NonNull result: ProjectsItemAdapterResult) {
+    override fun onDelete(result: ProjectsItemAdapterResult) {
         RemoveProjectDialog.show(requireActivity())
                 .filter { RxAlertDialog.isPositive(it) }
                 .subscribe(
