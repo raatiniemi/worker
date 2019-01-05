@@ -50,7 +50,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import rx.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import java.util.*
 import kotlin.concurrent.schedule
@@ -119,14 +118,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 .compose(applySchedulers())
                 .subscribe { showClockOutErrorMessage() }
 
-        removeProjectViewModel.removeProjectError
-                .compose(bindToLifecycle())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { result ->
-                    restoreProjectAtPreviousPosition(result)
-                    showDeleteProjectErrorMessage()
-                }
-
         observeViewModel()
         loadProjectsViaViewModel()
     }
@@ -138,6 +129,12 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
+        })
+
+        removeProjectViewModel.restoreProject.observeAndConsume(this, Observer {
+            restoreProjectAtPreviousPosition(it)
+
+            showDeleteProjectErrorMessage()
         })
 
         refreshViewModel.activePositions.observe(this, Observer {
@@ -351,7 +348,10 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                         {
                             deleteProjectAtPosition(result.position)
 
-                            removeProjectViewModel.remove(result)
+                            GlobalScope.launch {
+                                // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
+                                removeProjectViewModel.remove(result)
+                            }
                         },
                         { Timber.w(it) }
                 )

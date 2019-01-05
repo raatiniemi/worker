@@ -17,47 +17,26 @@
 package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import me.raatiniemi.worker.domain.exception.NoProjectIdException
 import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
-import me.raatiniemi.worker.util.RxUtil.hideErrors
-import rx.Observable
-import rx.subjects.PublishSubject
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import timber.log.Timber
 
 class RemoveProjectViewModel(private val removeProject: RemoveProject) : ViewModel() {
-    val removeProjectSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
-    val removeProjectError: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
+    val restoreProject = ConsumableLiveData<ProjectsItemAdapterResult>()
 
-    private val project = PublishSubject.create<ProjectsItemAdapterResult>()
+    suspend fun remove(result: ProjectsItemAdapterResult) = withContext(Dispatchers.IO) {
+        try {
+            val (_, projectsItem) = result
 
-    init {
-        project
-                .switchMap { result ->
-                    executeUseCase(result)
-                            .compose(redirectErrorToSubject(result))
-                            .compose(hideErrors())
-                }
-                .subscribe(removeProjectSuccess)
-    }
-
-    private fun redirectErrorToSubject(result: ProjectsItemAdapterResult): Observable.Transformer<ProjectsItemAdapterResult, ProjectsItemAdapterResult> {
-        return Observable.Transformer { source ->
-            source.doOnError { removeProjectError.onNext(result) }
-                    .onErrorResumeNext(Observable.empty())
-        }
-    }
-
-    private fun executeUseCase(result: ProjectsItemAdapterResult): Observable<ProjectsItemAdapterResult> {
-        return try {
-            val projectsItem = result.projectsItem
             removeProject(projectsItem.asProject())
-
-            Observable.just(result)
+        } catch (e: NoProjectIdException) {
+            Timber.w(e, "Unable to remove project without id")
         } catch (e: Exception) {
-            Observable.error(e)
+            restoreProject.postValue(result)
         }
-    }
-
-    fun remove(result: ProjectsItemAdapterResult) {
-        project.onNext(result)
     }
 }
