@@ -48,17 +48,17 @@ class ClockActivityViewModelTest {
     private val clockOutError = TestSubscriber<Throwable>()
     private val project = Project.from(1L, "Project #1")
 
-    private lateinit var vm: ClockActivityViewModel.ViewModel
+    private lateinit var vm: ClockActivityViewModel
 
     @Before
     fun setUp() {
-        vm = ClockActivityViewModel.ViewModel(clockIn, clockOut, getProjectTimeSince)
+        vm = ClockActivityViewModel(clockIn, clockOut, getProjectTimeSince)
 
-        vm.output().clockInSuccess().subscribe(clockInSuccess)
-        vm.error().clockInError().subscribe(clockInError)
+        vm.clockInSuccess().subscribe(clockInSuccess)
+        vm.clockInError().subscribe(clockInError)
 
-        vm.output().clockOutSuccess().subscribe(clockOutSuccess)
-        vm.error().clockOutError().subscribe(clockOutError)
+        vm.clockOutSuccess().subscribe(clockOutSuccess)
+        vm.clockOutError().subscribe(clockOutError)
     }
 
     @Test
@@ -71,7 +71,7 @@ class ClockActivityViewModelTest {
         val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
-        vm.input().clockIn(result, Date())
+        vm.clockIn(result, Date())
 
         clockInSuccess.assertNoValues()
         clockInError.assertValueCount(1)
@@ -88,7 +88,7 @@ class ClockActivityViewModelTest {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
-        vm.input().clockIn(result, Date())
+        vm.clockIn(result, Date())
 
         clockInSuccess.assertValueCount(1)
         clockInError.assertNoValues()
@@ -105,9 +105,9 @@ class ClockActivityViewModelTest {
     fun clockIn_withDifferentStartingPoint() {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
-        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.rawValue)
+        vm.startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.rawValue)
 
-        vm.input().clockIn(result, Date())
+        vm.clockIn(result, Date())
 
         clockInSuccess.assertValueCount(1)
         clockInError.assertNoValues()
@@ -124,9 +124,9 @@ class ClockActivityViewModelTest {
     fun clockIn_withInvalidStartingPoint() {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
-        vm.input().startingPointForTimeSummary(-1)
+        vm.startingPointForTimeSummary(-1)
 
-        vm.input().clockIn(result, Date())
+        vm.clockIn(result, Date())
 
         clockInSuccess.assertValueCount(1)
         clockInError.assertNoValues()
@@ -144,7 +144,7 @@ class ClockActivityViewModelTest {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
-        vm.input().clockOut(result, Date())
+        vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
         clockInError.assertNoValues()
@@ -166,7 +166,7 @@ class ClockActivityViewModelTest {
         val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
-        vm.input().clockOut(result, Date())
+        vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
         clockInError.assertNoValues()
@@ -188,9 +188,9 @@ class ClockActivityViewModelTest {
         timeIntervalRepository.add(timeInterval)
         val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
-        vm.input().startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.rawValue)
+        vm.startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.rawValue)
 
-        vm.input().clockOut(result, Date())
+        vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
         clockInError.assertNoValues()
@@ -212,9 +212,9 @@ class ClockActivityViewModelTest {
         timeIntervalRepository.add(timeInterval)
         val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
-        vm.input().startingPointForTimeSummary(-1)
+        vm.startingPointForTimeSummary(-1)
 
-        vm.input().clockOut(result, Date())
+        vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
         clockInError.assertNoValues()

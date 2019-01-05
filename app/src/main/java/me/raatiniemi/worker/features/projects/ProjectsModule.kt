@@ -38,7 +38,7 @@ val projectsModule = module {
         val clockOut = ClockOut(get())
         val getProjectTimeSince = GetProjectTimeSince(get())
 
-        ClockActivityViewModel.ViewModel(clockIn, clockOut, getProjectTimeSince)
+        ClockActivityViewModel(clockIn, clockOut, getProjectTimeSince)
     }
 
     viewModel {

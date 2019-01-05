@@ -33,157 +33,115 @@ import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-interface ClockActivityViewModel {
-    interface Input {
-        fun startingPointForTimeSummary(startingPoint: Int)
+class ClockActivityViewModel(
+        private val clockIn: ClockIn,
+        private val clockOut: ClockOut,
+        private val getProjectTimeSince: GetProjectTimeSince
+) {
+    private var startingPoint = TimeIntervalStartingPoint.MONTH
 
-        fun clockIn(result: ProjectsItemAdapterResult, date: Date)
+    private val clockInResult = PublishSubject.create<ProjectsItemAdapterResult>()
+    private val clockInDate = PublishSubject.create<Date>()
 
-        fun clockOut(result: ProjectsItemAdapterResult, date: Date)
-    }
+    private val clockInSuccess = PublishSubject.create<ProjectsItemAdapterResult>()
+    private val clockInError = PublishSubject.create<Throwable>()
 
-    interface Output {
-        fun clockInSuccess(): Observable<ProjectsItemAdapterResult>
+    private val clockOutResult = PublishSubject.create<ProjectsItemAdapterResult>()
+    private val clockOutDate = PublishSubject.create<Date>()
 
-        fun clockOutSuccess(): Observable<ProjectsItemAdapterResult>
-    }
+    private val clockOutSuccess = PublishSubject.create<ProjectsItemAdapterResult>()
+    private val clockOutError = PublishSubject.create<Throwable>()
 
-    interface Error {
-        fun clockInError(): Observable<Throwable>
-
-        fun clockOutError(): Observable<Throwable>
-    }
-
-    class ViewModel(
-            private val clockIn: ClockIn,
-            private val clockOut: ClockOut,
-            private val getProjectTimeSince: GetProjectTimeSince
-    ) : Input, Output, Error {
-        private val input: Input
-        private val output: Output
-        private val error: Error
-
-        private var startingPoint = TimeIntervalStartingPoint.MONTH
-
-        private val clockInResult = PublishSubject.create<ProjectsItemAdapterResult>()
-        private val clockInDate = PublishSubject.create<Date>()
-
-        private val clockInSuccess = PublishSubject.create<ProjectsItemAdapterResult>()
-        private val clockInError = PublishSubject.create<Throwable>()
-
-        private val clockOutResult = PublishSubject.create<ProjectsItemAdapterResult>()
-        private val clockOutDate = PublishSubject.create<Date>()
-
-        private val clockOutSuccess = PublishSubject.create<ProjectsItemAdapterResult>()
-        private val clockOutError = PublishSubject.create<Throwable>()
-
-        init {
-            input = this
-            output = this
-            error = this
-
-            Observable.zip(clockInResult, clockInDate) { result, date -> CombinedResult(result, date) }
-                    .throttleFirst(500, TimeUnit.MILLISECONDS)
-                    .switchMap { result ->
-                        executeUseCase(Action.CLOCK_IN, result)
-                                .compose(redirectErrors(clockInError))
-                                .compose(hideErrors())
-                    }
-                    .subscribe(clockInSuccess)
-
-            Observable.zip(clockOutResult, clockOutDate) { result, date -> CombinedResult(result, date) }
-                    .throttleFirst(500, TimeUnit.MILLISECONDS)
-                    .switchMap { result ->
-                        executeUseCase(Action.CLOCK_OUT, result)
-                                .compose(redirectErrors(clockOutError))
-                                .compose(hideErrors())
-                    }
-                    .subscribe(clockOutSuccess)
-        }
-
-        private fun executeUseCase(action: Action, combinedResult: CombinedResult): Observable<ProjectsItemAdapterResult> {
-            return try {
-                val project = combinedResult.result.projectsItem.asProject()
-                val date = combinedResult.date
-
-                val projectId = project.id
-                        ?: throw NullPointerException("No project id is available")
-
-                when (action) {
-                    Action.CLOCK_IN -> clockIn.execute(projectId, date)
-                    Action.CLOCK_OUT -> clockOut.execute(projectId, date)
+    init {
+        Observable.zip(clockInResult, clockInDate) { result, date -> CombinedResult(result, date) }
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .switchMap { result ->
+                    executeUseCase(Action.CLOCK_IN, result)
+                            .compose(redirectErrors(clockInError))
+                            .compose(hideErrors())
                 }
-                val registeredTime = getRegisteredTimeForProject(project)
+                .subscribe(clockInSuccess)
 
-                val projectsItem = ProjectsItem.from(project, registeredTime)
-                Observable.just(buildResult(combinedResult.result, projectsItem))
-            } catch (e: Exception) {
-                Observable.error(e)
+        Observable.zip(clockOutResult, clockOutDate) { result, date -> CombinedResult(result, date) }
+                .throttleFirst(500, TimeUnit.MILLISECONDS)
+                .switchMap { result ->
+                    executeUseCase(Action.CLOCK_OUT, result)
+                            .compose(redirectErrors(clockOutError))
+                            .compose(hideErrors())
+                }
+                .subscribe(clockOutSuccess)
+    }
+
+    private fun executeUseCase(action: Action, combinedResult: CombinedResult): Observable<ProjectsItemAdapterResult> {
+        return try {
+            val project = combinedResult.result.projectsItem.asProject()
+            val date = combinedResult.date
+
+            val projectId = project.id
+                    ?: throw NullPointerException("No project id is available")
+
+            when (action) {
+                Action.CLOCK_IN -> clockIn.execute(projectId, date)
+                Action.CLOCK_OUT -> clockOut.execute(projectId, date)
             }
-        }
+            val registeredTime = getRegisteredTimeForProject(project)
 
-        private fun getRegisteredTimeForProject(project: Project): List<TimeInterval> {
-            return getProjectTimeSince(project, startingPoint)
+            val projectsItem = ProjectsItem.from(project, registeredTime)
+            Observable.just(buildResult(combinedResult.result, projectsItem))
+        } catch (e: Exception) {
+            Observable.error(e)
         }
+    }
 
-        private fun buildResult(
-                result: ProjectsItemAdapterResult,
-                projectsItem: ProjectsItem
-        ): ProjectsItemAdapterResult {
-            return ProjectsItemAdapterResult(result.position, projectsItem)
+    private fun getRegisteredTimeForProject(project: Project): List<TimeInterval> {
+        return getProjectTimeSince(project, startingPoint)
+    }
+
+    private fun buildResult(
+            result: ProjectsItemAdapterResult,
+            projectsItem: ProjectsItem
+    ): ProjectsItemAdapterResult {
+        return ProjectsItemAdapterResult(result.position, projectsItem)
+    }
+
+    fun clockIn(result: ProjectsItemAdapterResult, date: Date) {
+        this.clockInResult.onNext(result)
+        this.clockInDate.onNext(date)
+    }
+
+    fun clockOut(result: ProjectsItemAdapterResult, date: Date) {
+        this.clockOutResult.onNext(result)
+        this.clockOutDate.onNext(date)
+    }
+
+    fun clockInSuccess(): Observable<ProjectsItemAdapterResult> {
+        return clockInSuccess
+    }
+
+    fun clockOutSuccess(): Observable<ProjectsItemAdapterResult> {
+        return clockOutSuccess
+    }
+
+    fun startingPointForTimeSummary(startingPoint: Int) {
+        try {
+            this.startingPoint = TimeIntervalStartingPoint.from(startingPoint)
+        } catch (e: InvalidStartingPointException) {
+            Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
         }
+    }
 
-        override fun clockIn(result: ProjectsItemAdapterResult, date: Date) {
-            this.clockInResult.onNext(result)
-            this.clockInDate.onNext(date)
-        }
+    fun clockInError(): Observable<Throwable> {
+        return clockInError
+    }
 
-        override fun clockOut(result: ProjectsItemAdapterResult, date: Date) {
-            this.clockOutResult.onNext(result)
-            this.clockOutDate.onNext(date)
-        }
+    fun clockOutError(): Observable<Throwable> {
+        return clockOutError
+    }
 
-        override fun clockInSuccess(): Observable<ProjectsItemAdapterResult> {
-            return clockInSuccess
-        }
+    class CombinedResult constructor(val result: ProjectsItemAdapterResult, val date: Date)
 
-        override fun clockOutSuccess(): Observable<ProjectsItemAdapterResult> {
-            return clockOutSuccess
-        }
-
-        override fun startingPointForTimeSummary(startingPoint: Int) {
-            try {
-                this.startingPoint = TimeIntervalStartingPoint.from(startingPoint)
-            } catch (e: InvalidStartingPointException) {
-                Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
-            }
-        }
-
-        override fun clockInError(): Observable<Throwable> {
-            return clockInError
-        }
-
-        override fun clockOutError(): Observable<Throwable> {
-            return clockOutError
-        }
-
-        fun input(): Input {
-            return input
-        }
-
-        fun output(): Output {
-            return output
-        }
-
-        fun error(): Error {
-            return error
-        }
-
-        class CombinedResult constructor(val result: ProjectsItemAdapterResult, val date: Date)
-
-        enum class Action {
-            CLOCK_IN,
-            CLOCK_OUT
-        }
+    enum class Action {
+        CLOCK_IN,
+        CLOCK_OUT
     }
 }

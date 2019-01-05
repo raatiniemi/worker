@@ -61,7 +61,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     private val removeProjectViewModel: RemoveProjectViewModel by viewModel()
     private val refreshViewModel: RefreshActiveProjectsViewModel by viewModel()
 
-    private val clockActivityViewModel: ClockActivityViewModel.ViewModel by inject()
+    private val clockActivityViewModel: ClockActivityViewModel by inject()
     private val keyValueStore: KeyValueStore by inject()
 
     private var refreshActiveProjectsTimer: Timer? = null
@@ -90,9 +90,9 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         recyclerView.adapter = adapter
 
         val startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary()
-        clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary)
+        clockActivityViewModel.startingPointForTimeSummary(startingPointForTimeSummary)
 
-        clockActivityViewModel.output().clockInSuccess()
+        clockActivityViewModel.clockInSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { result ->
@@ -100,12 +100,12 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                     updateProject(result)
                 }
 
-        clockActivityViewModel.error().clockInError()
+        clockActivityViewModel.clockInError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { showClockInErrorMessage() }
 
-        clockActivityViewModel.output().clockOutSuccess()
+        clockActivityViewModel.clockOutSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { result ->
@@ -113,7 +113,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                     updateProject(result)
                 }
 
-        clockActivityViewModel.error().clockOutError()
+        clockActivityViewModel.clockOutError()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { showClockOutErrorMessage() }
@@ -201,7 +201,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
         val startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary()
-        clockActivityViewModel.input().startingPointForTimeSummary(startingPointForTimeSummary)
+        clockActivityViewModel.startingPointForTimeSummary(startingPointForTimeSummary)
 
         reloadProjects()
     }
@@ -307,20 +307,20 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         if (projectsItem.isActive) {
             // Check if clock out require confirmation.
             if (!keyValueStore.confirmClockOut()) {
-                clockActivityViewModel.input().clockOut(result, Date())
+                clockActivityViewModel.clockOut(result, Date())
                 return
             }
 
             ConfirmClockOutDialog.show(requireActivity())
                     .filter { RxAlertDialog.isPositive(it) }
                     .subscribe(
-                            { clockActivityViewModel.input().clockOut(result, Date()) },
+                            { clockActivityViewModel.clockOut(result, Date()) },
                             { Timber.w(it) }
                     )
             return
         }
 
-        clockActivityViewModel.input().clockIn(result, Date())
+        clockActivityViewModel.clockIn(result, Date())
     }
 
     override fun onClockActivityAt(result: ProjectsItemAdapterResult) {
@@ -329,11 +329,11 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 projectsItem
         ) { calendar ->
             if (projectsItem.isActive) {
-                clockActivityViewModel.input().clockOut(result, calendar.time)
+                clockActivityViewModel.clockOut(result, calendar.time)
                 return@newInstance
             }
 
-            clockActivityViewModel.input().clockIn(result, calendar.time)
+            clockActivityViewModel.clockIn(result, calendar.time)
         }
 
         childFragmentManager.beginTransaction()
