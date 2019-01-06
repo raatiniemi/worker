@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
@@ -25,11 +26,12 @@ import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
+import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -38,6 +40,10 @@ import java.util.*
 
 @RunWith(JUnit4::class)
 class ClockActivityViewModelTest {
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
+
     private val keyValueStore = InMemoryKeyValueStore()
     private val timeIntervalRepository = TimeIntervalInMemoryRepository()
     private val clockIn = ClockIn(timeIntervalRepository)
@@ -45,7 +51,6 @@ class ClockActivityViewModelTest {
     private val getProjectTimeSince = GetProjectTimeSince(timeIntervalRepository)
 
     private val clockInSuccess = TestSubscriber<ProjectsItemAdapterResult>()
-    private val clockInError = TestSubscriber<Throwable>()
 
     private val clockOutSuccess = TestSubscriber<ProjectsItemAdapterResult>()
     private val clockOutError = TestSubscriber<Throwable>()
@@ -63,7 +68,6 @@ class ClockActivityViewModelTest {
         )
 
         vm.clockInSuccess.subscribe(clockInSuccess)
-        vm.clockInError.subscribe(clockInError)
 
         vm.clockOutSuccess.subscribe(clockOutSuccess)
         vm.clockOutError.subscribe(clockOutError)
@@ -81,13 +85,14 @@ class ClockActivityViewModelTest {
         vm.clockIn(result, Date())
 
         clockInSuccess.assertNoValues()
-        clockInError.assertValueCount(1)
         clockOutSuccess.assertNoValues()
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
+        vm.viewActions.observeForever {
+            assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
+        }
     }
 
     @Test
@@ -98,14 +103,15 @@ class ClockActivityViewModelTest {
         vm.clockIn(result, Date())
 
         clockInSuccess.assertValueCount(1)
-        clockInError.assertNoValues()
         clockOutSuccess.assertNoValues()
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockInSuccess.onNextEvents, true)
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -117,14 +123,15 @@ class ClockActivityViewModelTest {
         vm.clockIn(result, Date())
 
         clockInSuccess.assertValueCount(1)
-        clockInError.assertNoValues()
         clockOutSuccess.assertNoValues()
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockInSuccess.onNextEvents, true)
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -136,14 +143,15 @@ class ClockActivityViewModelTest {
         vm.clockIn(result, Date())
 
         clockInSuccess.assertValueCount(1)
-        clockInError.assertNoValues()
         clockOutSuccess.assertNoValues()
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockInSuccess.onNextEvents, true)
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -155,14 +163,15 @@ class ClockActivityViewModelTest {
         vm.clockIn(result, Date())
 
         clockInSuccess.assertValueCount(1)
-        clockInError.assertNoValues()
         clockOutSuccess.assertNoValues()
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockInSuccess.onNextEvents, true)
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -173,13 +182,14 @@ class ClockActivityViewModelTest {
         vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
-        clockInError.assertNoValues()
         clockOutSuccess.assertNoValues()
         clockOutError.assertValueCount(1)
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -194,14 +204,15 @@ class ClockActivityViewModelTest {
         vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
-        clockInError.assertNoValues()
         clockOutSuccess.assertValueCount(1)
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockOutSuccess.onNextEvents, false)
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -217,14 +228,15 @@ class ClockActivityViewModelTest {
         vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
-        clockInError.assertNoValues()
         clockOutSuccess.assertValueCount(1)
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockOutSuccess.onNextEvents, false)
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -240,14 +252,15 @@ class ClockActivityViewModelTest {
         vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
-        clockInError.assertNoValues()
         clockOutSuccess.assertValueCount(1)
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockOutSuccess.onNextEvents, false)
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     @Test
@@ -263,14 +276,15 @@ class ClockActivityViewModelTest {
         vm.clockOut(result, Date())
 
         clockInSuccess.assertNoValues()
-        clockInError.assertNoValues()
         clockOutSuccess.assertValueCount(1)
         clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
-        clockInError.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
         clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockOutSuccess.onNextEvents, false)
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
     }
 
     private fun verifyProjectStatus(results: List<ProjectsItemAdapterResult>, isActive: Boolean) {

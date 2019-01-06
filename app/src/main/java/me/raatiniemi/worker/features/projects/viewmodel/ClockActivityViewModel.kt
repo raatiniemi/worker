@@ -25,6 +25,8 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
+import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.RxUtil.hideErrors
@@ -61,7 +63,6 @@ class ClockActivityViewModel(
     private val clockInDate = PublishSubject.create<Date>()
 
     val clockInSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
-    val clockInError: PublishSubject<Throwable> = PublishSubject.create<Throwable>()
 
     private val clockOutResult = PublishSubject.create<ProjectsItemAdapterResult>()
     private val clockOutDate = PublishSubject.create<Date>()
@@ -69,12 +70,13 @@ class ClockActivityViewModel(
     val clockOutSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
     val clockOutError: PublishSubject<Throwable> = PublishSubject.create<Throwable>()
 
+    val viewActions = ConsumableLiveData<ProjectsViewActions>()
+
     init {
         Observable.zip(clockInResult, clockInDate) { result, date -> Action.ClockIn(result, date) }
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .switchMap { action ->
                     executeUseCase(action)
-                            .compose(redirectErrors(clockInError))
                             .compose(hideErrors())
                 }
                 .subscribe(clockInSuccess)
@@ -107,6 +109,10 @@ class ClockActivityViewModel(
             val result = ProjectsItemAdapterResult(action.position, projectsItem)
             Observable.just(result)
         } catch (e: Exception) {
+            if (action is Action.ClockIn) {
+                viewActions.postValue(ProjectsViewActions.ShowUnableToClockInErrorMessage)
+            }
+
             Observable.error(e)
         }
     }

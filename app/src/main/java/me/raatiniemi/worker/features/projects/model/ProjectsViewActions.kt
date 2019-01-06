@@ -32,4 +32,15 @@ sealed class ProjectsViewActions : ViewAction {
             snackBar.show()
         }
     }
+
+    object ShowUnableToClockInErrorMessage : ProjectsViewActions() {
+        override fun action(activity: FragmentActivity) {
+            val snackBar = Snackbar.make(
+                    activity.findViewById(android.R.id.content),
+                    R.string.error_message_clock_in,
+                    Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
+        }
+    }
 }

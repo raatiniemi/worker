@@ -97,11 +97,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                     updateProject(result)
                 }
 
-        clockActivityViewModel.clockInError
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe { showClockInErrorMessage() }
-
         clockActivityViewModel.clockOutSuccess
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
@@ -125,6 +120,10 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         })
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
+            it.action(requireActivity())
+        })
+
+        clockActivityViewModel.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
 
@@ -231,14 +230,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun updateProject(result: ProjectsItemAdapterResult) {
         adapter.set(result.position, result.projectsItem)
-    }
-
-    private fun showClockInErrorMessage() {
-        Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                R.string.error_message_clock_in,
-                Snackbar.LENGTH_SHORT
-        ).show()
     }
 
     private fun showClockOutErrorMessage() {
