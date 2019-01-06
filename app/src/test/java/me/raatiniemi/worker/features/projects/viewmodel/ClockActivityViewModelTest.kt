@@ -62,11 +62,11 @@ class ClockActivityViewModelTest {
                 getProjectTimeSince
         )
 
-        vm.clockInSuccess().subscribe(clockInSuccess)
-        vm.clockInError().subscribe(clockInError)
+        vm.clockInSuccess.subscribe(clockInSuccess)
+        vm.clockInError.subscribe(clockInError)
 
-        vm.clockOutSuccess().subscribe(clockOutSuccess)
-        vm.clockOutError().subscribe(clockOutError)
+        vm.clockOutSuccess.subscribe(clockOutSuccess)
+        vm.clockOutError.subscribe(clockOutError)
     }
 
     @Test

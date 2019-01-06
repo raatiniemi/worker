@@ -89,7 +89,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
 
-        clockActivityViewModel.clockInSuccess()
+        clockActivityViewModel.clockInSuccess
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { result ->
@@ -97,12 +97,12 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                     updateProject(result)
                 }
 
-        clockActivityViewModel.clockInError()
+        clockActivityViewModel.clockInError
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { showClockInErrorMessage() }
 
-        clockActivityViewModel.clockOutSuccess()
+        clockActivityViewModel.clockOutSuccess
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { result ->
@@ -110,7 +110,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                     updateProject(result)
                 }
 
-        clockActivityViewModel.clockOutError()
+        clockActivityViewModel.clockOutError
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
                 .subscribe { showClockOutErrorMessage() }

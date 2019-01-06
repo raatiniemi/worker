@@ -60,14 +60,14 @@ class ClockActivityViewModel(
     private val clockInResult = PublishSubject.create<ProjectsItemAdapterResult>()
     private val clockInDate = PublishSubject.create<Date>()
 
-    private val clockInSuccess = PublishSubject.create<ProjectsItemAdapterResult>()
-    private val clockInError = PublishSubject.create<Throwable>()
+    val clockInSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
+    val clockInError: PublishSubject<Throwable> = PublishSubject.create<Throwable>()
 
     private val clockOutResult = PublishSubject.create<ProjectsItemAdapterResult>()
     private val clockOutDate = PublishSubject.create<Date>()
 
-    private val clockOutSuccess = PublishSubject.create<ProjectsItemAdapterResult>()
-    private val clockOutError = PublishSubject.create<Throwable>()
+    val clockOutSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
+    val clockOutError: PublishSubject<Throwable> = PublishSubject.create<Throwable>()
 
     init {
         Observable.zip(clockInResult, clockInDate) { result, date -> CombinedResult(result, date) }
@@ -129,22 +129,6 @@ class ClockActivityViewModel(
     fun clockOut(result: ProjectsItemAdapterResult, date: Date) {
         this.clockOutResult.onNext(result)
         this.clockOutDate.onNext(date)
-    }
-
-    fun clockInSuccess(): Observable<ProjectsItemAdapterResult> {
-        return clockInSuccess
-    }
-
-    fun clockOutSuccess(): Observable<ProjectsItemAdapterResult> {
-        return clockOutSuccess
-    }
-
-    fun clockInError(): Observable<Throwable> {
-        return clockInError
-    }
-
-    fun clockOutError(): Observable<Throwable> {
-        return clockOutError
     }
 
     class CombinedResult constructor(val result: ProjectsItemAdapterResult, val date: Date)
