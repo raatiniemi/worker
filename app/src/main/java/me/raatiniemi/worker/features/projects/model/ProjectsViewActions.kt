@@ -43,4 +43,15 @@ sealed class ProjectsViewActions : ViewAction {
             snackBar.show()
         }
     }
+
+    object ShowUnableToClockOutErrorMessage : ProjectsViewActions() {
+        override fun action(activity: FragmentActivity) {
+            val snackBar = Snackbar.make(
+                    activity.findViewById(android.R.id.content),
+                    R.string.error_message_clock_out,
+                    Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
+        }
+    }
 }

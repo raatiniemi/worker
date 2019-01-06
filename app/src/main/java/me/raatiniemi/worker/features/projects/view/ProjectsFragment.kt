@@ -105,11 +105,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                     updateProject(result)
                 }
 
-        clockActivityViewModel.clockOutError
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe { showClockOutErrorMessage() }
-
         observeViewModel()
         loadProjectsViaViewModel()
     }
@@ -230,14 +225,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun updateProject(result: ProjectsItemAdapterResult) {
         adapter.set(result.position, result.projectsItem)
-    }
-
-    private fun showClockOutErrorMessage() {
-        Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                R.string.error_message_clock_out,
-                Snackbar.LENGTH_SHORT
-        ).show()
     }
 
     private fun deleteProjectAtPosition(position: Int) {

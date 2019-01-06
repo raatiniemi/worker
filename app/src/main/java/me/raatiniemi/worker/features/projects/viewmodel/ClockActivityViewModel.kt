@@ -30,7 +30,6 @@ import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.RxUtil.hideErrors
-import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 import timber.log.Timber
@@ -68,7 +67,6 @@ class ClockActivityViewModel(
     private val clockOutDate = PublishSubject.create<Date>()
 
     val clockOutSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
-    val clockOutError: PublishSubject<Throwable> = PublishSubject.create<Throwable>()
 
     val viewActions = ConsumableLiveData<ProjectsViewActions>()
 
@@ -85,7 +83,6 @@ class ClockActivityViewModel(
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
                 .switchMap { action ->
                     executeUseCase(action)
-                            .compose(redirectErrors(clockOutError))
                             .compose(hideErrors())
                 }
                 .subscribe(clockOutSuccess)
@@ -109,9 +106,11 @@ class ClockActivityViewModel(
             val result = ProjectsItemAdapterResult(action.position, projectsItem)
             Observable.just(result)
         } catch (e: Exception) {
-            if (action is Action.ClockIn) {
-                viewActions.postValue(ProjectsViewActions.ShowUnableToClockInErrorMessage)
+            val viewAction = when (action) {
+                is Action.ClockIn -> ProjectsViewActions.ShowUnableToClockInErrorMessage
+                is Action.ClockOut -> ProjectsViewActions.ShowUnableToClockOutErrorMessage
             }
+            viewActions.postValue(viewAction)
 
             Observable.error(e)
         }

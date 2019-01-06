@@ -53,7 +53,6 @@ class ClockActivityViewModelTest {
     private val clockInSuccess = TestSubscriber<ProjectsItemAdapterResult>()
 
     private val clockOutSuccess = TestSubscriber<ProjectsItemAdapterResult>()
-    private val clockOutError = TestSubscriber<Throwable>()
     private val project = Project.from(1L, "Project #1")
 
     private lateinit var vm: ClockActivityViewModel
@@ -70,7 +69,6 @@ class ClockActivityViewModelTest {
         vm.clockInSuccess.subscribe(clockInSuccess)
 
         vm.clockOutSuccess.subscribe(clockOutSuccess)
-        vm.clockOutError.subscribe(clockOutError)
     }
 
     @Test
@@ -86,10 +84,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertNoValues()
         clockOutSuccess.assertNoValues()
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         vm.viewActions.observeForever {
             assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
         }
@@ -104,10 +100,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertValueCount(1)
         clockOutSuccess.assertNoValues()
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockInSuccess.onNextEvents, true)
         vm.viewActions.observeForever {
             assertNull(it)
@@ -124,10 +118,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertValueCount(1)
         clockOutSuccess.assertNoValues()
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockInSuccess.onNextEvents, true)
         vm.viewActions.observeForever {
             assertNull(it)
@@ -144,10 +136,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertValueCount(1)
         clockOutSuccess.assertNoValues()
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockInSuccess.onNextEvents, true)
         vm.viewActions.observeForever {
             assertNull(it)
@@ -164,10 +154,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertValueCount(1)
         clockOutSuccess.assertNoValues()
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockInSuccess.onNextEvents, true)
         vm.viewActions.observeForever {
             assertNull(it)
@@ -183,12 +171,10 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertNoValues()
         clockOutSuccess.assertNoValues()
-        clockOutError.assertValueCount(1)
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.ShowUnableToClockOutErrorMessage)
         }
     }
 
@@ -205,10 +191,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertNoValues()
         clockOutSuccess.assertValueCount(1)
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockOutSuccess.onNextEvents, false)
         vm.viewActions.observeForever {
             assertNull(it)
@@ -229,10 +213,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertNoValues()
         clockOutSuccess.assertValueCount(1)
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockOutSuccess.onNextEvents, false)
         vm.viewActions.observeForever {
             assertNull(it)
@@ -253,10 +235,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertNoValues()
         clockOutSuccess.assertValueCount(1)
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockOutSuccess.onNextEvents, false)
         vm.viewActions.observeForever {
             assertNull(it)
@@ -277,10 +257,8 @@ class ClockActivityViewModelTest {
 
         clockInSuccess.assertNoValues()
         clockOutSuccess.assertValueCount(1)
-        clockOutError.assertNoValues()
         clockInSuccess.assertNoTerminalEvent()
         clockOutSuccess.assertNoTerminalEvent()
-        clockOutError.assertNoTerminalEvent()
         verifyProjectStatus(clockOutSuccess.onNextEvents, false)
         vm.viewActions.observeForever {
             assertNull(it)
