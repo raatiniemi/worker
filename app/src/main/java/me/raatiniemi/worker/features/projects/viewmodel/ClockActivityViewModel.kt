@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
+import androidx.lifecycle.ViewModel
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
@@ -40,7 +41,7 @@ class ClockActivityViewModel(
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val getProjectTimeSince: GetProjectTimeSince
-) {
+) : ViewModel() {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH

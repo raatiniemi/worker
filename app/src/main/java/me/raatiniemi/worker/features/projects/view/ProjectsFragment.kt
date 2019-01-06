@@ -58,10 +58,10 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     private val eventBus = EventBus.getDefault()
 
     private val projectsViewModel: ProjectsViewModel by viewModel()
+    private val clockActivityViewModel: ClockActivityViewModel by viewModel()
     private val removeProjectViewModel: RemoveProjectViewModel by viewModel()
     private val refreshViewModel: RefreshActiveProjectsViewModel by viewModel()
 
-    private val clockActivityViewModel: ClockActivityViewModel by inject()
     private val keyValueStore: KeyValueStore by inject()
 
     private var refreshActiveProjectsTimer: Timer? = null
