@@ -67,15 +67,15 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private var refreshActiveProjectsTimer: Timer? = null
 
-    private lateinit var adapter: ProjectsAdapter
+    private lateinit var projectsAdapter: ProjectsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         eventBus.register(this)
 
-        adapter = ProjectsAdapter(resources, this, HintedImageButtonListener(requireActivity()))
-        adapter.setOnItemClickListener(this)
+        projectsAdapter = ProjectsAdapter(resources, this, HintedImageButtonListener(requireActivity()))
+        projectsAdapter.setOnItemClickListener(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -87,7 +87,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
         rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = this@ProjectsFragment.adapter
+            adapter = projectsAdapter
         }
 
         clockActivityViewModel.clockInSuccess
@@ -112,7 +112,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun observeViewModel() {
         projectsViewModel.projects.observe(this, Observer {
-            adapter.add(it)
+            projectsAdapter.add(it)
         })
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
@@ -152,7 +152,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
         refreshActiveProjectsTimer = Timer()
         refreshActiveProjectsTimer?.schedule(Date(), 60_000) {
-            refreshViewModel.projects(adapter.items)
+            refreshViewModel.projects(projectsAdapter.items)
         }
     }
 
@@ -180,7 +180,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     private fun addCreatedProject(project: Project) {
         val item = ProjectsItem.from(project, emptyList())
-        val position = adapter.add(item)
+        val position = projectsAdapter.add(item)
 
         rvProjects.scrollToPosition(position)
     }
@@ -196,7 +196,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     }
 
     private fun reloadProjects() {
-        adapter.clear()
+        projectsAdapter.clear()
 
         loadProjectsViaViewModel()
     }
@@ -213,7 +213,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         // Iterate and refresh every position.
         Timber.d("Refreshing %d projects", positions.size)
         for (position in positions) {
-            adapter.notifyItemChanged(position)
+            projectsAdapter.notifyItemChanged(position)
         }
     }
 
@@ -225,15 +225,15 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     }
 
     private fun updateProject(result: ProjectsItemAdapterResult) {
-        adapter.set(result.position, result.projectsItem)
+        projectsAdapter.set(result.position, result.projectsItem)
     }
 
     private fun deleteProjectAtPosition(position: Int) {
-        adapter.remove(position)
+        projectsAdapter.remove(position)
     }
 
     private fun restoreProjectAtPreviousPosition(result: ProjectsItemAdapterResult) {
-        adapter.add(result.position, result.projectsItem)
+        projectsAdapter.add(result.position, result.projectsItem)
 
         rvProjects.scrollToPosition(result.position)
     }
@@ -256,7 +256,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
         try {
             // Retrieve the project from the retrieved position.
-            val item = adapter.get(position)
+            val item = projectsAdapter.get(position)
             val (id) = item.asProject()
 
             val intent = ProjectActivity.newIntent(
