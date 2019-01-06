@@ -22,7 +22,6 @@ import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
@@ -102,7 +101,7 @@ class ClockActivityViewModel(
                 is Action.ClockIn -> clockIn.execute(projectId, date)
                 is Action.ClockOut -> clockOut.execute(projectId, date)
             }
-            val registeredTime = getRegisteredTimeForProject(project)
+            val registeredTime = getProjectTimeSince(project, startingPoint)
             val projectsItem = ProjectsItem.from(project, registeredTime)
 
             val result = ProjectsItemAdapterResult(action.position, projectsItem)
@@ -110,10 +109,6 @@ class ClockActivityViewModel(
         } catch (e: Exception) {
             Observable.error(e)
         }
-    }
-
-    private fun getRegisteredTimeForProject(project: Project): List<TimeInterval> {
-        return getProjectTimeSince(project, startingPoint)
     }
 
     fun clockIn(result: ProjectsItemAdapterResult, date: Date) {
