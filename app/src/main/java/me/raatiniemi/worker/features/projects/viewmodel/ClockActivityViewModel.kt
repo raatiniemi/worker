@@ -25,6 +25,8 @@ import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
+import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
@@ -34,11 +36,26 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ClockActivityViewModel(
+        private val keyValueStore: KeyValueStore,
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val getProjectTimeSince: GetProjectTimeSince
 ) {
-    private var startingPoint = TimeIntervalStartingPoint.MONTH
+    private val startingPoint: TimeIntervalStartingPoint
+        get() {
+            val defaultValue = TimeIntervalStartingPoint.MONTH
+            val startingPoint = keyValueStore.int(
+                    AppKeys.TIME_SUMMARY.rawValue,
+                    defaultValue.rawValue
+            )
+
+            return try {
+                TimeIntervalStartingPoint.from(startingPoint)
+            } catch (e: InvalidStartingPointException) {
+                Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
+                defaultValue
+            }
+        }
 
     private val clockInResult = PublishSubject.create<ProjectsItemAdapterResult>()
     private val clockInDate = PublishSubject.create<Date>()
@@ -120,14 +137,6 @@ class ClockActivityViewModel(
 
     fun clockOutSuccess(): Observable<ProjectsItemAdapterResult> {
         return clockOutSuccess
-    }
-
-    fun startingPointForTimeSummary(startingPoint: Int) {
-        try {
-            this.startingPoint = TimeIntervalStartingPoint.from(startingPoint)
-        } catch (e: InvalidStartingPointException) {
-            Timber.w(e, "Invalid starting point supplied: %i", startingPoint)
-        }
     }
 
     fun clockInError(): Observable<Throwable> {

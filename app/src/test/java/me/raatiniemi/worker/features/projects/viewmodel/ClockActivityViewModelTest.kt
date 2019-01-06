@@ -20,11 +20,13 @@ import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
+import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -36,6 +38,7 @@ import java.util.*
 
 @RunWith(JUnit4::class)
 class ClockActivityViewModelTest {
+    private val keyValueStore = InMemoryKeyValueStore()
     private val timeIntervalRepository = TimeIntervalInMemoryRepository()
     private val clockIn = ClockIn(timeIntervalRepository)
     private val clockOut = ClockOut(timeIntervalRepository)
@@ -52,7 +55,12 @@ class ClockActivityViewModelTest {
 
     @Before
     fun setUp() {
-        vm = ClockActivityViewModel(clockIn, clockOut, getProjectTimeSince)
+        vm = ClockActivityViewModel(
+                keyValueStore,
+                clockIn,
+                clockOut,
+                getProjectTimeSince
+        )
 
         vm.clockInSuccess().subscribe(clockInSuccess)
         vm.clockInError().subscribe(clockInError)
@@ -63,10 +71,9 @@ class ClockActivityViewModelTest {
 
     @Test
     fun `clock in with already active project`() {
-        val timeInterval = TimeInterval.builder(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(0)
-                .build()
+        val timeInterval = timeInterval {
+            stopInMilliseconds = 0
+        }
         timeIntervalRepository.add(timeInterval)
         val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
@@ -102,10 +109,29 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun `clock in project with day time interval starting point`() {
+    fun `clock in project with month time interval starting point`() {
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
-        vm.startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.rawValue)
+
+        vm.clockIn(result, Date())
+
+        clockInSuccess.assertValueCount(1)
+        clockInError.assertNoValues()
+        clockOutSuccess.assertNoValues()
+        clockOutError.assertNoValues()
+        clockInSuccess.assertNoTerminalEvent()
+        clockInError.assertNoTerminalEvent()
+        clockOutSuccess.assertNoTerminalEvent()
+        clockOutError.assertNoTerminalEvent()
+        verifyProjectStatus(clockInSuccess.onNextEvents, true)
+    }
+
+    @Test
+    fun `clock in project with day time interval starting point`() {
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
+        val projectsItem = ProjectsItem.from(project, emptyList())
+        val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
 
@@ -122,9 +148,9 @@ class ClockActivityViewModelTest {
 
     @Test
     fun `clock in project with invalid time interval starting point`() {
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
-        vm.startingPointForTimeSummary(-1)
 
         vm.clockIn(result, Date())
 
@@ -158,10 +184,32 @@ class ClockActivityViewModelTest {
 
     @Test
     fun `clock out project`() {
-        val timeInterval = TimeInterval.builder(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(0)
-                .build()
+        val timeInterval = timeInterval {
+            stopInMilliseconds = 0
+        }
+        timeIntervalRepository.add(timeInterval)
+        val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
+        val result = ProjectsItemAdapterResult(0, projectsItem)
+
+        vm.clockOut(result, Date())
+
+        clockInSuccess.assertNoValues()
+        clockInError.assertNoValues()
+        clockOutSuccess.assertValueCount(1)
+        clockOutError.assertNoValues()
+        clockInSuccess.assertNoTerminalEvent()
+        clockInError.assertNoTerminalEvent()
+        clockOutSuccess.assertNoTerminalEvent()
+        clockOutError.assertNoTerminalEvent()
+        verifyProjectStatus(clockOutSuccess.onNextEvents, false)
+    }
+
+    @Test
+    fun `clock out project with month time interval starting point`() {
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+        val timeInterval = timeInterval {
+            stopInMilliseconds = 0
+        }
         timeIntervalRepository.add(timeInterval)
         val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
@@ -181,14 +229,13 @@ class ClockActivityViewModelTest {
 
     @Test
     fun `clock out project with day time interval starting point`() {
-        val timeInterval = TimeInterval.builder(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(0)
-                .build()
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
+        val timeInterval = timeInterval {
+            stopInMilliseconds = 0
+        }
         timeIntervalRepository.add(timeInterval)
         val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
-        vm.startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.rawValue)
 
         vm.clockOut(result, Date())
 
@@ -205,14 +252,13 @@ class ClockActivityViewModelTest {
 
     @Test
     fun `clock out project with invalid time interval starting point`() {
-        val timeInterval = TimeInterval.builder(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(0)
-                .build()
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
+        val timeInterval = timeInterval {
+            stopInMilliseconds = 0
+        }
         timeIntervalRepository.add(timeInterval)
         val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
-        vm.startingPointForTimeSummary(-1)
 
         vm.clockOut(result, Date())
 

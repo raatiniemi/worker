@@ -89,9 +89,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = adapter
 
-        val startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary()
-        clockActivityViewModel.startingPointForTimeSummary(startingPointForTimeSummary)
-
         clockActivityViewModel.clockInSuccess()
                 .compose(bindToLifecycle())
                 .compose(applySchedulers())
@@ -200,9 +197,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
-        val startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary()
-        clockActivityViewModel.startingPointForTimeSummary(startingPointForTimeSummary)
-
         reloadProjects()
     }
 
