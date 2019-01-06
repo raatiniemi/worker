@@ -62,7 +62,7 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun clockIn_withError() {
+    fun `clock in with already active project`() {
         val timeInterval = TimeInterval.builder(1)
                 .startInMilliseconds(1)
                 .stopInMilliseconds(0)
@@ -84,7 +84,7 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun clockIn() {
+    fun `clock in project`() {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
@@ -102,7 +102,7 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun clockIn_withDifferentStartingPoint() {
+    fun `clock in project with day time interval starting point`() {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
         vm.startingPointForTimeSummary(TimeIntervalStartingPoint.DAY.rawValue)
@@ -121,7 +121,7 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun clockIn_withInvalidStartingPoint() {
+    fun `clock in project with invalid time interval starting point`() {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
         vm.startingPointForTimeSummary(-1)
@@ -140,7 +140,7 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun clockOut_withError() {
+    fun `clock out without active project`() {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
@@ -157,7 +157,7 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun clockOut() {
+    fun `clock out project`() {
         val timeInterval = TimeInterval.builder(1)
                 .startInMilliseconds(1)
                 .stopInMilliseconds(0)
@@ -180,7 +180,7 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun clockOut_withDifferentStartingPoint() {
+    fun `clock out project with day time interval starting point`() {
         val timeInterval = TimeInterval.builder(1)
                 .startInMilliseconds(1)
                 .stopInMilliseconds(0)
@@ -204,7 +204,7 @@ class ClockActivityViewModelTest {
     }
 
     @Test
-    fun clockOut_withInvalidStartingPoint() {
+    fun `clock out project with invalid time interval starting point`() {
         val timeInterval = TimeInterval.builder(1)
                 .startInMilliseconds(1)
                 .stopInMilliseconds(0)
