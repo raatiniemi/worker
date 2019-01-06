@@ -71,41 +71,42 @@ class ClockActivityViewModel(
     val clockOutError: PublishSubject<Throwable> = PublishSubject.create<Throwable>()
 
     init {
-        Observable.zip(clockInResult, clockInDate) { result, date -> CombinedResult(result, date) }
+        Observable.zip(clockInResult, clockInDate) { result, date -> Action.ClockIn(result, date) }
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .switchMap { result ->
-                    executeUseCase(Action.CLOCK_IN, result)
+                .switchMap { action ->
+                    executeUseCase(action)
                             .compose(redirectErrors(clockInError))
                             .compose(hideErrors())
                 }
                 .subscribe(clockInSuccess)
 
-        Observable.zip(clockOutResult, clockOutDate) { result, date -> CombinedResult(result, date) }
+        Observable.zip(clockOutResult, clockOutDate) { result, date -> Action.ClockOut(result, date) }
                 .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .switchMap { result ->
-                    executeUseCase(Action.CLOCK_OUT, result)
+                .switchMap { action ->
+                    executeUseCase(action)
                             .compose(redirectErrors(clockOutError))
                             .compose(hideErrors())
                 }
                 .subscribe(clockOutSuccess)
     }
 
-    private fun executeUseCase(action: Action, combinedResult: CombinedResult): Observable<ProjectsItemAdapterResult> {
+    private fun executeUseCase(action: Action): Observable<ProjectsItemAdapterResult> {
         return try {
-            val project = combinedResult.result.projectsItem.asProject()
-            val date = combinedResult.date
+            val project = action.project
+            val date = action.date
 
             val projectId = project.id
                     ?: throw NullPointerException("No project id is available")
 
             when (action) {
-                Action.CLOCK_IN -> clockIn.execute(projectId, date)
-                Action.CLOCK_OUT -> clockOut.execute(projectId, date)
+                is Action.ClockIn -> clockIn.execute(projectId, date)
+                is Action.ClockOut -> clockOut.execute(projectId, date)
             }
             val registeredTime = getRegisteredTimeForProject(project)
-
             val projectsItem = ProjectsItem.from(project, registeredTime)
-            Observable.just(buildResult(combinedResult.result, projectsItem))
+
+            val result = ProjectsItemAdapterResult(action.position, projectsItem)
+            Observable.just(result)
         } catch (e: Exception) {
             Observable.error(e)
         }
@@ -113,13 +114,6 @@ class ClockActivityViewModel(
 
     private fun getRegisteredTimeForProject(project: Project): List<TimeInterval> {
         return getProjectTimeSince(project, startingPoint)
-    }
-
-    private fun buildResult(
-            result: ProjectsItemAdapterResult,
-            projectsItem: ProjectsItem
-    ): ProjectsItemAdapterResult {
-        return ProjectsItemAdapterResult(result.position, projectsItem)
     }
 
     fun clockIn(result: ProjectsItemAdapterResult, date: Date) {
@@ -132,10 +126,12 @@ class ClockActivityViewModel(
         this.clockOutDate.onNext(date)
     }
 
-    class CombinedResult constructor(val result: ProjectsItemAdapterResult, val date: Date)
+    sealed class Action(result: ProjectsItemAdapterResult, val date: Date) {
+        val position: Int = result.position
+        val project: Project = result.projectsItem.asProject()
 
-    enum class Action {
-        CLOCK_IN,
-        CLOCK_OUT
+        class ClockIn(result: ProjectsItemAdapterResult, date: Date) : Action(result, date)
+
+        class ClockOut(result: ProjectsItemAdapterResult, date: Date) : Action(result, date)
     }
 }
