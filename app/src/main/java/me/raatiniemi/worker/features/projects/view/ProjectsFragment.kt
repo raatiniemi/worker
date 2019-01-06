@@ -24,6 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_projects.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
@@ -67,7 +68,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     private var refreshActiveProjectsTimer: Timer? = null
 
     private lateinit var adapter: ProjectsAdapter
-    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +85,10 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.fragment_projects)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = adapter
+        rvProjects.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = this@ProjectsFragment.adapter
+        }
 
         clockActivityViewModel.clockInSuccess
                 .compose(bindToLifecycle())
@@ -181,7 +182,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         val item = ProjectsItem.from(project, emptyList())
         val position = adapter.add(item)
 
-        recyclerView.scrollToPosition(position)
+        rvProjects.scrollToPosition(position)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -234,7 +235,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     private fun restoreProjectAtPreviousPosition(result: ProjectsItemAdapterResult) {
         adapter.add(result.position, result.projectsItem)
 
-        recyclerView.scrollToPosition(result.position)
+        rvProjects.scrollToPosition(result.position)
     }
 
     private fun showDeleteProjectErrorMessage() {
@@ -247,7 +248,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
 
     override fun onItemClick(view: View) {
         // Retrieve the position for the project from the RecyclerView.
-        val position = recyclerView.getChildAdapterPosition(view)
+        val position = rvProjects.getChildAdapterPosition(view)
         if (RecyclerView.NO_POSITION == position) {
             Timber.w("Unable to retrieve project position for onItemClick")
             return
