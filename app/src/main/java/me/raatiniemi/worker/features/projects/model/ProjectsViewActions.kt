@@ -21,8 +21,8 @@ import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.model.ViewAction
 
-sealed class ProjectsViewActions : ViewAction {
-    object ShowUnableToGetProjectsErrorMessage : ProjectsViewActions() {
+sealed class ProjectsViewActions {
+    object ShowUnableToGetProjectsErrorMessage : ProjectsViewActions(), ViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
@@ -33,7 +33,9 @@ sealed class ProjectsViewActions : ViewAction {
         }
     }
 
-    object ShowUnableToClockInErrorMessage : ProjectsViewActions() {
+    data class UpdateProject(val result: ProjectsItemAdapterResult) : ProjectsViewActions()
+
+    object ShowUnableToClockInErrorMessage : ProjectsViewActions(), ViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
@@ -44,7 +46,7 @@ sealed class ProjectsViewActions : ViewAction {
         }
     }
 
-    object ShowUnableToClockOutErrorMessage : ProjectsViewActions() {
+    object ShowUnableToClockOutErrorMessage : ProjectsViewActions(), ViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),

@@ -34,18 +34,19 @@ import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
+import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ClockActivityViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.RefreshActiveProjectsViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.RemoveProjectViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
+import me.raatiniemi.worker.features.shared.model.ViewAction
 import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 import me.raatiniemi.worker.features.shared.view.fragment.RxFragment
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.RxUtil.applySchedulers
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -90,22 +91,6 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
             adapter = projectsAdapter
         }
 
-        clockActivityViewModel.clockInSuccess
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe { result ->
-                    updateNotificationForProject(result.projectsItem)
-                    updateProject(result)
-                }
-
-        clockActivityViewModel.clockOutSuccess
-                .compose(bindToLifecycle())
-                .compose(applySchedulers())
-                .subscribe { result ->
-                    updateNotificationForProject(result.projectsItem)
-                    updateProject(result)
-                }
-
         observeViewModel()
         loadProjectsViaViewModel()
     }
@@ -116,11 +101,20 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         })
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
-            it.action(requireActivity())
+            if (it is ViewAction) {
+                it.action(requireActivity())
+            }
         })
 
         clockActivityViewModel.viewActions.observeAndConsume(this, Observer {
-            it.action(requireActivity())
+            when (it) {
+                is ProjectsViewActions.UpdateProject -> {
+                    updateNotificationForProject(it.result.projectsItem)
+                    updateProject(it.result)
+                }
+                is ViewAction -> it.action(requireActivity())
+                else -> Timber.w("No response")
+            }
         })
 
         removeProjectViewModel.restoreProject.observeAndConsume(this, Observer {
@@ -280,20 +274,31 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         if (projectsItem.isActive) {
             // Check if clock out require confirmation.
             if (!keyValueStore.confirmClockOut()) {
-                clockActivityViewModel.clockOut(result, Date())
+                // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
+                GlobalScope.launch {
+                    clockActivityViewModel.clockOut(result, Date())
+                }
                 return
             }
 
             ConfirmClockOutDialog.show(requireActivity())
                     .filter { RxAlertDialog.isPositive(it) }
                     .subscribe(
-                            { clockActivityViewModel.clockOut(result, Date()) },
+                            {
+                                // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
+                                GlobalScope.launch {
+                                    clockActivityViewModel.clockOut(result, Date())
+                                }
+                            },
                             { Timber.w(it) }
                     )
             return
         }
 
-        clockActivityViewModel.clockIn(result, Date())
+        // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
+        GlobalScope.launch {
+            clockActivityViewModel.clockIn(result, Date())
+        }
     }
 
     override fun onClockActivityAt(result: ProjectsItemAdapterResult) {
@@ -302,11 +307,17 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 projectsItem
         ) { calendar ->
             if (projectsItem.isActive) {
-                clockActivityViewModel.clockOut(result, calendar.time)
+                // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
+                GlobalScope.launch {
+                    clockActivityViewModel.clockOut(result, calendar.time)
+                }
                 return@newInstance
             }
 
-            clockActivityViewModel.clockIn(result, calendar.time)
+            // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
+            GlobalScope.launch {
+                clockActivityViewModel.clockIn(result, calendar.time)
+            }
         }
 
         childFragmentManager.beginTransaction()

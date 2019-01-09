@@ -16,7 +16,8 @@
 
 package me.raatiniemi.worker.features.projects.viewmodel
 
-import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
@@ -27,21 +28,18 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.RxUtil.hideErrors
-import rx.Observable
-import rx.subjects.PublishSubject
 import timber.log.Timber
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class ClockActivityViewModel(
         private val keyValueStore: KeyValueStore,
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val getProjectTimeSince: GetProjectTimeSince
-) : ViewModel() {
+) : CoroutineScopedViewModel() {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
@@ -58,38 +56,10 @@ class ClockActivityViewModel(
             }
         }
 
-    private val clockInResult = PublishSubject.create<ProjectsItemAdapterResult>()
-    private val clockInDate = PublishSubject.create<Date>()
-
-    val clockInSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
-
-    private val clockOutResult = PublishSubject.create<ProjectsItemAdapterResult>()
-    private val clockOutDate = PublishSubject.create<Date>()
-
-    val clockOutSuccess: PublishSubject<ProjectsItemAdapterResult> = PublishSubject.create<ProjectsItemAdapterResult>()
-
     val viewActions = ConsumableLiveData<ProjectsViewActions>()
 
-    init {
-        Observable.zip(clockInResult, clockInDate) { result, date -> Action.ClockIn(result, date) }
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .switchMap { action ->
-                    executeUseCase(action)
-                            .compose(hideErrors())
-                }
-                .subscribe(clockInSuccess)
-
-        Observable.zip(clockOutResult, clockOutDate) { result, date -> Action.ClockOut(result, date) }
-                .throttleFirst(500, TimeUnit.MILLISECONDS)
-                .switchMap { action ->
-                    executeUseCase(action)
-                            .compose(hideErrors())
-                }
-                .subscribe(clockOutSuccess)
-    }
-
-    private fun executeUseCase(action: Action): Observable<ProjectsItemAdapterResult> {
-        return try {
+    private fun executeUseCase(action: Action) {
+        try {
             val project = action.project
             val date = action.date
 
@@ -104,26 +74,22 @@ class ClockActivityViewModel(
             val projectsItem = ProjectsItem.from(project, registeredTime)
 
             val result = ProjectsItemAdapterResult(action.position, projectsItem)
-            Observable.just(result)
+            viewActions.postValue(ProjectsViewActions.UpdateProject(result))
         } catch (e: Exception) {
-            val viewAction = when (action) {
+            val viewAction: ProjectsViewActions = when (action) {
                 is Action.ClockIn -> ProjectsViewActions.ShowUnableToClockInErrorMessage
                 is Action.ClockOut -> ProjectsViewActions.ShowUnableToClockOutErrorMessage
             }
             viewActions.postValue(viewAction)
-
-            Observable.error(e)
         }
     }
 
-    fun clockIn(result: ProjectsItemAdapterResult, date: Date) {
-        this.clockInResult.onNext(result)
-        this.clockInDate.onNext(date)
+    suspend fun clockIn(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
+        executeUseCase(Action.ClockIn(result, date))
     }
 
-    fun clockOut(result: ProjectsItemAdapterResult, date: Date) {
-        this.clockOutResult.onNext(result)
-        this.clockOutDate.onNext(date)
+    suspend fun clockOut(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
+        executeUseCase(Action.ClockOut(result, date))
     }
 
     sealed class Action(result: ProjectsItemAdapterResult, val date: Date) {

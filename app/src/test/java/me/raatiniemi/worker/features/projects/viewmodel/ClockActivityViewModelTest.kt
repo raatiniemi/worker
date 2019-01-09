@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
@@ -29,13 +30,13 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import rx.observers.TestSubscriber
 import java.util.*
 
 @RunWith(JUnit4::class)
@@ -49,10 +50,6 @@ class ClockActivityViewModelTest {
     private val clockIn = ClockIn(timeIntervalRepository)
     private val clockOut = ClockOut(timeIntervalRepository)
     private val getProjectTimeSince = GetProjectTimeSince(timeIntervalRepository)
-
-    private val clockInSuccess = TestSubscriber<ProjectsItemAdapterResult>()
-
-    private val clockOutSuccess = TestSubscriber<ProjectsItemAdapterResult>()
     private val project = Project.from(1L, "Project #1")
 
     private lateinit var vm: ClockActivityViewModel
@@ -65,14 +62,10 @@ class ClockActivityViewModelTest {
                 clockOut,
                 getProjectTimeSince
         )
-
-        vm.clockInSuccess.subscribe(clockInSuccess)
-
-        vm.clockOutSuccess.subscribe(clockOutSuccess)
     }
 
     @Test
-    fun `clock in with already active project`() {
+    fun `clock in with already active project`() = runBlocking {
         val timeInterval = timeInterval {
             stopInMilliseconds = 0
         }
@@ -82,104 +75,92 @@ class ClockActivityViewModelTest {
 
         vm.clockIn(result, Date())
 
-        clockInSuccess.assertNoValues()
-        clockOutSuccess.assertNoValues()
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
         vm.viewActions.observeForever {
             assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
         }
     }
 
     @Test
-    fun `clock in project`() {
+    fun `clock in project`() = runBlocking {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
 
-        clockInSuccess.assertValueCount(1)
-        clockOutSuccess.assertNoValues()
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
-        verifyProjectStatus(clockInSuccess.onNextEvents, true)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.UpdateProject)
+
+            if (it is ProjectsViewActions.UpdateProject) {
+                assertActiveState(it.result, true)
+            }
         }
     }
 
     @Test
-    fun `clock in project with month time interval starting point`() {
+    fun `clock in project with month time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
 
-        clockInSuccess.assertValueCount(1)
-        clockOutSuccess.assertNoValues()
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
-        verifyProjectStatus(clockInSuccess.onNextEvents, true)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.UpdateProject)
+
+            if (it is ProjectsViewActions.UpdateProject) {
+                assertActiveState(it.result, true)
+            }
         }
     }
 
     @Test
-    fun `clock in project with day time interval starting point`() {
+    fun `clock in project with day time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
 
-        clockInSuccess.assertValueCount(1)
-        clockOutSuccess.assertNoValues()
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
-        verifyProjectStatus(clockInSuccess.onNextEvents, true)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.UpdateProject)
+
+            if (it is ProjectsViewActions.UpdateProject) {
+                assertActiveState(it.result, true)
+            }
         }
     }
 
     @Test
-    fun `clock in project with invalid time interval starting point`() {
+    fun `clock in project with invalid time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
 
-        clockInSuccess.assertValueCount(1)
-        clockOutSuccess.assertNoValues()
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
-        verifyProjectStatus(clockInSuccess.onNextEvents, true)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.UpdateProject)
+
+            if (it is ProjectsViewActions.UpdateProject) {
+                assertActiveState(it.result, true)
+            }
         }
     }
 
     @Test
-    fun `clock out without active project`() {
+    fun `clock out without active project`() = runBlocking {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockOut(result, Date())
 
-        clockInSuccess.assertNoValues()
-        clockOutSuccess.assertNoValues()
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
         vm.viewActions.observeForever {
             assertTrue(it is ProjectsViewActions.ShowUnableToClockOutErrorMessage)
         }
     }
 
     @Test
-    fun `clock out project`() {
+    fun `clock out project`() = runBlocking {
         val timeInterval = timeInterval {
             stopInMilliseconds = 0
         }
@@ -189,18 +170,17 @@ class ClockActivityViewModelTest {
 
         vm.clockOut(result, Date())
 
-        clockInSuccess.assertNoValues()
-        clockOutSuccess.assertValueCount(1)
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
-        verifyProjectStatus(clockOutSuccess.onNextEvents, false)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.UpdateProject)
+
+            if (it is ProjectsViewActions.UpdateProject) {
+                assertActiveState(it.result, false)
+            }
         }
     }
 
     @Test
-    fun `clock out project with month time interval starting point`() {
+    fun `clock out project with month time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
         val timeInterval = timeInterval {
             stopInMilliseconds = 0
@@ -211,18 +191,17 @@ class ClockActivityViewModelTest {
 
         vm.clockOut(result, Date())
 
-        clockInSuccess.assertNoValues()
-        clockOutSuccess.assertValueCount(1)
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
-        verifyProjectStatus(clockOutSuccess.onNextEvents, false)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.UpdateProject)
+
+            if (it is ProjectsViewActions.UpdateProject) {
+                assertActiveState(it.result, false)
+            }
         }
     }
 
     @Test
-    fun `clock out project with day time interval starting point`() {
+    fun `clock out project with day time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
         val timeInterval = timeInterval {
             stopInMilliseconds = 0
@@ -233,18 +212,17 @@ class ClockActivityViewModelTest {
 
         vm.clockOut(result, Date())
 
-        clockInSuccess.assertNoValues()
-        clockOutSuccess.assertValueCount(1)
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
-        verifyProjectStatus(clockOutSuccess.onNextEvents, false)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.UpdateProject)
+
+            if (it is ProjectsViewActions.UpdateProject) {
+                assertActiveState(it.result, false)
+            }
         }
     }
 
     @Test
-    fun `clock out project with invalid time interval starting point`() {
+    fun `clock out project with invalid time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
         val timeInterval = timeInterval {
             stopInMilliseconds = 0
@@ -255,24 +233,18 @@ class ClockActivityViewModelTest {
 
         vm.clockOut(result, Date())
 
-        clockInSuccess.assertNoValues()
-        clockOutSuccess.assertValueCount(1)
-        clockInSuccess.assertNoTerminalEvent()
-        clockOutSuccess.assertNoTerminalEvent()
-        verifyProjectStatus(clockOutSuccess.onNextEvents, false)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertTrue(it is ProjectsViewActions.UpdateProject)
+
+            if (it is ProjectsViewActions.UpdateProject) {
+                assertActiveState(it.result, false)
+            }
         }
     }
 
-    private fun verifyProjectStatus(results: List<ProjectsItemAdapterResult>, isActive: Boolean) {
-        val (_, projectsItem) = results[0]
+    private fun assertActiveState(result: ProjectsItemAdapterResult, expected: Boolean) {
+        val projectsItem = result.projectsItem
 
-        if (isActive) {
-            assertTrue(projectsItem.isActive)
-            return
-        }
-
-        assertFalse(projectsItem.isActive)
+        assertEquals(expected, projectsItem.isActive)
     }
 }
