@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.projects.viewmodel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
+import me.raatiniemi.worker.domain.exception.NoProjectIdException
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
@@ -63,8 +64,7 @@ class ClockActivityViewModel(
             val project = action.project
             val date = action.date
 
-            val projectId = project.id
-                    ?: throw NullPointerException("No project id is available")
+            val projectId = project.id ?: throw NoProjectIdException()
 
             when (action) {
                 is Action.ClockIn -> clockIn.execute(projectId, date)

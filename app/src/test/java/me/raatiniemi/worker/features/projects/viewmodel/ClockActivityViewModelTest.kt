@@ -81,6 +81,19 @@ class ClockActivityViewModelTest {
     }
 
     @Test
+    fun `clock in project without id`() = runBlocking {
+        val project = Project(null, "Project name")
+        val projectsItem = ProjectsItem.from(project, emptyList())
+        val result = ProjectsItemAdapterResult(0, projectsItem)
+
+        vm.clockIn(result, Date())
+
+        vm.viewActions.observeForever {
+            assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
+        }
+    }
+
+    @Test
     fun `clock in project`() = runBlocking {
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
@@ -149,6 +162,19 @@ class ClockActivityViewModelTest {
 
     @Test
     fun `clock out without active project`() = runBlocking {
+        val projectsItem = ProjectsItem.from(project, emptyList())
+        val result = ProjectsItemAdapterResult(0, projectsItem)
+
+        vm.clockOut(result, Date())
+
+        vm.viewActions.observeForever {
+            assertTrue(it is ProjectsViewActions.ShowUnableToClockOutErrorMessage)
+        }
+    }
+
+    @Test
+    fun `clock out project without id`() = runBlocking {
+        val project = Project(null, "Project name")
         val projectsItem = ProjectsItem.from(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
