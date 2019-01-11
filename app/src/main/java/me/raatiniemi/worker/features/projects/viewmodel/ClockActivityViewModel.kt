@@ -23,7 +23,6 @@ import me.raatiniemi.worker.domain.exception.NoProjectIdException
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
@@ -59,45 +58,38 @@ class ClockActivityViewModel(
 
     val viewActions = ConsumableLiveData<ProjectsViewActions>()
 
-    private fun executeUseCase(action: Action) {
+    suspend fun clockIn(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
         try {
-            val project = action.project
-            val date = action.date
-
+            val project = result.project
             val projectId = project.id ?: throw NoProjectIdException()
 
-            when (action) {
-                is Action.ClockIn -> clockIn.execute(projectId, date)
-                is Action.ClockOut -> clockOut.execute(projectId, date)
-            }
-            val registeredTime = getProjectTimeSince(project, startingPoint)
-            val projectsItem = ProjectsItem.from(project, registeredTime)
+            clockIn.execute(projectId, date)
 
-            val result = ProjectsItemAdapterResult(action.position, projectsItem)
-            viewActions.postValue(ProjectsViewActions.UpdateProject(result))
-        } catch (e: Exception) {
-            val viewAction: ProjectsViewActions = when (action) {
-                is Action.ClockIn -> ProjectsViewActions.ShowUnableToClockInErrorMessage
-                is Action.ClockOut -> ProjectsViewActions.ShowUnableToClockOutErrorMessage
-            }
+            val viewAction = ProjectsViewActions.UpdateProject(rebuildResult(result))
             viewActions.postValue(viewAction)
+        } catch (e: Exception) {
+            viewActions.postValue(ProjectsViewActions.ShowUnableToClockInErrorMessage)
         }
     }
 
-    suspend fun clockIn(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
-        executeUseCase(Action.ClockIn(result, date))
-    }
-
     suspend fun clockOut(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
-        executeUseCase(Action.ClockOut(result, date))
+        try {
+            val project = result.project
+            val projectId = project.id ?: throw NoProjectIdException()
+
+            clockOut.execute(projectId, date)
+
+            val viewAction = ProjectsViewActions.UpdateProject(rebuildResult(result))
+            viewActions.postValue(viewAction)
+        } catch (e: Exception) {
+            viewActions.postValue(ProjectsViewActions.ShowUnableToClockOutErrorMessage)
+        }
     }
 
-    sealed class Action(result: ProjectsItemAdapterResult, val date: Date) {
-        val position: Int = result.position
-        val project: Project = result.projectsItem.asProject()
+    private fun rebuildResult(result: ProjectsItemAdapterResult): ProjectsItemAdapterResult {
+        val project = result.project
+        val registeredTime = getProjectTimeSince(project, startingPoint)
 
-        class ClockIn(result: ProjectsItemAdapterResult, date: Date) : Action(result, date)
-
-        class ClockOut(result: ProjectsItemAdapterResult, date: Date) : Action(result, date)
+        return result.copy(projectsItem = ProjectsItem.from(project, registeredTime))
     }
 }
