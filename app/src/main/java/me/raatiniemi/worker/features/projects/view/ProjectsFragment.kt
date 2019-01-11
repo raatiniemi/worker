@@ -98,8 +98,14 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         })
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
-            if (it is ViewAction) {
-                it.action(requireActivity())
+            when (it) {
+                is ProjectsViewActions.RestoreProject -> {
+                    restoreProjectAtPreviousPosition(it.result)
+                    it.action(requireActivity())
+                }
+                is ViewAction -> {
+                    it.action(requireActivity())
+                }
             }
         })
 
@@ -112,12 +118,6 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
                 is ViewAction -> it.action(requireActivity())
                 else -> Timber.w("No response")
             }
-        })
-
-        projectsViewModel.restoreProject.observeAndConsume(this, Observer {
-            restoreProjectAtPreviousPosition(it)
-
-            showDeleteProjectErrorMessage()
         })
 
         refreshViewModel.activePositions.observe(this, Observer {
@@ -226,14 +226,6 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         projectsAdapter.add(result.position, result.projectsItem)
 
         rvProjects.scrollToPosition(result.position)
-    }
-
-    private fun showDeleteProjectErrorMessage() {
-        Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                R.string.error_message_project_deleted,
-                Snackbar.LENGTH_SHORT
-        ).show()
     }
 
     override fun onItemClick(view: View) {

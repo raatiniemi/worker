@@ -65,8 +65,6 @@ internal class ProjectsViewModel(
 
     val viewActions = ConsumableLiveData<ProjectsViewActions>()
 
-    val restoreProject = ConsumableLiveData<ProjectsItemAdapterResult>()
-
     suspend fun loadProjects() = withContext(Dispatchers.IO) {
         try {
             val projects = getProjects()
@@ -99,7 +97,8 @@ internal class ProjectsViewModel(
         } catch (e: NoProjectIdException) {
             Timber.w(e, "Unable to remove project without id")
         } catch (e: Exception) {
-            restoreProject.postValue(result)
+            val viewAction = ProjectsViewActions.RestoreProject(result)
+            viewActions.postValue(viewAction)
         }
     }
 }

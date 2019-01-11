@@ -56,4 +56,15 @@ sealed class ProjectsViewActions {
             snackBar.show()
         }
     }
+
+    data class RestoreProject(val result: ProjectsItemAdapterResult) : ProjectsViewActions(), ViewAction {
+        override fun action(activity: FragmentActivity) {
+            val snackBar = Snackbar.make(
+                    activity.findViewById(android.R.id.content),
+                    R.string.error_message_project_deleted,
+                    Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
+        }
+    }
 }

@@ -113,7 +113,7 @@ class ProjectsViewModelTest {
 
         vm.remove(result)
 
-        vm.restoreProject.observeForever {
+        vm.viewActions.observeForever {
             assertNull(it)
         }
     }
@@ -126,7 +126,7 @@ class ProjectsViewModelTest {
 
         vm.remove(result)
 
-        vm.restoreProject.observeForever {
+        vm.viewActions.observeForever {
             assertNull(it)
         }
     }
@@ -142,7 +142,7 @@ class ProjectsViewModelTest {
 
         val actual = projectRepository.findAll()
         assertEquals(emptyList<Project>(), actual)
-        vm.restoreProject.observeForever {
+        vm.viewActions.observeForever {
             assertNull(it)
         }
     }
