@@ -37,7 +37,6 @@ import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ClockActivityViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.RefreshActiveProjectsViewModel
-import me.raatiniemi.worker.features.projects.viewmodel.RemoveProjectViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
@@ -60,7 +59,6 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
 
     private val projectsViewModel: ProjectsViewModel by viewModel()
     private val clockActivityViewModel: ClockActivityViewModel by viewModel()
-    private val removeProjectViewModel: RemoveProjectViewModel by viewModel()
     private val refreshViewModel: RefreshActiveProjectsViewModel by viewModel()
 
     private val keyValueStore: KeyValueStore by inject()
@@ -116,7 +114,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
             }
         })
 
-        removeProjectViewModel.restoreProject.observeAndConsume(this, Observer {
+        projectsViewModel.restoreProject.observeAndConsume(this, Observer {
             restoreProjectAtPreviousPosition(it)
 
             showDeleteProjectErrorMessage()
@@ -326,7 +324,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
                             deleteProjectAtPosition(result.position)
 
                             launch {
-                                removeProjectViewModel.remove(result)
+                                projectsViewModel.remove(result)
                             }
                         },
                         { Timber.w(it) }

@@ -22,12 +22,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
+import me.raatiniemi.worker.domain.exception.NoProjectIdException
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.GetProjects
+import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
+import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
@@ -38,7 +41,8 @@ import timber.log.Timber
 internal class ProjectsViewModel(
         private val keyValueStore: KeyValueStore,
         private val getProjects: GetProjects,
-        private val getProjectTimeSince: GetProjectTimeSince
+        private val getProjectTimeSince: GetProjectTimeSince,
+        private val removeProject: RemoveProject
 ) : CoroutineScopedViewModel() {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
@@ -61,6 +65,8 @@ internal class ProjectsViewModel(
 
     val viewActions = ConsumableLiveData<ProjectsViewActions>()
 
+    val restoreProject = ConsumableLiveData<ProjectsItemAdapterResult>()
+
     suspend fun loadProjects() = withContext(Dispatchers.IO) {
         try {
             val projects = getProjects()
@@ -82,6 +88,18 @@ internal class ProjectsViewModel(
         } catch (e: DomainException) {
             Timber.w(e, "Unable to get registered time for project")
             emptyList()
+        }
+    }
+
+    suspend fun remove(result: ProjectsItemAdapterResult) = withContext(Dispatchers.IO) {
+        try {
+            val (_, projectsItem) = result
+
+            removeProject(projectsItem.asProject())
+        } catch (e: NoProjectIdException) {
+            Timber.w(e, "Unable to remove project without id")
+        } catch (e: Exception) {
+            restoreProject.postValue(result)
         }
     }
 }

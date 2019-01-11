@@ -20,12 +20,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.GetProjects
+import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
+import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,13 +47,20 @@ class ProjectsViewModelTest {
 
     private lateinit var getProjects: GetProjects
     private lateinit var getProjectTimeSince: GetProjectTimeSince
+    private lateinit var removeProject: RemoveProject
     private lateinit var vm: ProjectsViewModel
 
     @Before
     fun setUp() {
         getProjects = GetProjects(projectRepository)
         getProjectTimeSince = GetProjectTimeSince(timeIntervalRepository)
-        vm = ProjectsViewModel(keyValueStore, getProjects, getProjectTimeSince)
+        removeProject = RemoveProject(projectRepository)
+        vm = ProjectsViewModel(
+                keyValueStore,
+                getProjects,
+                getProjectTimeSince,
+                removeProject
+        )
     }
 
     @Test
@@ -92,6 +102,48 @@ class ProjectsViewModelTest {
 
         vm.projects.observeForever {
             assertEquals(expected, it)
+        }
+    }
+
+    @Test
+    fun `remove project without project id`() = runBlocking {
+        val project = Project(null, "Project #1")
+        val item = ProjectsItem.from(project, emptyList())
+        val result = ProjectsItemAdapterResult(0, item)
+
+        vm.remove(result)
+
+        vm.restoreProject.observeForever {
+            assertNull(it)
+        }
+    }
+
+    @Test
+    fun `remove project without project`() = runBlocking {
+        val project = Project(1, "Project #1")
+        val item = ProjectsItem.from(project, emptyList())
+        val result = ProjectsItemAdapterResult(0, item)
+
+        vm.remove(result)
+
+        vm.restoreProject.observeForever {
+            assertNull(it)
+        }
+    }
+
+    @Test
+    fun `remove project with project`() = runBlocking {
+        val project = Project(null, "Project #1")
+        val item = ProjectsItem.from(project.copy(1), emptyList())
+        val result = ProjectsItemAdapterResult(0, item)
+        projectRepository.add(project)
+
+        vm.remove(result)
+
+        val actual = projectRepository.findAll()
+        assertEquals(emptyList<Project>(), actual)
+        vm.restoreProject.observeForever {
+            assertNull(it)
         }
     }
 }
