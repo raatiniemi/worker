@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_projects.*
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
@@ -42,9 +41,9 @@ import me.raatiniemi.worker.features.projects.viewmodel.RemoveProjectViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
+import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
-import me.raatiniemi.worker.features.shared.view.fragment.RxFragment
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import me.raatiniemi.worker.util.KeyValueStore
 import org.greenrobot.eventbus.EventBus
@@ -56,7 +55,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.concurrent.schedule
 
-class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
+class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
     private val eventBus = EventBus.getDefault()
 
     private val projectsViewModel: ProjectsViewModel by viewModel()
@@ -129,8 +128,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
     }
 
     private fun loadProjectsViaViewModel() {
-        // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
-        GlobalScope.launch {
+        launch {
             projectsViewModel.loadProjects()
         }
     }
@@ -274,8 +272,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
         if (projectsItem.isActive) {
             // Check if clock out require confirmation.
             if (!keyValueStore.confirmClockOut()) {
-                // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
-                GlobalScope.launch {
+                launch {
                     clockActivityViewModel.clockOut(result, Date())
                 }
                 return
@@ -285,8 +282,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                     .filter { RxAlertDialog.isPositive(it) }
                     .subscribe(
                             {
-                                // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
-                                GlobalScope.launch {
+                                launch {
                                     clockActivityViewModel.clockOut(result, Date())
                                 }
                             },
@@ -295,8 +291,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
             return
         }
 
-        // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
-        GlobalScope.launch {
+        launch {
             clockActivityViewModel.clockIn(result, Date())
         }
     }
@@ -307,15 +302,13 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                 projectsItem
         ) { calendar ->
             if (projectsItem.isActive) {
-                // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
-                GlobalScope.launch {
+                launch {
                     clockActivityViewModel.clockOut(result, calendar.time)
                 }
                 return@newInstance
             }
 
-            // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
-            GlobalScope.launch {
+            launch {
                 clockActivityViewModel.clockIn(result, calendar.time)
             }
         }
@@ -332,8 +325,7 @@ class ProjectsFragment : RxFragment(), OnProjectActionListener, SimpleListAdapte
                         {
                             deleteProjectAtPosition(result.position)
 
-                            GlobalScope.launch {
-                                // TODO: Replace use of `GlobalScope` with `CoroutineContext` from fragment.
+                            launch {
                                 removeProjectViewModel.remove(result)
                             }
                         },
