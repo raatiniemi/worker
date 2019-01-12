@@ -19,9 +19,11 @@ package me.raatiniemi.worker.features.projects.model
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.projects.view.ProjectsAdapter
 import me.raatiniemi.worker.features.shared.model.ViewAction
+import timber.log.Timber
 
-sealed class ProjectsViewActions {
+internal sealed class ProjectsViewActions {
     object ShowUnableToGetProjectsErrorMessage : ProjectsViewActions(), ViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
@@ -68,5 +70,11 @@ sealed class ProjectsViewActions {
         }
     }
 
-    data class RefreshProjects(val positions: List<Int>) : ProjectsViewActions()
+    data class RefreshProjects(private val positions: List<Int>) : ProjectsViewActions() {
+        fun action(adapter: ProjectsAdapter) {
+            Timber.d("Refreshing %d projects", positions.size)
+
+            positions.forEach { adapter.notifyItemChanged(it) }
+        }
+    }
 }

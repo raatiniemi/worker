@@ -96,7 +96,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
             when (it) {
                 is ProjectsViewActions.RefreshProjects -> {
-                    refreshPositions(it.positions)
+                    it.action(projectsAdapter)
                 }
                 is ProjectsViewActions.UpdateProject -> {
                     updateNotificationForProject(it.result.projectsItem)
@@ -180,22 +180,6 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         projectsAdapter.clear()
 
         loadProjectsViaViewModel()
-    }
-
-    private fun refreshPositions(positions: List<Int>) {
-        // Check that we have positions to refresh.
-        if (positions.isEmpty()) {
-            // We should never reach this code since there are supposed to be
-            // checks for positions before the refreshPositions-method is called.
-            Timber.w("No positions, skip refreshing projects")
-            return
-        }
-
-        // Iterate and refresh every position.
-        Timber.d("Refreshing %d projects", positions.size)
-        for (position in positions) {
-            projectsAdapter.notifyItemChanged(position)
-        }
     }
 
     private fun updateNotificationForProject(project: ProjectsItem) {
