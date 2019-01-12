@@ -23,9 +23,7 @@ import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.exception.NoProjectIdException
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
-import me.raatiniemi.worker.domain.interactor.GetProjects
-import me.raatiniemi.worker.domain.interactor.RemoveProject
+import me.raatiniemi.worker.domain.interactor.*
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
@@ -37,11 +35,14 @@ import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
+import java.util.*
 
 internal class ProjectsViewModel(
         private val keyValueStore: KeyValueStore,
         private val getProjects: GetProjects,
         private val getProjectTimeSince: GetProjectTimeSince,
+        private val clockIn: ClockIn,
+        private val clockOut: ClockOut,
         private val removeProject: RemoveProject
 ) : CoroutineScopedViewModel() {
     private val startingPoint: TimeIntervalStartingPoint
@@ -99,6 +100,41 @@ internal class ProjectsViewModel(
 
         val viewAction = ProjectsViewActions.RefreshProjects(positions)
         viewActions.postValue(viewAction)
+    }
+
+    suspend fun clockIn(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
+        try {
+            val project = result.project
+            val projectId = project.id ?: throw NoProjectIdException()
+
+            clockIn.execute(projectId, date)
+
+            val viewAction = ProjectsViewActions.UpdateProject(rebuildResult(result))
+            viewActions.postValue(viewAction)
+        } catch (e: Exception) {
+            viewActions.postValue(ProjectsViewActions.ShowUnableToClockInErrorMessage)
+        }
+    }
+
+    suspend fun clockOut(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
+        try {
+            val project = result.project
+            val projectId = project.id ?: throw NoProjectIdException()
+
+            clockOut.execute(projectId, date)
+
+            val viewAction = ProjectsViewActions.UpdateProject(rebuildResult(result))
+            viewActions.postValue(viewAction)
+        } catch (e: Exception) {
+            viewActions.postValue(ProjectsViewActions.ShowUnableToClockOutErrorMessage)
+        }
+    }
+
+    private fun rebuildResult(result: ProjectsItemAdapterResult): ProjectsItemAdapterResult {
+        val project = result.project
+        val registeredTime = getProjectTimeSince(project, startingPoint)
+
+        return result.copy(projectsItem = ProjectsItem.from(project, registeredTime))
     }
 
     suspend fun remove(result: ProjectsItemAdapterResult) = withContext(Dispatchers.IO) {

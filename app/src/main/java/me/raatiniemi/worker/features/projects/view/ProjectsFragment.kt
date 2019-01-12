@@ -34,7 +34,6 @@ import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectE
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
-import me.raatiniemi.worker.features.projects.viewmodel.ClockActivityViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
@@ -57,7 +56,6 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
     private val eventBus = EventBus.getDefault()
 
     private val projectsViewModel: ProjectsViewModel by viewModel()
-    private val clockActivityViewModel: ClockActivityViewModel by viewModel()
 
     private val keyValueStore: KeyValueStore by inject()
 
@@ -100,6 +98,10 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
                 is ProjectsViewActions.RefreshProjects -> {
                     refreshPositions(it.positions)
                 }
+                is ProjectsViewActions.UpdateProject -> {
+                    updateNotificationForProject(it.result.projectsItem)
+                    updateProject(it.result)
+                }
                 is ProjectsViewActions.RestoreProject -> {
                     restoreProjectAtPreviousPosition(it.result)
                     it.action(requireActivity())
@@ -107,16 +109,6 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
                 is ViewAction -> {
                     it.action(requireActivity())
                 }
-            }
-        })
-
-        clockActivityViewModel.viewActions.observeAndConsume(this, Observer {
-            when (it) {
-                is ProjectsViewActions.UpdateProject -> {
-                    updateNotificationForProject(it.result.projectsItem)
-                    updateProject(it.result)
-                }
-                is ViewAction -> it.action(requireActivity())
                 else -> Timber.w("No response")
             }
         })
@@ -262,7 +254,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
             // Check if clock out require confirmation.
             if (!keyValueStore.confirmClockOut()) {
                 launch {
-                    clockActivityViewModel.clockOut(result, Date())
+                    projectsViewModel.clockOut(result, Date())
                 }
                 return
             }
@@ -272,7 +264,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
                     .subscribe(
                             {
                                 launch {
-                                    clockActivityViewModel.clockOut(result, Date())
+                                    projectsViewModel.clockOut(result, Date())
                                 }
                             },
                             { Timber.w(it) }
@@ -281,7 +273,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         }
 
         launch {
-            clockActivityViewModel.clockIn(result, Date())
+            projectsViewModel.clockIn(result, Date())
         }
     }
 
@@ -292,13 +284,13 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         ) { calendar ->
             if (projectsItem.isActive) {
                 launch {
-                    clockActivityViewModel.clockOut(result, calendar.time)
+                    projectsViewModel.clockOut(result, calendar.time)
                 }
                 return@newInstance
             }
 
             launch {
-                clockActivityViewModel.clockIn(result, calendar.time)
+                projectsViewModel.clockIn(result, calendar.time)
             }
         }
 
