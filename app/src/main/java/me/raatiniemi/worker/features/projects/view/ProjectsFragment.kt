@@ -36,7 +36,6 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ClockActivityViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
-import me.raatiniemi.worker.features.projects.viewmodel.RefreshActiveProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
@@ -59,7 +58,6 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
 
     private val projectsViewModel: ProjectsViewModel by viewModel()
     private val clockActivityViewModel: ClockActivityViewModel by viewModel()
-    private val refreshViewModel: RefreshActiveProjectsViewModel by viewModel()
 
     private val keyValueStore: KeyValueStore by inject()
 
@@ -99,6 +97,9 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
             when (it) {
+                is ProjectsViewActions.RefreshProjects -> {
+                    refreshPositions(it.positions)
+                }
                 is ProjectsViewActions.RestoreProject -> {
                     restoreProjectAtPreviousPosition(it.result)
                     it.action(requireActivity())
@@ -119,10 +120,6 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
                 else -> Timber.w("No response")
             }
         })
-
-        refreshViewModel.activePositions.observe(this, Observer {
-            refreshPositions(it)
-        })
     }
 
     private fun loadProjectsViaViewModel() {
@@ -142,7 +139,9 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
 
         refreshActiveProjectsTimer = Timer()
         refreshActiveProjectsTimer?.schedule(Date(), 60_000) {
-            refreshViewModel.projects(projectsAdapter.items)
+            launch {
+                projectsViewModel.refreshActiveProjects(projectsAdapter.items)
+            }
         }
     }
 

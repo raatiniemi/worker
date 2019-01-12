@@ -67,4 +67,6 @@ sealed class ProjectsViewActions {
             snackBar.show()
         }
     }
+
+    data class RefreshProjects(val positions: List<Int>) : ProjectsViewActions()
 }

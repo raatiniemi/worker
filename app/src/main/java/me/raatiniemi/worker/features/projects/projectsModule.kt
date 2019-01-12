@@ -20,7 +20,6 @@ import me.raatiniemi.worker.domain.interactor.*
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.ClockActivityViewModel
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
-import me.raatiniemi.worker.features.projects.viewmodel.RefreshActiveProjectsViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
@@ -44,10 +43,6 @@ val projectsModule = module {
         val getProjectTimeSince = GetProjectTimeSince(get())
 
         ClockActivityViewModel(get(), clockIn, clockOut, getProjectTimeSince)
-    }
-
-    viewModel {
-        RefreshActiveProjectsViewModel()
     }
 
     viewModel {

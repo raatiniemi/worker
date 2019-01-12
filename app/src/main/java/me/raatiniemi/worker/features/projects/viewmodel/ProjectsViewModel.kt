@@ -89,6 +89,18 @@ internal class ProjectsViewModel(
         }
     }
 
+    suspend fun refreshActiveProjects(projects: List<ProjectsItem>) = withContext(Dispatchers.Default) {
+        val positions = projects.filter { it.isActive }
+                .map { projects.indexOf(it) }
+
+        if (positions.isEmpty()) {
+            return@withContext
+        }
+
+        val viewAction = ProjectsViewActions.RefreshProjects(positions)
+        viewActions.postValue(viewAction)
+    }
+
     suspend fun remove(result: ProjectsItemAdapterResult) = withContext(Dispatchers.IO) {
         try {
             val (_, projectsItem) = result

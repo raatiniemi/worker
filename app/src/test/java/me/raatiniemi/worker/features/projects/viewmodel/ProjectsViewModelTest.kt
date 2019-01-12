@@ -22,10 +22,12 @@ import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.GetProjects
 import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
+import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -101,6 +103,58 @@ class ProjectsViewModelTest {
         vm.loadProjects()
 
         vm.projects.observeForever {
+            assertEquals(expected, it)
+        }
+    }
+
+    private fun getProjectsItem(project: Project, isActive: Boolean = false): ProjectsItem {
+        val registeredTime = if (isActive) {
+            listOf(
+                    timeInterval {
+                        projectId = project.id ?: 0
+                        startInMilliseconds = 1
+                    }
+            )
+        } else {
+            emptyList()
+        }
+
+        return ProjectsItem.from(project, registeredTime)
+    }
+
+    @Test
+    fun `refresh active projects without projects`() = runBlocking {
+        vm.refreshActiveProjects(emptyList())
+
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
+    }
+
+    @Test
+    fun `refresh active projects without active projects`() = runBlocking {
+        val items = listOf(
+                getProjectsItem(Project(1, "Project Name"))
+        )
+
+        vm.refreshActiveProjects(items)
+
+        vm.viewActions.observeForever {
+            assertNull(it)
+        }
+    }
+
+    @Test
+    fun `refresh active projects with active project`() = runBlocking {
+        val items = listOf(
+                getProjectsItem(Project(1, "Project Name #1")),
+                getProjectsItem(Project(2, "Project Name #2"), true)
+        )
+
+        vm.refreshActiveProjects(items)
+
+        vm.viewActions.observeForever {
+            val expected = ProjectsViewActions.RefreshProjects(positions = listOf(1))
             assertEquals(expected, it)
         }
     }
