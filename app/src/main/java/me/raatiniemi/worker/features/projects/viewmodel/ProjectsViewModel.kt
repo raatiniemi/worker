@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.DomainException
@@ -31,7 +32,6 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
-import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
@@ -44,7 +44,7 @@ internal class ProjectsViewModel(
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val removeProject: RemoveProject
-) : CoroutineScopedViewModel() {
+) : ViewModel() {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
