@@ -256,14 +256,12 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         val fragment = ClockActivityAtFragment.newInstance(
                 projectsItem
         ) { calendar ->
-            if (projectsItem.isActive) {
-                launch {
-                    projectsViewModel.clockOut(result, calendar.time)
-                }
-                return@newInstance
-            }
-
             launch {
+                if (projectsItem.isActive) {
+                    projectsViewModel.clockOut(result, calendar.time)
+                    return@launch
+                }
+
                 projectsViewModel.clockIn(result, calendar.time)
             }
         }
