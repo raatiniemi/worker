@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.projects.view
 
 import android.content.Context
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
 internal object ConfirmClockOutDialog {
     private const val TITLE = R.string.confirm_clock_out_title

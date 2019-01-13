@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.view
+package me.raatiniemi.worker.features.shared.view
 
 import android.app.AlertDialog
 import android.content.Context

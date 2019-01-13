@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.projects.view
 
 import android.content.Context
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
 internal object RemoveProjectDialog {
     private const val TITLE = R.string.confirm_delete_project_title
