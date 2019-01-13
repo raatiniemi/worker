@@ -40,7 +40,6 @@ import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import me.raatiniemi.worker.util.KeyValueStore
 import org.greenrobot.eventbus.EventBus
@@ -243,16 +242,12 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
                 return
             }
 
-            ConfirmClockOutDialog.show(requireActivity())
-                    .filter { RxAlertDialog.isPositive(it) }
-                    .subscribe(
-                            {
-                                launch {
-                                    projectsViewModel.clockOut(result, Date())
-                                }
-                            },
-                            { Timber.w(it) }
-                    )
+            launch {
+                val confirmAction = ConfirmClockOutDialog.show(requireContext())
+                if (ConfirmAction.YES == confirmAction) {
+                    projectsViewModel.clockOut(result, Date())
+                }
+            }
             return
         }
 
