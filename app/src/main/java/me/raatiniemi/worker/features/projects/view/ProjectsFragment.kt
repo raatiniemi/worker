@@ -90,6 +90,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
 
     private fun observeViewModel() {
         projectsViewModel.projects.observe(this, Observer {
+            projectsAdapter.clear()
             projectsAdapter.add(it)
         })
 
@@ -168,17 +169,11 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        reloadProjects()
+        loadProjectsViaViewModel()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
-        reloadProjects()
-    }
-
-    private fun reloadProjects() {
-        projectsAdapter.clear()
-
         loadProjectsViaViewModel()
     }
 
