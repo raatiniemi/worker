@@ -284,18 +284,14 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
     }
 
     override fun onDelete(result: ProjectsItemAdapterResult) {
-        RemoveProjectDialog.show(requireActivity())
-                .filter { RxAlertDialog.isPositive(it) }
-                .subscribe(
-                        {
-                            deleteProjectAtPosition(result.position)
+        launch {
+            val confirmAction = RemoveProjectDialog.show(requireContext())
+            if (ConfirmAction.YES == confirmAction) {
+                deleteProjectAtPosition(result.position)
 
-                            launch {
-                                projectsViewModel.remove(result)
-                            }
-                        },
-                        { Timber.w(it) }
-                )
+                projectsViewModel.remove(result)
+            }
+        }
     }
 
     companion object {

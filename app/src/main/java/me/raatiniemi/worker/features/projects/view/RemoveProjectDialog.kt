@@ -18,14 +18,10 @@ package me.raatiniemi.worker.features.projects.view
 
 import android.content.Context
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
-import rx.Observable
 
 internal object RemoveProjectDialog {
     private const val TITLE = R.string.confirm_delete_project_title
     private const val MESSAGE = R.string.confirm_delete_project_message
 
-    fun show(context: Context): Observable<Int> {
-        return RxAlertDialog.build(context, TITLE, MESSAGE)
-    }
+    suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }
