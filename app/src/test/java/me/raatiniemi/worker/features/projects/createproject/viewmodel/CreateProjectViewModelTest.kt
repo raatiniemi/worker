@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.viewmodel
+package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
@@ -23,7 +23,6 @@ import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
-import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
