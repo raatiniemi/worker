@@ -27,7 +27,7 @@ class ProjectsItemGetHelpTextForDeleteTest : ProjectsItemResourceTest() {
     @Test
     fun getHelpTextForDelete() {
         val project = Project.from("project #1")
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
 
         assertEquals("Delete %s", projectsItem.getHelpTextForDelete(resources))
     }

@@ -28,7 +28,7 @@ class ProjectsItemTest {
     @Test
     fun asProject() {
         val project = Project.from("Project name")
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
 
         assertSame(project, projectsItem.asProject())
     }
@@ -36,7 +36,7 @@ class ProjectsItemTest {
     @Test
     fun getTitle() {
         val project = Project.from("Project name")
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
 
         assertEquals("Project name", projectsItem.title)
     }

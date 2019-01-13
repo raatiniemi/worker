@@ -33,7 +33,7 @@ class ProjectsItemGetHelpTextForClockActivityToggleTest(
     @Test
     fun getHelpTextForClockActivityToggle() {
         val project = Project.from("Project #1")
-        val projectsItem = ProjectsItem.from(project, timeIntervals)
+        val projectsItem = ProjectsItem(project, timeIntervals)
 
         assertEquals(expected, projectsItem.getHelpTextForClockActivityToggle(resources))
     }

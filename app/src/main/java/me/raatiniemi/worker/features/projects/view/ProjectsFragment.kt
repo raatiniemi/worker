@@ -160,7 +160,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
     }
 
     private fun addCreatedProject(project: Project) {
-        val item = ProjectsItem.from(project, emptyList())
+        val item = ProjectsItem(project, emptyList())
         val position = projectsAdapter.add(item)
 
         rvProjects.scrollToPosition(position)

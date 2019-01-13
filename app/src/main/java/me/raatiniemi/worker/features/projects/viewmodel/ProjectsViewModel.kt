@@ -72,7 +72,7 @@ internal class ProjectsViewModel(
                     .map { project ->
                         val registeredTime = loadRegisteredTimeForProject(project)
 
-                        ProjectsItem.from(project, registeredTime)
+                        ProjectsItem(project, registeredTime)
                     }
 
             _projects.postValue(projects)
@@ -134,7 +134,7 @@ internal class ProjectsViewModel(
         val project = result.project
         val registeredTime = getProjectTimeSince(project, startingPoint)
 
-        return result.copy(projectsItem = ProjectsItem.from(project, registeredTime))
+        return result.copy(projectsItem = ProjectsItem(project, registeredTime))
     }
 
     suspend fun remove(result: ProjectsItemAdapterResult) = withContext(Dispatchers.IO) {

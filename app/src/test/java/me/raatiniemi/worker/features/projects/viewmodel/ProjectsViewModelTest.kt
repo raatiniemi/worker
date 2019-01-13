@@ -87,7 +87,7 @@ class ProjectsViewModelTest {
         val project = Project.from("Project #1")
         projectRepository.add(project)
         val expected = listOf(
-                ProjectsItem.from(project.copy(id = 1), emptyList())
+                ProjectsItem(project.copy(id = 1), emptyList())
         )
 
         vm.loadProjects()
@@ -104,8 +104,8 @@ class ProjectsViewModelTest {
         projectRepository.add(project1)
         projectRepository.add(project2)
         val expected = listOf(
-                ProjectsItem.from(project1.copy(id = 1), emptyList()),
-                ProjectsItem.from(project2.copy(id = 2), emptyList())
+                ProjectsItem(project1.copy(id = 1), emptyList()),
+                ProjectsItem(project2.copy(id = 2), emptyList())
         )
 
         vm.loadProjects()
@@ -127,7 +127,7 @@ class ProjectsViewModelTest {
             emptyList()
         }
 
-        return ProjectsItem.from(project, registeredTime)
+        return ProjectsItem(project, registeredTime)
     }
 
     @Test
@@ -173,7 +173,7 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
+        val projectsItem = ProjectsItem(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
@@ -186,7 +186,7 @@ class ProjectsViewModelTest {
     @Test
     fun `clock in project without id`() = runBlocking {
         val project = Project(null, "Project name")
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
@@ -198,7 +198,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock in project`() = runBlocking {
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
@@ -215,7 +215,7 @@ class ProjectsViewModelTest {
     @Test
     fun `clock in project with month time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
@@ -232,7 +232,7 @@ class ProjectsViewModelTest {
     @Test
     fun `clock in project with day time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
@@ -249,7 +249,7 @@ class ProjectsViewModelTest {
     @Test
     fun `clock in project with invalid time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockIn(result, Date())
@@ -265,7 +265,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out without active project`() = runBlocking {
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockOut(result, Date())
@@ -278,7 +278,7 @@ class ProjectsViewModelTest {
     @Test
     fun `clock out project without id`() = runBlocking {
         val project = Project(null, "Project name")
-        val projectsItem = ProjectsItem.from(project, emptyList())
+        val projectsItem = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockOut(result, Date())
@@ -294,7 +294,7 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
+        val projectsItem = ProjectsItem(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockOut(result, Date())
@@ -315,7 +315,7 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
+        val projectsItem = ProjectsItem(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockOut(result, Date())
@@ -336,7 +336,7 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
+        val projectsItem = ProjectsItem(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockOut(result, Date())
@@ -357,7 +357,7 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem.from(project, listOf(timeInterval))
+        val projectsItem = ProjectsItem(project, listOf(timeInterval))
         val result = ProjectsItemAdapterResult(0, projectsItem)
 
         vm.clockOut(result, Date())
@@ -380,7 +380,7 @@ class ProjectsViewModelTest {
     @Test
     fun `remove project without project id`() = runBlocking {
         val project = Project(null, "Project #1")
-        val item = ProjectsItem.from(project, emptyList())
+        val item = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, item)
 
         vm.remove(result)
@@ -393,7 +393,7 @@ class ProjectsViewModelTest {
     @Test
     fun `remove project without project`() = runBlocking {
         val project = Project(1, "Project #1")
-        val item = ProjectsItem.from(project, emptyList())
+        val item = ProjectsItem(project, emptyList())
         val result = ProjectsItemAdapterResult(0, item)
 
         vm.remove(result)
@@ -406,7 +406,7 @@ class ProjectsViewModelTest {
     @Test
     fun `remove project with project`() = runBlocking {
         val project = Project(null, "Project #1")
-        val item = ProjectsItem.from(project.copy(1), emptyList())
+        val item = ProjectsItem(project.copy(1), emptyList())
         val result = ProjectsItemAdapterResult(0, item)
         projectRepository.add(project)
 
