@@ -232,27 +232,22 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
     }
 
     override fun onClockActivityToggle(result: ProjectsItemAdapterResult) {
-        val projectsItem = result.projectsItem
-        if (projectsItem.isActive) {
-            // Check if clock out require confirmation.
-            if (!keyValueStore.confirmClockOut()) {
-                launch {
-                    projectsViewModel.clockOut(result, Date())
-                }
-                return
-            }
-
-            launch {
-                val confirmAction = ConfirmClockOutDialog.show(requireContext())
-                if (ConfirmAction.YES == confirmAction) {
-                    projectsViewModel.clockOut(result, Date())
-                }
-            }
-            return
-        }
-
         launch {
-            projectsViewModel.clockIn(result, Date())
+            val projectsItem = result.projectsItem
+            if (!projectsItem.isActive) {
+                projectsViewModel.clockIn(result, Date())
+                return@launch
+            }
+
+            if (!keyValueStore.confirmClockOut()) {
+                projectsViewModel.clockOut(result, Date())
+                return@launch
+            }
+
+            val confirmAction = ConfirmClockOutDialog.show(requireContext())
+            if (ConfirmAction.YES == confirmAction) {
+                projectsViewModel.clockOut(result, Date())
+            }
         }
     }
 
