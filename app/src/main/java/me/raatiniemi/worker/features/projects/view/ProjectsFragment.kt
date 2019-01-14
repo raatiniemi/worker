@@ -95,24 +95,24 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         })
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
-            when (it) {
-                is ProjectsViewActions.RefreshProjects -> {
-                    it.action(projectsAdapter)
-                }
-                is ProjectsViewActions.UpdateProject -> {
-                    updateNotificationForProject(it.result.projectsItem)
-                    updateProject(it.result)
-                }
-                is ProjectsViewActions.RestoreProject -> {
-                    restoreProjectAtPreviousPosition(it.result)
-                    it.action(requireActivity())
-                }
-                is ViewAction -> {
-                    it.action(requireActivity())
-                }
-                else -> Timber.w("No response")
-            }
+            processViewAction(it)
         })
+    }
+
+    private fun processViewAction(viewAction: ProjectsViewActions) {
+        when (viewAction) {
+            is ProjectsViewActions.RefreshProjects -> viewAction.action(projectsAdapter)
+            is ProjectsViewActions.UpdateProject -> {
+                updateNotificationForProject(viewAction.result.projectsItem)
+                updateProject(viewAction.result)
+            }
+            is ProjectsViewActions.RestoreProject -> {
+                restoreProjectAtPreviousPosition(viewAction.result)
+                viewAction.action(requireActivity())
+            }
+            is ViewAction -> viewAction.action(requireActivity())
+            else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
+        }
     }
 
     private fun loadProjectsViaViewModel() {
