@@ -79,13 +79,16 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureView()
+        observeViewModel()
+        loadProjectsViaViewModel()
+    }
+
+    private fun configureView() {
         rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = projectsAdapter
         }
-
-        observeViewModel()
-        loadProjectsViaViewModel()
     }
 
     private fun observeViewModel() {
