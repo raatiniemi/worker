@@ -17,34 +17,32 @@
 package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.ProjectDao
-import me.raatiniemi.worker.data.projects.ProjectEntity
+import me.raatiniemi.worker.data.projects.toEntity
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.util.Optional
 
 class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
-    private fun transform(entity: ProjectEntity) = Project(entity.id, entity.name)
-
     override fun findAll(): List<Project> {
         return projects.findAll()
-                .map { transform(it) }
+                .map { it.toProject() }
                 .toMutableList()
     }
 
     override fun findByName(projectName: String): Optional<Project> {
         val entity = projects.findByName(projectName) ?: return Optional.empty()
 
-        return Optional.of(transform(entity))
+        return Optional.of(entity.toProject())
     }
 
     override fun findById(id: Long): Optional<Project> {
         val entity = projects.findById(id) ?: return Optional.empty()
 
-        return Optional.of(transform(entity))
+        return Optional.of(entity.toProject())
     }
 
     override fun add(project: Project): Optional<Project> {
-        projects.add(ProjectEntity(name = project.name))
+        projects.add(project.toEntity())
 
         return findByName(projectName = project.name)
     }
