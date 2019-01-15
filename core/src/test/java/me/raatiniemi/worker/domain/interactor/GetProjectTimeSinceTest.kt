@@ -17,8 +17,9 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.model.timeIntervalStartAfter
+import me.raatiniemi.worker.domain.model.timeIntervalStartBefore
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -32,67 +33,49 @@ class GetProjectTimeSinceTest {
     private val project = Project.from(1, "Name")
 
     private lateinit var repository: TimeIntervalRepository
-    private lateinit var useCase: GetProjectTimeSince
-
-    private fun timeIntervalAfterStartingPoint(startingPoint: TimeIntervalStartingPoint): TimeInterval {
-        val startingPointInMilliseconds = startingPoint.calculateMilliseconds()
-
-        return TimeInterval.builder(1)
-                .startInMilliseconds(startingPointInMilliseconds + 1)
-                .stopInMilliseconds(startingPointInMilliseconds + 10)
-                .build()
-    }
-
-    private fun timeIntervalBeforeStartingPoint(startingPoint: TimeIntervalStartingPoint): TimeInterval {
-        val startingPointInMilliseconds = startingPoint.calculateMilliseconds()
-
-        return TimeInterval.builder(1)
-                .startInMilliseconds(startingPointInMilliseconds - 10)
-                .stopInMilliseconds(startingPointInMilliseconds)
-                .build()
-    }
+    private lateinit var getProjectTimeSince: GetProjectTimeSince
 
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        useCase = GetProjectTimeSince(repository)
+        getProjectTimeSince = GetProjectTimeSince(repository)
     }
 
     @Test
     fun execute_withDay() {
-        val timeIntervalBefore = timeIntervalBeforeStartingPoint(TimeIntervalStartingPoint.DAY)
-        val timeIntervalAfter = timeIntervalAfterStartingPoint(TimeIntervalStartingPoint.DAY)
+        val timeIntervalBefore = timeIntervalStartBefore(TimeIntervalStartingPoint.DAY) { }
+        val timeIntervalAfter = timeIntervalStartAfter(TimeIntervalStartingPoint.DAY) { }
         repository.add(timeIntervalBefore)
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, TimeIntervalStartingPoint.DAY)
+        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.DAY)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun execute_withWeek() {
-        val timeIntervalBefore = timeIntervalBeforeStartingPoint(TimeIntervalStartingPoint.WEEK)
-        val timeIntervalAfter = timeIntervalAfterStartingPoint(TimeIntervalStartingPoint.WEEK)
+        val timeIntervalBefore = timeIntervalStartBefore(TimeIntervalStartingPoint.WEEK) { }
+        val timeIntervalAfter = timeIntervalStartAfter(TimeIntervalStartingPoint.WEEK) { }
         repository.add(timeIntervalBefore)
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, TimeIntervalStartingPoint.WEEK)
+        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.WEEK)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun execute_withMonth() {
-        val timeIntervalBefore = timeIntervalBeforeStartingPoint(TimeIntervalStartingPoint.MONTH)
-        val timeIntervalAfter = timeIntervalAfterStartingPoint(TimeIntervalStartingPoint.MONTH)
+        val timeIntervalBefore = timeIntervalStartBefore(TimeIntervalStartingPoint.MONTH) { }
+        val timeIntervalAfter = timeIntervalStartAfter(TimeIntervalStartingPoint.MONTH) { }
         repository.add(timeIntervalBefore)
         repository.add(timeIntervalAfter)
         val expected = listOf(timeIntervalAfter.copy(id = 2))
 
-        val actual = useCase.execute(project, TimeIntervalStartingPoint.MONTH)
+        val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.MONTH)
 
         assertEquals(expected, actual)
     }

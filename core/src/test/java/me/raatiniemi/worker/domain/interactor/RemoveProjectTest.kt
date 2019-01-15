@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.exception.NoProjectIdException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
@@ -28,32 +29,39 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class RemoveProjectTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
-    private lateinit var useCase: RemoveProject
+    private lateinit var removeProject: RemoveProject
 
     @Before
     fun setUp() {
-        useCase = RemoveProject(repository)
+        removeProject = RemoveProject(repository)
+    }
+
+    @Test(expected = NoProjectIdException::class)
+    fun `remove project without id`() {
+        val project = Project(null, "Project name")
+
+        removeProject(project)
     }
 
     @Test
-    fun execute_withProject() {
+    fun `remove project with project`() {
         repository.add(Project.from("Project name"))
         val project = Project.from(1L, "Project name")
 
-        useCase.execute(project)
+        removeProject(project)
 
         val actual = repository.findAll()
         assertEquals(emptyList<Project>(), actual)
     }
 
     @Test
-    fun execute_withProjects() {
+    fun `remove project with projects`() {
         repository.add(Project.from("Project #1"))
         repository.add(Project.from("Project #2"))
         val expected = listOf(Project.from(2L, "Project #2"))
         val project = Project.from(1L, "Project #1")
 
-        useCase.execute(project)
+        removeProject(project)
 
         val actual = repository.findAll()
         assertEquals(expected, actual)

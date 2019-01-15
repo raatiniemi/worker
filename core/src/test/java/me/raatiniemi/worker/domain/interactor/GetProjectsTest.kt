@@ -29,16 +29,16 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class GetProjectsTest {
     private val repository: ProjectRepository = ProjectInMemoryRepository()
-    private lateinit var useCase: GetProjects
+    private lateinit var getProjects: GetProjects
 
     @Before
     fun setUp() {
-        useCase = GetProjects(repository)
+        getProjects = GetProjects(repository)
     }
 
     @Test
     fun execute_withoutProjects() {
-        val actual = useCase.execute()
+        val actual = getProjects()
 
         assertTrue(actual.isEmpty())
     }
@@ -52,7 +52,7 @@ class GetProjectsTest {
                 Project.from(2L, "Project #2")
         )
 
-        val actual = useCase.execute()
+        val actual = getProjects()
 
         assertEquals(expected, actual)
     }

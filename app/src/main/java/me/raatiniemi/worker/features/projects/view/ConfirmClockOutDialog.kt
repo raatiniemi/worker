@@ -14,24 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.view;
+package me.raatiniemi.worker.features.projects.view
 
-import android.content.Context;
+import android.content.Context
+import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
-import androidx.annotation.NonNull;
-import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
-import rx.Observable;
+internal object ConfirmClockOutDialog {
+    private const val TITLE = R.string.confirm_clock_out_title
+    private const val MESSAGE = R.string.confirm_clock_out_message
 
-final class ConfirmClockOutDialog {
-    private static final int TITLE = R.string.confirm_clock_out_title;
-    private static final int MESSAGE = R.string.confirm_clock_out_message;
-
-    private ConfirmClockOutDialog() {
-    }
-
-    @NonNull
-    static Observable<Integer> show(@NonNull Context context) {
-        return RxAlertDialog.build(context, TITLE, MESSAGE);
-    }
+    suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }

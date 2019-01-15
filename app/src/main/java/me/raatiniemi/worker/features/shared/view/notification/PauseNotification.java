@@ -88,7 +88,7 @@ public class PauseNotification extends OngoingNotification {
     private List<TimeInterval> getRegisteredTime() {
         GetProjectTimeSince registeredTimeUseCase = buildRegisteredTimeUseCase(repository);
 
-        return registeredTimeUseCase.execute(
+        return registeredTimeUseCase.invoke(
                 getProject(),
                 TimeIntervalStartingPoint.DAY
         );

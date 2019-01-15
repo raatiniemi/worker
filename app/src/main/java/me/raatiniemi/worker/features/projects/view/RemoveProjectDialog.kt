@@ -14,26 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.model;
+package me.raatiniemi.worker.features.projects.view
 
-public class ProjectsItemAdapterResult {
-    private final int position;
-    private final ProjectsItem projectsItem;
+import android.content.Context
+import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
-    private ProjectsItemAdapterResult(int position, ProjectsItem projectsItem) {
-        this.position = position;
-        this.projectsItem = projectsItem;
-    }
+internal object RemoveProjectDialog {
+    private const val TITLE = R.string.confirm_delete_project_title
+    private const val MESSAGE = R.string.confirm_delete_project_message
 
-    public static ProjectsItemAdapterResult build(int position, ProjectsItem projectsItem) {
-        return new ProjectsItemAdapterResult(position, projectsItem);
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public ProjectsItem getProjectsItem() {
-        return projectsItem;
-    }
+    suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }

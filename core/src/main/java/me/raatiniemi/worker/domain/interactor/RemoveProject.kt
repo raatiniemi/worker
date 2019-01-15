@@ -14,35 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor;
+package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.model.Project;
-import me.raatiniemi.worker.domain.repository.ProjectRepository;
+import me.raatiniemi.worker.domain.exception.NoProjectIdException
+import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 /**
  * Use case for removing a project.
  */
-public class RemoveProject {
-    /**
-     * Project repository.
-     */
-    private final ProjectRepository repository;
+class RemoveProject(private val repository: ProjectRepository) {
+    operator fun invoke(project: Project) {
+        val projectId = project.id ?: throw NoProjectIdException()
 
-    /**
-     * Constructor.
-     *
-     * @param repository Project repository.
-     */
-    public RemoveProject(final ProjectRepository repository) {
-        this.repository = repository;
-    }
-
-    /**
-     * Remove the project.
-     *
-     * @param project Project to remove.
-     */
-    public void execute(final Project project) {
-        repository.remove(project.getId());
+        repository.remove(projectId)
     }
 }

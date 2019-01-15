@@ -14,30 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.model
+package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.Project
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
-@RunWith(JUnit4::class)
-class ProjectsItemTest {
-    @Test
-    fun asProject() {
-        val project = Project.from("Project name")
-        val projectsItem = ProjectsItem(project, emptyList())
-
-        assertSame(project, projectsItem.asProject())
-    }
-
-    @Test
-    fun getTitle() {
-        val project = Project.from("Project name")
-        val projectsItem = ProjectsItem(project, emptyList())
-
-        assertEquals("Project name", projectsItem.title)
-    }
+class GetProjectTimeSince(private val repository: TimeIntervalRepository) {
+    operator fun invoke(project: Project, startingPoint: TimeIntervalStartingPoint) =
+            repository.findAll(
+                    project,
+                    startingPoint.calculateMilliseconds()
+            )
 }

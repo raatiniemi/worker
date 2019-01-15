@@ -40,7 +40,6 @@
     <string name="error_message_get_projects">Failed to retrieve projects.</string>
 
     <string name="message_project_created">New project have been created</string>
-    <string name="message_project_deleted">Project have been deleted</string>
     <string name="error_message_project_deleted">Failed to delete project.</string>
 
     <string name="error_message_clock_in">Failed to clock in project.</string>

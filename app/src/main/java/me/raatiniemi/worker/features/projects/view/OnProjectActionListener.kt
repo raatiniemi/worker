@@ -14,33 +14,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.view;
+package me.raatiniemi.worker.features.projects.view
 
-import androidx.annotation.NonNull;
-import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult;
+import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 
 /**
  * Interface for project actions.
  */
-interface OnProjectActionListener {
+internal interface OnProjectActionListener {
     /**
      * Toggle the clock activity change.
      *
      * @param result Project to change the clock activity.
      */
-    void onClockActivityToggle(@NonNull ProjectsItemAdapterResult result);
+    fun onClockActivityToggle(result: ProjectsItemAdapterResult)
 
     /**
      * Toggle the clock activity change, with date and time.
      *
      * @param result Project to change the clock activity.
      */
-    void onClockActivityAt(@NonNull ProjectsItemAdapterResult result);
+    fun onClockActivityAt(result: ProjectsItemAdapterResult)
 
     /**
      * Handle project delete action from user.
      *
      * @param result Project to delete.
      */
-    void onDelete(@NonNull ProjectsItemAdapterResult result);
+    fun onDelete(result: ProjectsItemAdapterResult)
 }

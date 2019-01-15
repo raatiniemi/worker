@@ -76,9 +76,9 @@ class ProjectsItemEqualsHashCodeTest(
             @Parameters
             get() {
                 val project = Project.from(1L, "Name")
-                val projectsItem = ProjectsItem.from(project, emptyList())
+                val projectsItem = ProjectsItem(project, emptyList())
 
-                return listOf(
+                return listOf<Array<Any?>>(
                         arrayOf(
                                 "With same instance",
                                 true,
@@ -101,7 +101,7 @@ class ProjectsItemEqualsHashCodeTest(
                                 "With different project",
                                 false,
                                 projectsItem,
-                                ProjectsItem.from(
+                                ProjectsItem(
                                         Project.from(2L, "Project name"),
                                         emptyList()
                                 )
