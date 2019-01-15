@@ -26,7 +26,7 @@ import me.raatiniemi.worker.domain.model.Project
         tableName = "projects",
         indices = [Index(value = ["name"], unique = true)]
 )
-data class ProjectEntity(
+internal data class ProjectEntity(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "_id")
         val id: Long = 0,

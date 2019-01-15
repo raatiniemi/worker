@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.projects
 import androidx.room.*
 
 @Dao
-interface TimeIntervalDao {
+internal interface TimeIntervalDao {
     @Query("""SELECT * FROM time_intervals
         WHERE project_id = :projectId AND
             (start_in_milliseconds >= :startInMilliseconds OR stop_in_milliseconds = 0)

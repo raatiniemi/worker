@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.util.Optional
 
-class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
+internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
     override fun findAll(): List<Project> {
         return projects.findAll()
                 .map { it.toProject() }

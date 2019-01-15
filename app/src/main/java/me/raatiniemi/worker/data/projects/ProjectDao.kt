@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.projects
 import androidx.room.*
 
 @Dao
-interface ProjectDao {
+internal interface ProjectDao {
     @Query("SELECT * FROM projects ORDER BY name ASC")
     fun findAll(): List<ProjectEntity>
 

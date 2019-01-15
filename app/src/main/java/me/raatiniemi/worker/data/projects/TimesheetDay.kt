@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.data.projects
 
-data class TimesheetDay(val dateInMilliseconds: Long, val ids: String) {
+internal data class TimesheetDay(val dateInMilliseconds: Long, val ids: String) {
     val timeIntervalIds: List<Long>
         get() = ids.split(",")
                 .map { it.toLongOrNull() }
