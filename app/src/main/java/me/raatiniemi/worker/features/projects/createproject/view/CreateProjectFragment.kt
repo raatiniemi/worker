@@ -60,7 +60,6 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
             it?.apply { action(requireContext(), etProjectName) }
         })
 
-        // TODO: replace use of event bus with interface.
         vm.project.observe(this, Observer {
             eventBus.post(CreateProjectEvent(it))
 
