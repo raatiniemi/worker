@@ -24,7 +24,7 @@ class ProjectInMemoryRepository : ProjectRepository {
     private val incrementedId = AtomicLong()
     private val projects = mutableSetOf<Project>()
 
-    override fun findAll(): List<Project> = projects.sortedBy { it.id }
+    override fun findAll(): List<Project> = projects.sortedBy { it.name }
 
     override fun findByName(projectName: String): Optional<Project> {
         val project = projects.firstOrNull { it.name.equals(projectName, true) }
