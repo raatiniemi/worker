@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.view
+package me.raatiniemi.worker.features.projects.adapter
 
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -22,6 +22,8 @@ import android.view.ViewGroup
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
+import me.raatiniemi.worker.features.projects.view.OnProjectActionListener
+import me.raatiniemi.worker.features.projects.view.ProjectsItemViewHolder
 import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter
 import me.raatiniemi.worker.util.HintedImageButtonListener
 

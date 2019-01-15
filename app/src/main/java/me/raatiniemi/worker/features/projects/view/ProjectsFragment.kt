@@ -30,6 +30,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.project.view.ProjectActivity
+import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult

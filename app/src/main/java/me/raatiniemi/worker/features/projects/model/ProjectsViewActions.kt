@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.projects.model
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.projects.view.ProjectsAdapter
+import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.shared.model.ViewAction
 import timber.log.Timber
 
