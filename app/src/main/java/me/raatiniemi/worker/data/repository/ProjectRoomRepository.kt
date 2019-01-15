@@ -48,7 +48,6 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
     }
 
     override fun remove(id: Long) {
-        // TODO: Remove registered time as well...
         val entity = projects.findById(id) ?: return
 
         projects.remove(entity)
