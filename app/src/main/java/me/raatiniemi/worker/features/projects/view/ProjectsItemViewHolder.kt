@@ -17,17 +17,18 @@
 package me.raatiniemi.worker.features.projects.view
 
 import android.view.View
-import android.widget.ImageButton
-import android.widget.TextView
-
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
 
 internal class ProjectsItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val name: TextView = view.findViewById(R.id.tvName)
-    val time: TextView = view.findViewById(R.id.tvTimeSummary)
-    val clockActivityToggle: ImageButton = view.findViewById(R.id.ibClockActivityToggle)
-    val clockActivityAt: ImageButton = view.findViewById(R.id.ibClockActivityAt)
-    val delete: ImageButton = view.findViewById(R.id.ibDelete)
-    val clockedInSince: TextView = view.findViewById(R.id.tvClockedInSince)
+    val name: AppCompatTextView = view.findViewById(R.id.tvName)
+    val time: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
+
+    val clockActivityToggle: AppCompatImageButton = view.findViewById(R.id.ibClockActivityToggle)
+    val clockActivityAt: AppCompatImageButton = view.findViewById(R.id.ibClockActivityAt)
+    val delete: AppCompatImageButton = view.findViewById(R.id.ibDelete)
+
+    val clockedInSince: AppCompatTextView = view.findViewById(R.id.tvClockedInSince)
 }
