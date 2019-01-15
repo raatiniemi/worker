@@ -20,7 +20,7 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.shared.view.fragment.DateTimePickerFragment
 import java.util.*
 
-class ClockActivityAtFragment : DateTimePickerFragment(), DateTimePickerFragment.OnDateTimeSetListener {
+internal class ClockActivityAtFragment : DateTimePickerFragment(), DateTimePickerFragment.OnDateTimeSetListener {
     private lateinit var onDateTimeSetListener: (Calendar) -> Unit
 
     init {
