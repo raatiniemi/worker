@@ -23,6 +23,8 @@ import me.raatiniemi.worker.util.Optional
  * Represent a unified interface for working with projects using different data sources.
  */
 interface ProjectRepository {
+    fun count(): Int
+
     /**
      * Get projects.
      *

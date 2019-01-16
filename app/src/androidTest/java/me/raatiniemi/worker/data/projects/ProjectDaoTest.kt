@@ -24,6 +24,36 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ProjectDaoTest : BaseDaoTest() {
     @Test
+    fun count_withoutProjects() {
+        val expected = 0
+
+        val actual = projects.count()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withProject() {
+        projects.add(projectEntity { name = "Project name #1" })
+        val expected = 1
+
+        val actual = projects.count()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withProjects() {
+        projects.add(projectEntity { name = "Project name #1" })
+        projects.add(projectEntity { name = "Project name #2" })
+        val expected = 2
+
+        val actual = projects.count()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun findAll_withoutProjects() {
         val actual = projects.findAll()
 

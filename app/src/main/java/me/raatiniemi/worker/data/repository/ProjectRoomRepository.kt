@@ -23,6 +23,8 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.util.Optional
 
 internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
+    override fun count() = projects.count()
+
     override fun findAll(): List<Project> {
         return projects.findAll()
                 .map { it.toProject() }

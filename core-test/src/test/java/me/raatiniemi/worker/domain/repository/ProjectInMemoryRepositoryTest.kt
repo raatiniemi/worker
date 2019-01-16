@@ -33,6 +33,36 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
+    fun `count without projects`() {
+        val expected = 0
+
+        val actual = repository.count()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count with project`() {
+        repository.add(Project(null, "Project name #1"))
+        val expected = 1
+
+        val actual = repository.count()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count with projects`() {
+        repository.add(Project(null, "Project name #1"))
+        repository.add(Project(null, "Project name #2"))
+        val expected = 2
+
+        val actual = repository.count()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `findAll withoutProjects`() {
         val actual = repository.findAll()
 
