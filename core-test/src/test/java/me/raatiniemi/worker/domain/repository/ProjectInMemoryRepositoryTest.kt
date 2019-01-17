@@ -63,6 +63,81 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
+    fun `find all paging without projects`() {
+        val expected = emptyList<Project>()
+
+        val actual = repository.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all paging with project`() {
+        repository.add(Project(null, "Project name #1"))
+        val expected = listOf(
+                Project(1, "Project name #1")
+        )
+
+        val actual = repository.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all paging with projects`() {
+        repository.add(Project(null, "Project name #1"))
+        repository.add(Project(null, "Project name #2"))
+        val expected = listOf(
+                Project(1, "Project name #1"),
+                Project(2, "Project name #2")
+        )
+
+        val actual = repository.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all with project before page`() {
+        repository.add(Project(null, "Project name #1"))
+        repository.add(Project(null, "Project name #2"))
+        val expected = listOf(
+                Project(2, "Project name #2")
+        )
+
+        val actual = repository.findAll(1, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all with project after page`() {
+        repository.add(Project(null, "Project name #1"))
+        repository.add(Project(null, "Project name #2"))
+        val expected = listOf(
+                Project(1, "Project name #1")
+        )
+
+        val actual = repository.findAll(0, 1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all sorted page`() {
+        repository.add(Project(null, "Project name #2"))
+        repository.add(Project(null, "Project name #1"))
+        val expected = listOf(
+                Project(2, "Project name #1"),
+                Project(1, "Project name #2")
+        )
+
+        val actual = repository.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `findAll withoutProjects`() {
         val actual = repository.findAll()
 

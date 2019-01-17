@@ -25,6 +25,11 @@ import me.raatiniemi.worker.util.Optional
 internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
     override fun count() = projects.count()
 
+    override fun findAll(position: Int, pageSize: Int): List<Project> {
+        return projects.findAll(position, pageSize)
+                .map { it.toProject() }
+    }
+
     override fun findAll(): List<Project> {
         return projects.findAll()
                 .map { it.toProject() }

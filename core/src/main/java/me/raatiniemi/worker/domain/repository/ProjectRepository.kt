@@ -25,6 +25,8 @@ import me.raatiniemi.worker.util.Optional
 interface ProjectRepository {
     fun count(): Int
 
+    fun findAll(position: Int, pageSize: Int): List<Project>
+
     /**
      * Get projects.
      *

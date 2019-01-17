@@ -54,6 +54,103 @@ class ProjectDaoTest : BaseDaoTest() {
     }
 
     @Test
+    fun findAll_pagingWithoutProjects() {
+        val expected = emptyList<ProjectEntity>()
+
+        val actual = projects.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_pagingWithProject() {
+        projects.add(projectEntity { name = "Project name #1" })
+        val expected = listOf(
+                projectEntity {
+                    id = 1
+                    name = "Project name #1"
+                }
+        )
+
+        val actual = projects.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_pagingWithProjects() {
+        projects.add(projectEntity { name = "Project name #1" })
+        projects.add(projectEntity { name = "Project name #2" })
+        val expected = listOf(
+                projectEntity {
+                    id = 1
+                    name = "Project name #1"
+                },
+                projectEntity {
+                    id = 2
+                    name = "Project name #2"
+                }
+        )
+
+        val actual = projects.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_withProjectBeforePage() {
+        projects.add(projectEntity { name = "Project name #1" })
+        projects.add(projectEntity { name = "Project name #2" })
+        val expected = listOf(
+                projectEntity {
+                    id = 2
+                    name = "Project name #2"
+                }
+        )
+
+        val actual = projects.findAll(1, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_withProjectAfterPage() {
+        projects.add(projectEntity { name = "Project name #1" })
+        projects.add(projectEntity { name = "Project name #2" })
+        val expected = listOf(
+                projectEntity {
+                    id = 1
+                    name = "Project name #1"
+                }
+        )
+
+        val actual = projects.findAll(0, 1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_sortedPage() {
+        projects.add(projectEntity { name = "Project name #2" })
+        projects.add(projectEntity { name = "Project name #1" })
+        val expected = listOf(
+                projectEntity {
+                    id = 2
+                    name = "Project name #1"
+                },
+                projectEntity {
+                    id = 1
+                    name = "Project name #2"
+                }
+        )
+
+        val actual = projects.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+
+    @Test
     fun findAll_withoutProjects() {
         val actual = projects.findAll()
 

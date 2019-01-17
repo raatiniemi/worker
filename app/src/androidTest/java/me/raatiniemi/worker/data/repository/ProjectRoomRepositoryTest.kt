@@ -80,6 +80,81 @@ class ProjectRoomRepositoryTest {
     }
 
     @Test
+    fun findAll_pagingWithoutProjects() {
+        val expected = emptyList<Project>()
+
+        val actual = repository.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_pagingWithProject() {
+        repository.add(Project(null, "Project name #1"))
+        val expected = listOf(
+                Project(1, "Project name #1")
+        )
+
+        val actual = repository.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_pagingWithProjects() {
+        repository.add(Project(null, "Project name #1"))
+        repository.add(Project(null, "Project name #2"))
+        val expected = listOf(
+                Project(1, "Project name #1"),
+                Project(2, "Project name #2")
+        )
+
+        val actual = repository.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_withProjectBeforePage() {
+        repository.add(Project(null, "Project name #1"))
+        repository.add(Project(null, "Project name #2"))
+        val expected = listOf(
+                Project(2, "Project name #2")
+        )
+
+        val actual = repository.findAll(1, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_withProjectAfterPage() {
+        repository.add(Project(null, "Project name #1"))
+        repository.add(Project(null, "Project name #2"))
+        val expected = listOf(
+                Project(1, "Project name #1")
+        )
+
+        val actual = repository.findAll(0, 1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun findAll_sortedPage() {
+        repository.add(Project(null, "Project name #2"))
+        repository.add(Project(null, "Project name #1"))
+        val expected = listOf(
+                Project(2, "Project name #1"),
+                Project(1, "Project name #2")
+        )
+
+        val actual = repository.findAll(0, 10)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun findAll_withoutProjects() {
         val actual = repository.findAll()
 

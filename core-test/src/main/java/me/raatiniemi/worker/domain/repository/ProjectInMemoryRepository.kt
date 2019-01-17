@@ -26,6 +26,14 @@ class ProjectInMemoryRepository : ProjectRepository {
 
     override fun count() = projects.count()
 
+    override fun findAll(position: Int, pageSize: Int): List<Project> {
+        val fromIndex = indexWithCountCap(position, count())
+        val toIndex = indexWithCountCap(position + pageSize, count())
+
+        return projects.sortedBy { it.name }
+                .subList(fromIndex, toIndex)
+    }
+
     override fun findAll(): List<Project> = projects.sortedBy { it.name }
 
     override fun findByName(projectName: String): Optional<Project> {
