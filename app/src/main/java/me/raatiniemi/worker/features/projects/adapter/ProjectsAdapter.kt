@@ -25,6 +25,7 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.view.OnProjectActionListener
 import me.raatiniemi.worker.features.projects.view.ProjectsItemViewHolder
 import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter
+import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.util.HintedImageButtonListener
 
 internal class ProjectsAdapter(
@@ -52,7 +53,7 @@ internal class ProjectsAdapter(
             time.text = item.timeSummary
 
             clockedInSince.text = item.getClockedInSince(resources)
-            item.setVisibilityForClockedInSinceView(clockedInSince)
+            clockedInSince.visibleIf { item.isActive }
 
             itemView.setOnClickListener(onClickListener)
 

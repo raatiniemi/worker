@@ -17,8 +17,6 @@
 package me.raatiniemi.worker.features.projects.model
 
 import android.content.res.Resources
-import android.view.View
-import android.widget.TextView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
@@ -96,15 +94,6 @@ data class ProjectsItem(private val project: Project, private val registeredTime
         )
     }
 
-    fun setVisibilityForClockedInSinceView(clockedInSinceView: TextView) {
-        if (isActive) {
-            showTextView(clockedInSinceView)
-            return
-        }
-
-        hideTextView(clockedInSinceView)
-    }
-
     companion object {
         private val intervalFormat: DateIntervalFormat = HoursMinutesIntervalFormat()
 
@@ -118,14 +107,6 @@ data class ProjectsItem(private val project: Project, private val registeredTime
 
         private fun formattedElapsedTime(elapsedTimeInMilliseconds: Long): String {
             return intervalFormat.format(elapsedTimeInMilliseconds)
-        }
-
-        private fun showTextView(textView: TextView) {
-            textView.visibility = View.VISIBLE
-        }
-
-        private fun hideTextView(textView: TextView) {
-            textView.visibility = View.GONE
         }
 
         private fun getClockedInSinceFormatTemplate(resources: Resources): String {
