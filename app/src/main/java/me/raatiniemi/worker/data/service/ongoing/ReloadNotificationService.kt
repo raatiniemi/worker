@@ -18,10 +18,8 @@ package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Context
 import android.content.Intent
-
 import me.raatiniemi.worker.domain.exception.DomainException
-import me.raatiniemi.worker.domain.interactor.GetProjects
-import me.raatiniemi.worker.domain.interactor.IsProjectActive
+import me.raatiniemi.worker.domain.interactor.FindActiveProjects
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
 import timber.log.Timber
@@ -35,38 +33,34 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService") {
             return
         }
 
-        val getProjects = buildGetProjectsUseCase()
-        val isProjectActive = buildIsProjectActiveUseCase()
-
         try {
-            val projects = getProjects.invoke()
-            if (projects.isEmpty()) {
-                return
-            }
-
-
-            for (project in projects) {
-                if (isProjectActive.execute(project.id!!)) {
-                    sendPauseNotification(project)
-                }
+            val findActiveProjects = buildFindActiveProjectsUseCase()
+            findActiveProjects().forEach {
+                sendPauseNotification(it)
             }
         } catch (e: DomainException) {
             Timber.e(e, "Unable to reload notifications")
         }
     }
 
-    private fun buildGetProjectsUseCase(): GetProjects {
-        return GetProjects(projectRepository)
-    }
-
-    private fun buildIsProjectActiveUseCase(): IsProjectActive {
-        return IsProjectActive(timeIntervalRepository)
+    private fun buildFindActiveProjectsUseCase(): FindActiveProjects {
+        return FindActiveProjects(projectRepository, timeIntervalRepository)
     }
 
     private fun sendPauseNotification(project: Project) {
+        val projectId = project.id
+        if (projectId == null) {
+            Timber.w("Unable to send pause notification for project without id")
+            return
+        }
+
         sendNotification(
-                project.id!!,
-                PauseNotification.build(this, project, isOngoingNotificationChronometerEnabled)
+                projectId,
+                PauseNotification.build(
+                        this,
+                        project,
+                        isOngoingNotificationChronometerEnabled
+                )
         )
     }
 
