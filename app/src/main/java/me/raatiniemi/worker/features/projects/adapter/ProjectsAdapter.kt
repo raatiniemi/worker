@@ -57,20 +57,31 @@ internal class ProjectsAdapter(
             itemView.setOnClickListener(onClickListener)
 
             with(clockActivityToggle) {
-                contentDescription = item.getHelpTextForClockActivityToggle(resources)
+                contentDescription = if (item.isActive) {
+                    resources.getString(R.string.fragment_projects_item_clock_out, item.title)
+                } else {
+                    resources.getString(R.string.fragment_projects_item_clock_in, item.title)
+                }
+
                 setOnClickListener { onProjectActionListener.onClockActivityToggle(result) }
                 setOnLongClickListener(hintedImageButtonListener)
                 isActivated = item.isActive
             }
 
             with(clockActivityAt) {
-                contentDescription = item.getHelpTextForClockActivityAt(resources)
+                contentDescription = if (item.isActive) {
+                    resources.getString(R.string.fragment_projects_item_clock_out_at, item.title)
+                } else {
+                    resources.getString(R.string.fragment_projects_item_clock_in_at, item.title)
+                }
+
                 setOnClickListener { onProjectActionListener.onClockActivityAt(result) }
                 setOnLongClickListener(hintedImageButtonListener)
             }
 
             with(delete) {
-                contentDescription = item.getHelpTextForDelete(resources)
+                contentDescription = resources.getString(R.string.fragment_projects_item_delete, item.title)
+
                 setOnClickListener { onProjectActionListener.onDelete(result) }
                 setOnLongClickListener(hintedImageButtonListener)
             }

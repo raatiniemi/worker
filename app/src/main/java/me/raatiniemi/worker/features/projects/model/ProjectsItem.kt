@@ -63,26 +63,6 @@ data class ProjectsItem(private val project: Project, private val registeredTime
         return registeredTimeSummary + activeTimeInterval.interval
     }
 
-    fun getHelpTextForClockActivityToggle(resources: Resources): String {
-        return resources.run {
-            if (isActive) {
-                getString(R.string.fragment_projects_item_clock_out, project.name)
-            } else getString(R.string.fragment_projects_item_clock_in, project.name)
-        }
-    }
-
-    fun getHelpTextForClockActivityAt(resources: Resources): String {
-        return resources.run {
-            if (isActive) {
-                getString(R.string.fragment_projects_item_clock_out_at, project.name)
-            } else getString(R.string.fragment_projects_item_clock_in_at, project.name)
-        }
-    }
-
-    fun getHelpTextForDelete(resources: Resources): String {
-        return resources.getString(R.string.fragment_projects_item_delete, project.name)
-    }
-
     fun getClockedInSince(resources: Resources): String? {
         val activeTimeInterval = this.activeTimeInterval ?: return null
 
