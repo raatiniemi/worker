@@ -27,7 +27,7 @@ import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProjectsItem(private val project: Project, registeredTime: List<TimeInterval>) {
+data class ProjectsItem(private val project: Project, private val registeredTime: List<TimeInterval>) {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
     private val registeredTimeSummary: Long
     private val activeTimeInterval: TimeInterval?
@@ -103,25 +103,6 @@ class ProjectsItem(private val project: Project, registeredTime: List<TimeInterv
         }
 
         hideTextView(clockedInSinceView)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other === this) {
-            return true
-        }
-
-        if (other !is ProjectsItem) {
-            return false
-        }
-
-        return project == other.project
-    }
-
-    override fun hashCode(): Int {
-        var result = 17
-        result = 31 * result + project.hashCode()
-
-        return result
     }
 
     companion object {
