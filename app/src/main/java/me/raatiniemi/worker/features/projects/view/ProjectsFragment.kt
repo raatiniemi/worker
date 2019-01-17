@@ -69,7 +69,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
 
         eventBus.register(this)
 
-        projectsAdapter = ProjectsAdapter(resources, this, HintedImageButtonListener(requireActivity()))
+        projectsAdapter = ProjectsAdapter(this, HintedImageButtonListener(requireActivity()))
         projectsAdapter.setOnItemClickListener(this)
     }
 
