@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.projects.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
@@ -28,6 +29,7 @@ import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.util.HintedImageButtonListener
 
 internal class ProjectsAdapter(
+        private val onItemClickListener: View.OnClickListener,
         private val onProjectActionListener: OnProjectActionListener,
         private val hintedImageButtonListener: HintedImageButtonListener
 ) : SimpleListAdapter<ProjectsItem, ProjectsItemViewHolder>() {
@@ -54,7 +56,7 @@ internal class ProjectsAdapter(
             clockedInSince.text = item.getClockedInSince(resources)
             clockedInSince.visibleIf { item.isActive }
 
-            itemView.setOnClickListener(onClickListener)
+            itemView.setOnClickListener(onItemClickListener)
 
             with(clockActivityToggle) {
                 contentDescription = if (item.isActive) {

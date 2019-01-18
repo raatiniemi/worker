@@ -41,7 +41,6 @@ import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
-import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import me.raatiniemi.worker.util.KeyValueStore
 import org.greenrobot.eventbus.EventBus
@@ -53,7 +52,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.concurrent.schedule
 
-class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, SimpleListAdapter.OnItemClickListener {
+class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener {
     private val eventBus = EventBus.getDefault()
 
     private val projectsViewModel: ProjectsViewModel by viewModel()
@@ -69,8 +68,11 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
 
         eventBus.register(this)
 
-        projectsAdapter = ProjectsAdapter(this, HintedImageButtonListener(requireActivity()))
-        projectsAdapter.setOnItemClickListener(this)
+        projectsAdapter = ProjectsAdapter(
+                View.OnClickListener { onItemClick(it) },
+                this,
+                HintedImageButtonListener(requireActivity())
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -202,7 +204,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener, Sim
         rvProjects.scrollToPosition(result.position)
     }
 
-    override fun onItemClick(view: View) {
+    private fun onItemClick(view: View) {
         // Retrieve the position for the project from the RecyclerView.
         val position = rvProjects.getChildAdapterPosition(view)
         if (RecyclerView.NO_POSITION == position) {
