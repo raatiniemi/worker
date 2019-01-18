@@ -22,8 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
@@ -33,6 +31,7 @@ import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
+import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
@@ -52,7 +51,7 @@ import timber.log.Timber
 import java.util.*
 import kotlin.concurrent.schedule
 
-class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener {
+class ProjectsFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
 
     private val projectsViewModel: ProjectsViewModel by viewModel()
@@ -69,8 +68,14 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener {
         eventBus.register(this)
 
         projectsAdapter = ProjectsAdapter(
-                View.OnClickListener { onItemClick(it) },
-                this,
+                object : ProjectsActionConsumer {
+                    override fun accept(action: ProjectsAction) = when (action) {
+                        is ProjectsAction.Open -> onItemClick(action.result)
+                        is ProjectsAction.Toggle -> onClockActivityToggle(action.result)
+                        is ProjectsAction.At -> onClockActivityAt(action.result)
+                        is ProjectsAction.Remove -> onDelete(action.result)
+                    }
+                },
                 HintedImageButtonListener(requireActivity())
         )
     }
@@ -204,36 +209,14 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener {
         rvProjects.scrollToPosition(result.position)
     }
 
-    private fun onItemClick(view: View) {
-        // Retrieve the position for the project from the RecyclerView.
-        val position = rvProjects.getChildAdapterPosition(view)
-        if (RecyclerView.NO_POSITION == position) {
-            Timber.w("Unable to retrieve project position for onItemClick")
-            return
-        }
+    private fun onItemClick(result: ProjectsItemAdapterResult) {
+        val (id) = result.project
 
-        try {
-            // Retrieve the project from the retrieved position.
-            val item = projectsAdapter.get(position)
-            val (id) = item.asProject()
-
-            val intent = ProjectActivity.newIntent(
-                    requireActivity(),
-                    id
-            )
-            startActivity(intent)
-        } catch (e: IndexOutOfBoundsException) {
-            Timber.w(e, "Unable to get project position")
-            Snackbar.make(
-                    requireActivity().findViewById(android.R.id.content),
-                    R.string.error_message_unable_to_find_project,
-                    Snackbar.LENGTH_SHORT
-            ).show()
-        }
-
+        val intent = ProjectActivity.newIntent(requireActivity(), id)
+        startActivity(intent)
     }
 
-    override fun onClockActivityToggle(result: ProjectsItemAdapterResult) {
+    private fun onClockActivityToggle(result: ProjectsItemAdapterResult) {
         launch {
             val projectsItem = result.projectsItem
             if (!projectsItem.isActive) {
@@ -253,7 +236,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener {
         }
     }
 
-    override fun onClockActivityAt(result: ProjectsItemAdapterResult) {
+    private fun onClockActivityAt(result: ProjectsItemAdapterResult) {
         val projectsItem = result.projectsItem
         val fragment = ClockActivityAtFragment.newInstance(
                 projectsItem
@@ -273,7 +256,7 @@ class ProjectsFragment : CoroutineScopedFragment(), OnProjectActionListener {
                 .commit()
     }
 
-    override fun onDelete(result: ProjectsItemAdapterResult) {
+    private fun onDelete(result: ProjectsItemAdapterResult) {
         launch {
             val confirmAction = RemoveProjectDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
