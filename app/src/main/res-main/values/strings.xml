@@ -13,6 +13,8 @@
     <string name="menu_actions_project_timesheet_register">Mark as registered</string>
     <string name="menu_actions_project_timesheet_delete">Delete</string>
 
+    <string name="projects_empty_text">You haven\'t created\na project yet…</string>
+
     <string name="fragment_projects_item_clocked_in_since" formatted="false">Since %s (%s)</string>
     <string name="fragment_projects_item_clock_in">Clock in %s</string>
     <string name="fragment_projects_item_clock_in_at">Clock in %s at</string>
