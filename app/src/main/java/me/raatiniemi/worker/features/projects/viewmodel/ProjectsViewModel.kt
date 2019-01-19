@@ -76,7 +76,6 @@ internal class ProjectsViewModel(
 
     init {
         val config = PagedList.Config.Builder()
-                .setInitialLoadSizeHint(1)
                 .setPageSize(10)
                 .setEnablePlaceholders(true)
                 .build()
