@@ -1,1 +1,3 @@
 add ripple effects to project actions.
+convert project list to kotlin and views to constraint layout.
+support infinite scroll in project list.
