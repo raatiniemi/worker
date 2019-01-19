@@ -17,17 +17,23 @@
 package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
 import me.raatiniemi.worker.domain.exception.NoProjectIdException
-import me.raatiniemi.worker.domain.interactor.*
+import me.raatiniemi.worker.domain.interactor.ClockIn
+import me.raatiniemi.worker.domain.interactor.ClockOut
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
+import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
@@ -39,7 +45,7 @@ import java.util.*
 
 internal class ProjectsViewModel(
         private val keyValueStore: KeyValueStore,
-        private val getProjects: GetProjects,
+        projectRepository: ProjectRepository,
         private val getProjectTimeSince: GetProjectTimeSince,
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
@@ -61,24 +67,27 @@ internal class ProjectsViewModel(
             }
         }
 
-    private val _projects = MutableLiveData<List<ProjectsItem>>()
-    val projects: LiveData<List<ProjectsItem>> = _projects
+    val projects: LiveData<PagedList<ProjectsItem>>
+
+    private val factory = ProjectDataSourceFactory(projectRepository)
+            .map { buildProjectsItem(it) }
 
     val viewActions = ConsumableLiveData<ProjectsViewActions>()
 
-    suspend fun loadProjects() = withContext(Dispatchers.IO) {
-        try {
-            val projects = getProjects()
-                    .map { project ->
-                        val registeredTime = loadRegisteredTimeForProject(project)
+    init {
+        val config = PagedList.Config.Builder()
+                .setInitialLoadSizeHint(1)
+                .setPageSize(10)
+                .setEnablePlaceholders(true)
+                .build()
 
-                        ProjectsItem(project, registeredTime)
-                    }
+        projects = LivePagedListBuilder(factory, config).build()
+    }
 
-            _projects.postValue(projects)
-        } catch (e: DomainException) {
-            viewActions.postValue(ProjectsViewActions.ShowUnableToGetProjectsErrorMessage)
-        }
+    private fun buildProjectsItem(project: Project): ProjectsItem {
+        val registeredTime = loadRegisteredTimeForProject(project)
+
+        return ProjectsItem(project, registeredTime)
     }
 
     private fun loadRegisteredTimeForProject(project: Project): List<TimeInterval> {
@@ -90,8 +99,15 @@ internal class ProjectsViewModel(
         }
     }
 
-    suspend fun refreshActiveProjects(projects: List<ProjectsItem>) = withContext(Dispatchers.Default) {
-        val positions = projects.filter { it.isActive }
+    fun reloadProjects() {
+        projects.value?.run {
+            dataSource.invalidate()
+        }
+    }
+
+    suspend fun refreshActiveProjects(projects: List<ProjectsItem?>) = withContext(Dispatchers.Default) {
+        val positions = projects.filterNotNull()
+                .filter { it.isActive }
                 .map { projects.indexOf(it) }
 
         if (positions.isEmpty()) {
@@ -109,8 +125,8 @@ internal class ProjectsViewModel(
 
             clockIn.execute(projectId, date)
 
-            val viewAction = ProjectsViewActions.UpdateProject(rebuildResult(result))
-            viewActions.postValue(viewAction)
+            viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
+            reloadProjects()
         } catch (e: Exception) {
             viewActions.postValue(ProjectsViewActions.ShowUnableToClockInErrorMessage)
         }
@@ -123,30 +139,22 @@ internal class ProjectsViewModel(
 
             clockOut.execute(projectId, date)
 
-            val viewAction = ProjectsViewActions.UpdateProject(rebuildResult(result))
-            viewActions.postValue(viewAction)
+            viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
+            reloadProjects()
         } catch (e: Exception) {
             viewActions.postValue(ProjectsViewActions.ShowUnableToClockOutErrorMessage)
         }
     }
 
-    private fun rebuildResult(result: ProjectsItemAdapterResult): ProjectsItemAdapterResult {
-        val project = result.project
-        val registeredTime = getProjectTimeSince(project, startingPoint)
-
-        return result.copy(projectsItem = ProjectsItem(project, registeredTime))
-    }
-
     suspend fun remove(result: ProjectsItemAdapterResult) = withContext(Dispatchers.IO) {
         try {
-            val (_, projectsItem) = result
+            removeProject(result.project)
 
-            removeProject(projectsItem.asProject())
+            reloadProjects()
         } catch (e: NoProjectIdException) {
             Timber.w(e, "Unable to remove project without id")
         } catch (e: Exception) {
-            val viewAction = ProjectsViewActions.RestoreProject(result)
-            viewActions.postValue(viewAction)
+            viewActions.postValue(ProjectsViewActions.ShowUnableToDeleteProjectErrorMessage)
         }
     }
 }

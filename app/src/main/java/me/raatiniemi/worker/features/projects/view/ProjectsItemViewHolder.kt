@@ -31,4 +31,11 @@ internal class ProjectsItemViewHolder(view: View) : RecyclerView.ViewHolder(view
     val delete: AppCompatImageButton = view.findViewById(R.id.ibDelete)
 
     val clockedInSince: AppCompatTextView = view.findViewById(R.id.tvClockedInSince)
+
+    fun clearValues() {
+        name.text = null
+        time.text = null
+
+        clockedInSince.text = null
+    }
 }

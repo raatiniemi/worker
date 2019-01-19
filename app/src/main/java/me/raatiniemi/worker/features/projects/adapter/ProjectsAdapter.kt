@@ -18,20 +18,22 @@ package me.raatiniemi.worker.features.projects.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
 import me.raatiniemi.worker.features.projects.view.ProjectsItemViewHolder
-import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter
 import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.util.HintedImageButtonListener
 
 internal class ProjectsAdapter(
         private val consumer: ProjectsActionConsumer,
         private val hintedImageButtonListener: HintedImageButtonListener
-) : SimpleListAdapter<ProjectsItem, ProjectsItemViewHolder>() {
+) : PagedListAdapter<ProjectsItem, ProjectsItemViewHolder>(projectsDiffCallback) {
+    operator fun get(position: Int) = getItem(position)
+
     override fun getItemViewType(position: Int): Int {
         return R.layout.fragment_projects_item
     }
@@ -44,7 +46,12 @@ internal class ProjectsAdapter(
     }
 
     override fun onBindViewHolder(vh: ProjectsItemViewHolder, index: Int) {
-        val item = get(index)
+        val item = getItem(index)
+        if (item == null) {
+            vh.clearValues()
+            return
+        }
+
         val result = ProjectsItemAdapterResult(index, item)
 
         vh.apply {

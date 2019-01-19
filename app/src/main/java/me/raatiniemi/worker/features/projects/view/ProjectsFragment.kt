@@ -25,12 +25,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
-import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
@@ -89,7 +86,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
 
         configureView()
         observeViewModel()
-        loadProjectsViaViewModel()
     }
 
     private fun configureView() {
@@ -101,8 +97,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
 
     private fun observeViewModel() {
         projectsViewModel.projects.observe(this, Observer {
-            projectsAdapter.clear()
-            projectsAdapter.add(it)
+            projectsAdapter.submitList(it)
         })
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
@@ -113,22 +108,8 @@ class ProjectsFragment : CoroutineScopedFragment() {
     private fun processViewAction(viewAction: ProjectsViewActions) {
         when (viewAction) {
             is ProjectsViewActions.RefreshProjects -> viewAction.action(projectsAdapter)
-            is ProjectsViewActions.UpdateProject -> {
-                updateNotificationForProject(viewAction.result.projectsItem)
-                updateProject(viewAction.result)
-            }
-            is ProjectsViewActions.RestoreProject -> {
-                restoreProjectAtPreviousPosition(viewAction.result)
-                viewAction.action(requireActivity())
-            }
             is ViewAction -> viewAction.action(requireActivity())
             else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
-        }
-    }
-
-    private fun loadProjectsViaViewModel() {
-        launch {
-            projectsViewModel.loadProjects()
         }
     }
 
@@ -144,7 +125,9 @@ class ProjectsFragment : CoroutineScopedFragment() {
         refreshActiveProjectsTimer = Timer()
         refreshActiveProjectsTimer?.schedule(Date(), 60_000) {
             launch {
-                projectsViewModel.refreshActiveProjects(projectsAdapter.items)
+                val projects = projectsAdapter.currentList ?: return@launch
+
+                projectsViewModel.refreshActiveProjects(projects)
             }
         }
     }
@@ -168,45 +151,17 @@ class ProjectsFragment : CoroutineScopedFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: CreateProjectEvent) {
-        addCreatedProject(event.project)
-    }
-
-    private fun addCreatedProject(project: Project) {
-        val item = ProjectsItem(project, emptyList())
-        val position = projectsAdapter.add(item)
-
-        rvProjects.scrollToPosition(position)
+        projectsViewModel.reloadProjects()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        loadProjectsViaViewModel()
+        projectsViewModel.reloadProjects()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
-        loadProjectsViaViewModel()
-    }
-
-    private fun updateNotificationForProject(project: ProjectsItem) {
-        ProjectNotificationService.startServiceWithContext(
-                requireActivity(),
-                project.asProject()
-        )
-    }
-
-    private fun updateProject(result: ProjectsItemAdapterResult) {
-        projectsAdapter.set(result.position, result.projectsItem)
-    }
-
-    private fun deleteProjectAtPosition(position: Int) {
-        projectsAdapter.remove(position)
-    }
-
-    private fun restoreProjectAtPreviousPosition(result: ProjectsItemAdapterResult) {
-        projectsAdapter.add(result.position, result.projectsItem)
-
-        rvProjects.scrollToPosition(result.position)
+        projectsViewModel.reloadProjects()
     }
 
     private fun onItemClick(result: ProjectsItemAdapterResult) {
@@ -260,8 +215,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
         launch {
             val confirmAction = RemoveProjectDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
-                deleteProjectAtPosition(result.position)
-
                 projectsViewModel.remove(result)
             }
         }
