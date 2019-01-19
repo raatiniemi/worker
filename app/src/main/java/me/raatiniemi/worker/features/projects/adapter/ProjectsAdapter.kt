@@ -25,7 +25,6 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
 import me.raatiniemi.worker.features.projects.view.ProjectsItemViewHolder
-import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.util.HintedImageButtonListener
 
 internal class ProjectsAdapter(
@@ -53,53 +52,32 @@ internal class ProjectsAdapter(
         }
 
         val result = ProjectsItemAdapterResult(index, item)
-
         vh.apply {
-            name.text = item.title
-            time.text = item.timeSummary
-
-            val resources = vh.itemView.resources
-            clockedInSince.text = item.getClockedInSince(resources)
-            clockedInSince.visibleIf { item.isActive }
-
-            with(clockActivityToggle) {
-                contentDescription = if (item.isActive) {
-                    resources.getString(R.string.fragment_projects_item_clock_out, item.title)
-                } else {
-                    resources.getString(R.string.fragment_projects_item_clock_in, item.title)
-                }
-
-                setOnLongClickListener(hintedImageButtonListener)
-                isActivated = item.isActive
-            }
-
-            with(clockActivityAt) {
-                contentDescription = if (item.isActive) {
-                    resources.getString(R.string.fragment_projects_item_clock_out_at, item.title)
-                } else {
-                    resources.getString(R.string.fragment_projects_item_clock_in_at, item.title)
-                }
-
-                setOnLongClickListener(hintedImageButtonListener)
-            }
-
-            with(delete) {
-                contentDescription = resources.getString(R.string.fragment_projects_item_delete, item.title)
-
-                setOnLongClickListener(hintedImageButtonListener)
-            }
+            bind(item)
 
             itemView.setOnClickListener {
                 consumer.accept(ProjectsAction.Open(result))
             }
-            clockActivityToggle.setOnClickListener {
-                consumer.accept(ProjectsAction.Toggle(result))
+
+            with(clockActivityToggle) {
+                setOnClickListener {
+                    consumer.accept(ProjectsAction.Toggle(result))
+                }
+                setOnLongClickListener(hintedImageButtonListener)
             }
-            clockActivityAt.setOnClickListener {
-                consumer.accept(ProjectsAction.At(result))
+
+            with(clockActivityAt) {
+                setOnClickListener {
+                    consumer.accept(ProjectsAction.At(result))
+                }
+                setOnLongClickListener(hintedImageButtonListener)
             }
-            delete.setOnClickListener {
-                consumer.accept(ProjectsAction.Remove(result))
+
+            with(delete) {
+                setOnClickListener {
+                    consumer.accept(ProjectsAction.Remove(result))
+                }
+                setOnLongClickListener(hintedImageButtonListener)
             }
         }
     }

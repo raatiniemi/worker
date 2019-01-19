@@ -21,16 +21,49 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.projects.model.ProjectsItem
+import me.raatiniemi.worker.features.shared.view.visibleIf
 
 internal class ProjectsItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val name: AppCompatTextView = view.findViewById(R.id.tvName)
-    val time: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
+    private val name: AppCompatTextView = view.findViewById(R.id.tvName)
+    private val time: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
 
     val clockActivityToggle: AppCompatImageButton = view.findViewById(R.id.ibClockActivityToggle)
     val clockActivityAt: AppCompatImageButton = view.findViewById(R.id.ibClockActivityAt)
     val delete: AppCompatImageButton = view.findViewById(R.id.ibDelete)
 
-    val clockedInSince: AppCompatTextView = view.findViewById(R.id.tvClockedInSince)
+    private val clockedInSince: AppCompatTextView = view.findViewById(R.id.tvClockedInSince)
+
+    fun bind(projectsItem: ProjectsItem) {
+        val resources = itemView.resources
+
+        name.text = projectsItem.title
+        time.text = projectsItem.timeSummary
+
+        with(clockActivityToggle) {
+            isActivated = projectsItem.isActive
+            contentDescription = if (projectsItem.isActive) {
+                resources.getString(R.string.fragment_projects_item_clock_out, projectsItem.title)
+            } else {
+                resources.getString(R.string.fragment_projects_item_clock_in, projectsItem.title)
+            }
+        }
+
+        with(clockActivityAt) {
+            contentDescription = if (projectsItem.isActive) {
+                resources.getString(R.string.fragment_projects_item_clock_out_at, projectsItem.title)
+            } else {
+                resources.getString(R.string.fragment_projects_item_clock_in_at, projectsItem.title)
+            }
+        }
+
+        with(delete) {
+            contentDescription = resources.getString(R.string.fragment_projects_item_delete, projectsItem.title)
+        }
+
+        clockedInSince.visibleIf { projectsItem.isActive }
+        clockedInSince.text = projectsItem.getClockedInSince(resources)
+    }
 
     fun clearValues() {
         name.text = null
