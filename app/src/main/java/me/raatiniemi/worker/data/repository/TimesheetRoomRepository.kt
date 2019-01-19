@@ -26,7 +26,7 @@ import me.raatiniemi.worker.domain.repository.PageRequest
 import me.raatiniemi.worker.domain.repository.TimesheetRepository
 import java.util.*
 
-class TimesheetRoomRepository(
+internal class TimesheetRoomRepository(
         private val timesheet: TimesheetDao,
         private val timeIntervals: TimeIntervalDao
 ) : TimesheetRepository {

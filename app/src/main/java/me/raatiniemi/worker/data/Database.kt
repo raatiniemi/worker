@@ -28,7 +28,7 @@ import me.raatiniemi.worker.data.projects.*
         version = 3,
         exportSchema = true
 )
-abstract class Database : RoomDatabase() {
+internal abstract class Database : RoomDatabase() {
     abstract fun projects(): ProjectDao
     abstract fun timeIntervals(): TimeIntervalDao
     abstract fun timesheet(): TimesheetDao

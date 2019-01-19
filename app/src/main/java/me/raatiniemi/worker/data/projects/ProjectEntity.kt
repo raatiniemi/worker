@@ -20,14 +20,22 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import me.raatiniemi.worker.domain.model.Project
 
 @Entity(
         tableName = "projects",
         indices = [Index(value = ["name"], unique = true)]
 )
-data class ProjectEntity(
+internal data class ProjectEntity(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "_id")
         val id: Long = 0,
         val name: String
+) {
+    fun toProject() = Project(id = id, name = name)
+}
+
+internal fun Project.toEntity() = ProjectEntity(
+        id = id ?: 0,
+        name = name
 )

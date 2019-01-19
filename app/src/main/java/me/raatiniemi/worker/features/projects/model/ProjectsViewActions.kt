@@ -19,23 +19,18 @@ package me.raatiniemi.worker.features.projects.model
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.shared.model.ViewAction
 import timber.log.Timber
 
 internal sealed class ProjectsViewActions {
-    object ShowUnableToGetProjectsErrorMessage : ProjectsViewActions(), ViewAction {
+    data class UpdateNotification(val project: Project) : ProjectsViewActions(), ViewAction {
         override fun action(activity: FragmentActivity) {
-            val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
-                    R.string.error_message_get_projects,
-                    Snackbar.LENGTH_SHORT
-            )
-            snackBar.show()
+            ProjectNotificationService.startServiceWithContext(activity, project)
         }
     }
-
-    data class UpdateProject(val result: ProjectsItemAdapterResult) : ProjectsViewActions()
 
     object ShowUnableToClockInErrorMessage : ProjectsViewActions(), ViewAction {
         override fun action(activity: FragmentActivity) {
@@ -59,7 +54,7 @@ internal sealed class ProjectsViewActions {
         }
     }
 
-    data class RestoreProject(val result: ProjectsItemAdapterResult) : ProjectsViewActions(), ViewAction {
+    object ShowUnableToDeleteProjectErrorMessage : ProjectsViewActions(), ViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),

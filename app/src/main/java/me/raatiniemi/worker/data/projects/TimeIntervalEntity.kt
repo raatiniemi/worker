@@ -34,7 +34,7 @@ import me.raatiniemi.worker.domain.model.TimeInterval
             Index(name = "index_project_id", value = ["project_id"])
         ]
 )
-data class TimeIntervalEntity(
+internal data class TimeIntervalEntity(
         @PrimaryKey(autoGenerate = true)
         @ColumnInfo(name = "_id")
         val id: Long = 0,
@@ -46,7 +46,7 @@ data class TimeIntervalEntity(
         val stopInMilliseconds: Long = 0,
         val registered: Long = 0
 ) {
-    internal fun toTimeInterval() = TimeInterval(
+    fun toTimeInterval() = TimeInterval(
             id = id,
             projectId = projectId,
             startInMilliseconds = startInMilliseconds,

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects
+package me.raatiniemi.worker.domain.repository
 
-internal data class TimesheetDay(val dateInMilliseconds: Long, val ids: String) {
-    val timeIntervalIds: List<Long>
-        get() = ids.split(",")
-                .map { it.toLongOrNull() }
-                .mapNotNull { it }
+/**
+ * Use index unless it's above count, in which count will be used.
+ */
+internal fun indexWithCountCap(index: Int, count: Int): Int {
+    return if (index > count) {
+        count
+    } else {
+        index
+    }
 }

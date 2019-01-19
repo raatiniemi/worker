@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +14,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.model
+package me.raatiniemi.worker.features.projects.view
 
-import me.raatiniemi.worker.domain.model.Project
-import org.junit.Assert.assertEquals
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import me.raatiniemi.worker.features.projects.model.ProjectsAction
 
-@RunWith(JUnit4::class)
-class ProjectsItemGetHelpTextForDeleteTest : ProjectsItemResourceTest() {
-    @Test
-    fun getHelpTextForDelete() {
-        val project = Project.from("project #1")
-        val projectsItem = ProjectsItem(project, emptyList())
-
-        assertEquals("Delete %s", projectsItem.getHelpTextForDelete(resources))
-    }
+@FunctionalInterface
+internal interface ProjectsActionConsumer {
+    fun accept(action: ProjectsAction)
 }

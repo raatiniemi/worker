@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -31,38 +31,36 @@ import java.util.*
 @RunWith(JUnit4::class)
 class ClockInTest {
     private lateinit var repository: TimeIntervalRepository
-    private lateinit var useCase: ClockIn
+    private lateinit var clockIn: ClockIn
 
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        useCase = ClockIn(repository)
+        clockIn = ClockIn(repository)
     }
 
     @Test(expected = ActiveProjectException::class)
     fun execute_withActiveTime() {
-        val timeInterval = TimeInterval.builder(1)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(0)
-                .build()
-        repository.add(timeInterval)
+        repository.add(
+                timeInterval {
+                    startInMilliseconds = 1
+                }
+        )
 
-        useCase.execute(1, Date())
+        clockIn(1, Date())
     }
 
     @Test
     fun execute() {
         val date = Date()
         val expected = listOf(
-                TimeInterval.builder(1)
-                        .id(1)
-                        .startInMilliseconds(date.time)
-                        .stopInMilliseconds(0)
-                        .build()
+                timeInterval {
+                    id = 1
+                    startInMilliseconds = date.time
+                }
         )
 
-        useCase.execute(1, date)
+        clockIn(1, date)
 
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(expected, actual)

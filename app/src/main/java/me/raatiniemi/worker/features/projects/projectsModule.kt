@@ -24,7 +24,6 @@ import org.koin.dsl.module.module
 
 val projectsModule = module {
     viewModel {
-        val getProjects = GetProjects(get())
         val getProjectTimeSince = GetProjectTimeSince(get())
         val clockIn = ClockIn(get())
         val clockOut = ClockOut(get())
@@ -32,7 +31,7 @@ val projectsModule = module {
 
         ProjectsViewModel(
                 keyValueStore = get(),
-                getProjects = getProjects,
+                projectRepository = get(),
                 getProjectTimeSince = getProjectTimeSince,
                 clockIn = clockIn,
                 clockOut = clockOut,

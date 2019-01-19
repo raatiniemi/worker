@@ -16,62 +16,67 @@
 
 package me.raatiniemi.worker.features.projects.adapter
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
-import me.raatiniemi.worker.features.projects.view.OnProjectActionListener
-import me.raatiniemi.worker.features.projects.view.ProjectsItemViewHolder
-import me.raatiniemi.worker.features.shared.view.adapter.SimpleListAdapter
+import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
+import me.raatiniemi.worker.features.projects.view.ViewHolder
 import me.raatiniemi.worker.util.HintedImageButtonListener
 
 internal class ProjectsAdapter(
-        private val resources: Resources,
-        private val onProjectActionListener: OnProjectActionListener,
+        private val consumer: ProjectsActionConsumer,
         private val hintedImageButtonListener: HintedImageButtonListener
-) : SimpleListAdapter<ProjectsItem, ProjectsItemViewHolder>() {
+) : PagedListAdapter<ProjectsItem, ViewHolder>(projectsDiffCallback) {
+    operator fun get(position: Int) = getItem(position)
+
     override fun getItemViewType(position: Int): Int {
         return R.layout.fragment_projects_item
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ProjectsItemViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
         val view = inflater.inflate(viewType, viewGroup, false)
 
-        return ProjectsItemViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(vh: ProjectsItemViewHolder, index: Int) {
-        val item = get(index)
+    override fun onBindViewHolder(vh: ViewHolder, index: Int) {
+        val item = getItem(index)
+        if (item == null) {
+            vh.clearValues()
+            return
+        }
+
         val result = ProjectsItemAdapterResult(index, item)
-
         vh.apply {
-            name.text = item.title
-            time.text = item.timeSummary
+            bind(item)
 
-            clockedInSince.text = item.getClockedInSince(resources)
-            item.setVisibilityForClockedInSinceView(clockedInSince)
-
-            itemView.setOnClickListener(onClickListener)
+            itemView.setOnClickListener {
+                consumer.accept(ProjectsAction.Open(result))
+            }
 
             with(clockActivityToggle) {
-                contentDescription = item.getHelpTextForClockActivityToggle(resources)
-                setOnClickListener { onProjectActionListener.onClockActivityToggle(result) }
+                setOnClickListener {
+                    consumer.accept(ProjectsAction.Toggle(result))
+                }
                 setOnLongClickListener(hintedImageButtonListener)
-                isActivated = item.isActive
             }
 
             with(clockActivityAt) {
-                contentDescription = item.getHelpTextForClockActivityAt(resources)
-                setOnClickListener { onProjectActionListener.onClockActivityAt(result) }
+                setOnClickListener {
+                    consumer.accept(ProjectsAction.At(result))
+                }
                 setOnLongClickListener(hintedImageButtonListener)
             }
 
             with(delete) {
-                contentDescription = item.getHelpTextForDelete(resources)
-                setOnClickListener { onProjectActionListener.onDelete(result) }
+                setOnClickListener {
+                    consumer.accept(ProjectsAction.Remove(result))
+                }
                 setOnLongClickListener(hintedImageButtonListener)
             }
         }

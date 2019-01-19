@@ -30,3 +30,15 @@ fun View.onClick(action: suspend () -> Unit) {
         }
     }
 }
+
+fun View.visibleIf(defaultVisibility: Int = View.INVISIBLE, predicate: () -> Boolean) {
+    if (defaultVisibility != View.INVISIBLE && defaultVisibility != View.GONE) {
+        throw IllegalArgumentException("defaultVisibility needs to be either `View.GONE` or `View.INVISIBLE`")
+    }
+
+    visibility = if (predicate()) {
+        View.VISIBLE
+    } else {
+        defaultVisibility
+    }
+}

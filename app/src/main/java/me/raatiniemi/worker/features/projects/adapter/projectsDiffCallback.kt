@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,11 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects
+package me.raatiniemi.worker.features.projects.adapter
 
-internal data class TimesheetDay(val dateInMilliseconds: Long, val ids: String) {
-    val timeIntervalIds: List<Long>
-        get() = ids.split(",")
-                .map { it.toLongOrNull() }
-                .mapNotNull { it }
+import androidx.recyclerview.widget.DiffUtil
+import me.raatiniemi.worker.features.projects.model.ProjectsItem
+
+internal val projectsDiffCallback = object : DiffUtil.ItemCallback<ProjectsItem>() {
+    override fun areItemsTheSame(old: ProjectsItem, new: ProjectsItem) = old.title == new.title
+
+    override fun areContentsTheSame(old: ProjectsItem, new: ProjectsItem) = old == new
 }

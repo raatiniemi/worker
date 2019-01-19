@@ -37,8 +37,6 @@
     <string name="confirm_delete_time_title">Delete time</string>
     <string name="confirm_delete_time_message">Are you sure you want to delete the registered time?</string>
 
-    <string name="error_message_get_projects">Failed to retrieve projects.</string>
-
     <string name="message_project_created">New project have been created</string>
     <string name="error_message_project_deleted">Failed to delete project.</string>
 
@@ -100,8 +98,6 @@
     <string name="error_message_unknown">An unknown error has occurred</string>
     <string name="error_message_project_name_missing">You have to supply a name</string>
     <string name="error_message_project_name_already_exists">Project name already exists</string>
-
-    <string name="error_message_unable_to_find_project">Unable to find project.</string>
 
     <string name="error_message_preference_screen_not_implemented">Preference screen is not implemented.</string>
     <string name="error_message_preference_not_implemented">Preference is not implemented.</string>

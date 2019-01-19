@@ -17,8 +17,6 @@
 package me.raatiniemi.worker.features.projects.model
 
 import android.content.res.Resources
-import android.view.View
-import android.widget.TextView
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
@@ -27,7 +25,7 @@ import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProjectsItem(private val project: Project, registeredTime: List<TimeInterval>) {
+data class ProjectsItem(private val project: Project, private val registeredTime: List<TimeInterval>) {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
     private val registeredTimeSummary: Long
     private val activeTimeInterval: TimeInterval?
@@ -65,26 +63,6 @@ class ProjectsItem(private val project: Project, registeredTime: List<TimeInterv
         return registeredTimeSummary + activeTimeInterval.interval
     }
 
-    fun getHelpTextForClockActivityToggle(resources: Resources): String {
-        return resources.run {
-            if (isActive) {
-                getString(R.string.fragment_projects_item_clock_out, project.name)
-            } else getString(R.string.fragment_projects_item_clock_in, project.name)
-        }
-    }
-
-    fun getHelpTextForClockActivityAt(resources: Resources): String {
-        return resources.run {
-            if (isActive) {
-                getString(R.string.fragment_projects_item_clock_out_at, project.name)
-            } else getString(R.string.fragment_projects_item_clock_in_at, project.name)
-        }
-    }
-
-    fun getHelpTextForDelete(resources: Resources): String {
-        return resources.getString(R.string.fragment_projects_item_delete, project.name)
-    }
-
     fun getClockedInSince(resources: Resources): String? {
         val activeTimeInterval = this.activeTimeInterval ?: return null
 
@@ -94,34 +72,6 @@ class ProjectsItem(private val project: Project, registeredTime: List<TimeInterv
                 formattedClockedInSince,
                 formattedElapsedTime(activeTimeInterval.interval)
         )
-    }
-
-    fun setVisibilityForClockedInSinceView(clockedInSinceView: TextView) {
-        if (isActive) {
-            showTextView(clockedInSinceView)
-            return
-        }
-
-        hideTextView(clockedInSinceView)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other === this) {
-            return true
-        }
-
-        if (other !is ProjectsItem) {
-            return false
-        }
-
-        return project == other.project
-    }
-
-    override fun hashCode(): Int {
-        var result = 17
-        result = 31 * result + project.hashCode()
-
-        return result
     }
 
     companion object {
@@ -137,14 +87,6 @@ class ProjectsItem(private val project: Project, registeredTime: List<TimeInterv
 
         private fun formattedElapsedTime(elapsedTimeInMilliseconds: Long): String {
             return intervalFormat.format(elapsedTimeInMilliseconds)
-        }
-
-        private fun showTextView(textView: TextView) {
-            textView.visibility = View.VISIBLE
-        }
-
-        private fun hideTextView(textView: TextView) {
-            textView.visibility = View.GONE
         }
 
         private fun getClockedInSinceFormatTemplate(resources: Resources): String {

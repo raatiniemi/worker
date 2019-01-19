@@ -62,7 +62,7 @@ public class PauseService extends OngoingService {
     private void clockOutProjectNow(long projectId) {
         try {
             ClockOut clockOut = buildClockOutUseCase();
-            clockOut.execute(projectId, new Date());
+            clockOut.invoke(projectId, new Date());
         } catch (InactiveProjectException e) {
             Timber.e(e, "Pause service called with inactive project");
         }

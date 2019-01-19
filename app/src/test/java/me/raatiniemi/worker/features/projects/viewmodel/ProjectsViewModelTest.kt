@@ -47,7 +47,6 @@ class ProjectsViewModelTest {
     private val projectRepository = ProjectInMemoryRepository()
     private val timeIntervalRepository = TimeIntervalInMemoryRepository()
 
-    private lateinit var getProjects: GetProjects
     private lateinit var getProjectTimeSince: GetProjectTimeSince
     private lateinit var clockIn: ClockIn
     private lateinit var clockOut: ClockOut
@@ -58,61 +57,18 @@ class ProjectsViewModelTest {
 
     @Before
     fun setUp() {
-        getProjects = GetProjects(projectRepository)
         getProjectTimeSince = GetProjectTimeSince(timeIntervalRepository)
         clockIn = ClockIn(timeIntervalRepository)
         clockOut = ClockOut(timeIntervalRepository)
         removeProject = RemoveProject(projectRepository)
         vm = ProjectsViewModel(
                 keyValueStore,
-                getProjects,
+                projectRepository,
                 getProjectTimeSince,
                 clockIn,
                 clockOut,
                 removeProject
         )
-    }
-
-    @Test
-    fun `load projects without projects`() = runBlocking {
-        vm.loadProjects()
-
-        vm.projects.observeForever {
-            assertEquals(emptyList<ProjectsItem>(), it)
-        }
-    }
-
-    @Test
-    fun `load projects with project`() = runBlocking {
-        val project = Project.from("Project #1")
-        projectRepository.add(project)
-        val expected = listOf(
-                ProjectsItem(project.copy(id = 1), emptyList())
-        )
-
-        vm.loadProjects()
-
-        vm.projects.observeForever {
-            assertEquals(expected, it)
-        }
-    }
-
-    @Test
-    fun `load projects with projects`() = runBlocking {
-        val project1 = Project.from("Project #1")
-        val project2 = Project.from("Project #2")
-        projectRepository.add(project1)
-        projectRepository.add(project2)
-        val expected = listOf(
-                ProjectsItem(project1.copy(id = 1), emptyList()),
-                ProjectsItem(project2.copy(id = 2), emptyList())
-        )
-
-        vm.loadProjects()
-
-        vm.projects.observeForever {
-            assertEquals(expected, it)
-        }
     }
 
     private fun getProjectsItem(project: Project, isActive: Boolean = false): ProjectsItem {
@@ -204,11 +160,7 @@ class ProjectsViewModelTest {
         vm.clockIn(result, Date())
 
         vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.UpdateProject)
-
-            if (it is ProjectsViewActions.UpdateProject) {
-                assertActiveState(it.result, true)
-            }
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -221,11 +173,7 @@ class ProjectsViewModelTest {
         vm.clockIn(result, Date())
 
         vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.UpdateProject)
-
-            if (it is ProjectsViewActions.UpdateProject) {
-                assertActiveState(it.result, true)
-            }
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -238,11 +186,7 @@ class ProjectsViewModelTest {
         vm.clockIn(result, Date())
 
         vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.UpdateProject)
-
-            if (it is ProjectsViewActions.UpdateProject) {
-                assertActiveState(it.result, true)
-            }
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -255,11 +199,7 @@ class ProjectsViewModelTest {
         vm.clockIn(result, Date())
 
         vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.UpdateProject)
-
-            if (it is ProjectsViewActions.UpdateProject) {
-                assertActiveState(it.result, true)
-            }
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -300,11 +240,7 @@ class ProjectsViewModelTest {
         vm.clockOut(result, Date())
 
         vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.UpdateProject)
-
-            if (it is ProjectsViewActions.UpdateProject) {
-                assertActiveState(it.result, false)
-            }
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -321,11 +257,7 @@ class ProjectsViewModelTest {
         vm.clockOut(result, Date())
 
         vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.UpdateProject)
-
-            if (it is ProjectsViewActions.UpdateProject) {
-                assertActiveState(it.result, false)
-            }
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -342,11 +274,7 @@ class ProjectsViewModelTest {
         vm.clockOut(result, Date())
 
         vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.UpdateProject)
-
-            if (it is ProjectsViewActions.UpdateProject) {
-                assertActiveState(it.result, false)
-            }
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -363,18 +291,8 @@ class ProjectsViewModelTest {
         vm.clockOut(result, Date())
 
         vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.UpdateProject)
-
-            if (it is ProjectsViewActions.UpdateProject) {
-                assertActiveState(it.result, false)
-            }
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
-    }
-
-    private fun assertActiveState(result: ProjectsItemAdapterResult, expected: Boolean) {
-        val projectsItem = result.projectsItem
-
-        assertEquals(expected, projectsItem.isActive)
     }
 
     @Test

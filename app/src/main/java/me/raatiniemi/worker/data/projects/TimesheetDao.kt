@@ -20,7 +20,7 @@ import androidx.room.Dao
 import androidx.room.Query
 
 @Dao
-interface TimesheetDao {
+internal interface TimesheetDao {
     @Query("""SELECT
         MIN(start_in_milliseconds) AS dateInMilliseconds,
         GROUP_CONCAT(_id) as ids

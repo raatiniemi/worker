@@ -62,7 +62,7 @@ public class ResumeService extends OngoingService {
     private void clockInProjectNow(long projectId) {
         try {
             ClockIn clockIn = buildClockInUseCase();
-            clockIn.execute(projectId, new Date());
+            clockIn.invoke(projectId, new Date());
         } catch (ActiveProjectException e) {
             Timber.e(e, "Resume service called with active project");
         }
