@@ -123,7 +123,7 @@ internal class ProjectsViewModel(
             val project = result.project
             val projectId = project.id ?: throw NoProjectIdException()
 
-            clockIn.execute(projectId, date)
+            clockIn(projectId, date)
 
             viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
             reloadProjects()
