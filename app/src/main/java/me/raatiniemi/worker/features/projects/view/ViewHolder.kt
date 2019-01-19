@@ -24,7 +24,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.shared.view.visibleIf
 
-internal class ProjectsItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val name: AppCompatTextView = view.findViewById(R.id.tvName)
     private val time: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
 

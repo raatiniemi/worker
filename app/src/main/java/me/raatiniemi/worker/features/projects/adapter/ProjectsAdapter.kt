@@ -24,27 +24,27 @@ import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
-import me.raatiniemi.worker.features.projects.view.ProjectsItemViewHolder
+import me.raatiniemi.worker.features.projects.view.ViewHolder
 import me.raatiniemi.worker.util.HintedImageButtonListener
 
 internal class ProjectsAdapter(
         private val consumer: ProjectsActionConsumer,
         private val hintedImageButtonListener: HintedImageButtonListener
-) : PagedListAdapter<ProjectsItem, ProjectsItemViewHolder>(projectsDiffCallback) {
+) : PagedListAdapter<ProjectsItem, ViewHolder>(projectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.fragment_projects_item
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ProjectsItemViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(viewGroup.context)
         val view = inflater.inflate(viewType, viewGroup, false)
 
-        return ProjectsItemViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(vh: ProjectsItemViewHolder, index: Int) {
+    override fun onBindViewHolder(vh: ViewHolder, index: Int) {
         val item = getItem(index)
         if (item == null) {
             vh.clearValues()
