@@ -18,7 +18,7 @@ package me.raatiniemi.worker.features.projects.model
 
 import me.raatiniemi.worker.domain.model.Project
 
-data class ProjectsItemAdapterResult(val position: Int, val projectsItem: ProjectsItem) {
+internal data class ProjectsItemAdapterResult(val position: Int, val projectsItem: ProjectsItem) {
     val project: Project
         get() = projectsItem.asProject()
 }

@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.model
 
-sealed class ProjectsAction(val result: ProjectsItemAdapterResult) {
+internal sealed class ProjectsAction(val result: ProjectsItemAdapterResult) {
     class Open(result: ProjectsItemAdapterResult) : ProjectsAction(result)
     class Toggle(result: ProjectsItemAdapterResult) : ProjectsAction(result)
     class At(result: ProjectsItemAdapterResult) : ProjectsAction(result)

@@ -19,6 +19,6 @@ package me.raatiniemi.worker.features.projects.view
 import me.raatiniemi.worker.features.projects.model.ProjectsAction
 
 @FunctionalInterface
-interface ProjectsActionConsumer {
+internal interface ProjectsActionConsumer {
     fun accept(action: ProjectsAction)
 }
