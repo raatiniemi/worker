@@ -37,6 +37,7 @@ import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
+import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import me.raatiniemi.worker.util.KeyValueStore
 import org.greenrobot.eventbus.EventBus
@@ -98,6 +99,8 @@ class ProjectsFragment : CoroutineScopedFragment() {
     private fun observeViewModel() {
         projectsViewModel.projects.observe(this, Observer {
             projectsAdapter.submitList(it)
+
+            tvEmptyProjects.visibleIf { it.isEmpty() }
         })
 
         projectsViewModel.viewActions.observeAndConsume(this, Observer {
