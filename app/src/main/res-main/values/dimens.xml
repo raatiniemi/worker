@@ -10,8 +10,4 @@
     <dimen name="expandable_group_item_padding_right">12dp</dimen>
     <dimen name="expandable_group_item_letter_width">40dp</dimen>
 
-    <dimen name="expandable_child_item_height">44dp</dimen>
-    <dimen name="expandable_child_item_padding_left">12dp</dimen>
-    <dimen name="expandable_child_item_padding_right">12dp</dimen>
-
 </resources>
