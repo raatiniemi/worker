@@ -29,9 +29,9 @@ import org.mockito.Mockito.*
 import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
-class RemoveTimesheetViewModelTest {
+class RemoveTimeReportViewModelTest {
     private val useCase = mock(RemoveTime::class.java)
-    private val vm = RemoveTimesheetViewModel.ViewModel(useCase)
+    private val vm = RemoveTimeReportViewModel.ViewModel(useCase)
 
     private val success = TestSubscriber<TimeReportAdapterResult>()
     private val errors = TestSubscriber<Throwable>()

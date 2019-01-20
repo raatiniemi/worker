@@ -44,7 +44,7 @@ import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.features.project.ViewModels;
 import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel;
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel;
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel;
 import me.raatiniemi.worker.features.project.view.ProjectActivity;
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
@@ -65,7 +65,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
     private final ViewModels viewModels = new ViewModels();
     private final GetTimeReportViewModel.ViewModel getTimeReportViewModel = viewModels.getTimeReport();
     private final RegisterTimeReportViewModel.ViewModel registerTimeReportViewModel = viewModels.getRegisterTimeReport();
-    private final RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel = viewModels.getRemoveTimesheet();
+    private final RemoveTimeReportViewModel.ViewModel removeTimeReportViewModel = viewModels.getRemoveTimeReport();
 
     private final EventBus eventBus = EventBus.getDefault();
 
@@ -117,7 +117,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
                     .filter(RxAlertDialog::isPositive)
                     .subscribe(
                             which -> {
-                                removeTimesheetViewModel.remove(adapter.getSelectedItems());
+                                removeTimeReportViewModel.remove(adapter.getSelectedItems());
 
                                 actionMode.finish();
                             },
@@ -253,14 +253,14 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
         registerTimeReportViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showRegisterErrorMessage());
-        removeTimesheetViewModel.success()
+        removeTimeReportViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
                         result -> adapter.remove(result),
                         Timber::e
                 );
-        removeTimesheetViewModel.errors()
+        removeTimeReportViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showDeleteErrorMessage());
 

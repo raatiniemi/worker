@@ -21,7 +21,7 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimesheetViewModel
+import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
 import org.koin.dsl.module.module
 
 val projectModule = module {
@@ -34,6 +34,6 @@ val projectModule = module {
     }
 
     single {
-        RemoveTimesheetViewModel.ViewModel(RemoveTime(get()))
+        RemoveTimeReportViewModel.ViewModel(RemoveTime(get()))
     }
 }

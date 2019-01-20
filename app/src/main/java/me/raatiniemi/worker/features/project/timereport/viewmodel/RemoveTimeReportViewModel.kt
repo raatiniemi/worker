@@ -23,7 +23,7 @@ import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-interface RemoveTimesheetViewModel {
+interface RemoveTimeReportViewModel {
     interface Input {
         fun remove(results: List<TimeReportAdapterResult>)
     }
