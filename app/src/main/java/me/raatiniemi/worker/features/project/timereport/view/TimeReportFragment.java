@@ -113,7 +113,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
         }
 
         private void confirmRemoveSelectedItems(ActionMode actionMode) {
-            DeleteTimeDialog.show(getActivity())
+            DeleteTimeDialog.INSTANCE.show(getActivity())
                     .filter(RxAlertDialog::isPositive)
                     .subscribe(
                             which -> {
