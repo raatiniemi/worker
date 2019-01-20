@@ -24,7 +24,7 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.features.project.timesheet.view.TimesheetFragment;
+import me.raatiniemi.worker.features.project.timereport.view.TimesheetFragment;
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity;
 import me.raatiniemi.worker.util.KeyValueStore;
 

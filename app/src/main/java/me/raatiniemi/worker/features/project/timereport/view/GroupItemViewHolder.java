@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timesheet.view;
+package me.raatiniemi.worker.features.project.timereport.view;
 
 import android.view.View;
 import android.widget.ImageView;

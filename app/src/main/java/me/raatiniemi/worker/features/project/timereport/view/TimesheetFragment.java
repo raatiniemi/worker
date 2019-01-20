@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timesheet.view;
+package me.raatiniemi.worker.features.project.timereport.view;
 
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -42,9 +42,9 @@ import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.features.project.ViewModels;
-import me.raatiniemi.worker.features.project.timesheet.viewmodel.GetTimesheetViewModel;
-import me.raatiniemi.worker.features.project.timesheet.viewmodel.RegisterTimesheetViewModel;
-import me.raatiniemi.worker.features.project.timesheet.viewmodel.RemoveTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimesheetViewModel;
 import me.raatiniemi.worker.features.project.view.ProjectActivity;
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timesheet.view;
+package me.raatiniemi.worker.features.project.timereport.view;
 
 import android.graphics.Point;
 import android.view.LayoutInflater;
@@ -27,8 +27,8 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
-import me.raatiniemi.worker.features.project.timesheet.model.TimesheetAdapterResult;
-import me.raatiniemi.worker.features.project.timesheet.model.TimesheetGroup;
+import me.raatiniemi.worker.features.project.timereport.model.TimesheetAdapterResult;
+import me.raatiniemi.worker.features.project.timereport.model.TimesheetGroup;
 import me.raatiniemi.worker.features.shared.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable;
 import me.raatiniemi.worker.util.SelectionListener;

@@ -14,12 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timesheet.viewmodel
+package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.features.project.timesheet.model.TimesheetAdapterResult
+import me.raatiniemi.worker.features.project.timereport.model.TimesheetAdapterResult
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable

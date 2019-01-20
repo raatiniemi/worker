@@ -14,13 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timesheet.viewmodel
+package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.GetTimesheet
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.features.project.timesheet.model.TimesheetGroup
+import me.raatiniemi.worker.features.project.timereport.model.TimesheetGroup
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

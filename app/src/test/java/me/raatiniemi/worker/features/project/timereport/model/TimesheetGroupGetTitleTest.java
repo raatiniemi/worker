@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timesheet.model;
+package me.raatiniemi.worker.features.project.timereport.model;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
