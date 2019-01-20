@@ -17,15 +17,15 @@
 package me.raatiniemi.worker.features.project.timereport.view;
 
 import android.view.View;
-import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
+import androidx.appcompat.widget.AppCompatTextView;
 import me.raatiniemi.worker.R;
 
 class ChildItemViewHolder extends AbstractExpandableItemViewHolder {
-    final TextView title;
-    final TextView summarize;
+    final AppCompatTextView title;
+    final AppCompatTextView summarize;
 
     ChildItemViewHolder(View view) {
         super(view);
