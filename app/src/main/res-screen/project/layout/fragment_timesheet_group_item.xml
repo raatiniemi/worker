@@ -35,7 +35,7 @@
             android:layout_toEndOf="@+id/fragment_timesheet_group_item_letter"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:textColor="@color/timesheetGroupText"
+            android:textColor="@color/timeReportGroupText"
             tools:text="Monday (March 9th)"
             />
 
@@ -46,7 +46,7 @@
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
             android:textSize="16sp"
-            android:textColor="@color/timesheetGroupText"
+            android:textColor="@color/timeReportGroupText"
             tools:text="8.35 (+0.35)"
             />
 
