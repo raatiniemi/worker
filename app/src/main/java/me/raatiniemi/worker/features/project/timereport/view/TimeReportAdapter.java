@@ -35,7 +35,7 @@ import me.raatiniemi.worker.util.SelectionListener;
 import me.raatiniemi.worker.util.SelectionManager;
 import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator;
 
-class TimesheetAdapter extends ExpandableListAdapter<
+class TimeReportAdapter extends ExpandableListAdapter<
         TimesheetItem,
         TimeReportGroup,
         GroupItemViewHolder,
@@ -44,7 +44,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
     private final HoursMinutesFormat formatter;
     private final SelectionManager<TimeReportAdapterResult> selectionManager;
 
-    TimesheetAdapter(
+    TimeReportAdapter(
             HoursMinutesFormat formatter,
             SelectionListener selectionListener
     ) {

@@ -71,7 +71,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
 
     private LinearLayoutManager linearLayoutManager;
 
-    private TimesheetAdapter adapter;
+    private TimeReportAdapter adapter;
 
     private ActionMode actionMode;
 
@@ -161,7 +161,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        adapter = new TimesheetAdapter(getHoursMinutesFormat(), this);
+        adapter = new TimeReportAdapter(getHoursMinutesFormat(), this);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
