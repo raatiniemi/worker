@@ -287,7 +287,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     private void showGetTimesheetErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                R.string.error_message_get_timesheet,
+                R.string.error_message_get_time_report,
                 Snackbar.LENGTH_SHORT
         ).show();
     }
@@ -295,7 +295,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     private void showDeleteErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                R.string.error_message_delete_timesheet,
+                R.string.error_message_delete_time_report,
                 Snackbar.LENGTH_SHORT
         ).show();
     }
@@ -303,7 +303,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
     private void showRegisterErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                R.string.error_message_register_timesheet,
+                R.string.error_message_register_time_report,
                 Snackbar.LENGTH_SHORT
         ).show();
     }

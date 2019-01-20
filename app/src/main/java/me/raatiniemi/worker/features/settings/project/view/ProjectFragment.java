@@ -250,7 +250,7 @@ public class ProjectFragment extends BasePreferenceFragment
 
         Snackbar.make(
                 contentView,
-                R.string.message_change_time_sheet_summary_format_fraction,
+                R.string.message_change_time_report_summary_format_fraction,
                 Snackbar.LENGTH_LONG
         ).show();
     }
@@ -264,7 +264,7 @@ public class ProjectFragment extends BasePreferenceFragment
 
         Snackbar.make(
                 contentView,
-                R.string.message_change_time_sheet_summary_format_digital_clock,
+                R.string.message_change_time_report_summary_format_digital_clock,
                 Snackbar.LENGTH_LONG
         ).show();
     }
@@ -278,7 +278,7 @@ public class ProjectFragment extends BasePreferenceFragment
 
         Snackbar.make(
                 contentView,
-                R.string.error_message_change_time_sheet_summary_format,
+                R.string.error_message_change_time_report_summary_format,
                 Snackbar.LENGTH_LONG
         ).show();
     }

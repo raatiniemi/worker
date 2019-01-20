@@ -39,8 +39,8 @@
 
         <ListPreference
             android:key="settings_project_time_sheet_summary_format"
-            android:title="@string/activity_settings_project_time_sheet_summary_format_title"
-            android:summary="@string/activity_settings_project_time_sheet_summary_format_summary"
+            android:title="@string/activity_settings_project_time_report_summary_format_title"
+            android:summary="@string/activity_settings_project_time_report_summary_format_summary"
             android:entries="@array/project_time_sheet_summary_format_alternative_text"
             android:entryValues="@array/project_time_sheet_summary_format_alternative_value"
             />

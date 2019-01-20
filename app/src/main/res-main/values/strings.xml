@@ -10,8 +10,8 @@
 
     <string name="menu_actions_project_hide_registered">Hide registered</string>
 
-    <string name="menu_actions_project_timesheet_register">Mark as registered</string>
-    <string name="menu_actions_project_timesheet_delete">Delete</string>
+    <string name="menu_actions_project_time_report_register">Mark as registered</string>
+    <string name="menu_actions_project_time_report_delete">Delete</string>
 
     <string name="projects_empty_text">You haven\'t created\na project yet…</string>
 
@@ -28,7 +28,7 @@
     <string name="fragment_create_project_submit">Create</string>
     <string name="fragment_create_project_dismiss">Cancel</string>
 
-    <string name="fragment_timesheet_group_item_selection_content_description">Select or deselect item group</string>
+    <string name="fragment_time_report_group_item_selection_content_description">Select or deselect item group</string>
 
     <string name="confirm_clock_out_title">You are about to clock out</string>
     <string name="confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
@@ -45,9 +45,9 @@
     <string name="error_message_clock_in">Failed to clock in project.</string>
     <string name="error_message_clock_out">Failed to clock out project.</string>
 
-    <string name="error_message_get_timesheet">Failed to retrieve timesheet.</string>
-    <string name="error_message_register_timesheet">Failed to update item(s).</string>
-    <string name="error_message_delete_timesheet">Failed to delete item(s).</string>
+    <string name="error_message_get_time_report">Failed to retrieve time report.</string>
+    <string name="error_message_register_time_report">Failed to update item(s).</string>
+    <string name="error_message_delete_time_report">Failed to delete item(s).</string>
 
     <string name="message_permission_write_backup">Need permission to backup.</string>
     <string name="message_permission_read_backup">Need permission to read backup.</string>
@@ -65,10 +65,10 @@
     <string name="activity_settings_project_time_summary_summary">Starting point for the collection of registered time used for the time summary.</string>
     <string name="activity_settings_project_time_summary_week">Week</string>
     <string name="activity_settings_project_time_summary_month">Month</string>
-    <string name="activity_settings_project_time_sheet_summary_format_title">Format for time sheet summary</string>
-    <string name="activity_settings_project_time_sheet_summary_format_summary">Which format should be used to show the summary on the time sheet view.</string>
-    <string name="activity_settings_project_time_sheet_summary_format_fraction">Fraction</string>
-    <string name="activity_settings_project_time_sheet_summary_format_digital">Digital</string>
+    <string name="activity_settings_project_time_report_summary_format_title">Format for time report summary</string>
+    <string name="activity_settings_project_time_report_summary_format_summary">Which format should be used to show the summary on the time report view.</string>
+    <string name="activity_settings_project_time_report_summary_format_fraction">Fraction</string>
+    <string name="activity_settings_project_time_report_summary_format_digital">Digital</string>
     <string name="activity_settings_project_ongoing_notification">Ongoing notification</string>
     <string name="activity_settings_project_ongoing_notification_enable">Enable</string>
     <string name="activity_settings_project_ongoing_notification_enable_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
@@ -108,9 +108,9 @@
     <string name="message_change_time_summary_starting_point_month">Time summary will show current month</string>
     <string name="error_message_change_time_summary_starting_point">Unable to change time summary starting point.</string>
 
-    <string name="message_change_time_sheet_summary_format_fraction">Time sheet summary will use fraction format</string>
-    <string name="message_change_time_sheet_summary_format_digital_clock">Time sheet summary will use digital clock</string>
-    <string name="error_message_change_time_sheet_summary_format">Unable to change time sheet summary format.</string>
+    <string name="message_change_time_report_summary_format_fraction">Time report summary will use fraction format</string>
+    <string name="message_change_time_report_summary_format_digital_clock">Time report summary will use digital clock</string>
+    <string name="error_message_change_time_report_summary_format">Unable to change time report summary format.</string>
 
     <string name="error_notification_backup_title">Backup failed</string>
     <string name="error_notification_backup_message">Backup to external storage failed.</string>
