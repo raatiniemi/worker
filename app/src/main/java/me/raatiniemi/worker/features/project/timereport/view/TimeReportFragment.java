@@ -79,7 +79,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
             actionMode.setTitle(R.string.menu_title_actions);
-            actionMode.getMenuInflater().inflate(R.menu.actions_project_timesheet, menu);
+            actionMode.getMenuInflater().inflate(R.menu.actions_project_time_report, menu);
             return true;
         }
 
@@ -91,11 +91,11 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
         @Override
         public boolean onActionItemClicked(final ActionMode actionMode, MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.actions_project_timesheet_delete:
+                case R.id.actions_project_time_report_delete:
                     confirmRemoveSelectedItems(actionMode);
                     return false;
 
-                case R.id.actions_project_timesheet_register:
+                case R.id.actions_project_time_report_register:
                     toggleRegisterSelectedItems(actionMode);
                     return true;
 
