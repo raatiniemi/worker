@@ -27,7 +27,7 @@ import java.util.List;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
-import me.raatiniemi.worker.features.project.timereport.model.TimesheetAdapterResult;
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult;
 import me.raatiniemi.worker.features.project.timereport.model.TimesheetGroup;
 import me.raatiniemi.worker.features.shared.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable;
@@ -42,7 +42,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         ChildItemViewHolder
         > {
     private final HoursMinutesFormat formatter;
-    private final SelectionManager<TimesheetAdapterResult> selectionManager;
+    private final SelectionManager<TimeReportAdapterResult> selectionManager;
 
     TimesheetAdapter(
             HoursMinutesFormat formatter,
@@ -92,7 +92,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
                 LetterDrawable.build(groupItem.getFirstLetterFromTitle())
         );
 
-        final List<TimesheetAdapterResult> results = groupItem.buildItemResultsWithGroupIndex(group);
+        final List<TimeReportAdapterResult> results = groupItem.buildItemResultsWithGroupIndex(group);
 
         vh.letter.setOnLongClickListener(view -> {
             if (selectionManager.isSelectionActivated()) {
@@ -129,7 +129,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
     public void onBindChildViewHolder(ChildItemViewHolder vh, final int group, final int child, int viewType) {
         final TimesheetItem item = get(group, child);
 
-        final TimesheetAdapterResult result = new TimesheetAdapterResult(group, child, item);
+        final TimeReportAdapterResult result = new TimeReportAdapterResult(group, child, item);
 
         // Register the long click listener on the time item.
         vh.itemView.setOnLongClickListener(view -> {
@@ -197,30 +197,30 @@ class TimesheetAdapter extends ExpandableListAdapter<
         return !selectionManager.isSelectionActivated() || !isPointInView(new Point(x, y), vh.letter);
     }
 
-    public void remove(List<TimesheetAdapterResult> results) {
+    public void remove(List<TimeReportAdapterResult> results) {
         Collections.sort(results);
         Collections.reverse(results);
 
         //noinspection Convert2streamapi
-        for (TimesheetAdapterResult result : results) {
+        for (TimeReportAdapterResult result : results) {
             remove(result);
         }
     }
 
-    public void remove(TimesheetAdapterResult result) {
+    public void remove(TimeReportAdapterResult result) {
         remove(result.getGroup(), result.getChild());
     }
 
-    public void set(List<TimesheetAdapterResult> results) {
+    public void set(List<TimeReportAdapterResult> results) {
         Collections.sort(results);
 
         //noinspection Convert2streamapi
-        for (TimesheetAdapterResult result : results) {
+        for (TimeReportAdapterResult result : results) {
             set(result);
         }
     }
 
-    public void set(TimesheetAdapterResult result) {
+    public void set(TimeReportAdapterResult result) {
         set(result.getGroup(), result.getChild(), TimesheetItem.with(result.getTimeInterval()));
     }
 
@@ -228,7 +228,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
         return selectionManager.isSelectionActivated();
     }
 
-    List<TimesheetAdapterResult> getSelectedItems() {
+    List<TimeReportAdapterResult> getSelectedItems() {
         return selectionManager.getSelectedItems();
     }
 

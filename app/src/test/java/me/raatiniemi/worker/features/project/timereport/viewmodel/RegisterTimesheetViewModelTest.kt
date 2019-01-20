@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.features.project.timereport.model.TimesheetAdapterResult
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,7 +35,7 @@ class RegisterTimesheetViewModelTest {
     private val useCase = mock(MarkRegisteredTime::class.java)
     private val vm = RegisterTimesheetViewModel.ViewModel(useCase)
 
-    private val success = TestSubscriber<TimesheetAdapterResult>()
+    private val success = TestSubscriber<TimeReportAdapterResult>()
     private val errors = TestSubscriber<Throwable>()
 
     @Before
@@ -48,7 +48,7 @@ class RegisterTimesheetViewModelTest {
     fun register_withError() {
         val timeInterval = TimeInterval.builder(1L).build()
         val item = TimesheetItem.with(timeInterval)
-        val results = listOf(TimesheetAdapterResult(0, 0, item))
+        val results = listOf(TimeReportAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(timeInterval))))
                 .thenThrow(DomainException::class.java)
 
@@ -64,7 +64,7 @@ class RegisterTimesheetViewModelTest {
     fun register_withItem() {
         val timeInterval = TimeInterval.builder(1L).build()
         val item = TimesheetItem.with(timeInterval)
-        val results = listOf(TimesheetAdapterResult(0, 0, item))
+        val results = listOf(TimeReportAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(timeInterval))))
                 .thenReturn(listOf(timeInterval))
 
@@ -83,8 +83,8 @@ class RegisterTimesheetViewModelTest {
                 TimeInterval.builder(1L).id(2L).build()
         )
         val results = listOf(
-                TimesheetAdapterResult(0, 0, TimesheetItem.with(times[0])),
-                TimesheetAdapterResult(0, 1, TimesheetItem.with(times[1]))
+                TimeReportAdapterResult(0, 0, TimesheetItem.with(times[0])),
+                TimeReportAdapterResult(0, 1, TimesheetItem.with(times[1]))
         )
         `when`(useCase.execute(eq(times)))
                 .thenReturn(times)

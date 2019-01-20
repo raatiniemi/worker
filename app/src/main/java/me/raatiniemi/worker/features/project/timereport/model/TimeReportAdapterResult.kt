@@ -19,15 +19,15 @@ package me.raatiniemi.worker.features.project.timereport.model
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
 
-data class TimesheetAdapterResult(
+data class TimeReportAdapterResult(
         val group: Int,
         val child: Int,
         private val item: TimesheetItem
-) : Comparable<TimesheetAdapterResult> {
+) : Comparable<TimeReportAdapterResult> {
     val timeInterval: TimeInterval
         get() = item.asTimeInterval()
 
-    override fun compareTo(other: TimesheetAdapterResult): Int {
+    override fun compareTo(other: TimeReportAdapterResult): Int {
         if (group == other.group) {
             if (child == other.child) {
                 return 0

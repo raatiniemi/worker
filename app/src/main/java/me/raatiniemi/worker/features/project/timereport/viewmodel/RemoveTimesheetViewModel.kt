@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import me.raatiniemi.worker.domain.interactor.RemoveTime
-import me.raatiniemi.worker.features.project.timereport.model.TimesheetAdapterResult
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
@@ -25,11 +25,11 @@ import rx.subjects.PublishSubject
 
 interface RemoveTimesheetViewModel {
     interface Input {
-        fun remove(results: List<TimesheetAdapterResult>)
+        fun remove(results: List<TimeReportAdapterResult>)
     }
 
     interface Output {
-        fun success(): Observable<TimesheetAdapterResult>
+        fun success(): Observable<TimeReportAdapterResult>
     }
 
     interface Error {
@@ -37,9 +37,9 @@ interface RemoveTimesheetViewModel {
     }
 
     class ViewModel internal constructor(private val useCase: RemoveTime) : Input, Output, Error {
-        private val remove = PublishSubject.create<List<TimesheetAdapterResult>>()
+        private val remove = PublishSubject.create<List<TimeReportAdapterResult>>()
 
-        private val success = PublishSubject.create<TimesheetAdapterResult>()
+        private val success = PublishSubject.create<TimeReportAdapterResult>()
         private val errors = PublishSubject.create<Throwable>()
 
         init {
@@ -50,8 +50,8 @@ interface RemoveTimesheetViewModel {
             }.subscribe(success)
         }
 
-        private fun executeUseCase(results: List<TimesheetAdapterResult>): Observable<TimesheetAdapterResult> {
-            return Observable.defer<TimesheetAdapterResult> {
+        private fun executeUseCase(results: List<TimeReportAdapterResult>): Observable<TimeReportAdapterResult> {
+            return Observable.defer<TimeReportAdapterResult> {
                 try {
                     val times = results.map { it.timeInterval }.toList()
                     useCase.execute(times)
@@ -63,11 +63,11 @@ interface RemoveTimesheetViewModel {
             }
         }
 
-        override fun remove(results: List<TimesheetAdapterResult>) {
+        override fun remove(results: List<TimeReportAdapterResult>) {
             remove.onNext(results)
         }
 
-        override fun success(): Observable<TimesheetAdapterResult> {
+        override fun success(): Observable<TimeReportAdapterResult> {
             return success
         }
 

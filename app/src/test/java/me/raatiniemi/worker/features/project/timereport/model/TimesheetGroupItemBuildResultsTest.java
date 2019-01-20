@@ -36,13 +36,13 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class TimesheetGroupItemBuildResultsTest {
     private final String message;
-    private final List<TimesheetAdapterResult> expected;
+    private final List<TimeReportAdapterResult> expected;
     private final int groupIndex;
     private final TimesheetGroup groupItem;
 
     public TimesheetGroupItemBuildResultsTest(
             String message,
-            TimesheetAdapterResult[] expected,
+            TimeReportAdapterResult[] expected,
             int groupIndex,
             TimesheetGroup groupItem
     ) {
@@ -75,28 +75,28 @@ public class TimesheetGroupItemBuildResultsTest {
                 new Object[][]{
                         {
                                 "Without items",
-                                new TimesheetAdapterResult[]{
+                                new TimeReportAdapterResult[]{
                                 },
                                 0,
                                 buildTimesheetGroupWithNumberOfItems(0)
                         },
                         {
                                 "With one item",
-                                new TimesheetAdapterResult[]{
-                                        new TimesheetAdapterResult(1, 0, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
+                                new TimeReportAdapterResult[]{
+                                        new TimeReportAdapterResult(1, 0, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
                                 },
                                 1,
                                 buildTimesheetGroupWithNumberOfItems(1)
                         },
                         {
                                 "With multiple items",
-                                new TimesheetAdapterResult[]{
-                                        new TimesheetAdapterResult(2, 0, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(5L).build())),
-                                        new TimesheetAdapterResult(2, 1, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(4L).build())),
-                                        new TimesheetAdapterResult(2, 2, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(3L).build())),
-                                        new TimesheetAdapterResult(2, 3, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(2L).build())),
-                                        new TimesheetAdapterResult(2, 4, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(1L).build())),
-                                        new TimesheetAdapterResult(2, 5, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
+                                new TimeReportAdapterResult[]{
+                                        new TimeReportAdapterResult(2, 0, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(5L).build())),
+                                        new TimeReportAdapterResult(2, 1, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(4L).build())),
+                                        new TimeReportAdapterResult(2, 2, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(3L).build())),
+                                        new TimeReportAdapterResult(2, 3, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(2L).build())),
+                                        new TimeReportAdapterResult(2, 4, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(1L).build())),
+                                        new TimeReportAdapterResult(2, 5, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
                                 },
                                 2,
                                 buildTimesheetGroupWithNumberOfItems(6)
@@ -107,7 +107,7 @@ public class TimesheetGroupItemBuildResultsTest {
 
     @Test
     public void buildItemResultsWithGroupIndex() {
-        List<TimesheetAdapterResult> actual =
+        List<TimeReportAdapterResult> actual =
                 groupItem.buildItemResultsWithGroupIndex(groupIndex);
 
         assertEquals(message, expected, actual);

@@ -30,17 +30,17 @@ import me.raatiniemi.worker.domain.model.TimesheetItem;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetAdapterResultComparableTest {
+public class TimeReportAdapterResultComparableTest {
     private final String message;
     private final int expected;
-    private final TimesheetAdapterResult lhs;
-    private final TimesheetAdapterResult rhs;
+    private final TimeReportAdapterResult lhs;
+    private final TimeReportAdapterResult rhs;
 
-    public TimesheetAdapterResultComparableTest(
+    public TimeReportAdapterResultComparableTest(
             String message,
             int expected,
-            TimesheetAdapterResult lhs,
-            TimesheetAdapterResult rhs
+            TimeReportAdapterResult lhs,
+            TimeReportAdapterResult rhs
     ) {
         this.message = message;
         this.expected = expected;
@@ -58,32 +58,32 @@ public class TimesheetAdapterResultComparableTest {
                         {
                                 "Equal",
                                 0,
-                                new TimesheetAdapterResult(0, 0, item),
-                                new TimesheetAdapterResult(0, 0, item)
+                                new TimeReportAdapterResult(0, 0, item),
+                                new TimeReportAdapterResult(0, 0, item)
                         },
                         {
                                 "lhs is more than rhs (group)",
                                 1,
-                                new TimesheetAdapterResult(1, 0, item),
-                                new TimesheetAdapterResult(0, 0, item)
+                                new TimeReportAdapterResult(1, 0, item),
+                                new TimeReportAdapterResult(0, 0, item)
                         },
                         {
                                 "lhs is less than rhs (group)",
                                 -1,
-                                new TimesheetAdapterResult(0, 0, item),
-                                new TimesheetAdapterResult(1, 0, item)
+                                new TimeReportAdapterResult(0, 0, item),
+                                new TimeReportAdapterResult(1, 0, item)
                         },
                         {
                                 "lhs is more than rhs (child)",
                                 1,
-                                new TimesheetAdapterResult(0, 1, item),
-                                new TimesheetAdapterResult(0, 0, item)
+                                new TimeReportAdapterResult(0, 1, item),
+                                new TimeReportAdapterResult(0, 0, item)
                         },
                         {
                                 "lhs is less than rhs (child)",
                                 -1,
-                                new TimesheetAdapterResult(0, 0, item),
-                                new TimesheetAdapterResult(0, 1, item)
+                                new TimeReportAdapterResult(0, 0, item),
+                                new TimeReportAdapterResult(0, 1, item)
                         }
                 }
         );

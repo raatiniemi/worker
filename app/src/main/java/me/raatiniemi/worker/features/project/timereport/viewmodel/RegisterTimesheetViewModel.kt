@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.features.project.timereport.model.TimesheetAdapterResult
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
@@ -27,11 +27,11 @@ import rx.subjects.PublishSubject
 
 interface RegisterTimesheetViewModel {
     interface Input {
-        fun register(results: List<TimesheetAdapterResult>)
+        fun register(results: List<TimeReportAdapterResult>)
     }
 
     interface Output {
-        fun success(): Observable<TimesheetAdapterResult>
+        fun success(): Observable<TimeReportAdapterResult>
     }
 
     interface Error {
@@ -39,9 +39,9 @@ interface RegisterTimesheetViewModel {
     }
 
     class ViewModel internal constructor(private val useCase: MarkRegisteredTime) : Input, Output, Error {
-        private val register = PublishSubject.create<List<TimesheetAdapterResult>>()
+        private val register = PublishSubject.create<List<TimeReportAdapterResult>>()
 
-        private val success = PublishSubject.create<TimesheetAdapterResult>()
+        private val success = PublishSubject.create<TimeReportAdapterResult>()
         private val errors = PublishSubject.create<Throwable>()
 
         init {
@@ -52,8 +52,8 @@ interface RegisterTimesheetViewModel {
             }.subscribe(success)
         }
 
-        private fun executeUseCase(results: List<TimesheetAdapterResult>): Observable<TimesheetAdapterResult> {
-            return Observable.defer<TimesheetAdapterResult> {
+        private fun executeUseCase(results: List<TimeReportAdapterResult>): Observable<TimeReportAdapterResult> {
+            return Observable.defer<TimeReportAdapterResult> {
                 try {
                     val times = results.map { it.timeInterval }.toList()
                     val items = useCase.execute(times)
@@ -69,22 +69,22 @@ interface RegisterTimesheetViewModel {
             }
         }
 
-        private fun mapUpdateToSelectedItems(time: TimeInterval, selectedItems: List<TimesheetAdapterResult>): TimesheetAdapterResult {
+        private fun mapUpdateToSelectedItems(time: TimeInterval, selectedItems: List<TimeReportAdapterResult>): TimeReportAdapterResult {
             return selectedItems
                     .filter { it.timeInterval.id == time.id }
                     .map {
                         val item = TimesheetItem.with(time)
 
-                        TimesheetAdapterResult(it.group, it.child, item)
+                        TimeReportAdapterResult(it.group, it.child, item)
                     }
                     .first()
         }
 
-        override fun register(results: List<TimesheetAdapterResult>) {
+        override fun register(results: List<TimeReportAdapterResult>) {
             register.onNext(results)
         }
 
-        override fun success(): Observable<TimesheetAdapterResult> {
+        override fun success(): Observable<TimeReportAdapterResult> {
             return success
         }
 

@@ -68,9 +68,9 @@ class TimesheetGroup private constructor(
                 .accumulated()
     }
 
-    fun buildItemResultsWithGroupIndex(groupIndex: Int): List<TimesheetAdapterResult> {
+    fun buildItemResultsWithGroupIndex(groupIndex: Int): List<TimeReportAdapterResult> {
         return items.mapIndexedTo(ArrayList()) { childIndex, item ->
-            TimesheetAdapterResult(groupIndex, childIndex, item)
+            TimeReportAdapterResult(groupIndex, childIndex, item)
         }
     }
 

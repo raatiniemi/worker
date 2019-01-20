@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.features.project.timereport.model.TimesheetAdapterResult
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +33,7 @@ class RemoveTimesheetViewModelTest {
     private val useCase = mock(RemoveTime::class.java)
     private val vm = RemoveTimesheetViewModel.ViewModel(useCase)
 
-    private val success = TestSubscriber<TimesheetAdapterResult>()
+    private val success = TestSubscriber<TimeReportAdapterResult>()
     private val errors = TestSubscriber<Throwable>()
 
     @Before
@@ -46,7 +46,7 @@ class RemoveTimesheetViewModelTest {
     fun remove_withError() {
         val timeInterval = TimeInterval.builder(1L).build()
         val item = TimesheetItem.with(timeInterval)
-        val results = listOf(TimesheetAdapterResult(0, 0, item))
+        val results = listOf(TimeReportAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(timeInterval))))
                 .thenThrow(DomainException::class.java)
 
@@ -61,7 +61,7 @@ class RemoveTimesheetViewModelTest {
     @Test
     fun remove_withSingleItem() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val results = listOf(TimesheetAdapterResult(0, 0, TimesheetItem.with(timeInterval)))
+        val results = listOf(TimeReportAdapterResult(0, 0, TimesheetItem.with(timeInterval)))
 
         vm.remove(results)
 
@@ -76,8 +76,8 @@ class RemoveTimesheetViewModelTest {
     fun remove_withMultipleItems() {
         val timeInterval = TimeInterval.builder(1L).build()
         val results = listOf(
-                TimesheetAdapterResult(0, 0, TimesheetItem.with(timeInterval)),
-                TimesheetAdapterResult(0, 1, TimesheetItem.with(timeInterval))
+                TimeReportAdapterResult(0, 0, TimesheetItem.with(timeInterval)),
+                TimeReportAdapterResult(0, 1, TimesheetItem.with(timeInterval))
         )
 
         vm.remove(results)
