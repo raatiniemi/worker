@@ -76,7 +76,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
     @Override
     public ChildItemViewHolder onCreateChildViewHolder(ViewGroup viewGroup, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.fragment_timesheet_child_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.fragment_time_report_child_item, viewGroup, false);
 
         return new ChildItemViewHolder(view);
     }

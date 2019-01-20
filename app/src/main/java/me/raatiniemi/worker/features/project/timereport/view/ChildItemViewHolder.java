@@ -30,7 +30,7 @@ class ChildItemViewHolder extends AbstractExpandableItemViewHolder {
     ChildItemViewHolder(View view) {
         super(view);
 
-        title = view.findViewById(R.id.fragment_timesheet_child_item_title);
-        summarize = view.findViewById(R.id.fragment_timesheet_child_item_summarize);
+        title = view.findViewById(R.id.tvTitle);
+        summarize = view.findViewById(R.id.tvSummary);
     }
 }
