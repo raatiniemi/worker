@@ -58,7 +58,7 @@ import static me.raatiniemi.worker.R.drawable.list_item_divider;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.RxUtil.applySchedulersWithBackpressureBuffer;
 
-public class TimesheetFragment extends RxFragment implements SelectionListener {
+public class TimeReportFragment extends RxFragment implements SelectionListener {
     private final Preferences preferences = new Preferences();
     private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
 
@@ -109,7 +109,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         public void onDestroyActionMode(ActionMode actionMode) {
             adapter.deselectItems();
 
-            TimesheetFragment.this.actionMode = null;
+            TimeReportFragment.this.actionMode = null;
         }
 
         private void confirmRemoveSelectedItems(ActionMode actionMode) {
@@ -134,11 +134,11 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
 
     private boolean loading = false;
 
-    public static TimesheetFragment newInstance(Bundle bundle) {
-        TimesheetFragment timesheetFragment = new TimesheetFragment();
-        timesheetFragment.setArguments(bundle);
+    public static TimeReportFragment newInstance(Bundle bundle) {
+        TimeReportFragment fragment = new TimeReportFragment();
+        fragment.setArguments(bundle);
 
-        return timesheetFragment;
+        return fragment;
     }
 
     private long getProjectId() {
@@ -154,7 +154,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_timesheet, container, false);
+        return inflater.inflate(R.layout.fragment_time_report, container, false);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         RecyclerViewExpandableItemManager recyclerViewExpandableItemManager
                 = new RecyclerViewExpandableItemManager(savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.fragment_timesheet);
+        RecyclerView recyclerView = view.findViewById(R.id.rvTimeReport);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
         recyclerView.setAdapter(recyclerViewExpandableItemManager.createWrappedAdapter(adapter));
@@ -235,7 +235,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
                 );
         getTimesheetViewModel.errors()
                 .compose(bindToLifecycle())
-                .subscribe(e -> showGetTimesheetErrorMessage());
+                .subscribe(e -> showGetTimeReportErrorMessage());
         registerTimesheetViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulersWithBackpressureBuffer())
@@ -284,7 +284,7 @@ public class TimesheetFragment extends RxFragment implements SelectionListener {
         return new DigitalHoursMinutesIntervalFormat();
     }
 
-    private void showGetTimesheetErrorMessage() {
+    private void showGetTimeReportErrorMessage() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
                 R.string.error_message_get_time_report,
