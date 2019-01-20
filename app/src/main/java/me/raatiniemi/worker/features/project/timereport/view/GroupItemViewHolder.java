@@ -17,17 +17,17 @@
 package me.raatiniemi.worker.features.project.timereport.view;
 
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 import me.raatiniemi.worker.R;
 
 class GroupItemViewHolder extends AbstractExpandableItemViewHolder {
-    final ImageView letter;
-    final TextView title;
-    final TextView summarize;
+    final AppCompatImageView letter;
+    final AppCompatTextView title;
+    final AppCompatTextView summarize;
 
     GroupItemViewHolder(View view) {
         super(view);
