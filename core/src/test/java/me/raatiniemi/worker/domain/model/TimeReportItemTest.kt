@@ -23,11 +23,11 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class TimesheetItemTest {
+class TimeReportItemTest {
     @Test
     fun asTime() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
 
         assertSame(timeInterval, item.asTimeInterval())
     }
@@ -37,7 +37,7 @@ class TimesheetItemTest {
         val timeInterval = TimeInterval.builder(1L)
                 .id(1L)
                 .build()
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
 
         assertEquals(timeInterval.id, item.id)
     }

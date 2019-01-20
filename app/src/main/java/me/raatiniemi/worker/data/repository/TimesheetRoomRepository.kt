@@ -20,8 +20,8 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.TimeReportDay
 import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator
-import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.PageRequest
 import me.raatiniemi.worker.domain.repository.TimesheetRepository
 import java.util.*
@@ -30,22 +30,22 @@ internal class TimesheetRoomRepository(
         private val timeReport: TimeReportDao,
         private val timeIntervals: TimeIntervalDao
 ) : TimesheetRepository {
-    private fun transform(timeReportDay: TimeReportDay): Pair<Date, Set<TimesheetItem>> {
+    private fun transform(timeReportDay: TimeReportDay): Pair<Date, Set<TimeReportItem>> {
         val map = timeReportDay.timeIntervalIds
                 .mapNotNull { timeIntervals.find(it) }
                 .map { it.toTimeInterval() }
-                .map { TimesheetItem.with(it) }
+                .map { TimeReportItem.with(it) }
 
         return Pair(
                 Date(timeReportDay.dateInMilliseconds),
-                map.toSortedSet(TimesheetItemComparator())
+                map.toSortedSet(TimeReportItemComparator())
         )
     }
 
     override fun getTimesheet(
             projectId: Long,
             pageRequest: PageRequest
-    ): Map<Date, Set<TimesheetItem>> {
+    ): Map<Date, Set<TimeReportItem>> {
         return timeReport.findAll(projectId, pageRequest.offset, pageRequest.maxResults)
                 .map { transform(it) }
                 .toMap()
@@ -55,7 +55,7 @@ internal class TimesheetRoomRepository(
     override fun getTimesheetWithoutRegisteredEntries(
             projectId: Long,
             pageRequest: PageRequest
-    ): Map<Date, Set<TimesheetItem>> {
+    ): Map<Date, Set<TimeReportItem>> {
         return timeReport.findAllUnregistered(projectId, pageRequest.offset, pageRequest.maxResults)
                 .map { transform(it) }
                 .toMap()

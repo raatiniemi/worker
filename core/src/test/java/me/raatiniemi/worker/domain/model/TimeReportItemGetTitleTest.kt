@@ -24,14 +24,14 @@ import org.junit.runners.Parameterized.Parameters
 import java.util.*
 
 @RunWith(Parameterized::class)
-class TimesheetItemGetTitleTest(
+class TimeReportItemGetTitleTest(
         private val message: String,
         private val expected: String,
         private val timeInterval: TimeInterval
 ) {
     @Test
     fun getTitle() {
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
 
         assertEquals(message, expected, item.title)
     }

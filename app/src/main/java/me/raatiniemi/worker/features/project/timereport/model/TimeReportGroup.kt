@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.model
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.accumulated
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.shared.model.ExpandableItem
@@ -26,8 +26,8 @@ import java.util.*
 
 class TimeReportGroup private constructor(
         private val date: Date,
-        private val items: MutableList<TimesheetItem>
-) : ExpandableItem<TimesheetItem> {
+        private val items: MutableList<TimeReportItem>
+) : ExpandableItem<TimeReportItem> {
     private val dateFormat = SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG))
     val id: Long
 
@@ -74,15 +74,15 @@ class TimeReportGroup private constructor(
         }
     }
 
-    override fun get(index: Int): TimesheetItem {
+    override fun get(index: Int): TimeReportItem {
         return items[index]
     }
 
-    override fun set(index: Int, item: TimesheetItem) {
+    override fun set(index: Int, item: TimeReportItem) {
         items[index] = item
     }
 
-    override fun remove(index: Int): TimesheetItem {
+    override fun remove(index: Int): TimeReportItem {
         return items.removeAt(index)
     }
 
@@ -93,9 +93,9 @@ class TimeReportGroup private constructor(
     companion object {
         private const val LANGUAGE_TAG = "en_US"
 
-        fun build(date: Date, timesheetItems: SortedSet<TimesheetItem>): TimeReportGroup {
-            val items = ArrayList<TimesheetItem>()
-            items.addAll(timesheetItems)
+        fun build(date: Date, timeReportItems: SortedSet<TimeReportItem>): TimeReportGroup {
+            val items = ArrayList<TimeReportItem>()
+            items.addAll(timeReportItems)
 
             return TimeReportGroup(date, items)
         }

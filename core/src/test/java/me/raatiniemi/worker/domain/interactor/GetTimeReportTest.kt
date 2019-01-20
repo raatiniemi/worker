@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimesheetInMemoryRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -45,7 +45,7 @@ class GetTimeReportTest {
 
         val actual = useCase.execute(1, 0, true)
 
-        assertEquals(emptyMap<Date, TimesheetItem>(), actual)
+        assertEquals(emptyMap<Date, TimeReportItem>(), actual)
     }
 
     @Test
@@ -68,7 +68,7 @@ class GetTimeReportTest {
         val useCase = GetTimeReport(repository)
         val expected = mapOf(
                 resetToStartOfDay(timeInterval.startInMilliseconds) to sortedSetOf(
-                        TimesheetItem(timeInterval)
+                        TimeReportItem(timeInterval)
                 )
         )
 
@@ -84,7 +84,7 @@ class GetTimeReportTest {
 
         val actual = useCase.execute(1, 0, false)
 
-        assertEquals(emptyMap<Date, TimesheetItem>(), actual)
+        assertEquals(emptyMap<Date, TimeReportItem>(), actual)
     }
 
     @Test
@@ -106,7 +106,7 @@ class GetTimeReportTest {
         val useCase = GetTimeReport(repository)
         val expected = mapOf(
                 resetToStartOfDay(1) to timeIntervals
-                        .map { TimesheetItem(it) }
+                        .map { TimeReportItem(it) }
                         .toSortedSet()
         )
 

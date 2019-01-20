@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import org.junit.Before
 import org.junit.Test
@@ -45,7 +45,7 @@ class RemoveTimeReportViewModelTest {
     @Test
     fun remove_withError() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
         val results = listOf(TimeReportAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(timeInterval))))
                 .thenThrow(DomainException::class.java)
@@ -61,7 +61,7 @@ class RemoveTimeReportViewModelTest {
     @Test
     fun remove_withSingleItem() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val results = listOf(TimeReportAdapterResult(0, 0, TimesheetItem.with(timeInterval)))
+        val results = listOf(TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval)))
 
         vm.remove(results)
 
@@ -76,8 +76,8 @@ class RemoveTimeReportViewModelTest {
     fun remove_withMultipleItems() {
         val timeInterval = TimeInterval.builder(1L).build()
         val results = listOf(
-                TimeReportAdapterResult(0, 0, TimesheetItem.with(timeInterval)),
-                TimeReportAdapterResult(0, 1, TimesheetItem.with(timeInterval))
+                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval)),
+                TimeReportAdapterResult(0, 1, TimeReportItem.with(timeInterval))
         )
 
         vm.remove(results)

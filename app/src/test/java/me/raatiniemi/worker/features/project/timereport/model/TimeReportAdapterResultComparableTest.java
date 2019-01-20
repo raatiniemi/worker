@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.model.TimeReportItem;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -51,7 +51,7 @@ public class TimeReportAdapterResultComparableTest {
     @Parameters
     public static Collection<Object[]> getParameters() {
         TimeInterval timeInterval = TimeInterval.builder(1L).build();
-        TimesheetItem item = TimesheetItem.with(timeInterval);
+        TimeReportItem item = TimeReportItem.with(timeInterval);
 
         return Arrays.asList(
                 new Object[][]{

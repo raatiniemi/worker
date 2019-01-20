@@ -16,9 +16,9 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator
+import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -78,8 +78,8 @@ class TimesheetInMemoryRepositoryTest {
         val repository = TimesheetInMemoryRepository(timeIntervals)
         val expected = mapOf(
                 resetToStartOfDay(1) to timeIntervals
-                        .map { TimesheetItem(it) }
-                        .toSortedSet(TimesheetItemComparator())
+                        .map { TimeReportItem(it) }
+                        .toSortedSet(TimeReportItemComparator())
         )
 
         val actual = repository.getTimesheet(1, PageRequest.withOffset(0))
@@ -102,8 +102,8 @@ class TimesheetInMemoryRepositoryTest {
         val timeIntervals = listOf(ti1, ti2)
         val repository = TimesheetInMemoryRepository(timeIntervals)
         val expected = mapOf(
-                resetToStartOfDay(ti1.startInMilliseconds) to setOf(TimesheetItem(ti1)),
-                resetToStartOfDay(ti2.startInMilliseconds) to setOf(TimesheetItem(ti2))
+                resetToStartOfDay(ti1.startInMilliseconds) to setOf(TimeReportItem(ti1)),
+                resetToStartOfDay(ti2.startInMilliseconds) to setOf(TimeReportItem(ti2))
         )
 
         val actual = repository.getTimesheet(1, PageRequest.withOffset(0))
@@ -171,8 +171,8 @@ class TimesheetInMemoryRepositoryTest {
         val repository = TimesheetInMemoryRepository(timeIntervals)
         val expected = mapOf(
                 resetToStartOfDay(1) to listOf(ti1, ti2)
-                        .map { TimesheetItem(it) }
-                        .toSortedSet(TimesheetItemComparator())
+                        .map { TimeReportItem(it) }
+                        .toSortedSet(TimeReportItemComparator())
         )
 
         val actual = repository.getTimesheetWithoutRegisteredEntries(1, PageRequest.withOffset(0))
@@ -201,8 +201,8 @@ class TimesheetInMemoryRepositoryTest {
         val timeIntervals = listOf(ti1, ti2, ti3)
         val repository = TimesheetInMemoryRepository(timeIntervals)
         val expected = mapOf(
-                resetToStartOfDay(ti1.startInMilliseconds) to setOf(TimesheetItem(ti1)),
-                resetToStartOfDay(ti2.startInMilliseconds) to setOf(TimesheetItem(ti2))
+                resetToStartOfDay(ti1.startInMilliseconds) to setOf(TimeReportItem(ti1)),
+                resetToStartOfDay(ti2.startInMilliseconds) to setOf(TimeReportItem(ti2))
         )
 
         val actual = repository.getTimesheetWithoutRegisteredEntries(1, PageRequest.withOffset(0))

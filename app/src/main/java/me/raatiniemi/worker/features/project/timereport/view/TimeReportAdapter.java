@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.model.TimeReportItem;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult;
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup;
@@ -36,7 +36,7 @@ import me.raatiniemi.worker.util.SelectionManager;
 import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator;
 
 class TimeReportAdapter extends ExpandableListAdapter<
-        TimesheetItem,
+        TimeReportItem,
         TimeReportGroup,
         GroupItemViewHolder,
         ChildItemViewHolder
@@ -127,7 +127,7 @@ class TimeReportAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindChildViewHolder(ChildItemViewHolder vh, final int group, final int child, int viewType) {
-        final TimesheetItem item = get(group, child);
+        final TimeReportItem item = get(group, child);
 
         final TimeReportAdapterResult result = new TimeReportAdapterResult(group, child, item);
 
@@ -188,7 +188,7 @@ class TimeReportAdapter extends ExpandableListAdapter<
 
     @Override
     public long getChildId(int group, int child) {
-        TimesheetItem item = get(group, child);
+        TimeReportItem item = get(group, child);
         return item.getId();
     }
 
@@ -221,7 +221,7 @@ class TimeReportAdapter extends ExpandableListAdapter<
     }
 
     public void set(TimeReportAdapterResult result) {
-        set(result.getGroup(), result.getChild(), TimesheetItem.with(result.getTimeInterval()));
+        set(result.getGroup(), result.getChild(), TimeReportItem.with(result.getTimeInterval()));
     }
 
     boolean haveSelectedItems() {

@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import org.junit.Before
 import org.junit.Test
@@ -47,7 +47,7 @@ class RegisterTimeReportViewModelTest {
     @Test
     fun register_withError() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
         val results = listOf(TimeReportAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(timeInterval))))
                 .thenThrow(DomainException::class.java)
@@ -63,7 +63,7 @@ class RegisterTimeReportViewModelTest {
     @Test
     fun register_withItem() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
         val results = listOf(TimeReportAdapterResult(0, 0, item))
         `when`(useCase.execute(eq(listOf(timeInterval))))
                 .thenReturn(listOf(timeInterval))
@@ -83,8 +83,8 @@ class RegisterTimeReportViewModelTest {
                 TimeInterval.builder(1L).id(2L).build()
         )
         val results = listOf(
-                TimeReportAdapterResult(0, 0, TimesheetItem.with(times[0])),
-                TimeReportAdapterResult(0, 1, TimesheetItem.with(times[1]))
+                TimeReportAdapterResult(0, 0, TimeReportItem.with(times[0])),
+                TimeReportAdapterResult(0, 1, TimeReportItem.with(times[1]))
         )
         `when`(useCase.execute(eq(times)))
                 .thenReturn(times)

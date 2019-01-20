@@ -25,22 +25,22 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.model.TimeReportItem;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetItemComparatorTest {
+public class TimeReportItemComparatorTest {
     private final String message;
     private final int expected;
-    private final TimesheetItem lhs;
-    private final TimesheetItem rhs;
+    private final TimeReportItem lhs;
+    private final TimeReportItem rhs;
 
-    public TimesheetItemComparatorTest(
+    public TimeReportItemComparatorTest(
             String message,
             int expected,
-            TimesheetItem lhs,
-            TimesheetItem rhs
+            TimeReportItem lhs,
+            TimeReportItem rhs
     ) {
         this.message = message;
         this.expected = expected;
@@ -55,13 +55,13 @@ public class TimesheetItemComparatorTest {
                         {
                                 "Active with lhs.start = rhs.start",
                                 0,
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(0L)
                                                 .build()
                                 ),
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(0L)
@@ -71,13 +71,13 @@ public class TimesheetItemComparatorTest {
                         {
                                 "Active with lhs.start > rhs.start",
                                 -1,
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(2L)
                                                 .stopInMilliseconds(0L)
                                                 .build()
                                 ),
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(0L)
@@ -87,13 +87,13 @@ public class TimesheetItemComparatorTest {
                         {
                                 "Active with lhs.start < rhs.start",
                                 1,
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(0L)
                                                 .build()
                                 ),
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(2L)
                                                 .stopInMilliseconds(0L)
@@ -103,13 +103,13 @@ public class TimesheetItemComparatorTest {
                         {
                                 "lhs == rhs",
                                 0,
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(2L)
                                                 .build()
                                 ),
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(2L)
@@ -119,13 +119,13 @@ public class TimesheetItemComparatorTest {
                         {
                                 "lhs.start > rhs.start",
                                 -1,
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(2L)
                                                 .stopInMilliseconds(2L)
                                                 .build()
                                 ),
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(2L)
@@ -135,13 +135,13 @@ public class TimesheetItemComparatorTest {
                         {
                                 "lhs.start < rhs.start",
                                 1,
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(2L)
                                                 .build()
                                 ),
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(2L)
                                                 .stopInMilliseconds(2L)
@@ -151,13 +151,13 @@ public class TimesheetItemComparatorTest {
                         {
                                 "lhs.stop > rhs.stop",
                                 -1,
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(2L)
                                                 .build()
                                 ),
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(1L)
@@ -167,13 +167,13 @@ public class TimesheetItemComparatorTest {
                         {
                                 "lhs.stop < rhs.stop",
                                 1,
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(1L)
                                                 .build()
                                 ),
-                                TimesheetItem.with(
+                                TimeReportItem.with(
                                         TimeInterval.builder(1L)
                                                 .startInMilliseconds(1L)
                                                 .stopInMilliseconds(2L)

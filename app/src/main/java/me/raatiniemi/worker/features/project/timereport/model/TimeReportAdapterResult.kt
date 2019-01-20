@@ -17,12 +17,12 @@
 package me.raatiniemi.worker.features.project.timereport.model
 
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 
 data class TimeReportAdapterResult(
         val group: Int,
         val child: Int,
-        private val item: TimesheetItem
+        private val item: TimeReportItem
 ) : Comparable<TimeReportAdapterResult> {
     val timeInterval: TimeInterval
         get() = item.asTimeInterval()

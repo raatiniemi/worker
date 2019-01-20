@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.model
 
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +36,7 @@ class TimeReportGroupExpandableItemTest {
     @Test
     fun get() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val items = sortedSetOf(TimesheetItem.with(timeInterval))
+        val items = sortedSetOf(TimeReportItem.with(timeInterval))
         val group = TimeReportGroup.build(Date(), items)
 
         assertEquals(items.first(), group.get(0))
@@ -45,7 +45,7 @@ class TimeReportGroupExpandableItemTest {
     @Test(expected = IndexOutOfBoundsException::class)
     fun setWithIndexOutOfBounds() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
         val group = TimeReportGroup.build(Date(), TreeSet())
 
         group.set(1, item)
@@ -53,7 +53,7 @@ class TimeReportGroupExpandableItemTest {
 
     fun set() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val items = sortedSetOf(TimesheetItem.with(timeInterval))
+        val items = sortedSetOf(TimeReportItem.with(timeInterval))
         val group = TimeReportGroup.build(Date(), items)
 
         group.set(1, items.first())
@@ -69,7 +69,7 @@ class TimeReportGroupExpandableItemTest {
     @Test
     fun remove() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val items = sortedSetOf(TimesheetItem.with(timeInterval))
+        val items = sortedSetOf(TimeReportItem.with(timeInterval))
         val group = TimeReportGroup.build(Date(), items)
 
         assertEquals(items.first(), group.remove(0))
@@ -85,7 +85,7 @@ class TimeReportGroupExpandableItemTest {
     @Test
     fun sizeWithItem() {
         val timeInterval = TimeInterval.builder(1L).build()
-        val items = sortedSetOf(TimesheetItem.with(timeInterval))
+        val items = sortedSetOf(TimeReportItem.with(timeInterval))
         val group = TimeReportGroup.build(Date(), items)
 
         assertEquals(1, group.size())
@@ -104,8 +104,8 @@ class TimeReportGroupExpandableItemTest {
                 .stopInMilliseconds(5L)
                 .build()
         val items = sortedSetOf(
-                TimesheetItem.with(timeInterval1),
-                TimesheetItem.with(timeInterval2)
+                TimeReportItem.with(timeInterval1),
+                TimeReportItem.with(timeInterval2)
         )
         val group = TimeReportGroup.build(Date(), items)
 

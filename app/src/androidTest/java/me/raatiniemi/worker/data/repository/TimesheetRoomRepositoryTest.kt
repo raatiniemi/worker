@@ -25,11 +25,11 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
+import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator
-import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.PageRequest
 import me.raatiniemi.worker.domain.repository.TimesheetRepository
 import org.junit.After
@@ -72,13 +72,13 @@ class TimesheetRoomRepositoryTest {
         database.close()
     }
 
-    private fun timesheetItemSet(timeIntervals: List<TimeInterval>): SortedSet<TimesheetItem> {
-        return timeIntervals.map { TimesheetItem(it) }
-                .toSortedSet(TimesheetItemComparator())
+    private fun timeReportItemSet(timeIntervals: List<TimeInterval>): SortedSet<TimeReportItem> {
+        return timeIntervals.map { TimeReportItem(it) }
+                .toSortedSet(TimeReportItemComparator())
     }
 
-    private fun timesheetItemSet(timeInterval: TimeInterval): SortedSet<TimesheetItem> {
-        return timesheetItemSet(listOf(timeInterval))
+    private fun timeReportItemSet(timeInterval: TimeInterval): SortedSet<TimeReportItem> {
+        return timeReportItemSet(listOf(timeInterval))
     }
 
     @Test
@@ -125,8 +125,8 @@ class TimesheetRoomRepositoryTest {
                 ti1.copy(id = 1).toTimeInterval(),
                 ti2.copy(id = 2).toTimeInterval()
         )
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timesheetItemSet(timeIntervals))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti1.startInMilliseconds), timeReportItemSet(timeIntervals))
         }
 
         val actual = repository.getTimesheet(1, PageRequest.withOffset(0))
@@ -147,9 +147,9 @@ class TimesheetRoomRepositoryTest {
             stopInMilliseconds = 93000000
         }
         listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timesheetItemSet(ti1.copy(id = 1).toTimeInterval()))
-            put(Date(ti2.startInMilliseconds), timesheetItemSet(ti2.copy(id = 2).toTimeInterval()))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
+            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
         val actual = repository.getTimesheet(1, PageRequest.withOffset(0))
@@ -170,8 +170,8 @@ class TimesheetRoomRepositoryTest {
             stopInMilliseconds = 93000000
         }
         listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timesheetItemSet(ti1.copy(id = 1).toTimeInterval()))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
         }
 
         val actual = repository.getTimesheet(1, PageRequest.withOffset(1))
@@ -192,8 +192,8 @@ class TimesheetRoomRepositoryTest {
             stopInMilliseconds = 93000000
         }
         listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti2.startInMilliseconds), timesheetItemSet(ti2.copy(id = 2).toTimeInterval()))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
         val actual = repository.getTimesheet(1, PageRequest.withMaxResults(1))
@@ -251,8 +251,8 @@ class TimesheetRoomRepositoryTest {
                 ti1.copy(id = 1).toTimeInterval(),
                 ti2.copy(id = 2).toTimeInterval()
         )
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timesheetItemSet(timeIntervals))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti1.startInMilliseconds), timeReportItemSet(timeIntervals))
         }
 
         val actual = repository.getTimesheetWithoutRegisteredEntries(
@@ -276,9 +276,9 @@ class TimesheetRoomRepositoryTest {
             stopInMilliseconds = 93000000
         }
         listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timesheetItemSet(ti1.copy(id = 1).toTimeInterval()))
-            put(Date(ti2.startInMilliseconds), timesheetItemSet(ti2.copy(id = 2).toTimeInterval()))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
+            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
         val actual = repository.getTimesheetWithoutRegisteredEntries(
@@ -302,8 +302,8 @@ class TimesheetRoomRepositoryTest {
             stopInMilliseconds = 93000000
         }
         listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timesheetItemSet(ti1.copy(id = 1).toTimeInterval()))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
         }
 
         val actual = repository.getTimesheetWithoutRegisteredEntries(
@@ -327,8 +327,8 @@ class TimesheetRoomRepositoryTest {
             stopInMilliseconds = 93000000
         }
         listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti2.startInMilliseconds), timesheetItemSet(ti2.copy(id = 2).toTimeInterval()))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
         val actual = repository.getTimesheetWithoutRegisteredEntries(
@@ -353,8 +353,8 @@ class TimesheetRoomRepositoryTest {
             stopInMilliseconds = 93000000
         }
         listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator()).apply {
-            put(Date(ti2.startInMilliseconds), timesheetItemSet(ti2.copy(id = 2).toTimeInterval()))
+        val expected = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator()).apply {
+            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
         val actual = repository.getTimesheetWithoutRegisteredEntries(

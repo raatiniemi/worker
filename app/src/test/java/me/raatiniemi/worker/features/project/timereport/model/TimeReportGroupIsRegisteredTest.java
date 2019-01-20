@@ -27,21 +27,21 @@ import java.util.Date;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.model.TimeReportItem;
 
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TimeReportGroupIsRegisteredTest {
-    private static final TimesheetItem NOT_REGISTERED_TIME;
-    private final static TimesheetItem REGISTERED_TIME;
+    private static final TimeReportItem NOT_REGISTERED_TIME;
+    private final static TimeReportItem REGISTERED_TIME;
 
     static {
         TimeInterval notRegistered = TimeInterval.builder(1L).build();
-        NOT_REGISTERED_TIME = TimesheetItem.with(notRegistered);
+        NOT_REGISTERED_TIME = TimeReportItem.with(notRegistered);
 
         TimeInterval registered = TimeInterval.builder(1L).register().build();
-        REGISTERED_TIME = TimesheetItem.with(registered);
+        REGISTERED_TIME = TimeReportItem.with(registered);
     }
 
     private final boolean expected;
@@ -49,11 +49,11 @@ public class TimeReportGroupIsRegisteredTest {
 
     public TimeReportGroupIsRegisteredTest(
             boolean expected,
-            TimesheetItem... timesheetItems
+            TimeReportItem... timeReportItems
     ) {
         this.expected = expected;
 
-        TreeSet<TimesheetItem> items = new TreeSet<>(Arrays.asList(timesheetItems));
+        TreeSet<TimeReportItem> items = new TreeSet<>(Arrays.asList(timeReportItems));
         item = TimeReportGroup.Companion.build(new Date(), items);
     }
 
@@ -63,26 +63,26 @@ public class TimeReportGroupIsRegisteredTest {
                 new Object[][]{
                         {
                                 Boolean.TRUE,
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.FALSE,
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         NOT_REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.FALSE,
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         NOT_REGISTERED_TIME,
                                         REGISTERED_TIME
                                 }
                         },
                         {
                                 Boolean.TRUE,
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         REGISTERED_TIME,
                                         REGISTERED_TIME
                                 }

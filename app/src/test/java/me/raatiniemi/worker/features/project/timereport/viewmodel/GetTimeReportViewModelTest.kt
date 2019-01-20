@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
 import org.junit.Before
 import org.junit.Test
@@ -61,7 +61,7 @@ class GetTimeReportViewModelTest {
     @Test
     fun fetch_hideRegisteredTime() {
         `when`(useCase.execute(eq(1L), eq(0), eq(true)))
-                .thenReturn(TreeMap<Date, SortedSet<TimesheetItem>>())
+                .thenReturn(TreeMap<Date, SortedSet<TimeReportItem>>())
 
         vm.hideRegisteredTime()
         vm.fetch(1L, 0)
@@ -75,7 +75,7 @@ class GetTimeReportViewModelTest {
     @Test
     fun fetch_withEmptyResult() {
         `when`(useCase.execute(eq(1L), eq(0), eq(false)))
-                .thenReturn(TreeMap<Date, SortedSet<TimesheetItem>>())
+                .thenReturn(TreeMap<Date, SortedSet<TimeReportItem>>())
 
         vm.fetch(1L, 0)
 
@@ -111,23 +111,23 @@ class GetTimeReportViewModelTest {
         errors.assertNoTerminalEvent()
     }
 
-    private fun buildTimesheetSegment(): SortedMap<Date, SortedSet<TimesheetItem>> {
+    private fun buildTimesheetSegment(): SortedMap<Date, SortedSet<TimeReportItem>> {
         return buildTimesheetSegmentWithNumberOfItems(1)
     }
 
-    private fun buildTimesheetSegmentWithNumberOfItems(numberOfItems: Int): SortedMap<Date, SortedSet<TimesheetItem>> {
-        val segments = TreeMap<Date, SortedSet<TimesheetItem>>()
+    private fun buildTimesheetSegmentWithNumberOfItems(numberOfItems: Int): SortedMap<Date, SortedSet<TimeReportItem>> {
+        val segments = TreeMap<Date, SortedSet<TimeReportItem>>()
         for (i in 0 until numberOfItems) {
-            segments[Date(i.toLong())] = timesheetItems
+            segments[Date(i.toLong())] = timeReportItems
         }
 
         return segments
     }
 
-    private val timesheetItems: TreeSet<TimesheetItem>
+    private val timeReportItems: TreeSet<TimeReportItem>
         get() {
             val timeInterval = TimeInterval.builder(1L).build()
-            val item = TimesheetItem.with(timeInterval)
+            val item = TimeReportItem.with(timeInterval)
 
             return TreeSet(setOf(item))
         }

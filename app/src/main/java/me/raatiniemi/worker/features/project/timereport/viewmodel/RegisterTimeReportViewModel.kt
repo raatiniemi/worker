@@ -18,7 +18,7 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
@@ -73,7 +73,7 @@ interface RegisterTimeReportViewModel {
             return selectedItems
                     .filter { it.timeInterval.id == time.id }
                     .map {
-                        val item = TimesheetItem.with(time)
+                        val item = TimeReportItem.with(time)
 
                         TimeReportAdapterResult(it.group, it.child, item)
                     }

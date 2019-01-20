@@ -17,9 +17,9 @@
 package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator
-import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator
+import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimesheetItem
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import java.util.*
 
 class TimesheetInMemoryRepository(private val timeIntervals: List<TimeInterval>) : TimesheetRepository {
@@ -36,15 +36,15 @@ class TimesheetInMemoryRepository(private val timeIntervals: List<TimeInterval>)
 
     // TODO: Implement proper support for pagination.
     private fun filterAndBuildResult(predicate: (TimeInterval) -> Boolean)
-            : TreeMap<Date, Set<TimesheetItem>> {
+            : TreeMap<Date, Set<TimeReportItem>> {
         val matchingTimeIntervals = timeIntervals.filter { predicate(it) }
                 .groupBy { resetToStartOfDay(it.startInMilliseconds) }
 
-        val timeIntervals = TreeMap<Date, Set<TimesheetItem>>(TimesheetDateComparator())
+        val timeIntervals = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator())
         matchingTimeIntervals.forEach {
             timeIntervals[it.key] = it.value
-                    .map { timeInterval -> TimesheetItem(timeInterval) }
-                    .toSortedSet(TimesheetItemComparator())
+                    .map { timeInterval -> TimeReportItem(timeInterval) }
+                    .toSortedSet(TimeReportItemComparator())
         }
 
         return timeIntervals
@@ -53,14 +53,14 @@ class TimesheetInMemoryRepository(private val timeIntervals: List<TimeInterval>)
     override fun getTimesheet(
             projectId: Long,
             pageRequest: PageRequest
-    ): Map<Date, Set<TimesheetItem>> {
+    ): Map<Date, Set<TimeReportItem>> {
         return filterAndBuildResult { it.projectId == projectId }
     }
 
     override fun getTimesheetWithoutRegisteredEntries(
             projectId: Long,
             pageRequest: PageRequest
-    ): Map<Date, Set<TimesheetItem>> {
+    ): Map<Date, Set<TimeReportItem>> {
         return filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
     }
 }

@@ -25,7 +25,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator;
-import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.model.TimeReportItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 
@@ -52,7 +52,7 @@ public class GetTimeReport {
      * @param hideRegisteredTime Should registered time be hidden.
      * @return Segment of project time report.
      */
-    public SortedMap<Date, SortedSet<TimesheetItem>> execute(
+    public SortedMap<Date, SortedSet<TimeReportItem>> execute(
             final Long projectId,
             final int offset,
             boolean hideRegisteredTime
@@ -66,17 +66,17 @@ public class GetTimeReport {
         return sortedEntries(repository.getTimesheet(projectId, pageRequest));
     }
 
-    private static SortedMap<Date, SortedSet<TimesheetItem>> sortedEntries(Map<Date, Set<TimesheetItem>> entries) {
-        SortedMap<Date, SortedSet<TimesheetItem>> result = new TreeMap<>(new TimesheetDateComparator());
+    private static SortedMap<Date, SortedSet<TimeReportItem>> sortedEntries(Map<Date, Set<TimeReportItem>> entries) {
+        SortedMap<Date, SortedSet<TimeReportItem>> result = new TreeMap<>(new TimesheetDateComparator());
 
-        for (Map.Entry<Date, Set<TimesheetItem>> entry : entries.entrySet()) {
+        for (Map.Entry<Date, Set<TimeReportItem>> entry : entries.entrySet()) {
             result.put(entry.getKey(), sortItems(entry.getValue()));
         }
 
         return result;
     }
 
-    private static SortedSet<TimesheetItem> sortItems(Set<TimesheetItem> items) {
+    private static SortedSet<TimeReportItem> sortItems(Set<TimeReportItem> items) {
         return new TreeSet<>(items);
     }
 }

@@ -23,14 +23,14 @@ import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
-class TimesheetItemIsRegisteredTest(
+class TimeReportItemIsRegisteredTest(
         private val message: String,
         private val expected: Boolean,
         private val timeInterval: TimeInterval
 ) {
     @Test
     fun isRegistered() {
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
 
         assertEquals(message, expected, item.isRegistered)
     }

@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.model.TimeReportItem;
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
@@ -43,12 +43,12 @@ public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
     public TimeReportGroupGetTimeSummaryWithDifferenceTest(
             String expected,
             HoursMinutesFormat formatter,
-            TimesheetItem... times
+            TimeReportItem... times
     ) {
         this.expected = expected;
         this.formatter = formatter;
 
-        TreeSet<TimesheetItem> items = new TreeSet<>(Arrays.asList(times));
+        TreeSet<TimeReportItem> items = new TreeSet<>(Arrays.asList(times));
         item = TimeReportGroup.Companion.build(new Date(), items);
     }
 
@@ -59,28 +59,28 @@ public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
                         {
                                 "1.00 (-7.00)",
                                 new FractionIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(3600000)
                                 }
                         },
                         {
                                 "8.00",
                                 new FractionIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(28800000)
                                 }
                         },
                         {
                                 "9.00 (+1.00)",
                                 new FractionIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(32400000)
                                 }
                         },
                         {
                                 "9.12 (+1.12)",
                                 new FractionIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(14380327),
                                         buildTimesheetItemWithInterval(18407820)
                                 }
@@ -88,7 +88,7 @@ public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
                         {
                                 "8.77 (+0.77)",
                                 new FractionIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(13956031),
                                         buildTimesheetItemWithInterval(17594386)
                                 }
@@ -96,7 +96,7 @@ public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
                         {
                                 "7.87 (-0.13)",
                                 new FractionIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(11661632),
                                         buildTimesheetItemWithInterval(16707601)
                                 }
@@ -104,28 +104,28 @@ public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
                         {
                                 "1:00 (-7:00)",
                                 new DigitalHoursMinutesIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(3600000)
                                 }
                         },
                         {
                                 "8:00",
                                 new DigitalHoursMinutesIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(28800000)
                                 }
                         },
                         {
                                 "9:00 (+1:00)",
                                 new DigitalHoursMinutesIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(32400000)
                                 }
                         },
                         {
                                 "9:07 (+1:07)",
                                 new DigitalHoursMinutesIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(14380327),
                                         buildTimesheetItemWithInterval(18407820)
                                 }
@@ -133,7 +133,7 @@ public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
                         {
                                 "8:46 (+0:46)",
                                 new DigitalHoursMinutesIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(13956031),
                                         buildTimesheetItemWithInterval(17594386)
                                 }
@@ -141,7 +141,7 @@ public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
                         {
                                 "7:52 (-0:08)",
                                 new DigitalHoursMinutesIntervalFormat(),
-                                new TimesheetItem[]{
+                                new TimeReportItem[]{
                                         buildTimesheetItemWithInterval(11661632),
                                         buildTimesheetItemWithInterval(16707601)
                                 }
@@ -150,8 +150,8 @@ public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
         );
     }
 
-    private static TimesheetItem buildTimesheetItemWithInterval(long interval) {
-        return TimesheetItem.with(
+    private static TimeReportItem buildTimesheetItemWithInterval(long interval) {
+        return TimeReportItem.with(
                 TimeInterval.builder(1L)
                         .startInMilliseconds(1L)
                         .stopInMilliseconds(interval)

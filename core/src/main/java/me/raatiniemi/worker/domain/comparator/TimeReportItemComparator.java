@@ -19,9 +19,9 @@ package me.raatiniemi.worker.domain.comparator;
 import java.util.Comparator;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.model.TimeReportItem;
 
-public class TimesheetItemComparator implements Comparator<TimesheetItem> {
+public class TimeReportItemComparator implements Comparator<TimeReportItem> {
     private static boolean isActive(TimeInterval timeInterval) {
         return 0 == timeInterval.getStopInMilliseconds();
     }
@@ -65,7 +65,7 @@ public class TimesheetItemComparator implements Comparator<TimesheetItem> {
     }
 
     @Override
-    public int compare(TimesheetItem o1, TimesheetItem o2) {
+    public int compare(TimeReportItem o1, TimeReportItem o2) {
         return compare(o1.asTimeInterval(), o2.asTimeInterval());
     }
 }

@@ -26,14 +26,14 @@ import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
-class TimesheetItemGetTimeSummaryWithFormatterTest(
+class TimeReportItemGetTimeSummaryWithFormatterTest(
         private val expected: String,
         private val formatter: HoursMinutesFormat,
         private val timeInterval: TimeInterval
 ) {
     @Test
     fun getTimeSummary() {
-        val item = TimesheetItem.with(timeInterval)
+        val item = TimeReportItem.with(timeInterval)
 
         assertEquals(expected, item.getTimeSummaryWithFormatter(formatter))
     }

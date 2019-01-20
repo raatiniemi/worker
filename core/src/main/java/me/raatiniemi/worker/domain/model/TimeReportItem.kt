@@ -16,13 +16,13 @@
 
 package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator
+import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.util.CalculateTime
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class TimesheetItem(private val timeInterval: TimeInterval) : Comparable<TimesheetItem> {
+data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<TimeReportItem> {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
     val hoursMinutes: HoursMinutes = CalculateTime.calculateHoursMinutes(timeInterval.interval)
 
@@ -69,21 +69,21 @@ data class TimesheetItem(private val timeInterval: TimeInterval) : Comparable<Ti
         return formatter.apply(hoursMinutes)
     }
 
-    override fun compareTo(other: TimesheetItem): Int {
+    override fun compareTo(other: TimeReportItem): Int {
         return comparator.compare(this, other)
     }
 
     companion object {
         private const val TIME_SEPARATOR = " - "
-        private val comparator = TimesheetItemComparator()
+        private val comparator = TimeReportItemComparator()
 
         private fun buildDateFromMilliseconds(milliseconds: Long): Date {
             return Date(milliseconds)
         }
 
         @JvmStatic
-        fun with(time: TimeInterval): TimesheetItem {
-            return TimesheetItem(time)
+        fun with(time: TimeInterval): TimeReportItem {
+            return TimeReportItem(time)
         }
     }
 }

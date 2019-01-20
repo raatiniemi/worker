@@ -29,7 +29,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.model.TimesheetItem;
+import me.raatiniemi.worker.domain.model.TimeReportItem;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -57,13 +57,13 @@ public class TimeReportGroupItemBuildResultsTest {
             return TimeReportGroup.Companion.build(new Date(), new TreeSet<>());
         }
 
-        SortedSet<TimesheetItem> items = new TreeSet<>();
+        SortedSet<TimeReportItem> items = new TreeSet<>();
         for (long i = 0; i < numberOfItems; i++) {
             TimeInterval timeInterval = TimeInterval.builder(1L)
                     .startInMilliseconds(i)
                     .build();
 
-            items.add(TimesheetItem.with(timeInterval));
+            items.add(TimeReportItem.with(timeInterval));
         }
 
         return TimeReportGroup.Companion.build(new Date(), items);
@@ -83,7 +83,7 @@ public class TimeReportGroupItemBuildResultsTest {
                         {
                                 "With one item",
                                 new TimeReportAdapterResult[]{
-                                        new TimeReportAdapterResult(1, 0, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
+                                        new TimeReportAdapterResult(1, 0, TimeReportItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
                                 },
                                 1,
                                 buildTimesheetGroupWithNumberOfItems(1)
@@ -91,12 +91,12 @@ public class TimeReportGroupItemBuildResultsTest {
                         {
                                 "With multiple items",
                                 new TimeReportAdapterResult[]{
-                                        new TimeReportAdapterResult(2, 0, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(5L).build())),
-                                        new TimeReportAdapterResult(2, 1, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(4L).build())),
-                                        new TimeReportAdapterResult(2, 2, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(3L).build())),
-                                        new TimeReportAdapterResult(2, 3, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(2L).build())),
-                                        new TimeReportAdapterResult(2, 4, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(1L).build())),
-                                        new TimeReportAdapterResult(2, 5, TimesheetItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
+                                        new TimeReportAdapterResult(2, 0, TimeReportItem.with(TimeInterval.builder(1L).startInMilliseconds(5L).build())),
+                                        new TimeReportAdapterResult(2, 1, TimeReportItem.with(TimeInterval.builder(1L).startInMilliseconds(4L).build())),
+                                        new TimeReportAdapterResult(2, 2, TimeReportItem.with(TimeInterval.builder(1L).startInMilliseconds(3L).build())),
+                                        new TimeReportAdapterResult(2, 3, TimeReportItem.with(TimeInterval.builder(1L).startInMilliseconds(2L).build())),
+                                        new TimeReportAdapterResult(2, 4, TimeReportItem.with(TimeInterval.builder(1L).startInMilliseconds(1L).build())),
+                                        new TimeReportAdapterResult(2, 5, TimeReportItem.with(TimeInterval.builder(1L).startInMilliseconds(0L).build()))
                                 },
                                 2,
                                 buildTimesheetGroupWithNumberOfItems(6)
