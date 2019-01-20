@@ -25,7 +25,7 @@ import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-interface RegisterTimesheetViewModel {
+interface RegisterTimeReportViewModel {
     interface Input {
         fun register(results: List<TimeReportAdapterResult>)
     }

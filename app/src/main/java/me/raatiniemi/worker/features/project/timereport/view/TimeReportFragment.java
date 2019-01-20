@@ -43,7 +43,7 @@ import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.features.project.ViewModels;
 import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel;
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel;
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimesheetViewModel;
 import me.raatiniemi.worker.features.project.view.ProjectActivity;
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
@@ -64,7 +64,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
 
     private final ViewModels viewModels = new ViewModels();
     private final GetTimeReportViewModel.ViewModel getTimeReportViewModel = viewModels.getTimeReport();
-    private final RegisterTimesheetViewModel.ViewModel registerTimesheetViewModel = viewModels.getRegisterTimesheet();
+    private final RegisterTimeReportViewModel.ViewModel registerTimeReportViewModel = viewModels.getRegisterTimeReport();
     private final RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel = viewModels.getRemoveTimesheet();
 
     private final EventBus eventBus = EventBus.getDefault();
@@ -126,7 +126,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
         }
 
         private void toggleRegisterSelectedItems(ActionMode actionMode) {
-            registerTimesheetViewModel.register(adapter.getSelectedItems());
+            registerTimeReportViewModel.register(adapter.getSelectedItems());
 
             actionMode.finish();
         }
@@ -236,7 +236,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
         getTimeReportViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showGetTimeReportErrorMessage());
-        registerTimesheetViewModel.success()
+        registerTimeReportViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
@@ -250,7 +250,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
                         },
                         Timber::e
                 );
-        registerTimesheetViewModel.errors()
+        registerTimeReportViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showRegisterErrorMessage());
         removeTimesheetViewModel.success()

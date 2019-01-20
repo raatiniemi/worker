@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project
 
 import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimesheetViewModel
+import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimesheetViewModel
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -25,7 +25,7 @@ import org.koin.standalone.inject
 class ViewModels: KoinComponent {
     val timeReport: GetTimeReportViewModel.ViewModel by inject()
 
-    val registerTimesheet: RegisterTimesheetViewModel.ViewModel by inject()
+    val registerTimeReport: RegisterTimeReportViewModel.ViewModel by inject()
 
     val removeTimesheet: RemoveTimesheetViewModel.ViewModel by inject()
 }

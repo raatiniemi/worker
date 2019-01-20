@@ -31,9 +31,9 @@ import org.mockito.Mockito.mock
 import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
-class RegisterTimesheetViewModelTest {
+class RegisterTimeReportViewModelTest {
     private val useCase = mock(MarkRegisteredTime::class.java)
-    private val vm = RegisterTimesheetViewModel.ViewModel(useCase)
+    private val vm = RegisterTimeReportViewModel.ViewModel(useCase)
 
     private val success = TestSubscriber<TimeReportAdapterResult>()
     private val errors = TestSubscriber<Throwable>()
