@@ -32,8 +32,8 @@ class GroupItemViewHolder extends AbstractExpandableItemViewHolder {
     GroupItemViewHolder(View view) {
         super(view);
 
-        letter = view.findViewById(R.id.fragment_timesheet_group_item_letter);
-        title = view.findViewById(R.id.fragment_timesheet_group_item_title);
-        summarize = view.findViewById(R.id.fragment_timesheet_group_item_summarize);
+        letter = view.findViewById(R.id.ivLetter);
+        title = view.findViewById(R.id.tvTitle);
+        summarize = view.findViewById(R.id.tvSummary);
     }
 }

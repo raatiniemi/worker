@@ -1,54 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/expandable_group_item_height"
-    android:background="@drawable/list_item_background"
-    >
+    android:background="@drawable/list_item_background">
 
     <RelativeLayout
-        android:id="@+id/fragment_timesheet_group_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="@dimen/expandable_group_item_padding_left"
-        android:paddingEnd="@dimen/expandable_group_item_padding_right"
-        >
+        android:paddingEnd="@dimen/expandable_group_item_padding_right">
 
         <ImageView
-            android:id="@+id/fragment_timesheet_group_item_letter"
+            android:id="@+id/ivLetter"
             android:layout_width="@dimen/expandable_group_item_letter_width"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/expandable_group_item_padding_left"
             android:layout_marginEnd="@dimen/expandable_group_item_padding_left"
             android:layout_marginBottom="@dimen/expandable_group_item_padding_left"
-            android:contentDescription="@string/fragment_time_report_group_item_selection_content_description"
-            />
+            android:contentDescription="@string/fragment_time_report_group_item_selection_content_description" />
 
         <TextView
-            android:id="@+id/fragment_timesheet_group_item_title"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_alignParentStart="false"
-            android:layout_toStartOf="@+id/fragment_timesheet_group_item_summarize"
-            android:layout_toEndOf="@+id/fragment_timesheet_group_item_letter"
-            android:textStyle="bold"
-            android:textSize="16sp"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@+id/tvSummary"
+            android:layout_toEndOf="@+id/ivLetter"
             android:textColor="@color/timeReportGroupText"
-            tools:text="Monday (March 9th)"
-            />
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Monday (March 9th)" />
 
         <TextView
-            android:id="@+id/fragment_timesheet_group_item_summarize"
+            android:id="@+id/tvSummary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
-            android:textSize="16sp"
+            android:layout_centerInParent="true"
             android:textColor="@color/timeReportGroupText"
-            tools:text="8.35 (+0.35)"
-            />
+            android:textSize="16sp"
+            tools:text="8.35 (+0.35)" />
 
     </RelativeLayout>
 
