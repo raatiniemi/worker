@@ -23,7 +23,7 @@ import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-interface GetTimesheetViewModel {
+interface GetTimeReportViewModel {
     interface Input {
         fun hideRegisteredTime()
         fun showRegisteredTime()

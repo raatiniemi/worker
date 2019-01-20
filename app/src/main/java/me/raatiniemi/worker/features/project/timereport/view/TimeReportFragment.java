@@ -42,7 +42,7 @@ import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat;
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.features.project.ViewModels;
-import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimesheetViewModel;
+import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel;
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimesheetViewModel;
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimesheetViewModel;
 import me.raatiniemi.worker.features.project.view.ProjectActivity;
@@ -63,7 +63,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
     private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
 
     private final ViewModels viewModels = new ViewModels();
-    private final GetTimesheetViewModel.ViewModel getTimesheetViewModel = viewModels.getTimeSheet();
+    private final GetTimeReportViewModel.ViewModel getTimeReportViewModel = viewModels.getTimeReport();
     private final RegisterTimesheetViewModel.ViewModel registerTimesheetViewModel = viewModels.getRegisterTimesheet();
     private final RemoveTimesheetViewModel.ViewModel removeTimesheetViewModel = viewModels.getRemoveTimesheet();
 
@@ -205,7 +205,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
                         int offset = adapter.getGroupCount();
 
                         // Retrieve additional timesheet items with offset.
-                        getTimesheetViewModel.fetch(getProjectId(), offset);
+                        getTimeReportViewModel.fetch(getProjectId(), offset);
                     }
                 }
             }
@@ -213,10 +213,10 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
         recyclerViewExpandableItemManager.attachRecyclerView(recyclerView);
 
         if (keyValueStore.hideRegisteredTime()) {
-            getTimesheetViewModel.hideRegisteredTime();
+            getTimeReportViewModel.hideRegisteredTime();
         }
 
-        getTimesheetViewModel.success()
+        getTimeReportViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulersWithBackpressureBuffer())
                 .subscribe(
@@ -233,7 +233,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
                         },
                         Timber::e
                 );
-        getTimesheetViewModel.errors()
+        getTimeReportViewModel.errors()
                 .compose(bindToLifecycle())
                 .subscribe(e -> showGetTimeReportErrorMessage());
         registerTimesheetViewModel.success()
@@ -264,7 +264,7 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
                 .compose(bindToLifecycle())
                 .subscribe(e -> showDeleteErrorMessage());
 
-        getTimesheetViewModel.fetch(getProjectId(), 0);
+        getTimeReportViewModel.fetch(getProjectId(), 0);
     }
 
     @Override
@@ -314,14 +314,14 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
 
     public void refresh() {
         if (keyValueStore.hideRegisteredTime()) {
-            getTimesheetViewModel.hideRegisteredTime();
+            getTimeReportViewModel.hideRegisteredTime();
         } else {
-            getTimesheetViewModel.showRegisteredTime();
+            getTimeReportViewModel.showRegisteredTime();
         }
 
         // Clear the items from the list and start loading from the beginning...
         adapter.clear();
-        getTimesheetViewModel.fetch(getProjectId(), 0);
+        getTimeReportViewModel.fetch(getProjectId(), 0);
     }
 
     @Override

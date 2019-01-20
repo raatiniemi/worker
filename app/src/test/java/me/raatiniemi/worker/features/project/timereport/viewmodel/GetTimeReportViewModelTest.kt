@@ -32,9 +32,9 @@ import rx.observers.TestSubscriber
 import java.util.*
 
 @RunWith(JUnit4::class)
-class GetTimesheetViewModelTest {
+class GetTimeReportViewModelTest {
     private val useCase = mock(GetTimesheet::class.java)
-    private val vm = GetTimesheetViewModel.ViewModel(useCase)
+    private val vm = GetTimeReportViewModel.ViewModel(useCase)
 
     private val success = TestSubscriber<TimeReportGroup>()
     private val errors = TestSubscriber<Throwable>()
