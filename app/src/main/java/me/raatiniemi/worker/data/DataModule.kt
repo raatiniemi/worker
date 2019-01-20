@@ -22,10 +22,10 @@ import me.raatiniemi.worker.data.migrations.Migration1To2
 import me.raatiniemi.worker.data.migrations.Migration2To3
 import me.raatiniemi.worker.data.repository.ProjectRoomRepository
 import me.raatiniemi.worker.data.repository.TimeIntervalRoomRepository
-import me.raatiniemi.worker.data.repository.TimesheetRoomRepository
+import me.raatiniemi.worker.data.repository.TimeReportRoomRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.domain.repository.TimesheetRepository
+import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 
@@ -53,9 +53,9 @@ val dataModule = module {
         TimeIntervalRoomRepository(database.timeIntervals())
     }
 
-    single<TimesheetRepository> {
+    single<TimeReportRepository> {
         val database: Database = get()
 
-        TimesheetRoomRepository(database.timeReport(), database.timeIntervals())
+        TimeReportRoomRepository(database.timeReport(), database.timeIntervals())
     }
 }

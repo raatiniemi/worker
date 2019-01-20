@@ -23,13 +23,13 @@ import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.PageRequest
-import me.raatiniemi.worker.domain.repository.TimesheetRepository
+import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import java.util.*
 
-internal class TimesheetRoomRepository(
+internal class TimeReportRoomRepository(
         private val timeReport: TimeReportDao,
         private val timeIntervals: TimeIntervalDao
-) : TimesheetRepository {
+) : TimeReportRepository {
     private fun transform(timeReportDay: TimeReportDay): Pair<Date, Set<TimeReportItem>> {
         val map = timeReportDay.timeIntervalIds
                 .mapNotNull { timeIntervals.find(it) }
@@ -42,7 +42,7 @@ internal class TimesheetRoomRepository(
         )
     }
 
-    override fun getTimesheet(
+    override fun getTimeReport(
             projectId: Long,
             pageRequest: PageRequest
     ): Map<Date, Set<TimeReportItem>> {
@@ -52,7 +52,7 @@ internal class TimesheetRoomRepository(
                 .toSortedMap(TimeReportDateComparator())
     }
 
-    override fun getTimesheetWithoutRegisteredEntries(
+    override fun getTimeReportWithoutRegisteredEntries(
             projectId: Long,
             pageRequest: PageRequest
     ): Map<Date, Set<TimeReportItem>> {

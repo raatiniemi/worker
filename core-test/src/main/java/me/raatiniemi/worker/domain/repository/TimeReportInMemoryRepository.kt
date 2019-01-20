@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import java.util.*
 
-class TimesheetInMemoryRepository(private val timeIntervals: List<TimeInterval>) : TimesheetRepository {
+class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) : TimeReportRepository {
     private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMilliseconds
@@ -50,14 +50,14 @@ class TimesheetInMemoryRepository(private val timeIntervals: List<TimeInterval>)
         return timeIntervals
     }
 
-    override fun getTimesheet(
+    override fun getTimeReport(
             projectId: Long,
             pageRequest: PageRequest
     ): Map<Date, Set<TimeReportItem>> {
         return filterAndBuildResult { it.projectId == projectId }
     }
 
-    override fun getTimesheetWithoutRegisteredEntries(
+    override fun getTimeReportWithoutRegisteredEntries(
             projectId: Long,
             pageRequest: PageRequest
     ): Map<Date, Set<TimeReportItem>> {

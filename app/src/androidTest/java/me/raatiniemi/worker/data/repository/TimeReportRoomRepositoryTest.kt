@@ -31,7 +31,7 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.PageRequest
-import me.raatiniemi.worker.domain.repository.TimesheetRepository
+import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -40,13 +40,13 @@ import org.junit.runner.RunWith
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)
-class TimesheetRoomRepositoryTest {
+class TimeReportRoomRepositoryTest {
     private val project = Project(1, "Name")
 
     private lateinit var database: Database
     private lateinit var timeReport: TimeReportDao
     private lateinit var timeIntervals: TimeIntervalDao
-    private lateinit var repository: TimesheetRepository
+    private lateinit var repository: TimeReportRepository
 
     @Before
     fun setUp() {
@@ -64,7 +64,7 @@ class TimesheetRoomRepositoryTest {
                 )
         timeReport = database.timeReport()
         timeIntervals = database.timeIntervals()
-        repository = TimesheetRoomRepository(timeReport, timeIntervals)
+        repository = TimeReportRoomRepository(timeReport, timeIntervals)
     }
 
     @After
@@ -82,14 +82,14 @@ class TimesheetRoomRepositoryTest {
     }
 
     @Test
-    fun getTimesheet_withoutTimeIntervals() {
-        val actual = repository.getTimesheet(1, PageRequest.withOffset(0))
+    fun getTimeReport_withoutTimeIntervals() {
+        val actual = repository.getTimeReport(1, PageRequest.withOffset(0))
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
 
     @Test
-    fun getTimesheet_withoutProjectTimeInterval() {
+    fun getTimeReport_withoutProjectTimeInterval() {
         database.projects().add(
                 projectEntity {
                     id = 2
@@ -103,13 +103,13 @@ class TimesheetRoomRepositoryTest {
         }
         timeIntervals.add(entity)
 
-        val actual = repository.getTimesheet(1, PageRequest.withOffset(0))
+        val actual = repository.getTimeReport(1, PageRequest.withOffset(0))
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
 
     @Test
-    fun getTimesheet_withTimeIntervalsForSameDate() {
+    fun getTimeReport_withTimeIntervalsForSameDate() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -129,13 +129,13 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti1.startInMilliseconds), timeReportItemSet(timeIntervals))
         }
 
-        val actual = repository.getTimesheet(1, PageRequest.withOffset(0))
+        val actual = repository.getTimeReport(1, PageRequest.withOffset(0))
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun getTimesheet_withTimeIntervalsForDifferentDates() {
+    fun getTimeReport_withTimeIntervalsForDifferentDates() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -152,13 +152,13 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.getTimesheet(1, PageRequest.withOffset(0))
+        val actual = repository.getTimeReport(1, PageRequest.withOffset(0))
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun getTimesheet_withTimeIntervalsWithOffset() {
+    fun getTimeReport_withTimeIntervalsWithOffset() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -174,13 +174,13 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
         }
 
-        val actual = repository.getTimesheet(1, PageRequest.withOffset(1))
+        val actual = repository.getTimeReport(1, PageRequest.withOffset(1))
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun getTimesheet_withTimeIntervalsWithMaxResult() {
+    fun getTimeReport_withTimeIntervalsWithMaxResult() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -196,14 +196,14 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.getTimesheet(1, PageRequest.withMaxResults(1))
+        val actual = repository.getTimeReport(1, PageRequest.withMaxResults(1))
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun getTimesheetWithoutRegisteredEntries_withoutTimeIntervals() {
-        val actual = repository.getTimesheetWithoutRegisteredEntries(
+    fun getTimeReportWithoutRegisteredEntries_withoutTimeIntervals() {
+        val actual = repository.getTimeReportWithoutRegisteredEntries(
                 1,
                 PageRequest.withOffset(0)
         )
@@ -212,7 +212,7 @@ class TimesheetRoomRepositoryTest {
     }
 
     @Test
-    fun getTimesheetWithoutRegisteredEntries_withoutProjectTimeInterval() {
+    fun getTimeReportWithoutRegisteredEntries_withoutProjectTimeInterval() {
         database.projects().add(
                 projectEntity {
                     id = 2
@@ -226,7 +226,7 @@ class TimesheetRoomRepositoryTest {
         }
         timeIntervals.add(entity)
 
-        val actual = repository.getTimesheetWithoutRegisteredEntries(
+        val actual = repository.getTimeReportWithoutRegisteredEntries(
                 1,
                 PageRequest.withOffset(0)
         )
@@ -235,7 +235,7 @@ class TimesheetRoomRepositoryTest {
     }
 
     @Test
-    fun getTimesheetWithoutRegisteredEntries_withTimeIntervalsForSameDate() {
+    fun getTimeReportWithoutRegisteredEntries_withTimeIntervalsForSameDate() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -255,7 +255,7 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti1.startInMilliseconds), timeReportItemSet(timeIntervals))
         }
 
-        val actual = repository.getTimesheetWithoutRegisteredEntries(
+        val actual = repository.getTimeReportWithoutRegisteredEntries(
                 1,
                 PageRequest.withOffset(0)
         )
@@ -264,7 +264,7 @@ class TimesheetRoomRepositoryTest {
     }
 
     @Test
-    fun getTimesheetWithoutRegisteredEntries_withTimeIntervalsForDifferentDates() {
+    fun getTimeReportWithoutRegisteredEntries_withTimeIntervalsForDifferentDates() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -281,7 +281,7 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.getTimesheetWithoutRegisteredEntries(
+        val actual = repository.getTimeReportWithoutRegisteredEntries(
                 1,
                 PageRequest.withOffset(0)
         )
@@ -290,7 +290,7 @@ class TimesheetRoomRepositoryTest {
     }
 
     @Test
-    fun getTimesheetWithoutRegisteredEntries_withTimeIntervalsWithOffset() {
+    fun getTimeReportWithoutRegisteredEntries_withTimeIntervalsWithOffset() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -306,7 +306,7 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
         }
 
-        val actual = repository.getTimesheetWithoutRegisteredEntries(
+        val actual = repository.getTimeReportWithoutRegisteredEntries(
                 1,
                 PageRequest.withOffset(1)
         )
@@ -315,7 +315,7 @@ class TimesheetRoomRepositoryTest {
     }
 
     @Test
-    fun getTimesheetWithoutRegisteredEntries_withTimeIntervalsWithMaxResult() {
+    fun getTimeReportWithoutRegisteredEntries_withTimeIntervalsWithMaxResult() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -331,7 +331,7 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.getTimesheetWithoutRegisteredEntries(
+        val actual = repository.getTimeReportWithoutRegisteredEntries(
                 1,
                 PageRequest.withMaxResults(1)
         )
@@ -340,7 +340,7 @@ class TimesheetRoomRepositoryTest {
     }
 
     @Test
-    fun getTimesheetWithoutRegisteredEntries_withRegisteredTimeInterval() {
+    fun getTimeReportWithoutRegisteredEntries_withRegisteredTimeInterval() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -357,7 +357,7 @@ class TimesheetRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.getTimesheetWithoutRegisteredEntries(
+        val actual = repository.getTimeReportWithoutRegisteredEntries(
                 1,
                 PageRequest.withOffset(0)
         )

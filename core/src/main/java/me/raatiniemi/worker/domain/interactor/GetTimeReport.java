@@ -27,20 +27,20 @@ import java.util.TreeSet;
 import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator;
 import me.raatiniemi.worker.domain.model.TimeReportItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
-import me.raatiniemi.worker.domain.repository.TimesheetRepository;
+import me.raatiniemi.worker.domain.repository.TimeReportRepository;
 
 /**
  * Use case for getting segment from project time report.
  */
 public class GetTimeReport {
-    private final TimesheetRepository repository;
+    private final TimeReportRepository repository;
 
     /**
      * Constructor.
      *
      * @param repository Time report repository.
      */
-    public GetTimeReport(TimesheetRepository repository) {
+    public GetTimeReport(TimeReportRepository repository) {
         this.repository = repository;
     }
 
@@ -60,10 +60,10 @@ public class GetTimeReport {
         PageRequest pageRequest = PageRequest.Companion.withOffset(offset);
 
         if (hideRegisteredTime) {
-            return sortedEntries(repository.getTimesheetWithoutRegisteredEntries(projectId, pageRequest));
+            return sortedEntries(repository.getTimeReportWithoutRegisteredEntries(projectId, pageRequest));
         }
 
-        return sortedEntries(repository.getTimesheet(projectId, pageRequest));
+        return sortedEntries(repository.getTimeReport(projectId, pageRequest));
     }
 
     private static SortedMap<Date, SortedSet<TimeReportItem>> sortedEntries(Map<Date, Set<TimeReportItem>> entries) {

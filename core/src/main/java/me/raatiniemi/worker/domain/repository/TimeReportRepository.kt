@@ -19,22 +19,22 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import java.util.*
 
-interface TimesheetRepository {
+interface TimeReportRepository {
     /**
-     * Get timesheet segment for a project.
+     * Get time report segment for a project.
      *
      * @param projectId   Id for the project.
      * @param pageRequest Defines the page segment.
-     * @return Project timesheet segment.
+     * @return Project time report segment.
      */
-    fun getTimesheet(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>>
+    fun getTimeReport(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>>
 
     /**
-     * Get timesheet segment for a project, without registered entries.
+     * Get time report segment for a project, without registered entries.
      *
      * @param projectId   Id for the project.
      * @param pageRequest Defines the page segment.
-     * @return Project timesheet segment.
+     * @return Project time report segment.
      */
-    fun getTimesheetWithoutRegisteredEntries(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>>
+    fun getTimeReportWithoutRegisteredEntries(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>>
 }

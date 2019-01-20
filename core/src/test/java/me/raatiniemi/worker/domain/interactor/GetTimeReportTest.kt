@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.repository.TimesheetInMemoryRepository
+import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,7 +40,7 @@ class GetTimeReportTest {
 
     @Test
     fun execute_hideRegisteredTime() {
-        val repository = TimesheetInMemoryRepository(emptyList())
+        val repository = TimeReportInMemoryRepository(emptyList())
         val useCase = GetTimeReport(repository)
 
         val actual = useCase.execute(1, 0, true)
@@ -64,7 +64,7 @@ class GetTimeReportTest {
                         .register()
                         .build()
         )
-        val repository = TimesheetInMemoryRepository(timeIntervals)
+        val repository = TimeReportInMemoryRepository(timeIntervals)
         val useCase = GetTimeReport(repository)
         val expected = mapOf(
                 resetToStartOfDay(timeInterval.startInMilliseconds) to sortedSetOf(
@@ -79,7 +79,7 @@ class GetTimeReportTest {
 
     @Test
     fun execute_withRegisteredTime() {
-        val repository = TimesheetInMemoryRepository(emptyList())
+        val repository = TimeReportInMemoryRepository(emptyList())
         val useCase = GetTimeReport(repository)
 
         val actual = useCase.execute(1, 0, false)
@@ -102,7 +102,7 @@ class GetTimeReportTest {
                         .stopInMilliseconds(30)
                         .build()
         )
-        val repository = TimesheetInMemoryRepository(timeIntervals)
+        val repository = TimeReportInMemoryRepository(timeIntervals)
         val useCase = GetTimeReport(repository)
         val expected = mapOf(
                 resetToStartOfDay(1) to timeIntervals
