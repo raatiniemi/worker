@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
-import me.raatiniemi.worker.domain.interactor.GetTimesheet
+import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
@@ -42,7 +42,7 @@ interface GetTimeReportViewModel {
         fun errors(): Observable<Throwable>
     }
 
-    class ViewModel internal constructor(private val useCase: GetTimesheet) : Input, Output, Error {
+    class ViewModel internal constructor(private val useCase: GetTimeReport) : Input, Output, Error {
         // TODO: Remove mutable state from ViewModel.
         private var shouldHideRegisteredTime = false
         private val fetch = PublishSubject.create<Request>()

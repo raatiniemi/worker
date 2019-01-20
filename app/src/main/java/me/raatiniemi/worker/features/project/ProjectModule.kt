@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.features.project
 
-import me.raatiniemi.worker.domain.interactor.GetTimesheet
+import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel
@@ -26,7 +26,7 @@ import org.koin.dsl.module.module
 
 val projectModule = module {
     single {
-        GetTimeReportViewModel.ViewModel(GetTimesheet(get()))
+        GetTimeReportViewModel.ViewModel(GetTimeReport(get()))
     }
 
     single {

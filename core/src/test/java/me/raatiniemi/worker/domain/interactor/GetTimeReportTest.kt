@@ -26,7 +26,7 @@ import org.junit.runners.JUnit4
 import java.util.*
 
 @RunWith(JUnit4::class)
-class GetTimesheetTest {
+class GetTimeReportTest {
     private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMilliseconds
@@ -41,7 +41,7 @@ class GetTimesheetTest {
     @Test
     fun execute_hideRegisteredTime() {
         val repository = TimesheetInMemoryRepository(emptyList())
-        val useCase = GetTimesheet(repository)
+        val useCase = GetTimeReport(repository)
 
         val actual = useCase.execute(1, 0, true)
 
@@ -65,7 +65,7 @@ class GetTimesheetTest {
                         .build()
         )
         val repository = TimesheetInMemoryRepository(timeIntervals)
-        val useCase = GetTimesheet(repository)
+        val useCase = GetTimeReport(repository)
         val expected = mapOf(
                 resetToStartOfDay(timeInterval.startInMilliseconds) to sortedSetOf(
                         TimesheetItem(timeInterval)
@@ -80,7 +80,7 @@ class GetTimesheetTest {
     @Test
     fun execute_withRegisteredTime() {
         val repository = TimesheetInMemoryRepository(emptyList())
-        val useCase = GetTimesheet(repository)
+        val useCase = GetTimeReport(repository)
 
         val actual = useCase.execute(1, 0, false)
 
@@ -103,7 +103,7 @@ class GetTimesheetTest {
                         .build()
         )
         val repository = TimesheetInMemoryRepository(timeIntervals)
-        val useCase = GetTimesheet(repository)
+        val useCase = GetTimeReport(repository)
         val expected = mapOf(
                 resetToStartOfDay(1) to timeIntervals
                         .map { TimesheetItem(it) }

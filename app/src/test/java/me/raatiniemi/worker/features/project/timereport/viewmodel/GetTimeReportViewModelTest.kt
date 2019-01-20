@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import me.raatiniemi.worker.domain.exception.DomainException
-import me.raatiniemi.worker.domain.interactor.GetTimesheet
+import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
@@ -33,7 +33,7 @@ import java.util.*
 
 @RunWith(JUnit4::class)
 class GetTimeReportViewModelTest {
-    private val useCase = mock(GetTimesheet::class.java)
+    private val useCase = mock(GetTimeReport::class.java)
     private val vm = GetTimeReportViewModel.ViewModel(useCase)
 
     private val success = TestSubscriber<TimeReportGroup>()

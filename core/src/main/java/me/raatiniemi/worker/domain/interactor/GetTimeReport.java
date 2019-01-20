@@ -30,27 +30,27 @@ import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
 
 /**
- * Use case for getting segment from project timesheet.
+ * Use case for getting segment from project time report.
  */
-public class GetTimesheet {
+public class GetTimeReport {
     private final TimesheetRepository repository;
 
     /**
      * Constructor.
      *
-     * @param repository Timesheet repository.
+     * @param repository Time report repository.
      */
-    public GetTimesheet(TimesheetRepository repository) {
+    public GetTimeReport(TimesheetRepository repository) {
         this.repository = repository;
     }
 
     /**
-     * Get segment from project timesheet.
+     * Get segment from project time report.
      *
      * @param projectId          Id for project.
      * @param offset             Offset for segment.
      * @param hideRegisteredTime Should registered time be hidden.
-     * @return Segment of project timesheet.
+     * @return Segment of project time report.
      */
     public SortedMap<Date, SortedSet<TimesheetItem>> execute(
             final Long projectId,
