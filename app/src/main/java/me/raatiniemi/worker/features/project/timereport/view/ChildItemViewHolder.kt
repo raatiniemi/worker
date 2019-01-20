@@ -14,23 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timereport.view;
+package me.raatiniemi.worker.features.project.timereport.view
 
-import android.view.View;
+import android.view.View
+import androidx.appcompat.widget.AppCompatTextView
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder
+import me.raatiniemi.worker.R
 
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
-
-import androidx.appcompat.widget.AppCompatTextView;
-import me.raatiniemi.worker.R;
-
-class ChildItemViewHolder extends AbstractExpandableItemViewHolder {
-    final AppCompatTextView title;
-    final AppCompatTextView summarize;
-
-    ChildItemViewHolder(View view) {
-        super(view);
-
-        title = view.findViewById(R.id.tvTitle);
-        summarize = view.findViewById(R.id.tvSummary);
-    }
+internal class ChildItemViewHolder(view: View) : AbstractExpandableItemViewHolder(view) {
+    val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
+    val summarize: AppCompatTextView = view.findViewById(R.id.tvSummary)
 }

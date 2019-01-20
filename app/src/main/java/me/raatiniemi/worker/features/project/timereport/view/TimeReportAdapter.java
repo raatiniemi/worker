@@ -166,8 +166,8 @@ class TimeReportAdapter extends ExpandableListAdapter<
             vh.itemView.setActivated(item.isRegistered());
         }
 
-        vh.title.setText(item.getTitle());
-        vh.summarize.setText(item.getTimeSummaryWithFormatter(formatter));
+        vh.getTitle().setText(item.getTitle());
+        vh.getSummarize().setText(item.getTimeSummaryWithFormatter(formatter));
     }
 
     @Override
