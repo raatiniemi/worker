@@ -16,24 +16,24 @@
 
 package me.raatiniemi.worker.features.project
 
-import me.raatiniemi.worker.domain.interactor.GetTimesheet
+import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
-import me.raatiniemi.worker.features.project.timesheet.viewmodel.GetTimesheetViewModel
-import me.raatiniemi.worker.features.project.timesheet.viewmodel.RegisterTimesheetViewModel
-import me.raatiniemi.worker.features.project.timesheet.viewmodel.RemoveTimesheetViewModel
+import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel
+import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
+import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
 import org.koin.dsl.module.module
 
 val projectModule = module {
     single {
-        GetTimesheetViewModel.ViewModel(GetTimesheet(get()))
+        GetTimeReportViewModel.ViewModel(GetTimeReport(get()))
     }
 
     single {
-        RegisterTimesheetViewModel.ViewModel(MarkRegisteredTime(get()))
+        RegisterTimeReportViewModel.ViewModel(MarkRegisteredTime(get()))
     }
 
     single {
-        RemoveTimesheetViewModel.ViewModel(RemoveTime(get()))
+        RemoveTimeReportViewModel.ViewModel(RemoveTime(get()))
     }
 }

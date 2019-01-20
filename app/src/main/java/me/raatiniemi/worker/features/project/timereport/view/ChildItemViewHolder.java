@@ -14,13 +14,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.features.project.timereport.view;
 
-enum class AppKeys(val rawValue: String) {
-    HIDE_REGISTERED_TIME("pref_hide_registered_time"),
-    CONFIRM_CLOCK_OUT("pref_confirm_clock_out"),
-    ONGOING_NOTIFICATION_ENABLED("pref_ongoing_notification_enabled"),
-    ONGOING_NOTIFICATION_CHRONOMETER_ENABLED("pref_ongoing_notification_chronometer_enabled"),
-    TIME_SUMMARY("pref_time_summary"),
-    TIME_REPORT_SUMMARY_FORMAT("pref_time_sheet_summary_format")
+import android.view.View;
+import android.widget.TextView;
+
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
+
+import me.raatiniemi.worker.R;
+
+class ChildItemViewHolder extends AbstractExpandableItemViewHolder {
+    final TextView title;
+    final TextView summarize;
+
+    ChildItemViewHolder(View view) {
+        super(view);
+
+        title = view.findViewById(R.id.tvTitle);
+        summarize = view.findViewById(R.id.tvSummary);
+    }
 }

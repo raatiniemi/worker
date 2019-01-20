@@ -14,18 +14,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project
+package me.raatiniemi.worker.features.project.timereport.view;
 
-import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-class ViewModels: KoinComponent {
-    val timeReport: GetTimeReportViewModel.ViewModel by inject()
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
-    val registerTimeReport: RegisterTimeReportViewModel.ViewModel by inject()
+import me.raatiniemi.worker.R;
 
-    val removeTimeReport: RemoveTimeReportViewModel.ViewModel by inject()
+class GroupItemViewHolder extends AbstractExpandableItemViewHolder {
+    final ImageView letter;
+    final TextView title;
+    final TextView summarize;
+
+    GroupItemViewHolder(View view) {
+        super(view);
+
+        letter = view.findViewById(R.id.ivLetter);
+        title = view.findViewById(R.id.tvTitle);
+        summarize = view.findViewById(R.id.tvSummary);
+    }
 }

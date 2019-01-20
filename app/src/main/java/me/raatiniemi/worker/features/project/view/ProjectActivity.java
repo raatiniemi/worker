@@ -24,7 +24,7 @@ import android.view.MenuItem;
 
 import me.raatiniemi.worker.Preferences;
 import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.features.project.timesheet.view.TimesheetFragment;
+import me.raatiniemi.worker.features.project.timereport.view.TimeReportFragment;
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity;
 import me.raatiniemi.worker.util.KeyValueStore;
 
@@ -35,17 +35,17 @@ public class ProjectActivity extends BaseActivity {
     public static final String MESSAGE_PROJECT_ID = "project id";
 
     /**
-     * Tag for the timesheet fragment.
+     * Tag for the time report fragment.
      */
-    private static final String FRAGMENT_TIMESHEET_TAG = "timesheet";
+    private static final String FRAGMENT_TIME_REPORT_TAG = "time report";
 
     private final Preferences preferences = new Preferences();
     private final KeyValueStore keyValueStore = preferences.getKeyValueStore();
 
     /**
-     * Reference to the timesheet fragment.
+     * Reference to the time report fragment.
      */
-    private TimesheetFragment timesheetFragment;
+    private TimeReportFragment timeReportFragment;
 
     public static Intent newIntent(Context context, Long projectId) {
         Intent intent = new Intent(context, ProjectActivity.class);
@@ -56,16 +56,16 @@ public class ProjectActivity extends BaseActivity {
     }
 
     /**
-     * Get the timesheet fragment, handles construction if needed.
+     * Get the time report fragment, handles construction if needed.
      *
-     * @return Timesheet fragment.
+     * @return Time report fragment.
      */
-    private TimesheetFragment getTimesheetFragment() {
-        if (isNull(timesheetFragment)) {
-            timesheetFragment = TimesheetFragment.newInstance(getIntent().getExtras());
+    private TimeReportFragment getTimeReportFragment() {
+        if (isNull(timeReportFragment)) {
+            timeReportFragment = TimeReportFragment.newInstance(getIntent().getExtras());
         }
 
-        return timesheetFragment;
+        return timeReportFragment;
     }
 
     @Override
@@ -77,8 +77,8 @@ public class ProjectActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(
                             R.id.fragment_container,
-                            getTimesheetFragment(),
-                            ProjectActivity.FRAGMENT_TIMESHEET_TAG
+                            getTimeReportFragment(),
+                            ProjectActivity.FRAGMENT_TIME_REPORT_TAG
                     )
                     .commit();
         }
@@ -112,6 +112,6 @@ public class ProjectActivity extends BaseActivity {
         item.setChecked(!item.isChecked());
 
         keyValueStore.setHideRegisteredTime(item.isChecked());
-        getTimesheetFragment().refresh();
+        getTimeReportFragment().refresh();
     }
 }

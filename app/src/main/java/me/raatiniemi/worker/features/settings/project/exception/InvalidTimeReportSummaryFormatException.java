@@ -14,13 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.features.settings.project.exception;
 
-enum class AppKeys(val rawValue: String) {
-    HIDE_REGISTERED_TIME("pref_hide_registered_time"),
-    CONFIRM_CLOCK_OUT("pref_confirm_clock_out"),
-    ONGOING_NOTIFICATION_ENABLED("pref_ongoing_notification_enabled"),
-    ONGOING_NOTIFICATION_CHRONOMETER_ENABLED("pref_ongoing_notification_chronometer_enabled"),
-    TIME_SUMMARY("pref_time_summary"),
-    TIME_REPORT_SUMMARY_FORMAT("pref_time_sheet_summary_format")
+public class InvalidTimeReportSummaryFormatException extends RuntimeException {
+    public InvalidTimeReportSummaryFormatException(String message) {
+        super(message);
+    }
 }

@@ -14,13 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.features.project.timereport.view;
 
-enum class AppKeys(val rawValue: String) {
-    HIDE_REGISTERED_TIME("pref_hide_registered_time"),
-    CONFIRM_CLOCK_OUT("pref_confirm_clock_out"),
-    ONGOING_NOTIFICATION_ENABLED("pref_ongoing_notification_enabled"),
-    ONGOING_NOTIFICATION_CHRONOMETER_ENABLED("pref_ongoing_notification_chronometer_enabled"),
-    TIME_SUMMARY("pref_time_summary"),
-    TIME_REPORT_SUMMARY_FORMAT("pref_time_sheet_summary_format")
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+import me.raatiniemi.worker.R;
+import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
+import rx.Observable;
+
+final class DeleteTimeDialog {
+    private static final int TITLE = R.string.confirm_delete_time_title;
+    private static final int MESSAGE = R.string.confirm_delete_time_message;
+
+    private DeleteTimeDialog() {
+    }
+
+    @NonNull
+    static Observable<Integer> show(@NonNull Context context) {
+        return RxAlertDialog.build(context, TITLE, MESSAGE);
+    }
 }

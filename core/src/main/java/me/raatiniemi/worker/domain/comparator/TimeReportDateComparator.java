@@ -14,13 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.domain.comparator;
 
-enum class AppKeys(val rawValue: String) {
-    HIDE_REGISTERED_TIME("pref_hide_registered_time"),
-    CONFIRM_CLOCK_OUT("pref_confirm_clock_out"),
-    ONGOING_NOTIFICATION_ENABLED("pref_ongoing_notification_enabled"),
-    ONGOING_NOTIFICATION_CHRONOMETER_ENABLED("pref_ongoing_notification_chronometer_enabled"),
-    TIME_SUMMARY("pref_time_summary"),
-    TIME_REPORT_SUMMARY_FORMAT("pref_time_sheet_summary_format")
+import java.util.Comparator;
+import java.util.Date;
+
+public final class TimeReportDateComparator implements Comparator<Date> {
+    @Override
+    public int compare(Date o1, Date o2) {
+        int comparable = o1.compareTo(o2);
+        if (0 == comparable) {
+            return 0;
+        }
+
+        return -comparable;
+    }
 }
