@@ -22,7 +22,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.data.Database
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
-import me.raatiniemi.worker.data.projects.TimesheetDao
+import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
 import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator
@@ -44,7 +44,7 @@ class TimesheetRoomRepositoryTest {
     private val project = Project(1, "Name")
 
     private lateinit var database: Database
-    private lateinit var timesheet: TimesheetDao
+    private lateinit var timeReport: TimeReportDao
     private lateinit var timeIntervals: TimeIntervalDao
     private lateinit var repository: TimesheetRepository
 
@@ -62,9 +62,9 @@ class TimesheetRoomRepositoryTest {
                             name = project.name
                         }
                 )
-        timesheet = database.timesheet()
+        timeReport = database.timeReport()
         timeIntervals = database.timeIntervals()
-        repository = TimesheetRoomRepository(timesheet, timeIntervals)
+        repository = TimesheetRoomRepository(timeReport, timeIntervals)
     }
 
     @After

@@ -31,5 +31,5 @@ import me.raatiniemi.worker.data.projects.*
 internal abstract class Database : RoomDatabase() {
     abstract fun projects(): ProjectDao
     abstract fun timeIntervals(): TimeIntervalDao
-    abstract fun timesheet(): TimesheetDao
+    abstract fun timeReport(): TimeReportDao
 }

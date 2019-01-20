@@ -23,7 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class TimesheetDaoTest : BaseDaoTest() {
+class TimeReportDaoTest : BaseDaoTest() {
     @Before
     override fun setUp() {
         super.setUp()
@@ -33,9 +33,9 @@ class TimesheetDaoTest : BaseDaoTest() {
 
     @Test
     fun findAll_withoutTimeIntervals() {
-        val actual = timesheet.findAll(1, 0, 10)
+        val actual = timeReport.findAll(1, 0, 10)
 
-        assertEquals(emptyList<TimesheetDay>(), actual)
+        assertEquals(emptyList<TimeReportDay>(), actual)
     }
 
     @Test
@@ -46,19 +46,19 @@ class TimesheetDaoTest : BaseDaoTest() {
         })
         timeIntervals.add(timeIntervalEntity { projectId = 2 })
 
-        val actual = timesheet.findAll(1, 0, 10)
+        val actual = timeReport.findAll(1, 0, 10)
 
-        assertEquals(emptyList<TimesheetDay>(), actual)
+        assertEquals(emptyList<TimeReportDay>(), actual)
     }
 
     @Test
     fun findAll_withTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                TimesheetDay(1, "1")
+                TimeReportDay(1, "1")
         )
 
-        val actual = timesheet.findAll(1, 0, 10)
+        val actual = timeReport.findAll(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -71,10 +71,10 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 100
         })
         val expected = listOf(
-                TimesheetDay(1, "1,2")
+                TimeReportDay(1, "1,2")
         )
 
-        val actual = timesheet.findAll(1, 0, 10)
+        val actual = timeReport.findAll(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -87,11 +87,11 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimesheetDay(90000000, "2"),
-                TimesheetDay(1, "1")
+                TimeReportDay(90000000, "2"),
+                TimeReportDay(1, "1")
         )
 
-        val actual = timesheet.findAll(1, 0, 10)
+        val actual = timeReport.findAll(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -104,10 +104,10 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimesheetDay(1, "1")
+                TimeReportDay(1, "1")
         )
 
-        val actual = timesheet.findAll(1, 1, 10)
+        val actual = timeReport.findAll(1, 1, 10)
 
         assertEquals(expected, actual)
     }
@@ -120,19 +120,19 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimesheetDay(90000000, "2")
+                TimeReportDay(90000000, "2")
         )
 
-        val actual = timesheet.findAll(1, 0, 1)
+        val actual = timeReport.findAll(1, 0, 1)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun findAllUnregistered_withoutTimeIntervals() {
-        val actual = timesheet.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findAllUnregistered(1, 0, 10)
 
-        assertEquals(emptyList<TimesheetDay>(), actual)
+        assertEquals(emptyList<TimeReportDay>(), actual)
     }
 
     @Test
@@ -143,19 +143,19 @@ class TimesheetDaoTest : BaseDaoTest() {
         })
         timeIntervals.add(timeIntervalEntity { projectId = 2 })
 
-        val actual = timesheet.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findAllUnregistered(1, 0, 10)
 
-        assertEquals(emptyList<TimesheetDay>(), actual)
+        assertEquals(emptyList<TimeReportDay>(), actual)
     }
 
     @Test
     fun findAllUnregistered_withTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                TimesheetDay(1, "1")
+                TimeReportDay(1, "1")
         )
 
-        val actual = timesheet.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findAllUnregistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -168,10 +168,10 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 100
         })
         val expected = listOf(
-                TimesheetDay(1, "1,2")
+                TimeReportDay(1, "1,2")
         )
 
-        val actual = timesheet.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findAllUnregistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -184,11 +184,11 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimesheetDay(90000000, "2"),
-                TimesheetDay(1, "1")
+                TimeReportDay(90000000, "2"),
+                TimeReportDay(1, "1")
         )
 
-        val actual = timesheet.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findAllUnregistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -201,10 +201,10 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimesheetDay(1, "1")
+                TimeReportDay(1, "1")
         )
 
-        val actual = timesheet.findAllUnregistered(1, 1, 10)
+        val actual = timeReport.findAllUnregistered(1, 1, 10)
 
         assertEquals(expected, actual)
     }
@@ -217,10 +217,10 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimesheetDay(90000000, "2")
+                TimeReportDay(90000000, "2")
         )
 
-        val actual = timesheet.findAllUnregistered(1, 0, 1)
+        val actual = timeReport.findAllUnregistered(1, 0, 1)
 
         assertEquals(expected, actual)
     }
@@ -233,10 +233,10 @@ class TimesheetDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimesheetDay(90000000, "2")
+                TimeReportDay(90000000, "2")
         )
 
-        val actual = timesheet.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findAllUnregistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }

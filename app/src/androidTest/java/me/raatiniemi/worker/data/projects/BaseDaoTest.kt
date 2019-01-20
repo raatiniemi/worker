@@ -49,7 +49,7 @@ open class BaseDaoTest {
         database.timeIntervals()
     }
 
-    internal val timesheet: TimesheetDao by lazy {
-        database.timesheet()
+    internal val timeReport: TimeReportDao by lazy {
+        database.timeReport()
     }
 }

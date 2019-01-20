@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
-import me.raatiniemi.worker.data.projects.TimesheetDao
-import me.raatiniemi.worker.data.projects.TimesheetDay
+import me.raatiniemi.worker.data.projects.TimeReportDao
+import me.raatiniemi.worker.data.projects.TimeReportDay
 import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator
 import me.raatiniemi.worker.domain.comparator.TimesheetItemComparator
 import me.raatiniemi.worker.domain.model.TimesheetItem
@@ -27,17 +27,17 @@ import me.raatiniemi.worker.domain.repository.TimesheetRepository
 import java.util.*
 
 internal class TimesheetRoomRepository(
-        private val timesheet: TimesheetDao,
+        private val timeReport: TimeReportDao,
         private val timeIntervals: TimeIntervalDao
 ) : TimesheetRepository {
-    private fun transform(timesheetDay: TimesheetDay): Pair<Date, Set<TimesheetItem>> {
-        val map = timesheetDay.timeIntervalIds
+    private fun transform(timeReportDay: TimeReportDay): Pair<Date, Set<TimesheetItem>> {
+        val map = timeReportDay.timeIntervalIds
                 .mapNotNull { timeIntervals.find(it) }
                 .map { it.toTimeInterval() }
                 .map { TimesheetItem.with(it) }
 
         return Pair(
-                Date(timesheetDay.dateInMilliseconds),
+                Date(timeReportDay.dateInMilliseconds),
                 map.toSortedSet(TimesheetItemComparator())
         )
     }
@@ -46,7 +46,7 @@ internal class TimesheetRoomRepository(
             projectId: Long,
             pageRequest: PageRequest
     ): Map<Date, Set<TimesheetItem>> {
-        return timesheet.findAll(projectId, pageRequest.offset, pageRequest.maxResults)
+        return timeReport.findAll(projectId, pageRequest.offset, pageRequest.maxResults)
                 .map { transform(it) }
                 .toMap()
                 .toSortedMap(TimesheetDateComparator())
@@ -56,7 +56,7 @@ internal class TimesheetRoomRepository(
             projectId: Long,
             pageRequest: PageRequest
     ): Map<Date, Set<TimesheetItem>> {
-        return timesheet.findAllUnregistered(projectId, pageRequest.offset, pageRequest.maxResults)
+        return timeReport.findAllUnregistered(projectId, pageRequest.offset, pageRequest.maxResults)
                 .map { transform(it) }
                 .toMap()
                 .toSortedMap(TimesheetDateComparator())

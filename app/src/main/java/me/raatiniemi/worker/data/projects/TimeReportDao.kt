@@ -20,7 +20,7 @@ import androidx.room.Dao
 import androidx.room.Query
 
 @Dao
-internal interface TimesheetDao {
+internal interface TimeReportDao {
     @Query("""SELECT
         MIN(start_in_milliseconds) AS dateInMilliseconds,
         GROUP_CONCAT(_id) as ids
@@ -29,7 +29,7 @@ internal interface TimesheetDao {
         GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch')
         ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
         LIMIT :offset, :maxResult""")
-    fun findAll(projectId: Long, offset: Int, maxResult: Int): List<TimesheetDay>
+    fun findAll(projectId: Long, offset: Int, maxResult: Int): List<TimeReportDay>
 
     @Query("""SELECT
         MIN(start_in_milliseconds) AS dateInMilliseconds,
@@ -40,5 +40,5 @@ internal interface TimesheetDao {
         GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch')
         ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
         LIMIT :offset, :maxResult""")
-    fun findAllUnregistered(projectId: Long, offset: Int, maxResult: Int): List<TimesheetDay>
+    fun findAllUnregistered(projectId: Long, offset: Int, maxResult: Int): List<TimeReportDay>
 }

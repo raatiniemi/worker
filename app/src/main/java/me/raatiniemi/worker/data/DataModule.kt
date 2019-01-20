@@ -56,6 +56,6 @@ val dataModule = module {
     single<TimesheetRepository> {
         val database: Database = get()
 
-        TimesheetRoomRepository(database.timesheet(), database.timeIntervals())
+        TimesheetRoomRepository(database.timeReport(), database.timeIntervals())
     }
 }
