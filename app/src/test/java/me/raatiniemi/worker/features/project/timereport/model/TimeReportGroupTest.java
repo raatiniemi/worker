@@ -26,13 +26,13 @@ import java.util.TreeSet;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
-public class TimesheetGroupTest {
+public class TimeReportGroupTest {
     @Test
     public void getId() {
         Date date = new Date();
         long days = date.getTime() / 1000 / 60 / 60 / 24;
 
-        TimesheetGroup groupItem = TimesheetGroup.Companion.build(date, new TreeSet<>());
+        TimeReportGroup groupItem = TimeReportGroup.Companion.build(date, new TreeSet<>());
 
         assertEquals(days, groupItem.getId());
     }

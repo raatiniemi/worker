@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import me.raatiniemi.worker.domain.interactor.GetTimesheet
-import me.raatiniemi.worker.features.project.timereport.model.TimesheetGroup
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
 import me.raatiniemi.worker.util.RxUtil.hideErrors
 import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
@@ -35,7 +35,7 @@ interface GetTimesheetViewModel {
     }
 
     interface Output {
-        fun success(): Observable<TimesheetGroup>
+        fun success(): Observable<TimeReportGroup>
     }
 
     interface Error {
@@ -47,7 +47,7 @@ interface GetTimesheetViewModel {
         private var shouldHideRegisteredTime = false
         private val fetch = PublishSubject.create<Request>()
 
-        private val success = PublishSubject.create<TimesheetGroup>()
+        private val success = PublishSubject.create<TimeReportGroup>()
         private val errors = PublishSubject.create<Throwable>()
 
         init {
@@ -58,12 +58,12 @@ interface GetTimesheetViewModel {
             }.subscribe(success)
         }
 
-        private fun executeUseCase(request: Request): Observable<TimesheetGroup> {
-            return Observable.defer<TimesheetGroup> {
+        private fun executeUseCase(request: Request): Observable<TimeReportGroup> {
+            return Observable.defer<TimeReportGroup> {
                 try {
                     val items = useCase.execute(request.id, request.offset, shouldHideRegisteredTime)
                             .entries
-                            .map { TimesheetGroup.build(it.key, it.value) }
+                            .map { TimeReportGroup.build(it.key, it.value) }
 
                     Observable.from(items)
                 } catch (e: Exception) {
@@ -84,7 +84,7 @@ interface GetTimesheetViewModel {
             fetch.onNext(Request(id, offset))
         }
 
-        override fun success(): Observable<TimesheetGroup> {
+        override fun success(): Observable<TimeReportGroup> {
             return success
         }
 

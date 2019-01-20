@@ -20,7 +20,7 @@ import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.GetTimesheet
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimesheetItem
-import me.raatiniemi.worker.features.project.timereport.model.TimesheetGroup
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +36,7 @@ class GetTimesheetViewModelTest {
     private val useCase = mock(GetTimesheet::class.java)
     private val vm = GetTimesheetViewModel.ViewModel(useCase)
 
-    private val success = TestSubscriber<TimesheetGroup>()
+    private val success = TestSubscriber<TimeReportGroup>()
     private val errors = TestSubscriber<Throwable>()
 
     @Before

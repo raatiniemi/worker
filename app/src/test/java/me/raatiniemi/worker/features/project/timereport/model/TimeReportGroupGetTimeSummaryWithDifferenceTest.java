@@ -35,12 +35,12 @@ import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
+public class TimeReportGroupGetTimeSummaryWithDifferenceTest {
     private final String expected;
     private final HoursMinutesFormat formatter;
-    private final TimesheetGroup item;
+    private final TimeReportGroup item;
 
-    public TimesheetGroupGetTimeSummaryWithDifferenceTest(
+    public TimeReportGroupGetTimeSummaryWithDifferenceTest(
             String expected,
             HoursMinutesFormat formatter,
             TimesheetItem... times
@@ -49,7 +49,7 @@ public class TimesheetGroupGetTimeSummaryWithDifferenceTest {
         this.formatter = formatter;
 
         TreeSet<TimesheetItem> items = new TreeSet<>(Arrays.asList(times));
-        item = TimesheetGroup.Companion.build(new Date(), items);
+        item = TimeReportGroup.Companion.build(new Date(), items);
     }
 
     @Parameters

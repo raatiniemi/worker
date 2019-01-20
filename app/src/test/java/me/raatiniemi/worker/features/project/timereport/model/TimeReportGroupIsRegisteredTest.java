@@ -32,7 +32,7 @@ import me.raatiniemi.worker.domain.model.TimesheetItem;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupIsRegisteredTest {
+public class TimeReportGroupIsRegisteredTest {
     private static final TimesheetItem NOT_REGISTERED_TIME;
     private final static TimesheetItem REGISTERED_TIME;
 
@@ -45,16 +45,16 @@ public class TimesheetGroupIsRegisteredTest {
     }
 
     private final boolean expected;
-    private final TimesheetGroup item;
+    private final TimeReportGroup item;
 
-    public TimesheetGroupIsRegisteredTest(
+    public TimeReportGroupIsRegisteredTest(
             boolean expected,
             TimesheetItem... timesheetItems
     ) {
         this.expected = expected;
 
         TreeSet<TimesheetItem> items = new TreeSet<>(Arrays.asList(timesheetItems));
-        item = TimesheetGroup.Companion.build(new Date(), items);
+        item = TimeReportGroup.Companion.build(new Date(), items);
     }
 
     @Parameters

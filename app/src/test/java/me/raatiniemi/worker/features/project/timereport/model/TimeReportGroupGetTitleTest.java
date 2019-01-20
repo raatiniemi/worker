@@ -30,11 +30,11 @@ import java.util.TreeSet;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupGetTitleTest {
+public class TimeReportGroupGetTitleTest {
     private final String expected;
     private final Calendar calendar;
 
-    public TimesheetGroupGetTitleTest(String expected, Calendar calendar) {
+    public TimeReportGroupGetTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
         this.calendar = calendar;
     }
@@ -53,7 +53,7 @@ public class TimesheetGroupGetTitleTest {
 
     @Test
     public void getTitle() {
-        TimesheetGroup groupItem = TimesheetGroup.Companion.build(calendar.getTime(), new TreeSet<>());
+        TimeReportGroup groupItem = TimeReportGroup.Companion.build(calendar.getTime(), new TreeSet<>());
 
         assertEquals(expected, groupItem.getTitle());
     }

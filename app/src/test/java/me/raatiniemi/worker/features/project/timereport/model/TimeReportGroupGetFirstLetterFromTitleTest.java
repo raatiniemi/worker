@@ -30,13 +30,13 @@ import java.util.TreeSet;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
-public class TimesheetGroupGetFirstLetterFromTitleTest {
+public class TimeReportGroupGetFirstLetterFromTitleTest {
     private final String expected;
-    private final TimesheetGroup item;
+    private final TimeReportGroup item;
 
-    public TimesheetGroupGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
+    public TimeReportGroupGetFirstLetterFromTitleTest(String expected, Calendar calendar) {
         this.expected = expected;
-        item = TimesheetGroup.Companion.build(calendar.getTime(), new TreeSet<>());
+        item = TimeReportGroup.Companion.build(calendar.getTime(), new TreeSet<>());
     }
 
     @Parameters

@@ -28,7 +28,7 @@ import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.domain.model.TimesheetItem;
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat;
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult;
-import me.raatiniemi.worker.features.project.timereport.model.TimesheetGroup;
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup;
 import me.raatiniemi.worker.features.shared.view.adapter.ExpandableListAdapter;
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable;
 import me.raatiniemi.worker.util.SelectionListener;
@@ -37,7 +37,7 @@ import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator;
 
 class TimesheetAdapter extends ExpandableListAdapter<
         TimesheetItem,
-        TimesheetGroup,
+        TimeReportGroup,
         GroupItemViewHolder,
         ChildItemViewHolder
         > {
@@ -83,7 +83,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public void onBindGroupViewHolder(GroupItemViewHolder vh, int group, int viewType) {
-        TimesheetGroup groupItem = get(group);
+        TimeReportGroup groupItem = get(group);
 
         vh.title.setText(groupItem.getTitle());
         vh.summarize.setText(groupItem.getTimeSummaryWithDifference(formatter));
@@ -182,7 +182,7 @@ class TimesheetAdapter extends ExpandableListAdapter<
 
     @Override
     public long getGroupId(int group) {
-        TimesheetGroup groupItem = get(group);
+        TimeReportGroup groupItem = get(group);
         return groupItem.getId();
     }
 

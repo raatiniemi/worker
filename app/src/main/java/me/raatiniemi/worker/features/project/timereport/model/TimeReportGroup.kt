@@ -24,7 +24,7 @@ import me.raatiniemi.worker.features.shared.model.ExpandableItem
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TimesheetGroup private constructor(
+class TimeReportGroup private constructor(
         private val date: Date,
         private val items: MutableList<TimesheetItem>
 ) : ExpandableItem<TimesheetItem> {
@@ -93,11 +93,11 @@ class TimesheetGroup private constructor(
     companion object {
         private const val LANGUAGE_TAG = "en_US"
 
-        fun build(date: Date, timesheetItems: SortedSet<TimesheetItem>): TimesheetGroup {
+        fun build(date: Date, timesheetItems: SortedSet<TimesheetItem>): TimeReportGroup {
             val items = ArrayList<TimesheetItem>()
             items.addAll(timesheetItems)
 
-            return TimesheetGroup(date, items)
+            return TimeReportGroup(date, items)
         }
 
         private fun calculateDaysSinceUnixEpoch(date: Date): Long {

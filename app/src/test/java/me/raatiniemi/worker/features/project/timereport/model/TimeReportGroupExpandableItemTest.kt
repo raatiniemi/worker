@@ -25,10 +25,10 @@ import org.junit.runners.JUnit4
 import java.util.*
 
 @RunWith(JUnit4::class)
-class TimesheetGroupExpandableItemTest {
+class TimeReportGroupExpandableItemTest {
     @Test(expected = IndexOutOfBoundsException::class)
     fun getWithIndexOutOfBounds() {
-        val group = TimesheetGroup.build(Date(), TreeSet())
+        val group = TimeReportGroup.build(Date(), TreeSet())
 
         group.get(1)
     }
@@ -37,7 +37,7 @@ class TimesheetGroupExpandableItemTest {
     fun get() {
         val timeInterval = TimeInterval.builder(1L).build()
         val items = sortedSetOf(TimesheetItem.with(timeInterval))
-        val group = TimesheetGroup.build(Date(), items)
+        val group = TimeReportGroup.build(Date(), items)
 
         assertEquals(items.first(), group.get(0))
     }
@@ -46,7 +46,7 @@ class TimesheetGroupExpandableItemTest {
     fun setWithIndexOutOfBounds() {
         val timeInterval = TimeInterval.builder(1L).build()
         val item = TimesheetItem.with(timeInterval)
-        val group = TimesheetGroup.build(Date(), TreeSet())
+        val group = TimeReportGroup.build(Date(), TreeSet())
 
         group.set(1, item)
     }
@@ -54,14 +54,14 @@ class TimesheetGroupExpandableItemTest {
     fun set() {
         val timeInterval = TimeInterval.builder(1L).build()
         val items = sortedSetOf(TimesheetItem.with(timeInterval))
-        val group = TimesheetGroup.build(Date(), items)
+        val group = TimeReportGroup.build(Date(), items)
 
         group.set(1, items.first())
     }
 
     @Test(expected = IndexOutOfBoundsException::class)
     fun removeWithIndexOutOfBounds() {
-        val group = TimesheetGroup.build(Date(), TreeSet())
+        val group = TimeReportGroup.build(Date(), TreeSet())
 
         group.remove(1)
     }
@@ -70,14 +70,14 @@ class TimesheetGroupExpandableItemTest {
     fun remove() {
         val timeInterval = TimeInterval.builder(1L).build()
         val items = sortedSetOf(TimesheetItem.with(timeInterval))
-        val group = TimesheetGroup.build(Date(), items)
+        val group = TimeReportGroup.build(Date(), items)
 
         assertEquals(items.first(), group.remove(0))
     }
 
     @Test
     fun sizeWithoutItems() {
-        val group = TimesheetGroup.build(Date(), TreeSet())
+        val group = TimeReportGroup.build(Date(), TreeSet())
 
         assertEquals(0, group.size())
     }
@@ -86,7 +86,7 @@ class TimesheetGroupExpandableItemTest {
     fun sizeWithItem() {
         val timeInterval = TimeInterval.builder(1L).build()
         val items = sortedSetOf(TimesheetItem.with(timeInterval))
-        val group = TimesheetGroup.build(Date(), items)
+        val group = TimeReportGroup.build(Date(), items)
 
         assertEquals(1, group.size())
     }
@@ -107,7 +107,7 @@ class TimesheetGroupExpandableItemTest {
                 TimesheetItem.with(timeInterval1),
                 TimesheetItem.with(timeInterval2)
         )
-        val group = TimesheetGroup.build(Date(), items)
+        val group = TimeReportGroup.build(Date(), items)
 
         assertEquals(2, group.size())
     }
