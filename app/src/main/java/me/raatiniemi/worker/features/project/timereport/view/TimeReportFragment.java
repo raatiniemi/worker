@@ -276,8 +276,8 @@ public class TimeReportFragment extends RxFragment implements SelectionListener 
 
     @NonNull
     private HoursMinutesFormat getHoursMinutesFormat() {
-        int format = keyValueStore.timeSheetSummaryFormat();
-        if (KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION == format) {
+        int format = keyValueStore.timeReportSummaryFormat();
+        if (KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_FRACTION == format) {
             return new FractionIntervalFormat();
         }
 

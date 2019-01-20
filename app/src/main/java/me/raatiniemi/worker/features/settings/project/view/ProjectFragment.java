@@ -78,7 +78,7 @@ public class ProjectFragment extends BasePreferenceFragment
         }
 
         try {
-            int timeReportSummaryFormatValue = keyValueStore.timeSheetSummaryFormat();
+            int timeReportSummaryFormatValue = keyValueStore.timeReportSummaryFormat();
 
             ListPreference timeReportSummaryFormat = (ListPreference) findPreference(TIME_REPORT_SUMMARY_FORMAT_KEY);
             timeReportSummaryFormat.setValue(String.valueOf(timeReportSummaryFormatValue));

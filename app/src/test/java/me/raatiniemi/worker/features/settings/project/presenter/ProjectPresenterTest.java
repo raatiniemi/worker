@@ -117,12 +117,12 @@ public class ProjectPresenterTest {
 
     @Test
     public void changeTimeReportSummaryFormat_withDigitalClock() {
-        keyValueStore.useFractionAsTimeSheetSummaryFormat();
+        keyValueStore.useFractionAsTimeReportSummaryFormat();
         presenter.attachView(view);
 
-        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK);
 
-        assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK, keyValueStore.timeSheetSummaryFormat());
+        assertEquals(KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK, keyValueStore.timeReportSummaryFormat());
         verify(view).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
         verify(view, never()).showChangeTimeReportSummaryToFractionSuccessMessage();
         verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();
@@ -132,9 +132,9 @@ public class ProjectPresenterTest {
     public void changeTimeReportSummaryFormat_withFraction() {
         presenter.attachView(view);
 
-        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_FRACTION);
 
-        assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION, keyValueStore.timeSheetSummaryFormat());
+        assertEquals(KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_FRACTION, keyValueStore.timeReportSummaryFormat());
         verify(view, never()).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
         verify(view).showChangeTimeReportSummaryToFractionSuccessMessage();
         verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();
@@ -144,9 +144,9 @@ public class ProjectPresenterTest {
     public void changeTimeReportSummaryFormat_withPreviousValue() {
         presenter.attachView(view);
 
-        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK);
 
-        assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK, keyValueStore.timeSheetSummaryFormat());
+        assertEquals(KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK, keyValueStore.timeReportSummaryFormat());
         verify(view, never()).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
         verify(view, never()).showChangeTimeReportSummaryToFractionSuccessMessage();
         verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();
@@ -154,9 +154,9 @@ public class ProjectPresenterTest {
 
     @Test
     public void changeTimeReportSummaryFormat_withoutAttachedView() {
-        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_FRACTION);
 
-        assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION, keyValueStore.timeSheetSummaryFormat());
+        assertEquals(KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_FRACTION, keyValueStore.timeReportSummaryFormat());
         verify(view, never()).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
         verify(view, never()).showChangeTimeReportSummaryToFractionSuccessMessage();
         verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();

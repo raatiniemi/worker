@@ -22,5 +22,5 @@ enum class AppKeys(val rawValue: String) {
     ONGOING_NOTIFICATION_ENABLED("pref_ongoing_notification_enabled"),
     ONGOING_NOTIFICATION_CHRONOMETER_ENABLED("pref_ongoing_notification_chronometer_enabled"),
     TIME_SUMMARY("pref_time_summary"),
-    TIME_SHEET_SUMMARY_FORMAT("pref_time_sheet_summary_format")
+    TIME_REPORT_SUMMARY_FORMAT("pref_time_sheet_summary_format")
 }

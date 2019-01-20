@@ -79,19 +79,19 @@ interface KeyValueStore {
         return int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
     }
 
-    fun useFractionAsTimeSheetSummaryFormat() {
-        set(AppKeys.TIME_SHEET_SUMMARY_FORMAT.rawValue, TIME_SHEET_SUMMARY_FORMAT_FRACTION)
+    fun useFractionAsTimeReportSummaryFormat() {
+        set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_FRACTION)
     }
 
-    fun useDigitalClockAsTimeSheetSummaryFormat() {
-        set(AppKeys.TIME_SHEET_SUMMARY_FORMAT.rawValue, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK)
+    fun useDigitalClockAsTimeReportSummaryFormat() {
+        set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
     }
 
-    fun timeSheetSummaryFormat(): Int {
-        return int(AppKeys.TIME_SHEET_SUMMARY_FORMAT.rawValue, TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK)
+    fun timeReportSummaryFormat(): Int {
+        return int(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
     }
 }
 
 // TODO: Should time sheet summary format constants be moved to a better location?
-const val TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK: Int = 1
-const val TIME_SHEET_SUMMARY_FORMAT_FRACTION: Int = 2
+const val TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK: Int = 1
+const val TIME_REPORT_SUMMARY_FORMAT_FRACTION: Int = 2

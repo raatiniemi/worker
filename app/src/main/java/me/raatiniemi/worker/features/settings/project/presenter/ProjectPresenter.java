@@ -75,19 +75,19 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
     }
 
     public void changeTimeReportSummaryFormat(int newFormat) {
-        int currentFormat = keyValueStore.timeSheetSummaryFormat();
+        int currentFormat = keyValueStore.timeReportSummaryFormat();
         if (currentFormat == newFormat) {
             return;
         }
 
         try {
             switch (newFormat) {
-                case KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK:
-                    keyValueStore.useDigitalClockAsTimeSheetSummaryFormat();
+                case KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK:
+                    keyValueStore.useDigitalClockAsTimeReportSummaryFormat();
                     break;
 
-                case KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION:
-                    keyValueStore.useFractionAsTimeSheetSummaryFormat();
+                case KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_FRACTION:
+                    keyValueStore.useFractionAsTimeReportSummaryFormat();
                     break;
 
                 default:
@@ -97,7 +97,7 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
             }
 
             performWithView(view -> {
-                if (KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK == newFormat) {
+                if (KeyValueStoreKt.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK == newFormat) {
                     view.showChangeTimeReportSummaryToDigitalClockSuccessMessage();
                     return;
                 }
