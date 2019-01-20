@@ -26,12 +26,12 @@ import java.util.Date;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
-public class TimesheetDateComparatorTest {
-    private TimesheetDateComparator comparator;
+public class TimeReportDateComparatorTest {
+    private TimeReportDateComparator comparator;
 
     @Before
     public void setUp() {
-        comparator = new TimesheetDateComparator();
+        comparator = new TimeReportDateComparator();
     }
 
     @Test

@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.repository
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.TimeReportDay
-import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator
+import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.PageRequest
@@ -49,7 +49,7 @@ internal class TimesheetRoomRepository(
         return timeReport.findAll(projectId, pageRequest.offset, pageRequest.maxResults)
                 .map { transform(it) }
                 .toMap()
-                .toSortedMap(TimesheetDateComparator())
+                .toSortedMap(TimeReportDateComparator())
     }
 
     override fun getTimesheetWithoutRegisteredEntries(
@@ -59,6 +59,6 @@ internal class TimesheetRoomRepository(
         return timeReport.findAllUnregistered(projectId, pageRequest.offset, pageRequest.maxResults)
                 .map { transform(it) }
                 .toMap()
-                .toSortedMap(TimesheetDateComparator())
+                .toSortedMap(TimeReportDateComparator())
     }
 }

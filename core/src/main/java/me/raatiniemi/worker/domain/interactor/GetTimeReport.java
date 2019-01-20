@@ -24,7 +24,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator;
+import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator;
 import me.raatiniemi.worker.domain.model.TimeReportItem;
 import me.raatiniemi.worker.domain.repository.PageRequest;
 import me.raatiniemi.worker.domain.repository.TimesheetRepository;
@@ -67,7 +67,7 @@ public class GetTimeReport {
     }
 
     private static SortedMap<Date, SortedSet<TimeReportItem>> sortedEntries(Map<Date, Set<TimeReportItem>> entries) {
-        SortedMap<Date, SortedSet<TimeReportItem>> result = new TreeMap<>(new TimesheetDateComparator());
+        SortedMap<Date, SortedSet<TimeReportItem>> result = new TreeMap<>(new TimeReportDateComparator());
 
         for (Map.Entry<Date, Set<TimeReportItem>> entry : entries.entrySet()) {
             result.put(entry.getKey(), sortItems(entry.getValue()));

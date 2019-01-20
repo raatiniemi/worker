@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.comparator;
 import java.util.Comparator;
 import java.util.Date;
 
-public final class TimesheetDateComparator implements Comparator<Date> {
+public final class TimeReportDateComparator implements Comparator<Date> {
     @Override
     public int compare(Date o1, Date o2) {
         int comparable = o1.compareTo(o2);

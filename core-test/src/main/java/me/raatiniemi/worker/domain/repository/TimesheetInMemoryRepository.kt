@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.comparator.TimesheetDateComparator
+import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
@@ -40,7 +40,7 @@ class TimesheetInMemoryRepository(private val timeIntervals: List<TimeInterval>)
         val matchingTimeIntervals = timeIntervals.filter { predicate(it) }
                 .groupBy { resetToStartOfDay(it.startInMilliseconds) }
 
-        val timeIntervals = TreeMap<Date, Set<TimeReportItem>>(TimesheetDateComparator())
+        val timeIntervals = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator())
         matchingTimeIntervals.forEach {
             timeIntervals[it.key] = it.value
                     .map { timeInterval -> TimeReportItem(timeInterval) }
