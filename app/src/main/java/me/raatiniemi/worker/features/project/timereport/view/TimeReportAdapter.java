@@ -85,16 +85,16 @@ class TimeReportAdapter extends ExpandableListAdapter<
     public void onBindGroupViewHolder(GroupItemViewHolder vh, int group, int viewType) {
         TimeReportGroup groupItem = get(group);
 
-        vh.title.setText(groupItem.getTitle());
-        vh.summarize.setText(groupItem.getTimeSummaryWithDifference(formatter));
+        vh.getTitle().setText(groupItem.getTitle());
+        vh.getSummarize().setText(groupItem.getTimeSummaryWithDifference(formatter));
 
-        vh.letter.setImageDrawable(
+        vh.getLetter().setImageDrawable(
                 LetterDrawable.build(groupItem.getFirstLetterFromTitle())
         );
 
         final List<TimeReportAdapterResult> results = groupItem.buildItemResultsWithGroupIndex(group);
 
-        vh.letter.setOnLongClickListener(view -> {
+        vh.getLetter().setOnLongClickListener(view -> {
             if (selectionManager.isSelectionActivated()) {
                 return false;
             }
@@ -103,7 +103,7 @@ class TimeReportAdapter extends ExpandableListAdapter<
             return true;
         });
 
-        vh.letter.setOnClickListener(view -> {
+        vh.getLetter().setOnClickListener(view -> {
             if (!selectionManager.isSelectionActivated()) {
                 return;
             }
@@ -194,7 +194,7 @@ class TimeReportAdapter extends ExpandableListAdapter<
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupItemViewHolder vh, int group, int x, int y, boolean expand) {
-        return !selectionManager.isSelectionActivated() || !isPointInView(new Point(x, y), vh.letter);
+        return !selectionManager.isSelectionActivated() || !isPointInView(new Point(x, y), vh.getLetter());
     }
 
     public void remove(List<TimeReportAdapterResult> results) {
