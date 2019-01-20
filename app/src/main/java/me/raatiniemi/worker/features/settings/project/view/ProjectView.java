@@ -35,17 +35,17 @@ public interface ProjectView extends MvpView {
     void showChangeTimeSummaryStartingPointErrorMessage();
 
     /**
-     * Show message for successful time sheet summary format change to digital clock.
+     * Show message for successful time report summary format change to digital clock.
      */
-    void showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+    void showChangeTimeReportSummaryToDigitalClockSuccessMessage();
 
     /**
-     * Show message for successful time sheet summary format change to fraction.
+     * Show message for successful time report summary format change to fraction.
      */
-    void showChangeTimeSheetSummaryToFractionSuccessMessage();
+    void showChangeTimeReportSummaryToFractionSuccessMessage();
 
     /**
-     * Show message for failed time sheet summary format change.
+     * Show message for failed time report summary format change.
      */
-    void showChangeTimeSheetSummaryFormatErrorMessage();
+    void showChangeTimeReportSummaryFormatErrorMessage();
 }

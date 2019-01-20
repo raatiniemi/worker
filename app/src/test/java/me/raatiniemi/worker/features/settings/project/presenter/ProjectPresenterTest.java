@@ -116,69 +116,69 @@ public class ProjectPresenterTest {
     }
 
     @Test
-    public void changeTimesheetSummaryFormat_withDigitalClock() {
+    public void changeTimeReportSummaryFormat_withDigitalClock() {
         keyValueStore.useFractionAsTimeSheetSummaryFormat();
         presenter.attachView(view);
 
-        presenter.changeTimeSheetSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
 
         assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK, keyValueStore.timeSheetSummaryFormat());
-        verify(view).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+        verify(view).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();
     }
 
     @Test
-    public void changeTimesheetSummaryFormat_withFraction() {
+    public void changeTimeReportSummaryFormat_withFraction() {
         presenter.attachView(view);
 
-        presenter.changeTimeSheetSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
 
         assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION, keyValueStore.timeSheetSummaryFormat());
-        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
-        verify(view).showChangeTimeSheetSummaryToFractionSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+        verify(view, never()).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
+        verify(view).showChangeTimeReportSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();
     }
 
     @Test
-    public void changeTimesheetSummaryFormat_withPreviousValue() {
+    public void changeTimeReportSummaryFormat_withPreviousValue() {
         presenter.attachView(view);
 
-        presenter.changeTimeSheetSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
+        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK);
 
         assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK, keyValueStore.timeSheetSummaryFormat());
-        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+        verify(view, never()).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();
     }
 
     @Test
-    public void changeTimesheetSummaryFormat_withoutAttachedView() {
-        presenter.changeTimeSheetSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
+    public void changeTimeReportSummaryFormat_withoutAttachedView() {
+        presenter.changeTimeReportSummaryFormat(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION);
 
         assertEquals(KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_FRACTION, keyValueStore.timeSheetSummaryFormat());
-        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+        verify(view, never()).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();
     }
 
     @Test
-    public void changeTimesheetSummaryFormat_invalidFormat() {
+    public void changeTimeReportSummaryFormat_invalidFormat() {
         presenter.attachView(view);
 
-        presenter.changeTimeSheetSummaryFormat(0);
+        presenter.changeTimeReportSummaryFormat(0);
 
-        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
-        verify(view).showChangeTimeSheetSummaryFormatErrorMessage();
+        verify(view, never()).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryToFractionSuccessMessage();
+        verify(view).showChangeTimeReportSummaryFormatErrorMessage();
     }
 
     @Test
-    public void changeTimesheetSummaryFormat_invalidFormatWithoutAttachedView() {
-        presenter.changeTimeSheetSummaryFormat(0);
+    public void changeTimeReportSummaryFormat_invalidFormatWithoutAttachedView() {
+        presenter.changeTimeReportSummaryFormat(0);
 
-        verify(view, never()).showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryToFractionSuccessMessage();
-        verify(view, never()).showChangeTimeSheetSummaryFormatErrorMessage();
+        verify(view, never()).showChangeTimeReportSummaryToDigitalClockSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryToFractionSuccessMessage();
+        verify(view, never()).showChangeTimeReportSummaryFormatErrorMessage();
     }
 }

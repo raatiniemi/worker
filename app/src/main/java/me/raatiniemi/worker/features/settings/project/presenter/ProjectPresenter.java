@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException;
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
-import me.raatiniemi.worker.features.settings.project.exception.InvalidTimeSheetSummaryFormatException;
+import me.raatiniemi.worker.features.settings.project.exception.InvalidTimeReportSummaryFormatException;
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent;
 import me.raatiniemi.worker.features.settings.project.view.ProjectView;
 import me.raatiniemi.worker.features.shared.presenter.BasePresenter;
@@ -74,7 +74,7 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
         }
     }
 
-    public void changeTimeSheetSummaryFormat(int newFormat) {
+    public void changeTimeReportSummaryFormat(int newFormat) {
         int currentFormat = keyValueStore.timeSheetSummaryFormat();
         if (currentFormat == newFormat) {
             return;
@@ -91,23 +91,23 @@ public class ProjectPresenter extends BasePresenter<ProjectView> {
                     break;
 
                 default:
-                    throw new InvalidTimeSheetSummaryFormatException(
+                    throw new InvalidTimeReportSummaryFormatException(
                             "Summary format '" + newFormat + "' is not valid"
                     );
             }
 
             performWithView(view -> {
                 if (KeyValueStoreKt.TIME_SHEET_SUMMARY_FORMAT_DIGITAL_CLOCK == newFormat) {
-                    view.showChangeTimeSheetSummaryToDigitalClockSuccessMessage();
+                    view.showChangeTimeReportSummaryToDigitalClockSuccessMessage();
                     return;
                 }
 
-                view.showChangeTimeSheetSummaryToFractionSuccessMessage();
+                view.showChangeTimeReportSummaryToFractionSuccessMessage();
             });
-        } catch (InvalidTimeSheetSummaryFormatException e) {
+        } catch (InvalidTimeReportSummaryFormatException e) {
             Timber.w(e, "Unable to set new format");
 
-            performWithView(ProjectView::showChangeTimeSheetSummaryFormatErrorMessage);
+            performWithView(ProjectView::showChangeTimeReportSummaryFormatErrorMessage);
         }
     }
 }

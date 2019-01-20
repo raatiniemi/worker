@@ -47,7 +47,7 @@ public class ProjectFragment extends BasePreferenceFragment
         implements ProjectView, Preference.OnPreferenceChangeListener {
     private static final String CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out";
     private static final String TIME_SUMMARY_KEY = "settings_project_time_summary";
-    private static final String TIME_SHEET_SUMMARY_FORMAT_KEY = "settings_project_time_sheet_summary_format";
+    private static final String TIME_REPORT_SUMMARY_FORMAT_KEY = "settings_project_time_report_summary_format";
     private static final String ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable";
     private static final String ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer";
 
@@ -78,13 +78,13 @@ public class ProjectFragment extends BasePreferenceFragment
         }
 
         try {
-            int timeSheetSummaryFormatValue = keyValueStore.timeSheetSummaryFormat();
+            int timeReportSummaryFormatValue = keyValueStore.timeSheetSummaryFormat();
 
-            ListPreference timeSheetSummaryFormat = (ListPreference) findPreference(TIME_SHEET_SUMMARY_FORMAT_KEY);
-            timeSheetSummaryFormat.setValue(String.valueOf(timeSheetSummaryFormatValue));
-            timeSheetSummaryFormat.setOnPreferenceChangeListener(this);
+            ListPreference timeReportSummaryFormat = (ListPreference) findPreference(TIME_REPORT_SUMMARY_FORMAT_KEY);
+            timeReportSummaryFormat.setValue(String.valueOf(timeReportSummaryFormatValue));
+            timeReportSummaryFormat.setOnPreferenceChangeListener(this);
         } catch (ClassCastException e) {
-            Timber.w(e, "Unable to set listener for 'timesheet_summary_format'");
+            Timber.w(e, "Unable to set listener for 'settings_project_time_report_summary_format'");
         }
 
         populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY, keyValueStore.ongoingNotification());
@@ -133,7 +133,7 @@ public class ProjectFragment extends BasePreferenceFragment
                 toggleConfirmClockOut(preference);
                 return true;
             case TIME_SUMMARY_KEY:
-            case TIME_SHEET_SUMMARY_FORMAT_KEY:
+            case TIME_REPORT_SUMMARY_FORMAT_KEY:
                 return true;
             case ONGOING_NOTIFICATION_ENABLE_KEY:
                 toggleOngoingNotification(preference);
@@ -182,8 +182,8 @@ public class ProjectFragment extends BasePreferenceFragment
         if (TIME_SUMMARY_KEY.equals(preference.getKey())) {
             changeTimeSummaryStartingPoint(newValue);
             return true;
-        } else if (TIME_SHEET_SUMMARY_FORMAT_KEY.equals(preference.getKey())) {
-            changeTimeSheetSummaryFormat(newValue);
+        } else if (TIME_REPORT_SUMMARY_FORMAT_KEY.equals(preference.getKey())) {
+            changeTimeReportSummaryFormat(newValue);
             return true;
         }
         return false;
@@ -236,13 +236,13 @@ public class ProjectFragment extends BasePreferenceFragment
         ).show();
     }
 
-    private void changeTimeSheetSummaryFormat(Object newValue) {
+    private void changeTimeReportSummaryFormat(Object newValue) {
         int newFormat = Integer.parseInt((String) newValue);
-        presenter.changeTimeSheetSummaryFormat(newFormat);
+        presenter.changeTimeReportSummaryFormat(newFormat);
     }
 
     @Override
-    public void showChangeTimeSheetSummaryToFractionSuccessMessage() {
+    public void showChangeTimeReportSummaryToFractionSuccessMessage() {
         View contentView = getActivity().findViewById(android.R.id.content);
         if (isNull(contentView)) {
             return;
@@ -256,7 +256,7 @@ public class ProjectFragment extends BasePreferenceFragment
     }
 
     @Override
-    public void showChangeTimeSheetSummaryToDigitalClockSuccessMessage() {
+    public void showChangeTimeReportSummaryToDigitalClockSuccessMessage() {
         View contentView = getActivity().findViewById(android.R.id.content);
         if (isNull(contentView)) {
             return;
@@ -270,7 +270,7 @@ public class ProjectFragment extends BasePreferenceFragment
     }
 
     @Override
-    public void showChangeTimeSheetSummaryFormatErrorMessage() {
+    public void showChangeTimeReportSummaryFormatErrorMessage() {
         View contentView = getActivity().findViewById(android.R.id.content);
         if (isNull(contentView)) {
             return;

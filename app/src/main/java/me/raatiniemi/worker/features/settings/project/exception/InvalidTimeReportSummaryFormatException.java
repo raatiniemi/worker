@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.settings.project.exception;
 
-public class InvalidTimeSheetSummaryFormatException extends RuntimeException {
-    public InvalidTimeSheetSummaryFormatException(String message) {
+public class InvalidTimeReportSummaryFormatException extends RuntimeException {
+    public InvalidTimeReportSummaryFormatException(String message) {
         super(message);
     }
 }
