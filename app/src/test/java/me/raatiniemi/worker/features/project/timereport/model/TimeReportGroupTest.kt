@@ -14,26 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timereport.model;
+package me.raatiniemi.worker.features.project.timereport.model
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import me.raatiniemi.worker.domain.model.TimeReportItem
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
+import java.util.*
 
-import java.util.Date;
-import java.util.TreeSet;
-
-import static junit.framework.Assert.assertEquals;
-
-@RunWith(JUnit4.class)
-public class TimeReportGroupTest {
+@RunWith(JUnit4::class)
+class TimeReportGroupTest {
     @Test
-    public void getId() {
-        Date date = new Date();
-        long days = date.getTime() / 1000 / 60 / 60 / 24;
+    fun getId() {
+        val date = Date()
+        val days = date.time / 1000 / 60 / 60 / 24
 
-        TimeReportGroup groupItem = TimeReportGroup.Companion.build(date, new TreeSet<>());
+        val groupItem = TimeReportGroup.build(date, TreeSet<TimeReportItem>())
 
-        assertEquals(days, groupItem.getId());
+        assertEquals(days, groupItem.id)
     }
 }
