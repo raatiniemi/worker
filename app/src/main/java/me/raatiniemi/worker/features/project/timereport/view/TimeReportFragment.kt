@@ -28,6 +28,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
+import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
