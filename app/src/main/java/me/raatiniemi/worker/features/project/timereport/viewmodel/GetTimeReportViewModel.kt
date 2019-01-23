@@ -23,75 +23,55 @@ import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-interface GetTimeReportViewModel {
-    interface Input {
-        fun hideRegisteredTime()
-        fun showRegisteredTime()
+class GetTimeReportViewModel internal constructor(private val useCase: GetTimeReport) {
+    // TODO: Remove mutable state from ViewModel.
+    private var shouldHideRegisteredTime = false
+    private val fetch = PublishSubject.create<Request>()
 
-        // TODO: Improve method name.
-        // The method do not fetch anything, it just pushes the "event"
-        // to onto an observable which will handle the actual fetching.
-        fun fetch(id: Long, offset: Int)
+    private val success = PublishSubject.create<TimeReportGroup>()
+    private val errors = PublishSubject.create<Throwable>()
+
+    init {
+        fetch.switchMap {
+            executeUseCase(it)
+                    .compose(redirectErrors(errors))
+                    .compose(hideErrors())
+        }.subscribe(success)
     }
 
-    interface Output {
-        fun success(): Observable<TimeReportGroup>
-    }
+    private fun executeUseCase(request: Request): Observable<TimeReportGroup> {
+        return Observable.defer<TimeReportGroup> {
+            try {
+                val items = useCase.execute(request.id, request.offset, shouldHideRegisteredTime)
+                        .entries
+                        .map { TimeReportGroup.build(it.key, it.value) }
 
-    interface Error {
-        fun errors(): Observable<Throwable>
-    }
-
-    class ViewModel internal constructor(private val useCase: GetTimeReport) : Input, Output, Error {
-        // TODO: Remove mutable state from ViewModel.
-        private var shouldHideRegisteredTime = false
-        private val fetch = PublishSubject.create<Request>()
-
-        private val success = PublishSubject.create<TimeReportGroup>()
-        private val errors = PublishSubject.create<Throwable>()
-
-        init {
-            fetch.switchMap {
-                executeUseCase(it)
-                        .compose(redirectErrors(errors))
-                        .compose(hideErrors())
-            }.subscribe(success)
-        }
-
-        private fun executeUseCase(request: Request): Observable<TimeReportGroup> {
-            return Observable.defer<TimeReportGroup> {
-                try {
-                    val items = useCase.execute(request.id, request.offset, shouldHideRegisteredTime)
-                            .entries
-                            .map { TimeReportGroup.build(it.key, it.value) }
-
-                    Observable.from(items)
-                } catch (e: Exception) {
-                    Observable.error(e)
-                }
+                Observable.from(items)
+            } catch (e: Exception) {
+                Observable.error(e)
             }
         }
-
-        override fun hideRegisteredTime() {
-            shouldHideRegisteredTime = true
-        }
-
-        override fun showRegisteredTime() {
-            shouldHideRegisteredTime = false
-        }
-
-        override fun fetch(id: Long, offset: Int) {
-            fetch.onNext(Request(id, offset))
-        }
-
-        override fun success(): Observable<TimeReportGroup> {
-            return success
-        }
-
-        override fun errors(): Observable<Throwable> {
-            return errors
-        }
-
-        private data class Request(val id: Long, val offset: Int)
     }
+
+    fun hideRegisteredTime() {
+        shouldHideRegisteredTime = true
+    }
+
+    fun showRegisteredTime() {
+        shouldHideRegisteredTime = false
+    }
+
+    fun fetch(id: Long, offset: Int) {
+        fetch.onNext(Request(id, offset))
+    }
+
+    fun success(): Observable<TimeReportGroup> {
+        return success
+    }
+
+    fun errors(): Observable<Throwable> {
+        return errors
+    }
+
+    private data class Request(val id: Long, val offset: Int)
 }

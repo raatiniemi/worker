@@ -50,7 +50,7 @@ import timber.log.Timber
 class TimeReportFragment : RxFragment(), SelectionListener {
     private val keyValueStore: KeyValueStore by inject()
 
-    private val getTimeReportViewModel: GetTimeReportViewModel.ViewModel by inject()
+    private val getTimeReportViewModel: GetTimeReportViewModel by inject()
     private val registerTimeReportViewModel: RegisterTimeReportViewModel.ViewModel by inject()
     private val removeTimeReportViewModel: RemoveTimeReportViewModel.ViewModel by inject()
 

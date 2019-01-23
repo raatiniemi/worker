@@ -34,7 +34,7 @@ import java.util.*
 @RunWith(JUnit4::class)
 class GetTimeReportViewModelTest {
     private val useCase = mock(GetTimeReport::class.java)
-    private val vm = GetTimeReportViewModel.ViewModel(useCase)
+    private val vm = GetTimeReportViewModel(useCase)
 
     private val success = TestSubscriber<TimeReportGroup>()
     private val errors = TestSubscriber<Throwable>()
