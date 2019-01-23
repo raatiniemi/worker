@@ -25,71 +25,57 @@ import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-interface RegisterTimeReportViewModel {
-    interface Input {
-        fun register(results: List<TimeReportAdapterResult>)
+class RegisterTimeReportViewModel internal constructor(private val useCase: MarkRegisteredTime) {
+    private val register = PublishSubject.create<List<TimeReportAdapterResult>>()
+
+    private val success = PublishSubject.create<TimeReportAdapterResult>()
+    private val errors = PublishSubject.create<Throwable>()
+
+    init {
+        register.switchMap {
+            executeUseCase(it)
+                    .compose(redirectErrors(errors))
+                    .compose(hideErrors())
+        }.subscribe(success)
     }
 
-    interface Output {
-        fun success(): Observable<TimeReportAdapterResult>
-    }
+    private fun executeUseCase(results: List<TimeReportAdapterResult>): Observable<TimeReportAdapterResult> {
+        return Observable.defer<TimeReportAdapterResult> {
+            try {
+                val times = results.map { it.timeInterval }.toList()
+                val items = useCase.execute(times)
+                        .map {
+                            mapUpdateToSelectedItems(it, results)
+                        }
+                        .toList()
 
-    interface Error {
-        fun errors(): Observable<Throwable>
-    }
-
-    class ViewModel internal constructor(private val useCase: MarkRegisteredTime) : Input, Output, Error {
-        private val register = PublishSubject.create<List<TimeReportAdapterResult>>()
-
-        private val success = PublishSubject.create<TimeReportAdapterResult>()
-        private val errors = PublishSubject.create<Throwable>()
-
-        init {
-            register.switchMap {
-                executeUseCase(it)
-                        .compose(redirectErrors(errors))
-                        .compose(hideErrors())
-            }.subscribe(success)
-        }
-
-        private fun executeUseCase(results: List<TimeReportAdapterResult>): Observable<TimeReportAdapterResult> {
-            return Observable.defer<TimeReportAdapterResult> {
-                try {
-                    val times = results.map { it.timeInterval }.toList()
-                    val items = useCase.execute(times)
-                            .map {
-                                mapUpdateToSelectedItems(it, results)
-                            }
-                            .toList()
-
-                    Observable.from(items.sorted().reversed())
-                } catch (e: Exception) {
-                    Observable.error(e)
-                }
+                Observable.from(items.sorted().reversed())
+            } catch (e: Exception) {
+                Observable.error(e)
             }
         }
+    }
 
-        private fun mapUpdateToSelectedItems(time: TimeInterval, selectedItems: List<TimeReportAdapterResult>): TimeReportAdapterResult {
-            return selectedItems
-                    .filter { it.timeInterval.id == time.id }
-                    .map {
-                        val item = TimeReportItem.with(time)
+    private fun mapUpdateToSelectedItems(time: TimeInterval, selectedItems: List<TimeReportAdapterResult>): TimeReportAdapterResult {
+        return selectedItems
+                .filter { it.timeInterval.id == time.id }
+                .map {
+                    val item = TimeReportItem.with(time)
 
-                        TimeReportAdapterResult(it.group, it.child, item)
-                    }
-                    .first()
-        }
+                    TimeReportAdapterResult(it.group, it.child, item)
+                }
+                .first()
+    }
 
-        override fun register(results: List<TimeReportAdapterResult>) {
-            register.onNext(results)
-        }
+    fun register(results: List<TimeReportAdapterResult>) {
+        register.onNext(results)
+    }
 
-        override fun success(): Observable<TimeReportAdapterResult> {
-            return success
-        }
+    fun success(): Observable<TimeReportAdapterResult> {
+        return success
+    }
 
-        override fun errors(): Observable<Throwable> {
-            return errors
-        }
+    fun errors(): Observable<Throwable> {
+        return errors
     }
 }

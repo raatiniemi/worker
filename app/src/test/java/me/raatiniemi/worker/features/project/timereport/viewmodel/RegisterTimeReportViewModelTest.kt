@@ -33,7 +33,7 @@ import rx.observers.TestSubscriber
 @RunWith(JUnit4::class)
 class RegisterTimeReportViewModelTest {
     private val useCase = mock(MarkRegisteredTime::class.java)
-    private val vm = RegisterTimeReportViewModel.ViewModel(useCase)
+    private val vm = RegisterTimeReportViewModel(useCase)
 
     private val success = TestSubscriber<TimeReportAdapterResult>()
     private val errors = TestSubscriber<Throwable>()

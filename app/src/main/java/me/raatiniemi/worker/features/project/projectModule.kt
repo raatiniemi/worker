@@ -30,7 +30,7 @@ val projectModule = module {
     }
 
     single {
-        RegisterTimeReportViewModel.ViewModel(MarkRegisteredTime(get()))
+        RegisterTimeReportViewModel(MarkRegisteredTime(get()))
     }
 
     single {
