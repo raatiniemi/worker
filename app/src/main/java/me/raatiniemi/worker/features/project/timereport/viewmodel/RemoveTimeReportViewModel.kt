@@ -23,56 +23,42 @@ import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-interface RemoveTimeReportViewModel {
-    interface Input {
-        fun remove(results: List<TimeReportAdapterResult>)
+class RemoveTimeReportViewModel internal constructor(private val useCase: RemoveTime) {
+    private val remove = PublishSubject.create<List<TimeReportAdapterResult>>()
+
+    private val success = PublishSubject.create<TimeReportAdapterResult>()
+    private val errors = PublishSubject.create<Throwable>()
+
+    init {
+        remove.switchMap {
+            executeUseCase(it)
+                    .compose(redirectErrors(errors))
+                    .compose(hideErrors())
+        }.subscribe(success)
     }
 
-    interface Output {
-        fun success(): Observable<TimeReportAdapterResult>
-    }
+    private fun executeUseCase(results: List<TimeReportAdapterResult>): Observable<TimeReportAdapterResult> {
+        return Observable.defer<TimeReportAdapterResult> {
+            try {
+                val times = results.map { it.timeInterval }.toList()
+                useCase.execute(times)
 
-    interface Error {
-        fun errors(): Observable<Throwable>
-    }
-
-    class ViewModel internal constructor(private val useCase: RemoveTime) : Input, Output, Error {
-        private val remove = PublishSubject.create<List<TimeReportAdapterResult>>()
-
-        private val success = PublishSubject.create<TimeReportAdapterResult>()
-        private val errors = PublishSubject.create<Throwable>()
-
-        init {
-            remove.switchMap {
-                executeUseCase(it)
-                        .compose(redirectErrors(errors))
-                        .compose(hideErrors())
-            }.subscribe(success)
-        }
-
-        private fun executeUseCase(results: List<TimeReportAdapterResult>): Observable<TimeReportAdapterResult> {
-            return Observable.defer<TimeReportAdapterResult> {
-                try {
-                    val times = results.map { it.timeInterval }.toList()
-                    useCase.execute(times)
-
-                    Observable.from(results.sorted().reversed())
-                } catch (e: Exception) {
-                    Observable.error(e)
-                }
+                Observable.from(results.sorted().reversed())
+            } catch (e: Exception) {
+                Observable.error(e)
             }
         }
+    }
 
-        override fun remove(results: List<TimeReportAdapterResult>) {
-            remove.onNext(results)
-        }
+    fun remove(results: List<TimeReportAdapterResult>) {
+        remove.onNext(results)
+    }
 
-        override fun success(): Observable<TimeReportAdapterResult> {
-            return success
-        }
+    fun success(): Observable<TimeReportAdapterResult> {
+        return success
+    }
 
-        override fun errors(): Observable<Throwable> {
-            return errors
-        }
+    fun errors(): Observable<Throwable> {
+        return errors
     }
 }

@@ -34,6 +34,6 @@ val projectModule = module {
     }
 
     single {
-        RemoveTimeReportViewModel.ViewModel(RemoveTime(get()))
+        RemoveTimeReportViewModel(RemoveTime(get()))
     }
 }

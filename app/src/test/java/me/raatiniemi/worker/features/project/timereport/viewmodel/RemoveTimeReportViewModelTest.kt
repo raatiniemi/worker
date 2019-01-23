@@ -31,7 +31,7 @@ import rx.observers.TestSubscriber
 @RunWith(JUnit4::class)
 class RemoveTimeReportViewModelTest {
     private val useCase = mock(RemoveTime::class.java)
-    private val vm = RemoveTimeReportViewModel.ViewModel(useCase)
+    private val vm = RemoveTimeReportViewModel(useCase)
 
     private val success = TestSubscriber<TimeReportAdapterResult>()
     private val errors = TestSubscriber<Throwable>()
