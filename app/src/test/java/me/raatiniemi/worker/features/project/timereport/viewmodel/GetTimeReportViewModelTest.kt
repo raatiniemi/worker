@@ -16,55 +16,59 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
-import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
+import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 import rx.observers.TestSubscriber
 import java.util.*
 
 @RunWith(JUnit4::class)
 class GetTimeReportViewModelTest {
-    private val useCase = mock(GetTimeReport::class.java)
-    private val vm = GetTimeReportViewModel(useCase)
+    private lateinit var repository: TimeReportRepository
+    private lateinit var getTimeReport: GetTimeReport
 
     private val success = TestSubscriber<TimeReportGroup>()
     private val errors = TestSubscriber<Throwable>()
 
-    @Before
-    fun setUp() {
+    private fun setUpViewModel(timeIntervals: List<TimeInterval>): GetTimeReportViewModel {
+        repository = TimeReportInMemoryRepository(timeIntervals)
+        getTimeReport = GetTimeReport(repository)
+
+        val vm = GetTimeReportViewModel(getTimeReport)
         vm.success().subscribe(success)
         vm.errors().subscribe(errors)
+
+        return vm
     }
 
     @Test
-    fun fetch_withError() {
-        `when`(useCase.execute(eq(1L), eq(0), eq(false)))
-                .thenThrow(DomainException::class.java)
+    fun `fetch without time intervals`() {
+        val vm = setUpViewModel(emptyList())
 
-        vm.fetch(1L, 0)
+        vm.fetch(1, 0)
 
         success.assertNoValues()
         success.assertNoTerminalEvent()
-        errors.assertValueCount(1)
+        errors.assertNoValues()
         errors.assertNoTerminalEvent()
     }
 
     @Test
-    fun fetch_hideRegisteredTime() {
-        `when`(useCase.execute(eq(1L), eq(0), eq(true)))
-                .thenReturn(TreeMap<Date, SortedSet<TimeReportItem>>())
-
+    fun `fetch with hide registered time intervals`() {
+        val vm = setUpViewModel(listOf(
+                timeInterval {
+                    isRegistered = true
+                }
+        ))
         vm.hideRegisteredTime()
-        vm.fetch(1L, 0)
+
+        vm.fetch(1, 0)
 
         success.assertNoValues()
         success.assertNoTerminalEvent()
@@ -73,24 +77,12 @@ class GetTimeReportViewModelTest {
     }
 
     @Test
-    fun fetch_withEmptyResult() {
-        `when`(useCase.execute(eq(1L), eq(0), eq(false)))
-                .thenReturn(TreeMap<Date, SortedSet<TimeReportItem>>())
+    fun `fetch with single item`() {
+        val vm = setUpViewModel(listOf(
+                timeInterval { }
+        ))
 
-        vm.fetch(1L, 0)
-
-        success.assertNoValues()
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
-    }
-
-    @Test
-    fun fetch_withSingleItem() {
-        `when`(useCase.execute(eq(1L), eq(0), eq(false)))
-                .thenReturn(buildTimesheetSegment())
-
-        vm.fetch(1L, 0)
+        vm.fetch(1, 0)
 
         success.assertValueCount(1)
         success.assertNoTerminalEvent()
@@ -99,36 +91,22 @@ class GetTimeReportViewModelTest {
     }
 
     @Test
-    fun fetch_withMultipleItems() {
-        `when`(useCase.execute(eq(1L), eq(0), eq(false)))
-                .thenReturn(buildTimesheetSegmentWithNumberOfItems(2))
+    fun `fetch with multiple items`() {
+        val vm = setUpViewModel(listOf(
+                timeInterval {
+                    startInMilliseconds = 0
+                    stopInMilliseconds = 1
+                },
+                timeInterval {
+                    startInMilliseconds = Date().time
+                }
+        ))
 
-        vm.fetch(1L, 0)
+        vm.fetch(1, 0)
 
         success.assertValueCount(2)
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()
     }
-
-    private fun buildTimesheetSegment(): SortedMap<Date, SortedSet<TimeReportItem>> {
-        return buildTimesheetSegmentWithNumberOfItems(1)
-    }
-
-    private fun buildTimesheetSegmentWithNumberOfItems(numberOfItems: Int): SortedMap<Date, SortedSet<TimeReportItem>> {
-        val segments = TreeMap<Date, SortedSet<TimeReportItem>>()
-        for (i in 0 until numberOfItems) {
-            segments[Date(i.toLong())] = timeReportItems
-        }
-
-        return segments
-    }
-
-    private val timeReportItems: TreeSet<TimeReportItem>
-        get() {
-            val timeInterval = TimeInterval.builder(1L).build()
-            val item = TimeReportItem.with(timeInterval)
-
-            return TreeSet(setOf(item))
-        }
 }
