@@ -18,12 +18,15 @@ package me.raatiniemi.worker.features.project.timereport.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat
@@ -182,7 +185,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
                             val offset = timeReportAdapter.groupCount
 
                             // Retrieve additional timesheet items with offset.
-                            getTimeReportViewModel.fetch(projectId, offset)
+                            loadTimeReportViaViewModel(offset)
                         }
                     }
                 }
@@ -194,26 +197,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
             getTimeReportViewModel.hideRegisteredTime()
         }
 
-        getTimeReportViewModel.success()
-                .compose(bindToLifecycle())
-                .compose(applySchedulersWithBackpressureBuffer())
-                .subscribe(
-                        {
-                            timeReportAdapter.add(it)
-
-                            // TODO: Call `finishLoading` when all items in buffer have been added.
-                            // The call to `finishLoading` will be called for each of the added
-                            // groups, i.e. there's a window in where we can load the same segment
-                            // multiple times due to the disconnect between finish loading and the
-                            // user attempts scroll (causing another load to happen). However, this
-                            // seems to be fairly theoretical, at least now, but should be improved.
-                            finishLoading()
-                        },
-                        { Timber.e(it) }
-                )
-        getTimeReportViewModel.errors()
-                .compose(bindToLifecycle())
-                .subscribe { showGetTimeReportErrorMessage() }
+        observeViewModel()
         registerTimeReportViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulersWithBackpressureBuffer())
@@ -242,22 +226,38 @@ class TimeReportFragment : RxFragment(), SelectionListener {
                 .compose(bindToLifecycle())
                 .subscribe { showDeleteErrorMessage() }
 
-        getTimeReportViewModel.fetch(projectId, 0)
+        loadTimeReportViaViewModel(offset = 0)
+    }
+
+    private fun observeViewModel() {
+        getTimeReportViewModel.timeReport.observe(this, Observer {
+            timeReportAdapter.add(it)
+
+            // TODO: Call `finishLoading` when all items in buffer have been added.
+            // The call to `finishLoading` will be called for each of the added
+            // groups, i.e. there's a window in where we can load the same segment
+            // multiple times due to the disconnect between finish loading and the
+            // user attempts scroll (causing another load to happen). However, this
+            // seems to be fairly theoretical, at least now, but should be improved.
+            finishLoading()
+        })
+
+        getTimeReportViewModel.viewActions.observeAndConsume(this, Observer {
+            it.action(requireActivity())
+        })
+    }
+
+    private fun loadTimeReportViaViewModel(offset: Int) {
+        // TODO: Replace use of GlobalScope in favor of CoroutineScope context.
+        GlobalScope.launch {
+            getTimeReportViewModel.fetch(projectId, offset)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         eventBus.unregister(this)
-    }
-
-    private fun showGetTimeReportErrorMessage() {
-        val snackBar = Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                R.string.error_message_get_time_report,
-                Snackbar.LENGTH_SHORT
-        )
-        snackBar.show()
     }
 
     private fun showDeleteErrorMessage() {
@@ -291,7 +291,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
 
         // Clear the items from the list and start loading from the beginning...
         timeReportAdapter.clear()
-        getTimeReportViewModel.fetch(projectId, 0)
+        loadTimeReportViaViewModel(offset = 0)
     }
 
     override fun onSelect() {

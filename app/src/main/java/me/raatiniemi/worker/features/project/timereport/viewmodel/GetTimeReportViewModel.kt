@@ -16,42 +16,23 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
-import me.raatiniemi.worker.util.RxUtil.hideErrors
-import me.raatiniemi.worker.util.RxUtil.redirectErrors
-import rx.Observable
-import rx.subjects.PublishSubject
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
 class GetTimeReportViewModel internal constructor(private val getTimeReport: GetTimeReport) {
     // TODO: Remove mutable state from ViewModel.
     private var shouldHideRegisteredTime = false
-    private val fetch = PublishSubject.create<Request>()
 
-    private val success = PublishSubject.create<TimeReportGroup>()
-    private val errors = PublishSubject.create<Throwable>()
+    private val _timeReport = MutableLiveData<List<TimeReportGroup>>()
+    val timeReport: LiveData<List<TimeReportGroup>> = _timeReport
 
-    init {
-        fetch.switchMap {
-            executeUseCase(it)
-                    .compose(redirectErrors(errors))
-                    .compose(hideErrors())
-        }.subscribe(success)
-    }
-
-    private fun executeUseCase(request: Request): Observable<TimeReportGroup> {
-        return Observable.defer<TimeReportGroup> {
-            try {
-                val items = getTimeReport(request.id, request.offset, shouldHideRegisteredTime)
-                        .entries
-                        .map { TimeReportGroup.build(it.key, it.value) }
-
-                Observable.from(items)
-            } catch (e: Exception) {
-                Observable.error(e)
-            }
-        }
-    }
+    val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
     fun hideRegisteredTime() {
         shouldHideRegisteredTime = true
@@ -61,17 +42,15 @@ class GetTimeReportViewModel internal constructor(private val getTimeReport: Get
         shouldHideRegisteredTime = false
     }
 
-    fun fetch(id: Long, offset: Int) {
-        fetch.onNext(Request(id, offset))
-    }
+    suspend fun fetch(id: Long, offset: Int) = withContext(Dispatchers.IO) {
+        try {
+            val items = getTimeReport(id, offset, shouldHideRegisteredTime)
+                    .entries
+                    .map { TimeReportGroup.build(it.key, it.value) }
 
-    fun success(): Observable<TimeReportGroup> {
-        return success
+            _timeReport.postValue(items)
+        } catch (e: Exception) {
+            viewActions.postValue(TimeReportViewActions.ShowUnableToLoadTimeReportErrorMessage)
+        }
     }
-
-    fun errors(): Observable<Throwable> {
-        return errors
-    }
-
-    private data class Request(val id: Long, val offset: Int)
 }

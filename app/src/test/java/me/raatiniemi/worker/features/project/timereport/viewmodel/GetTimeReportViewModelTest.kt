@@ -16,51 +16,64 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
+import org.junit.Assert.assertEquals
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import rx.observers.TestSubscriber
 import java.util.*
 
 @RunWith(JUnit4::class)
 class GetTimeReportViewModelTest {
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
+
+    private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timeInMilliseconds
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        return calendar.time
+    }
+
     private lateinit var repository: TimeReportRepository
     private lateinit var getTimeReport: GetTimeReport
-
-    private val success = TestSubscriber<TimeReportGroup>()
-    private val errors = TestSubscriber<Throwable>()
 
     private fun setUpViewModel(timeIntervals: List<TimeInterval>): GetTimeReportViewModel {
         repository = TimeReportInMemoryRepository(timeIntervals)
         getTimeReport = GetTimeReport(repository)
 
-        val vm = GetTimeReportViewModel(getTimeReport)
-        vm.success().subscribe(success)
-        vm.errors().subscribe(errors)
-
-        return vm
+        return GetTimeReportViewModel(getTimeReport)
     }
 
     @Test
-    fun `fetch without time intervals`() {
+    fun `fetch without time intervals`() = runBlocking {
+        val expected = emptyList<TimeReportGroup>()
         val vm = setUpViewModel(emptyList())
 
         vm.fetch(1, 0)
 
-        success.assertNoValues()
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
+        vm.timeReport.observeForever {
+            assertEquals(expected, it)
+        }
     }
 
     @Test
-    fun `fetch with hide registered time intervals`() {
+    fun `fetch with hide registered time intervals`() = runBlocking {
+        val expected = emptyList<TimeReportGroup>()
         val vm = setUpViewModel(listOf(
                 timeInterval {
                     isRegistered = true
@@ -70,43 +83,74 @@ class GetTimeReportViewModelTest {
 
         vm.fetch(1, 0)
 
-        success.assertNoValues()
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
+        vm.timeReport.observeForever {
+            assertEquals(expected, it)
+        }
     }
 
     @Test
-    fun `fetch with single item`() {
-        val vm = setUpViewModel(listOf(
-                timeInterval { }
-        ))
-
-        vm.fetch(1, 0)
-
-        success.assertValueCount(1)
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
-    }
-
-    @Test
-    fun `fetch with multiple items`() {
+    fun `fetch with single item`() = runBlocking {
+        val expected = listOf(
+                TimeReportGroup.build(
+                        resetToStartOfDay(0),
+                        sortedSetOf(
+                                TimeReportItem(timeInterval { id = 1 })
+                        )
+                )
+        )
         val vm = setUpViewModel(listOf(
                 timeInterval {
-                    startInMilliseconds = 0
-                    stopInMilliseconds = 1
-                },
-                timeInterval {
-                    startInMilliseconds = Date().time
+                    id = 1
                 }
         ))
 
         vm.fetch(1, 0)
 
-        success.assertValueCount(2)
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
+        vm.timeReport.observeForever {
+            assertEquals(expected, it)
+        }
+    }
+
+    @Test
+    fun `fetch with multiple items`() = runBlocking {
+        val date = Date()
+        val expected = listOf(
+                TimeReportGroup.build(
+                        resetToStartOfDay(date.time),
+                        sortedSetOf(
+                                TimeReportItem(timeInterval {
+                                    id = 2
+                                    startInMilliseconds = date.time
+                                })
+                        )
+                ),
+                TimeReportGroup.build(
+                        resetToStartOfDay(0),
+                        sortedSetOf(
+                                TimeReportItem(timeInterval {
+                                    id = 1
+                                    startInMilliseconds = 0
+                                    stopInMilliseconds = 1
+                                })
+                        )
+                )
+        )
+        val vm = setUpViewModel(listOf(
+                timeInterval {
+                    id = 1
+                    startInMilliseconds = 0
+                    stopInMilliseconds = 1
+                },
+                timeInterval {
+                    id = 2
+                    startInMilliseconds = date.time
+                }
+        ))
+
+        vm.fetch(1, 0)
+
+        vm.timeReport.observeForever {
+            assertEquals(expected, it)
+        }
     }
 }

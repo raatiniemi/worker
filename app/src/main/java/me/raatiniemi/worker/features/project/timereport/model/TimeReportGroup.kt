@@ -24,7 +24,7 @@ import me.raatiniemi.worker.features.shared.model.ExpandableItem
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TimeReportGroup private constructor(
+data class TimeReportGroup internal constructor(
         private val date: Date,
         private val items: MutableList<TimeReportItem>
 ) : ExpandableItem<TimeReportItem> {
