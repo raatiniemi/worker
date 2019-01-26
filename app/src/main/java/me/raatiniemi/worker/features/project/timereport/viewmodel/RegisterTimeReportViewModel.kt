@@ -25,13 +25,13 @@ import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterR
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
-class RegisterTimeReportViewModel internal constructor(private val useCase: MarkRegisteredTime) {
+class RegisterTimeReportViewModel internal constructor(private val markRegisteredTime: MarkRegisteredTime) {
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
     suspend fun register(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
         try {
             val timeIntervals = results.map { it.timeInterval }
-            val items = useCase.execute(timeIntervals)
+            val items = markRegisteredTime(timeIntervals)
                     .map { mapUpdateToSelectedItems(it, results) }
                     .sorted()
                     .reversed()
