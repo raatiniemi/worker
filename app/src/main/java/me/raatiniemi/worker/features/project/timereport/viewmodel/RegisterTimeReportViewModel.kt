@@ -16,66 +16,42 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.util.RxUtil.hideErrors
-import me.raatiniemi.worker.util.RxUtil.redirectErrors
-import rx.Observable
-import rx.subjects.PublishSubject
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
 class RegisterTimeReportViewModel internal constructor(private val useCase: MarkRegisteredTime) {
-    private val register = PublishSubject.create<List<TimeReportAdapterResult>>()
+    val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
-    private val success = PublishSubject.create<TimeReportAdapterResult>()
-    private val errors = PublishSubject.create<Throwable>()
+    suspend fun register(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
+        try {
+            val timeIntervals = results.map { it.timeInterval }
+            val items = useCase.execute(timeIntervals)
+                    .map { mapUpdateToSelectedItems(it, results) }
+                    .sorted()
+                    .reversed()
 
-    init {
-        register.switchMap {
-            executeUseCase(it)
-                    .compose(redirectErrors(errors))
-                    .compose(hideErrors())
-        }.subscribe(success)
-    }
-
-    private fun executeUseCase(results: List<TimeReportAdapterResult>): Observable<TimeReportAdapterResult> {
-        return Observable.defer<TimeReportAdapterResult> {
-            try {
-                val times = results.map { it.timeInterval }.toList()
-                val items = useCase.execute(times)
-                        .map {
-                            mapUpdateToSelectedItems(it, results)
-                        }
-                        .toList()
-
-                Observable.from(items.sorted().reversed())
-            } catch (e: Exception) {
-                Observable.error(e)
-            }
+            viewActions.postValue(TimeReportViewActions.UpdateRegistered(items))
+        } catch (e: Exception) {
+            viewActions.postValue(TimeReportViewActions.ShowUnableToRegisterErrorMessage)
         }
     }
 
-    private fun mapUpdateToSelectedItems(time: TimeInterval, selectedItems: List<TimeReportAdapterResult>): TimeReportAdapterResult {
-        return selectedItems
-                .filter { it.timeInterval.id == time.id }
+    private fun mapUpdateToSelectedItems(
+            timeInterval: TimeInterval,
+            selectedItems: List<TimeReportAdapterResult>
+    ): TimeReportAdapterResult {
+        return selectedItems.filter { it.timeInterval.id == timeInterval.id }
                 .map {
-                    val item = TimeReportItem.with(time)
+                    val item = TimeReportItem.with(timeInterval)
 
                     TimeReportAdapterResult(it.group, it.child, item)
                 }
                 .first()
-    }
-
-    fun register(results: List<TimeReportAdapterResult>) {
-        register.onNext(results)
-    }
-
-    fun success(): Observable<TimeReportAdapterResult> {
-        return success
-    }
-
-    fun errors(): Observable<Throwable> {
-        return errors
     }
 }

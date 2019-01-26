@@ -32,11 +32,13 @@ import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
-import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
+import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
 import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
+import me.raatiniemi.worker.features.shared.model.ViewAction
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 import me.raatiniemi.worker.features.shared.view.fragment.RxFragment
 import me.raatiniemi.worker.util.KeyValueStore
@@ -112,7 +114,10 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         }
 
         private fun toggleRegisterSelectedItems(actionMode: ActionMode) {
-            registerTimeReportViewModel.register(timeReportAdapter.selectedItems)
+            // TODO: Replace use of GlobalScope in favor of CoroutineScope context.
+            GlobalScope.launch {
+                registerTimeReportViewModel.register(timeReportAdapter.selectedItems)
+            }
 
             actionMode.finish()
         }
@@ -195,23 +200,6 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         recyclerViewExpandableItemManager.attachRecyclerView(rvTimeReport)
 
         observeViewModel()
-        registerTimeReportViewModel.success()
-                .compose(bindToLifecycle())
-                .compose(applySchedulersWithBackpressureBuffer())
-                .subscribe(
-                        {
-                            if (keyValueStore.hideRegisteredTime()) {
-                                timeReportAdapter.remove(it)
-                                return@subscribe
-                            }
-
-                            timeReportAdapter.set(it)
-                        },
-                        { Timber.e(it) }
-                )
-        registerTimeReportViewModel.errors()
-                .compose(bindToLifecycle())
-                .subscribe { showRegisterErrorMessage() }
         removeTimeReportViewModel.success()
                 .compose(bindToLifecycle())
                 .compose(applySchedulersWithBackpressureBuffer())
@@ -240,7 +228,23 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         })
 
         vm.viewActions.observeAndConsume(this, Observer {
-            it.action(requireActivity())
+            if (it is ViewAction) {
+                it.action(requireActivity())
+            }
+        })
+
+        registerTimeReportViewModel.viewActions.observeAndConsume(this, Observer {
+            when (it) {
+                is TimeReportViewActions.UpdateRegistered -> {
+                    if (keyValueStore.hideRegisteredTime()) {
+                        timeReportAdapter.remove(it.results)
+                        return@Observer
+                    }
+
+                    timeReportAdapter.set(it.results)
+                }
+                is ViewAction -> it.action(requireActivity())
+            }
         })
     }
 
@@ -261,15 +265,6 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         val snackBar = Snackbar.make(
                 requireActivity().findViewById(android.R.id.content),
                 R.string.error_message_delete_time_report,
-                Snackbar.LENGTH_SHORT
-        )
-        snackBar.show()
-    }
-
-    private fun showRegisterErrorMessage() {
-        val snackBar = Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                R.string.error_message_register_time_report,
                 Snackbar.LENGTH_SHORT
         )
         snackBar.show()

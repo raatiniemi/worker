@@ -21,12 +21,25 @@ import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.model.ViewAction
 
-sealed class TimeReportViewActions : ViewAction {
-    object ShowUnableToLoadTimeReportErrorMessage : TimeReportViewActions() {
+sealed class TimeReportViewActions {
+    object ShowUnableToLoadTimeReportErrorMessage : TimeReportViewActions(), ViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
                     R.string.error_message_get_time_report,
+                    Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
+        }
+    }
+
+    data class UpdateRegistered(val results: List<TimeReportAdapterResult>) : TimeReportViewActions()
+
+    object ShowUnableToRegisterErrorMessage : TimeReportViewActions(), ViewAction {
+        override fun action(activity: FragmentActivity) {
+            val snackBar = Snackbar.make(
+                    activity.findViewById(android.R.id.content),
+                    R.string.error_message_register_time_report,
                     Snackbar.LENGTH_SHORT
             )
             snackBar.show()

@@ -16,39 +16,41 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
+import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class RegisterTimeReportViewModelTest {
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
+
     private lateinit var repository: TimeIntervalRepository
     private lateinit var markRegisteredTime: MarkRegisteredTime
     private lateinit var vm: RegisterTimeReportViewModel
-
-    private val success = TestSubscriber<TimeReportAdapterResult>()
-    private val errors = TestSubscriber<Throwable>()
 
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
         markRegisteredTime = MarkRegisteredTime(repository)
         vm = RegisterTimeReportViewModel(markRegisteredTime)
-
-        vm.success().subscribe(success)
-        vm.errors().subscribe(errors)
     }
 
     @Test
-    fun register_withItem() {
+    fun `register with item`() = runBlocking {
         repository.add(timeInterval { })
         val timeInterval = timeInterval { id = 1 }
         val results = listOf(
@@ -60,14 +62,13 @@ class RegisterTimeReportViewModelTest {
 
         vm.register(results)
 
-        success.assertReceivedOnNext(expected)
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
+        vm.viewActions.observeForever {
+            assertEquals(TimeReportViewActions.UpdateRegistered(expected), it)
+        }
     }
 
     @Test
-    fun register_withItems() {
+    fun `register with items`() = runBlocking {
         repository.add(timeInterval { })
         repository.add(timeInterval { })
         val results = listOf(
@@ -84,9 +85,8 @@ class RegisterTimeReportViewModelTest {
 
         vm.register(results)
 
-        success.assertReceivedOnNext(expected.asReversed())
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
+        vm.viewActions.observeForever {
+            assertEquals(TimeReportViewActions.UpdateRegistered(expected.asReversed()), it)
+        }
     }
 }
