@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
@@ -30,7 +31,7 @@ import me.raatiniemi.worker.util.KeyValueStore
 class TimeReportViewModel internal constructor(
         private val keyValueStore: KeyValueStore,
         private val getTimeReport: GetTimeReport
-) {
+) : ViewModel() {
     private val shouldHideRegisteredTime: Boolean
         get() = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
 

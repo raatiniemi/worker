@@ -48,12 +48,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class TimeReportFragment : RxFragment(), SelectionListener {
     private val keyValueStore: KeyValueStore by inject()
 
-    private val vm: TimeReportViewModel by inject()
+    private val vm: TimeReportViewModel by viewModel()
     private val registerTimeReportViewModel: RegisterTimeReportViewModel by inject()
     private val removeTimeReportViewModel: RemoveTimeReportViewModel by inject()
 
