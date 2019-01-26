@@ -32,7 +32,7 @@ import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
-import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel
+import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
 import me.raatiniemi.worker.features.project.view.ProjectActivity
@@ -53,7 +53,7 @@ import timber.log.Timber
 class TimeReportFragment : RxFragment(), SelectionListener {
     private val keyValueStore: KeyValueStore by inject()
 
-    private val getTimeReportViewModel: GetTimeReportViewModel by inject()
+    private val vm: TimeReportViewModel by inject()
     private val registerTimeReportViewModel: RegisterTimeReportViewModel by inject()
     private val removeTimeReportViewModel: RemoveTimeReportViewModel by inject()
 
@@ -226,7 +226,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
     }
 
     private fun observeViewModel() {
-        getTimeReportViewModel.timeReport.observe(this, Observer {
+        vm.timeReport.observe(this, Observer {
             timeReportAdapter.add(it)
 
             // TODO: Call `finishLoading` when all items in buffer have been added.
@@ -238,7 +238,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
             finishLoading()
         })
 
-        getTimeReportViewModel.viewActions.observeAndConsume(this, Observer {
+        vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
     }
@@ -246,7 +246,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
     private fun loadTimeReportViaViewModel(offset: Int) {
         // TODO: Replace use of GlobalScope in favor of CoroutineScope context.
         GlobalScope.launch {
-            getTimeReportViewModel.fetch(projectId, offset)
+            vm.fetch(projectId, offset)
         }
     }
 

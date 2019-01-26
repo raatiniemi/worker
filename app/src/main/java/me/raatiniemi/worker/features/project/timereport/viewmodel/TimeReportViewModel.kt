@@ -27,7 +27,7 @@ import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 
-class GetTimeReportViewModel internal constructor(
+class TimeReportViewModel internal constructor(
         private val keyValueStore: KeyValueStore,
         private val getTimeReport: GetTimeReport
 ) {

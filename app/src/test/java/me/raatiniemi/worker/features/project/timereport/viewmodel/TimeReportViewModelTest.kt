@@ -35,7 +35,7 @@ import org.junit.runners.JUnit4
 import java.util.*
 
 @RunWith(JUnit4::class)
-class GetTimeReportViewModelTest {
+class TimeReportViewModelTest {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
@@ -56,11 +56,11 @@ class GetTimeReportViewModelTest {
     private lateinit var repository: TimeReportRepository
     private lateinit var getTimeReport: GetTimeReport
 
-    private fun setUpViewModel(timeIntervals: List<TimeInterval>): GetTimeReportViewModel {
+    private fun setUpViewModel(timeIntervals: List<TimeInterval>): TimeReportViewModel {
         repository = TimeReportInMemoryRepository(timeIntervals)
         getTimeReport = GetTimeReport(repository)
 
-        return GetTimeReportViewModel(keyValueStore, getTimeReport)
+        return TimeReportViewModel(keyValueStore, getTimeReport)
     }
 
     @Test
