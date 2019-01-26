@@ -16,61 +16,51 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
-import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
 import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class RegisterTimeReportViewModelTest {
-    private val useCase = mock(MarkRegisteredTime::class.java)
-    private val vm = RegisterTimeReportViewModel(useCase)
+    private lateinit var repository: TimeIntervalRepository
+    private lateinit var markRegisteredTime: MarkRegisteredTime
+    private lateinit var vm: RegisterTimeReportViewModel
 
     private val success = TestSubscriber<TimeReportAdapterResult>()
     private val errors = TestSubscriber<Throwable>()
 
     @Before
     fun setUp() {
+        repository = TimeIntervalInMemoryRepository()
+        markRegisteredTime = MarkRegisteredTime(repository)
+        vm = RegisterTimeReportViewModel(markRegisteredTime)
+
         vm.success().subscribe(success)
         vm.errors().subscribe(errors)
     }
 
     @Test
-    fun register_withError() {
-        val timeInterval = TimeInterval.builder(1L).build()
-        val item = TimeReportItem.with(timeInterval)
-        val results = listOf(TimeReportAdapterResult(0, 0, item))
-        `when`(useCase.execute(eq(listOf(timeInterval))))
-                .thenThrow(DomainException::class.java)
-
-        vm.register(results)
-
-        success.assertNoValues()
-        success.assertNoTerminalEvent()
-        errors.assertValueCount(1)
-        errors.assertNoTerminalEvent()
-    }
-
-    @Test
     fun register_withItem() {
-        val timeInterval = TimeInterval.builder(1L).build()
-        val item = TimeReportItem.with(timeInterval)
-        val results = listOf(TimeReportAdapterResult(0, 0, item))
-        `when`(useCase.execute(eq(listOf(timeInterval))))
-                .thenReturn(listOf(timeInterval))
+        repository.add(timeInterval { })
+        val timeInterval = timeInterval { id = 1 }
+        val results = listOf(
+                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval))
+        )
+        val expected = listOf(
+                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval.copy(isRegistered = true)))
+        )
 
         vm.register(results)
 
-        success.assertReceivedOnNext(results)
+        success.assertReceivedOnNext(expected)
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()
@@ -78,20 +68,23 @@ class RegisterTimeReportViewModelTest {
 
     @Test
     fun register_withItems() {
-        val times = listOf(
-                TimeInterval.builder(1L).id(1L).build(),
-                TimeInterval.builder(1L).id(2L).build()
-        )
+        repository.add(timeInterval { })
+        repository.add(timeInterval { })
         val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem.with(times[0])),
-                TimeReportAdapterResult(0, 1, TimeReportItem.with(times[1]))
+                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval { id = 1 })),
+                TimeReportAdapterResult(0, 1, TimeReportItem.with(timeInterval { id = 2 }))
         )
-        `when`(useCase.execute(eq(times)))
-                .thenReturn(times)
+        val expected = results.map {
+            TimeReportAdapterResult(
+                    it.group,
+                    it.child,
+                    TimeReportItem(it.timeInterval.copy(isRegistered = true))
+            )
+        }
 
         vm.register(results)
 
-        success.assertReceivedOnNext(results.sorted().reversed())
+        success.assertReceivedOnNext(expected.asReversed())
         success.assertNoTerminalEvent()
         errors.assertNoValues()
         errors.assertNoTerminalEvent()
