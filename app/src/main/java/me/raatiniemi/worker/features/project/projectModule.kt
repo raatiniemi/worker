@@ -19,7 +19,6 @@ package me.raatiniemi.worker.features.project
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
@@ -27,11 +26,7 @@ import org.koin.dsl.module.module
 
 val projectModule = module {
     viewModel {
-        TimeReportViewModel(get(), GetTimeReport(get()))
-    }
-
-    single {
-        RegisterTimeReportViewModel(MarkRegisteredTime(get()))
+        TimeReportViewModel(get(), GetTimeReport(get()), MarkRegisteredTime(get()))
     }
 
     single {

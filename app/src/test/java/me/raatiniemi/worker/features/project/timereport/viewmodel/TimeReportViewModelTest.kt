@@ -19,12 +19,17 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
+import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
@@ -53,14 +58,19 @@ class TimeReportViewModelTest {
 
     private val keyValueStore = InMemoryKeyValueStore()
 
-    private lateinit var repository: TimeReportRepository
-    private lateinit var getTimeReport: GetTimeReport
+    private lateinit var timeReportRepository: TimeReportRepository
+    private lateinit var timeIntervalRepository: TimeIntervalRepository
 
     private fun setUpViewModel(timeIntervals: List<TimeInterval>): TimeReportViewModel {
-        repository = TimeReportInMemoryRepository(timeIntervals)
-        getTimeReport = GetTimeReport(repository)
+        timeReportRepository = TimeReportInMemoryRepository(timeIntervals)
+        timeIntervalRepository = TimeIntervalInMemoryRepository()
+        timeIntervals.forEach { timeIntervalRepository.add(it) }
 
-        return TimeReportViewModel(keyValueStore, getTimeReport)
+        return TimeReportViewModel(
+                keyValueStore,
+                GetTimeReport(timeReportRepository),
+                MarkRegisteredTime(timeIntervalRepository)
+        )
     }
 
     @Test
@@ -155,6 +165,51 @@ class TimeReportViewModelTest {
 
         vm.timeReport.observeForever {
             assertEquals(expected, it)
+        }
+    }
+
+    @Test
+    fun `register with item`() = runBlocking {
+        val vm = setUpViewModel(listOf(
+                timeInterval { }
+        ))
+        val timeInterval = timeInterval { id = 1 }
+        val results = listOf(
+                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval))
+        )
+        val expected = listOf(
+                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval.copy(isRegistered = true)))
+        )
+
+        vm.register(results)
+
+        vm.viewActions.observeForever {
+            assertEquals(TimeReportViewActions.UpdateRegistered(expected), it)
+        }
+    }
+
+    @Test
+    fun `register with items`() = runBlocking {
+        val vm = setUpViewModel(listOf(
+                timeInterval { },
+                timeInterval { }
+        ))
+        val results = listOf(
+                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval { id = 1 })),
+                TimeReportAdapterResult(0, 1, TimeReportItem.with(timeInterval { id = 2 }))
+        )
+        val expected = results.map {
+            TimeReportAdapterResult(
+                    it.group,
+                    it.child,
+                    TimeReportItem(it.timeInterval.copy(isRegistered = true))
+            )
+        }
+
+        vm.register(results)
+
+        vm.viewActions.observeForever {
+            assertEquals(TimeReportViewActions.UpdateRegistered(expected.asReversed()), it)
         }
     }
 }
