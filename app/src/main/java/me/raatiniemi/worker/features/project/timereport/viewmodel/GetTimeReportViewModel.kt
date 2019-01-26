@@ -24,23 +24,20 @@ import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.util.KeyValueStore
 
-class GetTimeReportViewModel internal constructor(private val getTimeReport: GetTimeReport) {
-    // TODO: Remove mutable state from ViewModel.
-    private var shouldHideRegisteredTime = false
+class GetTimeReportViewModel internal constructor(
+        private val keyValueStore: KeyValueStore,
+        private val getTimeReport: GetTimeReport
+) {
+    private val shouldHideRegisteredTime: Boolean
+        get() = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
 
     private val _timeReport = MutableLiveData<List<TimeReportGroup>>()
     val timeReport: LiveData<List<TimeReportGroup>> = _timeReport
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
-
-    fun hideRegisteredTime() {
-        shouldHideRegisteredTime = true
-    }
-
-    fun showRegisteredTime() {
-        shouldHideRegisteredTime = false
-    }
 
     suspend fun fetch(id: Long, offset: Int) = withContext(Dispatchers.IO) {
         try {

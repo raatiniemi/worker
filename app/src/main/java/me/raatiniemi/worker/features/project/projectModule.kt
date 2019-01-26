@@ -26,7 +26,7 @@ import org.koin.dsl.module.module
 
 val projectModule = module {
     single {
-        GetTimeReportViewModel(GetTimeReport(get()))
+        GetTimeReportViewModel(get(), GetTimeReport(get()))
     }
 
     single {

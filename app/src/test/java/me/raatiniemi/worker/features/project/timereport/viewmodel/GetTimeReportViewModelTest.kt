@@ -25,6 +25,8 @@ import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
+import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -49,6 +51,8 @@ class GetTimeReportViewModelTest {
         return calendar.time
     }
 
+    private val keyValueStore = InMemoryKeyValueStore()
+
     private lateinit var repository: TimeReportRepository
     private lateinit var getTimeReport: GetTimeReport
 
@@ -56,7 +60,7 @@ class GetTimeReportViewModelTest {
         repository = TimeReportInMemoryRepository(timeIntervals)
         getTimeReport = GetTimeReport(repository)
 
-        return GetTimeReportViewModel(getTimeReport)
+        return GetTimeReportViewModel(keyValueStore, getTimeReport)
     }
 
     @Test
@@ -79,7 +83,7 @@ class GetTimeReportViewModelTest {
                     isRegistered = true
                 }
         ))
-        vm.hideRegisteredTime()
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME.rawValue, true)
 
         vm.fetch(1, 0)
 

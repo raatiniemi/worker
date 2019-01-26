@@ -193,10 +193,6 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         }
         recyclerViewExpandableItemManager.attachRecyclerView(rvTimeReport)
 
-        if (keyValueStore.hideRegisteredTime()) {
-            getTimeReportViewModel.hideRegisteredTime()
-        }
-
         observeViewModel()
         registerTimeReportViewModel.success()
                 .compose(bindToLifecycle())
@@ -283,12 +279,6 @@ class TimeReportFragment : RxFragment(), SelectionListener {
     }
 
     fun refresh() {
-        if (keyValueStore.hideRegisteredTime()) {
-            getTimeReportViewModel.hideRegisteredTime()
-        } else {
-            getTimeReportViewModel.showRegisteredTime()
-        }
-
         // Clear the items from the list and start loading from the beginning...
         timeReportAdapter.clear()
         loadTimeReportViaViewModel(offset = 0)
