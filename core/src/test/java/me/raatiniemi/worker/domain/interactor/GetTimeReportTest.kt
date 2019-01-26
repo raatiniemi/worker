@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -38,34 +39,40 @@ class GetTimeReportTest {
         return calendar.time
     }
 
+    private fun buildUseCase(timeIntervals: List<TimeInterval>): GetTimeReport {
+        val repository = TimeReportInMemoryRepository(timeIntervals)
+
+        return GetTimeReport(repository)
+    }
+
     @Test
     fun execute_hideRegisteredTime() {
-        val repository = TimeReportInMemoryRepository(emptyList())
-        val useCase = GetTimeReport(repository)
+        val expected = emptyMap<Date, TimeReportItem>()
+        val useCase = buildUseCase(emptyList())
 
         val actual = useCase.execute(1, 0, true)
 
-        assertEquals(emptyMap<Date, TimeReportItem>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun execute_withSortedDatesHidingRegisteredTime() {
-        val timeInterval = TimeInterval.builder(1)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(10)
-                .build()
-        val timeIntervals = listOf(
-                timeInterval,
-                TimeInterval.builder(1)
-                        .id(2)
-                        .startInMilliseconds(11)
-                        .stopInMilliseconds(30)
-                        .register()
-                        .build()
+        val timeInterval = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
+        val useCase = buildUseCase(
+                listOf(
+                        timeInterval,
+                        timeInterval {
+                            id = 2
+                            startInMilliseconds = 11
+                            stopInMilliseconds = 30
+                            isRegistered = true
+                        }
+                )
         )
-        val repository = TimeReportInMemoryRepository(timeIntervals)
-        val useCase = GetTimeReport(repository)
         val expected = mapOf(
                 resetToStartOfDay(timeInterval.startInMilliseconds) to sortedSetOf(
                         TimeReportItem(timeInterval)
@@ -79,31 +86,30 @@ class GetTimeReportTest {
 
     @Test
     fun execute_withRegisteredTime() {
-        val repository = TimeReportInMemoryRepository(emptyList())
-        val useCase = GetTimeReport(repository)
+        val expected = emptyMap<Date, TimeReportItem>()
+        val useCase = buildUseCase(emptyList())
 
         val actual = useCase.execute(1, 0, false)
 
-        assertEquals(emptyMap<Date, TimeReportItem>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun execute_withSortedDatesWithRegisteredTime() {
         val timeIntervals = listOf(
-                TimeInterval.builder(1)
-                        .id(1)
-                        .startInMilliseconds(1)
-                        .stopInMilliseconds(10)
-                        .register()
-                        .build(),
-                TimeInterval.builder(1)
-                        .id(2)
-                        .startInMilliseconds(11)
-                        .stopInMilliseconds(30)
-                        .build()
+                timeInterval {
+                    id = 1
+                    startInMilliseconds = 1
+                    stopInMilliseconds = 10
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 2
+                    startInMilliseconds = 11
+                    stopInMilliseconds = 30
+                }
         )
-        val repository = TimeReportInMemoryRepository(timeIntervals)
-        val useCase = GetTimeReport(repository)
+        val useCase = buildUseCase(timeIntervals)
         val expected = mapOf(
                 resetToStartOfDay(1) to timeIntervals
                         .map { TimeReportItem(it) }
