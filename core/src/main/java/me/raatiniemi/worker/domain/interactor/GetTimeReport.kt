@@ -26,7 +26,7 @@ import java.util.*
  * Use case for getting segment from project time report.
  */
 class GetTimeReport(private val repository: TimeReportRepository) {
-    fun execute(projectId: Long, offset: Int, hideRegisteredTime: Boolean)
+    operator fun invoke(projectId: Long, offset: Int, hideRegisteredTime: Boolean)
             : SortedMap<Date, SortedSet<TimeReportItem>> {
         val pageRequest = PageRequest.withOffset(offset)
 

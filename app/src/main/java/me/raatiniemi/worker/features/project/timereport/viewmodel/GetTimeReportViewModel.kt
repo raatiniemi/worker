@@ -23,7 +23,7 @@ import me.raatiniemi.worker.util.RxUtil.redirectErrors
 import rx.Observable
 import rx.subjects.PublishSubject
 
-class GetTimeReportViewModel internal constructor(private val useCase: GetTimeReport) {
+class GetTimeReportViewModel internal constructor(private val getTimeReport: GetTimeReport) {
     // TODO: Remove mutable state from ViewModel.
     private var shouldHideRegisteredTime = false
     private val fetch = PublishSubject.create<Request>()
@@ -42,7 +42,7 @@ class GetTimeReportViewModel internal constructor(private val useCase: GetTimeRe
     private fun executeUseCase(request: Request): Observable<TimeReportGroup> {
         return Observable.defer<TimeReportGroup> {
             try {
-                val items = useCase.execute(request.id, request.offset, shouldHideRegisteredTime)
+                val items = getTimeReport(request.id, request.offset, shouldHideRegisteredTime)
                         .entries
                         .map { TimeReportGroup.build(it.key, it.value) }
 

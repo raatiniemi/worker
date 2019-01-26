@@ -39,7 +39,7 @@ class GetTimeReportTest {
         return calendar.time
     }
 
-    private fun buildUseCase(timeIntervals: List<TimeInterval>): GetTimeReport {
+    private fun buildGetTimeReport(timeIntervals: List<TimeInterval>): GetTimeReport {
         val repository = TimeReportInMemoryRepository(timeIntervals)
 
         return GetTimeReport(repository)
@@ -48,9 +48,9 @@ class GetTimeReportTest {
     @Test
     fun execute_hideRegisteredTime() {
         val expected = emptyMap<Date, TimeReportItem>()
-        val useCase = buildUseCase(emptyList())
+        val getTimeReport = buildGetTimeReport(emptyList())
 
-        val actual = useCase.execute(1, 0, true)
+        val actual = getTimeReport(1, 0, true)
 
         assertEquals(expected, actual)
     }
@@ -62,7 +62,7 @@ class GetTimeReportTest {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val useCase = buildUseCase(
+        val getTimeReport = buildGetTimeReport(
                 listOf(
                         timeInterval,
                         timeInterval {
@@ -79,7 +79,7 @@ class GetTimeReportTest {
                 )
         )
 
-        val actual = useCase.execute(1, 0, true)
+        val actual = getTimeReport(1, 0, true)
 
         assertEquals(expected, actual)
     }
@@ -87,9 +87,9 @@ class GetTimeReportTest {
     @Test
     fun execute_withRegisteredTime() {
         val expected = emptyMap<Date, TimeReportItem>()
-        val useCase = buildUseCase(emptyList())
+        val getTimeReport = buildGetTimeReport(emptyList())
 
-        val actual = useCase.execute(1, 0, false)
+        val actual = getTimeReport(1, 0, false)
 
         assertEquals(expected, actual)
     }
@@ -109,14 +109,14 @@ class GetTimeReportTest {
                     stopInMilliseconds = 30
                 }
         )
-        val useCase = buildUseCase(timeIntervals)
+        val getTimeReport = buildGetTimeReport(timeIntervals)
         val expected = mapOf(
                 resetToStartOfDay(1) to timeIntervals
                         .map { TimeReportItem(it) }
                         .toSortedSet()
         )
 
-        val actual = useCase.execute(1, 0, false)
+        val actual = getTimeReport(1, 0, false)
 
         assertEquals(expected, actual)
     }
