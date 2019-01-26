@@ -28,7 +28,7 @@ class RemoveTime(private val repository: TimeIntervalRepository) {
      *
      * @param time Time to remove.
      */
-    fun execute(time: TimeInterval) {
+    operator fun invoke(time: TimeInterval) {
         time.id ?: return
 
         repository.remove(time.id)
@@ -39,7 +39,7 @@ class RemoveTime(private val repository: TimeIntervalRepository) {
      *
      * @param items Items to remove.
      */
-    fun execute(items: List<TimeInterval>) {
+    operator fun invoke(items: List<TimeInterval>) {
         repository.remove(items)
     }
 }

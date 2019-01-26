@@ -23,13 +23,13 @@ import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterR
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
-class RemoveTimeReportViewModel internal constructor(private val useCase: RemoveTime) {
+class RemoveTimeReportViewModel internal constructor(private val removeTime: RemoveTime) {
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
     suspend fun remove(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
         try {
             val timeInterval = results.map { it.timeInterval }.toList()
-            useCase.execute(timeInterval)
+            removeTime(timeInterval)
 
             viewActions.postValue(TimeReportViewActions.RemoveRegistered(results.sorted().reversed()))
         } catch (e: Exception) {

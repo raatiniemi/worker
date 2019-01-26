@@ -29,12 +29,12 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class RemoveTimeTest {
     private lateinit var repository: TimeIntervalRepository
-    private lateinit var useCase: RemoveTime
+    private lateinit var removeTime: RemoveTime
 
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        useCase = RemoveTime(repository)
+        removeTime = RemoveTime(repository)
     }
 
     @Test
@@ -46,7 +46,7 @@ class RemoveTimeTest {
                 .build()
         repository.add(timeInterval)
 
-        useCase.execute(timeInterval)
+        removeTime(timeInterval)
 
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(emptyList<TimeInterval>(), actual)
@@ -61,7 +61,7 @@ class RemoveTimeTest {
                 .build()
         repository.add(timeInterval)
 
-        useCase.execute(listOf(timeInterval))
+        removeTime(listOf(timeInterval))
 
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(emptyList<TimeInterval>(), actual)
