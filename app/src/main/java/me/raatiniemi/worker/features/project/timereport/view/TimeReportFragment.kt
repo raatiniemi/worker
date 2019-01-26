@@ -21,7 +21,6 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
@@ -43,7 +42,6 @@ import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 import me.raatiniemi.worker.features.shared.view.fragment.RxFragment
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.NullUtil.isNull
-import me.raatiniemi.worker.util.RxUtil.applySchedulersWithBackpressureBuffer
 import me.raatiniemi.worker.util.SelectionListener
 import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_FRACTION
 import org.greenrobot.eventbus.EventBus
@@ -105,7 +103,9 @@ class TimeReportFragment : RxFragment(), SelectionListener {
                     .filter { RxAlertDialog.isPositive(it) }
                     .subscribe(
                             {
-                                removeTimeReportViewModel.remove(timeReportAdapter.selectedItems)
+                                GlobalScope.launch {
+                                    removeTimeReportViewModel.remove(timeReportAdapter.selectedItems)
+                                }
 
                                 actionMode.finish()
                             },
@@ -200,17 +200,6 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         recyclerViewExpandableItemManager.attachRecyclerView(rvTimeReport)
 
         observeViewModel()
-        removeTimeReportViewModel.success()
-                .compose(bindToLifecycle())
-                .compose(applySchedulersWithBackpressureBuffer())
-                .subscribe(
-                        { timeReportAdapter.remove(it) },
-                        { Timber.e(it) }
-                )
-        removeTimeReportViewModel.errors()
-                .compose(bindToLifecycle())
-                .subscribe { showDeleteErrorMessage() }
-
         loadTimeReportViaViewModel(offset = 0)
     }
 
@@ -246,6 +235,15 @@ class TimeReportFragment : RxFragment(), SelectionListener {
                 is ViewAction -> it.action(requireActivity())
             }
         })
+
+        removeTimeReportViewModel.viewActions.observeAndConsume(this, Observer {
+            when (it) {
+                is TimeReportViewActions.RemoveRegistered -> {
+                    timeReportAdapter.remove(it.results)
+                }
+                is ViewAction -> it.action(requireActivity())
+            }
+        })
     }
 
     private fun loadTimeReportViaViewModel(offset: Int) {
@@ -259,15 +257,6 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         super.onDestroy()
 
         eventBus.unregister(this)
-    }
-
-    private fun showDeleteErrorMessage() {
-        val snackBar = Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                R.string.error_message_delete_time_report,
-                Snackbar.LENGTH_SHORT
-        )
-        snackBar.show()
     }
 
     private fun finishLoading() {

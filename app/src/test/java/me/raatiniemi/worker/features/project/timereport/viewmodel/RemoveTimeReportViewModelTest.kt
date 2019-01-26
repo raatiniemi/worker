@@ -16,76 +16,76 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
-import me.raatiniemi.worker.domain.exception.DomainException
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.RemoveTime
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
+import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mockito.*
-import rx.observers.TestSubscriber
 
 @RunWith(JUnit4::class)
 class RemoveTimeReportViewModelTest {
-    private val useCase = mock(RemoveTime::class.java)
-    private val vm = RemoveTimeReportViewModel(useCase)
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
 
-    private val success = TestSubscriber<TimeReportAdapterResult>()
-    private val errors = TestSubscriber<Throwable>()
+    private val repository = TimeIntervalInMemoryRepository()
+
+    private lateinit var removeTime: RemoveTime
+    private lateinit var vm: RemoveTimeReportViewModel
 
     @Before
     fun setUp() {
-        vm.success().subscribe(success)
-        vm.errors().subscribe(errors)
+        removeTime = RemoveTime(repository)
+        vm = RemoveTimeReportViewModel(removeTime)
     }
 
     @Test
-    fun remove_withError() {
-        val timeInterval = TimeInterval.builder(1L).build()
-        val item = TimeReportItem.with(timeInterval)
-        val results = listOf(TimeReportAdapterResult(0, 0, item))
-        `when`(useCase.execute(eq(listOf(timeInterval))))
-                .thenThrow(DomainException::class.java)
-
-        vm.remove(results)
-
-        success.assertNoValues()
-        success.assertNoTerminalEvent()
-        errors.assertValueCount(1)
-        errors.assertNoTerminalEvent()
-    }
-
-    @Test
-    fun remove_withSingleItem() {
-        val timeInterval = TimeInterval.builder(1L).build()
-        val results = listOf(TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval)))
-
-        vm.remove(results)
-
-        verify(useCase).execute(eq(listOf(timeInterval)))
-        success.assertReceivedOnNext(results)
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
-    }
-
-    @Test
-    fun remove_withMultipleItems() {
-        val timeInterval = TimeInterval.builder(1L).build()
+    fun `remove with single item`() = runBlocking {
+        val expected = emptyList<TimeInterval>()
+        val project = Project(1, "Project name #1")
+        repository.add(timeInterval { })
+        val timeInterval = timeInterval { id = 1 }
         val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval)),
-                TimeReportAdapterResult(0, 1, TimeReportItem.with(timeInterval))
+                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval))
         )
 
         vm.remove(results)
 
-        verify(useCase).execute(eq(listOf(timeInterval, timeInterval)))
-        success.assertReceivedOnNext(results.reversed())
-        success.assertNoTerminalEvent()
-        errors.assertNoValues()
-        errors.assertNoTerminalEvent()
+        val actual = repository.findAll(project, 0)
+        assertEquals(expected, actual)
+        vm.viewActions.observeForever {
+            assertEquals(TimeReportViewActions.RemoveRegistered(results), it)
+        }
+    }
+
+    @Test
+    fun `remove with multiple items`() = runBlocking {
+        val expected = emptyList<TimeInterval>()
+        val project = Project(1, "Project name #1")
+        repository.add(timeInterval { })
+        repository.add(timeInterval { })
+        val results = listOf(
+                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval { id = 1 })),
+                TimeReportAdapterResult(0, 1, TimeReportItem(timeInterval { id = 2 }))
+        )
+
+        vm.remove(results)
+
+        val actual = repository.findAll(project, 0)
+        assertEquals(expected, actual)
+        vm.viewActions.observeForever {
+            assertEquals(TimeReportViewActions.RemoveRegistered(results.reversed()), it)
+        }
     }
 }

@@ -16,49 +16,24 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.util.RxUtil.hideErrors
-import me.raatiniemi.worker.util.RxUtil.redirectErrors
-import rx.Observable
-import rx.subjects.PublishSubject
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 
 class RemoveTimeReportViewModel internal constructor(private val useCase: RemoveTime) {
-    private val remove = PublishSubject.create<List<TimeReportAdapterResult>>()
+    val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
-    private val success = PublishSubject.create<TimeReportAdapterResult>()
-    private val errors = PublishSubject.create<Throwable>()
+    suspend fun remove(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
+        try {
+            val timeInterval = results.map { it.timeInterval }.toList()
+            useCase.execute(timeInterval)
 
-    init {
-        remove.switchMap {
-            executeUseCase(it)
-                    .compose(redirectErrors(errors))
-                    .compose(hideErrors())
-        }.subscribe(success)
-    }
-
-    private fun executeUseCase(results: List<TimeReportAdapterResult>): Observable<TimeReportAdapterResult> {
-        return Observable.defer<TimeReportAdapterResult> {
-            try {
-                val times = results.map { it.timeInterval }.toList()
-                useCase.execute(times)
-
-                Observable.from(results.sorted().reversed())
-            } catch (e: Exception) {
-                Observable.error(e)
-            }
+            viewActions.postValue(TimeReportViewActions.RemoveRegistered(results.sorted().reversed()))
+        } catch (e: Exception) {
+            viewActions.postValue(TimeReportViewActions.ShowUnableToDeleteErrorMessage)
         }
-    }
-
-    fun remove(results: List<TimeReportAdapterResult>) {
-        remove.onNext(results)
-    }
-
-    fun success(): Observable<TimeReportAdapterResult> {
-        return success
-    }
-
-    fun errors(): Observable<Throwable> {
-        return errors
     }
 }

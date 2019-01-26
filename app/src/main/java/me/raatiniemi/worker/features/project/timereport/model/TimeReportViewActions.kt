@@ -45,4 +45,17 @@ sealed class TimeReportViewActions {
             snackBar.show()
         }
     }
+
+    data class RemoveRegistered(val results: List<TimeReportAdapterResult>) : TimeReportViewActions()
+
+    object ShowUnableToDeleteErrorMessage : TimeReportViewActions(), ViewAction {
+        override fun action(activity: FragmentActivity) {
+            val snackBar = Snackbar.make(
+                    activity.findViewById(android.R.id.content),
+                    R.string.error_message_delete_time_report,
+                    Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
+        }
+    }
 }
