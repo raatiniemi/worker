@@ -24,8 +24,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat
@@ -101,9 +103,11 @@ class TimeReportFragment : RxFragment(), SelectionListener {
                             {
                                 GlobalScope.launch {
                                     vm.remove(timeReportAdapter.selectedItems)
-                                }
 
-                                actionMode.finish()
+                                    withContext(Dispatchers.Main) {
+                                        actionMode.finish()
+                                    }
+                                }
                             },
                             { Timber.w(it) }
                     )
@@ -113,9 +117,11 @@ class TimeReportFragment : RxFragment(), SelectionListener {
             // TODO: Replace use of GlobalScope in favor of CoroutineScope context.
             GlobalScope.launch {
                 vm.register(timeReportAdapter.selectedItems)
-            }
 
-            actionMode.finish()
+                withContext(Dispatchers.Main) {
+                    actionMode.finish()
+                }
+            }
         }
     }
 
