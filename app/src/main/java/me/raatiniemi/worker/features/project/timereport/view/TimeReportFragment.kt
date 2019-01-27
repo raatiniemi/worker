@@ -97,7 +97,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         }
 
         private fun confirmRemoveSelectedItems(actionMode: ActionMode) {
-            DeleteTimeDialog.show(requireActivity())
+            ConfirmDeleteTimeIntervalDialog.show(requireActivity())
                     .filter { RxAlertDialog.isPositive(it) }
                     .subscribe(
                             {

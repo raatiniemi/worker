@@ -21,7 +21,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 import rx.Observable
 
-internal object DeleteTimeDialog {
+internal object ConfirmDeleteTimeIntervalDialog {
     private const val TITLE = R.string.confirm_delete_time_title
     private const val MESSAGE = R.string.confirm_delete_time_message
 
