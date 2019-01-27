@@ -32,7 +32,6 @@ import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
 import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
@@ -54,7 +53,6 @@ class TimeReportFragment : RxFragment(), SelectionListener {
     private val keyValueStore: KeyValueStore by inject()
 
     private val vm: TimeReportViewModel by viewModel()
-    private val removeTimeReportViewModel: RemoveTimeReportViewModel by inject()
 
     private val eventBus = EventBus.getDefault()
 
@@ -102,7 +100,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
                     .subscribe(
                             {
                                 GlobalScope.launch {
-                                    removeTimeReportViewModel.remove(timeReportAdapter.selectedItems)
+                                    vm.remove(timeReportAdapter.selectedItems)
                                 }
 
                                 actionMode.finish()
@@ -224,12 +222,6 @@ class TimeReportFragment : RxFragment(), SelectionListener {
 
                     timeReportAdapter.set(it.results)
                 }
-                is ViewAction -> it.action(requireActivity())
-            }
-        })
-
-        removeTimeReportViewModel.viewActions.observeAndConsume(this, Observer {
-            when (it) {
                 is TimeReportViewActions.RemoveRegistered -> {
                     timeReportAdapter.remove(it.results)
                 }

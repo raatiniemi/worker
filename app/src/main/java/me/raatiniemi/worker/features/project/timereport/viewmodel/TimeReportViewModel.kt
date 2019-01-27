@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
+import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
@@ -35,7 +36,8 @@ import me.raatiniemi.worker.util.KeyValueStore
 class TimeReportViewModel internal constructor(
         private val keyValueStore: KeyValueStore,
         private val getTimeReport: GetTimeReport,
-        private val markRegisteredTime: MarkRegisteredTime
+        private val markRegisteredTime: MarkRegisteredTime,
+        private val removeTime: RemoveTime
 ) : ViewModel() {
     private val shouldHideRegisteredTime: Boolean
         get() = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
@@ -82,5 +84,16 @@ class TimeReportViewModel internal constructor(
                     TimeReportAdapterResult(it.group, it.child, item)
                 }
                 .first()
+    }
+
+    suspend fun remove(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
+        try {
+            val timeInterval = results.map { it.timeInterval }.toList()
+            removeTime(timeInterval)
+
+            viewActions.postValue(TimeReportViewActions.RemoveRegistered(results.sorted().reversed()))
+        } catch (e: Exception) {
+            viewActions.postValue(TimeReportViewActions.ShowUnableToDeleteErrorMessage)
+        }
     }
 }

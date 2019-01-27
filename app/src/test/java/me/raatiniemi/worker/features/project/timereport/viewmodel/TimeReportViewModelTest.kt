@@ -20,6 +20,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
+import me.raatiniemi.worker.domain.interactor.RemoveTime
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
@@ -69,7 +71,8 @@ class TimeReportViewModelTest {
         return TimeReportViewModel(
                 keyValueStore,
                 GetTimeReport(timeReportRepository),
-                MarkRegisteredTime(timeIntervalRepository)
+                MarkRegisteredTime(timeIntervalRepository),
+                RemoveTime(timeIntervalRepository)
         )
     }
 
@@ -210,6 +213,49 @@ class TimeReportViewModelTest {
 
         vm.viewActions.observeForever {
             assertEquals(TimeReportViewActions.UpdateRegistered(expected.asReversed()), it)
+        }
+    }
+
+    @Test
+    fun `remove with single item`() = runBlocking {
+        val expected = emptyList<TimeInterval>()
+        val project = Project(1, "Project name #1")
+        val vm = setUpViewModel(listOf(
+                timeInterval { }
+        ))
+        val timeInterval = timeInterval { id = 1 }
+        val results = listOf(
+                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval))
+        )
+
+        vm.remove(results)
+
+        val actual = timeIntervalRepository.findAll(project, 0)
+        assertEquals(expected, actual)
+        vm.viewActions.observeForever {
+            assertEquals(TimeReportViewActions.RemoveRegistered(results), it)
+        }
+    }
+
+    @Test
+    fun `remove with multiple items`() = runBlocking {
+        val expected = emptyList<TimeInterval>()
+        val project = Project(1, "Project name #1")
+        val vm = setUpViewModel(listOf(
+                timeInterval { },
+                timeInterval { }
+        ))
+        val results = listOf(
+                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval { id = 1 })),
+                TimeReportAdapterResult(0, 1, TimeReportItem(timeInterval { id = 2 }))
+        )
+
+        vm.remove(results)
+
+        val actual = timeIntervalRepository.findAll(project, 0)
+        assertEquals(expected, actual)
+        vm.viewActions.observeForever {
+            assertEquals(TimeReportViewActions.RemoveRegistered(results.reversed()), it)
         }
     }
 }
