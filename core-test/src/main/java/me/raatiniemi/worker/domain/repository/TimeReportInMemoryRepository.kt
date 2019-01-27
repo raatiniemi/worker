@@ -23,6 +23,16 @@ import me.raatiniemi.worker.domain.model.TimeReportItem
 import java.util.*
 
 class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) : TimeReportRepository {
+    override fun count(projectId: Long) = timeIntervals
+            .filter { it.projectId == projectId }
+            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+            .count()
+
+    override fun countNotRegistered(projectId: Long) = timeIntervals
+            .filter { it.projectId == projectId && !it.isRegistered }
+            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+            .count()
+
     private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMilliseconds

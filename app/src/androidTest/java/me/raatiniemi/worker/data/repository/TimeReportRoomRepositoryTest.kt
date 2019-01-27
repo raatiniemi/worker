@@ -25,8 +25,8 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
-import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
+import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
@@ -70,6 +70,114 @@ class TimeReportRoomRepositoryTest {
     @After
     fun tearDown() {
         database.close()
+    }
+
+    @Test
+    fun count_withoutTimeIntervals() {
+        val expected = 0
+
+        val actual = repository.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeInterval() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = repository.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeIntervalsOnSameDay() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = repository.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeIntervalsOnDifferentDays() {
+        val expected = 2
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity { startInMilliseconds = Date().time })
+
+        val actual = repository.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withoutTimeIntervals() {
+        val expected = 0
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withRegisteredTimeInterval() {
+        val expected = 0
+        timeIntervals.add(timeIntervalEntity { registered = true })
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeInterval() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeIntervalsOnSameDay() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withRegisteredTimeIntervalOnDifferentDays() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity {
+            startInMilliseconds = Date().time
+            registered = true
+        })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeIntervalsOnDifferentDays() {
+        val expected = 2
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity {
+            startInMilliseconds = Date().time
+        })
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
     }
 
     private fun timeReportItemSet(timeIntervals: List<TimeInterval>): SortedSet<TimeReportItem> {

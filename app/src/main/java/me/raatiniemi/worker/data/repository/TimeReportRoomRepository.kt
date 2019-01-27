@@ -30,6 +30,10 @@ internal class TimeReportRoomRepository(
         private val timeReport: TimeReportDao,
         private val timeIntervals: TimeIntervalDao
 ) : TimeReportRepository {
+    override fun count(projectId: Long) = timeReport.count(projectId)
+
+    override fun countNotRegistered(projectId: Long) = timeReport.countNotRegistered(projectId)
+
     private fun transform(timeReportDay: TimeReportDay): Pair<Date, Set<TimeReportItem>> {
         val map = timeReportDay.timeIntervalIds
                 .mapNotNull { timeIntervals.find(it) }

@@ -21,6 +21,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportDaoTest : BaseDaoTest() {
@@ -29,6 +30,106 @@ class TimeReportDaoTest : BaseDaoTest() {
         super.setUp()
 
         projects.add(projectEntity())
+    }
+
+    @Test
+    fun count_withoutTimeIntervals() {
+        val expected = 0
+
+        val actual = timeReport.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeInterval() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = timeReport.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeIntervalsOnSameDay() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = timeReport.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeIntervalsOnDifferentDays() {
+        val expected = 2
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity {
+            startInMilliseconds = Date().time
+        })
+
+        val actual = timeReport.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withoutTimeIntervals() {
+        val expected = 0
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeInterval() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeIntervalsOnSameDay() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withRegisteredTimeIntervalOnDifferentDays() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity {
+            startInMilliseconds = Date().time
+            registered = true
+        })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeIntervalsOnDifferentDays() {
+        val expected = 2
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity {
+            startInMilliseconds = Date().time
+        })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
     }
 
     @Test

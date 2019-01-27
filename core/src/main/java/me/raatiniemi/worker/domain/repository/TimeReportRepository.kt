@@ -20,6 +20,10 @@ import me.raatiniemi.worker.domain.model.TimeReportItem
 import java.util.*
 
 interface TimeReportRepository {
+    fun count(projectId: Long): Int
+
+    fun countNotRegistered(projectId: Long): Int
+
     /**
      * Get time report segment for a project.
      *

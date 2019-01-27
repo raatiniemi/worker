@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.timeInterval
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,6 +37,159 @@ class TimeReportInMemoryRepositoryTest {
         calendar.set(Calendar.MILLISECOND, 0)
 
         return calendar.time
+    }
+
+    @Test
+    fun `count without time intervals`() {
+        val expected = 0
+        val repository = TimeReportInMemoryRepository(emptyList())
+
+        val actual = repository.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count with time interval`() {
+        val expected = 1
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval { id = 1 }
+                )
+        )
+
+        val actual = repository.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count with time intervals on same day`() {
+        val expected = 1
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval { id = 1 },
+                        timeInterval { id = 2 }
+                )
+        )
+
+        val actual = repository.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count with time intervals on different days`() {
+        val expected = 2
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval {
+                            id = 1
+                            isRegistered = true
+                        },
+                        timeInterval {
+                            id = 2
+                            startInMilliseconds = Date().time
+                        }
+                )
+        )
+
+        val actual = repository.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered without time intervals`() {
+        val expected = 0
+        val repository = TimeReportInMemoryRepository(emptyList())
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered with registered time interval`() {
+        val expected = 0
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval {
+                            id = 1
+                            isRegistered = true
+                        }
+                )
+        )
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered with time interval`() {
+        val expected = 1
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval { id = 1 }
+                )
+        )
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered with time intervals on same day`() {
+        val expected = 1
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval { id = 1 },
+                        timeInterval { id = 2 }
+                )
+        )
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered with registered time interval on different days`() {
+        val expected = 1
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval { id = 1 },
+                        timeInterval {
+                            id = 2
+                            startInMilliseconds = Date().time
+                            isRegistered = true
+                        }
+                )
+        )
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count not registered with time intervals on different days`() {
+        val expected = 2
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval { id = 1 },
+                        timeInterval {
+                            id = 2
+                            startInMilliseconds = Date().time
+                        }
+                )
+        )
+
+        val actual = repository.countNotRegistered(1)
+
+        assertEquals(expected, actual)
     }
 
     @Test

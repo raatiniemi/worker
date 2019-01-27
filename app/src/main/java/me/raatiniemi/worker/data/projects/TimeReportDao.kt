@@ -21,6 +21,21 @@ import androidx.room.Query
 
 @Dao
 internal interface TimeReportDao {
+    @Query("""SELECT COUNT(*)
+        FROM (SELECT _id
+            FROM time_intervals
+            WHERE project_id = :projectId
+            GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch'))""")
+    fun count(projectId: Long): Int
+
+    @Query("""SELECT COUNT(*)
+        FROM (SELECT _id
+            FROM time_intervals
+            WHERE project_id = :projectId
+                AND registered = 0
+            GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch'))""")
+    fun countNotRegistered(projectId: Long): Int
+
     @Query("""SELECT
         MIN(start_in_milliseconds) AS dateInMilliseconds,
         GROUP_CONCAT(_id) as ids
