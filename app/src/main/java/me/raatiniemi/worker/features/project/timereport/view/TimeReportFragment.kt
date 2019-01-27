@@ -37,8 +37,8 @@ import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportView
 import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
+import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.NullUtil.isNull
 import me.raatiniemi.worker.util.SelectionListener
@@ -96,20 +96,16 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         }
 
         private fun confirmRemoveSelectedItems(actionMode: ActionMode) {
-            ConfirmDeleteTimeIntervalDialog.show(requireActivity())
-                    .filter { RxAlertDialog.isPositive(it) }
-                    .subscribe(
-                            {
-                                launch {
-                                    vm.remove(timeReportAdapter.selectedItems)
+            launch {
+                val confirmAction = ConfirmDeleteTimeIntervalDialog.show(requireContext())
+                if (ConfirmAction.YES == confirmAction) {
+                    vm.remove(timeReportAdapter.selectedItems)
+                }
 
-                                    withContext(Dispatchers.Main) {
-                                        actionMode.finish()
-                                    }
-                                }
-                            },
-                            { Timber.w(it) }
-                    )
+                withContext(Dispatchers.Main) {
+                    actionMode.finish()
+                }
+            }
         }
 
         private fun toggleRegisterSelectedItems(actionMode: ActionMode) = launch {
