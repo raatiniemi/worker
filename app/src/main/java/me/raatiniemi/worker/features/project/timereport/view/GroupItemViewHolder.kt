@@ -14,26 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timereport.model;
+package me.raatiniemi.worker.features.project.timereport.view
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder
+import me.raatiniemi.worker.R
 
-import java.util.Date;
-import java.util.TreeSet;
-
-import static junit.framework.Assert.assertEquals;
-
-@RunWith(JUnit4.class)
-public class TimeReportGroupTest {
-    @Test
-    public void getId() {
-        Date date = new Date();
-        long days = date.getTime() / 1000 / 60 / 60 / 24;
-
-        TimeReportGroup groupItem = TimeReportGroup.Companion.build(date, new TreeSet<>());
-
-        assertEquals(days, groupItem.getId());
-    }
+internal class GroupItemViewHolder(view: View) : AbstractExpandableItemViewHolder(view) {
+    val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
+    val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
+    val summarize: AppCompatTextView = view.findViewById(R.id.tvSummary)
 }

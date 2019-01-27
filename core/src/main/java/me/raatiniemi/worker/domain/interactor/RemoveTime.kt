@@ -14,38 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor;
+package me.raatiniemi.worker.domain.interactor
 
-import java.util.List;
-
-import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
+import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 /**
  * Use case for removing registered time.
  */
-public class RemoveTime {
-    /**
-     * Time interval repository.
-     */
-    private final TimeIntervalRepository timeIntervalRepository;
-
-    /**
-     * Constructor.
-     *
-     * @param timeIntervalRepository Time interval repository.
-     */
-    public RemoveTime(TimeIntervalRepository timeIntervalRepository) {
-        this.timeIntervalRepository = timeIntervalRepository;
-    }
-
+class RemoveTime(private val repository: TimeIntervalRepository) {
     /**
      * Remove registered time.
      *
      * @param time Time to remove.
      */
-    public void execute(final TimeInterval time) {
-        timeIntervalRepository.remove(time.getId());
+    operator fun invoke(time: TimeInterval) {
+        time.id ?: return
+
+        repository.remove(time.id)
     }
 
     /**
@@ -53,7 +39,7 @@ public class RemoveTime {
      *
      * @param items Items to remove.
      */
-    public void execute(List<TimeInterval> items) {
-        timeIntervalRepository.remove(items);
+    operator fun invoke(items: List<TimeInterval>) {
+        repository.remove(items)
     }
 }

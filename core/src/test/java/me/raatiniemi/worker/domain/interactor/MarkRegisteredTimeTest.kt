@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -29,31 +29,43 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class MarkRegisteredTimeTest {
     private lateinit var repository: TimeIntervalRepository
-    private lateinit var useCase: MarkRegisteredTime
+    private lateinit var markRegisteredTime: MarkRegisteredTime
 
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        useCase = MarkRegisteredTime(repository)
+        markRegisteredTime = MarkRegisteredTime(repository)
     }
 
     @Test
     fun execute_withMultipleUnregisteredItems() {
         val timeIntervals = listOf(
-                TimeInterval.builder(1).id(1).build(),
-                TimeInterval.builder(1).id(2).build(),
-                TimeInterval.builder(1).id(3).build(),
-                TimeInterval.builder(1).id(4).build()
+                timeInterval { id = 1 },
+                timeInterval { id = 2 },
+                timeInterval { id = 3 },
+                timeInterval { id = 4 }
         )
         timeIntervals.forEach { repository.add(it) }
 
-        useCase.execute(timeIntervals)
+        markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-                TimeInterval.builder(1).id(1).register().build(),
-                TimeInterval.builder(1).id(2).register().build(),
-                TimeInterval.builder(1).id(3).register().build(),
-                TimeInterval.builder(1).id(4).register().build()
+                timeInterval {
+                    id = 1
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 2
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 3
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 4
+                    isRegistered = true
+                }
         )
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(expected, actual)
@@ -62,20 +74,32 @@ class MarkRegisteredTimeTest {
     @Test
     fun execute_withMultipleRegisteredItems() {
         val timeIntervals = listOf(
-                TimeInterval.builder(1).id(1).register().build(),
-                TimeInterval.builder(1).id(2).register().build(),
-                TimeInterval.builder(1).id(3).register().build(),
-                TimeInterval.builder(1).id(4).register().build()
+                timeInterval {
+                    id = 1
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 2
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 3
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 4
+                    isRegistered = true
+                }
         )
         timeIntervals.forEach { repository.add(it) }
 
-        useCase.execute(timeIntervals)
+        markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-                TimeInterval.builder(1).id(1).build(),
-                TimeInterval.builder(1).id(2).build(),
-                TimeInterval.builder(1).id(3).build(),
-                TimeInterval.builder(1).id(4).build()
+                timeInterval { id = 1 },
+                timeInterval { id = 2 },
+                timeInterval { id = 3 },
+                timeInterval { id = 4 }
         )
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(expected, actual)
@@ -84,20 +108,43 @@ class MarkRegisteredTimeTest {
     @Test
     fun execute_withMultipleItems() {
         val timeIntervals = listOf(
-                TimeInterval.builder(1).id(1).build(),
-                TimeInterval.builder(1).id(2).register().build(),
-                TimeInterval.builder(1).id(3).register().build(),
-                TimeInterval.builder(1).id(4).register().build()
+                timeInterval {
+                    id = 1
+                },
+                timeInterval {
+                    id = 2
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 3
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 4
+                    isRegistered = true
+                }
         )
         timeIntervals.forEach { repository.add(it) }
 
-        useCase.execute(timeIntervals)
+        markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-                TimeInterval.builder(1).id(1).register().build(),
-                TimeInterval.builder(1).id(2).register().build(),
-                TimeInterval.builder(1).id(3).register().build(),
-                TimeInterval.builder(1).id(4).register().build()
+                timeInterval {
+                    id = 1
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 2
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 3
+                    isRegistered = true
+                },
+                timeInterval {
+                    id = 4
+                    isRegistered = true
+                }
         )
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(expected, actual)

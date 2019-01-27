@@ -14,18 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project
+package me.raatiniemi.worker.features.project.timereport.view
 
-import me.raatiniemi.worker.features.project.timereport.viewmodel.GetTimeReportViewModel
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RegisterTimeReportViewModel
-import me.raatiniemi.worker.features.project.timereport.viewmodel.RemoveTimeReportViewModel
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import android.content.Context
+import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
-class ViewModels: KoinComponent {
-    val timeReport: GetTimeReportViewModel.ViewModel by inject()
+internal object ConfirmDeleteTimeIntervalDialog {
+    private const val TITLE = R.string.confirm_delete_time_title
+    private const val MESSAGE = R.string.confirm_delete_time_message
 
-    val registerTimeReport: RegisterTimeReportViewModel.ViewModel by inject()
-
-    val removeTimeReport: RemoveTimeReportViewModel.ViewModel by inject()
+    suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }

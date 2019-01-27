@@ -14,24 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timereport.view;
+package me.raatiniemi.worker.features.project.timereport.model
 
-import android.content.Context;
+import me.raatiniemi.worker.domain.model.TimeReportItem
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
+import java.util.*
 
-import androidx.annotation.NonNull;
-import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
-import rx.Observable;
+@RunWith(JUnit4::class)
+class TimeReportGroupTest {
+    @Test
+    fun getId() {
+        val date = Date()
+        val days = date.time / 1000 / 60 / 60 / 24
 
-final class DeleteTimeDialog {
-    private static final int TITLE = R.string.confirm_delete_time_title;
-    private static final int MESSAGE = R.string.confirm_delete_time_message;
+        val groupItem = TimeReportGroup.build(date, TreeSet<TimeReportItem>())
 
-    private DeleteTimeDialog() {
-    }
-
-    @NonNull
-    static Observable<Integer> show(@NonNull Context context) {
-        return RxAlertDialog.build(context, TITLE, MESSAGE);
+        assertEquals(days, groupItem.id)
     }
 }
