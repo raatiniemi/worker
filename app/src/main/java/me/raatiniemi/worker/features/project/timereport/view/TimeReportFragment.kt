@@ -25,7 +25,6 @@ import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDec
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.R
@@ -38,8 +37,8 @@ import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportView
 import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
+import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
-import me.raatiniemi.worker.features.shared.view.fragment.RxFragment
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.NullUtil.isNull
 import me.raatiniemi.worker.util.SelectionListener
@@ -51,7 +50,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class TimeReportFragment : RxFragment(), SelectionListener {
+class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
     private val keyValueStore: KeyValueStore by inject()
 
     private val vm: TimeReportViewModel by viewModel()
@@ -101,7 +100,7 @@ class TimeReportFragment : RxFragment(), SelectionListener {
                     .filter { RxAlertDialog.isPositive(it) }
                     .subscribe(
                             {
-                                GlobalScope.launch {
+                                launch {
                                     vm.remove(timeReportAdapter.selectedItems)
 
                                     withContext(Dispatchers.Main) {
@@ -113,14 +112,11 @@ class TimeReportFragment : RxFragment(), SelectionListener {
                     )
         }
 
-        private fun toggleRegisterSelectedItems(actionMode: ActionMode) {
-            // TODO: Replace use of GlobalScope in favor of CoroutineScope context.
-            GlobalScope.launch {
-                vm.register(timeReportAdapter.selectedItems)
+        private fun toggleRegisterSelectedItems(actionMode: ActionMode) = launch {
+            vm.register(timeReportAdapter.selectedItems)
 
-                withContext(Dispatchers.Main) {
-                    actionMode.finish()
-                }
+            withContext(Dispatchers.Main) {
+                actionMode.finish()
             }
         }
     }
@@ -236,11 +232,8 @@ class TimeReportFragment : RxFragment(), SelectionListener {
         })
     }
 
-    private fun loadTimeReportViaViewModel(offset: Int) {
-        // TODO: Replace use of GlobalScope in favor of CoroutineScope context.
-        GlobalScope.launch {
-            vm.fetch(projectId, offset)
-        }
+    private fun loadTimeReportViaViewModel(offset: Int) = launch {
+        vm.fetch(projectId, offset)
     }
 
     override fun onDestroy() {
