@@ -31,7 +31,7 @@ interface TimeReportRepository {
      * @param pageRequest Defines the page segment.
      * @return Project time report segment.
      */
-    fun getTimeReport(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>>
+    fun findAll(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>>
 
     /**
      * Get time report segment for a project, without registered entries.
@@ -40,5 +40,5 @@ interface TimeReportRepository {
      * @param pageRequest Defines the page segment.
      * @return Project time report segment.
      */
-    fun getTimeReportWithoutRegisteredEntries(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>>
+    fun findNotRegistered(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>>
 }

@@ -230,39 +230,39 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun findAllUnregistered_withoutTimeIntervals() {
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+    fun findNotRegistered_withoutTimeIntervals() {
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(emptyList<TimeReportDay>(), actual)
     }
 
     @Test
-    fun findAllUnregistered_withoutTimeIntervalForProject() {
+    fun findNotRegistered_withoutTimeIntervalForProject() {
         projects.add(projectEntity {
             id = 2
             name = "Name #2"
         })
         timeIntervals.add(timeIntervalEntity { projectId = 2 })
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(emptyList<TimeReportDay>(), actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeInterval() {
+    fun findNotRegistered_withTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
                 TimeReportDay(1, "1")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeIntervalOnSameDay() {
+    fun findNotRegistered_withTimeIntervalOnSameDay() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 10
@@ -272,13 +272,13 @@ class TimeReportDaoTest : BaseDaoTest() {
                 TimeReportDay(1, "1,2")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeIntervalOnDifferentDays() {
+    fun findNotRegistered_withTimeIntervalOnDifferentDays() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
@@ -289,13 +289,13 @@ class TimeReportDaoTest : BaseDaoTest() {
                 TimeReportDay(1, "1")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeIntervalWithOffset() {
+    fun findNotRegistered_withTimeIntervalWithOffset() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
@@ -305,13 +305,13 @@ class TimeReportDaoTest : BaseDaoTest() {
                 TimeReportDay(1, "1")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 1, 10)
+        val actual = timeReport.findNotRegistered(1, 1, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeIntervalWithMaxResult() {
+    fun findNotRegistered_withTimeIntervalWithMaxResult() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
@@ -321,13 +321,13 @@ class TimeReportDaoTest : BaseDaoTest() {
                 TimeReportDay(90000000, "2")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 1)
+        val actual = timeReport.findNotRegistered(1, 0, 1)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withRegisteredTimeInterval() {
+    fun findNotRegistered_withRegisteredTimeInterval() {
         timeIntervals.add(timeIntervalEntity { registered = true })
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
@@ -337,7 +337,7 @@ class TimeReportDaoTest : BaseDaoTest() {
                 TimeReportDay(90000000, "2")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }

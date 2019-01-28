@@ -31,9 +31,9 @@ class GetTimeReport(private val repository: TimeReportRepository) {
         val pageRequest = PageRequest.withOffset(offset)
 
         val entries = if (hideRegisteredTime) {
-            repository.getTimeReportWithoutRegisteredEntries(projectId, pageRequest)
+            repository.findNotRegistered(projectId, pageRequest)
         } else {
-            repository.getTimeReport(projectId, pageRequest)
+            repository.findAll(projectId, pageRequest)
         }
 
         return entries.mapValues { it.value.toSortedSet() }

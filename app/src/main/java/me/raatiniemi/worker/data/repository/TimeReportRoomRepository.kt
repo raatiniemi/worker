@@ -46,21 +46,15 @@ internal class TimeReportRoomRepository(
         )
     }
 
-    override fun getTimeReport(
-            projectId: Long,
-            pageRequest: PageRequest
-    ): Map<Date, Set<TimeReportItem>> {
+    override fun findAll(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>> {
         return timeReport.findAll(projectId, pageRequest.offset, pageRequest.maxResults)
                 .map { transform(it) }
                 .toMap()
                 .toSortedMap(TimeReportDateComparator())
     }
 
-    override fun getTimeReportWithoutRegisteredEntries(
-            projectId: Long,
-            pageRequest: PageRequest
-    ): Map<Date, Set<TimeReportItem>> {
-        return timeReport.findAllUnregistered(projectId, pageRequest.offset, pageRequest.maxResults)
+    override fun findNotRegistered(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>> {
+        return timeReport.findNotRegistered(projectId, pageRequest.offset, pageRequest.maxResults)
                 .map { transform(it) }
                 .toMap()
                 .toSortedMap(TimeReportDateComparator())

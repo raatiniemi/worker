@@ -55,5 +55,5 @@ internal interface TimeReportDao {
         GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch')
         ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
         LIMIT :offset, :maxResult""")
-    fun findAllUnregistered(projectId: Long, offset: Int, maxResult: Int): List<TimeReportDay>
+    fun findNotRegistered(projectId: Long, offset: Int, maxResult: Int): List<TimeReportDay>
 }
