@@ -196,7 +196,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `find all without time intervals`() {
         val repository = TimeReportInMemoryRepository(emptyList())
 
-        val actual = repository.findAll(1, PageRequest.withOffset(0))
+        val actual = repository.findAll(1, 0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
@@ -210,7 +210,7 @@ class TimeReportInMemoryRepositoryTest {
                 .build()
         val repository = TimeReportInMemoryRepository(listOf(timeInterval))
 
-        val actual = repository.findAll(1, PageRequest.withOffset(0))
+        val actual = repository.findAll(1, 0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
@@ -236,7 +236,7 @@ class TimeReportInMemoryRepositoryTest {
                         .toSortedSet(TimeReportItemComparator())
         )
 
-        val actual = repository.findAll(1, PageRequest.withOffset(0))
+        val actual = repository.findAll(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -260,7 +260,7 @@ class TimeReportInMemoryRepositoryTest {
                 resetToStartOfDay(ti2.startInMilliseconds) to setOf(TimeReportItem(ti2))
         )
 
-        val actual = repository.findAll(1, PageRequest.withOffset(0))
+        val actual = repository.findAll(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -269,7 +269,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered without time intervals`() {
         val repository = TimeReportInMemoryRepository(emptyList())
 
-        val actual = repository.findNotRegistered(1, PageRequest.withOffset(0))
+        val actual = repository.findNotRegistered(1, 0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
@@ -283,7 +283,7 @@ class TimeReportInMemoryRepositoryTest {
                 .build()
         val repository = TimeReportInMemoryRepository(listOf(timeInterval))
 
-        val actual = repository.findNotRegistered(1, PageRequest.withOffset(0))
+        val actual = repository.findNotRegistered(1,  0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
@@ -314,7 +314,7 @@ class TimeReportInMemoryRepositoryTest {
                         .toSortedSet(TimeReportItemComparator())
         )
 
-        val actual = repository.findNotRegistered(1, PageRequest.withOffset(0))
+        val actual = repository.findNotRegistered(1,  0, 10)
 
         assertEquals(expected, actual)
     }
@@ -344,7 +344,7 @@ class TimeReportInMemoryRepositoryTest {
                 resetToStartOfDay(ti2.startInMilliseconds) to setOf(TimeReportItem(ti2))
         )
 
-        val actual = repository.findNotRegistered(1, PageRequest.withOffset(0))
+        val actual = repository.findNotRegistered(1,  0, 10)
 
         assertEquals(expected, actual)
     }
@@ -359,7 +359,7 @@ class TimeReportInMemoryRepositoryTest {
                 .build()
         val repository = TimeReportInMemoryRepository(listOf(timeInterval))
 
-        val actual = repository.findNotRegistered(1, PageRequest.withOffset(0))
+        val actual = repository.findNotRegistered(1,  0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }

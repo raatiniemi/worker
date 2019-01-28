@@ -198,7 +198,7 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalWithOffset() {
+    fun findAll_withTimeIntervalWithPosition() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
@@ -214,7 +214,7 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalWithMaxResult() {
+    fun findAll_withTimeIntervalWithPageSize() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
@@ -295,7 +295,7 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun findNotRegistered_withTimeIntervalWithOffset() {
+    fun findNotRegistered_withTimeIntervalWithPosition() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
@@ -311,7 +311,7 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun findNotRegistered_withTimeIntervalWithMaxResult() {
+    fun findNotRegistered_withTimeIntervalWithPageSize() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000

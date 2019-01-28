@@ -30,7 +30,6 @@ import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.repository.PageRequest
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -191,7 +190,7 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findAll_withoutTimeIntervals() {
-        val actual = repository.findAll(1, PageRequest.withOffset(0))
+        val actual = repository.findAll(1, 0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
@@ -211,7 +210,7 @@ class TimeReportRoomRepositoryTest {
         }
         timeIntervals.add(entity)
 
-        val actual = repository.findAll(1, PageRequest.withOffset(0))
+        val actual = repository.findAll(1, 0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
@@ -237,7 +236,7 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti1.startInMilliseconds), timeReportItemSet(timeIntervals))
         }
 
-        val actual = repository.findAll(1, PageRequest.withOffset(0))
+        val actual = repository.findAll(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -260,13 +259,13 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.findAll(1, PageRequest.withOffset(0))
+        val actual = repository.findAll(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAll_withTimeIntervalsWithOffset() {
+    fun findAll_withTimeIntervalsWithPosition() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -282,13 +281,13 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
         }
 
-        val actual = repository.findAll(1, PageRequest.withOffset(1))
+        val actual = repository.findAll(1, 1, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAll_withTimeIntervalsWithMaxResult() {
+    fun findAll_withTimeIntervalsWithPageSize() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -304,17 +303,14 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.findAll(1, PageRequest.withMaxResults(1))
+        val actual = repository.findAll(1, 0, 1)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun findNotRegistered_withoutTimeIntervals() {
-        val actual = repository.findNotRegistered(
-                1,
-                PageRequest.withOffset(0)
-        )
+        val actual = repository.findNotRegistered(1, 0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
@@ -334,10 +330,7 @@ class TimeReportRoomRepositoryTest {
         }
         timeIntervals.add(entity)
 
-        val actual = repository.findNotRegistered(
-                1,
-                PageRequest.withOffset(0)
-        )
+        val actual = repository.findNotRegistered(1, 0, 10)
 
         assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
     }
@@ -363,10 +356,7 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti1.startInMilliseconds), timeReportItemSet(timeIntervals))
         }
 
-        val actual = repository.findNotRegistered(
-                1,
-                PageRequest.withOffset(0)
-        )
+        val actual = repository.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -389,16 +379,13 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.findNotRegistered(
-                1,
-                PageRequest.withOffset(0)
-        )
+        val actual = repository.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findNotRegistered_withTimeIntervalsWithOffset() {
+    fun findNotRegistered_withTimeIntervalsWithPosition() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -414,16 +401,13 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
         }
 
-        val actual = repository.findNotRegistered(
-                1,
-                PageRequest.withOffset(1)
-        )
+        val actual = repository.findNotRegistered(1, 1, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findNotRegistered_withTimeIntervalsWithMaxResult() {
+    fun findNotRegistered_withTimeIntervalsWithPageSize() {
         val ti1 = timeIntervalEntity {
             projectId = 1
             startInMilliseconds = 1
@@ -439,10 +423,7 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.findNotRegistered(
-                1,
-                PageRequest.withMaxResults(1)
-        )
+        val actual = repository.findNotRegistered(1, 0, 1)
 
         assertEquals(expected, actual)
     }
@@ -465,10 +446,7 @@ class TimeReportRoomRepositoryTest {
             put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
         }
 
-        val actual = repository.findNotRegistered(
-                1,
-                PageRequest.withOffset(0)
-        )
+        val actual = repository.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }

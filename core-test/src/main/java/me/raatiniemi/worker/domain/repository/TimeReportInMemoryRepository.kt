@@ -60,11 +60,11 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
         return timeIntervals
     }
 
-    override fun findAll(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>> {
+    override fun findAll(projectId: Long, position: Int, pageSize: Int): Map<Date, Set<TimeReportItem>> {
         return filterAndBuildResult { it.projectId == projectId }
     }
 
-    override fun findNotRegistered(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>> {
+    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): Map<Date, Set<TimeReportItem>> {
         return filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
     }
 }

@@ -22,7 +22,6 @@ import me.raatiniemi.worker.data.projects.TimeReportDay
 import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.repository.PageRequest
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import java.util.*
 
@@ -46,15 +45,15 @@ internal class TimeReportRoomRepository(
         )
     }
 
-    override fun findAll(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>> {
-        return timeReport.findAll(projectId, pageRequest.offset, pageRequest.maxResults)
+    override fun findAll(projectId: Long, position: Int, pageSize: Int): Map<Date, Set<TimeReportItem>> {
+        return timeReport.findAll(projectId, position, pageSize)
                 .map { transform(it) }
                 .toMap()
                 .toSortedMap(TimeReportDateComparator())
     }
 
-    override fun findNotRegistered(projectId: Long, pageRequest: PageRequest): Map<Date, Set<TimeReportItem>> {
-        return timeReport.findNotRegistered(projectId, pageRequest.offset, pageRequest.maxResults)
+    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): Map<Date, Set<TimeReportItem>> {
+        return timeReport.findNotRegistered(projectId, position, pageSize)
                 .map { transform(it) }
                 .toMap()
                 .toSortedMap(TimeReportDateComparator())

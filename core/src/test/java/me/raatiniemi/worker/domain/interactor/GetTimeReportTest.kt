@@ -50,7 +50,7 @@ class GetTimeReportTest {
         val expected = emptyMap<Date, TimeReportItem>()
         val getTimeReport = buildGetTimeReport(emptyList())
 
-        val actual = getTimeReport(1, 0, true)
+        val actual = getTimeReport(1, 0, 10, true)
 
         assertEquals(expected, actual)
     }
@@ -79,7 +79,7 @@ class GetTimeReportTest {
                 )
         )
 
-        val actual = getTimeReport(1, 0, true)
+        val actual = getTimeReport(1, 0, 10, true)
 
         assertEquals(expected, actual)
     }
@@ -89,7 +89,7 @@ class GetTimeReportTest {
         val expected = emptyMap<Date, TimeReportItem>()
         val getTimeReport = buildGetTimeReport(emptyList())
 
-        val actual = getTimeReport(1, 0, false)
+        val actual = getTimeReport(1, 0, 10, false)
 
         assertEquals(expected, actual)
     }
@@ -116,7 +116,7 @@ class GetTimeReportTest {
                         .toSortedSet()
         )
 
-        val actual = getTimeReport(1, 0, false)
+        val actual = getTimeReport(1, 0, 10, false)
 
         assertEquals(expected, actual)
     }
