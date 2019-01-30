@@ -18,7 +18,7 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
-import me.raatiniemi.worker.data.projects.TimeReportDay
+import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
 import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
 import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeReportItem
@@ -33,14 +33,13 @@ internal class TimeReportRoomRepository(
 
     override fun countNotRegistered(projectId: Long) = timeReport.countNotRegistered(projectId)
 
-    private fun transform(timeReportDay: TimeReportDay): Pair<Date, Set<TimeReportItem>> {
-        val map = timeReportDay.timeIntervalIds
-                .mapNotNull { timeIntervals.find(it) }
+    private fun transform(group: TimeReportQueryGroup): Pair<Date, Set<TimeReportItem>> {
+        val map = group.mapNotNull { timeIntervals.find(it) }
                 .map { it.toTimeInterval() }
                 .map { TimeReportItem.with(it) }
 
         return Pair(
-                Date(timeReportDay.dateInMilliseconds),
+                Date(group.dateInMilliseconds),
                 map.toSortedSet(TimeReportItemComparator())
         )
     }

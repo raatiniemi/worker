@@ -16,9 +16,11 @@
 
 package me.raatiniemi.worker.data.projects
 
-internal data class TimeReportDay(val dateInMilliseconds: Long, val ids: String) {
-    val timeIntervalIds: List<Long>
-        get() = ids.split(",")
-                .map { it.toLongOrNull() }
-                .mapNotNull { it }
+internal data class TimeReportQueryGroup(
+        val dateInMilliseconds: Long,
+        val ids: String
+) : Iterable<Long> {
+    override fun iterator() = ids.split(",")
+            .mapNotNull { it.toLongOrNull() }
+            .iterator()
 }

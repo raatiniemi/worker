@@ -44,7 +44,7 @@ internal interface TimeReportDao {
         GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch')
         ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
         LIMIT :position, :pageSize""")
-    fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay>
+    fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportQueryGroup>
 
     @Query("""SELECT
         MIN(start_in_milliseconds) AS dateInMilliseconds,
@@ -55,5 +55,5 @@ internal interface TimeReportDao {
         GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch')
         ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
         LIMIT :position, :pageSize""")
-    fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay>
+    fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportQueryGroup>
 }

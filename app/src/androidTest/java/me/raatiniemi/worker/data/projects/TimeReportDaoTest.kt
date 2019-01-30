@@ -136,7 +136,7 @@ class TimeReportDaoTest : BaseDaoTest() {
     fun findAll_withoutTimeIntervals() {
         val actual = timeReport.findAll(1, 0, 10)
 
-        assertEquals(emptyList<TimeReportDay>(), actual)
+        assertEquals(emptyList<TimeReportQueryGroup>(), actual)
     }
 
     @Test
@@ -149,14 +149,14 @@ class TimeReportDaoTest : BaseDaoTest() {
 
         val actual = timeReport.findAll(1, 0, 10)
 
-        assertEquals(emptyList<TimeReportDay>(), actual)
+        assertEquals(emptyList<TimeReportQueryGroup>(), actual)
     }
 
     @Test
     fun findAll_withTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findAll(1, 0, 10)
@@ -172,7 +172,7 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 100
         })
         val expected = listOf(
-                TimeReportDay(1, "1,2")
+                TimeReportQueryGroup(1, "1,2")
         )
 
         val actual = timeReport.findAll(1, 0, 10)
@@ -188,8 +188,8 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2"),
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(90000000, "2"),
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findAll(1, 0, 10)
@@ -205,7 +205,7 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findAll(1, 1, 10)
@@ -221,7 +221,7 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2")
+                TimeReportQueryGroup(90000000, "2")
         )
 
         val actual = timeReport.findAll(1, 0, 1)
@@ -233,7 +233,7 @@ class TimeReportDaoTest : BaseDaoTest() {
     fun findNotRegistered_withoutTimeIntervals() {
         val actual = timeReport.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyList<TimeReportDay>(), actual)
+        assertEquals(emptyList<TimeReportQueryGroup>(), actual)
     }
 
     @Test
@@ -246,14 +246,14 @@ class TimeReportDaoTest : BaseDaoTest() {
 
         val actual = timeReport.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyList<TimeReportDay>(), actual)
+        assertEquals(emptyList<TimeReportQueryGroup>(), actual)
     }
 
     @Test
     fun findNotRegistered_withTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findNotRegistered(1, 0, 10)
@@ -269,7 +269,7 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 100
         })
         val expected = listOf(
-                TimeReportDay(1, "1,2")
+                TimeReportQueryGroup(1, "1,2")
         )
 
         val actual = timeReport.findNotRegistered(1, 0, 10)
@@ -285,8 +285,8 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2"),
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(90000000, "2"),
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findNotRegistered(1, 0, 10)
@@ -302,7 +302,7 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findNotRegistered(1, 1, 10)
@@ -318,7 +318,7 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2")
+                TimeReportQueryGroup(90000000, "2")
         )
 
         val actual = timeReport.findNotRegistered(1, 0, 1)
@@ -334,7 +334,7 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2")
+                TimeReportQueryGroup(90000000, "2")
         )
 
         val actual = timeReport.findNotRegistered(1, 0, 10)
