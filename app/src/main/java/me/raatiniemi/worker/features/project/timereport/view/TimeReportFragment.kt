@@ -22,7 +22,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator
-import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -146,12 +145,10 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         timeReportAdapter = TimeReportAdapter(hoursMinutesFormat, this)
         linearLayoutManager = LinearLayoutManager(requireActivity())
 
-        val recyclerViewExpandableItemManager = RecyclerViewExpandableItemManager(savedInstanceState)
-
         rvTimeReport.apply {
             setHasFixedSize(false)
             layoutManager = linearLayoutManager
-            adapter = recyclerViewExpandableItemManager.createWrappedAdapter(timeReportAdapter)
+            adapter = timeReportAdapter
             addItemDecoration(
                     SimpleListDividerDecorator(
                             resources.getDrawable(
@@ -182,7 +179,7 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
                             // Retrieve the total number of groups within the view, we need to
                             // exclude the children otherwise the offset will be wrong.
-                            val offset = timeReportAdapter.groupCount
+                            val offset = timeReportAdapter.itemCount
 
                             // Retrieve additional timesheet items with offset.
                             loadTimeReportViaViewModel(offset)
@@ -191,7 +188,6 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
                 }
             })
         }
-        recyclerViewExpandableItemManager.attachRecyclerView(rvTimeReport)
 
         observeViewModel()
         loadTimeReportViaViewModel(offset = 0)
@@ -211,17 +207,18 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         })
 
         vm.viewActions.observeAndConsume(this, Observer {
+            // TODO: Re-enable remove, set actions.
             when (it) {
                 is TimeReportViewActions.UpdateRegistered -> {
                     if (keyValueStore.hideRegisteredTime()) {
-                        timeReportAdapter.remove(it.results)
+                        // timeReportAdapter.remove(it.results)
                         return@Observer
                     }
 
-                    timeReportAdapter.set(it.results)
+                    // timeReportAdapter.set(it.results)
                 }
                 is TimeReportViewActions.RemoveRegistered -> {
-                    timeReportAdapter.remove(it.results)
+                    // timeReportAdapter.remove(it.results)
                 }
                 is ViewAction -> it.action(requireActivity())
             }

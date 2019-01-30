@@ -19,10 +19,10 @@ package me.raatiniemi.worker.features.project.timereport.view
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder
+import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
 
-internal class GroupItemViewHolder(view: View) : AbstractExpandableItemViewHolder(view) {
+internal class GroupItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
     val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
     val summarize: AppCompatTextView = view.findViewById(R.id.tvSummary)

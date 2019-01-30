@@ -20,14 +20,13 @@ import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.accumulated
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
-import me.raatiniemi.worker.features.shared.model.ExpandableItem
 import java.text.SimpleDateFormat
 import java.util.*
 
 data class TimeReportGroup internal constructor(
         private val date: Date,
-        private val items: MutableList<TimeReportItem>
-) : ExpandableItem<TimeReportItem> {
+        private val items: List<TimeReportItem>
+) {
     private val dateFormat = SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG))
     val id: Long
 
@@ -72,22 +71,6 @@ data class TimeReportGroup internal constructor(
         return items.mapIndexedTo(ArrayList()) { childIndex, item ->
             TimeReportAdapterResult(groupIndex, childIndex, item)
         }
-    }
-
-    override fun get(index: Int): TimeReportItem {
-        return items[index]
-    }
-
-    override fun set(index: Int, item: TimeReportItem) {
-        items[index] = item
-    }
-
-    override fun remove(index: Int): TimeReportItem {
-        return items.removeAt(index)
-    }
-
-    override fun size(): Int {
-        return items.size
     }
 
     companion object {
