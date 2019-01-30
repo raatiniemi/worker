@@ -27,9 +27,7 @@ data class TimeReportGroup internal constructor(
         private val items: List<TimeReportItem>
 ) {
     val isRegistered: Boolean
-        get() {
-            return items.any { it.isRegistered }
-        }
+        get() = items.any { it.isRegistered }
 
     private fun calculateTimeDifference(accumulated: HoursMinutes): HoursMinutes {
         return accumulated.minus(HoursMinutes(8, 0))
