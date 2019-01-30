@@ -24,7 +24,7 @@ import java.util.*
 
 data class TimeReportGroup internal constructor(
         val date: Date,
-        private val items: List<TimeReportItem>
+        val items: List<TimeReportItem>
 ) {
     val isRegistered: Boolean
         get() = items.any { it.isRegistered }
@@ -40,12 +40,6 @@ data class TimeReportGroup internal constructor(
 
     val timeDifference: HoursMinutes by lazy {
         timeSummary - HoursMinutes(8, 0)
-    }
-
-    fun buildItemResultsWithGroupIndex(groupIndex: Int): List<TimeReportAdapterResult> {
-        return items.mapIndexedTo(ArrayList()) { childIndex, item ->
-            TimeReportAdapterResult(groupIndex, childIndex, item)
-        }
     }
 
     companion object {
@@ -86,4 +80,10 @@ private fun getTimeDifferenceFormat(difference: HoursMinutes): String {
         return " (+%s)"
     }
     return " (%s)"
+}
+
+fun TimeReportGroup.buildItemResultsWithGroupIndex(groupIndex: Int): List<TimeReportAdapterResult> {
+    return items.mapIndexed { childIndex, item ->
+        TimeReportAdapterResult(groupIndex, childIndex, item)
+    }
 }
