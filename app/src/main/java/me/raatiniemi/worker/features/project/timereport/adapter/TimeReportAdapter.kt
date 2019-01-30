@@ -59,41 +59,43 @@ internal class TimeReportAdapter(
     override fun onBindViewHolder(vh: GroupItemViewHolder, position: Int) {
         val groupItem = items[position]
 
-        vh.title.text = groupItem.title
-        vh.summarize.text = groupItem.getTimeSummaryWithDifference(formatter)
+        with(vh) {
+            title.text = groupItem.title
+            summarize.text = groupItem.getTimeSummaryWithDifference(formatter)
 
-        vh.letter.setImageDrawable(LetterDrawable.build(groupItem.firstLetterFromTitle))
+            letter.setImageDrawable(LetterDrawable.build(groupItem.firstLetterFromTitle))
 
-        val results = groupItem.buildItemResultsWithGroupIndex(position)
+            val results = groupItem.buildItemResultsWithGroupIndex(position)
 
-        vh.letter.setOnLongClickListener {
-            if (selectionManager.isSelectionActivated) {
-                return@setOnLongClickListener false
+            letter.setOnLongClickListener {
+                if (selectionManager.isSelectionActivated) {
+                    return@setOnLongClickListener false
+                }
+
+                selectionManager.selectItems(results)
+                true
             }
 
-            selectionManager.selectItems(results)
-            true
-        }
+            letter.setOnClickListener {
+                if (!selectionManager.isSelectionActivated) {
+                    return@setOnClickListener
+                }
 
-        vh.letter.setOnClickListener {
-            if (!selectionManager.isSelectionActivated) {
-                return@setOnClickListener
+                if (selectionManager.isSelected(results)) {
+                    selectionManager.deselectItems(results)
+                    return@setOnClickListener
+                }
+                selectionManager.selectItems(results)
             }
 
-            if (selectionManager.isSelected(results)) {
-                selectionManager.deselectItems(results)
-                return@setOnClickListener
+            itemView.isSelected = selectionManager.isSelected(results)
+
+            // In case the item have been selected, we should not activate
+            // it. The selected background color should take precedence.
+            itemView.isActivated = false
+            if (!itemView.isSelected) {
+                itemView.isActivated = groupItem.isRegistered
             }
-            selectionManager.selectItems(results)
-        }
-
-        vh.itemView.isSelected = selectionManager.isSelected(results)
-
-        // In case the item have been selected, we should not activate
-        // it. The selected background color should take precedence.
-        vh.itemView.isActivated = false
-        if (!vh.itemView.isSelected) {
-            vh.itemView.isActivated = groupItem.isRegistered
         }
     }
 
