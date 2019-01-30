@@ -28,7 +28,6 @@ data class TimeReportGroup internal constructor(
         private val items: List<TimeReportItem>
 ) {
     private val dateFormat = SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG))
-    val id: Long
 
     val title: String
         get() = dateFormat.format(date)
@@ -40,10 +39,6 @@ data class TimeReportGroup internal constructor(
         get() {
             return items.any { it.isRegistered }
         }
-
-    init {
-        id = calculateDaysSinceUnixEpoch(date)
-    }
 
     private fun calculateTimeDifference(accumulated: HoursMinutes): HoursMinutes {
         return accumulated.minus(HoursMinutes(8, 0))
@@ -81,15 +76,6 @@ data class TimeReportGroup internal constructor(
             items.addAll(timeReportItems)
 
             return TimeReportGroup(date, items)
-        }
-
-        private fun calculateDaysSinceUnixEpoch(date: Date): Long {
-            val milliseconds = date.time
-            val seconds = milliseconds / 1000
-            val minutes = seconds / 60
-            val hours = minutes / 60
-
-            return hours / 24
         }
 
         private fun formatTimeDifference(format: String, difference: String): String {
