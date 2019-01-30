@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.project.timereport.model
 
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
@@ -32,11 +33,15 @@ import java.util.*
 class TimeReportGroupGetTimeSummaryWithDifferenceTest(
         private val expected: String,
         private val formatter: HoursMinutesFormat,
-        private val timeReportItems: List<TimeReportItem>
+        private val timeIntervals: List<TimeInterval>
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
-        val item: TimeReportGroup = TimeReportGroup.build(Date(), timeReportItems.toSortedSet())
+        val item: TimeReportGroup = TimeReportGroup.build(
+                Date(),
+                timeIntervals.map { TimeReportItem.with(it) }
+                        .toSortedSet()
+        )
 
         assertEquals(expected, item.getTimeSummaryWithDifference(formatter))
     }
@@ -51,144 +56,144 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                             "1.00 (-7.00)",
                             FractionIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 3600000
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "8.00",
                             FractionIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 28800000
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "9.00 (+1.00)",
                             FractionIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 32400000
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "9.12 (+1.12)",
                             FractionIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 14380327
-                                    }),
-                                    TimeReportItem.with(timeInterval {
+                                    },
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 18407820
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "8.77 (+0.77)",
                             FractionIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 13956031
-                                    }),
-                                    TimeReportItem.with(timeInterval {
+                                    },
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 17594386
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "7.87 (-0.13)",
                             FractionIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 11661632
-                                    }),
-                                    TimeReportItem.with(timeInterval {
+                                    },
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 16707601
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "1:00 (-7:00)",
                             DigitalHoursMinutesIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 3600000
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "8:00",
                             DigitalHoursMinutesIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 28800000
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "9:00 (+1:00)",
                             DigitalHoursMinutesIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 32400000
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "9:07 (+1:07)",
                             DigitalHoursMinutesIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 14380327
-                                    }),
-                                    TimeReportItem.with(timeInterval {
+                                    },
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 18407820
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "8:46 (+0:46)",
                             DigitalHoursMinutesIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 13956031
-                                    }),
-                                    TimeReportItem.with(timeInterval {
+                                    },
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 17594386
-                                    })
+                                    }
                             )
                     ),
                     arrayOf(
                             "7:52 (-0:08)",
                             DigitalHoursMinutesIntervalFormat(),
                             listOf(
-                                    TimeReportItem.with(timeInterval {
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 11661632
-                                    }),
-                                    TimeReportItem.with(timeInterval {
+                                    },
+                                    timeInterval {
                                         startInMilliseconds = 1
                                         stopInMilliseconds = 16707601
-                                    })
+                                    }
                             )
                     )
             )

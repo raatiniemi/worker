@@ -29,26 +29,17 @@ data class TimeReportGroup internal constructor(
     val isRegistered: Boolean
         get() = items.any { it.isRegistered }
 
-    private fun calculateTimeDifference(accumulated: HoursMinutes): HoursMinutes {
-        return accumulated.minus(HoursMinutes(8, 0))
-    }
-
-    fun getTimeSummaryWithDifference(formatter: HoursMinutesFormat): String {
-        val accumulated = accumulatedHoursMinutes()
-        val timeSummary = formatter.apply(accumulated)
-
-        val calculatedDifference = calculateTimeDifference(accumulated)
-        val timeDifference = formatTimeDifference(
-                getTimeDifferenceFormat(calculatedDifference),
-                formatter.apply(calculatedDifference)
-        )
-
-        return timeSummary + timeDifference
+    val timeSummary: HoursMinutes by lazy {
+        accumulatedHoursMinutes()
     }
 
     private fun accumulatedHoursMinutes(): HoursMinutes {
         return items.map { it.hoursMinutes }
                 .accumulated()
+    }
+
+    val timeDifference: HoursMinutes by lazy {
+        timeSummary - HoursMinutes(8, 0)
     }
 
     fun buildItemResultsWithGroupIndex(groupIndex: Int): List<TimeReportAdapterResult> {
@@ -58,28 +49,41 @@ data class TimeReportGroup internal constructor(
     }
 
     companion object {
-        private const val LANGUAGE_TAG = "en_US"
-
         fun build(date: Date, timeReportItems: SortedSet<TimeReportItem>): TimeReportGroup {
             val items = ArrayList<TimeReportItem>()
             items.addAll(timeReportItems)
 
             return TimeReportGroup(date, items)
         }
-
-        private fun formatTimeDifference(format: String, difference: String): String {
-            return String.format(Locale.forLanguageTag(LANGUAGE_TAG), format, difference)
-        }
-
-        private fun getTimeDifferenceFormat(difference: HoursMinutes): String {
-            if (difference.empty) {
-                return ""
-            }
-
-            if (difference.positive) {
-                return " (+%s)"
-            }
-            return " (%s)"
-        }
     }
+}
+
+fun TimeReportGroup.getTimeSummaryWithDifference(formatter: HoursMinutesFormat): String {
+    val timeSummary = formatter.apply(timeSummary)
+    val calculatedDifference = timeDifference
+
+    return String.format(
+            Locale.getDefault(),
+            "%s%s",
+            timeSummary,
+            formatTimeDifference(
+                    getTimeDifferenceFormat(calculatedDifference),
+                    formatter.apply(calculatedDifference)
+            )
+    )
+}
+
+private fun formatTimeDifference(format: String, difference: String): String {
+    return String.format(Locale.getDefault(), format, difference)
+}
+
+private fun getTimeDifferenceFormat(difference: HoursMinutes): String {
+    if (difference.empty) {
+        return ""
+    }
+
+    if (difference.positive) {
+        return " (+%s)"
+    }
+    return " (%s)"
 }
