@@ -21,7 +21,6 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator
 import kotlinx.android.synthetic.main.fragment_time_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -149,15 +148,6 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
             setHasFixedSize(false)
             layoutManager = linearLayoutManager
             adapter = timeReportAdapter
-            addItemDecoration(
-                    SimpleListDividerDecorator(
-                            resources.getDrawable(
-                                    R.drawable.list_item_divider,
-                                    requireContext().theme
-                            ),
-                            true
-                    )
-            )
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     // Make sure we're not loading data before checking the position.
