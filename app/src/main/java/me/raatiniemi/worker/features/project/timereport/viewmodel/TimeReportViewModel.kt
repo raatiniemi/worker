@@ -25,9 +25,9 @@ import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.AppKeys

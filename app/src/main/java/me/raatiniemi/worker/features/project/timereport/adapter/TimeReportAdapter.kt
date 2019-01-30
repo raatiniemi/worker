@@ -20,9 +20,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
+import me.raatiniemi.worker.features.project.timereport.model.buildItemResultsWithGroupIndex
 import me.raatiniemi.worker.features.project.timereport.model.getTimeSummaryWithDifference
 import me.raatiniemi.worker.features.project.timereport.view.GroupItemViewHolder
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth

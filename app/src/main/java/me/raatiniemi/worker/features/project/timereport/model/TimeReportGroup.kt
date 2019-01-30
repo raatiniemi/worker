@@ -17,40 +17,10 @@
 package me.raatiniemi.worker.features.project.timereport.model
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.model.accumulated
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.util.*
 
-data class TimeReportGroup internal constructor(
-        val date: Date,
-        val items: List<TimeReportItem>
-) {
-    val isRegistered: Boolean
-        get() = items.any { it.isRegistered }
-
-    val timeSummary: HoursMinutes by lazy {
-        accumulatedHoursMinutes()
-    }
-
-    private fun accumulatedHoursMinutes(): HoursMinutes {
-        return items.map { it.hoursMinutes }
-                .accumulated()
-    }
-
-    val timeDifference: HoursMinutes by lazy {
-        timeSummary - HoursMinutes(8, 0)
-    }
-
-    companion object {
-        fun build(date: Date, timeReportItems: SortedSet<TimeReportItem>): TimeReportGroup {
-            val items = ArrayList<TimeReportItem>()
-            items.addAll(timeReportItems)
-
-            return TimeReportGroup(date, items)
-        }
-    }
-}
 
 fun TimeReportGroup.getTimeSummaryWithDifference(formatter: HoursMinutesFormat): String {
     val timeSummary = formatter.apply(timeSummary)

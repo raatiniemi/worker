@@ -21,16 +21,12 @@ import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
