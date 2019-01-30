@@ -20,21 +20,12 @@ import me.raatiniemi.worker.domain.model.HoursMinutes
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.accumulated
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 data class TimeReportGroup internal constructor(
-        private val date: Date,
+        val date: Date,
         private val items: List<TimeReportItem>
 ) {
-    private val dateFormat = SimpleDateFormat("EEE (MMM d)", Locale.forLanguageTag(LANGUAGE_TAG))
-
-    val title: String
-        get() = dateFormat.format(date)
-
-    val firstLetterFromTitle: String
-        get() = title.first().toString()
-
     val isRegistered: Boolean
         get() {
             return items.any { it.isRegistered }

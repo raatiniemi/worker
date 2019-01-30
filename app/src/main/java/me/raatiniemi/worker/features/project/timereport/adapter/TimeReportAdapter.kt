@@ -24,6 +24,7 @@ import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
 import me.raatiniemi.worker.features.project.timereport.view.GroupItemViewHolder
+import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 import me.raatiniemi.worker.util.SelectionListener
 import me.raatiniemi.worker.util.SelectionManager
@@ -60,10 +61,11 @@ internal class TimeReportAdapter(
         val groupItem = items[position]
 
         with(vh) {
-            title.text = groupItem.title
+            title.text = shortDayMonthDayInMonth(groupItem.date)
             summarize.text = groupItem.getTimeSummaryWithDifference(formatter)
 
-            letter.setImageDrawable(LetterDrawable.build(groupItem.firstLetterFromTitle))
+            val firstLetterInTitle = title.text.run { first().toString() }
+            letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
 
             val results = groupItem.buildItemResultsWithGroupIndex(position)
 
