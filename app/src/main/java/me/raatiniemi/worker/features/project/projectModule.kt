@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.features.project
 
-import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.features.project.model.ProjectHolder
@@ -32,7 +31,8 @@ val projectModule = module {
     viewModel {
         TimeReportViewModel(
                 get(),
-                GetTimeReport(get()),
+                get(),
+                get(),
                 MarkRegisteredTime(get()),
                 RemoveTime(get())
         )

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.data.projects.datasource
 
+import androidx.paging.DataSource
 import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.util.KeyValueStore
 
-/**
- * Use case for getting segment from project time report.
- */
-class GetTimeReport(private val repository: TimeReportRepository) {
-    operator fun invoke(projectId: Long, position: Int, pageSize: Int, hideRegisteredTime: Boolean)
-            : List<TimeReportGroup> {
-        return if (hideRegisteredTime) {
-            repository.findNotRegistered(projectId, position, pageSize)
-        } else {
-            repository.findAll(projectId, position, pageSize)
-        }
-    }
+internal class TimeReportDataSourceFactory(
+        val projectId: Long,
+        val keyValueStore: KeyValueStore,
+        val repository: TimeReportRepository
+) : DataSource.Factory<Int, TimeReportGroup>() {
+    override fun create() = TimeReportDataSource(projectId, keyValueStore, repository)
 }

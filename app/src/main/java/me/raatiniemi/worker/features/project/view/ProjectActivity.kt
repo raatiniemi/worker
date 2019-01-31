@@ -80,7 +80,7 @@ class ProjectActivity : BaseActivity() {
         item.isChecked = !item.isChecked
 
         keyValueStore.setHideRegisteredTime(item.isChecked)
-        timeReportFragment.refresh()
+        timeReportFragment.reloadTimeReport()
     }
 
     companion object {

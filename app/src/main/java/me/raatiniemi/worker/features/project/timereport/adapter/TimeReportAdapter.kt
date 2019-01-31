@@ -18,7 +18,7 @@ package me.raatiniemi.worker.features.project.timereport.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
@@ -31,14 +31,11 @@ import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 import me.raatiniemi.worker.util.SelectionListener
 import me.raatiniemi.worker.util.SelectionManager
 import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator
-import java.util.*
 
 internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
         selectionListener: SelectionListener
-) : RecyclerView.Adapter<GroupItemViewHolder>() {
-    private val items = ArrayList<TimeReportGroup>()
-
+) : PagedListAdapter<TimeReportGroup, GroupItemViewHolder>(timeReportDiffCallback) {
     private val selectionManager: SelectionManager<TimeReportAdapterResult>
 
     val selectedItems: List<TimeReportAdapterResult>
@@ -46,11 +43,7 @@ internal class TimeReportAdapter(
 
     init {
         selectionManager = SelectionManagerAdapterDecorator(this, selectionListener)
-
-        setHasStableIds(true)
     }
-
-    override fun getItemCount() = items.count()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -60,16 +53,20 @@ internal class TimeReportAdapter(
     }
 
     override fun onBindViewHolder(vh: GroupItemViewHolder, position: Int) {
-        val groupItem = items[position]
+        val item = getItem(position)
+        if (item == null) {
+            vh.clearValues()
+            return
+        }
 
         with(vh) {
-            title.text = shortDayMonthDayInMonth(groupItem.date)
-            summarize.text = groupItem.getTimeSummaryWithDifference(formatter)
+            title.text = shortDayMonthDayInMonth(item.date)
+            summarize.text = item.getTimeSummaryWithDifference(formatter)
 
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
 
-            val results = groupItem.buildItemResultsWithGroupIndex(position)
+            val results = item.buildItemResultsWithGroupIndex(position)
 
             letter.setOnLongClickListener {
                 if (selectionManager.isSelectionActivated) {
@@ -98,27 +95,9 @@ internal class TimeReportAdapter(
             // it. The selected background color should take precedence.
             itemView.isActivated = false
             if (!itemView.isSelected) {
-                itemView.isActivated = groupItem.isRegistered
+                itemView.isActivated = item.isRegistered
             }
         }
-    }
-
-    fun add(items: List<TimeReportGroup>): Int {
-        // Retrieve the current count to have a reference point
-        // at which location the new items will be inserted.
-        val index = itemCount
-        this.items.addAll(items)
-
-        // Notify the adapter of the new items.
-        notifyDataSetChanged()
-
-        // Return the reference point for the location of the new items.
-        return index
-    }
-
-    fun clear() {
-        items.clear()
-        notifyDataSetChanged()
     }
 
     fun haveSelectedItems(): Boolean {
