@@ -50,8 +50,6 @@ class TimeReportViewModel internal constructor(
     suspend fun fetch(id: Long, offset: Int) = withContext(Dispatchers.IO) {
         try {
             val items = getTimeReport(id, offset, 10, shouldHideRegisteredTime)
-                    .entries
-                    .map { TimeReportGroup.build(it.key, it.value) }
 
             _timeReport.postValue(items)
         } catch (e: Exception) {

@@ -16,24 +16,19 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
-import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
-import java.util.*
 
 /**
  * Use case for getting segment from project time report.
  */
 class GetTimeReport(private val repository: TimeReportRepository) {
     operator fun invoke(projectId: Long, position: Int, pageSize: Int, hideRegisteredTime: Boolean)
-            : SortedMap<Date, SortedSet<TimeReportItem>> {
-        val entries = if (hideRegisteredTime) {
+            : List<TimeReportGroup> {
+        return if (hideRegisteredTime) {
             repository.findNotRegistered(projectId, position, pageSize)
         } else {
             repository.findAll(projectId, position, pageSize)
         }
-
-        return entries.mapValues { it.value.toSortedSet() }
-                .toSortedMap(TimeReportDateComparator())
     }
 }

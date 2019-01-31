@@ -25,10 +25,8 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
-import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
-import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import org.junit.After
@@ -179,20 +177,13 @@ class TimeReportRoomRepositoryTest {
         assertEquals(expected, actual)
     }
 
-    private fun timeReportItemSet(timeIntervals: List<TimeInterval>): SortedSet<TimeReportItem> {
-        return timeIntervals.map { TimeReportItem(it) }
-                .toSortedSet(TimeReportItemComparator())
-    }
-
-    private fun timeReportItemSet(timeInterval: TimeInterval): SortedSet<TimeReportItem> {
-        return timeReportItemSet(listOf(timeInterval))
-    }
-
     @Test
     fun findAll_withoutTimeIntervals() {
+        val expected = emptyList<TimeReportGroup>()
+
         val actual = repository.findAll(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -203,38 +194,42 @@ class TimeReportRoomRepositoryTest {
                     name = "Name #2"
                 }
         )
-        val entity = timeIntervalEntity {
-            projectId = 2
-            startInMilliseconds = 1
-            stopInMilliseconds = 10
-        }
-        timeIntervals.add(entity)
+        timeIntervals.add(
+                timeIntervalEntity {
+                    projectId = 2
+                    startInMilliseconds = 1
+                    stopInMilliseconds = 10
+                }
+        )
+        val expected = emptyList<TimeReportGroup>()
 
         val actual = repository.findAll(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun findAll_withTimeIntervalsForSameDay() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 11
             stopInMilliseconds = 30
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
         val timeIntervals = listOf(
-                ti1.copy(id = 1).toTimeInterval(),
-                ti2.copy(id = 2).toTimeInterval()
+                firstTimeInterval.copy(id = 1).toTimeInterval(),
+                secondTimeInterval.copy(id = 2).toTimeInterval()
         )
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timeReportItemSet(timeIntervals))
-        }
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(firstTimeInterval.startInMilliseconds),
+                        timeIntervals.map { TimeReportItem(it) }
+                )
+        )
 
         val actual = repository.findAll(1, 0, 10)
 
@@ -243,21 +238,30 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findAll_withTimeIntervalsForDifferentDays() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
-            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
-        }
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(secondTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                        )
+                ),
+                TimeReportGroup(
+                        Date(firstTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                        )
+                )
+        )
 
         val actual = repository.findAll(1, 0, 10)
 
@@ -266,20 +270,24 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findAll_withTimeIntervalsWithPosition() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
-        }
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(firstTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                        )
+                )
+        )
 
         val actual = repository.findAll(1, 1, 10)
 
@@ -288,20 +296,24 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findAll_withTimeIntervalsWithPageSize() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
-        }
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(secondTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                        )
+                )
+        )
 
         val actual = repository.findAll(1, 0, 1)
 
@@ -310,9 +322,11 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findNotRegistered_withoutTimeIntervals() {
+        val expected = emptyList<TimeReportGroup>()
+
         val actual = repository.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -323,38 +337,41 @@ class TimeReportRoomRepositoryTest {
                     name = "Name #2"
                 }
         )
-        val entity = timeIntervalEntity {
-            projectId = 2
-            startInMilliseconds = 1
-            stopInMilliseconds = 10
-        }
-        timeIntervals.add(entity)
+        timeIntervals.add(
+                timeIntervalEntity {
+                    projectId = 2
+                    startInMilliseconds = 1
+                    stopInMilliseconds = 10
+                }
+        )
+        val expected = emptyList<TimeReportGroup>()
 
         val actual = repository.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun findNotRegistered_withTimeIntervalsForSameDay() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 11
             stopInMilliseconds = 30
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val timeIntervals = listOf(
-                ti1.copy(id = 1).toTimeInterval(),
-                ti2.copy(id = 2).toTimeInterval()
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(firstTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval()),
+                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                        )
+                )
         )
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timeReportItemSet(timeIntervals))
-        }
 
         val actual = repository.findNotRegistered(1, 0, 10)
 
@@ -363,21 +380,30 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findNotRegistered_withTimeIntervalsForDifferentDays() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
-            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
-        }
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(secondTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                        )
+                ),
+                TimeReportGroup(
+                        Date(firstTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                        )
+                )
+        )
 
         val actual = repository.findNotRegistered(1, 0, 10)
 
@@ -386,20 +412,24 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findNotRegistered_withTimeIntervalsWithPosition() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti1.startInMilliseconds), timeReportItemSet(ti1.copy(id = 1).toTimeInterval()))
-        }
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(firstTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                        )
+                )
+        )
 
         val actual = repository.findNotRegistered(1, 1, 10)
 
@@ -408,20 +438,24 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findNotRegistered_withTimeIntervalsWithPageSize() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
-        }
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(secondTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                        )
+                )
+        )
 
         val actual = repository.findNotRegistered(1, 0, 1)
 
@@ -430,21 +464,25 @@ class TimeReportRoomRepositoryTest {
 
     @Test
     fun findNotRegistered_withRegisteredTimeInterval() {
-        val ti1 = timeIntervalEntity {
-            projectId = 1
+        val firstTimeInterval = timeIntervalEntity {
             startInMilliseconds = 1
             stopInMilliseconds = 10
             registered = true
         }
-        val ti2 = timeIntervalEntity {
-            projectId = 1
+        val secondTimeInterval = timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 93000000
         }
-        listOf(ti1, ti2).forEach { timeIntervals.add(it) }
-        val expected = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator()).apply {
-            put(Date(ti2.startInMilliseconds), timeReportItemSet(ti2.copy(id = 2).toTimeInterval()))
-        }
+        timeIntervals.add(firstTimeInterval)
+        timeIntervals.add(secondTimeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        Date(secondTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                        )
+                )
+        )
 
         val actual = repository.findNotRegistered(1, 0, 10)
 

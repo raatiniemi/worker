@@ -16,8 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import org.junit.Assert.assertEquals
@@ -194,46 +193,53 @@ class TimeReportInMemoryRepositoryTest {
 
     @Test
     fun `find all without time intervals`() {
+        val expected = emptyList<TimeReportGroup>()
         val repository = TimeReportInMemoryRepository(emptyList())
 
         val actual = repository.findAll(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `find all without time interval for project`() {
-        val timeInterval = TimeInterval.builder(2)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(10)
-                .build()
-        val repository = TimeReportInMemoryRepository(listOf(timeInterval))
+        val expected = emptyList<TimeReportGroup>()
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval {
+                            id = 1
+                            projectId = 2
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 20
+                        }
+                )
+        )
 
         val actual = repository.findAll(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `find all with time intervals for same day`() {
         val timeIntervals = listOf(
-                TimeInterval.builder(1)
-                        .id(1)
-                        .startInMilliseconds(1)
-                        .stopInMilliseconds(10)
-                        .build(),
-                TimeInterval.builder(1)
-                        .id(2)
-                        .startInMilliseconds(11)
-                        .stopInMilliseconds(30)
-                        .build()
+                timeInterval {
+                    id = 1
+                    startInMilliseconds = 1
+                    stopInMilliseconds = 10
+                },
+                timeInterval {
+                    id = 2
+                    startInMilliseconds = 11
+                    stopInMilliseconds = 30
+                }
         )
         val repository = TimeReportInMemoryRepository(timeIntervals)
-        val expected = mapOf(
-                resetToStartOfDay(1) to timeIntervals
-                        .map { TimeReportItem(it) }
-                        .toSortedSet(TimeReportItemComparator())
+        val expected = listOf(
+                TimeReportGroup(
+                        resetToStartOfDay(1),
+                        timeIntervals.map { TimeReportItem(it) }
+                )
         )
 
         val actual = repository.findAll(1, 0, 10)
@@ -243,21 +249,35 @@ class TimeReportInMemoryRepositoryTest {
 
     @Test
     fun `find all with time intervals for different days`() {
-        val ti1 = TimeInterval.builder(1)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(10)
-                .build()
-        val ti2 = TimeInterval.builder(1)
-                .id(2)
-                .startInMilliseconds(90000000)
-                .stopInMilliseconds(93000000)
-                .build()
-        val timeIntervals = listOf(ti1, ti2)
-        val repository = TimeReportInMemoryRepository(timeIntervals)
-        val expected = mapOf(
-                resetToStartOfDay(ti1.startInMilliseconds) to setOf(TimeReportItem(ti1)),
-                resetToStartOfDay(ti2.startInMilliseconds) to setOf(TimeReportItem(ti2))
+        val firstTimeInterval = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            startInMilliseconds = 90000000
+            stopInMilliseconds = 93000000
+        }
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        firstTimeInterval,
+                        secondTimeInterval
+                )
+        )
+        val expected = listOf(
+                TimeReportGroup(
+                        resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(secondTimeInterval)
+                        )
+                ),
+                TimeReportGroup(
+                        resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(firstTimeInterval)
+                        )
+                )
         )
 
         val actual = repository.findAll(1, 0, 10)
@@ -267,100 +287,134 @@ class TimeReportInMemoryRepositoryTest {
 
     @Test
     fun `find not registered without time intervals`() {
+        val expected = emptyList<TimeReportGroup>()
         val repository = TimeReportInMemoryRepository(emptyList())
 
         val actual = repository.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `find not registered without time intervals for project`() {
-        val timeInterval = TimeInterval.builder(2)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(10)
-                .build()
-        val repository = TimeReportInMemoryRepository(listOf(timeInterval))
+        val expected = emptyList<TimeReportGroup>()
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval {
+                            id = 1
+                            projectId = 2
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 10
+                        }
+                )
+        )
 
-        val actual = repository.findNotRegistered(1,  0, 10)
+        val actual = repository.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `find not registered with time intervals for same day`() {
-        val ti1 = TimeInterval.builder(1)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(10)
-                .build()
-        val ti2 = TimeInterval.builder(1)
-                .id(2)
-                .startInMilliseconds(11)
-                .stopInMilliseconds(30)
-                .build()
-        val ti3 = TimeInterval.builder(1)
-                .id(3)
-                .startInMilliseconds(30)
-                .stopInMilliseconds(45)
-                .register()
-                .build()
-        val timeIntervals = listOf(ti1, ti2, ti3)
-        val repository = TimeReportInMemoryRepository(timeIntervals)
-        val expected = mapOf(
-                resetToStartOfDay(1) to listOf(ti1, ti2)
-                        .map { TimeReportItem(it) }
-                        .toSortedSet(TimeReportItemComparator())
+        val firstTimeInterval = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            startInMilliseconds = 11
+            stopInMilliseconds = 30
+        }
+        val registeredTimeInterval = timeInterval {
+            id = 3
+            startInMilliseconds = 30
+            stopInMilliseconds = 45
+            isRegistered = true
+        }
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        firstTimeInterval,
+                        secondTimeInterval,
+                        registeredTimeInterval
+                )
+        )
+        val expected = listOf(
+                TimeReportGroup(
+                        resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(firstTimeInterval),
+                                TimeReportItem(secondTimeInterval)
+                        )
+                )
         )
 
-        val actual = repository.findNotRegistered(1,  0, 10)
+        val actual = repository.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `find not registered with time interval for different days`() {
-        val ti1 = TimeInterval.builder(1)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(10)
-                .build()
-        val ti2 = TimeInterval.builder(1)
-                .id(2)
-                .startInMilliseconds(90000000)
-                .stopInMilliseconds(93000000)
-                .build()
-        val ti3 = TimeInterval.builder(1)
-                .id(2)
-                .startInMilliseconds(180000000)
-                .stopInMilliseconds(183000000)
-                .register()
-                .build()
-        val timeIntervals = listOf(ti1, ti2, ti3)
-        val repository = TimeReportInMemoryRepository(timeIntervals)
-        val expected = mapOf(
-                resetToStartOfDay(ti1.startInMilliseconds) to setOf(TimeReportItem(ti1)),
-                resetToStartOfDay(ti2.startInMilliseconds) to setOf(TimeReportItem(ti2))
+        val firstTimeInterval = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            startInMilliseconds = 90000000
+            stopInMilliseconds = 93000000
+        }
+        val registeredTimeInterval = timeInterval {
+            id = 3
+            startInMilliseconds = 180000000
+            stopInMilliseconds = 183000000
+            isRegistered = true
+        }
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        firstTimeInterval,
+                        secondTimeInterval,
+                        registeredTimeInterval
+                )
+        )
+        val expected = listOf(
+                TimeReportGroup(
+                        resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(secondTimeInterval)
+                        )
+                ),
+                TimeReportGroup(
+                        resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(firstTimeInterval)
+                        )
+                )
         )
 
-        val actual = repository.findNotRegistered(1,  0, 10)
+        val actual = repository.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `find not registered with registered time intervals`() {
-        val timeInterval = TimeInterval.builder(1)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(10)
-                .register()
-                .build()
-        val repository = TimeReportInMemoryRepository(listOf(timeInterval))
+        val expected = emptyList<TimeReportGroup>()
+        val repository = TimeReportInMemoryRepository(
+                listOf(
+                        timeInterval {
+                            id = 1
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 10
+                            isRegistered = true
+                        }
+                )
+        )
 
-        val actual = repository.findNotRegistered(1,  0, 10)
+        val actual = repository.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyMap<Date, Set<TimeInterval>>(), actual)
+        assertEquals(expected, actual)
     }
 }

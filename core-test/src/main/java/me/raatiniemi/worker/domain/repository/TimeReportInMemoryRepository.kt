@@ -16,9 +16,8 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
-import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import java.util.*
 
@@ -45,26 +44,21 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
     }
 
     // TODO: Implement proper support for pagination.
-    private fun filterAndBuildResult(predicate: (TimeInterval) -> Boolean)
-            : TreeMap<Date, Set<TimeReportItem>> {
-        val matchingTimeIntervals = timeIntervals.filter { predicate(it) }
+    private fun filterAndBuildResult(predicate: (TimeInterval) -> Boolean): List<TimeReportGroup> {
+        return timeIntervals.filter { predicate(it) }
                 .groupBy { resetToStartOfDay(it.startInMilliseconds) }
-
-        val timeIntervals = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator())
-        matchingTimeIntervals.forEach {
-            timeIntervals[it.key] = it.value
-                    .map { timeInterval -> TimeReportItem(timeInterval) }
-                    .toSortedSet(TimeReportItemComparator())
-        }
-
-        return timeIntervals
+                .map { entry ->
+                    TimeReportGroup(
+                            entry.key,
+                            entry.value.map { TimeReportItem(it) }
+                    )
+                }
+                .sortedByDescending { it.date }
     }
 
-    override fun findAll(projectId: Long, position: Int, pageSize: Int): Map<Date, Set<TimeReportItem>> {
-        return filterAndBuildResult { it.projectId == projectId }
-    }
+    override fun findAll(projectId: Long, position: Int, pageSize: Int) =
+            filterAndBuildResult { it.projectId == projectId }
 
-    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): Map<Date, Set<TimeReportItem>> {
-        return filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
-    }
+    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int) =
+            filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
 }

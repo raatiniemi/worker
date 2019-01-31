@@ -16,15 +16,14 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import java.util.*
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 
 interface TimeReportRepository {
     fun count(projectId: Long): Int
 
     fun countNotRegistered(projectId: Long): Int
 
-    fun findAll(projectId: Long, position: Int, pageSize: Int): Map<Date, Set<TimeReportItem>>
+    fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportGroup>
 
-    fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): Map<Date, Set<TimeReportItem>>
+    fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportGroup>
 }

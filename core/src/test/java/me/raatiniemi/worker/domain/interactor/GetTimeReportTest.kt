@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
@@ -47,7 +48,7 @@ class GetTimeReportTest {
 
     @Test
     fun execute_hideRegisteredTime() {
-        val expected = emptyMap<Date, TimeReportItem>()
+        val expected = emptyList<TimeReportGroup>()
         val getTimeReport = buildGetTimeReport(emptyList())
 
         val actual = getTimeReport(1, 0, 10, true)
@@ -73,9 +74,12 @@ class GetTimeReportTest {
                         }
                 )
         )
-        val expected = mapOf(
-                resetToStartOfDay(timeInterval.startInMilliseconds) to sortedSetOf(
-                        TimeReportItem(timeInterval)
+        val expected = listOf(
+                TimeReportGroup(
+                        resetToStartOfDay(timeInterval.startInMilliseconds),
+                        listOf(
+                                TimeReportItem(timeInterval)
+                        )
                 )
         )
 
@@ -86,7 +90,7 @@ class GetTimeReportTest {
 
     @Test
     fun execute_withRegisteredTime() {
-        val expected = emptyMap<Date, TimeReportItem>()
+        val expected = emptyList<TimeReportGroup>()
         val getTimeReport = buildGetTimeReport(emptyList())
 
         val actual = getTimeReport(1, 0, 10, false)
@@ -110,10 +114,11 @@ class GetTimeReportTest {
                 }
         )
         val getTimeReport = buildGetTimeReport(timeIntervals)
-        val expected = mapOf(
-                resetToStartOfDay(1) to timeIntervals
-                        .map { TimeReportItem(it) }
-                        .toSortedSet()
+        val expected = listOf(
+                TimeReportGroup(
+                        resetToStartOfDay(1),
+                        timeIntervals.map { TimeReportItem(it) }
+                )
         )
 
         val actual = getTimeReport(1, 0, 10, false)
