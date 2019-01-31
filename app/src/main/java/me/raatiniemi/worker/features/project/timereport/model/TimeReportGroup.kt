@@ -21,7 +21,6 @@ import me.raatiniemi.worker.domain.model.TimeReportGroup
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.util.*
 
-
 fun TimeReportGroup.getTimeSummaryWithDifference(formatter: HoursMinutesFormat): String {
     val timeSummary = formatter.apply(timeSummary)
     val calculatedDifference = timeDifference
@@ -49,6 +48,7 @@ private fun getTimeDifferenceFormat(difference: HoursMinutes): String {
     if (difference.positive) {
         return " (+%s)"
     }
+
     return " (%s)"
 }
 
