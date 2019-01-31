@@ -25,7 +25,7 @@ import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import me.raatiniemi.worker.features.project.timereport.model.buildItemResultsWithGroupIndex
 import me.raatiniemi.worker.features.project.timereport.model.getTimeSummaryWithDifference
-import me.raatiniemi.worker.features.project.timereport.view.GroupItemViewHolder
+import me.raatiniemi.worker.features.project.timereport.view.ViewHolder
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 import me.raatiniemi.worker.util.SelectionListener
@@ -35,7 +35,7 @@ import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator
 internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
         selectionListener: SelectionListener
-) : PagedListAdapter<TimeReportGroup, GroupItemViewHolder>(timeReportDiffCallback) {
+) : PagedListAdapter<TimeReportGroup, ViewHolder>(timeReportDiffCallback) {
     private val selectionManager: SelectionManager<TimeReportAdapterResult>
 
     val selectedItems: List<TimeReportAdapterResult>
@@ -45,14 +45,14 @@ internal class TimeReportAdapter(
         selectionManager = SelectionManagerAdapterDecorator(this, selectionListener)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.fragment_time_report_group_item, parent, false)
+        val view = inflater.inflate(R.layout.fragment_time_report_item, parent, false)
 
-        return GroupItemViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(vh: GroupItemViewHolder, position: Int) {
+    override fun onBindViewHolder(vh: ViewHolder, position: Int) {
         val item = getItem(position)
         if (item == null) {
             vh.clearValues()

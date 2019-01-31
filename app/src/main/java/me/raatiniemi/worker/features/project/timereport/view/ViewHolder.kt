@@ -22,7 +22,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
 
-internal class GroupItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
     val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
     val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)

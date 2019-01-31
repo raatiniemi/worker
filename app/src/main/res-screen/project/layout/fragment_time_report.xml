@@ -8,6 +8,6 @@
         android:id="@+id/rvTimeReport"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/fragment_time_report_group_item" />
+        tools:listitem="@layout/fragment_time_report_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
