@@ -29,10 +29,10 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
+import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
-import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ViewAction
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
@@ -50,6 +50,7 @@ import timber.log.Timber
 
 class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
     private val keyValueStore: KeyValueStore by inject()
+    private val projectHolder: ProjectHolder by inject()
 
     private val vm: TimeReportViewModel by viewModel()
 
@@ -116,9 +117,6 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
     }
 
     private var loading = false
-
-    private val projectId: Long
-        get() = arguments?.getLong(ProjectActivity.MESSAGE_PROJECT_ID, -1) ?: -1
 
     private val hoursMinutesFormat: HoursMinutesFormat
         get() {
@@ -216,7 +214,7 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
     }
 
     private fun loadTimeReportViaViewModel(offset: Int) = launch {
-        vm.fetch(projectId, offset)
+        vm.fetch(projectHolder.project, offset)
     }
 
     override fun onDestroy() {
@@ -255,7 +253,7 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        if (event.projectId == projectId) {
+        if (event.projectId == projectHolder.project) {
             refresh()
             return
         }
@@ -265,11 +263,6 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
     companion object {
         @JvmStatic
-        fun newInstance(bundle: Bundle): TimeReportFragment {
-            val fragment = TimeReportFragment()
-            fragment.arguments = bundle
-
-            return fragment
-        }
+        fun newInstance() = TimeReportFragment()
     }
 }

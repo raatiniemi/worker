@@ -19,11 +19,16 @@ package me.raatiniemi.worker.features.project
 import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
+import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 val projectModule = module {
+    single {
+        ProjectHolder()
+    }
+
     viewModel {
         TimeReportViewModel(
                 get(),

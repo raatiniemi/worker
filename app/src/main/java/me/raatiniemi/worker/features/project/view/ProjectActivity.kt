@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.view.TimeReportFragment
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
 import me.raatiniemi.worker.util.KeyValueStore
@@ -31,6 +32,7 @@ import org.koin.android.ext.android.inject
 
 class ProjectActivity : BaseActivity() {
     private val keyValueStore: KeyValueStore by inject()
+    private val projectHolder: ProjectHolder by inject()
 
     private lateinit var timeReportFragment: TimeReportFragment
 
@@ -38,7 +40,8 @@ class ProjectActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
 
-        timeReportFragment = TimeReportFragment.newInstance(intent.extras!!)
+        projectHolder.project = intent.getLongExtra(ProjectActivity.MESSAGE_PROJECT_ID, -1)
+        timeReportFragment = TimeReportFragment.newInstance()
 
         if (isNull(savedInstanceState)) {
             supportFragmentManager.beginTransaction()
