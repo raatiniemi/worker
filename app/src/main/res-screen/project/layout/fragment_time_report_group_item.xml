@@ -33,7 +33,7 @@
         tools:text="Monday (March 9th)" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvSummary"
+        android:id="@+id/tvTimeSummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"

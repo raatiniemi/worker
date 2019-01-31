@@ -61,7 +61,7 @@ internal class TimeReportAdapter(
 
         with(vh) {
             title.text = shortDayMonthDayInMonth(item.date)
-            summarize.text = item.getTimeSummaryWithDifference(formatter)
+            timeSummary.text = item.getTimeSummaryWithDifference(formatter)
 
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
