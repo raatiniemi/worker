@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.PositionalDataSource
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
@@ -26,7 +26,7 @@ internal class TimeReportDataSource(
         private val projectId: Long,
         private val keyValueStore: KeyValueStore,
         private val repository: TimeReportRepository
-) : PositionalDataSource<TimeReportGroup>() {
+) : PositionalDataSource<TimeReportDay>() {
     private val shouldHideRegisteredTime: Boolean
         get() = keyValueStore.bool(
                 AppKeys.HIDE_REGISTERED_TIME.rawValue,
@@ -41,7 +41,7 @@ internal class TimeReportDataSource(
         }
     }
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<TimeReportGroup>) {
+    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<TimeReportDay>) {
         val totalCount = countTotal()
         val position = computeInitialLoadPosition(params, totalCount)
         val loadSize = computeInitialLoadSize(params, position, totalCount)
@@ -53,7 +53,7 @@ internal class TimeReportDataSource(
         )
     }
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<TimeReportGroup>) {
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<TimeReportDay>) {
         callback.onResult(repository.findAll(projectId, params.startPosition, params.loadSize))
     }
 }

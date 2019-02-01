@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import org.junit.Assert.assertEquals
@@ -193,7 +193,7 @@ class TimeReportInMemoryRepositoryTest {
 
     @Test
     fun `find all without time intervals`() {
-        val expected = emptyList<TimeReportGroup>()
+        val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(emptyList())
 
         val actual = repository.findAll(1, 0, 10)
@@ -203,7 +203,7 @@ class TimeReportInMemoryRepositoryTest {
 
     @Test
     fun `find all without time interval for project`() {
-        val expected = emptyList<TimeReportGroup>()
+        val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(
                 listOf(
                         timeInterval {
@@ -236,7 +236,7 @@ class TimeReportInMemoryRepositoryTest {
         )
         val repository = TimeReportInMemoryRepository(timeIntervals)
         val expected = listOf(
-                TimeReportGroup(
+                TimeReportDay(
                         resetToStartOfDay(1),
                         timeIntervals.map { TimeReportItem(it) }
                 )
@@ -266,13 +266,13 @@ class TimeReportInMemoryRepositoryTest {
                 )
         )
         val expected = listOf(
-                TimeReportGroup(
+                TimeReportDay(
                         resetToStartOfDay(secondTimeInterval.startInMilliseconds),
                         listOf(
                                 TimeReportItem(secondTimeInterval)
                         )
                 ),
-                TimeReportGroup(
+                TimeReportDay(
                         resetToStartOfDay(firstTimeInterval.startInMilliseconds),
                         listOf(
                                 TimeReportItem(firstTimeInterval)
@@ -287,7 +287,7 @@ class TimeReportInMemoryRepositoryTest {
 
     @Test
     fun `find not registered without time intervals`() {
-        val expected = emptyList<TimeReportGroup>()
+        val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(emptyList())
 
         val actual = repository.findNotRegistered(1, 0, 10)
@@ -297,7 +297,7 @@ class TimeReportInMemoryRepositoryTest {
 
     @Test
     fun `find not registered without time intervals for project`() {
-        val expected = emptyList<TimeReportGroup>()
+        val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(
                 listOf(
                         timeInterval {
@@ -340,7 +340,7 @@ class TimeReportInMemoryRepositoryTest {
                 )
         )
         val expected = listOf(
-                TimeReportGroup(
+                TimeReportDay(
                         resetToStartOfDay(firstTimeInterval.startInMilliseconds),
                         listOf(
                                 TimeReportItem(firstTimeInterval),
@@ -380,13 +380,13 @@ class TimeReportInMemoryRepositoryTest {
                 )
         )
         val expected = listOf(
-                TimeReportGroup(
+                TimeReportDay(
                         resetToStartOfDay(secondTimeInterval.startInMilliseconds),
                         listOf(
                                 TimeReportItem(secondTimeInterval)
                         )
                 ),
-                TimeReportGroup(
+                TimeReportDay(
                         resetToStartOfDay(firstTimeInterval.startInMilliseconds),
                         listOf(
                                 TimeReportItem(firstTimeInterval)
@@ -401,7 +401,7 @@ class TimeReportInMemoryRepositoryTest {
 
     @Test
     fun `find not registered with registered time intervals`() {
-        val expected = emptyList<TimeReportGroup>()
+        val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(
                 listOf(
                         timeInterval {

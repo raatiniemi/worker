@@ -18,7 +18,7 @@ package me.raatiniemi.worker.domain.model
 
 import java.util.*
 
-data class TimeReportGroup(val date: Date, val items: List<TimeReportItem>) {
+data class TimeReportDay(val date: Date, val items: List<TimeReportItem>) {
     val isRegistered: Boolean
         get() = items.any { it.isRegistered }
 

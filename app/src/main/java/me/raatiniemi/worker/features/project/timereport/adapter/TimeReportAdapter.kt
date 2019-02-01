@@ -20,7 +20,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.model.getTimeSummaryWithDifference
@@ -34,7 +34,7 @@ import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator
 internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
         selectionListener: SelectionListener
-) : PagedListAdapter<TimeReportGroup, ViewHolder>(timeReportDiffCallback) {
+) : PagedListAdapter<TimeReportDay, ViewHolder>(timeReportDiffCallback) {
     private val selectionManager: SelectionManager<TimeReportItem>
 
     val selectedItems: List<TimeReportItem>
@@ -52,15 +52,15 @@ internal class TimeReportAdapter(
     }
 
     override fun onBindViewHolder(vh: ViewHolder, position: Int) {
-        val item = getItem(position)
-        if (item == null) {
+        val day = getItem(position)
+        if (day == null) {
             vh.clearValues()
             return
         }
 
         with(vh) {
-            title.text = shortDayMonthDayInMonth(item.date)
-            timeSummary.text = item.getTimeSummaryWithDifference(formatter)
+            title.text = shortDayMonthDayInMonth(day.date)
+            timeSummary.text = day.getTimeSummaryWithDifference(formatter)
 
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
@@ -70,7 +70,7 @@ internal class TimeReportAdapter(
                     return@setOnLongClickListener false
                 }
 
-                selectionManager.selectItems(item.items)
+                selectionManager.selectItems(day.items)
                 true
             }
 
@@ -79,20 +79,20 @@ internal class TimeReportAdapter(
                     return@setOnClickListener
                 }
 
-                if (selectionManager.isSelected(item.items)) {
-                    selectionManager.deselectItems(item.items)
+                if (selectionManager.isSelected(day.items)) {
+                    selectionManager.deselectItems(day.items)
                     return@setOnClickListener
                 }
-                selectionManager.selectItems(item.items)
+                selectionManager.selectItems(day.items)
             }
 
-            itemView.isSelected = selectionManager.isSelected(item.items)
+            itemView.isSelected = selectionManager.isSelected(day.items)
 
             // In case the item have been selected, we should not activate
             // it. The selected background color should take precedence.
             itemView.isActivated = false
             if (!itemView.isSelected) {
-                itemView.isActivated = item.isRegistered
+                itemView.isActivated = day.isRegistered
             }
         }
     }

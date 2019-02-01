@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.features.project.timereport.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 
-internal val timeReportDiffCallback = object : DiffUtil.ItemCallback<TimeReportGroup>() {
-    override fun areItemsTheSame(old: TimeReportGroup, new: TimeReportGroup) = old.date == new.date
+internal val timeReportDiffCallback = object : DiffUtil.ItemCallback<TimeReportDay>() {
+    override fun areItemsTheSame(old: TimeReportDay, new: TimeReportDay) = old.date == new.date
 
-    override fun areContentsTheSame(old: TimeReportGroup, new: TimeReportGroup) = old == new
+    override fun areContentsTheSame(old: TimeReportDay, new: TimeReportDay) = old == new
 }

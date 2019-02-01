@@ -19,7 +19,7 @@ package me.raatiniemi.worker.data.repository
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import java.util.*
@@ -32,23 +32,23 @@ internal class TimeReportRoomRepository(
 
     override fun countNotRegistered(projectId: Long) = timeReport.countNotRegistered(projectId)
 
-    private fun transform(group: TimeReportQueryGroup): TimeReportGroup {
+    private fun transform(group: TimeReportQueryGroup): TimeReportDay {
         val map = group.mapNotNull { timeIntervals.find(it) }
                 .map { it.toTimeInterval() }
                 .map { TimeReportItem.with(it) }
 
-        return TimeReportGroup(
+        return TimeReportDay(
                 Date(group.dateInMilliseconds),
                 map
         )
     }
 
-    override fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportGroup> {
+    override fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay> {
         return timeReport.findAll(projectId, position, pageSize)
                 .map { transform(it) }
     }
 
-    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportGroup> {
+    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay> {
         return timeReport.findNotRegistered(projectId, position, pageSize)
                 .map { transform(it) }
     }

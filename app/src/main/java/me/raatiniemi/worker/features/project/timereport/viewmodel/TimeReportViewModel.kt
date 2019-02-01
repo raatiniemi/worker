@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
@@ -46,7 +46,7 @@ class TimeReportViewModel internal constructor(
             repository
     )
 
-    val timeReport: LiveData<PagedList<TimeReportGroup>>
+    val timeReport: LiveData<PagedList<TimeReportDay>>
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 

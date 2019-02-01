@@ -17,11 +17,11 @@
 package me.raatiniemi.worker.features.project.timereport.model
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import java.util.*
 
-fun TimeReportGroup.getTimeSummaryWithDifference(formatter: HoursMinutesFormat): String {
+fun TimeReportDay.getTimeSummaryWithDifference(formatter: HoursMinutesFormat): String {
     val timeSummary = formatter.apply(timeSummary)
     val calculatedDifference = timeDifference
 

@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.model
 
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
@@ -38,12 +38,12 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
-        val item = TimeReportGroup(
+        val day = TimeReportDay(
                 Date(),
                 timeIntervals.map { TimeReportItem.with(it) }
         )
 
-        assertEquals(expected, item.getTimeSummaryWithDifference(formatter))
+        assertEquals(expected, day.getTimeSummaryWithDifference(formatter))
     }
 
     companion object {

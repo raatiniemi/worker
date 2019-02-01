@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
-import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.util.KeyValueStore
 
@@ -25,6 +25,6 @@ internal class TimeReportDataSourceFactory(
         val projectId: Long,
         val keyValueStore: KeyValueStore,
         val repository: TimeReportRepository
-) : DataSource.Factory<Int, TimeReportGroup>() {
+) : DataSource.Factory<Int, TimeReportDay>() {
     override fun create() = TimeReportDataSource(projectId, keyValueStore, repository)
 }

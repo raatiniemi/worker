@@ -24,15 +24,15 @@ import org.junit.runners.Parameterized.Parameters
 import java.util.*
 
 @RunWith(Parameterized::class)
-class TimeReportGroupIsRegisteredTest(
+class TimeReportDayIsRegisteredTest(
         private val expected: Boolean,
         private val items: List<TimeReportItem>
 ) {
     @Test
     fun isRegistered() {
-        val item = TimeReportGroup(Date(), items)
+        val day = TimeReportDay(Date(), items)
 
-        assertEquals(expected, item.isRegistered)
+        assertEquals(expected, day.isRegistered)
     }
 
     companion object {
