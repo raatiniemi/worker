@@ -21,9 +21,8 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.features.project.timereport.model.buildItemResultsWithGroupIndex
 import me.raatiniemi.worker.features.project.timereport.model.getTimeSummaryWithDifference
 import me.raatiniemi.worker.features.project.timereport.view.ViewHolder
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
@@ -36,9 +35,9 @@ internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
         selectionListener: SelectionListener
 ) : PagedListAdapter<TimeReportGroup, ViewHolder>(timeReportDiffCallback) {
-    private val selectionManager: SelectionManager<TimeReportAdapterResult>
+    private val selectionManager: SelectionManager<TimeReportItem>
 
-    val selectedItems: List<TimeReportAdapterResult>
+    val selectedItems: List<TimeReportItem>
         get() = selectionManager.selectedItems
 
     init {
@@ -66,14 +65,12 @@ internal class TimeReportAdapter(
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
 
-            val results = item.buildItemResultsWithGroupIndex(position)
-
             letter.setOnLongClickListener {
                 if (selectionManager.isSelectionActivated) {
                     return@setOnLongClickListener false
                 }
 
-                selectionManager.selectItems(results)
+                selectionManager.selectItems(item.items)
                 true
             }
 
@@ -82,14 +79,14 @@ internal class TimeReportAdapter(
                     return@setOnClickListener
                 }
 
-                if (selectionManager.isSelected(results)) {
-                    selectionManager.deselectItems(results)
+                if (selectionManager.isSelected(item.items)) {
+                    selectionManager.deselectItems(item.items)
                     return@setOnClickListener
                 }
-                selectionManager.selectItems(results)
+                selectionManager.selectItems(item.items)
             }
 
-            itemView.isSelected = selectionManager.isSelected(results)
+            itemView.isSelected = selectionManager.isSelected(item.items)
 
             // In case the item have been selected, we should not activate
             // it. The selected background color should take precedence.

@@ -26,9 +26,9 @@ import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.TimeReportGroup
+import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.KeyValueStore
@@ -65,9 +65,11 @@ class TimeReportViewModel internal constructor(
         }
     }
 
-    suspend fun register(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
+    suspend fun register(timeReportItems: List<TimeReportItem>) = withContext(Dispatchers.IO) {
         try {
-            val timeIntervals = results.map { it.timeInterval }
+            val timeIntervals = timeReportItems.map {
+                it.asTimeInterval()
+            }
             markRegisteredTime(timeIntervals)
 
             reloadTimeReport()
@@ -76,10 +78,12 @@ class TimeReportViewModel internal constructor(
         }
     }
 
-    suspend fun remove(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
+    suspend fun remove(timeReportItems: List<TimeReportItem>) = withContext(Dispatchers.IO) {
         try {
-            val timeInterval = results.map { it.timeInterval }
-            removeTime(timeInterval)
+            val timeIntervals = timeReportItems.map {
+                it.asTimeInterval()
+            }
+            removeTime(timeIntervals)
 
             reloadTimeReport()
         } catch (e: Exception) {

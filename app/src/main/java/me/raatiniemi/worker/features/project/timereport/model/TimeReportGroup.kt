@@ -51,9 +51,3 @@ private fun getTimeDifferenceFormat(difference: HoursMinutes): String {
 
     return " (%s)"
 }
-
-fun TimeReportGroup.buildItemResultsWithGroupIndex(groupIndex: Int): List<TimeReportAdapterResult> {
-    return items.mapIndexed { childIndex, item ->
-        TimeReportAdapterResult(groupIndex, childIndex, item)
-    }
-}

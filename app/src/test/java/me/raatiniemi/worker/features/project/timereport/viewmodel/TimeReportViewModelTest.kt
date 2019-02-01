@@ -29,7 +29,6 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -77,14 +76,14 @@ class TimeReportViewModelTest {
                 )
         )
         val timeInterval = timeInterval { id = 1 }
-        val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval))
+        val timeReportItems = listOf(
+                TimeReportItem.with(timeInterval)
         )
         val expected = listOf(
                 timeInterval.copy(isRegistered = true)
         )
 
-        vm.register(results)
+        vm.register(timeReportItems)
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
@@ -100,16 +99,16 @@ class TimeReportViewModelTest {
         )
         val firstTimeInterval = timeInterval { id = 1 }
         val secondTimeInterval = timeInterval { id = 2 }
-        val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem.with(firstTimeInterval)),
-                TimeReportAdapterResult(0, 1, TimeReportItem.with(secondTimeInterval))
+        val timeReportItems = listOf(
+                TimeReportItem.with(firstTimeInterval),
+                TimeReportItem.with(secondTimeInterval)
         )
         val expected = listOf(
                 firstTimeInterval.copy(isRegistered = true),
                 secondTimeInterval.copy(isRegistered = true)
         )
 
-        vm.register(results)
+        vm.register(timeReportItems)
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
@@ -121,12 +120,12 @@ class TimeReportViewModelTest {
                 timeInterval { }
         ))
         val timeInterval = timeInterval { id = 1 }
-        val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval))
+        val timeReportItems = listOf(
+                TimeReportItem(timeInterval)
         )
         val expected = emptyList<TimeInterval>()
 
-        vm.remove(results)
+        vm.remove(timeReportItems)
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
@@ -138,13 +137,13 @@ class TimeReportViewModelTest {
                 timeInterval { },
                 timeInterval { }
         ))
-        val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval { id = 1 })),
-                TimeReportAdapterResult(0, 1, TimeReportItem(timeInterval { id = 2 }))
+        val timeReportItems = listOf(
+                TimeReportItem(timeInterval { id = 1 }),
+                TimeReportItem(timeInterval { id = 2 })
         )
         val expected = emptyList<TimeInterval>()
 
-        vm.remove(results)
+        vm.remove(timeReportItems)
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
