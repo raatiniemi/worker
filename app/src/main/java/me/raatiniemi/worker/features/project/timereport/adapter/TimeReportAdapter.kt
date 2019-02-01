@@ -46,7 +46,7 @@ internal class TimeReportAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.fragment_time_report_item, parent, false)
+        val view = inflater.inflate(R.layout.fragment_time_report_day, parent, false)
 
         return ViewHolder(view)
     }
