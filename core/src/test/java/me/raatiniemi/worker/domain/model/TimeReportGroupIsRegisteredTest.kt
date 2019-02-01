@@ -30,7 +30,7 @@ class TimeReportGroupIsRegisteredTest(
 ) {
     @Test
     fun isRegistered() {
-        val item: TimeReportGroup = TimeReportGroup.build(Date(), items.toSortedSet())
+        val item = TimeReportGroup(Date(), items)
 
         assertEquals(expected, item.isRegistered)
     }

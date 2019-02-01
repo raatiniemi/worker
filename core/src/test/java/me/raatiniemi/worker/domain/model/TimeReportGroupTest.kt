@@ -31,10 +31,9 @@ class TimeReportGroupTest(
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
-        val item: TimeReportGroup = TimeReportGroup.build(
+        val item = TimeReportGroup(
                 Date(),
                 timeIntervals.map { TimeReportItem.with(it) }
-                        .toSortedSet()
         )
 
         assertEquals(expectedTimeSummary, item.timeSummary)

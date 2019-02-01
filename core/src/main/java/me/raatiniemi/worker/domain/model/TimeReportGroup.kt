@@ -34,13 +34,4 @@ data class TimeReportGroup(val date: Date, val items: List<TimeReportItem>) {
     val timeDifference: HoursMinutes by lazy {
         timeSummary - HoursMinutes(8, 0)
     }
-
-    companion object {
-        fun build(date: Date, timeReportItems: SortedSet<TimeReportItem>): TimeReportGroup {
-            val items = ArrayList<TimeReportItem>()
-            items.addAll(timeReportItems)
-
-            return TimeReportGroup(date, items)
-        }
-    }
 }
