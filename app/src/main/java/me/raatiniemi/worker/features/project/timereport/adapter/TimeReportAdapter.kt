@@ -92,13 +92,13 @@ internal class TimeReportAdapter(
                 selectionManager.selectItems(day.items)
             }
 
-            itemView.isSelected = selectionManager.isSelected(day.items)
+            header.isSelected = selectionManager.isSelected(day.items)
 
             // In case the item have been selected, we should not activate
             // it. The selected background color should take precedence.
-            itemView.isActivated = false
-            if (!itemView.isSelected) {
-                itemView.isActivated = day.isRegistered
+            header.isActivated = false
+            if (!header.isSelected) {
+                header.isActivated = day.isRegistered
             }
 
             items.visibility = if (expandedItems.contains(position)) {
@@ -121,13 +121,45 @@ internal class TimeReportAdapter(
         val layoutInflater = LayoutInflater.from(parent.context)
 
         parent.removeAllViews()
-        items.forEach {
+        items.forEach { item ->
             val view = layoutInflater.inflate(R.layout.fragment_time_report_item, parent, false)
-            val vh = ItemViewHolder(view)
+            ItemViewHolder(view).apply {
+                timeInterval.text = item.title
+                timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
 
-            with(vh) {
-                timeInterval.text = it.title
-                timeSummary.text = it.getTimeSummaryWithFormatter(formatter)
+                itemView.setOnLongClickListener {
+                    if (selectionManager.isSelectionActivated) {
+                        return@setOnLongClickListener false
+                    }
+
+                    if (selectionManager.isSelected(item)) {
+                        return@setOnLongClickListener false
+                    }
+
+                    selectionManager.selectItem(item)
+                    true
+                }
+                itemView.setOnClickListener {
+                    if (!selectionManager.isSelectionActivated) {
+                        return@setOnClickListener
+                    }
+
+                    if (selectionManager.isSelected(item)) {
+                        selectionManager.deselectItem(item)
+                        return@setOnClickListener
+                    }
+
+                    selectionManager.selectItem(item)
+                }
+
+                itemView.isSelected = selectionManager.isSelected(item)
+
+                // In case the item have been selected, we should not activate
+                // it. The selected background color should take precedence.
+                itemView.isActivated = false
+                if (!itemView.isSelected) {
+                    itemView.isActivated = item.isRegistered
+                }
             }
 
             parent.addView(view)

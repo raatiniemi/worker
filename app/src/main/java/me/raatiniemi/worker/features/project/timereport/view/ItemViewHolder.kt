@@ -18,9 +18,11 @@ package me.raatiniemi.worker.features.project.timereport.view
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import me.raatiniemi.worker.R
 
 class ItemViewHolder(view: View) {
+    val itemView: ConstraintLayout = view.findViewById(R.id.clItem)
     val timeInterval: AppCompatTextView = view.findViewById(R.id.tvTimeInterval)
     val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
 }
