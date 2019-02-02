@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.paging.PagedListAdapter
@@ -38,6 +39,7 @@ internal class TimeReportAdapter(
         selectionListener: SelectionListener
 ) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
     private val selectionManager: SelectionManager<TimeReportItem>
+    private val expandedItems = mutableSetOf<Int>()
 
     val selectedItems: List<TimeReportItem>
         get() = selectionManager.selectedItems
@@ -97,6 +99,20 @@ internal class TimeReportAdapter(
             itemView.isActivated = false
             if (!itemView.isSelected) {
                 itemView.isActivated = day.isRegistered
+            }
+
+            items.visibility = if (expandedItems.contains(position)) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            itemView.setOnClickListener {
+                if (items.visibility == View.VISIBLE) {
+                    expandedItems.remove(position)
+                } else {
+                    expandedItems.add(position)
+                }
+                notifyItemChanged(position)
             }
         }
     }
