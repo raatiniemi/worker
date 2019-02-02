@@ -18,13 +18,15 @@ package me.raatiniemi.worker.features.project.timereport.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.model.getTimeSummaryWithDifference
-import me.raatiniemi.worker.features.project.timereport.view.ViewHolder
+import me.raatiniemi.worker.features.project.timereport.view.DayViewHolder
+import me.raatiniemi.worker.features.project.timereport.view.ItemViewHolder
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 import me.raatiniemi.worker.util.SelectionListener
@@ -34,7 +36,7 @@ import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator
 internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
         selectionListener: SelectionListener
-) : PagedListAdapter<TimeReportDay, ViewHolder>(timeReportDiffCallback) {
+) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
     private val selectionManager: SelectionManager<TimeReportItem>
 
     val selectedItems: List<TimeReportItem>
@@ -44,14 +46,14 @@ internal class TimeReportAdapter(
         selectionManager = SelectionManagerAdapterDecorator(this, selectionListener)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.fragment_time_report_day, parent, false)
 
-        return ViewHolder(view)
+        return DayViewHolder(view)
     }
 
-    override fun onBindViewHolder(vh: ViewHolder, position: Int) {
+    override fun onBindViewHolder(vh: DayViewHolder, position: Int) {
         val day = getItem(position)
         if (day == null) {
             vh.clearValues()
@@ -64,6 +66,8 @@ internal class TimeReportAdapter(
 
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
+
+            buildTimeReportItemList(items, day.items)
 
             letter.setOnLongClickListener {
                 if (selectionManager.isSelectionActivated) {
@@ -94,6 +98,23 @@ internal class TimeReportAdapter(
             if (!itemView.isSelected) {
                 itemView.isActivated = day.isRegistered
             }
+        }
+    }
+
+    private fun buildTimeReportItemList(parent: LinearLayoutCompat, items: List<TimeReportItem>) {
+        val layoutInflater = LayoutInflater.from(parent.context)
+
+        parent.removeAllViews()
+        items.forEach {
+            val view = layoutInflater.inflate(R.layout.fragment_time_report_item, parent, false)
+            val vh = ItemViewHolder(view)
+
+            with(vh) {
+                timeInterval.text = it.title
+                timeSummary.text = it.getTimeSummaryWithFormatter(formatter)
+            }
+
+            parent.addView(view)
         }
     }
 

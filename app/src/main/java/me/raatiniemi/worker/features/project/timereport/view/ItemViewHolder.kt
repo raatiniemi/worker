@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,18 +17,10 @@
 package me.raatiniemi.worker.features.project.timereport.view
 
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
 
-internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
-    val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
+class ItemViewHolder(view: View) {
+    val timeInterval: AppCompatTextView = view.findViewById(R.id.tvTimeInterval)
     val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
-
-    fun clearValues() {
-        title.text = null
-        timeSummary.text = null
-    }
 }
