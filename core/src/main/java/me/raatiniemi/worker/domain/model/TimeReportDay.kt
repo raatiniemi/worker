@@ -20,7 +20,7 @@ import java.util.*
 
 data class TimeReportDay(val date: Date, val items: List<TimeReportItem>) {
     val isRegistered: Boolean
-        get() = items.any { it.isRegistered }
+        get() = items.all { it.isRegistered }
 
     val timeSummary: HoursMinutes by lazy {
         accumulatedHoursMinutes()
