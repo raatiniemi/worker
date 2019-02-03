@@ -52,7 +52,10 @@ class TimeReportViewModel internal constructor(
 
     init {
         val config = PagedList.Config.Builder()
-                .setPageSize(15)
+                .setInitialLoadSizeHint(1)
+                .setPrefetchDistance(2)
+                .setPageSize(8)
+                .setMaxSize(15)
                 .setEnablePlaceholders(true)
                 .build()
 
