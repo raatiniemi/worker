@@ -50,7 +50,8 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
                 .map { entry ->
                     TimeReportDay(
                             entry.key,
-                            entry.value.map { TimeReportItem(it) }
+                            entry.value.sortedByDescending { it.startInMilliseconds }
+                                    .map { TimeReportItem(it) }
                     )
                 }
                 .sortedByDescending { it.date }

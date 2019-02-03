@@ -221,8 +221,8 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val timeIntervals = listOf(
-                firstTimeInterval.copy(id = 1).toTimeInterval(),
-                secondTimeInterval.copy(id = 2).toTimeInterval()
+                secondTimeInterval.copy(id = 2).toTimeInterval(),
+                firstTimeInterval.copy(id = 1).toTimeInterval()
         )
         val expected = listOf(
                 TimeReportDay(
@@ -367,8 +367,8 @@ class TimeReportRoomRepositoryTest {
                 TimeReportDay(
                         Date(firstTimeInterval.startInMilliseconds),
                         listOf(
-                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval()),
-                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
+                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval()),
+                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
                         )
                 )
         )
