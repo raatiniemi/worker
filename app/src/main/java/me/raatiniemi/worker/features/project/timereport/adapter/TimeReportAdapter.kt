@@ -63,7 +63,7 @@ internal class TimeReportAdapter(
         }
 
         with(vh) {
-            title.text = shortDayMonthDayInMonth(day.date)
+            title.text = shortDayMonthDayInMonth(day.date).capitalize()
             timeSummary.text = day.getTimeSummaryWithDifference(formatter)
 
             val firstLetterInTitle = title.text.run { first().toString() }
