@@ -18,11 +18,9 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
-import me.raatiniemi.worker.data.projects.TimeReportDay
-import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
-import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
+import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.repository.PageRequest
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import java.util.*
 
@@ -30,35 +28,29 @@ internal class TimeReportRoomRepository(
         private val timeReport: TimeReportDao,
         private val timeIntervals: TimeIntervalDao
 ) : TimeReportRepository {
-    private fun transform(timeReportDay: TimeReportDay): Pair<Date, Set<TimeReportItem>> {
-        val map = timeReportDay.timeIntervalIds
-                .mapNotNull { timeIntervals.find(it) }
+    override fun count(projectId: Long) = timeReport.count(projectId)
+
+    override fun countNotRegistered(projectId: Long) = timeReport.countNotRegistered(projectId)
+
+    private fun transform(group: TimeReportQueryGroup): TimeReportDay {
+        val map = group.mapNotNull { timeIntervals.find(it) }
                 .map { it.toTimeInterval() }
+                .sortedByDescending { it.startInMilliseconds }
                 .map { TimeReportItem.with(it) }
 
-        return Pair(
-                Date(timeReportDay.dateInMilliseconds),
-                map.toSortedSet(TimeReportItemComparator())
+        return TimeReportDay(
+                Date(group.dateInMilliseconds),
+                map
         )
     }
 
-    override fun getTimeReport(
-            projectId: Long,
-            pageRequest: PageRequest
-    ): Map<Date, Set<TimeReportItem>> {
-        return timeReport.findAll(projectId, pageRequest.offset, pageRequest.maxResults)
+    override fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay> {
+        return timeReport.findAll(projectId, position, pageSize)
                 .map { transform(it) }
-                .toMap()
-                .toSortedMap(TimeReportDateComparator())
     }
 
-    override fun getTimeReportWithoutRegisteredEntries(
-            projectId: Long,
-            pageRequest: PageRequest
-    ): Map<Date, Set<TimeReportItem>> {
-        return timeReport.findAllUnregistered(projectId, pageRequest.offset, pageRequest.maxResults)
+    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay> {
+        return timeReport.findNotRegistered(projectId, position, pageSize)
                 .map { transform(it) }
-                .toMap()
-                .toSortedMap(TimeReportDateComparator())
     }
 }

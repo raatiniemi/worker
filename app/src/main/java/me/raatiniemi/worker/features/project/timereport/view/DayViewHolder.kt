@@ -17,11 +17,24 @@
 package me.raatiniemi.worker.features.project.timereport.view
 
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.R
 
-internal class ChildItemViewHolder(view: View) : AbstractExpandableItemViewHolder(view) {
+internal class DayViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    val header: ConstraintLayout = view.findViewById(R.id.clHeader)
+    val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
     val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
-    val summarize: AppCompatTextView = view.findViewById(R.id.tvSummary)
+    val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
+    val items: LinearLayoutCompat = view.findViewById(R.id.llItems)
+
+    fun clearValues() {
+        title.text = null
+        timeSummary.text = null
+
+        items.removeAllViews()
+    }
 }

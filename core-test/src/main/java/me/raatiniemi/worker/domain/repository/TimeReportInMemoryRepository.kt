@@ -16,13 +16,22 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.comparator.TimeReportDateComparator
-import me.raatiniemi.worker.domain.comparator.TimeReportItemComparator
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import java.util.*
 
 class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) : TimeReportRepository {
+    override fun count(projectId: Long) = timeIntervals
+            .filter { it.projectId == projectId }
+            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+            .count()
+
+    override fun countNotRegistered(projectId: Long) = timeIntervals
+            .filter { it.projectId == projectId && !it.isRegistered }
+            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+            .count()
+
     private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMilliseconds
@@ -35,32 +44,22 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
     }
 
     // TODO: Implement proper support for pagination.
-    private fun filterAndBuildResult(predicate: (TimeInterval) -> Boolean)
-            : TreeMap<Date, Set<TimeReportItem>> {
-        val matchingTimeIntervals = timeIntervals.filter { predicate(it) }
+    private fun filterAndBuildResult(predicate: (TimeInterval) -> Boolean): List<TimeReportDay> {
+        return timeIntervals.filter { predicate(it) }
                 .groupBy { resetToStartOfDay(it.startInMilliseconds) }
-
-        val timeIntervals = TreeMap<Date, Set<TimeReportItem>>(TimeReportDateComparator())
-        matchingTimeIntervals.forEach {
-            timeIntervals[it.key] = it.value
-                    .map { timeInterval -> TimeReportItem(timeInterval) }
-                    .toSortedSet(TimeReportItemComparator())
-        }
-
-        return timeIntervals
+                .map { entry ->
+                    TimeReportDay(
+                            entry.key,
+                            entry.value.sortedByDescending { it.startInMilliseconds }
+                                    .map { TimeReportItem(it) }
+                    )
+                }
+                .sortedByDescending { it.date }
     }
 
-    override fun getTimeReport(
-            projectId: Long,
-            pageRequest: PageRequest
-    ): Map<Date, Set<TimeReportItem>> {
-        return filterAndBuildResult { it.projectId == projectId }
-    }
+    override fun findAll(projectId: Long, position: Int, pageSize: Int) =
+            filterAndBuildResult { it.projectId == projectId }
 
-    override fun getTimeReportWithoutRegisteredEntries(
-            projectId: Long,
-            pageRequest: PageRequest
-    ): Map<Date, Set<TimeReportItem>> {
-        return filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
-    }
+    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int) =
+            filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
 }

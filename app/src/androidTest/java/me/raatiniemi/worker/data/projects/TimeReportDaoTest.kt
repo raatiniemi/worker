@@ -21,6 +21,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportDaoTest : BaseDaoTest() {
@@ -32,10 +33,110 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
+    fun count_withoutTimeIntervals() {
+        val expected = 0
+
+        val actual = timeReport.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeInterval() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = timeReport.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeIntervalsOnSameDay() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = timeReport.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun count_withTimeIntervalsOnDifferentDays() {
+        val expected = 2
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity {
+            startInMilliseconds = Date().time
+        })
+
+        val actual = timeReport.count(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withoutTimeIntervals() {
+        val expected = 0
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeInterval() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeIntervalsOnSameDay() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity { })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withRegisteredTimeIntervalOnDifferentDays() {
+        val expected = 1
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity {
+            startInMilliseconds = Date().time
+            registered = true
+        })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun countNotRegistered_withTimeIntervalsOnDifferentDays() {
+        val expected = 2
+        timeIntervals.add(timeIntervalEntity { })
+        timeIntervals.add(timeIntervalEntity {
+            startInMilliseconds = Date().time
+        })
+
+        val actual = timeReport.countNotRegistered(1)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun findAll_withoutTimeIntervals() {
         val actual = timeReport.findAll(1, 0, 10)
 
-        assertEquals(emptyList<TimeReportDay>(), actual)
+        assertEquals(emptyList<TimeReportQueryGroup>(), actual)
     }
 
     @Test
@@ -48,14 +149,14 @@ class TimeReportDaoTest : BaseDaoTest() {
 
         val actual = timeReport.findAll(1, 0, 10)
 
-        assertEquals(emptyList<TimeReportDay>(), actual)
+        assertEquals(emptyList<TimeReportQueryGroup>(), actual)
     }
 
     @Test
     fun findAll_withTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findAll(1, 0, 10)
@@ -71,7 +172,7 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 100
         })
         val expected = listOf(
-                TimeReportDay(1, "1,2")
+                TimeReportQueryGroup(1, "1,2")
         )
 
         val actual = timeReport.findAll(1, 0, 10)
@@ -87,8 +188,8 @@ class TimeReportDaoTest : BaseDaoTest() {
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2"),
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(90000000, "2"),
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findAll(1, 0, 10)
@@ -97,14 +198,14 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalWithOffset() {
+    fun findAll_withTimeIntervalWithPosition() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(1, "1")
         )
 
         val actual = timeReport.findAll(1, 1, 10)
@@ -113,14 +214,14 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun findAll_withTimeIntervalWithMaxResult() {
+    fun findAll_withTimeIntervalWithPageSize() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2")
+                TimeReportQueryGroup(90000000, "2")
         )
 
         val actual = timeReport.findAll(1, 0, 1)
@@ -129,114 +230,114 @@ class TimeReportDaoTest : BaseDaoTest() {
     }
 
     @Test
-    fun findAllUnregistered_withoutTimeIntervals() {
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+    fun findNotRegistered_withoutTimeIntervals() {
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyList<TimeReportDay>(), actual)
+        assertEquals(emptyList<TimeReportQueryGroup>(), actual)
     }
 
     @Test
-    fun findAllUnregistered_withoutTimeIntervalForProject() {
+    fun findNotRegistered_withoutTimeIntervalForProject() {
         projects.add(projectEntity {
             id = 2
             name = "Name #2"
         })
         timeIntervals.add(timeIntervalEntity { projectId = 2 })
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
-        assertEquals(emptyList<TimeReportDay>(), actual)
+        assertEquals(emptyList<TimeReportQueryGroup>(), actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeInterval() {
+    fun findNotRegistered_withTimeInterval() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(1, "1")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeIntervalOnSameDay() {
+    fun findNotRegistered_withTimeIntervalOnSameDay() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 10
             stopInMilliseconds = 100
         })
         val expected = listOf(
-                TimeReportDay(1, "1,2")
+                TimeReportQueryGroup(1, "1,2")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeIntervalOnDifferentDays() {
+    fun findNotRegistered_withTimeIntervalOnDifferentDays() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2"),
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(90000000, "2"),
+                TimeReportQueryGroup(1, "1")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeIntervalWithOffset() {
+    fun findNotRegistered_withTimeIntervalWithPosition() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(1, "1")
+                TimeReportQueryGroup(1, "1")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 1, 10)
+        val actual = timeReport.findNotRegistered(1, 1, 10)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withTimeIntervalWithMaxResult() {
+    fun findNotRegistered_withTimeIntervalWithPageSize() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2")
+                TimeReportQueryGroup(90000000, "2")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 1)
+        val actual = timeReport.findNotRegistered(1, 0, 1)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun findAllUnregistered_withRegisteredTimeInterval() {
+    fun findNotRegistered_withRegisteredTimeInterval() {
         timeIntervals.add(timeIntervalEntity { registered = true })
         timeIntervals.add(timeIntervalEntity {
             startInMilliseconds = 90000000
             stopInMilliseconds = 90000010
         })
         val expected = listOf(
-                TimeReportDay(90000000, "2")
+                TimeReportQueryGroup(90000000, "2")
         )
 
-        val actual = timeReport.findAllUnregistered(1, 0, 10)
+        val actual = timeReport.findNotRegistered(1, 0, 10)
 
         assertEquals(expected, actual)
     }

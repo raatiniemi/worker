@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timereport.model
+package me.raatiniemi.worker.data.projects.datasource
 
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import org.junit.Assert.assertEquals
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
-import java.util.*
+import androidx.paging.DataSource
+import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.util.KeyValueStore
 
-@RunWith(JUnit4::class)
-class TimeReportGroupTest {
-    @Test
-    fun getId() {
-        val date = Date()
-        val days = date.time / 1000 / 60 / 60 / 24
-
-        val groupItem = TimeReportGroup.build(date, TreeSet<TimeReportItem>())
-
-        assertEquals(days, groupItem.id)
-    }
+internal class TimeReportDataSourceFactory(
+        val projectId: Long,
+        val keyValueStore: KeyValueStore,
+        val repository: TimeReportRepository
+) : DataSource.Factory<Int, TimeReportDay>() {
+    override fun create() = TimeReportDataSource(projectId, keyValueStore, repository)
 }

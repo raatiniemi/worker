@@ -21,6 +21,21 @@ import androidx.room.Query
 
 @Dao
 internal interface TimeReportDao {
+    @Query("""SELECT COUNT(*)
+        FROM (SELECT _id
+            FROM time_intervals
+            WHERE project_id = :projectId
+            GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch'))""")
+    fun count(projectId: Long): Int
+
+    @Query("""SELECT COUNT(*)
+        FROM (SELECT _id
+            FROM time_intervals
+            WHERE project_id = :projectId
+                AND registered = 0
+            GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch'))""")
+    fun countNotRegistered(projectId: Long): Int
+
     @Query("""SELECT
         MIN(start_in_milliseconds) AS dateInMilliseconds,
         GROUP_CONCAT(_id) as ids
@@ -28,8 +43,8 @@ internal interface TimeReportDao {
         WHERE project_id = :projectId
         GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch')
         ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
-        LIMIT :offset, :maxResult""")
-    fun findAll(projectId: Long, offset: Int, maxResult: Int): List<TimeReportDay>
+        LIMIT :position, :pageSize""")
+    fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportQueryGroup>
 
     @Query("""SELECT
         MIN(start_in_milliseconds) AS dateInMilliseconds,
@@ -39,6 +54,6 @@ internal interface TimeReportDao {
             AND registered = 0
         GROUP BY strftime('%Y%m%d', start_in_milliseconds / 1000, 'unixepoch')
         ORDER BY start_in_milliseconds DESC, stop_in_milliseconds DESC
-        LIMIT :offset, :maxResult""")
-    fun findAllUnregistered(projectId: Long, offset: Int, maxResult: Int): List<TimeReportDay>
+        LIMIT :position, :pageSize""")
+    fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportQueryGroup>
 }

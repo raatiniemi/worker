@@ -17,81 +17,78 @@
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.raatiniemi.worker.domain.interactor.GetTimeReport
+import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
+import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
-import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 
 class TimeReportViewModel internal constructor(
-        private val keyValueStore: KeyValueStore,
-        private val getTimeReport: GetTimeReport,
+        projectHolder: ProjectHolder,
+        keyValueStore: KeyValueStore,
+        repository: TimeReportRepository,
         private val markRegisteredTime: MarkRegisteredTime,
         private val removeTime: RemoveTime
 ) : ViewModel() {
-    private val shouldHideRegisteredTime: Boolean
-        get() = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
+    private val factory = TimeReportDataSourceFactory(
+            projectHolder.project,
+            keyValueStore,
+            repository
+    )
 
-    private val _timeReport = MutableLiveData<List<TimeReportGroup>>()
-    val timeReport: LiveData<List<TimeReportGroup>> = _timeReport
+    val timeReport: LiveData<PagedList<TimeReportDay>>
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
-    suspend fun fetch(id: Long, offset: Int) = withContext(Dispatchers.IO) {
-        try {
-            val items = getTimeReport(id, offset, shouldHideRegisteredTime)
-                    .entries
-                    .map { TimeReportGroup.build(it.key, it.value) }
+    init {
+        val config = PagedList.Config.Builder()
+                .setInitialLoadSizeHint(1)
+                .setPrefetchDistance(2)
+                .setPageSize(8)
+                .setMaxSize(15)
+                .setEnablePlaceholders(true)
+                .build()
 
-            _timeReport.postValue(items)
-        } catch (e: Exception) {
-            viewActions.postValue(TimeReportViewActions.ShowUnableToLoadTimeReportErrorMessage)
+        timeReport = LivePagedListBuilder(factory, config).build()
+    }
+
+    fun reloadTimeReport() {
+        timeReport.value?.run {
+            dataSource.invalidate()
         }
     }
 
-    suspend fun register(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
+    suspend fun register(timeReportItems: List<TimeReportItem>) = withContext(Dispatchers.IO) {
         try {
-            val timeIntervals = results.map { it.timeInterval }
-            val items = markRegisteredTime(timeIntervals)
-                    .map { mapUpdateToSelectedItems(it, results) }
-                    .sorted()
-                    .reversed()
+            val timeIntervals = timeReportItems.map {
+                it.asTimeInterval()
+            }
+            markRegisteredTime(timeIntervals)
 
-            viewActions.postValue(TimeReportViewActions.UpdateRegistered(items))
+            reloadTimeReport()
         } catch (e: Exception) {
             viewActions.postValue(TimeReportViewActions.ShowUnableToRegisterErrorMessage)
         }
     }
 
-    private fun mapUpdateToSelectedItems(
-            timeInterval: TimeInterval,
-            selectedItems: List<TimeReportAdapterResult>
-    ): TimeReportAdapterResult {
-        return selectedItems.filter { it.timeInterval.id == timeInterval.id }
-                .map {
-                    val item = TimeReportItem.with(timeInterval)
-
-                    TimeReportAdapterResult(it.group, it.child, item)
-                }
-                .first()
-    }
-
-    suspend fun remove(results: List<TimeReportAdapterResult>) = withContext(Dispatchers.IO) {
+    suspend fun remove(timeReportItems: List<TimeReportItem>) = withContext(Dispatchers.IO) {
         try {
-            val timeInterval = results.map { it.timeInterval }.toList()
-            removeTime(timeInterval)
+            val timeIntervals = timeReportItems.map {
+                it.asTimeInterval()
+            }
+            removeTime(timeIntervals)
 
-            viewActions.postValue(TimeReportViewActions.RemoveRegistered(results.sorted().reversed()))
+            reloadTimeReport()
         } catch (e: Exception) {
             viewActions.postValue(TimeReportViewActions.ShowUnableToDeleteErrorMessage)
         }

@@ -45,7 +45,6 @@
     <string name="error_message_clock_in">Failed to clock in project.</string>
     <string name="error_message_clock_out">Failed to clock out project.</string>
 
-    <string name="error_message_get_time_report">Failed to retrieve time report.</string>
     <string name="error_message_register_time_report">Failed to update item(s).</string>
     <string name="error_message_delete_time_report">Failed to delete item(s).</string>
 

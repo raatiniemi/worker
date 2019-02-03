@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.repository
+package me.raatiniemi.worker.data.projects
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -22,28 +22,34 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class PageRequestTest {
+class TimeReportQueryGroupTest {
     @Test
-    fun withOffsetAndMaxResults() {
-        val pageRequest = PageRequest.withOffsetAndMaxResults(offset = 1, maxResults = 2)
+    fun `iterator without items`() {
+        val expected = emptyList<String>()
+        val group = TimeReportQueryGroup(1, "")
 
-        assertEquals(1, pageRequest.offset)
-        assertEquals(2, pageRequest.maxResults)
+        val actual = group.mapNotNull { it }
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun withOffset() {
-        val pageRequest = PageRequest.withOffset(offset = 1)
+    fun `iterator with item`() {
+        val expected = listOf<Long>(5)
+        val group = TimeReportQueryGroup(1, "5")
 
-        assertEquals(1, pageRequest.offset)
-        assertEquals(PageRequest.MAX_RESULTS, pageRequest.maxResults)
+        val actual = group.mapNotNull { it }
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun withMaxResults() {
-        val pageRequest = PageRequest.withMaxResults(100)
+    fun `iterator with items`() {
+        val expected = listOf<Long>(5, 3, 4, 1)
+        val group = TimeReportQueryGroup(1, "5,3,4,1")
 
-        assertEquals(0, pageRequest.offset)
-        assertEquals(100, pageRequest.maxResults)
+        val actual = group.toList()
+
+        assertEquals(expected, actual)
     }
 }

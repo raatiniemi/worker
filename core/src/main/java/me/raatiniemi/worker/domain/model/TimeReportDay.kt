@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.repository
+package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.model.TimeReportDay
+import java.util.*
 
-interface TimeReportRepository {
-    fun count(projectId: Long): Int
+data class TimeReportDay(val date: Date, val items: List<TimeReportItem>) {
+    val isRegistered: Boolean
+        get() = items.all { it.isRegistered }
 
-    fun countNotRegistered(projectId: Long): Int
+    val timeSummary: HoursMinutes by lazy {
+        accumulatedHoursMinutes()
+    }
 
-    fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay>
+    private fun accumulatedHoursMinutes(): HoursMinutes {
+        return items.map { it.hoursMinutes }
+                .accumulated()
+    }
 
-    fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay>
+    val timeDifference: HoursMinutes by lazy {
+        timeSummary - HoursMinutes(8, 0)
+    }
 }

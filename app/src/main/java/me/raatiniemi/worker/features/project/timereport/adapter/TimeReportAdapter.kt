@@ -16,18 +16,19 @@
 
 package me.raatiniemi.worker.features.project.timereport.adapter
 
-import android.graphics.Point
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
-import me.raatiniemi.worker.features.project.timereport.view.ChildItemViewHolder
-import me.raatiniemi.worker.features.project.timereport.view.GroupItemViewHolder
-import me.raatiniemi.worker.features.shared.view.adapter.ExpandableListAdapter
+import me.raatiniemi.worker.features.project.timereport.model.getTimeSummaryWithDifference
+import me.raatiniemi.worker.features.project.timereport.view.DayViewHolder
+import me.raatiniemi.worker.features.project.timereport.view.ItemViewHolder
+import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 import me.raatiniemi.worker.util.SelectionListener
 import me.raatiniemi.worker.util.SelectionManager
@@ -36,163 +37,133 @@ import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator
 internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
         selectionListener: SelectionListener
-) : ExpandableListAdapter<TimeReportItem, TimeReportGroup, GroupItemViewHolder, ChildItemViewHolder>() {
-    private val selectionManager: SelectionManager<TimeReportAdapterResult>
+) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
+    private val selectionManager: SelectionManager<TimeReportItem>
+    private val expandedItems = mutableSetOf<Int>()
 
-    val selectedItems: List<TimeReportAdapterResult>
+    val selectedItems: List<TimeReportItem>
         get() = selectionManager.selectedItems
 
     init {
         selectionManager = SelectionManagerAdapterDecorator(this, selectionListener)
-
-        setHasStableIds(true)
     }
 
-    private fun isPointInView(point: Point, view: View): Boolean {
-        val x = view.x
-        val y = view.y
-        val width = x + view.width
-        val height = y + view.height
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.fragment_time_report_day, parent, false)
 
-        return (!(point.x < x || point.y < y)
-                && point.x <= width
-                && point.y <= height)
+        return DayViewHolder(view)
     }
 
-    override fun onCreateGroupViewHolder(viewGroup: ViewGroup, viewType: Int): GroupItemViewHolder {
-        val inflater = LayoutInflater.from(viewGroup.context)
-        val view = inflater.inflate(R.layout.fragment_time_report_group_item, viewGroup, false)
-
-        return GroupItemViewHolder(view)
-    }
-
-    override fun onCreateChildViewHolder(viewGroup: ViewGroup, viewType: Int): ChildItemViewHolder {
-        val inflater = LayoutInflater.from(viewGroup.context)
-        val view = inflater.inflate(R.layout.fragment_time_report_child_item, viewGroup, false)
-
-        return ChildItemViewHolder(view)
-    }
-
-    override fun onBindGroupViewHolder(vh: GroupItemViewHolder, group: Int, viewType: Int) {
-        val groupItem = get(group)
-
-        vh.title.text = groupItem.title
-        vh.summarize.text = groupItem.getTimeSummaryWithDifference(formatter)
-
-        vh.letter.setImageDrawable(LetterDrawable.build(groupItem.firstLetterFromTitle))
-
-        val results = groupItem.buildItemResultsWithGroupIndex(group)
-
-        vh.letter.setOnLongClickListener {
-            if (selectionManager.isSelectionActivated) {
-                return@setOnLongClickListener false
-            }
-
-            selectionManager.selectItems(results)
-            true
+    override fun onBindViewHolder(vh: DayViewHolder, position: Int) {
+        val day = getItem(position)
+        if (day == null) {
+            vh.clearValues()
+            return
         }
 
-        vh.letter.setOnClickListener {
-            if (!selectionManager.isSelectionActivated) {
-                return@setOnClickListener
+        with(vh) {
+            title.text = shortDayMonthDayInMonth(day.date).capitalize()
+            timeSummary.text = day.getTimeSummaryWithDifference(formatter)
+
+            val firstLetterInTitle = title.text.run { first().toString() }
+            letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
+
+            buildTimeReportItemList(items, day.items)
+
+            letter.setOnLongClickListener {
+                if (selectionManager.isSelectionActivated) {
+                    return@setOnLongClickListener false
+                }
+
+                selectionManager.selectItems(day.items)
+                true
             }
 
-            if (selectionManager.isSelected(results)) {
-                selectionManager.deselectItems(results)
-                return@setOnClickListener
+            letter.setOnClickListener {
+                if (!selectionManager.isSelectionActivated) {
+                    return@setOnClickListener
+                }
+
+                if (selectionManager.isSelected(day.items)) {
+                    selectionManager.deselectItems(day.items)
+                    return@setOnClickListener
+                }
+                selectionManager.selectItems(day.items)
             }
-            selectionManager.selectItems(results)
+
+            header.isSelected = selectionManager.isSelected(day.items)
+
+            // In case the item have been selected, we should not activate
+            // it. The selected background color should take precedence.
+            header.isActivated = false
+            if (!header.isSelected) {
+                header.isActivated = day.isRegistered
+            }
+
+            items.visibility = if (expandedItems.contains(position)) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            itemView.setOnClickListener {
+                if (items.visibility == View.VISIBLE) {
+                    expandedItems.remove(position)
+                } else {
+                    expandedItems.add(position)
+                }
+                notifyItemChanged(position)
+            }
         }
-
-        vh.itemView.isSelected = selectionManager.isSelected(results)
-
-        // In case the item have been selected, we should not activate
-        // it. The selected background color should take precedence.
-        vh.itemView.isActivated = false
-        if (!vh.itemView.isSelected) {
-            vh.itemView.isActivated = groupItem.isRegistered
-        }
     }
 
-    override fun onBindChildViewHolder(vh: ChildItemViewHolder, group: Int, child: Int, viewType: Int) {
-        val item = get(group, child)
+    private fun buildTimeReportItemList(parent: LinearLayoutCompat, items: List<TimeReportItem>) {
+        val layoutInflater = LayoutInflater.from(parent.context)
 
-        val result = TimeReportAdapterResult(group, child, item)
+        parent.removeAllViews()
+        items.forEach { item ->
+            val view = layoutInflater.inflate(R.layout.fragment_time_report_item, parent, false)
+            ItemViewHolder(view).apply {
+                timeInterval.text = item.title
+                timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
 
-        // Register the long click listener on the time item.
-        vh.itemView.setOnLongClickListener {
-            if (selectionManager.isSelectionActivated) {
-                return@setOnLongClickListener false
+                itemView.setOnLongClickListener {
+                    if (selectionManager.isSelectionActivated) {
+                        return@setOnLongClickListener false
+                    }
+
+                    if (selectionManager.isSelected(item)) {
+                        return@setOnLongClickListener false
+                    }
+
+                    selectionManager.selectItem(item)
+                    true
+                }
+                itemView.setOnClickListener {
+                    if (!selectionManager.isSelectionActivated) {
+                        return@setOnClickListener
+                    }
+
+                    if (selectionManager.isSelected(item)) {
+                        selectionManager.deselectItem(item)
+                        return@setOnClickListener
+                    }
+
+                    selectionManager.selectItem(item)
+                }
+
+                itemView.isSelected = selectionManager.isSelected(item)
+
+                // In case the item have been selected, we should not activate
+                // it. The selected background color should take precedence.
+                itemView.isActivated = false
+                if (!itemView.isSelected) {
+                    itemView.isActivated = item.isRegistered
+                }
             }
 
-            if (selectionManager.isSelected(result)) {
-                return@setOnLongClickListener false
-            }
-
-            selectionManager.selectItem(result)
-            true
+            parent.addView(view)
         }
-        vh.itemView.setOnClickListener {
-            if (!selectionManager.isSelectionActivated) {
-                return@setOnClickListener
-            }
-
-            if (selectionManager.isSelected(result)) {
-                selectionManager.deselectItem(result)
-                return@setOnClickListener
-            }
-
-            selectionManager.selectItem(result)
-        }
-
-        vh.itemView.isSelected = selectionManager.isSelected(result)
-
-        // In case the item have been selected, we should not activate
-        // it. The selected background color should take precedence.
-        vh.itemView.isActivated = false
-        if (!vh.itemView.isSelected) {
-            vh.itemView.isActivated = item.isRegistered
-        }
-
-        vh.title.text = item.title
-        vh.summarize.text = item.getTimeSummaryWithFormatter(formatter)
-    }
-
-    override fun getGroupItemViewType(group: Int): Int {
-        return 0
-    }
-
-    override fun getChildItemViewType(group: Int, child: Int): Int {
-        return 0
-    }
-
-    override fun getGroupId(group: Int): Long {
-        val groupItem = get(group)
-        return groupItem.id
-    }
-
-    override fun getChildId(group: Int, child: Int): Long {
-        val item = get(group, child)
-        return item.id!!
-    }
-
-    override fun onCheckCanExpandOrCollapseGroup(vh: GroupItemViewHolder, group: Int, x: Int, y: Int, expand: Boolean): Boolean {
-        return !selectionManager.isSelectionActivated || !isPointInView(Point(x, y), vh.letter)
-    }
-
-    fun remove(results: List<TimeReportAdapterResult>) = results.sorted()
-            .reversed()
-            .forEach { remove(it) }
-
-    fun remove(result: TimeReportAdapterResult) {
-        remove(result.group, result.child)
-    }
-
-    fun set(results: List<TimeReportAdapterResult>) = results.sorted()
-            .forEach { set(it) }
-
-    fun set(result: TimeReportAdapterResult) {
-        set(result.group, result.child, TimeReportItem.with(result.timeInterval))
     }
 
     fun haveSelectedItems(): Boolean {

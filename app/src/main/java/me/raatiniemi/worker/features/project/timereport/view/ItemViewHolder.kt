@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,12 @@
 package me.raatiniemi.worker.features.project.timereport.view
 
 import android.view.View
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder
+import androidx.constraintlayout.widget.ConstraintLayout
 import me.raatiniemi.worker.R
 
-internal class GroupItemViewHolder(view: View) : AbstractExpandableItemViewHolder(view) {
-    val letter: AppCompatImageView = view.findViewById(R.id.ivLetter)
-    val title: AppCompatTextView = view.findViewById(R.id.tvTitle)
-    val summarize: AppCompatTextView = view.findViewById(R.id.tvSummary)
+class ItemViewHolder(view: View) {
+    val itemView: ConstraintLayout = view.findViewById(R.id.clItem)
+    val timeInterval: AppCompatTextView = view.findViewById(R.id.tvTimeInterval)
+    val timeSummary: AppCompatTextView = view.findViewById(R.id.tvTimeSummary)
 }

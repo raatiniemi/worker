@@ -14,19 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.model;
+package me.raatiniemi.worker.data.projects
 
-/**
- * Base type for the combined group and child item.
- *
- * @param <C> Reference type for the child item.
- */
-public interface ExpandableItem<C> {
-    C get(int index);
-
-    void set(int index, C item);
-
-    C remove(int index);
-
-    int size();
+internal data class TimeReportQueryGroup(
+        val dateInMilliseconds: Long,
+        val ids: String
+) : Iterable<Long> {
+    override fun iterator() = ids.split(",")
+            .mapNotNull { it.toLongOrNull() }
+            .iterator()
 }

@@ -18,7 +18,6 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.domain.interactor.GetTimeReport
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.Project
@@ -29,17 +28,13 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportAdapterResult
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportGroup
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
-import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportViewModelTest {
@@ -47,17 +42,11 @@ class TimeReportViewModelTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timeInMilliseconds
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
+    private val project = Project(1, "Project name #1")
 
-        return calendar.time
+    private val projectHolder = ProjectHolder().apply {
+        project = 1
     }
-
     private val keyValueStore = InMemoryKeyValueStore()
 
     private lateinit var timeReportRepository: TimeReportRepository
@@ -66,196 +55,97 @@ class TimeReportViewModelTest {
     private fun setUpViewModel(timeIntervals: List<TimeInterval>): TimeReportViewModel {
         timeReportRepository = TimeReportInMemoryRepository(timeIntervals)
         timeIntervalRepository = TimeIntervalInMemoryRepository()
-        timeIntervals.forEach { timeIntervalRepository.add(it) }
+        timeIntervals.forEach {
+            timeIntervalRepository.add(it)
+        }
 
         return TimeReportViewModel(
+                projectHolder,
                 keyValueStore,
-                GetTimeReport(timeReportRepository),
+                timeReportRepository,
                 MarkRegisteredTime(timeIntervalRepository),
                 RemoveTime(timeIntervalRepository)
         )
     }
 
     @Test
-    fun `fetch without time intervals`() = runBlocking {
-        val expected = emptyList<TimeReportGroup>()
-        val vm = setUpViewModel(emptyList())
-
-        vm.fetch(1, 0)
-
-        vm.timeReport.observeForever {
-            assertEquals(expected, it)
-        }
-    }
-
-    @Test
-    fun `fetch with hide registered time intervals`() = runBlocking {
-        val expected = emptyList<TimeReportGroup>()
-        val vm = setUpViewModel(listOf(
-                timeInterval {
-                    isRegistered = true
-                }
-        ))
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME.rawValue, true)
-
-        vm.fetch(1, 0)
-
-        vm.timeReport.observeForever {
-            assertEquals(expected, it)
-        }
-    }
-
-    @Test
-    fun `fetch with single item`() = runBlocking {
-        val expected = listOf(
-                TimeReportGroup.build(
-                        resetToStartOfDay(0),
-                        sortedSetOf(
-                                TimeReportItem(timeInterval { id = 1 })
-                        )
-                )
-        )
-        val vm = setUpViewModel(listOf(
-                timeInterval {
-                    id = 1
-                }
-        ))
-
-        vm.fetch(1, 0)
-
-        vm.timeReport.observeForever {
-            assertEquals(expected, it)
-        }
-    }
-
-    @Test
-    fun `fetch with multiple items`() = runBlocking {
-        val date = Date()
-        val expected = listOf(
-                TimeReportGroup.build(
-                        resetToStartOfDay(date.time),
-                        sortedSetOf(
-                                TimeReportItem(timeInterval {
-                                    id = 2
-                                    startInMilliseconds = date.time
-                                })
-                        )
-                ),
-                TimeReportGroup.build(
-                        resetToStartOfDay(0),
-                        sortedSetOf(
-                                TimeReportItem(timeInterval {
-                                    id = 1
-                                    startInMilliseconds = 0
-                                    stopInMilliseconds = 1
-                                })
-                        )
-                )
-        )
-        val vm = setUpViewModel(listOf(
-                timeInterval {
-                    id = 1
-                    startInMilliseconds = 0
-                    stopInMilliseconds = 1
-                },
-                timeInterval {
-                    id = 2
-                    startInMilliseconds = date.time
-                }
-        ))
-
-        vm.fetch(1, 0)
-
-        vm.timeReport.observeForever {
-            assertEquals(expected, it)
-        }
-    }
-
-    @Test
     fun `register with item`() = runBlocking {
-        val vm = setUpViewModel(listOf(
-                timeInterval { }
-        ))
+        val vm = setUpViewModel(
+                listOf(
+                        timeInterval { }
+                )
+        )
         val timeInterval = timeInterval { id = 1 }
-        val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval))
+        val timeReportItems = listOf(
+                TimeReportItem.with(timeInterval)
         )
         val expected = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval.copy(isRegistered = true)))
+                timeInterval.copy(isRegistered = true)
         )
 
-        vm.register(results)
+        vm.register(timeReportItems)
 
-        vm.viewActions.observeForever {
-            assertEquals(TimeReportViewActions.UpdateRegistered(expected), it)
-        }
+        val actual = timeIntervalRepository.findAll(project, 0)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `register with items`() = runBlocking {
-        val vm = setUpViewModel(listOf(
-                timeInterval { },
-                timeInterval { }
-        ))
-        val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem.with(timeInterval { id = 1 })),
-                TimeReportAdapterResult(0, 1, TimeReportItem.with(timeInterval { id = 2 }))
+        val vm = setUpViewModel(
+                listOf(
+                        timeInterval { },
+                        timeInterval { }
+                )
         )
-        val expected = results.map {
-            TimeReportAdapterResult(
-                    it.group,
-                    it.child,
-                    TimeReportItem(it.timeInterval.copy(isRegistered = true))
-            )
-        }
+        val firstTimeInterval = timeInterval { id = 1 }
+        val secondTimeInterval = timeInterval { id = 2 }
+        val timeReportItems = listOf(
+                TimeReportItem.with(firstTimeInterval),
+                TimeReportItem.with(secondTimeInterval)
+        )
+        val expected = listOf(
+                firstTimeInterval.copy(isRegistered = true),
+                secondTimeInterval.copy(isRegistered = true)
+        )
 
-        vm.register(results)
+        vm.register(timeReportItems)
 
-        vm.viewActions.observeForever {
-            assertEquals(TimeReportViewActions.UpdateRegistered(expected.asReversed()), it)
-        }
+        val actual = timeIntervalRepository.findAll(project, 0)
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with single item`() = runBlocking {
-        val expected = emptyList<TimeInterval>()
-        val project = Project(1, "Project name #1")
         val vm = setUpViewModel(listOf(
                 timeInterval { }
         ))
         val timeInterval = timeInterval { id = 1 }
-        val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval))
+        val timeReportItems = listOf(
+                TimeReportItem(timeInterval)
         )
+        val expected = emptyList<TimeInterval>()
 
-        vm.remove(results)
+        vm.remove(timeReportItems)
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
-        vm.viewActions.observeForever {
-            assertEquals(TimeReportViewActions.RemoveRegistered(results), it)
-        }
     }
 
     @Test
     fun `remove with multiple items`() = runBlocking {
-        val expected = emptyList<TimeInterval>()
-        val project = Project(1, "Project name #1")
         val vm = setUpViewModel(listOf(
                 timeInterval { },
                 timeInterval { }
         ))
-        val results = listOf(
-                TimeReportAdapterResult(0, 0, TimeReportItem(timeInterval { id = 1 })),
-                TimeReportAdapterResult(0, 1, TimeReportItem(timeInterval { id = 2 }))
+        val timeReportItems = listOf(
+                TimeReportItem(timeInterval { id = 1 }),
+                TimeReportItem(timeInterval { id = 2 })
         )
+        val expected = emptyList<TimeInterval>()
 
-        vm.remove(results)
+        vm.remove(timeReportItems)
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
-        vm.viewActions.observeForever {
-            assertEquals(TimeReportViewActions.RemoveRegistered(results.reversed()), it)
-        }
     }
 }

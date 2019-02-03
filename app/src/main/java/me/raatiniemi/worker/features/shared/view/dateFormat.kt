@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,19 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.comparator;
+package me.raatiniemi.worker.features.shared.view
 
-import java.util.Comparator;
-import java.util.Date;
+import java.text.SimpleDateFormat
+import java.util.*
 
-public final class TimeReportDateComparator implements Comparator<Date> {
-    @Override
-    public int compare(Date o1, Date o2) {
-        int comparable = o1.compareTo(o2);
-        if (0 == comparable) {
-            return 0;
-        }
-
-        return -comparable;
-    }
+fun shortDayMonthDayInMonth(date: Date): String {
+    return SimpleDateFormat("EEE (MMM d)", Locale.getDefault())
+            .run { format(date) }
 }

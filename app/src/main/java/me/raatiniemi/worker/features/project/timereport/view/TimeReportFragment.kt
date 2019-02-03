@@ -20,9 +20,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator
-import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,12 +28,10 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
+import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
-import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.features.shared.model.ViewAction
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.util.KeyValueStore
@@ -52,12 +47,12 @@ import timber.log.Timber
 
 class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
     private val keyValueStore: KeyValueStore by inject()
+    private val projectHolder: ProjectHolder by inject()
 
     private val vm: TimeReportViewModel by viewModel()
 
     private val eventBus = EventBus.getDefault()
 
-    private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var timeReportAdapter: TimeReportAdapter
     private var actionMode: ActionMode? = null
 
@@ -117,11 +112,6 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         }
     }
 
-    private var loading = false
-
-    private val projectId: Long
-        get() = arguments?.getLong(ProjectActivity.MESSAGE_PROJECT_ID, -1) ?: -1
-
     private val hoursMinutesFormat: HoursMinutesFormat
         get() {
             val format = keyValueStore.timeReportSummaryFormat()
@@ -144,92 +134,24 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         super.onViewCreated(view, savedInstanceState)
 
         timeReportAdapter = TimeReportAdapter(hoursMinutesFormat, this)
-        linearLayoutManager = LinearLayoutManager(requireActivity())
-
-        val recyclerViewExpandableItemManager = RecyclerViewExpandableItemManager(savedInstanceState)
 
         rvTimeReport.apply {
+            adapter = timeReportAdapter
+            layoutManager = LinearLayoutManager(requireActivity())
             setHasFixedSize(false)
-            layoutManager = linearLayoutManager
-            adapter = recyclerViewExpandableItemManager.createWrappedAdapter(timeReportAdapter)
-            addItemDecoration(
-                    SimpleListDividerDecorator(
-                            resources.getDrawable(
-                                    R.drawable.list_item_divider,
-                                    requireContext().theme
-                            ),
-                            true
-                    )
-            )
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    // Make sure we're not loading data before checking the position.
-                    if (!loading) {
-                        // Retrieve positional data, needed for the calculation on whether
-                        // we are close to the end of the list or not.
-                        val visibleItems = linearLayoutManager.childCount
-                        val firstVisiblePosition = linearLayoutManager.findFirstVisibleItemPosition()
-
-                        // Retrieve the total number of items within the recycler view,
-                        // this will include both the group and the children.
-                        val totalItems = linearLayoutManager.itemCount
-
-                        // Check if the last row in the list is visible.
-                        if (visibleItems + firstVisiblePosition >= totalItems) {
-                            // We are about to start loading data, and thus we need
-                            // to block additional loading requests.
-                            loading = true
-
-                            // Retrieve the total number of groups within the view, we need to
-                            // exclude the children otherwise the offset will be wrong.
-                            val offset = timeReportAdapter.groupCount
-
-                            // Retrieve additional timesheet items with offset.
-                            loadTimeReportViaViewModel(offset)
-                        }
-                    }
-                }
-            })
         }
-        recyclerViewExpandableItemManager.attachRecyclerView(rvTimeReport)
 
         observeViewModel()
-        loadTimeReportViaViewModel(offset = 0)
     }
 
     private fun observeViewModel() {
         vm.timeReport.observe(this, Observer {
-            timeReportAdapter.add(it)
-
-            // TODO: Call `finishLoading` when all items in buffer have been added.
-            // The call to `finishLoading` will be called for each of the added
-            // groups, i.e. there's a window in where we can load the same segment
-            // multiple times due to the disconnect between finish loading and the
-            // user attempts scroll (causing another load to happen). However, this
-            // seems to be fairly theoretical, at least now, but should be improved.
-            finishLoading()
+            timeReportAdapter.submitList(it)
         })
 
         vm.viewActions.observeAndConsume(this, Observer {
-            when (it) {
-                is TimeReportViewActions.UpdateRegistered -> {
-                    if (keyValueStore.hideRegisteredTime()) {
-                        timeReportAdapter.remove(it.results)
-                        return@Observer
-                    }
-
-                    timeReportAdapter.set(it.results)
-                }
-                is TimeReportViewActions.RemoveRegistered -> {
-                    timeReportAdapter.remove(it.results)
-                }
-                is ViewAction -> it.action(requireActivity())
-            }
+            it.action(requireActivity())
         })
-    }
-
-    private fun loadTimeReportViaViewModel(offset: Int) = launch {
-        vm.fetch(projectId, offset)
     }
 
     override fun onDestroy() {
@@ -238,14 +160,8 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         eventBus.unregister(this)
     }
 
-    private fun finishLoading() {
-        loading = false
-    }
-
-    fun refresh() {
-        // Clear the items from the list and start loading from the beginning...
-        timeReportAdapter.clear()
-        loadTimeReportViaViewModel(offset = 0)
+    fun reloadTimeReport() {
+        vm.reloadTimeReport()
     }
 
     override fun onSelect() {
@@ -268,8 +184,8 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        if (event.projectId == projectId) {
-            refresh()
+        if (event.projectId == projectHolder.project) {
+            vm.reloadTimeReport()
             return
         }
 
@@ -278,11 +194,6 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
     companion object {
         @JvmStatic
-        fun newInstance(bundle: Bundle): TimeReportFragment {
-            val fragment = TimeReportFragment()
-            fragment.arguments = bundle
-
-            return fragment
-        }
+        fun newInstance() = TimeReportFragment()
     }
 }
