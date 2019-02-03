@@ -8,6 +8,8 @@
         android:id="@+id/rvTimeReport"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         tools:listitem="@layout/fragment_time_report_day" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
