@@ -154,9 +154,11 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
     private fun confirmRemoveSelectedItems() = launch {
         val confirmAction = ConfirmDeleteTimeIntervalDialog.show(requireContext())
-        if (ConfirmAction.YES == confirmAction) {
-            vm.remove(timeReportAdapter.selectedItems)
+        if (confirmAction == ConfirmAction.NO) {
+            return@launch
         }
+
+        vm.remove(timeReportAdapter.selectedItems)
 
         withContext(Dispatchers.Main) {
             actionMode?.finish()
