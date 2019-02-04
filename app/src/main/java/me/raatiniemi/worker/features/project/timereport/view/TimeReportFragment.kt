@@ -17,7 +17,10 @@
 package me.raatiniemi.worker.features.project.timereport.view
 
 import android.os.Bundle
-import android.view.*
+import android.view.ActionMode
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
@@ -30,6 +33,7 @@ import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportAction
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
@@ -55,62 +59,6 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
     private lateinit var timeReportAdapter: TimeReportAdapter
     private var actionMode: ActionMode? = null
-
-    private val actionModeCallback = object : ActionMode.Callback {
-        override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-            actionMode.setTitle(R.string.menu_title_actions)
-            actionMode.menuInflater.inflate(R.menu.actions_project_time_report, menu)
-            return true
-        }
-
-        override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-            return false
-        }
-
-        override fun onActionItemClicked(actionMode: ActionMode, item: MenuItem) = when (item.itemId) {
-            R.id.actions_project_time_report_delete -> {
-                confirmRemoveSelectedItems(actionMode)
-                false
-            }
-
-            R.id.actions_project_time_report_register -> {
-                toggleRegisterSelectedItems(actionMode)
-                true
-            }
-
-            else -> {
-                Timber.w("Undefined action: %d", item.itemId)
-                false
-            }
-        }
-
-        override fun onDestroyActionMode(actionMode: ActionMode) {
-            timeReportAdapter.deselectItems()
-
-            this@TimeReportFragment.actionMode = null
-        }
-
-        private fun confirmRemoveSelectedItems(actionMode: ActionMode) {
-            launch {
-                val confirmAction = ConfirmDeleteTimeIntervalDialog.show(requireContext())
-                if (ConfirmAction.YES == confirmAction) {
-                    vm.remove(timeReportAdapter.selectedItems)
-                }
-
-                withContext(Dispatchers.Main) {
-                    actionMode.finish()
-                }
-            }
-        }
-
-        private fun toggleRegisterSelectedItems(actionMode: ActionMode) = launch {
-            vm.register(timeReportAdapter.selectedItems)
-
-            withContext(Dispatchers.Main) {
-                actionMode.finish()
-            }
-        }
-    }
 
     private val hoursMinutesFormat: HoursMinutesFormat
         get() {
@@ -165,9 +113,23 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
     }
 
     override fun onSelect() {
-        if (isNull(actionMode)) {
-            actionMode = requireActivity().startActionMode(actionModeCallback)
+        if (actionMode != null) {
+            return
         }
+
+        val callback = TimeReportActionModeCallback(object : TimeReportActionConsumer {
+            override fun consume(action: TimeReportAction) {
+                when (action) {
+                    TimeReportAction.TOGGLE_REGISTERED -> toggleRegisterSelectedItems()
+                    TimeReportAction.REMOVE -> confirmRemoveSelectedItems()
+                    TimeReportAction.FINISH -> {
+                        timeReportAdapter.deselectItems()
+                        actionMode = null
+                    }
+                }
+            }
+        })
+        actionMode = requireActivity().startActionMode(callback)
     }
 
     override fun onDeselect() {
@@ -180,6 +142,27 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         }
 
         actionMode?.finish()
+    }
+
+    private fun toggleRegisterSelectedItems() = launch {
+        vm.register(timeReportAdapter.selectedItems)
+
+        withContext(Dispatchers.Main) {
+            actionMode?.finish()
+        }
+    }
+
+    private fun confirmRemoveSelectedItems() = launch {
+        val confirmAction = ConfirmDeleteTimeIntervalDialog.show(requireContext())
+        if (confirmAction == ConfirmAction.NO) {
+            return@launch
+        }
+
+        vm.remove(timeReportAdapter.selectedItems)
+
+        withContext(Dispatchers.Main) {
+            actionMode?.finish()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
