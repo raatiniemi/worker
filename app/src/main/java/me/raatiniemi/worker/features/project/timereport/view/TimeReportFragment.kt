@@ -73,7 +73,7 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
         rvTimeReport.apply {
             adapter = timeReportAdapter
-            layoutManager = LinearLayoutManager(requireActivity())
+            layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)
         }
 
