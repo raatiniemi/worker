@@ -22,17 +22,17 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
-import me.raatiniemi.worker.features.shared.model.ViewAction
+import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import timber.log.Timber
 
 internal sealed class ProjectsViewActions {
-    data class UpdateNotification(val project: Project) : ProjectsViewActions(), ViewAction {
+    data class UpdateNotification(val project: Project) : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             ProjectNotificationService.startServiceWithContext(activity, project)
         }
     }
 
-    object ShowUnableToClockInErrorMessage : ProjectsViewActions(), ViewAction {
+    object ShowUnableToClockInErrorMessage : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
@@ -43,7 +43,7 @@ internal sealed class ProjectsViewActions {
         }
     }
 
-    object ShowUnableToClockOutErrorMessage : ProjectsViewActions(), ViewAction {
+    object ShowUnableToClockOutErrorMessage : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
@@ -54,7 +54,7 @@ internal sealed class ProjectsViewActions {
         }
     }
 
-    object ShowUnableToDeleteProjectErrorMessage : ProjectsViewActions(), ViewAction {
+    object ShowUnableToDeleteProjectErrorMessage : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),

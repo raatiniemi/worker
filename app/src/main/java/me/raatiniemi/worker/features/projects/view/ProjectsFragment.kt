@@ -34,7 +34,7 @@ import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
-import me.raatiniemi.worker.features.shared.model.ViewAction
+import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.visibleIf
@@ -111,7 +111,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
     private fun processViewAction(viewAction: ProjectsViewActions) {
         when (viewAction) {
             is ProjectsViewActions.RefreshProjects -> viewAction.action(projectsAdapter)
-            is ViewAction -> viewAction.action(requireActivity())
+            is ActivityViewAction -> viewAction.action(requireActivity())
             else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
         }
     }

@@ -19,10 +19,10 @@ package me.raatiniemi.worker.features.project.timereport.model
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.shared.model.ViewAction
+import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 
-sealed class TimeReportViewActions : ViewAction {
-    object ShowUnableToRegisterErrorMessage : TimeReportViewActions(), ViewAction {
+sealed class TimeReportViewActions : ActivityViewAction {
+    object ShowUnableToRegisterErrorMessage : TimeReportViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
@@ -33,7 +33,7 @@ sealed class TimeReportViewActions : ViewAction {
         }
     }
 
-    object ShowUnableToDeleteErrorMessage : TimeReportViewActions(), ViewAction {
+    object ShowUnableToDeleteErrorMessage : TimeReportViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
