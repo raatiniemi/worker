@@ -18,14 +18,27 @@ package me.raatiniemi.worker.features.project
 
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
+import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
+import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
+import me.raatiniemi.worker.util.KeyValueStore
+import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_FRACTION
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 val projectModule = module {
     single {
         ProjectHolder()
+    }
+
+    factory {
+        val keyValueStore: KeyValueStore = get()
+        if (keyValueStore.timeReportSummaryFormat() == TIME_REPORT_SUMMARY_FORMAT_FRACTION) {
+            FractionIntervalFormat()
+        } else {
+            DigitalHoursMinutesIntervalFormat()
+        }
     }
 
     viewModel {

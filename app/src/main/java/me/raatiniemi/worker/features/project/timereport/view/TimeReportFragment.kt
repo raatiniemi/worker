@@ -28,9 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
-import me.raatiniemi.worker.domain.util.FractionIntervalFormat
-import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAction
@@ -38,35 +35,28 @@ import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportView
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
-import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.NullUtil.isNull
 import me.raatiniemi.worker.util.SelectionListener
-import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_FRACTION
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
-    private val keyValueStore: KeyValueStore by inject()
     private val projectHolder: ProjectHolder by inject()
 
     private val vm: TimeReportViewModel by viewModel()
 
     private val eventBus = EventBus.getDefault()
 
-    private lateinit var timeReportAdapter: TimeReportAdapter
-    private var actionMode: ActionMode? = null
+    private val timeReportAdapter: TimeReportAdapter by lazy {
+        TimeReportAdapter(get(), this)
+    }
 
-    private val hoursMinutesFormat: HoursMinutesFormat
-        get() {
-            val format = keyValueStore.timeReportSummaryFormat()
-            return if (TIME_REPORT_SUMMARY_FORMAT_FRACTION == format) {
-                FractionIntervalFormat()
-            } else DigitalHoursMinutesIntervalFormat()
-        }
+    private var actionMode: ActionMode? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,8 +70,6 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        timeReportAdapter = TimeReportAdapter(hoursMinutesFormat, this)
 
         rvTimeReport.apply {
             adapter = timeReportAdapter
