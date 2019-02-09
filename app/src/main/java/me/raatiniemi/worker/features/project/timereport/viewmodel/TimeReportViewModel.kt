@@ -76,7 +76,7 @@ class TimeReportViewModel internal constructor(
         }
     }
 
-    suspend fun registerSelectedItems() = withContext(Dispatchers.IO) {
+    suspend fun toggleRegisteredStateForSelectedItems() = withContext(Dispatchers.IO) {
         try {
             val selectedItems = _selectedItems.value ?: return@withContext
             val timeIntervals = selectedItems.map { it.asTimeInterval() }

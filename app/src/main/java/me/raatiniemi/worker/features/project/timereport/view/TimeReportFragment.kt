@@ -113,7 +113,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
         val callback = TimeReportActionModeCallback(object : TimeReportActionConsumer {
             override fun consume(action: TimeReportAction) {
                 when (action) {
-                    TimeReportAction.TOGGLE_REGISTERED -> toggleRegisterSelectedItems()
+                    TimeReportAction.TOGGLE_REGISTERED -> toggleRegisteredStateForSelectedItems()
                     TimeReportAction.REMOVE -> confirmRemoveSelectedItems()
                 }
             }
@@ -126,8 +126,8 @@ class TimeReportFragment : CoroutineScopedFragment() {
         actionMode = null
     }
 
-    private fun toggleRegisterSelectedItems() = launch {
-        vm.registerSelectedItems()
+    private fun toggleRegisteredStateForSelectedItems() = launch {
+        vm.toggleRegisteredStateForSelectedItems()
     }
 
     private fun confirmRemoveSelectedItems() = launch {

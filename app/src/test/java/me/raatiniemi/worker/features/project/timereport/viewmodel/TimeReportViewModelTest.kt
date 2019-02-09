@@ -70,7 +70,7 @@ class TimeReportViewModelTest {
     }
 
     @Test
-    fun `register with item`() = runBlocking {
+    fun `toggle registered state with selected item`() = runBlocking {
         val vm = setUpViewModel(
                 listOf(
                         timeInterval { }
@@ -83,14 +83,14 @@ class TimeReportViewModelTest {
         )
 
         vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
-        vm.registerSelectedItems()
+        vm.toggleRegisteredStateForSelectedItems()
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `register with items`() = runBlocking {
+    fun `toggle registered state for selected items`() = runBlocking {
         val vm = setUpViewModel(
                 listOf(
                         timeInterval { },
@@ -108,7 +108,7 @@ class TimeReportViewModelTest {
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))
         vm.consume(TimeReportLongPressAction.LongPressItem(secondTimeIntervalItem))
-        vm.registerSelectedItems()
+        vm.toggleRegisteredStateForSelectedItems()
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
