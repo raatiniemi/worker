@@ -16,7 +16,10 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -29,6 +32,8 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPressAction
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.KeyValueStore
@@ -39,7 +44,7 @@ class TimeReportViewModel internal constructor(
         repository: TimeReportRepository,
         private val markRegisteredTime: MarkRegisteredTime,
         private val removeTime: RemoveTime
-) : ViewModel() {
+) : ViewModel(), TimeReportSelectionManager {
     private val factory = TimeReportDataSourceFactory(
             projectHolder.project,
             keyValueStore,
@@ -92,5 +97,48 @@ class TimeReportViewModel internal constructor(
         } catch (e: Exception) {
             viewActions.postValue(TimeReportViewActions.ShowUnableToDeleteErrorMessage)
         }
+    }
+
+    private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
+    val isSelectionActivated: LiveData<Boolean> = Transformations.map(_selectedItems) {
+        isSelectionActivated(it)
+    }
+
+    private fun isSelectionActivated(items: Set<TimeReportItem>?): Boolean {
+        return !items.isNullOrEmpty()
+    }
+
+    @MainThread
+    override fun consume(longPress: TimeReportLongPressAction): Boolean {
+        val selectedItems = _selectedItems.value ?: HashSet()
+        if (isSelectionActivated(selectedItems)) {
+            return false
+        }
+
+        if (selectedItems.containsAll(longPress.items)) {
+            return false
+        }
+
+        _selectedItems.value = selectedItems.apply {
+            addAll(longPress.items)
+        }
+        return true
+    }
+
+    @MainThread
+    override fun consume(tap: TimeReportTapAction) {
+        val selectedItems = _selectedItems.value ?: HashSet()
+        if (!isSelectionActivated(selectedItems)) {
+            return
+        }
+
+        if (selectedItems.containsAll(tap.items)) {
+            selectedItems.removeAll(tap.items)
+            _selectedItems.value = selectedItems
+            return
+        }
+
+        selectedItems.addAll(tap.items)
+        _selectedItems.value = selectedItems
     }
 }

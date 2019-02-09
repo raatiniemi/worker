@@ -35,8 +35,6 @@ import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportView
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
-import me.raatiniemi.worker.util.NullUtil.isNull
-import me.raatiniemi.worker.util.SelectionListener
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -45,7 +43,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
+class TimeReportFragment : CoroutineScopedFragment() {
     private val projectHolder: ProjectHolder by inject()
 
     private val vm: TimeReportViewModel by viewModel()
@@ -53,7 +51,7 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
     private val eventBus = EventBus.getDefault()
 
     private val timeReportAdapter: TimeReportAdapter by lazy {
-        TimeReportAdapter(get(), this)
+        TimeReportAdapter(get(), vm)
     }
 
     private var actionMode: ActionMode? = null
@@ -88,6 +86,15 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
+
+        vm.isSelectionActivated.observe(this, Observer {
+            if (it) {
+                showActionMode()
+                return@Observer
+            }
+
+            dismissActionMode()
+        })
     }
 
     override fun onDestroy() {
@@ -100,7 +107,7 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         vm.reloadTimeReport()
     }
 
-    override fun onSelect() {
+    private fun showActionMode() {
         if (actionMode != null) {
             return
         }
@@ -111,8 +118,7 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
                     TimeReportAction.TOGGLE_REGISTERED -> toggleRegisterSelectedItems()
                     TimeReportAction.REMOVE -> confirmRemoveSelectedItems()
                     TimeReportAction.FINISH -> {
-                        timeReportAdapter.deselectItems()
-                        actionMode = null
+                        // TODO: Remove in favor for resetting selected items via register/remove.
                     }
                 }
             }
@@ -120,20 +126,13 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
         actionMode = requireActivity().startActionMode(callback)
     }
 
-    override fun onDeselect() {
-        if (isNull(actionMode)) {
-            return
-        }
-
-        if (timeReportAdapter.haveSelectedItems()) {
-            return
-        }
-
+    private fun dismissActionMode() {
         actionMode?.finish()
+        actionMode = null
     }
 
     private fun toggleRegisterSelectedItems() = launch {
-        vm.register(timeReportAdapter.selectedItems)
+        // TODO: Call register selected items on view model.
 
         withContext(Dispatchers.Main) {
             actionMode?.finish()
@@ -146,7 +145,7 @@ class TimeReportFragment : CoroutineScopedFragment(), SelectionListener {
             return@launch
         }
 
-        vm.remove(timeReportAdapter.selectedItems)
+        // TODO: Call remove selected items on view model.
 
         withContext(Dispatchers.Main) {
             actionMode?.finish()
