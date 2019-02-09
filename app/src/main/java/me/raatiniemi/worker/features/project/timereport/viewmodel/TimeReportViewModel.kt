@@ -75,11 +75,11 @@ class TimeReportViewModel internal constructor(
         }
     }
 
-    suspend fun register(timeReportItems: List<TimeReportItem>) = withContext(Dispatchers.IO) {
+    suspend fun registerSelectedItems() = withContext(Dispatchers.IO) {
         try {
-            val timeIntervals = timeReportItems.map {
-                it.asTimeInterval()
-            }
+            val selectedItems = _selectedItems.value ?: return@withContext
+            val timeIntervals = selectedItems.map { it.asTimeInterval() }
+
             markRegisteredTime(timeIntervals)
 
             reloadTimeReport()

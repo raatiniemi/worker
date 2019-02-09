@@ -29,6 +29,7 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -76,14 +77,13 @@ class TimeReportViewModelTest {
                 )
         )
         val timeInterval = timeInterval { id = 1 }
-        val timeReportItems = listOf(
-                TimeReportItem.with(timeInterval)
-        )
+        val timeReportItem = TimeReportItem.with(timeInterval)
         val expected = listOf(
                 timeInterval.copy(isRegistered = true)
         )
 
-        vm.register(timeReportItems)
+        vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
+        vm.registerSelectedItems()
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
@@ -99,16 +99,16 @@ class TimeReportViewModelTest {
         )
         val firstTimeInterval = timeInterval { id = 1 }
         val secondTimeInterval = timeInterval { id = 2 }
-        val timeReportItems = listOf(
-                TimeReportItem.with(firstTimeInterval),
-                TimeReportItem.with(secondTimeInterval)
-        )
+        val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
+        val secondTimeIntervalItem = TimeReportItem.with(secondTimeInterval)
         val expected = listOf(
                 firstTimeInterval.copy(isRegistered = true),
                 secondTimeInterval.copy(isRegistered = true)
         )
 
-        vm.register(timeReportItems)
+        vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))
+        vm.consume(TimeReportLongPressAction.LongPressItem(secondTimeIntervalItem))
+        vm.registerSelectedItems()
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)

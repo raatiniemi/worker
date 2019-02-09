@@ -129,11 +129,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
     }
 
     private fun toggleRegisterSelectedItems() = launch {
-        // TODO: Call register selected items on view model.
-
-        withContext(Dispatchers.Main) {
-            actionMode?.finish()
-        }
+        vm.registerSelectedItems()
     }
 
     private fun confirmRemoveSelectedItems() = launch {
