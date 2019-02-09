@@ -37,6 +37,7 @@ import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapActio
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.KeyValueStore
+import timber.log.Timber
 
 class TimeReportViewModel internal constructor(
         projectHolder: ProjectHolder,
@@ -84,6 +85,7 @@ class TimeReportViewModel internal constructor(
 
             reloadTimeReport()
         } catch (e: Exception) {
+            Timber.e(e, "Unable to toggle registered state with selected items")
             viewActions.postValue(TimeReportViewActions.ShowUnableToRegisterErrorMessage)
         }
     }
@@ -97,6 +99,7 @@ class TimeReportViewModel internal constructor(
 
             reloadTimeReport()
         } catch (e: Exception) {
+            Timber.e(e, "Unable to remove selected items")
             viewActions.postValue(TimeReportViewActions.ShowUnableToDeleteErrorMessage)
         }
     }
