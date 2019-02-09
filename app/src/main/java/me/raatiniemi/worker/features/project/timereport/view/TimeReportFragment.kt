@@ -77,21 +77,20 @@ class TimeReportFragment : CoroutineScopedFragment() {
     }
 
     private fun observeViewModel() {
+        vm.isSelectionActivated.observe(this, Observer { shouldShowActionMode ->
+            if (shouldShowActionMode) {
+                showActionMode()
+                return@Observer
+            }
+            dismissActionMode()
+        })
+
         vm.timeReport.observe(this, Observer {
             timeReportAdapter.submitList(it)
         })
 
         vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
-        })
-
-        vm.isSelectionActivated.observe(this, Observer {
-            if (it) {
-                showActionMode()
-                return@Observer
-            }
-
-            dismissActionMode()
         })
     }
 
