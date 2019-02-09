@@ -120,12 +120,11 @@ class TimeReportViewModelTest {
                 timeInterval { }
         ))
         val timeInterval = timeInterval { id = 1 }
-        val timeReportItems = listOf(
-                TimeReportItem(timeInterval)
-        )
+        val timeReportItem = TimeReportItem(timeInterval)
         val expected = emptyList<TimeInterval>()
 
-        vm.remove(timeReportItems)
+        vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
+        vm.removeSelectedItems()
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
@@ -137,13 +136,13 @@ class TimeReportViewModelTest {
                 timeInterval { },
                 timeInterval { }
         ))
-        val timeReportItems = listOf(
-                TimeReportItem(timeInterval { id = 1 }),
-                TimeReportItem(timeInterval { id = 2 })
-        )
+        val firstTimeReportItem = TimeReportItem(timeInterval { id = 1 })
+        val secondTimeReportItem = TimeReportItem(timeInterval { id = 2 })
         val expected = emptyList<TimeInterval>()
 
-        vm.remove(timeReportItems)
+        vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))
+        vm.consume(TimeReportLongPressAction.LongPressItem(secondTimeReportItem))
+        vm.removeSelectedItems()
 
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)

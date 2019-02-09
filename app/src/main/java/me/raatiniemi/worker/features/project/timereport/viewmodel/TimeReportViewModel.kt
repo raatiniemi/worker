@@ -88,11 +88,11 @@ class TimeReportViewModel internal constructor(
         }
     }
 
-    suspend fun remove(timeReportItems: List<TimeReportItem>) = withContext(Dispatchers.IO) {
+    suspend fun removeSelectedItems() = withContext(Dispatchers.IO) {
         try {
-            val timeIntervals = timeReportItems.map {
-                it.asTimeInterval()
-            }
+            val selectedItems = _selectedItems.value ?: return@withContext
+            val timeIntervals = selectedItems.map { it.asTimeInterval() }
+
             removeTime(timeIntervals)
 
             reloadTimeReport()

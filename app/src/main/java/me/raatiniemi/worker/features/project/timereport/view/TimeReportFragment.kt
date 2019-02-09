@@ -24,9 +24,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
@@ -138,11 +136,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
             return@launch
         }
 
-        // TODO: Call remove selected items on view model.
-
-        withContext(Dispatchers.Main) {
-            actionMode?.finish()
-        }
+        vm.removeSelectedItems()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
