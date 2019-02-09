@@ -68,6 +68,8 @@ class TimeReportViewModel internal constructor(
     }
 
     fun reloadTimeReport() {
+        _selectedItems.postValue(HashSet())
+
         timeReport.value?.run {
             dataSource.invalidate()
         }

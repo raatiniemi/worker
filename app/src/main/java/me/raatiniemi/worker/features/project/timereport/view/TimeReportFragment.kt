@@ -117,9 +117,6 @@ class TimeReportFragment : CoroutineScopedFragment() {
                 when (action) {
                     TimeReportAction.TOGGLE_REGISTERED -> toggleRegisterSelectedItems()
                     TimeReportAction.REMOVE -> confirmRemoveSelectedItems()
-                    TimeReportAction.FINISH -> {
-                        // TODO: Remove in favor for resetting selected items via register/remove.
-                    }
                 }
             }
         })
