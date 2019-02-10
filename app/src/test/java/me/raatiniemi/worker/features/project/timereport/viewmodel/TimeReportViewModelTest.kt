@@ -30,6 +30,7 @@ import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPressAction
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -100,14 +101,14 @@ class TimeReportViewModelTest {
         val firstTimeInterval = timeInterval { id = 1 }
         val secondTimeInterval = timeInterval { id = 2 }
         val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
-        val secondTimeIntervalItem = TimeReportItem.with(secondTimeInterval)
+        val secondTimeReportItem = TimeReportItem.with(secondTimeInterval)
         val expected = listOf(
                 firstTimeInterval.copy(isRegistered = true),
                 secondTimeInterval.copy(isRegistered = true)
         )
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))
-        vm.consume(TimeReportLongPressAction.LongPressItem(secondTimeIntervalItem))
+        vm.consume(TimeReportTapAction.TapItem(secondTimeReportItem))
         vm.toggleRegisteredStateForSelectedItems()
 
         val actual = timeIntervalRepository.findAll(project, 0)
@@ -141,7 +142,7 @@ class TimeReportViewModelTest {
         val expected = emptyList<TimeInterval>()
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))
-        vm.consume(TimeReportLongPressAction.LongPressItem(secondTimeReportItem))
+        vm.consume(TimeReportTapAction.TapItem(secondTimeReportItem))
         vm.removeSelectedItems()
 
         val actual = timeIntervalRepository.findAll(project, 0)
