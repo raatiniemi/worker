@@ -90,21 +90,26 @@ internal class TimeReportAdapter(
         parent.removeAllViews()
         items.forEach { item ->
             val view = layoutInflater.inflate(R.layout.fragment_time_report_item, parent, false)
-            ItemViewHolder(view).apply {
-                timeInterval.text = item.title
-                timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
-
-                itemView.apply(stateManager.state(item))
-
-                itemView.setOnLongClickListener {
-                    stateManager.consume(TimeReportLongPressAction.LongPressItem(item))
-                }
-                itemView.setOnClickListener {
-                    stateManager.consume(TimeReportTapAction.TapItem(item))
-                }
-            }
+            bindTimeReportItemViewHolder(view, item)
 
             parent.addView(view)
+        }
+    }
+
+    private fun bindTimeReportItemViewHolder(view: View, item: TimeReportItem) {
+        val vh = ItemViewHolder(view)
+        with(vh) {
+            timeInterval.text = item.title
+            timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
+
+            itemView.apply(stateManager.state(item))
+
+            itemView.setOnLongClickListener {
+                stateManager.consume(TimeReportLongPressAction.LongPressItem(item))
+            }
+            itemView.setOnClickListener {
+                stateManager.consume(TimeReportTapAction.TapItem(item))
+            }
         }
     }
 }
