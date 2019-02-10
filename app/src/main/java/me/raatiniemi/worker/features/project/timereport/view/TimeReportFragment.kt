@@ -114,6 +114,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
                 when (action) {
                     TimeReportAction.TOGGLE_REGISTERED -> toggleRegisteredStateForSelectedItems()
                     TimeReportAction.REMOVE -> confirmRemoveSelectedItems()
+                    TimeReportAction.DISMISS -> clearSelection()
                 }
             }
         })
@@ -136,6 +137,12 @@ class TimeReportFragment : CoroutineScopedFragment() {
         }
 
         vm.removeSelectedItems()
+    }
+
+    private fun clearSelection() {
+        vm.clearSelection()
+
+        timeReportAdapter.notifyDataSetChanged()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

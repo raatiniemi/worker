@@ -70,11 +70,15 @@ class TimeReportViewModel internal constructor(
     }
 
     fun reloadTimeReport() {
-        _selectedItems.postValue(HashSet())
+        clearSelection()
 
         timeReport.value?.run {
             dataSource.invalidate()
         }
+    }
+
+    fun clearSelection() {
+        _selectedItems.postValue(HashSet())
     }
 
     suspend fun toggleRegisteredStateForSelectedItems() = withContext(Dispatchers.IO) {

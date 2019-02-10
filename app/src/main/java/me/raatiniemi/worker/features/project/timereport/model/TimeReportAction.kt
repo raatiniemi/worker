@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.model
 
 enum class TimeReportAction {
+    TOGGLE_REGISTERED,
     REMOVE,
-    TOGGLE_REGISTERED
+    DISMISS
 }

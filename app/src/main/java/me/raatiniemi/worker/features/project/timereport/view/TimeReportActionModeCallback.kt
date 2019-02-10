@@ -50,5 +50,6 @@ internal class TimeReportActionModeCallback(private val consumer: TimeReportActi
     }
 
     override fun onDestroyActionMode(mode: ActionMode?) {
+        consumer.consume(TimeReportAction.DISMISS)
     }
 }
