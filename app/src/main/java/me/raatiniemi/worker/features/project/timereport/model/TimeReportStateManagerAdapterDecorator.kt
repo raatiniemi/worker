@@ -27,15 +27,15 @@ class TimeReportStateManagerAdapterDecorator(
         private val stateManager: TimeReportStateManager
 ) : TimeReportStateManager {
     @MainThread
-    override fun expanded(day: TimeReportDay) = stateManager.expanded(day)
+    override fun expanded(position: Int): Boolean = stateManager.expanded(position)
 
     @MainThread
-    override fun expand(day: TimeReportDay) = stateManager.expand(day)
-            .apply { adapter.notifyDataSetChanged() }
+    override fun expand(position: Int) = stateManager.expand(position)
+            .apply { adapter.notifyItemChanged(position) }
 
     @MainThread
-    override fun collapse(day: TimeReportDay) = stateManager.collapse(day)
-            .apply { adapter.notifyDataSetChanged() }
+    override fun collapse(position: Int) = stateManager.collapse(position)
+            .apply { adapter.notifyItemChanged(position) }
 
     @MainThread
     override fun state(day: TimeReportDay) = stateManager.state(day)

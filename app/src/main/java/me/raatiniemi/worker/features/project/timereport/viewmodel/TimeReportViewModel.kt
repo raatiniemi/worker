@@ -54,7 +54,7 @@ class TimeReportViewModel internal constructor(
     )
 
     private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
-    private val expandedDays = mutableSetOf<TimeReportDay>()
+    private val expandedDays = mutableSetOf<Int>()
 
     val timeReport: LiveData<PagedList<TimeReportDay>>
 
@@ -117,16 +117,16 @@ class TimeReportViewModel internal constructor(
     }
 
     @MainThread
-    override fun expanded(day: TimeReportDay) = expandedDays.contains(day)
+    override fun expanded(position: Int): Boolean = expandedDays.contains(position)
 
     @MainThread
-    override fun expand(day: TimeReportDay) {
-        expandedDays.add(day)
+    override fun expand(position: Int) {
+        expandedDays.add(position)
     }
 
     @MainThread
-    override fun collapse(day: TimeReportDay) {
-        expandedDays.remove(day)
+    override fun collapse(position: Int) {
+        expandedDays.remove(position)
     }
 
     @MainThread

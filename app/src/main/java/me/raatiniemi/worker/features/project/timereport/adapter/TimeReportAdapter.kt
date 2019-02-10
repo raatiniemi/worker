@@ -64,7 +64,7 @@ internal class TimeReportAdapter(
             header.apply(stateManager.state(day))
 
             buildTimeReportItemList(items, day.items)
-            items.visibleIf(View.GONE) { stateManager.expanded(day) }
+            items.visibleIf(View.GONE) { stateManager.expanded(position) }
 
             letter.setOnLongClickListener {
                 stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
@@ -76,10 +76,10 @@ internal class TimeReportAdapter(
 
             itemView.setOnClickListener {
                 if (items.visibility == View.VISIBLE) {
-                    stateManager.collapse(day)
+                    stateManager.collapse(position)
                     return@setOnClickListener
                 }
-                stateManager.expand(day)
+                stateManager.expand(position)
             }
         }
     }
