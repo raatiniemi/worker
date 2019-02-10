@@ -53,7 +53,14 @@ class TimeReportViewModel internal constructor(
             repository
     )
 
+    private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
+    private val expandedDays = mutableSetOf<TimeReportDay>()
+
     val timeReport: LiveData<PagedList<TimeReportDay>>
+
+    val isSelectionActivated: LiveData<Boolean> = Transformations.map(_selectedItems) {
+        isSelectionActivated(it)
+    }
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
@@ -108,17 +115,6 @@ class TimeReportViewModel internal constructor(
             viewActions.postValue(TimeReportViewActions.ShowUnableToDeleteErrorMessage)
         }
     }
-
-    private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
-    val isSelectionActivated: LiveData<Boolean> = Transformations.map(_selectedItems) {
-        isSelectionActivated(it)
-    }
-
-    private fun isSelectionActivated(items: Set<TimeReportItem>?): Boolean {
-        return !items.isNullOrEmpty()
-    }
-
-    private val expandedDays = mutableSetOf<TimeReportDay>()
 
     @MainThread
     override fun expanded(day: TimeReportDay) = expandedDays.contains(day)
@@ -182,6 +178,10 @@ class TimeReportViewModel internal constructor(
             addAll(longPress.items)
         }
         return true
+    }
+
+    private fun isSelectionActivated(items: Set<TimeReportItem>?): Boolean {
+        return !items.isNullOrEmpty()
     }
 
     @MainThread
