@@ -132,6 +132,23 @@ class TimeReportViewModel internal constructor(
             selectedItems?.run { containsAll(items) } ?: false
 
     @MainThread
+    override fun state(item: TimeReportItem): TimeReportState {
+        val selectedItems = _selectedItems.value
+        if (isSelected(selectedItems, item)) {
+            return TimeReportState.SELECTED
+        }
+
+        if (item.isRegistered) {
+            return TimeReportState.REGISTERED
+        }
+
+        return TimeReportState.EMPTY
+    }
+
+    private fun isSelected(selectedItems: HashSet<TimeReportItem>?, item: TimeReportItem) =
+            selectedItems?.run { contains(item) } ?: false
+
+    @MainThread
     override fun consume(longPress: TimeReportLongPressAction): Boolean {
         val selectedItems = _selectedItems.value ?: HashSet()
         if (isSelectionActivated(selectedItems)) {

@@ -112,6 +112,21 @@ internal class TimeReportAdapter(
                 timeInterval.text = item.title
                 timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
 
+                when (selectionManager.state(item)) {
+                    TimeReportState.SELECTED -> {
+                        itemView.isSelected = true
+                        itemView.isActivated = false
+                    }
+                    TimeReportState.REGISTERED -> {
+                        itemView.isSelected = false
+                        itemView.isActivated = true
+                    }
+                    TimeReportState.EMPTY -> {
+                        itemView.isSelected = false
+                        itemView.isActivated = false
+                    }
+                }
+
                 itemView.setOnLongClickListener {
                     selectionManager.consume(TimeReportLongPressAction.LongPressItem(item))
                 }
