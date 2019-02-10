@@ -23,6 +23,12 @@ import me.raatiniemi.worker.features.project.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
 
 interface TimeReportStateManager {
+    fun expanded(day: TimeReportDay): Boolean
+
+    fun expand(day: TimeReportDay)
+
+    fun collapse(day: TimeReportDay)
+
     fun state(day: TimeReportDay): TimeReportState
 
     fun state(item: TimeReportItem): TimeReportState

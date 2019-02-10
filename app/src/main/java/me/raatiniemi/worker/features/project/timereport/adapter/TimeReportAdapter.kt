@@ -30,6 +30,7 @@ import me.raatiniemi.worker.features.project.timereport.view.DayViewHolder
 import me.raatiniemi.worker.features.project.timereport.view.ItemViewHolder
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportStateManager
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
+import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 
 internal class TimeReportAdapter(
@@ -38,8 +39,6 @@ internal class TimeReportAdapter(
 ) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
     private val stateManager: TimeReportStateManager =
             TimeReportStateManagerAdapterDecorator(this, stateManager)
-
-    private val expandedItems = mutableSetOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -65,6 +64,7 @@ internal class TimeReportAdapter(
             header.apply(stateManager.state(day))
 
             buildTimeReportItemList(items, day.items)
+            items.visibleIf(View.GONE) { stateManager.expanded(day) }
 
             letter.setOnLongClickListener {
                 stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
@@ -74,18 +74,12 @@ internal class TimeReportAdapter(
                 stateManager.consume(TimeReportTapAction.TapDay(day))
             }
 
-            items.visibility = if (expandedItems.contains(position)) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
             itemView.setOnClickListener {
                 if (items.visibility == View.VISIBLE) {
-                    expandedItems.remove(position)
-                } else {
-                    expandedItems.add(position)
+                    stateManager.collapse(day)
+                    return@setOnClickListener
                 }
-                notifyItemChanged(position)
+                stateManager.expand(day)
             }
         }
     }

@@ -118,6 +118,21 @@ class TimeReportViewModel internal constructor(
         return !items.isNullOrEmpty()
     }
 
+    private val expandedDays = mutableSetOf<TimeReportDay>()
+
+    @MainThread
+    override fun expanded(day: TimeReportDay) = expandedDays.contains(day)
+
+    @MainThread
+    override fun expand(day: TimeReportDay) {
+        expandedDays.add(day)
+    }
+
+    @MainThread
+    override fun collapse(day: TimeReportDay) {
+        expandedDays.remove(day)
+    }
+
     @MainThread
     override fun state(day: TimeReportDay): TimeReportState {
         val selectedItems = _selectedItems.value
