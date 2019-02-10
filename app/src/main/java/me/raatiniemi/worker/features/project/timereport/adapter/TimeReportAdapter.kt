@@ -62,20 +62,7 @@ internal class TimeReportAdapter(
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
 
-            when (selectionManager.state(day)) {
-                TimeReportState.SELECTED -> {
-                    header.isSelected = true
-                    header.isActivated = false
-                }
-                TimeReportState.REGISTERED -> {
-                    header.isSelected = false
-                    header.isActivated = true
-                }
-                TimeReportState.EMPTY -> {
-                    header.isSelected = false
-                    header.isActivated = false
-                }
-            }
+            header.apply(selectionManager.state(day))
 
             buildTimeReportItemList(items, day.items)
 
@@ -113,20 +100,7 @@ internal class TimeReportAdapter(
                 timeInterval.text = item.title
                 timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
 
-                when (selectionManager.state(item)) {
-                    TimeReportState.SELECTED -> {
-                        itemView.isSelected = true
-                        itemView.isActivated = false
-                    }
-                    TimeReportState.REGISTERED -> {
-                        itemView.isSelected = false
-                        itemView.isActivated = true
-                    }
-                    TimeReportState.EMPTY -> {
-                        itemView.isSelected = false
-                        itemView.isActivated = false
-                    }
-                }
+                itemView.apply(selectionManager.state(item))
 
                 itemView.setOnLongClickListener {
                     selectionManager.consume(TimeReportLongPressAction.LongPressItem(item))
@@ -138,5 +112,20 @@ internal class TimeReportAdapter(
 
             parent.addView(view)
         }
+    }
+}
+
+private fun View.apply(state: TimeReportState) = when (state) {
+    TimeReportState.SELECTED -> {
+        isSelected = true
+        isActivated = false
+    }
+    TimeReportState.REGISTERED -> {
+        isSelected = false
+        isActivated = true
+    }
+    TimeReportState.EMPTY -> {
+        isSelected = false
+        isActivated = false
     }
 }
