@@ -22,7 +22,7 @@ import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPres
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
 
-interface TimeReportSelectionManager {
+interface TimeReportStateManager {
     fun state(day: TimeReportDay): TimeReportState
 
     fun state(item: TimeReportItem): TimeReportState

@@ -46,7 +46,7 @@ class TimeReportViewModel internal constructor(
         repository: TimeReportRepository,
         private val markRegisteredTime: MarkRegisteredTime,
         private val removeTime: RemoveTime
-) : ViewModel(), TimeReportSelectionManager {
+) : ViewModel(), TimeReportStateManager {
     private val factory = TimeReportDataSourceFactory(
             projectHolder.project,
             keyValueStore,

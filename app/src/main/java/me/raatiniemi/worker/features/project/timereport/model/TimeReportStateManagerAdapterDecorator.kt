@@ -20,27 +20,27 @@ import androidx.annotation.MainThread
 import androidx.recyclerview.widget.RecyclerView
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportSelectionManager
+import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportStateManager
 
-class TimeReportSelectionManagerAdapterDecorator(
+class TimeReportStateManagerAdapterDecorator(
         private val adapter: RecyclerView.Adapter<*>,
-        private val selectionManager: TimeReportSelectionManager
-) : TimeReportSelectionManager {
+        private val stateManager: TimeReportStateManager
+) : TimeReportStateManager {
     @MainThread
-    override fun state(day: TimeReportDay) = selectionManager.state(day)
+    override fun state(day: TimeReportDay) = stateManager.state(day)
 
     @MainThread
-    override fun state(item: TimeReportItem) = selectionManager.state(item)
+    override fun state(item: TimeReportItem) = stateManager.state(item)
 
     @MainThread
     override fun consume(longPress: TimeReportLongPressAction): Boolean {
-        return selectionManager.consume(longPress)
+        return stateManager.consume(longPress)
                 .apply { adapter.notifyDataSetChanged() }
     }
 
     @MainThread
     override fun consume(tap: TimeReportTapAction) {
-        return selectionManager.consume(tap)
+        return stateManager.consume(tap)
                 .apply { adapter.notifyDataSetChanged() }
     }
 }

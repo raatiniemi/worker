@@ -28,16 +28,16 @@ import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.timereport.model.*
 import me.raatiniemi.worker.features.project.timereport.view.DayViewHolder
 import me.raatiniemi.worker.features.project.timereport.view.ItemViewHolder
-import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportSelectionManager
+import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportStateManager
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 
 internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
-        selectionManager: TimeReportSelectionManager
+        stateManager: TimeReportStateManager
 ) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
-    private val selectionManager: TimeReportSelectionManager =
-            TimeReportSelectionManagerAdapterDecorator(this, selectionManager)
+    private val stateManager: TimeReportStateManager =
+            TimeReportStateManagerAdapterDecorator(this, stateManager)
 
     private val expandedItems = mutableSetOf<Int>()
 
@@ -62,16 +62,16 @@ internal class TimeReportAdapter(
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
 
-            header.apply(selectionManager.state(day))
+            header.apply(stateManager.state(day))
 
             buildTimeReportItemList(items, day.items)
 
             letter.setOnLongClickListener {
-                selectionManager.consume(TimeReportLongPressAction.LongPressDay(day))
+                stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
             }
 
             letter.setOnClickListener {
-                selectionManager.consume(TimeReportTapAction.TapDay(day))
+                stateManager.consume(TimeReportTapAction.TapDay(day))
             }
 
             items.visibility = if (expandedItems.contains(position)) {
@@ -100,13 +100,13 @@ internal class TimeReportAdapter(
                 timeInterval.text = item.title
                 timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
 
-                itemView.apply(selectionManager.state(item))
+                itemView.apply(stateManager.state(item))
 
                 itemView.setOnLongClickListener {
-                    selectionManager.consume(TimeReportLongPressAction.LongPressItem(item))
+                    stateManager.consume(TimeReportLongPressAction.LongPressItem(item))
                 }
                 itemView.setOnClickListener {
-                    selectionManager.consume(TimeReportTapAction.TapItem(item))
+                    stateManager.consume(TimeReportTapAction.TapItem(item))
                 }
             }
 
