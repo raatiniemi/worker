@@ -25,9 +25,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPressAction
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
-import me.raatiniemi.worker.features.project.timereport.model.getTimeSummaryWithDifference
+import me.raatiniemi.worker.features.project.timereport.model.*
 import me.raatiniemi.worker.features.project.timereport.view.DayViewHolder
 import me.raatiniemi.worker.features.project.timereport.view.ItemViewHolder
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportSelectionManager
@@ -36,8 +34,11 @@ import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 
 internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
-        private val selectionManager: TimeReportSelectionManager
+        selectionManager: TimeReportSelectionManager
 ) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
+    private val selectionManager: TimeReportSelectionManager =
+            TimeReportSelectionManagerAdapterDecorator(this, selectionManager)
+
     private val expandedItems = mutableSetOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
