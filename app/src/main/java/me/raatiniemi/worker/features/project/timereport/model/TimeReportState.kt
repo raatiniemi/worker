@@ -14,17 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.timereport.viewmodel
+package me.raatiniemi.worker.features.project.timereport.model
 
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPressAction
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportState
-import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
-
-interface TimeReportSelectionManager {
-    fun state(day: TimeReportDay): TimeReportState
-
-    fun consume(longPress: TimeReportLongPressAction): Boolean
-
-    fun consume(tap: TimeReportTapAction)
+enum class TimeReportState {
+    SELECTED,
+    REGISTERED,
+    EMPTY
 }

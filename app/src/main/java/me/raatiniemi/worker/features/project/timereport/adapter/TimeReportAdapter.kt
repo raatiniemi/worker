@@ -61,6 +61,21 @@ internal class TimeReportAdapter(
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
 
+            when (selectionManager.state(day)) {
+                TimeReportState.SELECTED -> {
+                    header.isSelected = true
+                    header.isActivated = false
+                }
+                TimeReportState.REGISTERED -> {
+                    header.isSelected = false
+                    header.isActivated = true
+                }
+                TimeReportState.EMPTY -> {
+                    header.isSelected = false
+                    header.isActivated = false
+                }
+            }
+
             buildTimeReportItemList(items, day.items)
 
             letter.setOnLongClickListener {

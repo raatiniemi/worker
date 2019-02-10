@@ -33,6 +33,7 @@ import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPressAction
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
@@ -112,6 +113,23 @@ class TimeReportViewModel internal constructor(
     private fun isSelectionActivated(items: Set<TimeReportItem>?): Boolean {
         return !items.isNullOrEmpty()
     }
+
+    @MainThread
+    override fun state(day: TimeReportDay): TimeReportState {
+        val selectedItems = _selectedItems.value
+        if (isSelected(selectedItems, day.items)) {
+            return TimeReportState.SELECTED
+        }
+
+        if (day.isRegistered) {
+            return TimeReportState.REGISTERED
+        }
+
+        return TimeReportState.EMPTY
+    }
+
+    private fun isSelected(selectedItems: HashSet<TimeReportItem>?, items: List<TimeReportItem>) =
+            selectedItems?.run { containsAll(items) } ?: false
 
     @MainThread
     override fun consume(longPress: TimeReportLongPressAction): Boolean {
