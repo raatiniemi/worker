@@ -16,8 +16,15 @@
 
 package me.raatiniemi.worker.features.project.timereport.model
 
-enum class TimeReportAction {
-    TOGGLE_REGISTERED,
-    REMOVE,
-    DISMISS
+import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.model.TimeReportItem
+
+sealed class TimeReportTapAction : TimeReportSelectAction {
+    data class TapDay(val day: TimeReportDay) : TimeReportTapAction() {
+        override val items = day.items
+    }
+
+    data class TapItem(val item: TimeReportItem) : TimeReportTapAction() {
+        override val items = listOf(item)
+    }
 }

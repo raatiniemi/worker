@@ -16,7 +16,10 @@
 
 package me.raatiniemi.worker.features.project.timereport.viewmodel
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -29,9 +32,13 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPressAction
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportState
+import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.KeyValueStore
+import timber.log.Timber
 
 class TimeReportViewModel internal constructor(
         projectHolder: ProjectHolder,
@@ -39,14 +46,21 @@ class TimeReportViewModel internal constructor(
         repository: TimeReportRepository,
         private val markRegisteredTime: MarkRegisteredTime,
         private val removeTime: RemoveTime
-) : ViewModel() {
+) : ViewModel(), TimeReportStateManager {
     private val factory = TimeReportDataSourceFactory(
             projectHolder.project,
             keyValueStore,
             repository
     )
 
+    private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
+    private val expandedDays = mutableSetOf<Int>()
+
     val timeReport: LiveData<PagedList<TimeReportDay>>
+
+    val isSelectionActivated: LiveData<Boolean> = Transformations.map(_selectedItems) {
+        isSelectionActivated(it)
+    }
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
@@ -63,34 +77,127 @@ class TimeReportViewModel internal constructor(
     }
 
     fun reloadTimeReport() {
+        clearSelection()
+
         timeReport.value?.run {
             dataSource.invalidate()
         }
     }
 
-    suspend fun register(timeReportItems: List<TimeReportItem>) = withContext(Dispatchers.IO) {
+    fun clearSelection() {
+        _selectedItems.postValue(HashSet())
+    }
+
+    suspend fun toggleRegisteredStateForSelectedItems() = withContext(Dispatchers.IO) {
         try {
-            val timeIntervals = timeReportItems.map {
-                it.asTimeInterval()
-            }
+            val selectedItems = _selectedItems.value ?: return@withContext
+            val timeIntervals = selectedItems.map { it.asTimeInterval() }
+
             markRegisteredTime(timeIntervals)
 
             reloadTimeReport()
         } catch (e: Exception) {
+            Timber.e(e, "Unable to toggle registered state with selected items")
             viewActions.postValue(TimeReportViewActions.ShowUnableToRegisterErrorMessage)
         }
     }
 
-    suspend fun remove(timeReportItems: List<TimeReportItem>) = withContext(Dispatchers.IO) {
+    suspend fun removeSelectedItems() = withContext(Dispatchers.IO) {
         try {
-            val timeIntervals = timeReportItems.map {
-                it.asTimeInterval()
-            }
+            val selectedItems = _selectedItems.value ?: return@withContext
+            val timeIntervals = selectedItems.map { it.asTimeInterval() }
+
             removeTime(timeIntervals)
 
             reloadTimeReport()
         } catch (e: Exception) {
+            Timber.e(e, "Unable to remove selected items")
             viewActions.postValue(TimeReportViewActions.ShowUnableToDeleteErrorMessage)
         }
+    }
+
+    @MainThread
+    override fun expanded(position: Int): Boolean = expandedDays.contains(position)
+
+    @MainThread
+    override fun expand(position: Int) {
+        expandedDays.add(position)
+    }
+
+    @MainThread
+    override fun collapse(position: Int) {
+        expandedDays.remove(position)
+    }
+
+    @MainThread
+    override fun state(day: TimeReportDay): TimeReportState {
+        val selectedItems = _selectedItems.value
+        if (isSelected(selectedItems, day.items)) {
+            return TimeReportState.SELECTED
+        }
+
+        if (day.isRegistered) {
+            return TimeReportState.REGISTERED
+        }
+
+        return TimeReportState.EMPTY
+    }
+
+    private fun isSelected(selectedItems: HashSet<TimeReportItem>?, items: List<TimeReportItem>) =
+            selectedItems?.run { containsAll(items) } ?: false
+
+    @MainThread
+    override fun state(item: TimeReportItem): TimeReportState {
+        val selectedItems = _selectedItems.value
+        if (isSelected(selectedItems, item)) {
+            return TimeReportState.SELECTED
+        }
+
+        if (item.isRegistered) {
+            return TimeReportState.REGISTERED
+        }
+
+        return TimeReportState.EMPTY
+    }
+
+    private fun isSelected(selectedItems: HashSet<TimeReportItem>?, item: TimeReportItem) =
+            selectedItems?.run { contains(item) } ?: false
+
+    @MainThread
+    override fun consume(longPress: TimeReportLongPressAction): Boolean {
+        val selectedItems = _selectedItems.value ?: HashSet()
+        if (isSelectionActivated(selectedItems)) {
+            return false
+        }
+
+        if (selectedItems.containsAll(longPress.items)) {
+            return false
+        }
+
+        _selectedItems.value = selectedItems.apply {
+            addAll(longPress.items)
+        }
+        return true
+    }
+
+    private fun isSelectionActivated(items: Set<TimeReportItem>?): Boolean {
+        return !items.isNullOrEmpty()
+    }
+
+    @MainThread
+    override fun consume(tap: TimeReportTapAction) {
+        val selectedItems = _selectedItems.value ?: HashSet()
+        if (!isSelectionActivated(selectedItems)) {
+            return
+        }
+
+        if (selectedItems.containsAll(tap.items)) {
+            selectedItems.removeAll(tap.items)
+            _selectedItems.value = selectedItems
+            return
+        }
+
+        selectedItems.addAll(tap.items)
+        _selectedItems.value = selectedItems
     }
 }

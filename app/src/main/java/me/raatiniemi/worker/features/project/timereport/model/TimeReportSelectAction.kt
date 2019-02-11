@@ -16,8 +16,8 @@
 
 package me.raatiniemi.worker.features.project.timereport.model
 
-enum class TimeReportAction {
-    TOGGLE_REGISTERED,
-    REMOVE,
-    DISMISS
+import me.raatiniemi.worker.domain.model.TimeReportItem
+
+internal interface TimeReportSelectAction {
+    val items: List<TimeReportItem>
 }

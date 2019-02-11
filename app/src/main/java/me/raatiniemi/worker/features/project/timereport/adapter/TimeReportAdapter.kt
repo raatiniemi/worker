@@ -25,28 +25,20 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
-import me.raatiniemi.worker.features.project.timereport.model.getTimeSummaryWithDifference
+import me.raatiniemi.worker.features.project.timereport.model.*
 import me.raatiniemi.worker.features.project.timereport.view.DayViewHolder
 import me.raatiniemi.worker.features.project.timereport.view.ItemViewHolder
+import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportStateManager
 import me.raatiniemi.worker.features.shared.view.shortDayMonthDayInMonth
+import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
-import me.raatiniemi.worker.util.SelectionListener
-import me.raatiniemi.worker.util.SelectionManager
-import me.raatiniemi.worker.util.SelectionManagerAdapterDecorator
 
 internal class TimeReportAdapter(
         private val formatter: HoursMinutesFormat,
-        selectionListener: SelectionListener
+        stateManager: TimeReportStateManager
 ) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
-    private val selectionManager: SelectionManager<TimeReportItem>
-    private val expandedItems = mutableSetOf<Int>()
-
-    val selectedItems: List<TimeReportItem>
-        get() = selectionManager.selectedItems
-
-    init {
-        selectionManager = SelectionManagerAdapterDecorator(this, selectionListener)
-    }
+    private val stateManager: TimeReportStateManager =
+            TimeReportStateManagerAdapterDecorator(this, stateManager)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -69,50 +61,25 @@ internal class TimeReportAdapter(
             val firstLetterInTitle = title.text.run { first().toString() }
             letter.setImageDrawable(LetterDrawable.build(firstLetterInTitle))
 
+            header.apply(stateManager.state(day))
+
             buildTimeReportItemList(items, day.items)
+            items.visibleIf(View.GONE) { stateManager.expanded(position) }
 
             letter.setOnLongClickListener {
-                if (selectionManager.isSelectionActivated) {
-                    return@setOnLongClickListener false
-                }
-
-                selectionManager.selectItems(day.items)
-                true
+                stateManager.consume(TimeReportLongPressAction.LongPressDay(day))
             }
 
             letter.setOnClickListener {
-                if (!selectionManager.isSelectionActivated) {
-                    return@setOnClickListener
-                }
-
-                if (selectionManager.isSelected(day.items)) {
-                    selectionManager.deselectItems(day.items)
-                    return@setOnClickListener
-                }
-                selectionManager.selectItems(day.items)
+                stateManager.consume(TimeReportTapAction.TapDay(day))
             }
 
-            header.isSelected = selectionManager.isSelected(day.items)
-
-            // In case the item have been selected, we should not activate
-            // it. The selected background color should take precedence.
-            header.isActivated = false
-            if (!header.isSelected) {
-                header.isActivated = day.isRegistered
-            }
-
-            items.visibility = if (expandedItems.contains(position)) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
             itemView.setOnClickListener {
                 if (items.visibility == View.VISIBLE) {
-                    expandedItems.remove(position)
-                } else {
-                    expandedItems.add(position)
+                    stateManager.collapse(position)
+                    return@setOnClickListener
                 }
-                notifyItemChanged(position)
+                stateManager.expand(position)
             }
         }
     }
@@ -123,54 +90,41 @@ internal class TimeReportAdapter(
         parent.removeAllViews()
         items.forEach { item ->
             val view = layoutInflater.inflate(R.layout.fragment_time_report_item, parent, false)
-            ItemViewHolder(view).apply {
-                timeInterval.text = item.title
-                timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
-
-                itemView.setOnLongClickListener {
-                    if (selectionManager.isSelectionActivated) {
-                        return@setOnLongClickListener false
-                    }
-
-                    if (selectionManager.isSelected(item)) {
-                        return@setOnLongClickListener false
-                    }
-
-                    selectionManager.selectItem(item)
-                    true
-                }
-                itemView.setOnClickListener {
-                    if (!selectionManager.isSelectionActivated) {
-                        return@setOnClickListener
-                    }
-
-                    if (selectionManager.isSelected(item)) {
-                        selectionManager.deselectItem(item)
-                        return@setOnClickListener
-                    }
-
-                    selectionManager.selectItem(item)
-                }
-
-                itemView.isSelected = selectionManager.isSelected(item)
-
-                // In case the item have been selected, we should not activate
-                // it. The selected background color should take precedence.
-                itemView.isActivated = false
-                if (!itemView.isSelected) {
-                    itemView.isActivated = item.isRegistered
-                }
-            }
+            bindTimeReportItemViewHolder(view, item)
 
             parent.addView(view)
         }
     }
 
-    fun haveSelectedItems(): Boolean {
-        return selectionManager.isSelectionActivated
-    }
+    private fun bindTimeReportItemViewHolder(view: View, item: TimeReportItem) {
+        val vh = ItemViewHolder(view)
+        with(vh) {
+            timeInterval.text = item.title
+            timeSummary.text = item.getTimeSummaryWithFormatter(formatter)
 
-    fun deselectItems() {
-        selectionManager.deselectItems()
+            itemView.apply(stateManager.state(item))
+
+            itemView.setOnLongClickListener {
+                stateManager.consume(TimeReportLongPressAction.LongPressItem(item))
+            }
+            itemView.setOnClickListener {
+                stateManager.consume(TimeReportTapAction.TapItem(item))
+            }
+        }
+    }
+}
+
+private fun View.apply(state: TimeReportState) = when (state) {
+    TimeReportState.SELECTED -> {
+        isSelected = true
+        isActivated = false
+    }
+    TimeReportState.REGISTERED -> {
+        isSelected = false
+        isActivated = true
+    }
+    TimeReportState.EMPTY -> {
+        isSelected = false
+        isActivated = false
     }
 }

@@ -46,11 +46,13 @@ internal class TimeReportDataSource(
         val position = computeInitialLoadPosition(params, totalCount)
         val loadSize = computeInitialLoadSize(params, position, totalCount)
 
-        callback.onResult(
-                repository.findAll(projectId, position, loadSize),
-                position,
-                totalCount
-        )
+        callback.onResult(loadData(position, loadSize), position, totalCount)
+    }
+
+    private fun loadData(position: Int, loadSize: Int) = if (shouldHideRegisteredTime) {
+        repository.findNotRegistered(projectId, position, loadSize)
+    } else {
+        repository.findAll(projectId, position, loadSize)
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<TimeReportDay>) {
