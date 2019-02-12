@@ -11,6 +11,7 @@ variables:
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - bin/configure-android-environment
+  - echo $KEYSTORE_BASE64 | base64 -d > app/upload.jks
 
 cache:
   paths:
