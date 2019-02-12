@@ -16,15 +16,12 @@
 
 package me.raatiniemi.worker.util;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
 
-import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
 public final class RxUtil {
@@ -40,31 +37,5 @@ public final class RxUtil {
     public static <T> Observable.Transformer<T, T> applySchedulers() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public static <T> Observable.Transformer<T, T> applySchedulersWithBackpressureBuffer() {
-        return observable -> observable.subscribeOn(Schedulers.io())
-                .onBackpressureBuffer()
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    @NonNull
-    public static <T> Observable.Transformer<T, T> redirectErrors(
-            @Nullable PublishSubject<Throwable> subject
-    ) {
-        return source -> source
-                .doOnError(e -> {
-                    if (isNull(subject)) {
-                        return;
-                    }
-
-                    subject.onNext(e);
-                })
-                .onErrorResumeNext(Observable.empty());
-    }
-
-    @NonNull
-    public static <T> Observable.Transformer<T, T> hideErrors() {
-        return redirectErrors(null);
     }
 }
