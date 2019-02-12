@@ -29,6 +29,7 @@
     <string name="fragment_create_project_dismiss">Cancel</string>
 
     <string name="fragment_time_report_group_item_selection_content_description">Select or deselect item group</string>
+    <string name="time_report_empty_text">No time report entries\nwas found…</string>
 
     <string name="confirm_clock_out_title">You are about to clock out</string>
     <string name="confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
