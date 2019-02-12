@@ -1,4 +1,4 @@
-add ripple effects to project actions.
-convert project list to kotlin and views to constraint layout.
-support infinite scroll in project list.
-add empty view for project list.
+rename time sheet references to time report.
+convert time report to kotlin and views to constraint layout.
+improve implementation for infinite scroll in time report.
+add empty view for time report.
