@@ -149,7 +149,6 @@ dependencies {
 
     implementation 'io.reactivex:rxandroid:1.2.0'
     implementation 'com.jakewharton.rxrelay:rxrelay:1.2.0'
-    implementation 'com.trello:rxlifecycle-android:1.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'org.greenrobot:eventbus:3.0.0'
 
