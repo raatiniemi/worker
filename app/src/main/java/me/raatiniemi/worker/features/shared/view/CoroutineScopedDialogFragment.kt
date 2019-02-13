@@ -25,7 +25,7 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class CoroutineScopedDialogFragment : DialogFragment(), CoroutineScope {
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Default + Job()
+        get() = Dispatchers.Main + Job()
 
     override fun onDestroyView() {
         super.onDestroyView()
