@@ -14,19 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.data.model;
+package me.raatiniemi.worker.features.settings.data.model
 
-import androidx.annotation.NonNull;
-
-public class BackupSuccessfulEvent {
-    private final Backup backup;
-
-    public BackupSuccessfulEvent(@NonNull Backup backup) {
-        this.backup = backup;
-    }
-
-    @NonNull
-    public Backup getBackup() {
-        return backup;
-    }
-}
+class BackupSuccessfulEvent(val backup: Backup)
