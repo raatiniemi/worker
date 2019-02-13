@@ -14,10 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.project.exception;
+package me.raatiniemi.worker.features.settings.project.exception
 
-public class InvalidTimeReportSummaryFormatException extends RuntimeException {
-    public InvalidTimeReportSummaryFormatException(String message) {
-        super(message);
-    }
-}
+class InvalidTimeReportSummaryFormatException(message: String) : RuntimeException(message)
