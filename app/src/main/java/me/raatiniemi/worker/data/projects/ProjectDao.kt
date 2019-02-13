@@ -35,7 +35,7 @@ internal interface ProjectDao {
     @Query("SELECT * FROM projects WHERE _id = :id LIMIT 1")
     fun findById(id: Long): ProjectEntity?
 
-    @Insert(onConflict = OnConflictStrategy.ROLLBACK)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     fun add(project: ProjectEntity): Long
 
     @Delete
