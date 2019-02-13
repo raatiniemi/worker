@@ -14,17 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.data.view;
+package me.raatiniemi.worker.features.settings.data.view
 
-import androidx.annotation.Nullable;
-import me.raatiniemi.worker.features.settings.data.model.Backup;
-import me.raatiniemi.worker.features.shared.view.MvpView;
+import me.raatiniemi.worker.features.settings.data.model.Backup
+import me.raatiniemi.worker.features.shared.view.MvpView
 
-public interface DataView extends MvpView {
+interface DataView : MvpView {
     /**
      * Update the view with the latest backup.
      *
      * @param backup Latest backup.
      */
-    void setLatestBackup(@Nullable Backup backup);
+    fun setLatestBackup(backup: Backup?)
 }
