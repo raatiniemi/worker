@@ -14,38 +14,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.project.view;
+package me.raatiniemi.worker.features.settings.project.view
 
-import me.raatiniemi.worker.features.shared.view.MvpView;
+import me.raatiniemi.worker.features.shared.view.MvpView
 
-public interface ProjectView extends MvpView {
+interface ProjectView : MvpView {
     /**
      * Show message for successful time summary starting point change to week.
      */
-    void showChangeTimeSummaryStartingPointToWeekSuccessMessage();
+    fun showChangeTimeSummaryStartingPointToWeekSuccessMessage()
 
     /**
      * Show message for successful time summary starting point change to month.
      */
-    void showChangeTimeSummaryStartingPointToMonthSuccessMessage();
+    fun showChangeTimeSummaryStartingPointToMonthSuccessMessage()
 
     /**
      * Show message for failed time summary starting point change.
      */
-    void showChangeTimeSummaryStartingPointErrorMessage();
+    fun showChangeTimeSummaryStartingPointErrorMessage()
 
     /**
      * Show message for successful time report summary format change to digital clock.
      */
-    void showChangeTimeReportSummaryToDigitalClockSuccessMessage();
+    fun showChangeTimeReportSummaryToDigitalClockSuccessMessage()
 
     /**
      * Show message for successful time report summary format change to fraction.
      */
-    void showChangeTimeReportSummaryToFractionSuccessMessage();
+    fun showChangeTimeReportSummaryToFractionSuccessMessage()
 
     /**
      * Show message for failed time report summary format change.
      */
-    void showChangeTimeReportSummaryFormatErrorMessage();
+    fun showChangeTimeReportSummaryFormatErrorMessage()
 }
