@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.project.presenter;
+package me.raatiniemi.worker.features.settings.data.presenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
@@ -26,7 +26,6 @@ import java.io.File;
 
 import me.raatiniemi.worker.features.settings.data.model.Backup;
 import me.raatiniemi.worker.features.settings.data.model.BackupSuccessfulEvent;
-import me.raatiniemi.worker.features.settings.data.presenter.DataPresenter;
 import me.raatiniemi.worker.features.settings.data.view.DataView;
 
 import static org.mockito.Mockito.mock;
