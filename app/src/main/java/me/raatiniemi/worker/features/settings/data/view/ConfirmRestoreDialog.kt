@@ -14,24 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.data.view;
+package me.raatiniemi.worker.features.settings.data.view
 
-import android.content.Context;
+import android.content.Context
+import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 
-import androidx.annotation.NonNull;
-import me.raatiniemi.worker.R;
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog;
-import rx.Observable;
+internal object ConfirmRestoreDialog {
+    private const val TITLE = R.string.activity_settings_restore_confirm_title
+    private const val MESSAGE = R.string.activity_settings_restore_confirm_message
 
-final class ConfirmRestoreDialog {
-    private static final int TITLE = R.string.activity_settings_restore_confirm_title;
-    private static final int MESSAGE = R.string.activity_settings_restore_confirm_message;
-
-    private ConfirmRestoreDialog() {
-    }
-
-    @NonNull
-    static Observable<Integer> show(@NonNull Context context) {
-        return RxAlertDialog.build(context, TITLE, MESSAGE);
-    }
+    fun show(context: Context) = RxAlertDialog.build(context, TITLE, MESSAGE)
 }

@@ -201,7 +201,7 @@ public class DataFragment extends BasePreferenceFragment
      * Initiate the restore action.
      */
     private void runRestore() {
-        ConfirmRestoreDialog.show(getActivity())
+        ConfirmRestoreDialog.INSTANCE.show(getActivity())
                 .filter(RxAlertDialog::isPositive)
                 .subscribe(
                         which -> {
