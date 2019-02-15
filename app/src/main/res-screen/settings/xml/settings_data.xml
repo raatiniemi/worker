@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
+    <androidx.preference.Preference
         android:key="settings_data_backup"
-        android:title="@string/activity_settings_backup"
-        />
+        android:title="@string/activity_settings_backup" />
 
-    <Preference
-        android:key="settings_data_restore"
-        android:title="@string/activity_settings_restore"
+    <androidx.preference.Preference
         android:enabled="false"
-        />
+        android:key="settings_data_restore"
+        android:title="@string/activity_settings_restore" />
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

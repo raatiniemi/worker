@@ -16,12 +16,12 @@
 
 package me.raatiniemi.worker.util;
 
-import android.preference.CheckBoxPreference;
-import android.preference.ListPreference;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
 
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;

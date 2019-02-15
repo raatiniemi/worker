@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        android:title="@string/activity_settings_preferences"
-        >
+    <androidx.preference.PreferenceCategory android:title="@string/activity_settings_preferences">
 
-        <PreferenceScreen
+        <Preference
             android:key="settings_project"
             android:title="@string/activity_settings_project"
-            />
+            app:fragment="me.raatiniemi.worker.features.settings.project.view.ProjectFragment" />
 
-        <PreferenceScreen
+        <Preference
             android:key="settings_data"
             android:title="@string/activity_settings_data"
-            />
+            app:fragment="me.raatiniemi.worker.features.settings.data.view.DataFragment" />
 
-    </PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

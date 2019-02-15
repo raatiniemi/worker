@@ -16,17 +16,10 @@
 
 package me.raatiniemi.worker.features.settings.view
 
-import android.preference.Preference
-import android.preference.PreferenceFragment
-import android.preference.PreferenceScreen
-import android.view.View
 import androidx.annotation.StringRes
-import com.google.android.material.snackbar.Snackbar
-import me.raatiniemi.worker.R
-import me.raatiniemi.worker.util.NullUtil.isNull
-import timber.log.Timber
+import androidx.preference.PreferenceFragmentCompat
 
-abstract class BasePreferenceFragment : PreferenceFragment() {
+abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
     @get:StringRes
     protected abstract val title: Int
 
@@ -34,47 +27,6 @@ abstract class BasePreferenceFragment : PreferenceFragment() {
         super.onResume()
 
         // Set the title for the preference fragment.
-        activity.setTitle(title)
-    }
-
-    override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen, preference: Preference): Boolean {
-        super.onPreferenceTreeClick(preferenceScreen, preference)
-        if (preference is PreferenceScreen) {
-            switchPreferenceScreen(preference.getKey())
-        } else {
-            Timber.d("Preference '%s' is not implemented", preference.title)
-            val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
-                    R.string.error_message_preference_not_implemented,
-                    Snackbar.LENGTH_SHORT
-            )
-            snackBar.show()
-        }
-        return false
-    }
-
-    /**
-     * Switch the currently displayed preference screen.
-     *
-     * @param key Key for the new preference screen.
-     */
-    internal open fun switchPreferenceScreen(key: String) {
-        Timber.w("Switch to preference screen '%s' is not implemented", key)
-
-        displayPreferenceScreenNotImplementedMessage()
-    }
-
-    private fun displayPreferenceScreenNotImplementedMessage() {
-        val contentView = activity.findViewById<View>(android.R.id.content)
-        if (isNull(contentView)) {
-            return
-        }
-
-        val snackBar = Snackbar.make(
-                contentView,
-                R.string.error_message_preference_screen_not_implemented,
-                Snackbar.LENGTH_SHORT
-        )
-        snackBar.show()
+        requireActivity().setTitle(title)
     }
 }

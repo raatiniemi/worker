@@ -16,41 +16,13 @@
 
 package me.raatiniemi.worker.features.settings.view
 
-import android.app.Fragment
 import android.os.Bundle
-
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.settings.data.view.DataFragment
-import me.raatiniemi.worker.features.settings.project.view.ProjectFragment
 
 class SettingsFragment : BasePreferenceFragment() {
     public override val title = R.string.activity_settings_title
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings)
-    }
-
-    override fun switchPreferenceScreen(key: String) {
-        val fragment: Fragment
-        when (key) {
-            SETTINGS_PROJECT_KEY -> fragment = ProjectFragment()
-            SETTINGS_DATA_KEY -> fragment = DataFragment()
-            else -> {
-                super.switchPreferenceScreen(key)
-                return
-            }
-        }
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment, key)
-                .addToBackStack(key)
-                .commit()
-    }
-
-    companion object {
-        private const val SETTINGS_PROJECT_KEY = "settings_project"
-        private const val SETTINGS_DATA_KEY = "settings_data"
     }
 }

@@ -19,12 +19,11 @@ package me.raatiniemi.worker.features.settings.data.view
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.os.Bundle
-import android.preference.Preference
-import android.preference.PreferenceScreen
 import android.view.View
 import androidx.annotation.IntRange
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
+import androidx.preference.Preference
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.service.data.BackupService
@@ -55,10 +54,12 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
 
         presenter.attachView(this)
 
-        addPreferencesFromResource(R.xml.settings_data)
-
         // Check for the latest backup.
         checkLatestBackup()
+    }
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        addPreferencesFromResource(R.xml.settings_data)
     }
 
     override fun onDestroyView() {
@@ -89,13 +90,13 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
         }
     }
 
-    override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen, preference: Preference): Boolean {
+    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         // Check if we support the user action, if not, send it to the
         // parent which will handle it.
-        when (preference.key) {
+        when (preference?.key) {
             SETTINGS_DATA_BACKUP_KEY -> runBackup()
             SETTINGS_DATA_RESTORE_KEY -> runRestore()
-            else -> return super.onPreferenceTreeClick(preferenceScreen, preference)
+            else -> return super.onPreferenceTreeClick(preference)
         }
 
         return false
@@ -107,10 +108,10 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
     private fun runBackup() {
         // We should only attempt to backup if permission to write
         // to the external storage have been granted.
-        if (PermissionUtil.havePermission(activity, WRITE_EXTERNAL_STORAGE)) {
+        if (PermissionUtil.havePermission(requireContext(), WRITE_EXTERNAL_STORAGE)) {
             Timber.d("Permission for writing to external storage is granted")
             val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
+                    requireActivity().findViewById(android.R.id.content),
                     R.string.message_backing_up_data,
                     Snackbar.LENGTH_SHORT
             )
@@ -135,14 +136,14 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
             permissions: Array<String>,
             @IntRange(from = 0) requestCode: Int
     ) {
-        val contentView = activity.findViewById<View>(android.R.id.content)
+        val contentView = requireActivity().findViewById<View>(android.R.id.content)
 
         snackBar = Snackbar.make(contentView, message, Snackbar.LENGTH_INDEFINITE)
                 .setAction(
                         android.R.string.ok
                 ) {
                     ActivityCompat.requestPermissions(
-                            activity,
+                            requireActivity(),
                             permissions,
                             requestCode
                     )
@@ -154,12 +155,12 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
      * Initiate the restore action.
      */
     private fun runRestore() {
-        ConfirmRestoreDialog.show(activity)
+        ConfirmRestoreDialog.show(requireContext())
                 .filter { RxAlertDialog.isPositive(it) }
                 .subscribe(
                         {
                             val snackBar = Snackbar.make(
-                                    activity.findViewById(android.R.id.content),
+                                    requireActivity().findViewById(android.R.id.content),
                                     R.string.message_restoring_data,
                                     Snackbar.LENGTH_SHORT
                             )
@@ -177,7 +178,7 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
     private fun checkLatestBackup() {
         // We should only attempt to check the latest backup if permission
         // to read the external storage have been granted.
-        if (PermissionUtil.havePermission(activity, READ_EXTERNAL_STORAGE)) {
+        if (PermissionUtil.havePermission(requireContext(), READ_EXTERNAL_STORAGE)) {
             // Tell the SettingsActivity to fetch the latest backup.
             Timber.d("Permission for reading external storage is granted")
             presenter.getLatestBackup()

@@ -20,11 +20,10 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.preference.ListPreference
-import android.preference.Preference
-import android.preference.PreferenceScreen
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.settings.project.presenter.ProjectPresenter
@@ -40,13 +39,13 @@ import timber.log.Timber
 
 class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPreferenceChangeListener {
     private val keyValueStore: KeyValueStore by inject()
-    private val presenter: ProjectPresenter by inject()
 
+    private val presenter: ProjectPresenter by inject()
     private val isOngoingChannelEnabled: Boolean
         @RequiresApi(api = Build.VERSION_CODES.O)
         get() {
             try {
-                val nm = activity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                val nm = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 return !Notifications.isOngoingChannelDisabled(nm)
             } catch (e: ClassCastException) {
                 return true
@@ -59,8 +58,6 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
         super.onCreate(savedInstanceState)
 
         presenter.attachView(this)
-
-        addPreferencesFromResource(R.xml.settings_project)
 
         populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, keyValueStore.confirmClockOut())
 
@@ -93,6 +90,10 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
         preference.isEnabled = isOngoingChannelEnabled
     }
 
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        addPreferencesFromResource(R.xml.settings_project)
+    }
+
     private fun populateCheckBoxPreference(
             preferenceKey: String,
             shouldCheck: Boolean
@@ -112,8 +113,8 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
         detachViewIfNotNull(presenter)
     }
 
-    override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen, preference: Preference): Boolean {
-        return when (preference.key) {
+    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+        return when (preference?.key) {
             CONFIRM_CLOCK_OUT_KEY -> {
                 toggleConfirmClockOut(preference)
                 true
@@ -127,7 +128,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
                 toggleOngoingNotificationChronometer(preference)
                 true
             }
-            else -> super.onPreferenceTreeClick(preferenceScreen, preference)
+            else -> super.onPreferenceTreeClick(preference)
         }
     }
 
@@ -177,7 +178,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
     }
 
     override fun showChangeTimeSummaryStartingPointToWeekSuccessMessage() {
-        val contentView = activity.findViewById<View>(android.R.id.content)
+        val contentView = requireActivity().findViewById<View>(android.R.id.content)
         if (isNull(contentView)) {
             return
         }
@@ -191,7 +192,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
     }
 
     override fun showChangeTimeSummaryStartingPointToMonthSuccessMessage() {
-        val contentView = activity.findViewById<View>(android.R.id.content)
+        val contentView = requireActivity().findViewById<View>(android.R.id.content)
         if (isNull(contentView)) {
             return
         }
@@ -205,7 +206,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
     }
 
     override fun showChangeTimeSummaryStartingPointErrorMessage() {
-        val contentView = activity.findViewById<View>(android.R.id.content)
+        val contentView = requireActivity().findViewById<View>(android.R.id.content)
         if (isNull(contentView)) {
             return
         }
@@ -224,7 +225,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
     }
 
     override fun showChangeTimeReportSummaryToFractionSuccessMessage() {
-        val contentView = activity.findViewById<View>(android.R.id.content)
+        val contentView = requireActivity().findViewById<View>(android.R.id.content)
         if (isNull(contentView)) {
             return
         }
@@ -238,7 +239,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
     }
 
     override fun showChangeTimeReportSummaryToDigitalClockSuccessMessage() {
-        val contentView = activity.findViewById<View>(android.R.id.content)
+        val contentView = requireActivity().findViewById<View>(android.R.id.content)
         if (isNull(contentView)) {
             return
         }
@@ -252,7 +253,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
     }
 
     override fun showChangeTimeReportSummaryFormatErrorMessage() {
-        val contentView = activity.findViewById<View>(android.R.id.content)
+        val contentView = requireActivity().findViewById<View>(android.R.id.content)
         if (isNull(contentView)) {
             return
         }

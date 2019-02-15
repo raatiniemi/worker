@@ -16,10 +16,9 @@
 
 package me.raatiniemi.worker.util;
 
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-
 import androidx.annotation.NonNull;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference;
 import timber.log.Timber;
 
 public class PreferenceUtil {
