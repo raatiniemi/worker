@@ -53,6 +53,8 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
             }
         }
 
+    override val title = R.string.activity_settings_project
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -154,8 +156,6 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
             keyValueStore.disableOngoingNotificationChronometer()
         }
     }
-
-    public override fun getTitle() = R.string.activity_settings_project
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
         return when (preference.key) {

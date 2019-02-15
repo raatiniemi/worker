@@ -48,6 +48,8 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
 
     private val presenter: DataPresenter by inject()
 
+    override val title = R.string.activity_settings_data
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -98,8 +100,6 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
 
         return false
     }
-
-    public override fun getTitle() = R.string.activity_settings_data
 
     /**
      * Initiate the backup action.
