@@ -91,6 +91,8 @@ integration test:
 
 deploy:
   stage: deploy
+  before_script:
+    - bin/configure-deploy-environment
   script:
     - ./gradlew publishApkRelease
   dependencies:
