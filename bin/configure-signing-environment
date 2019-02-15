@@ -10,5 +10,9 @@ if [ -z "${KEYSTORE_BASE64}" ]; then
   exit 1;
 fi;
 
-export KEYSTORE_NAME="upload.jks"
+if [ -z "${KEYSTORE_NAME}" ]; then
+  echo "No name for the keystore is available, ensure that \$KEYSTORE_NAME is set for project.";
+  exit 1;
+fi;
+
 echo $KEYSTORE_BASE64 | $BASE64 -d > app/$KEYSTORE_NAME
