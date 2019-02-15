@@ -1,0 +1,14 @@
+#!/bin/bash
+BASE64=$(which base64);
+if [ -z "${BASE64}" ]; then
+  echo "Unable to find binary for base64.";
+  exit 1;
+fi;
+
+if [ -z "${KEYSTORE_BASE64}" ]; then
+  echo "No base64 encoded keystore is available, ensure that \$KEYSTORE_BASE64 is set for project.";
+  exit 1;
+fi;
+
+export KEYSTORE_NAME="upload.jks"
+echo $KEYSTORE_BASE64 | $BASE64 -d > app/$KEYSTORE_NAME
