@@ -61,7 +61,7 @@ android {
     if (System.getenv("CI")) {
         signingConfigs {
             release {
-                storeFile file('upload.jks')
+                storeFile file(System.getenv("KEYSTORE_NAME"))
                 storePassword System.getenv("KEYSTORE_PASSWORD")
                 keyAlias System.getenv("KEY_ALIAS")
                 keyPassword System.getenv("KEY_PASSWORD")
@@ -121,10 +121,10 @@ android {
     }
 }
 
-if (System.getenv("PLAY_KEY_PATH")) {
+if (System.getenv("GOOGLE_PLAY_ANDROID_DEVELOPER_KEY_NAME")) {
     play {
         track = 'internal'
-        jsonFile = file(System.getenv("PLAY_KEY_PATH"))
+        jsonFile = file(System.getenv("GOOGLE_PLAY_ANDROID_DEVELOPER_KEY_NAME"))
     }
 }
 
