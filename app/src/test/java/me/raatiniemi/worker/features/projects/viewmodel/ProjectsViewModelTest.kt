@@ -22,6 +22,7 @@ import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.RemoveProject
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.model.timeInterval
@@ -311,9 +312,10 @@ class ProjectsViewModelTest {
 
     @Test
     fun `remove project with project`() = runBlocking {
-        val project = Project(null, "Project #1")
-        val item = ProjectsItem(project.copy(1), emptyList())
-        projectRepository.add(project)
+        val newProject = NewProject("Project #1")
+        val project = Project(1, "Project #1")
+        val item = ProjectsItem(project, emptyList())
+        projectRepository.add(newProject)
 
         vm.remove(item)
 

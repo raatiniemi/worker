@@ -17,7 +17,8 @@
 package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.ProjectDao
-import me.raatiniemi.worker.data.projects.toEntity
+import me.raatiniemi.worker.data.projects.ProjectEntity
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.util.Optional
@@ -48,10 +49,10 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
         return Optional.of(entity.toProject())
     }
 
-    override fun add(project: Project): Optional<Project> {
-        projects.add(project.toEntity())
+    override fun add(newProject: NewProject): Optional<Project> {
+        projects.add(ProjectEntity(name = newProject.name))
 
-        return findByName(projectName = project.name)
+        return findByName(newProject.name)
     }
 
     override fun remove(id: Long) {

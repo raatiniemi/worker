@@ -20,6 +20,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
@@ -62,7 +63,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `createProject with duplicated name`() = runBlocking {
-        repository.add(Project(id = null, name = "Name"))
+        repository.add(NewProject("Name"))
         vm.projectName = "Name"
 
         vm.createProject()
@@ -126,7 +127,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `isCreateEnabled with duplicated name`() = runBlocking {
-        repository.add(Project(id = null, name = "Name"))
+        repository.add(NewProject("Name"))
         vm.projectName = "Name"
 
         vm.createProject()

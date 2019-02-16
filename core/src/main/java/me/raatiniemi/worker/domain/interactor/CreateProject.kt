@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.NoProjectException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
@@ -30,8 +31,8 @@ class CreateProject(val findProject: FindProject, private val repository: Projec
             throw ProjectAlreadyExistsException("Project '${projectName}' already exists")
         }
 
-        val project = Project(null, projectName)
-        val value = repository.add(project)
+        val newProject = NewProject(projectName)
+        val value = repository.add(newProject)
         if (value.isPresent) {
             return value.get()
         }
