@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-data class NewProject(val name: String)
+inline class NewProject(val name: String)
