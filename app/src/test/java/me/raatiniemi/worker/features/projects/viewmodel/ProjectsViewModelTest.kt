@@ -55,7 +55,7 @@ class ProjectsViewModelTest {
     private lateinit var removeProject: RemoveProject
     private lateinit var vm: ProjectsViewModel
 
-    private val project = Project.from(1L, "Project #1")
+    private val project = Project(1L, "Project #1")
 
     @Before
     fun setUp() {

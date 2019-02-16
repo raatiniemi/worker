@@ -25,16 +25,4 @@ data class Project(val id: Long?, val name: String) {
             throw InvalidProjectNameException()
         }
     }
-
-    companion object {
-        @JvmStatic
-        fun from(id: Long?, projectName: String): Project {
-            return Project(id, projectName)
-        }
-
-        @JvmStatic
-        fun from(projectName: String): Project {
-            return Project(null, projectName)
-        }
-    }
 }

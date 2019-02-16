@@ -30,7 +30,7 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class GetProjectTimeSinceTest {
-    private val project = Project.from(1, "Name")
+    private val project = Project(1, "Name")
 
     private lateinit var repository: TimeIntervalRepository
     private lateinit var getProjectTimeSince: GetProjectTimeSince

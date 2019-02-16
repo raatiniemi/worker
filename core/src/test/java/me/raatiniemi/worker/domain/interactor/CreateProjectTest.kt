@@ -41,7 +41,7 @@ class CreateProjectTest {
 
     @Test(expected = ProjectAlreadyExistsException::class)
     fun `invoke with existing project`() {
-        val project = Project.from("Project Name")
+        val project = Project(null, "Project Name")
         repository.add(project)
 
         createProject("Project Name")

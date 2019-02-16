@@ -30,7 +30,7 @@ class CreateProject(val findProject: FindProject, private val repository: Projec
             throw ProjectAlreadyExistsException("Project '${projectName}' already exists")
         }
 
-        val project = Project.from(projectName)
+        val project = Project(null, projectName)
         val value = repository.add(project)
         if (value.isPresent) {
             return value.get()

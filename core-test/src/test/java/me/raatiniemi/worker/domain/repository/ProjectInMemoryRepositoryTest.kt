@@ -146,7 +146,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `findAll withProject`() {
-        repository.add(Project.from(projectName = "Project #1"))
+        repository.add(Project(null, name = "Project #1"))
         val expected = listOf(
                 Project(1, "Project #1")
         )
@@ -158,8 +158,8 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `findAll withProjects`() {
-        repository.add(Project.from(projectName = "Project #1"))
-        repository.add(Project.from(projectName = "Project #2"))
+        repository.add(Project(null, name = "Project #1"))
+        repository.add(Project(null, name = "Project #2"))
         val expected = listOf(
                 Project(1, "Project #1"),
                 Project(2, "Project #2")
@@ -179,7 +179,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `findByName withoutMatchingProject`() {
-        repository.add(Project.from("Project #1"))
+        repository.add(Project(null, "Project #1"))
 
         val actual = repository.findByName("Project #2")
 
@@ -188,7 +188,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `findByName withProject`() {
-        repository.add(Project.from("Project #1"))
+        repository.add(Project(null, "Project #1"))
         val expected = Project(1, "Project #1")
 
         val actual = repository.findByName("Project #1")
@@ -199,7 +199,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `findByName with lowercase project name`() {
-        repository.add(Project.from("Project #1"))
+        repository.add(Project(null, "Project #1"))
         val expected = Project(1, "Project #1")
 
         val actual = repository.findByName("project #1")
@@ -217,7 +217,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `findById withoutMatchingProject`() {
-        repository.add(Project.from("Project #1"))
+        repository.add(Project(null, "Project #1"))
 
         val actual = repository.findById(2)
 
@@ -226,7 +226,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `findById withProject`() {
-        repository.add(Project.from("Project #1"))
+        repository.add(Project(null, "Project #1"))
         val expected = Project(1, "Project #1")
 
         val actual = repository.findById(1)
@@ -242,7 +242,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `remove withoutMatchingProject`() {
-        repository.add(Project.from("Project #1"))
+        repository.add(Project(null, "Project #1"))
         val expected = listOf(
                 Project(1, "Project #1")
         )
@@ -255,7 +255,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `remove withProject`() {
-        repository.add(Project.from("Project #1"))
+        repository.add(Project(null, "Project #1"))
 
         repository.remove(1)
 

@@ -38,8 +38,8 @@ class GetProjectTest {
 
     @Test
     fun execute() {
-        repository.add(Project.from("Project name"))
-        val expected = Project.from(1L, "Project name")
+        repository.add(Project(null, "Project name"))
+        val expected = Project(1L, "Project name")
 
         val actual = useCase.execute(1L)
 
