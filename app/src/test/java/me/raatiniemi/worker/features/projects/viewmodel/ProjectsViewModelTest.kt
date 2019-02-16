@@ -18,14 +18,16 @@ package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
-import me.raatiniemi.worker.domain.interactor.*
+import me.raatiniemi.worker.domain.interactor.ClockIn
+import me.raatiniemi.worker.domain.interactor.ClockOut
+import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
+import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
@@ -129,10 +131,9 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem(project, listOf(timeInterval))
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, listOf(timeInterval))
 
-        vm.clockIn(result, Date())
+        vm.clockIn(item, Date())
 
         vm.viewActions.observeForever {
             assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
@@ -142,10 +143,9 @@ class ProjectsViewModelTest {
     @Test
     fun `clock in project without id`() = runBlocking {
         val project = Project(null, "Project name")
-        val projectsItem = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, emptyList())
 
-        vm.clockIn(result, Date())
+        vm.clockIn(item, Date())
 
         vm.viewActions.observeForever {
             assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
@@ -154,10 +154,9 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock in project`() = runBlocking {
-        val projectsItem = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, emptyList())
 
-        vm.clockIn(result, Date())
+        vm.clockIn(item, Date())
 
         vm.viewActions.observeForever {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -167,10 +166,9 @@ class ProjectsViewModelTest {
     @Test
     fun `clock in project with month time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
-        val projectsItem = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, emptyList())
 
-        vm.clockIn(result, Date())
+        vm.clockIn(item, Date())
 
         vm.viewActions.observeForever {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -180,10 +178,9 @@ class ProjectsViewModelTest {
     @Test
     fun `clock in project with day time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
-        val projectsItem = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, emptyList())
 
-        vm.clockIn(result, Date())
+        vm.clockIn(item, Date())
 
         vm.viewActions.observeForever {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -193,10 +190,9 @@ class ProjectsViewModelTest {
     @Test
     fun `clock in project with invalid time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
-        val projectsItem = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, emptyList())
 
-        vm.clockIn(result, Date())
+        vm.clockIn(item, Date())
 
         vm.viewActions.observeForever {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -205,10 +201,9 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out without active project`() = runBlocking {
-        val projectsItem = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, emptyList())
 
-        vm.clockOut(result, Date())
+        vm.clockOut(item, Date())
 
         vm.viewActions.observeForever {
             assertTrue(it is ProjectsViewActions.ShowUnableToClockOutErrorMessage)
@@ -218,10 +213,9 @@ class ProjectsViewModelTest {
     @Test
     fun `clock out project without id`() = runBlocking {
         val project = Project(null, "Project name")
-        val projectsItem = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, emptyList())
 
-        vm.clockOut(result, Date())
+        vm.clockOut(item, Date())
 
         vm.viewActions.observeForever {
             assertTrue(it is ProjectsViewActions.ShowUnableToClockOutErrorMessage)
@@ -234,10 +228,9 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem(project, listOf(timeInterval))
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, listOf(timeInterval))
 
-        vm.clockOut(result, Date())
+        vm.clockOut(item, Date())
 
         vm.viewActions.observeForever {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -251,10 +244,9 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem(project, listOf(timeInterval))
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, listOf(timeInterval))
 
-        vm.clockOut(result, Date())
+        vm.clockOut(item, Date())
 
         vm.viewActions.observeForever {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -268,10 +260,9 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem(project, listOf(timeInterval))
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, listOf(timeInterval))
 
-        vm.clockOut(result, Date())
+        vm.clockOut(item, Date())
 
         vm.viewActions.observeForever {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -285,10 +276,9 @@ class ProjectsViewModelTest {
             stopInMilliseconds = 0
         }
         timeIntervalRepository.add(timeInterval)
-        val projectsItem = ProjectsItem(project, listOf(timeInterval))
-        val result = ProjectsItemAdapterResult(0, projectsItem)
+        val item = ProjectsItem(project, listOf(timeInterval))
 
-        vm.clockOut(result, Date())
+        vm.clockOut(item, Date())
 
         vm.viewActions.observeForever {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -299,9 +289,8 @@ class ProjectsViewModelTest {
     fun `remove project without project id`() = runBlocking {
         val project = Project(null, "Project #1")
         val item = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, item)
 
-        vm.remove(result)
+        vm.remove(item)
 
         vm.viewActions.observeForever {
             assertNull(it)
@@ -312,9 +301,8 @@ class ProjectsViewModelTest {
     fun `remove project without project`() = runBlocking {
         val project = Project(1, "Project #1")
         val item = ProjectsItem(project, emptyList())
-        val result = ProjectsItemAdapterResult(0, item)
 
-        vm.remove(result)
+        vm.remove(item)
 
         vm.viewActions.observeForever {
             assertNull(it)
@@ -325,10 +313,9 @@ class ProjectsViewModelTest {
     fun `remove project with project`() = runBlocking {
         val project = Project(null, "Project #1")
         val item = ProjectsItem(project.copy(1), emptyList())
-        val result = ProjectsItemAdapterResult(0, item)
         projectRepository.add(project)
 
-        vm.remove(result)
+        vm.remove(item)
 
         val actual = projectRepository.findAll()
         assertEquals(emptyList<Project>(), actual)

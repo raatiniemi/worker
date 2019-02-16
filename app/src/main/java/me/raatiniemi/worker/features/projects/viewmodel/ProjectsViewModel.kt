@@ -35,7 +35,6 @@ import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.AppKeys
@@ -117,9 +116,9 @@ internal class ProjectsViewModel(
         viewActions.postValue(viewAction)
     }
 
-    suspend fun clockIn(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockIn(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
         try {
-            val project = result.project
+            val project = item.asProject()
             val projectId = project.id ?: throw NoProjectIdException()
 
             clockIn(projectId, date)
@@ -131,9 +130,9 @@ internal class ProjectsViewModel(
         }
     }
 
-    suspend fun clockOut(result: ProjectsItemAdapterResult, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockOut(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
         try {
-            val project = result.project
+            val project = item.asProject()
             val projectId = project.id ?: throw NoProjectIdException()
 
             clockOut(projectId, date)
@@ -145,9 +144,9 @@ internal class ProjectsViewModel(
         }
     }
 
-    suspend fun remove(result: ProjectsItemAdapterResult) = withContext(Dispatchers.IO) {
+    suspend fun remove(item: ProjectsItem) = withContext(Dispatchers.IO) {
         try {
-            removeProject(result.project)
+            removeProject(item.asProject())
 
             reloadProjects()
         } catch (e: NoProjectIdException) {
