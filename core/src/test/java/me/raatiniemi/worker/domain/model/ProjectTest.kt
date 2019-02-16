@@ -18,7 +18,6 @@ package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -26,30 +25,15 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class ProjectTest {
     @Test
-    fun builder_withDefaultValues() {
-        val project = Project(null, "Project name")
-
-        assertNull(project.id)
-        assertEquals("Project name", project.name)
-    }
-
-    @Test
     fun builder_withValues() {
         val project = Project(2L, "Project name")
 
         assertEquals("Project name", project.name)
-        assertEquals(java.lang.Long.valueOf(2L), project.id)
+        assertEquals(2L, project.id)
     }
 
     @Test(expected = InvalidProjectNameException::class)
     fun project_withEmptyName() {
-        Project(null, "")
-    }
-
-    @Test
-    fun getName() {
-        val project = Project(null, "Project name")
-
-        assertEquals("Project name", project.name)
+        Project(1, "")
     }
 }

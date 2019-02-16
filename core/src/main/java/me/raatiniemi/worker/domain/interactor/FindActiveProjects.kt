@@ -28,9 +28,8 @@ class FindActiveProjects(
             .filter { isActive(it) }
 
     private fun isActive(project: Project): Boolean {
-        val projectId = project.id ?: return false
+        val value = timeIntervalRepository.findActiveByProjectId(project.id)
 
-        val value = timeIntervalRepository.findActiveByProjectId(projectId)
         return value.isPresent
     }
 }

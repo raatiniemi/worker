@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.exception.NoProjectIdException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
@@ -25,8 +24,6 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
  */
 class RemoveProject(private val repository: ProjectRepository) {
     operator fun invoke(project: Project) {
-        val projectId = project.id ?: throw NoProjectIdException()
-
-        repository.remove(projectId)
+        repository.remove(project.id)
     }
 }

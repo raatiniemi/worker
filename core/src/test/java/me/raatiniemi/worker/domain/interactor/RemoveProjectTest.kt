@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.exception.NoProjectIdException
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
@@ -35,13 +34,6 @@ class RemoveProjectTest {
     @Before
     fun setUp() {
         removeProject = RemoveProject(repository)
-    }
-
-    @Test(expected = NoProjectIdException::class)
-    fun `remove project without id`() {
-        val project = Project(null, "Project name")
-
-        removeProject(project)
     }
 
     @Test

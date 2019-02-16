@@ -25,7 +25,6 @@ import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
-import me.raatiniemi.worker.domain.exception.NoProjectIdException
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
@@ -119,9 +118,8 @@ internal class ProjectsViewModel(
     suspend fun clockIn(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
         try {
             val project = item.asProject()
-            val projectId = project.id ?: throw NoProjectIdException()
 
-            clockIn(projectId, date)
+            clockIn(project.id, date)
 
             viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
             reloadProjects()
@@ -133,9 +131,8 @@ internal class ProjectsViewModel(
     suspend fun clockOut(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
         try {
             val project = item.asProject()
-            val projectId = project.id ?: throw NoProjectIdException()
 
-            clockOut(projectId, date)
+            clockOut(project.id, date)
 
             viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
             reloadProjects()
@@ -149,8 +146,6 @@ internal class ProjectsViewModel(
             removeProject(item.asProject())
 
             reloadProjects()
-        } catch (e: NoProjectIdException) {
-            Timber.w(e, "Unable to remove project without id")
         } catch (e: Exception) {
             viewActions.postValue(ProjectsViewActions.ShowUnableToDeleteProjectErrorMessage)
         }

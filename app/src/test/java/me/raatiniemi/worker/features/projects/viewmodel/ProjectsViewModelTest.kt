@@ -78,7 +78,7 @@ class ProjectsViewModelTest {
         val registeredTime = if (isActive) {
             listOf(
                     timeInterval {
-                        projectId = project.id ?: 0
+                        projectId = project.id
                         startInMilliseconds = 1
                     }
             )
@@ -142,18 +142,6 @@ class ProjectsViewModelTest {
     }
 
     @Test
-    fun `clock in project without id`() = runBlocking {
-        val project = Project(null, "Project name")
-        val item = ProjectsItem(project, emptyList())
-
-        vm.clockIn(item, Date())
-
-        vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
-        }
-    }
-
-    @Test
     fun `clock in project`() = runBlocking {
         val item = ProjectsItem(project, emptyList())
 
@@ -202,18 +190,6 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out without active project`() = runBlocking {
-        val item = ProjectsItem(project, emptyList())
-
-        vm.clockOut(item, Date())
-
-        vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.ShowUnableToClockOutErrorMessage)
-        }
-    }
-
-    @Test
-    fun `clock out project without id`() = runBlocking {
-        val project = Project(null, "Project name")
         val item = ProjectsItem(project, emptyList())
 
         vm.clockOut(item, Date())
@@ -288,7 +264,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `remove project without project id`() = runBlocking {
-        val project = Project(null, "Project #1")
+        val project = Project(1, "Project #1")
         val item = ProjectsItem(project, emptyList())
 
         vm.remove(item)

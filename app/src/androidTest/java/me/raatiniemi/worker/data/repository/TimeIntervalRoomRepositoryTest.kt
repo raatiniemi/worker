@@ -52,7 +52,7 @@ class TimeIntervalRoomRepositoryTest {
         database.projects()
                 .add(
                         projectEntity {
-                            id = project.id!!
+                            id = project.id
                             name = project.name
                         }
                 )

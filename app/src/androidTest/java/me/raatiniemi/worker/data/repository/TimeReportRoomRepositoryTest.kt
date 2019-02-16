@@ -55,7 +55,7 @@ class TimeReportRoomRepositoryTest {
         database.projects()
                 .add(
                         projectEntity {
-                            id = project.id ?: 0
+                            id = project.id
                             name = project.name
                         }
                 )

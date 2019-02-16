@@ -25,7 +25,7 @@ import me.raatiniemi.worker.util.Optional
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) : TimeIntervalRepository {
     override fun findAll(project: Project, milliseconds: Long): List<TimeInterval> {
-        return timeIntervals.findAll(projectId = project.id!!, startInMilliseconds = milliseconds)
+        return timeIntervals.findAll(projectId = project.id, startInMilliseconds = milliseconds)
                 .map { it.toTimeInterval() }
                 .toList()
     }
