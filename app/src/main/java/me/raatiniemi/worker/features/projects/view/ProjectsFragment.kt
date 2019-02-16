@@ -29,12 +29,12 @@ import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.model.ProjectsAction
-import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
+import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
-import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
+import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.visibleIf
@@ -68,10 +68,10 @@ class ProjectsFragment : CoroutineScopedFragment() {
         projectsAdapter = ProjectsAdapter(
                 object : ProjectsActionConsumer {
                     override fun accept(action: ProjectsAction) = when (action) {
-                        is ProjectsAction.Open -> onItemClick(action.result)
-                        is ProjectsAction.Toggle -> onClockActivityToggle(action.result)
-                        is ProjectsAction.At -> onClockActivityAt(action.result)
-                        is ProjectsAction.Remove -> onDelete(action.result)
+                        is ProjectsAction.Open -> onItemClick(action.item)
+                        is ProjectsAction.Toggle -> onClockActivityToggle(action.item)
+                        is ProjectsAction.At -> onClockActivityAt(action.item)
+                        is ProjectsAction.Remove -> onDelete(action.item)
                     }
                 },
                 HintedImageButtonListener(requireActivity())
@@ -167,45 +167,43 @@ class ProjectsFragment : CoroutineScopedFragment() {
         projectsViewModel.reloadProjects()
     }
 
-    private fun onItemClick(result: ProjectsItemAdapterResult) {
-        val (id) = result.project
+    private fun onItemClick(item: ProjectsItem) {
+        val (id) = item.asProject()
 
         val intent = ProjectActivity.newIntent(requireActivity(), id)
         startActivity(intent)
     }
 
-    private fun onClockActivityToggle(result: ProjectsItemAdapterResult) {
+    private fun onClockActivityToggle(item: ProjectsItem) {
         launch {
-            val projectsItem = result.projectsItem
-            if (!projectsItem.isActive) {
-                projectsViewModel.clockIn(result, Date())
+            if (!item.isActive) {
+                projectsViewModel.clockIn(item, Date())
                 return@launch
             }
 
             if (!keyValueStore.confirmClockOut()) {
-                projectsViewModel.clockOut(result, Date())
+                projectsViewModel.clockOut(item, Date())
                 return@launch
             }
 
             val confirmAction = ConfirmClockOutDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
-                projectsViewModel.clockOut(result, Date())
+                projectsViewModel.clockOut(item, Date())
             }
         }
     }
 
-    private fun onClockActivityAt(result: ProjectsItemAdapterResult) {
-        val projectsItem = result.projectsItem
+    private fun onClockActivityAt(item: ProjectsItem) {
         val fragment = ClockActivityAtFragment.newInstance(
-                projectsItem
+                item
         ) { calendar ->
             launch {
-                if (projectsItem.isActive) {
-                    projectsViewModel.clockOut(result, calendar.time)
+                if (item.isActive) {
+                    projectsViewModel.clockOut(item, calendar.time)
                     return@launch
                 }
 
-                projectsViewModel.clockIn(result, calendar.time)
+                projectsViewModel.clockIn(item, calendar.time)
             }
         }
 
@@ -214,11 +212,11 @@ class ProjectsFragment : CoroutineScopedFragment() {
                 .commit()
     }
 
-    private fun onDelete(result: ProjectsItemAdapterResult) {
+    private fun onDelete(item: ProjectsItem) {
         launch {
             val confirmAction = RemoveProjectDialog.show(requireContext())
             if (ConfirmAction.YES == confirmAction) {
-                projectsViewModel.remove(result)
+                projectsViewModel.remove(item)
             }
         }
     }

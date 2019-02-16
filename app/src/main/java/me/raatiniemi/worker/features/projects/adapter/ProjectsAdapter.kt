@@ -22,7 +22,6 @@ import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.model.ProjectsItemAdapterResult
 import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
 import me.raatiniemi.worker.features.projects.view.ViewHolder
 import me.raatiniemi.worker.util.HintedImageButtonListener
@@ -51,31 +50,30 @@ internal class ProjectsAdapter(
             return
         }
 
-        val result = ProjectsItemAdapterResult(index, item)
         vh.apply {
             bind(item)
 
             itemView.setOnClickListener {
-                consumer.accept(ProjectsAction.Open(result))
+                consumer.accept(ProjectsAction.Open(item))
             }
 
             with(clockActivityToggle) {
                 setOnClickListener {
-                    consumer.accept(ProjectsAction.Toggle(result))
+                    consumer.accept(ProjectsAction.Toggle(item))
                 }
                 setOnLongClickListener(hintedImageButtonListener)
             }
 
             with(clockActivityAt) {
                 setOnClickListener {
-                    consumer.accept(ProjectsAction.At(result))
+                    consumer.accept(ProjectsAction.At(item))
                 }
                 setOnLongClickListener(hintedImageButtonListener)
             }
 
             with(delete) {
                 setOnClickListener {
-                    consumer.accept(ProjectsAction.Remove(result))
+                    consumer.accept(ProjectsAction.Remove(item))
                 }
                 setOnLongClickListener(hintedImageButtonListener)
             }
