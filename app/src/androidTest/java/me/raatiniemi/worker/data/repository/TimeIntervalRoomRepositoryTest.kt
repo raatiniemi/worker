@@ -25,6 +25,7 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeIntervalEntity
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
+import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
@@ -209,14 +210,19 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun add() {
-        val timeInterval = TimeInterval(
+        val newTimeInterval = NewTimeInterval(
                 projectId = 1,
                 startInMilliseconds = 1,
                 stopInMilliseconds = 2
         )
-        val expected = timeInterval.copy(id = 1)
+        val expected = TimeInterval(
+                id = 1,
+                projectId = 1,
+                startInMilliseconds = 1,
+                stopInMilliseconds = 2
+        )
 
-        val actual = repository.add(timeInterval)
+        val actual = repository.add(newTimeInterval)
 
         assertTrue(actual.isPresent)
         assertEquals(expected, actual.get())

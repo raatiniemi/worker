@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
@@ -38,14 +39,20 @@ class MarkRegisteredTimeTest {
     }
 
     @Test
-    fun execute_withMultipleUnregisteredItems() {
+    fun `mark registered time with multiple unregistered items`() {
+        val newTimeIntervals = listOf(
+                newTimeInterval { },
+                newTimeInterval { },
+                newTimeInterval { },
+                newTimeInterval { }
+        )
+        newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
                 timeInterval { id = 1 },
                 timeInterval { id = 2 },
                 timeInterval { id = 3 },
                 timeInterval { id = 4 }
         )
-        timeIntervals.forEach { repository.add(it) }
 
         markRegisteredTime(timeIntervals)
 
@@ -72,7 +79,14 @@ class MarkRegisteredTimeTest {
     }
 
     @Test
-    fun execute_withMultipleRegisteredItems() {
+    fun `mark registered time with multiple registered items`() {
+        val newTimeIntervals = listOf(
+                newTimeInterval { isRegistered = true },
+                newTimeInterval { isRegistered = true },
+                newTimeInterval { isRegistered = true },
+                newTimeInterval { isRegistered = true }
+        )
+        newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
                 timeInterval {
                     id = 1
@@ -91,7 +105,6 @@ class MarkRegisteredTimeTest {
                     isRegistered = true
                 }
         )
-        timeIntervals.forEach { repository.add(it) }
 
         markRegisteredTime(timeIntervals)
 
@@ -106,11 +119,16 @@ class MarkRegisteredTimeTest {
     }
 
     @Test
-    fun execute_withMultipleItems() {
+    fun `mark registered time with multiple items`() {
+        val newTimeIntervals = listOf(
+                newTimeInterval { },
+                newTimeInterval { isRegistered = true },
+                newTimeInterval { isRegistered = true },
+                newTimeInterval { isRegistered = true }
+        )
+        newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
-                timeInterval {
-                    id = 1
-                },
+                timeInterval { id = 1 },
                 timeInterval {
                     id = 2
                     isRegistered = true
@@ -124,7 +142,6 @@ class MarkRegisteredTimeTest {
                     isRegistered = true
                 }
         )
-        timeIntervals.forEach { repository.add(it) }
 
         markRegisteredTime(timeIntervals)
 

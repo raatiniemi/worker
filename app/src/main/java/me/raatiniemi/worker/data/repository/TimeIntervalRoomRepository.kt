@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.toEntity
+import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
@@ -42,8 +43,8 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         return Optional.of(entity.toTimeInterval())
     }
 
-    override fun add(timeInterval: TimeInterval): Optional<TimeInterval> {
-        val id = timeIntervals.add(timeInterval.toEntity())
+    override fun add(newTimeInterval: NewTimeInterval): Optional<TimeInterval> {
+        val id = timeIntervals.add(newTimeInterval.toEntity())
 
         return findById(id)
     }

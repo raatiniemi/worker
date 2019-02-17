@@ -22,10 +22,7 @@ import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.RemoveProject
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
@@ -128,11 +125,12 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock in with already active project`() = runBlocking {
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockIn(item, Date())
 
@@ -201,11 +199,12 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out project`() = runBlocking {
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockOut(item, Date())
 
@@ -217,11 +216,12 @@ class ProjectsViewModelTest {
     @Test
     fun `clock out project with month time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockOut(item, Date())
 
@@ -233,11 +233,12 @@ class ProjectsViewModelTest {
     @Test
     fun `clock out project with day time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockOut(item, Date())
 
@@ -249,11 +250,12 @@ class ProjectsViewModelTest {
     @Test
     fun `clock out project with invalid time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockOut(item, Date())
 

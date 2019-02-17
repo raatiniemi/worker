@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
 import org.junit.Assert.*
 import org.junit.Before
@@ -46,11 +47,11 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `find all without time interval for project`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 10
             stopInMilliseconds = 15
         }
-        repository.add(timeInterval)
+        repository.add(newTimeInterval)
         val expected = emptyList<TimeInterval>()
 
         val anotherProject = project.copy(id = 2)
@@ -61,11 +62,11 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `find all with time interval before starting point`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 10
             stopInMilliseconds = 15
         }
-        repository.add(timeInterval)
+        repository.add(newTimeInterval)
         val expected = emptyList<TimeInterval>()
 
         val actual = repository.findAll(project, 15)
@@ -75,11 +76,11 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `find all with time interval after starting point`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 10
             stopInMilliseconds = 15
         }
-        repository.add(timeInterval)
+        repository.add(newTimeInterval)
         val expected = listOf(
                 timeInterval {
                     id = 1
@@ -102,12 +103,16 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `find by id with time interval`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        repository.add(timeInterval)
-        val expected = timeInterval.copy(id = 1)
+        repository.add(newTimeInterval)
+        val expected = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
 
         val actual = repository.findById(1)
 
@@ -124,11 +129,11 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `find active by project id without active time interval`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        repository.add(timeInterval)
+        repository.add(newTimeInterval)
 
         val actual = repository.findActiveByProjectId(1)
 
@@ -137,11 +142,14 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `find active by project id with active time interval`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
         }
-        repository.add(timeInterval)
-        val expected = timeInterval.copy(id = 1)
+        repository.add(newTimeInterval)
+        val expected = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+        }
 
         val actual = repository.findActiveByProjectId(1)
 
@@ -164,11 +172,11 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `update with time interval`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
             stopInMilliseconds = 0
         }
-        repository.add(timeInterval)
+        repository.add(newTimeInterval)
         val expected = timeInterval {
             id = 1
             startInMilliseconds = 1
@@ -199,11 +207,11 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `update with time intervals`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
             stopInMilliseconds = 0
         }
-        repository.add(timeInterval)
+        repository.add(newTimeInterval)
         val expected = listOf(
                 timeInterval {
                     id = 1
@@ -224,11 +232,11 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `remove with time interval`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        repository.add(timeInterval)
+        repository.add(newTimeInterval)
         val expected = emptyList<TimeInterval>()
 
         repository.remove(1)
@@ -251,11 +259,11 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `remove with time intervals`() {
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
             stopInMilliseconds = 10
         }
-        repository.add(timeInterval)
+        repository.add(newTimeInterval)
         val timeIntervals = listOf(
                 timeInterval {
                     id = 1

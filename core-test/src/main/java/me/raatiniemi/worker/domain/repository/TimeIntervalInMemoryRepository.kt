@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.util.Optional
@@ -43,12 +44,17 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         return Optional.ofNullable(timeInterval)
     }
 
-    override fun add(timeInterval: TimeInterval): Optional<TimeInterval> {
-        val id = incrementedId.incrementAndGet()
-        val value = timeInterval.copy(id = id)
-        timeIntervals.add(value)
+    override fun add(newTimeInterval: NewTimeInterval): Optional<TimeInterval> {
+        val timeInterval = TimeInterval(
+                id = incrementedId.incrementAndGet(),
+                projectId = newTimeInterval.projectId,
+                startInMilliseconds = newTimeInterval.startInMilliseconds,
+                stopInMilliseconds = newTimeInterval.stopInMilliseconds,
+                isRegistered = newTimeInterval.isRegistered
+        )
+        timeIntervals.add(timeInterval)
 
-        return Optional.of(value)
+        return Optional.of(timeInterval)
     }
 
     override fun update(timeInterval: TimeInterval): Optional<TimeInterval> {

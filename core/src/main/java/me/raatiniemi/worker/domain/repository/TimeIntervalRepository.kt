@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.util.Optional
@@ -50,12 +51,12 @@ interface TimeIntervalRepository {
     fun findActiveByProjectId(projectId: Long): Optional<TimeInterval>
 
     /**
-     * Add time.
+     * Add new time interval to the repository.
      *
-     * @param timeInterval Time to add.
-     * @return Added time.
+     * @param newTimeInterval New time interval to add.
+     * @return Added time interval.
      */
-    fun add(timeInterval: TimeInterval): Optional<TimeInterval>
+    fun add(newTimeInterval: NewTimeInterval): Optional<TimeInterval>
 
     /**
      * Update time.

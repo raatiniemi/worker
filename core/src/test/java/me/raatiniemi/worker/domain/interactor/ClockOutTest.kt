@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
@@ -47,17 +48,16 @@ class ClockOutTest {
     @Test
     fun execute() {
         val date = Date()
-        val timeInterval = timeInterval {
+        val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
         }
-        repository.add(
-                timeInterval
-        )
+        repository.add(newTimeInterval)
         val expected = listOf(
-                timeInterval.copy(
-                        id = 1,
-                        stopInMilliseconds = date.time
-                )
+                timeInterval {
+                    id = 1
+                    startInMilliseconds = 1
+                    stopInMilliseconds = date.time
+                }
         )
 
         clockOut(1L, date)
