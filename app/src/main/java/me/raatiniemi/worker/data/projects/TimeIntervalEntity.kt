@@ -44,8 +44,8 @@ internal data class TimeIntervalEntity(
         @ColumnInfo(name = "start_in_milliseconds")
         val startInMilliseconds: Long,
         @ColumnInfo(name = "stop_in_milliseconds")
-        val stopInMilliseconds: Long = 0,
-        val registered: Long = 0
+        val stopInMilliseconds: Long,
+        val registered: Long
 ) {
     fun toTimeInterval() = TimeInterval(
             id = id,
