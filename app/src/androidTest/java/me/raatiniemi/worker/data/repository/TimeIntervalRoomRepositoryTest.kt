@@ -231,6 +231,7 @@ class TimeIntervalRoomRepositoryTest {
     @Test
     fun update_withoutTimeInterval() {
         val timeInterval = TimeInterval(
+                id = 1,
                 projectId = 1,
                 startInMilliseconds = 1,
                 stopInMilliseconds = 2
@@ -262,6 +263,7 @@ class TimeIntervalRoomRepositoryTest {
     @Test
     fun update_withoutTimeIntervals() {
         val timeInterval = TimeInterval(
+                id = 1,
                 projectId = 1,
                 startInMilliseconds = 1,
                 stopInMilliseconds = 2

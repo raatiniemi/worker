@@ -27,9 +27,10 @@ import java.util.*
 class TimeIntervalTest {
     @Test
     fun builder_withDefaultValues() {
-        val timeInterval = TimeInterval.builder(1L).build()
+        val timeInterval = TimeInterval.builder(1L, 1L)
+                .build()
 
-        assertNull(timeInterval.id)
+        assertEquals(1L, timeInterval.id)
         assertEquals(1L, timeInterval.projectId)
         assertEquals(0L, timeInterval.startInMilliseconds)
         assertEquals(0L, timeInterval.stopInMilliseconds)
@@ -38,14 +39,13 @@ class TimeIntervalTest {
 
     @Test
     fun builder_withValues() {
-        val timeInterval = TimeInterval.builder(1L)
-                .id(2L)
+        val timeInterval = TimeInterval.builder(2L, 1L)
                 .startInMilliseconds(3L)
                 .stopInMilliseconds(4L)
                 .register()
                 .build()
 
-        assertEquals(java.lang.Long.valueOf(2L), timeInterval.id)
+        assertEquals(2L, timeInterval.id)
         assertEquals(1L, timeInterval.projectId)
         assertEquals(3L, timeInterval.startInMilliseconds)
         assertEquals(4L, timeInterval.stopInMilliseconds)
@@ -54,7 +54,8 @@ class TimeIntervalTest {
 
     @Test
     fun markAsRegistered() {
-        val t1 = TimeInterval.builder(1L).build()
+        val t1 = TimeInterval.builder(1L, 1L)
+                .build()
 
         val t2 = t1.markAsRegistered()
 
@@ -63,7 +64,7 @@ class TimeIntervalTest {
 
     @Test
     fun markAsRegistered_alreadyRegistered() {
-        val t1 = TimeInterval.builder(1L)
+        val t1 = TimeInterval.builder(1L, 1L)
                 .register()
                 .build()
 
@@ -74,7 +75,7 @@ class TimeIntervalTest {
 
     @Test
     fun unmarkRegistered() {
-        val t1 = TimeInterval.builder(1L)
+        val t1 = TimeInterval.builder(1L, 1L)
                 .register()
                 .build()
 
@@ -85,7 +86,7 @@ class TimeIntervalTest {
 
     @Test
     fun unmarkRegistered_notRegistered() {
-        val t1 = TimeInterval.builder(1L).build()
+        val t1 = TimeInterval.builder(1L, 1L).build()
 
         val t2 = t1.unmarkRegistered()
 
@@ -95,7 +96,7 @@ class TimeIntervalTest {
     @Test(expected = ClockOutBeforeClockInException::class)
     fun clockOutAt_clockOutBeforeClockIn() {
         val date = Date()
-        val timeInterval = TimeInterval.builder(1L)
+        val timeInterval = TimeInterval.builder(1L, 1L)
                 .startInMilliseconds(date.time + 1)
                 .build()
 
@@ -105,7 +106,8 @@ class TimeIntervalTest {
     @Test
     fun clockOutAt() {
         val date = Date()
-        val t1 = TimeInterval.builder(1L).build()
+        val t1 = TimeInterval.builder(1L, 1L)
+                .build()
 
         val t2 = t1.clockOutAt(date)
 
@@ -116,7 +118,7 @@ class TimeIntervalTest {
     @Test
     fun clockOutAt_withRegistered() {
         val date = Date()
-        val t1 = TimeInterval.builder(1L)
+        val t1 = TimeInterval.builder(1L, 1L)
                 .register()
                 .build()
 
@@ -128,7 +130,7 @@ class TimeIntervalTest {
 
     @Test
     fun isActive_whenActive() {
-        val timeInterval = TimeInterval.builder(1L)
+        val timeInterval = TimeInterval.builder(1L, 1L)
                 .build()
 
         assertTrue(timeInterval.isActive)
@@ -136,7 +138,7 @@ class TimeIntervalTest {
 
     @Test
     fun isActive_whenInactive() {
-        val timeInterval = TimeInterval.builder(1L)
+        val timeInterval = TimeInterval.builder(1L, 1L)
                 .stopInMilliseconds(1L)
                 .build()
 
@@ -145,7 +147,7 @@ class TimeIntervalTest {
 
     @Test
     fun getTime_whenActive() {
-        val timeInterval = TimeInterval.builder(1L)
+        val timeInterval = TimeInterval.builder(1L, 1L)
                 .startInMilliseconds(1L)
                 .build()
 
@@ -154,7 +156,7 @@ class TimeIntervalTest {
 
     @Test
     fun getTime_whenInactive() {
-        val timeInterval = TimeInterval.builder(1L)
+        val timeInterval = TimeInterval.builder(1L, 1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(11L)
                 .build()
@@ -164,7 +166,7 @@ class TimeIntervalTest {
 
     @Test
     fun getInterval_whenActive() {
-        val timeInterval = TimeInterval.builder(1L)
+        val timeInterval = TimeInterval.builder(1L, 1L)
                 .startInMilliseconds(1L)
                 .build()
 
@@ -175,7 +177,7 @@ class TimeIntervalTest {
 
     @Test
     fun getInterval_whenInactive() {
-        val timeInterval = TimeInterval.builder(1L)
+        val timeInterval = TimeInterval.builder(1L, 1L)
                 .startInMilliseconds(1L)
                 .stopInMilliseconds(11L)
                 .build()

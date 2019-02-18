@@ -75,7 +75,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     }
 
     private fun existingTimeInterval(timeInterval: TimeInterval): Boolean {
-        val id = timeInterval.id ?: return false
+        val id = timeInterval.id
 
         return findById(id).isPresent
     }
@@ -85,7 +85,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     }
 
     override fun remove(timeIntervals: List<TimeInterval>) {
-        timeIntervals.mapNotNull { it.id }
+        timeIntervals.map { it.id }
                 .forEach { remove(it) }
     }
 }

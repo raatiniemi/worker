@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.model
 import java.lang.Math.abs
 
 data class TimeIntervalBuilder(
-        var id: Long? = null,
+        var id: Long = 1,
         var projectId: Long = 1,
         var startInMilliseconds: Long = 0,
         var stopInMilliseconds: Long = 0,

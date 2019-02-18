@@ -69,7 +69,7 @@ internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(
 )
 
 internal fun TimeInterval.toEntity() = TimeIntervalEntity(
-        id = id ?: 0,
+        id = id,
         projectId = projectId,
         startInMilliseconds = startInMilliseconds,
         stopInMilliseconds = stopInMilliseconds,
