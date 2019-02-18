@@ -43,24 +43,6 @@ fun timeInterval(configure: TimeIntervalBuilder.() -> Unit): TimeInterval {
     return builder.build()
 }
 
-fun timeIntervalStartBefore(
-        startingPoint: TimeIntervalStartingPoint,
-        configure: TimeIntervalBuilder.() -> Unit
-): TimeInterval {
-    val builder = TimeIntervalBuilder()
-    builder.configure()
-
-    val startInMilliseconds = startingPoint.calculateMilliseconds() - 3_600_000
-    val stopInMilliseconds = startInMilliseconds + abs(builder.stopInMilliseconds)
-
-    return builder.let {
-        it.startInMilliseconds = startInMilliseconds
-        it.stopInMilliseconds = stopInMilliseconds
-
-        it.build()
-    }
-}
-
 fun timeIntervalStartAfter(
         startingPoint: TimeIntervalStartingPoint,
         configure: TimeIntervalBuilder.() -> Unit
