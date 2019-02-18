@@ -20,6 +20,13 @@ apply plugin: 'kotlin'
 sourceCompatibility = sourceCompatibilityVersion
 targetCompatibility = targetCompatibilityVersion
 
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+        freeCompilerArgs = ['-XXLanguage:+InlineClasses']
+    }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 

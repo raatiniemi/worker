@@ -14,6 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception
+package me.raatiniemi.worker.domain.model
 
-class NoProjectIdException : IllegalStateException()
+inline class NewProject(val name: String)

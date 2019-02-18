@@ -32,7 +32,7 @@ class ProjectsItemIsActiveTest(
 ) {
     @Test
     fun isActive() {
-        val project = Project.from("Project #1")
+        val project = Project(1, "Project #1")
         val projectsItem = ProjectsItem(project, timeIntervals)
 
         assertEquals(expected, projectsItem.isActive)
@@ -56,7 +56,7 @@ class ProjectsItemIsActiveTest(
         private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
                 return listOf(
-                        TimeInterval.builder(1L)
+                        TimeInterval.builder(1L, 1L)
                                 .startInMilliseconds(1)
                                 .stopInMilliseconds(0)
                                 .build()

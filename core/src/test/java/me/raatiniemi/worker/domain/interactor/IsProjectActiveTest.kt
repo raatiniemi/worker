@@ -16,7 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertFalse
@@ -46,12 +46,11 @@ class IsProjectActiveTest {
 
     @Test
     fun execute_withActiveTime() {
-        val timeInterval = TimeInterval.builder(1)
-                .id(1)
-                .startInMilliseconds(1)
-                .stopInMilliseconds(0)
-                .build()
-        repository.add(timeInterval)
+        val newTimeInterval = newTimeInterval {
+            startInMilliseconds = 1
+            stopInMilliseconds = 0
+        }
+        repository.add(newTimeInterval)
 
         val actual = useCase.execute(1)
 

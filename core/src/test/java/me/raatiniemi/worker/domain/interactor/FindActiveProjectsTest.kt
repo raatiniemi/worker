@@ -16,7 +16,9 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
@@ -49,7 +51,7 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke without active projects`() {
-        projectRepository.add(Project(null, "Project name #1"))
+        projectRepository.add(NewProject("Project name #1"))
         val expected = emptyList<Project>()
 
         val actual = findActiveProjects()
@@ -59,14 +61,14 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active project`() {
-        projectRepository.add(Project(null, "Project name #1"))
-        projectRepository.add(Project(null, "Project name #2"))
-        timeIntervalRepository.add(timeInterval {
+        projectRepository.add(NewProject("Project name #1"))
+        projectRepository.add(NewProject("Project name #2"))
+        timeIntervalRepository.add(newTimeInterval {
             projectId = 1
             startInMilliseconds = 1
             stopInMilliseconds = 10
         })
-        timeIntervalRepository.add(timeInterval {
+        timeIntervalRepository.add(newTimeInterval {
             projectId = 2
             startInMilliseconds = 1
             stopInMilliseconds = 0
@@ -80,14 +82,14 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active projects`() {
-        projectRepository.add(Project(null, "Project name #1"))
-        projectRepository.add(Project(null, "Project name #2"))
-        timeIntervalRepository.add(timeInterval {
+        projectRepository.add(NewProject("Project name #1"))
+        projectRepository.add(NewProject("Project name #2"))
+        timeIntervalRepository.add(newTimeInterval {
             projectId = 1
             startInMilliseconds = 1
             stopInMilliseconds = 0
         })
-        timeIntervalRepository.add(timeInterval {
+        timeIntervalRepository.add(newTimeInterval {
             projectId = 2
             startInMilliseconds = 1
             stopInMilliseconds = 0

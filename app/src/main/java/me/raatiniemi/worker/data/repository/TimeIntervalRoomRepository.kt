@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.toEntity
+import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
@@ -25,7 +26,7 @@ import me.raatiniemi.worker.util.Optional
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) : TimeIntervalRepository {
     override fun findAll(project: Project, milliseconds: Long): List<TimeInterval> {
-        return timeIntervals.findAll(projectId = project.id!!, startInMilliseconds = milliseconds)
+        return timeIntervals.findAll(projectId = project.id, startInMilliseconds = milliseconds)
                 .map { it.toTimeInterval() }
                 .toList()
     }
@@ -42,8 +43,8 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         return Optional.of(entity.toTimeInterval())
     }
 
-    override fun add(timeInterval: TimeInterval): Optional<TimeInterval> {
-        val id = timeIntervals.add(timeInterval.toEntity())
+    override fun add(newTimeInterval: NewTimeInterval): Optional<TimeInterval> {
+        val id = timeIntervals.add(newTimeInterval.toEntity())
 
         return findById(id)
     }
@@ -59,7 +60,7 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         val entities = timeIntervals.map { it.toEntity() }.toList()
         this.timeIntervals.update(entities)
 
-        return timeIntervals.mapNotNull { it.id }
+        return timeIntervals.map { it.id }
                 .mapNotNull { this.timeIntervals.find(it) }
                 .map { it.toTimeInterval() }
                 .toList()

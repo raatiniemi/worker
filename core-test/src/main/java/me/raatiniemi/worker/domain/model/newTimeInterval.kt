@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,18 +16,14 @@
 
 package me.raatiniemi.worker.domain.model
 
-import java.lang.Math.abs
-
-data class TimeIntervalBuilder(
-        var id: Long = 1,
+data class NewTimeIntervalBuilder(
         var projectId: Long = 1,
         var startInMilliseconds: Long = 0,
         var stopInMilliseconds: Long = 0,
         var isRegistered: Boolean = false
 ) {
-    fun build(): TimeInterval {
-        return TimeInterval(
-                id = id,
+    fun build(): NewTimeInterval {
+        return NewTimeInterval(
                 projectId = projectId,
                 startInMilliseconds = startInMilliseconds,
                 stopInMilliseconds = stopInMilliseconds,
@@ -36,22 +32,40 @@ data class TimeIntervalBuilder(
     }
 }
 
-fun timeInterval(configure: TimeIntervalBuilder.() -> Unit): TimeInterval {
-    val builder = TimeIntervalBuilder()
+fun newTimeInterval(configure: NewTimeIntervalBuilder.() -> Unit): NewTimeInterval {
+    val builder = NewTimeIntervalBuilder()
     builder.configure()
 
     return builder.build()
 }
 
-fun timeIntervalStartAfter(
+fun newTimeIntervalStartBefore(
         startingPoint: TimeIntervalStartingPoint,
-        configure: TimeIntervalBuilder.() -> Unit
-): TimeInterval {
-    val builder = TimeIntervalBuilder()
+        configure: NewTimeIntervalBuilder.() -> Unit
+): NewTimeInterval {
+    val builder = NewTimeIntervalBuilder()
+    builder.configure()
+
+    val startInMilliseconds = startingPoint.calculateMilliseconds() - 3_600_000
+    val stopInMilliseconds = startInMilliseconds + Math.abs(builder.stopInMilliseconds)
+
+    return builder.let {
+        it.startInMilliseconds = startInMilliseconds
+        it.stopInMilliseconds = stopInMilliseconds
+
+        it.build()
+    }
+}
+
+fun newTimeIntervalStartAfter(
+        startingPoint: TimeIntervalStartingPoint,
+        configure: NewTimeIntervalBuilder.() -> Unit
+): NewTimeInterval {
+    val builder = NewTimeIntervalBuilder()
     builder.configure()
 
     val startInMilliseconds = startingPoint.calculateMilliseconds() + 3_600_000
-    val stopInMilliseconds = startInMilliseconds + abs(builder.stopInMilliseconds)
+    val stopInMilliseconds = startInMilliseconds + Math.abs(builder.stopInMilliseconds)
 
     return builder.let {
         it.startInMilliseconds = startInMilliseconds

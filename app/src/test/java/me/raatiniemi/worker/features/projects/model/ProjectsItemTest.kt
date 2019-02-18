@@ -27,7 +27,7 @@ import org.junit.runners.JUnit4
 class ProjectsItemTest {
     @Test
     fun asProject() {
-        val project = Project.from("Project name")
+        val project = Project(1, "Project name")
         val projectsItem = ProjectsItem(project, emptyList())
 
         assertSame(project, projectsItem.asProject())
@@ -35,7 +35,7 @@ class ProjectsItemTest {
 
     @Test
     fun getTitle() {
-        val project = Project.from("Project name")
+        val project = Project(1, "Project name")
         val projectsItem = ProjectsItem(project, emptyList())
 
         assertEquals("Project name", projectsItem.title)

@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.util.Optional
 import java.util.concurrent.atomic.AtomicLong
@@ -48,9 +49,10 @@ class ProjectInMemoryRepository : ProjectRepository {
         return Optional.ofNullable(project)
     }
 
-    override fun add(project: Project): Optional<Project> {
+    override fun add(newProject: NewProject): Optional<Project> {
         val id = incrementedId.incrementAndGet()
-        projects.add(project.copy(id = id))
+        val project = Project(id, newProject.name)
+        projects.add(project)
 
         return findById(id)
     }

@@ -23,7 +23,7 @@ import java.util.*
  * Represent a time interval registered to a project.
  */
 data class TimeInterval(
-        val id: Long? = null,
+        val id: Long,
         val projectId: Long,
         val startInMilliseconds: Long,
         val stopInMilliseconds: Long = 0,
@@ -76,16 +76,10 @@ data class TimeInterval(
         return stopInMilliseconds - startInMilliseconds
     }
 
-    class Builder(internal val projectId: Long) {
-        internal var id: Long? = null
+    class Builder(internal val id: Long, internal val projectId: Long) {
         internal var startInMilliseconds = 0L
         internal var stopInMilliseconds = 0L
         internal var registered = false
-
-        fun id(id: Long?): Builder {
-            this.id = id
-            return this
-        }
 
         fun startInMilliseconds(startInMilliseconds: Long): Builder {
             this.startInMilliseconds = startInMilliseconds
@@ -109,8 +103,8 @@ data class TimeInterval(
 
     companion object {
         @JvmStatic
-        fun builder(projectId: Long): Builder {
-            return Builder(projectId)
+        fun builder(id: Long, projectId: Long): Builder {
+            return Builder(id = id, projectId = projectId)
         }
     }
 }

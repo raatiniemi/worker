@@ -31,7 +31,7 @@ class ProjectsItemGetTimeSummaryTest(
 ) {
     @Test
     fun getTimeSummary() {
-        val project = Project.from("Project name")
+        val project = Project(1, "Project name")
         val projectsItem = ProjectsItem(project, timeIntervals)
 
         assertEquals(expected, projectsItem.timeSummary)
@@ -45,7 +45,7 @@ class ProjectsItemGetTimeSummaryTest(
                     arrayOf(
                             "1h 0m",
                             listOf(
-                                    TimeInterval.builder(1L)
+                                    TimeInterval.builder(1L, 1L)
                                             .stopInMilliseconds(3600000)
                                             .build()
                             )
@@ -53,7 +53,7 @@ class ProjectsItemGetTimeSummaryTest(
                     arrayOf(
                             "2h 30m",
                             listOf(
-                                    TimeInterval.builder(1L)
+                                    TimeInterval.builder(1L, 1L)
                                             .stopInMilliseconds(9000000)
                                             .build()
                             )
@@ -61,10 +61,10 @@ class ProjectsItemGetTimeSummaryTest(
                     arrayOf(
                             "3h 30m",
                             listOf(
-                                    TimeInterval.builder(1L)
+                                    TimeInterval.builder(1L, 1L)
                                             .stopInMilliseconds(3600000)
                                             .build(),
-                                    TimeInterval.builder(1L)
+                                    TimeInterval.builder(1L, 1L)
                                             .stopInMilliseconds(9000000)
                                             .build()
                             )

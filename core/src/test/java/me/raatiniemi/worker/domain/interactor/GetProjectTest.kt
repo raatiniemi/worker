@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.NoProjectException
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
@@ -38,8 +39,8 @@ class GetProjectTest {
 
     @Test
     fun execute() {
-        repository.add(Project.from("Project name"))
-        val expected = Project.from(1L, "Project name")
+        repository.add(NewProject("Project name"))
+        val expected = Project(1L, "Project name")
 
         val actual = useCase.execute(1L)
 

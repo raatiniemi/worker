@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
@@ -41,8 +42,7 @@ class CreateProjectTest {
 
     @Test(expected = ProjectAlreadyExistsException::class)
     fun `invoke with existing project`() {
-        val project = Project.from("Project Name")
-        repository.add(project)
+        repository.add(NewProject("Project Name"))
 
         createProject("Project Name")
     }
@@ -51,7 +51,9 @@ class CreateProjectTest {
     fun execute() {
         createProject("Project Name")
 
-        val expected = listOf(Project(id = 1, name = "Project Name"))
+        val expected = listOf(
+                Project(id = 1, name = "Project Name")
+        )
         val actual = repository.findAll()
         assertEquals(expected, actual)
     }

@@ -34,8 +34,3 @@ internal data class ProjectEntity(
 ) {
     fun toProject() = Project(id = id, name = name)
 }
-
-internal fun Project.toEntity() = ProjectEntity(
-        id = id ?: 0,
-        name = name
-)

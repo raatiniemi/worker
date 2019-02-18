@@ -46,28 +46,28 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
                     arrayOf(
                             "1.00",
                             FractionIntervalFormat(),
-                            TimeInterval.builder(1L)
+                            TimeInterval.builder(1L, 1L)
                                     .stopInMilliseconds(3600000)
                                     .build()
                     ),
                     arrayOf(
                             "9.00",
                             FractionIntervalFormat(),
-                            TimeInterval.builder(1L)
+                            TimeInterval.builder(1L, 1L)
                                     .stopInMilliseconds(32400000)
                                     .build()
                     ),
                     arrayOf(
                             "1:00",
                             DigitalHoursMinutesIntervalFormat(),
-                            TimeInterval.builder(1L)
+                            TimeInterval.builder(1L, 1L)
                                     .stopInMilliseconds(3600000)
                                     .build()
                     ),
                     arrayOf(
                             "9:00",
                             DigitalHoursMinutesIntervalFormat(),
-                            TimeInterval.builder(1L)
+                            TimeInterval.builder(1L, 1L)
                                     .stopInMilliseconds(32400000)
                                     .build()
                     )

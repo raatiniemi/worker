@@ -26,7 +26,8 @@ import org.junit.runners.JUnit4
 class TimeReportItemTest {
     @Test
     fun asTime() {
-        val timeInterval = TimeInterval.builder(1L).build()
+        val timeInterval = TimeInterval.builder(1L, 1L)
+                .build()
         val item = TimeReportItem.with(timeInterval)
 
         assertSame(timeInterval, item.asTimeInterval())
@@ -34,8 +35,7 @@ class TimeReportItemTest {
 
     @Test
     fun getId() {
-        val timeInterval = TimeInterval.builder(1L)
-                .id(1L)
+        val timeInterval = TimeInterval.builder(1L, 1L)
                 .build()
         val item = TimeReportItem.with(timeInterval)
 

@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.projects
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.TimeInterval
 
 @Entity(
@@ -43,8 +44,8 @@ internal data class TimeIntervalEntity(
         @ColumnInfo(name = "start_in_milliseconds")
         val startInMilliseconds: Long,
         @ColumnInfo(name = "stop_in_milliseconds")
-        val stopInMilliseconds: Long = 0,
-        val registered: Long = 0
+        val stopInMilliseconds: Long,
+        val registered: Long
 ) {
     fun toTimeInterval() = TimeInterval(
             id = id,
@@ -55,8 +56,20 @@ internal data class TimeIntervalEntity(
     )
 }
 
+internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(
+        id = 0,
+        projectId = projectId,
+        startInMilliseconds = startInMilliseconds,
+        stopInMilliseconds = stopInMilliseconds,
+        registered = if (isRegistered) {
+            1
+        } else {
+            0
+        }
+)
+
 internal fun TimeInterval.toEntity() = TimeIntervalEntity(
-        id = id ?: 0,
+        id = id,
         projectId = projectId,
         startInMilliseconds = startInMilliseconds,
         stopInMilliseconds = stopInMilliseconds,

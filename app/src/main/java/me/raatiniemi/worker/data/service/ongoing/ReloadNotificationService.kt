@@ -48,14 +48,8 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService") {
     }
 
     private fun sendPauseNotification(project: Project) {
-        val projectId = project.id
-        if (projectId == null) {
-            Timber.w("Unable to send pause notification for project without id")
-            return
-        }
-
         sendNotification(
-                projectId,
+                project.id,
                 PauseNotification.build(
                         this,
                         project,

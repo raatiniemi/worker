@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.util.Optional
 
@@ -51,12 +52,12 @@ interface ProjectRepository {
     fun findById(id: Long): Optional<Project>
 
     /**
-     * Add a new project.
+     * Add new project to the repository.
      *
-     * @param project Project to add.
+     * @param newProject Project to add.
      * @return Added project.
      */
-    fun add(project: Project): Optional<Project>
+    fun add(newProject: NewProject): Optional<Project>
 
     /**
      * Remove project by id.

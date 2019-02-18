@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
@@ -41,11 +42,10 @@ class ClockInTest {
 
     @Test(expected = ActiveProjectException::class)
     fun execute_withActiveTime() {
-        repository.add(
-                timeInterval {
-                    startInMilliseconds = 1
-                }
-        )
+        val newTimeInterval = newTimeInterval {
+            startInMilliseconds = 1
+        }
+        repository.add(newTimeInterval)
 
         clockIn(1, Date())
     }

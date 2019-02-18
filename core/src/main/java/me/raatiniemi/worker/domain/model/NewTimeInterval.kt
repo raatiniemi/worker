@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +16,9 @@
 
 package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
-import org.junit.Assert.assertEquals
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
-
-@RunWith(JUnit4::class)
-class ProjectTest {
-    @Test
-    fun builder_withValues() {
-        val project = Project(2L, "Project name")
-
-        assertEquals("Project name", project.name)
-        assertEquals(2L, project.id)
-    }
-
-    @Test(expected = InvalidProjectNameException::class)
-    fun project_withEmptyName() {
-        Project(1, "")
-    }
-}
+data class NewTimeInterval(
+        val projectId: Long,
+        val startInMilliseconds: Long,
+        val stopInMilliseconds: Long = 0,
+        val isRegistered: Boolean = false
+)

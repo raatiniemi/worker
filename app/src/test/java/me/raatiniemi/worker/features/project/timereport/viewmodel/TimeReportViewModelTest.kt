@@ -20,10 +20,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
@@ -54,10 +51,20 @@ class TimeReportViewModelTest {
     private lateinit var timeReportRepository: TimeReportRepository
     private lateinit var timeIntervalRepository: TimeIntervalRepository
 
-    private fun setUpViewModel(timeIntervals: List<TimeInterval>): TimeReportViewModel {
-        timeReportRepository = TimeReportInMemoryRepository(timeIntervals)
+    private fun setUpViewModel(newTimeIntervals: List<NewTimeInterval>): TimeReportViewModel {
+        timeReportRepository = TimeReportInMemoryRepository(
+                newTimeIntervals.mapIndexed { index: Int, newTimeInterval: NewTimeInterval ->
+                    timeInterval {
+                        id = index + 1L
+                        projectId = newTimeInterval.projectId
+                        startInMilliseconds = newTimeInterval.startInMilliseconds
+                        stopInMilliseconds = newTimeInterval.stopInMilliseconds
+                        isRegistered = newTimeInterval.isRegistered
+                    }
+                }
+        )
         timeIntervalRepository = TimeIntervalInMemoryRepository()
-        timeIntervals.forEach {
+        newTimeIntervals.forEach {
             timeIntervalRepository.add(it)
         }
 
@@ -74,7 +81,7 @@ class TimeReportViewModelTest {
     fun `toggle registered state with selected item`() = runBlocking {
         val vm = setUpViewModel(
                 listOf(
-                        timeInterval { }
+                        newTimeInterval { }
                 )
         )
         val timeInterval = timeInterval { id = 1 }
@@ -94,8 +101,8 @@ class TimeReportViewModelTest {
     fun `toggle registered state for selected items`() = runBlocking {
         val vm = setUpViewModel(
                 listOf(
-                        timeInterval { },
-                        timeInterval { }
+                        newTimeInterval { },
+                        newTimeInterval { }
                 )
         )
         val firstTimeInterval = timeInterval { id = 1 }
@@ -118,7 +125,7 @@ class TimeReportViewModelTest {
     @Test
     fun `remove with single item`() = runBlocking {
         val vm = setUpViewModel(listOf(
-                timeInterval { }
+                newTimeInterval { }
         ))
         val timeInterval = timeInterval { id = 1 }
         val timeReportItem = TimeReportItem(timeInterval)
@@ -134,8 +141,8 @@ class TimeReportViewModelTest {
     @Test
     fun `remove with multiple items`() = runBlocking {
         val vm = setUpViewModel(listOf(
-                timeInterval { },
-                timeInterval { }
+                newTimeInterval { },
+                newTimeInterval { }
         ))
         val firstTimeReportItem = TimeReportItem(timeInterval { id = 1 })
         val secondTimeReportItem = TimeReportItem(timeInterval { id = 2 })

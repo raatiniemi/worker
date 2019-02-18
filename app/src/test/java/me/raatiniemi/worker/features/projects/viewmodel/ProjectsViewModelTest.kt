@@ -22,9 +22,7 @@ import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.RemoveProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
@@ -55,7 +53,7 @@ class ProjectsViewModelTest {
     private lateinit var removeProject: RemoveProject
     private lateinit var vm: ProjectsViewModel
 
-    private val project = Project.from(1L, "Project #1")
+    private val project = Project(1L, "Project #1")
 
     @Before
     fun setUp() {
@@ -77,7 +75,7 @@ class ProjectsViewModelTest {
         val registeredTime = if (isActive) {
             listOf(
                     timeInterval {
-                        projectId = project.id ?: 0
+                        projectId = project.id
                         startInMilliseconds = 1
                     }
             )
@@ -127,23 +125,12 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock in with already active project`() = runBlocking {
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
-
-        vm.clockIn(item, Date())
-
-        vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
-        }
-    }
-
-    @Test
-    fun `clock in project without id`() = runBlocking {
-        val project = Project(null, "Project name")
-        val item = ProjectsItem(project, emptyList())
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockIn(item, Date())
 
@@ -211,24 +198,13 @@ class ProjectsViewModelTest {
     }
 
     @Test
-    fun `clock out project without id`() = runBlocking {
-        val project = Project(null, "Project name")
-        val item = ProjectsItem(project, emptyList())
-
-        vm.clockOut(item, Date())
-
-        vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.ShowUnableToClockOutErrorMessage)
-        }
-    }
-
-    @Test
     fun `clock out project`() = runBlocking {
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockOut(item, Date())
 
@@ -240,11 +216,12 @@ class ProjectsViewModelTest {
     @Test
     fun `clock out project with month time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockOut(item, Date())
 
@@ -256,11 +233,12 @@ class ProjectsViewModelTest {
     @Test
     fun `clock out project with day time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockOut(item, Date())
 
@@ -272,11 +250,12 @@ class ProjectsViewModelTest {
     @Test
     fun `clock out project with invalid time interval starting point`() = runBlocking {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
-        val timeInterval = timeInterval {
-            stopInMilliseconds = 0
-        }
-        timeIntervalRepository.add(timeInterval)
-        val item = ProjectsItem(project, listOf(timeInterval))
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
 
         vm.clockOut(item, Date())
 
@@ -287,7 +266,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `remove project without project id`() = runBlocking {
-        val project = Project(null, "Project #1")
+        val project = Project(1, "Project #1")
         val item = ProjectsItem(project, emptyList())
 
         vm.remove(item)
@@ -311,9 +290,10 @@ class ProjectsViewModelTest {
 
     @Test
     fun `remove project with project`() = runBlocking {
-        val project = Project(null, "Project #1")
-        val item = ProjectsItem(project.copy(1), emptyList())
-        projectRepository.add(project)
+        val newProject = NewProject("Project #1")
+        val project = Project(1, "Project #1")
+        val item = ProjectsItem(project, emptyList())
+        projectRepository.add(newProject)
 
         vm.remove(item)
 
