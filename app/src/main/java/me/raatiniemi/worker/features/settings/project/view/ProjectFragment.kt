@@ -30,8 +30,6 @@ import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
 import me.raatiniemi.worker.util.*
-import me.raatiniemi.worker.util.NullUtil.isNull
-import me.raatiniemi.worker.util.NullUtil.nonNull
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -54,46 +52,6 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
 
     override val title = R.string.activity_settings_project
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, vm.confirmClockOut)
-
-        try {
-            val startingPointForTimeSummary = keyValueStore.int(
-                    AppKeys.TIME_SUMMARY.rawValue,
-                    TimeIntervalStartingPoint.MONTH.rawValue
-            )
-
-            val timeSummary = findPreference(TIME_SUMMARY_KEY) as ListPreference
-            timeSummary.value = startingPointForTimeSummary.toString()
-            timeSummary.onPreferenceChangeListener = this
-        } catch (e: ClassCastException) {
-            Timber.w(e, "Unable to set listener for 'time_summary'")
-        }
-
-        try {
-            val timeReportSummaryFormatValue = keyValueStore.int(
-                    AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
-                    TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-            )
-
-            val timeReportSummaryFormat = findPreference(TIME_REPORT_SUMMARY_FORMAT_KEY) as ListPreference
-            timeReportSummaryFormat.value = timeReportSummaryFormatValue.toString()
-            timeReportSummaryFormat.onPreferenceChangeListener = this
-        } catch (e: ClassCastException) {
-            Timber.w(e, "Unable to set listener for 'settings_project_time_report_summary_format'")
-        }
-
-        populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY, keyValueStore.ongoingNotification())
-        val preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY)
-        if (nonNull(preference)) {
-            preference.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary)
-        }
-
-        preference.isEnabled = isOngoingChannelEnabled
-    }
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings_project)
     }
@@ -101,17 +59,68 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureView()
+        observeViewModel()
+    }
+
+    private fun configureView() {
+        configureConfirmClockOut()
+        configureTimeSummaryStartingPoint()
+        configureTimeReportSummaryFormat()
+        configureOngoingNotification()
+    }
+
+    private fun configureConfirmClockOut() {
+        populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, vm.confirmClockOut)
+    }
+
+    private fun configureTimeSummaryStartingPoint() {
+        try {
+            val value = keyValueStore.int(
+                    AppKeys.TIME_SUMMARY.rawValue,
+                    TimeIntervalStartingPoint.MONTH.rawValue
+            )
+
+            val preference = findPreference(TIME_SUMMARY_KEY) as ListPreference
+            preference.value = value.toString()
+            preference.onPreferenceChangeListener = this
+        } catch (e: ClassCastException) {
+            Timber.w(e, "Unable to find preference with key: $TIME_SUMMARY_KEY")
+        }
+    }
+
+    private fun configureTimeReportSummaryFormat() {
+        try {
+            val value = keyValueStore.int(
+                    AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
+                    TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
+            )
+
+            val preference = findPreference(TIME_REPORT_SUMMARY_FORMAT_KEY) as ListPreference
+            preference.value = value.toString()
+            preference.onPreferenceChangeListener = this
+        } catch (e: ClassCastException) {
+            Timber.w(e, "Unable to find preference with key: $TIME_SUMMARY_KEY")
+        }
+    }
+
+    private fun configureOngoingNotification() {
+        populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY, keyValueStore.ongoingNotification())
+
+        val preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY)
+        preference?.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary)
+        preference?.isEnabled = isOngoingChannelEnabled
+    }
+
+    private fun observeViewModel() {
         vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
     }
 
-    private fun populateCheckBoxPreference(
-            preferenceKey: String,
-            shouldCheck: Boolean
-    ) {
+    private fun populateCheckBoxPreference(preferenceKey: String, shouldCheck: Boolean) {
         val preference = findPreference(preferenceKey)
-        if (isNull(preference)) {
+        if (preference == null) {
             Timber.w("Unable to find preference with key: %s", preferenceKey)
             return
         }
