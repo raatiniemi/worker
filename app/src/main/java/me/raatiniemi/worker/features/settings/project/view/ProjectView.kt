@@ -20,21 +20,6 @@ import me.raatiniemi.worker.features.shared.view.MvpView
 
 interface ProjectView : MvpView {
     /**
-     * Show message for successful time summary starting point change to week.
-     */
-    fun showChangeTimeSummaryStartingPointToWeekSuccessMessage()
-
-    /**
-     * Show message for successful time summary starting point change to month.
-     */
-    fun showChangeTimeSummaryStartingPointToMonthSuccessMessage()
-
-    /**
-     * Show message for failed time summary starting point change.
-     */
-    fun showChangeTimeSummaryStartingPointErrorMessage()
-
-    /**
      * Show message for successful time report summary format change to digital clock.
      */
     fun showChangeTimeReportSummaryToDigitalClockSuccessMessage()

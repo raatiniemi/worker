@@ -19,7 +19,6 @@ package me.raatiniemi.worker.util
 import android.content.Context
 import android.content.SharedPreferences
 import me.raatiniemi.worker.RobolectricTestCase
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import org.junit.Assert.*
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
@@ -162,31 +161,6 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
         val actual = keyValueStore.ongoingNotificationChronometer()
 
         assertTrue(actual)
-    }
-
-    @Test
-    fun startingPointForTimeSummary_withoutValue() {
-        val actual = keyValueStore.startingPointForTimeSummary()
-
-        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, actual)
-    }
-
-    @Test
-    fun startingPointForTimeSummary_withWeek() {
-        keyValueStore.useWeekForTimeSummaryStartingPoint()
-
-        val actual = keyValueStore.startingPointForTimeSummary()
-
-        assertEquals(TimeIntervalStartingPoint.WEEK.rawValue, actual)
-    }
-
-    @Test
-    fun startingPointForTimeSummary_withMonth() {
-        keyValueStore.useMonthForTimeSummaryStartingPoint()
-
-        val actual = keyValueStore.startingPointForTimeSummary()
-
-        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, actual)
     }
 
     @Test

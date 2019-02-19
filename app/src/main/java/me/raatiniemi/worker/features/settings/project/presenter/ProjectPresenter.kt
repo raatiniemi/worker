@@ -16,55 +16,15 @@
 
 package me.raatiniemi.worker.features.settings.project.presenter
 
-import me.raatiniemi.worker.domain.exception.InvalidStartingPointException
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.exception.InvalidTimeReportSummaryFormatException
-import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.settings.project.view.ProjectView
 import me.raatiniemi.worker.features.shared.presenter.BasePresenter
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
 import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_FRACTION
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
-class ProjectPresenter(
-        private val keyValueStore: KeyValueStore,
-        private val eventBus: EventBus
-) : BasePresenter<ProjectView>() {
-    fun changeTimeSummaryStartingPoint(newStartingPoint: Int) {
-        try {
-            val currentStartingPoint = keyValueStore.startingPointForTimeSummary()
-            if (currentStartingPoint == newStartingPoint) {
-                return
-            }
-
-            when (TimeIntervalStartingPoint.from(newStartingPoint)) {
-                TimeIntervalStartingPoint.WEEK -> keyValueStore.useWeekForTimeSummaryStartingPoint()
-                TimeIntervalStartingPoint.MONTH -> keyValueStore.useMonthForTimeSummaryStartingPoint()
-                else -> throw InvalidStartingPointException(
-                        "Starting point '$newStartingPoint' is not valid"
-                )
-            }
-
-            eventBus.post(TimeSummaryStartingPointChangeEvent())
-
-            performWithView { view ->
-                if (TimeIntervalStartingPoint.WEEK.rawValue == newStartingPoint) {
-                    view.showChangeTimeSummaryStartingPointToWeekSuccessMessage()
-                    return@performWithView
-                }
-
-                view.showChangeTimeSummaryStartingPointToMonthSuccessMessage()
-            }
-        } catch (e: InvalidStartingPointException) {
-            Timber.w(e, "Unable to set new starting point")
-
-            performWithView { it.showChangeTimeSummaryStartingPointErrorMessage() }
-        }
-
-    }
-
+class ProjectPresenter(private val keyValueStore: KeyValueStore) : BasePresenter<ProjectView>() {
     fun changeTimeReportSummaryFormat(newFormat: Int) {
         val currentFormat = keyValueStore.timeReportSummaryFormat()
         if (currentFormat == newFormat) {

@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.features.settings.project.presenter
 
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.settings.project.view.ProjectView
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
@@ -28,7 +26,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 
 @RunWith(JUnit4::class)
@@ -43,73 +40,7 @@ class ProjectPresenterTest {
     fun setUp() {
         eventBus = mock(EventBus::class.java)
         view = mock(ProjectView::class.java)
-        presenter = ProjectPresenter(keyValueStore, eventBus)
-    }
-
-    @Test
-    fun changeTimeSummaryStartingPoint_withMonth() {
-        keyValueStore.useWeekForTimeSummaryStartingPoint()
-        presenter.attachView(view)
-
-        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
-
-        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue.toLong(), keyValueStore.startingPointForTimeSummary().toLong())
-        verify<EventBus>(eventBus).post(ArgumentMatchers.any(TimeSummaryStartingPointChangeEvent::class.java))
-        verify<ProjectView>(view).showChangeTimeSummaryStartingPointToMonthSuccessMessage()
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage()
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointErrorMessage()
-    }
-
-    @Test
-    fun changeTimeSummaryStartingPoint_withWeek() {
-        presenter.attachView(view)
-
-        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK.rawValue)
-
-        assertEquals(TimeIntervalStartingPoint.WEEK.rawValue.toLong(), keyValueStore.startingPointForTimeSummary().toLong())
-        verify<EventBus>(eventBus).post(ArgumentMatchers.any(TimeSummaryStartingPointChangeEvent::class.java))
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage()
-        verify<ProjectView>(view).showChangeTimeSummaryStartingPointToWeekSuccessMessage()
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointErrorMessage()
-    }
-
-    @Test
-    fun changeTimeSummaryStartingPoint_withPreviousValue() {
-        presenter.attachView(view)
-
-        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
-
-        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue.toLong(), keyValueStore.startingPointForTimeSummary().toLong())
-        verify<EventBus>(eventBus, never()).post(ArgumentMatchers.any(TimeSummaryStartingPointChangeEvent::class.java))
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage()
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage()
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointErrorMessage()
-    }
-
-    @Test
-    fun changeTimeSummaryStartingPoint_withoutAttachedView() {
-        presenter.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK.rawValue)
-
-        verify<EventBus>(eventBus).post(ArgumentMatchers.any(TimeSummaryStartingPointChangeEvent::class.java))
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointToMonthSuccessMessage()
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointToWeekSuccessMessage()
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointErrorMessage()
-    }
-
-    @Test
-    fun changeTimeSummaryStartingPoint_invalidStartingPoint() {
-        presenter.attachView(view)
-
-        presenter.changeTimeSummaryStartingPoint(0)
-
-        verify<ProjectView>(view).showChangeTimeSummaryStartingPointErrorMessage()
-    }
-
-    @Test
-    fun changeTimeSummaryStartingPoint_invalidStartingPointWithoutAttachedView() {
-        presenter.changeTimeSummaryStartingPoint(0)
-
-        verify<ProjectView>(view, never()).showChangeTimeSummaryStartingPointErrorMessage()
+        presenter = ProjectPresenter(keyValueStore)
     }
 
     @Test

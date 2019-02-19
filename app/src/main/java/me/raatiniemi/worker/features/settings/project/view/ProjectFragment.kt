@@ -22,12 +22,16 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.Observer
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.presenter.ProjectPresenter
+import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
+import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.Notifications
 import me.raatiniemi.worker.util.NullUtil.isNull
@@ -35,10 +39,13 @@ import me.raatiniemi.worker.util.NullUtil.nonNull
 import me.raatiniemi.worker.util.PreferenceUtil
 import me.raatiniemi.worker.util.PresenterUtil.detachViewIfNotNull
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPreferenceChangeListener {
     private val keyValueStore: KeyValueStore by inject()
+
+    private val vm: ProjectViewModel by viewModel()
 
     private val presenter: ProjectPresenter by inject()
     private val isOngoingChannelEnabled: Boolean
@@ -62,7 +69,10 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
         populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, keyValueStore.confirmClockOut())
 
         try {
-            val startingPointForTimeSummary = keyValueStore.startingPointForTimeSummary()
+            val startingPointForTimeSummary = keyValueStore.int(
+                    AppKeys.TIME_SUMMARY.rawValue,
+                    TimeIntervalStartingPoint.MONTH.rawValue
+            )
 
             val timeSummary = findPreference(TIME_SUMMARY_KEY) as ListPreference
             timeSummary.value = startingPointForTimeSummary.toString()
@@ -92,6 +102,14 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings_project)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        vm.viewActions.observeAndConsume(this, Observer {
+            it.action(requireActivity())
+        })
     }
 
     private fun populateCheckBoxPreference(
@@ -174,49 +192,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
 
     private fun changeTimeSummaryStartingPoint(newStartingPoint: Any) {
         val startingPoint = Integer.parseInt(newStartingPoint as String)
-        presenter.changeTimeSummaryStartingPoint(startingPoint)
-    }
-
-    override fun showChangeTimeSummaryStartingPointToWeekSuccessMessage() {
-        val contentView = requireActivity().findViewById<View>(android.R.id.content)
-        if (isNull(contentView)) {
-            return
-        }
-
-        val snackBar = Snackbar.make(
-                contentView,
-                R.string.message_change_time_summary_starting_point_week,
-                Snackbar.LENGTH_LONG
-        )
-        snackBar.show()
-    }
-
-    override fun showChangeTimeSummaryStartingPointToMonthSuccessMessage() {
-        val contentView = requireActivity().findViewById<View>(android.R.id.content)
-        if (isNull(contentView)) {
-            return
-        }
-
-        val snackBar = Snackbar.make(
-                contentView,
-                R.string.message_change_time_summary_starting_point_month,
-                Snackbar.LENGTH_LONG
-        )
-        snackBar.show()
-    }
-
-    override fun showChangeTimeSummaryStartingPointErrorMessage() {
-        val contentView = requireActivity().findViewById<View>(android.R.id.content)
-        if (isNull(contentView)) {
-            return
-        }
-
-        val snackBar = Snackbar.make(
-                contentView,
-                R.string.error_message_change_time_summary_starting_point,
-                Snackbar.LENGTH_LONG
-        )
-        snackBar.show()
+        vm.changeTimeSummaryStartingPoint(startingPoint)
     }
 
     private fun changeTimeReportSummaryFormat(newValue: Any) {

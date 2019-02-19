@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.util
 
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-
 interface KeyValueStore {
     fun set(key: String, value: Boolean)
     fun set(key: String, value: Int)
@@ -65,18 +63,6 @@ interface KeyValueStore {
 
     fun ongoingNotificationChronometer(): Boolean {
         return bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
-    }
-
-    fun useWeekForTimeSummaryStartingPoint() {
-        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
-    }
-
-    fun useMonthForTimeSummaryStartingPoint() {
-        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
-    }
-
-    fun startingPointForTimeSummary(): Int {
-        return int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
     }
 
     fun useFractionAsTimeReportSummaryFormat() {

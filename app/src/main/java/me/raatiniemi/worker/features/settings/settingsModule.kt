@@ -18,12 +18,18 @@ package me.raatiniemi.worker.features.settings
 
 import me.raatiniemi.worker.features.settings.data.presenter.DataPresenter
 import me.raatiniemi.worker.features.settings.project.presenter.ProjectPresenter
+import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import org.greenrobot.eventbus.EventBus
+import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 val settingsModule = module {
+    viewModel {
+        ProjectViewModel(get())
+    }
+
     single {
-        ProjectPresenter(get(), EventBus.getDefault())
+        ProjectPresenter(get())
     }
 
     single { DataPresenter(EventBus.getDefault()) }
