@@ -19,7 +19,8 @@ package me.raatiniemi.worker.util
 import android.content.Context
 import android.content.SharedPreferences
 import me.raatiniemi.worker.RobolectricTestCase
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 
@@ -84,31 +85,6 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
         keyValueStore.setHideRegisteredTime(true)
 
         val actual = keyValueStore.hideRegisteredTime()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun confirmClockOut_withoutValue() {
-        val actual = keyValueStore.confirmClockOut()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun confirmClockOut_whenDisabled() {
-        keyValueStore.setConfirmClockOut(false)
-
-        val actual = keyValueStore.confirmClockOut()
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun confirmClockOut_whenEnabled() {
-        keyValueStore.setConfirmClockOut(true)
-
-        val actual = keyValueStore.confirmClockOut()
 
         assertTrue(actual)
     }

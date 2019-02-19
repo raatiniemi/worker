@@ -20,7 +20,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
 import me.raatiniemi.worker.util.*
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -40,6 +40,31 @@ class ProjectViewModelTest {
     @Before
     fun setUp() {
         vm = ProjectViewModel(keyValueStore)
+    }
+
+    @Test
+    fun `confirm clock out with default value`() {
+        val actual = vm.confirmClockOut
+
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `disable confirm clock out`() {
+        vm.confirmClockOut = false
+
+        val actual = vm.confirmClockOut
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `enable confirm clock out`() {
+        vm.confirmClockOut = false
+
+        vm.confirmClockOut = true
+
+        val actual = vm.confirmClockOut
+        assertTrue(actual)
     }
 
     @Test

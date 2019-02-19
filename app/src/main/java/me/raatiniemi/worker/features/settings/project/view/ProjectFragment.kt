@@ -57,7 +57,7 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, keyValueStore.confirmClockOut())
+        populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, vm.confirmClockOut)
 
         try {
             val startingPointForTimeSummary = keyValueStore.int(
@@ -122,7 +122,9 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         return when (preference?.key) {
             CONFIRM_CLOCK_OUT_KEY -> {
-                toggleConfirmClockOut(preference)
+                PreferenceUtil.readCheckBoxPreference(preference) {
+                    vm.confirmClockOut = it
+                }
                 true
             }
             TIME_SUMMARY_KEY, TIME_REPORT_SUMMARY_FORMAT_KEY -> true
@@ -136,10 +138,6 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
             }
             else -> super.onPreferenceTreeClick(preference)
         }
-    }
-
-    private fun toggleConfirmClockOut(preference: Preference) {
-        PreferenceUtil.readCheckBoxPreference(preference) { keyValueStore.setConfirmClockOut(it) }
     }
 
     private fun toggleOngoingNotification(preference: Preference) {

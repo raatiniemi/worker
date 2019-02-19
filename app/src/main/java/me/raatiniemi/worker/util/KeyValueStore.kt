@@ -33,14 +33,6 @@ interface KeyValueStore {
         return bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
     }
 
-    fun setConfirmClockOut(value: Boolean) {
-        return set(AppKeys.CONFIRM_CLOCK_OUT.rawValue, value)
-    }
-
-    fun confirmClockOut(): Boolean {
-        return bool(AppKeys.CONFIRM_CLOCK_OUT.rawValue, true)
-    }
-
     fun enableOngoingNotification() {
         set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
     }

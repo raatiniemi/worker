@@ -29,6 +29,14 @@ import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_FRACTION
 import timber.log.Timber
 
 class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
+    var confirmClockOut: Boolean
+        @MainThread
+        get() = keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT.rawValue, true)
+        @MainThread
+        set(value) {
+            keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT.rawValue, value)
+        }
+
     val viewActions = ConsumableLiveData<ProjectViewActions>()
 
     @MainThread
