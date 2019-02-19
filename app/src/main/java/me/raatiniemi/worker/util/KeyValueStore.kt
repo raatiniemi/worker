@@ -64,18 +64,6 @@ interface KeyValueStore {
     fun ongoingNotificationChronometer(): Boolean {
         return bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
     }
-
-    fun useFractionAsTimeReportSummaryFormat() {
-        set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_FRACTION)
-    }
-
-    fun useDigitalClockAsTimeReportSummaryFormat() {
-        set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
-    }
-
-    fun timeReportSummaryFormat(): Int {
-        return int(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
-    }
 }
 
 // TODO: Should time sheet summary format constants be moved to a better location?

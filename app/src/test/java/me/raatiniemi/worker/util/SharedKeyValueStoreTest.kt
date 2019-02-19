@@ -162,29 +162,4 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
 
         assertTrue(actual)
     }
-
-    @Test
-    fun timeSheetSummaryFormat_withoutValue() {
-        val actual = keyValueStore.timeReportSummaryFormat()
-
-        assertEquals(TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK, actual)
-    }
-
-    @Test
-    fun timeSheetSummaryFormat_withFraction() {
-        keyValueStore.useFractionAsTimeReportSummaryFormat()
-
-        val actual = keyValueStore.timeReportSummaryFormat()
-
-        assertEquals(TIME_REPORT_SUMMARY_FORMAT_FRACTION, actual)
-    }
-
-    @Test
-    fun timeSheetSummaryFormat_withDigitalClock() {
-        keyValueStore.useDigitalClockAsTimeReportSummaryFormat()
-
-        val actual = keyValueStore.timeReportSummaryFormat()
-
-        assertEquals(TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK, actual)
-    }
 }

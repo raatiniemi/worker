@@ -19,9 +19,7 @@ package me.raatiniemi.worker.features.settings.project.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.InMemoryKeyValueStore
-import me.raatiniemi.worker.util.KeyValueStore
+import me.raatiniemi.worker.util.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -81,6 +79,49 @@ class ProjectViewModelTest {
 
         vm.viewActions.observeForever {
             assertEquals(ProjectViewActions.ShowTimeSummaryStartingPointChangedToMonth, it)
+        }
+    }
+
+    @Test
+    fun `change time report summary format with current format`() {
+        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
+
+        vm.changeTimeReportSummaryFormat(TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
+
+        assertEquals(
+                TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK,
+                keyValueStore.int(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue)
+        )
+    }
+
+    @Test
+    fun `change time report summary format with unknown format`() {
+        vm.changeTimeReportSummaryFormat(-1)
+
+        vm.viewActions.observeForever {
+            assertEquals(ProjectViewActions.ShowUnableToChangeTimeReportSummaryErrorMessage, it)
+        }
+    }
+
+    @Test
+    fun `change time report summary format from fraction to digital clock`() {
+        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_FRACTION)
+
+        vm.changeTimeReportSummaryFormat(TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
+
+        vm.viewActions.observeForever {
+            assertEquals(ProjectViewActions.ShowTimeReportSummaryChangedToDigitalClock, it)
+        }
+    }
+
+    @Test
+    fun `change time report summary format from digital clock to fraction`() {
+        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
+
+        vm.changeTimeReportSummaryFormat(TIME_REPORT_SUMMARY_FORMAT_FRACTION)
+
+        vm.viewActions.observeForever {
+            assertEquals(ProjectViewActions.ShowTimeReportSummaryChangedToFraction, it)
         }
     }
 }

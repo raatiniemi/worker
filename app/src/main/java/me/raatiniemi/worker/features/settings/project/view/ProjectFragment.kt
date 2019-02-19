@@ -25,29 +25,22 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.features.settings.project.presenter.ProjectPresenter
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.Notifications
+import me.raatiniemi.worker.util.*
 import me.raatiniemi.worker.util.NullUtil.isNull
 import me.raatiniemi.worker.util.NullUtil.nonNull
-import me.raatiniemi.worker.util.PreferenceUtil
-import me.raatiniemi.worker.util.PresenterUtil.detachViewIfNotNull
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPreferenceChangeListener {
+class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeListener {
     private val keyValueStore: KeyValueStore by inject()
 
     private val vm: ProjectViewModel by viewModel()
 
-    private val presenter: ProjectPresenter by inject()
     private val isOngoingChannelEnabled: Boolean
         @RequiresApi(api = Build.VERSION_CODES.O)
         get() {
@@ -63,8 +56,6 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        presenter.attachView(this)
 
         populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, keyValueStore.confirmClockOut())
 
@@ -82,7 +73,10 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
         }
 
         try {
-            val timeReportSummaryFormatValue = keyValueStore.timeReportSummaryFormat()
+            val timeReportSummaryFormatValue = keyValueStore.int(
+                    AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
+                    TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
+            )
 
             val timeReportSummaryFormat = findPreference(TIME_REPORT_SUMMARY_FORMAT_KEY) as ListPreference
             timeReportSummaryFormat.value = timeReportSummaryFormatValue.toString()
@@ -123,12 +117,6 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
         }
 
         PreferenceUtil.populateCheckBoxPreference(preference, shouldCheck)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        detachViewIfNotNull(presenter)
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
@@ -197,49 +185,7 @@ class ProjectFragment : BasePreferenceFragment(), ProjectView, Preference.OnPref
 
     private fun changeTimeReportSummaryFormat(newValue: Any) {
         val newFormat = Integer.parseInt(newValue as String)
-        presenter.changeTimeReportSummaryFormat(newFormat)
-    }
-
-    override fun showChangeTimeReportSummaryToFractionSuccessMessage() {
-        val contentView = requireActivity().findViewById<View>(android.R.id.content)
-        if (isNull(contentView)) {
-            return
-        }
-
-        val snackBar = Snackbar.make(
-                contentView,
-                R.string.message_change_time_report_summary_format_fraction,
-                Snackbar.LENGTH_LONG
-        )
-        snackBar.show()
-    }
-
-    override fun showChangeTimeReportSummaryToDigitalClockSuccessMessage() {
-        val contentView = requireActivity().findViewById<View>(android.R.id.content)
-        if (isNull(contentView)) {
-            return
-        }
-
-        val snackBar = Snackbar.make(
-                contentView,
-                R.string.message_change_time_report_summary_format_digital_clock,
-                Snackbar.LENGTH_LONG
-        )
-        snackBar.show()
-    }
-
-    override fun showChangeTimeReportSummaryFormatErrorMessage() {
-        val contentView = requireActivity().findViewById<View>(android.R.id.content)
-        if (isNull(contentView)) {
-            return
-        }
-
-        val snackBar = Snackbar.make(
-                contentView,
-                R.string.error_message_change_time_report_summary_format,
-                Snackbar.LENGTH_LONG
-        )
-        snackBar.show()
+        vm.changeTimeReportSummaryFormat(newFormat)
     }
 
     companion object {
