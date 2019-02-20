@@ -23,12 +23,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
+import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
+import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.util.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -71,7 +73,9 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     }
 
     private fun configureConfirmClockOut() {
-        populateCheckBoxPreference(CONFIRM_CLOCK_OUT_KEY, vm.confirmClockOut)
+        configurePreference<CheckBoxPreference>(CONFIRM_CLOCK_OUT_KEY) {
+            isChecked = vm.confirmClockOut
+        }
     }
 
     private fun configureTimeSummaryStartingPoint() {
@@ -105,7 +109,9 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     }
 
     private fun configureOngoingNotification() {
-        populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY, vm.isOngoingNotificationEnabled)
+        configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_ENABLE_KEY) {
+            isChecked = vm.isOngoingNotificationEnabled
+        }
 
         val preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY)
         preference?.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary)
@@ -116,16 +122,6 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
         vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
-    }
-
-    private fun populateCheckBoxPreference(preferenceKey: String, shouldCheck: Boolean) {
-        val preference = findPreference(preferenceKey)
-        if (preference == null) {
-            Timber.w("Unable to find preference with key: %s", preferenceKey)
-            return
-        }
-
-        PreferenceUtil.populateCheckBoxPreference(preference, shouldCheck)
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

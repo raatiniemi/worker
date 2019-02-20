@@ -25,18 +25,6 @@ public class PreferenceUtil {
     private PreferenceUtil() {
     }
 
-    public static void populateCheckBoxPreference(
-            @NonNull Preference preference,
-            boolean isChecked
-    ) {
-        try {
-            CheckBoxPreference checkBoxPreference = (CheckBoxPreference) preference;
-            checkBoxPreference.setChecked(isChecked);
-        } catch (ClassCastException e) {
-            Timber.w(e, "Unable to set value for '%s'", preference.getKey());
-        }
-    }
-
     public static void readCheckBoxPreference(
             @NonNull Preference preference,
             @NonNull ReadCheckBoxPreference readCheckBoxPreference
