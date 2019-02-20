@@ -33,18 +33,6 @@ interface KeyValueStore {
         return bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
     }
 
-    fun enableOngoingNotification() {
-        set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
-    }
-
-    fun disableOngoingNotification() {
-        set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, false)
-    }
-
-    fun ongoingNotification(): Boolean {
-        return bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
-    }
-
     fun enableOngoingNotificationChronometer() {
         set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
     }

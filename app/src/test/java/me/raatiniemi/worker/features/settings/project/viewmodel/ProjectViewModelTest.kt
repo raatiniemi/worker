@@ -68,6 +68,31 @@ class ProjectViewModelTest {
     }
 
     @Test
+    fun `is ongoing notification enabled with default value`() {
+        val actual = vm.isOngoingNotificationEnabled
+
+        assertTrue(actual)
+    }
+
+    @Test
+    fun `disable ongoing notification`() {
+        vm.isOngoingNotificationEnabled = false
+
+        val actual = vm.isOngoingNotificationEnabled
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `enable ongoing notification`() {
+        vm.isOngoingNotificationEnabled = false
+
+        vm.isOngoingNotificationEnabled = true
+
+        val actual = vm.isOngoingNotificationEnabled
+        assertTrue(actual)
+    }
+
+    @Test
     fun `change time summary starting point with current starting point`() {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
 

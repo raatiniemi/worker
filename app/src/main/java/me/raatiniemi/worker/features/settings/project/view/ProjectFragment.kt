@@ -105,7 +105,7 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     }
 
     private fun configureOngoingNotification() {
-        populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY, keyValueStore.ongoingNotification())
+        populateCheckBoxPreference(ONGOING_NOTIFICATION_ENABLE_KEY, vm.isOngoingNotificationEnabled)
 
         val preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY)
         preference?.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary)
@@ -138,7 +138,9 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
             }
             TIME_SUMMARY_KEY, TIME_REPORT_SUMMARY_FORMAT_KEY -> true
             ONGOING_NOTIFICATION_ENABLE_KEY -> {
-                toggleOngoingNotification(preference)
+                PreferenceUtil.readCheckBoxPreference(preference) {
+                    vm.isOngoingNotificationEnabled = it
+                }
                 true
             }
             ONGOING_NOTIFICATION_CHRONOMETER_KEY -> {
@@ -146,17 +148,6 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
                 true
             }
             else -> super.onPreferenceTreeClick(preference)
-        }
-    }
-
-    private fun toggleOngoingNotification(preference: Preference) {
-        PreferenceUtil.readCheckBoxPreference(preference) { isChecked ->
-            if (isChecked) {
-                keyValueStore.enableOngoingNotification()
-                return@readCheckBoxPreference
-            }
-
-            keyValueStore.disableOngoingNotification()
         }
     }
 
