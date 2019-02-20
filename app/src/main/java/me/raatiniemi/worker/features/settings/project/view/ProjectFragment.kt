@@ -31,7 +31,11 @@ import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
 import me.raatiniemi.worker.features.shared.view.configurePreference
-import me.raatiniemi.worker.util.*
+import me.raatiniemi.worker.features.shared.view.onCheckChange
+import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.util.KeyValueStore
+import me.raatiniemi.worker.util.Notifications
+import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -75,6 +79,11 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     private fun configureConfirmClockOut() {
         configurePreference<CheckBoxPreference>(CONFIRM_CLOCK_OUT_KEY) {
             isChecked = vm.confirmClockOut
+
+            onCheckChange {
+                vm.confirmClockOut = it
+                true
+            }
         }
     }
 
@@ -110,12 +119,32 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
 
     private fun configureOngoingNotification() {
         configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_ENABLE_KEY) {
+            isEnabled = isOngoingChannelEnabled
             isChecked = vm.isOngoingNotificationEnabled
-        }
+            setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary)
 
-        val preference = findPreference(ONGOING_NOTIFICATION_ENABLE_KEY)
-        preference?.setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary)
-        preference?.isEnabled = isOngoingChannelEnabled
+            onCheckChange {
+                vm.isOngoingNotificationEnabled = it
+
+                configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_KEY) {
+                    isEnabled = vm.isOngoingNotificationEnabled
+                }
+                true
+            }
+        }
+        configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_KEY) {
+            isEnabled = isOngoingChannelEnabled && vm.isOngoingNotificationEnabled
+            isChecked = vm.isOngoingNotificationChronometerEnabled
+
+            onCheckChange {
+                if (vm.isOngoingNotificationEnabled) {
+                    vm.isOngoingNotificationChronometerEnabled = it
+                    true
+                } else {
+                    false
+                }
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -126,25 +155,10 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         return when (preference?.key) {
-            CONFIRM_CLOCK_OUT_KEY -> {
-                PreferenceUtil.readCheckBoxPreference(preference) {
-                    vm.confirmClockOut = it
-                }
-                true
-            }
+            CONFIRM_CLOCK_OUT_KEY -> false
             TIME_SUMMARY_KEY, TIME_REPORT_SUMMARY_FORMAT_KEY -> true
-            ONGOING_NOTIFICATION_ENABLE_KEY -> {
-                PreferenceUtil.readCheckBoxPreference(preference) {
-                    vm.isOngoingNotificationEnabled = it
-                }
-                true
-            }
-            ONGOING_NOTIFICATION_CHRONOMETER_KEY -> {
-                PreferenceUtil.readCheckBoxPreference(preference) {
-                    vm.isOngoingNotificationChronometerEnabled = it
-                }
-                true
-            }
+            ONGOING_NOTIFICATION_ENABLE_KEY -> false
+            ONGOING_NOTIFICATION_CHRONOMETER_KEY -> false
             else -> super.onPreferenceTreeClick(preference)
         }
     }
