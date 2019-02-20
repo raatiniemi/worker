@@ -88,29 +88,4 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
 
         assertTrue(actual)
     }
-
-    @Test
-    fun ongoingNotificationChronometer_withoutValue() {
-        val actual = keyValueStore.ongoingNotificationChronometer()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun ongoingNotificationChronometer_whenDisabled() {
-        keyValueStore.disableOngoingNotificationChronometer()
-
-        val actual = keyValueStore.ongoingNotificationChronometer()
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun ongoingNotificationChronometer_whenEnabled() {
-        keyValueStore.enableOngoingNotificationChronometer()
-
-        val actual = keyValueStore.ongoingNotificationChronometer()
-
-        assertTrue(actual)
-    }
 }

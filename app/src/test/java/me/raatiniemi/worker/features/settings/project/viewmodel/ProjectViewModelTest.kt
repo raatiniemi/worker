@@ -93,6 +93,36 @@ class ProjectViewModelTest {
     }
 
     @Test
+    fun `is ongoing notification chronometer enabled with ongoing notification disabled`() {
+        vm.isOngoingNotificationEnabled = false
+
+        vm.isOngoingNotificationChronometerEnabled = true
+
+        val actual = vm.isOngoingNotificationChronometerEnabled
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `disable ongoing notification chronometer`() {
+        vm.isOngoingNotificationEnabled = true
+
+        vm.isOngoingNotificationChronometerEnabled = false
+
+        val actual = vm.isOngoingNotificationChronometerEnabled
+        assertFalse(actual)
+    }
+
+    @Test
+    fun `enable ongoing notification chronometer`() {
+        vm.isOngoingNotificationEnabled = true
+
+        vm.isOngoingNotificationChronometerEnabled = true
+
+        val actual = vm.isOngoingNotificationChronometerEnabled
+        assertTrue(actual)
+    }
+
+    @Test
     fun `change time summary starting point with current starting point`() {
         keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
 

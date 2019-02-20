@@ -32,18 +32,6 @@ interface KeyValueStore {
     fun hideRegisteredTime(): Boolean {
         return bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
     }
-
-    fun enableOngoingNotificationChronometer() {
-        set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
-    }
-
-    fun disableOngoingNotificationChronometer() {
-        set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, false)
-    }
-
-    fun ongoingNotificationChronometer(): Boolean {
-        return bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
-    }
 }
 
 // TODO: Should time sheet summary format constants be moved to a better location?

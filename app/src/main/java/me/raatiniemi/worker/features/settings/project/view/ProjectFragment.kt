@@ -144,21 +144,12 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
                 true
             }
             ONGOING_NOTIFICATION_CHRONOMETER_KEY -> {
-                toggleOngoingNotificationChronometer(preference)
+                PreferenceUtil.readCheckBoxPreference(preference) {
+                    vm.isOngoingNotificationChronometerEnabled = it
+                }
                 true
             }
             else -> super.onPreferenceTreeClick(preference)
-        }
-    }
-
-    private fun toggleOngoingNotificationChronometer(preference: Preference) {
-        PreferenceUtil.readCheckBoxPreference(preference) { isChecked ->
-            if (isChecked) {
-                keyValueStore.enableOngoingNotificationChronometer()
-                return@readCheckBoxPreference
-            }
-
-            keyValueStore.disableOngoingNotificationChronometer()
         }
     }
 

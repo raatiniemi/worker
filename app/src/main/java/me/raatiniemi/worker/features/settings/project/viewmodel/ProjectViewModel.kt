@@ -45,6 +45,20 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
             keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, value)
         }
 
+    var isOngoingNotificationChronometerEnabled: Boolean
+        @MainThread
+        get() {
+            return if (isOngoingNotificationEnabled) {
+                keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
+            } else {
+                false
+            }
+        }
+        @MainThread
+        set(value) {
+            keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, value)
+        }
+
     val viewActions = ConsumableLiveData<ProjectViewActions>()
 
     @MainThread
