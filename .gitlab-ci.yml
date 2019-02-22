@@ -92,6 +92,8 @@ integration test:
 deploy:
   stage: deploy
   before_script:
+    - bin/configure-android-environment
+    - bin/configure-signing-environment
     - bin/configure-deploy-environment
   script:
     - ./gradlew publishApkRelease
