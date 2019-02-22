@@ -18,10 +18,8 @@ package me.raatiniemi.worker.features.settings.project.view
 
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
@@ -45,7 +43,6 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     private val vm: ProjectViewModel by viewModel()
 
     private val isOngoingChannelEnabled: Boolean
-        @RequiresApi(api = Build.VERSION_CODES.O)
         get() {
             try {
                 val nm = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
