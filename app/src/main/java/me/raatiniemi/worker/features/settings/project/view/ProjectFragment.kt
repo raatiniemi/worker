@@ -32,7 +32,7 @@ import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.util.Notifications
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeListener {
+class ProjectFragment : BasePreferenceFragment() {
     private val vm: ProjectViewModel by viewModel()
 
     private val isOngoingChannelEnabled: Boolean by lazy {
@@ -78,14 +78,26 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     private fun configureTimeSummaryStartingPoint() {
         configurePreference<ListPreference>(TIME_SUMMARY_KEY) {
             value = vm.timeSummary.toString()
-            onPreferenceChangeListener = this@ProjectFragment
+
+            setOnPreferenceChangeListener { _, newValue ->
+                val startingPoint = Integer.parseInt(newValue as String)
+                vm.changeTimeSummaryStartingPoint(startingPoint)
+
+                true
+            }
         }
     }
 
     private fun configureTimeReportSummaryFormat() {
         configurePreference<ListPreference>(TIME_REPORT_SUMMARY_FORMAT_KEY) {
             value = vm.timeReportSummaryFormat.toString()
-            onPreferenceChangeListener = this@ProjectFragment
+
+            setOnPreferenceChangeListener { _, newValue ->
+                val newFormat = Integer.parseInt(newValue as String)
+                vm.changeTimeReportSummaryFormat(newFormat)
+
+                true
+            }
         }
     }
 
@@ -133,30 +145,6 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
             ONGOING_NOTIFICATION_CHRONOMETER_KEY -> false
             else -> super.onPreferenceTreeClick(preference)
         }
-    }
-
-    override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
-        return when (preference.key) {
-            TIME_SUMMARY_KEY -> {
-                changeTimeSummaryStartingPoint(newValue)
-                true
-            }
-            TIME_REPORT_SUMMARY_FORMAT_KEY -> {
-                changeTimeReportSummaryFormat(newValue)
-                true
-            }
-            else -> false
-        }
-    }
-
-    private fun changeTimeSummaryStartingPoint(newStartingPoint: Any) {
-        val startingPoint = Integer.parseInt(newStartingPoint as String)
-        vm.changeTimeSummaryStartingPoint(startingPoint)
-    }
-
-    private fun changeTimeReportSummaryFormat(newValue: Any) {
-        val newFormat = Integer.parseInt(newValue as String)
-        vm.changeTimeReportSummaryFormat(newFormat)
     }
 
     companion object {
