@@ -37,7 +37,7 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
             keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT.rawValue, value)
         }
 
-    var isOngoingNotificationEnabled: Boolean
+    var ongoingNotificationEnabled: Boolean
         @MainThread
         get() = keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
         @MainThread
@@ -45,10 +45,10 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
             keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, value)
         }
 
-    var isOngoingNotificationChronometerEnabled: Boolean
+    var ongoingNotificationChronometerEnabled: Boolean
         @MainThread
         get() {
-            return if (isOngoingNotificationEnabled) {
+            return if (ongoingNotificationEnabled) {
                 keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
             } else {
                 false

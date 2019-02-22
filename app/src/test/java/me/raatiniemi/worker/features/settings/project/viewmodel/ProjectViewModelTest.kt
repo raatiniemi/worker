@@ -69,56 +69,56 @@ class ProjectViewModelTest {
 
     @Test
     fun `is ongoing notification enabled with default value`() {
-        val actual = vm.isOngoingNotificationEnabled
+        val actual = vm.ongoingNotificationEnabled
 
         assertTrue(actual)
     }
 
     @Test
     fun `disable ongoing notification`() {
-        vm.isOngoingNotificationEnabled = false
+        vm.ongoingNotificationEnabled = false
 
-        val actual = vm.isOngoingNotificationEnabled
+        val actual = vm.ongoingNotificationEnabled
         assertFalse(actual)
     }
 
     @Test
     fun `enable ongoing notification`() {
-        vm.isOngoingNotificationEnabled = false
+        vm.ongoingNotificationEnabled = false
 
-        vm.isOngoingNotificationEnabled = true
+        vm.ongoingNotificationEnabled = true
 
-        val actual = vm.isOngoingNotificationEnabled
+        val actual = vm.ongoingNotificationEnabled
         assertTrue(actual)
     }
 
     @Test
     fun `is ongoing notification chronometer enabled with ongoing notification disabled`() {
-        vm.isOngoingNotificationEnabled = false
+        vm.ongoingNotificationEnabled = false
 
-        vm.isOngoingNotificationChronometerEnabled = true
+        vm.ongoingNotificationChronometerEnabled = true
 
-        val actual = vm.isOngoingNotificationChronometerEnabled
+        val actual = vm.ongoingNotificationChronometerEnabled
         assertFalse(actual)
     }
 
     @Test
     fun `disable ongoing notification chronometer`() {
-        vm.isOngoingNotificationEnabled = true
+        vm.ongoingNotificationEnabled = true
 
-        vm.isOngoingNotificationChronometerEnabled = false
+        vm.ongoingNotificationChronometerEnabled = false
 
-        val actual = vm.isOngoingNotificationChronometerEnabled
+        val actual = vm.ongoingNotificationChronometerEnabled
         assertFalse(actual)
     }
 
     @Test
     fun `enable ongoing notification chronometer`() {
-        vm.isOngoingNotificationEnabled = true
+        vm.ongoingNotificationEnabled = true
 
-        vm.isOngoingNotificationChronometerEnabled = true
+        vm.ongoingNotificationChronometerEnabled = true
 
-        val actual = vm.isOngoingNotificationChronometerEnabled
+        val actual = vm.ongoingNotificationChronometerEnabled
         assertTrue(actual)
     }
 

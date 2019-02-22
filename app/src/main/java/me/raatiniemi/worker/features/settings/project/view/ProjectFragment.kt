@@ -113,25 +113,25 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     private fun configureOngoingNotification() {
         configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_ENABLE_KEY) {
             isEnabled = isOngoingChannelEnabled
-            isChecked = vm.isOngoingNotificationEnabled
+            isChecked = vm.ongoingNotificationEnabled
             setSummary(R.string.activity_settings_project_ongoing_notification_enable_summary)
 
             onCheckChange {
-                vm.isOngoingNotificationEnabled = it
+                vm.ongoingNotificationEnabled = it
 
                 configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_KEY) {
-                    isEnabled = vm.isOngoingNotificationEnabled
+                    isEnabled = vm.ongoingNotificationEnabled
                 }
                 true
             }
         }
         configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_KEY) {
-            isEnabled = isOngoingChannelEnabled && vm.isOngoingNotificationEnabled
-            isChecked = vm.isOngoingNotificationChronometerEnabled
+            isEnabled = isOngoingChannelEnabled && vm.ongoingNotificationEnabled
+            isChecked = vm.ongoingNotificationChronometerEnabled
 
             onCheckChange {
-                if (vm.isOngoingNotificationEnabled) {
-                    vm.isOngoingNotificationChronometerEnabled = it
+                if (vm.ongoingNotificationEnabled) {
+                    vm.ongoingNotificationChronometerEnabled = it
                     true
                 } else {
                     false
