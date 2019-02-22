@@ -17,12 +17,29 @@
 package me.raatiniemi.worker.features.settings.view
 
 import android.os.Bundle
+import android.view.View
+import androidx.preference.Preference
+import me.raatiniemi.worker.BuildConfig
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.view.configurePreference
 
 class SettingsFragment : BasePreferenceFragment() {
     public override val title = R.string.activity_settings_title
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        configurePreference<Preference>("settings_about_version") {
+            isSelectable = false
+            summary = getString(
+                    R.string.activity_settings_about_version_format,
+                    BuildConfig.VERSION_NAME,
+                    BuildConfig.VERSION_CODE
+            )
+        }
     }
 }
