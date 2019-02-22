@@ -41,6 +41,13 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
         @MainThread
         get() = keyValueStore.int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
 
+    val timeReportSummaryFormat: Int
+        @MainThread
+        get() = keyValueStore.int(
+                AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
+                TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
+        )
+
     var ongoingNotificationEnabled: Boolean
         @MainThread
         get() = keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)

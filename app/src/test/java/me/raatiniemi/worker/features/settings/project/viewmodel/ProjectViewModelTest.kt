@@ -97,6 +97,35 @@ class ProjectViewModelTest {
     }
 
     @Test
+    fun `time report summary format with default value`() {
+        val expected = TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
+
+        val actual = vm.timeReportSummaryFormat
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `time report summary format with digital clock`() {
+        val expected = TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
+        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, expected)
+
+        val actual = vm.timeReportSummaryFormat
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `time report summary format with fraction`() {
+        val expected = TIME_REPORT_SUMMARY_FORMAT_FRACTION
+        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, expected)
+
+        val actual = vm.timeReportSummaryFormat
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `is ongoing notification enabled with default value`() {
         val actual = vm.ongoingNotificationEnabled
 

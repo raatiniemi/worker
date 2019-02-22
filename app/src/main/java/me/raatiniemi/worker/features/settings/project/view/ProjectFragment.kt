@@ -29,16 +29,10 @@ import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
 import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.onCheckChange
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.Notifications
-import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeListener {
-    private val keyValueStore: KeyValueStore by inject()
-
     private val vm: ProjectViewModel by viewModel()
 
     private val isOngoingChannelEnabled: Boolean by lazy {
@@ -90,12 +84,7 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
 
     private fun configureTimeReportSummaryFormat() {
         configurePreference<ListPreference>(TIME_REPORT_SUMMARY_FORMAT_KEY) {
-            val timeReportSummaryFormat = keyValueStore.int(
-                    AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
-                    TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-            )
-
-            value = timeReportSummaryFormat.toString()
+            value = vm.timeReportSummaryFormat.toString()
             onPreferenceChangeListener = this@ProjectFragment
         }
     }
