@@ -23,7 +23,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
-import androidx.preference.Preference
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
@@ -135,16 +134,6 @@ class ProjectFragment : BasePreferenceFragment() {
         vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
-    }
-
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        return when (preference?.key) {
-            CONFIRM_CLOCK_OUT_KEY -> false
-            TIME_SUMMARY_KEY, TIME_REPORT_SUMMARY_FORMAT_KEY -> true
-            ONGOING_NOTIFICATION_ENABLE_KEY -> false
-            ONGOING_NOTIFICATION_CHRONOMETER_KEY -> false
-            else -> super.onPreferenceTreeClick(preference)
-        }
     }
 
     companion object {
