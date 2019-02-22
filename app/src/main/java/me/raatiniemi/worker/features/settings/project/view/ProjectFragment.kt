@@ -41,15 +41,14 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
 
     private val vm: ProjectViewModel by viewModel()
 
-    private val isOngoingChannelEnabled: Boolean
-        get() {
-            try {
-                val nm = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                return !Notifications.isOngoingChannelDisabled(nm)
-            } catch (e: ClassCastException) {
-                return true
-            }
+    private val isOngoingChannelEnabled: Boolean by lazy {
+        try {
+            val nm = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            return@lazy !Notifications.isOngoingChannelDisabled(nm)
+        } catch (e: ClassCastException) {
+            return@lazy true
         }
+    }
 
     override val title = R.string.activity_settings_project
 
