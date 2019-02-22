@@ -37,6 +37,10 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
             keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT.rawValue, value)
         }
 
+    val timeSummary: Int
+        @MainThread
+        get() = keyValueStore.int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+
     var ongoingNotificationEnabled: Boolean
         @MainThread
         get() = keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)

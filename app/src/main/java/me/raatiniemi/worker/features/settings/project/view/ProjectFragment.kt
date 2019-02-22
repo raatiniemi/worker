@@ -25,7 +25,6 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
 import me.raatiniemi.worker.features.shared.view.configurePreference
@@ -85,12 +84,7 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
 
     private fun configureTimeSummaryStartingPoint() {
         configurePreference<ListPreference>(TIME_SUMMARY_KEY) {
-            val timeSummary = keyValueStore.int(
-                    AppKeys.TIME_SUMMARY.rawValue,
-                    TimeIntervalStartingPoint.MONTH.rawValue
-            )
-
-            value = timeSummary.toString()
+            value = vm.timeSummary.toString()
             onPreferenceChangeListener = this@ProjectFragment
         }
     }

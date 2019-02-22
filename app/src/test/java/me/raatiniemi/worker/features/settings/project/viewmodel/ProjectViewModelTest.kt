@@ -68,6 +68,35 @@ class ProjectViewModelTest {
     }
 
     @Test
+    fun `time summary with default value`() {
+        val expected = TimeIntervalStartingPoint.MONTH.rawValue
+
+        val actual = vm.timeSummary
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `time summary with month`() {
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+        val expected = TimeIntervalStartingPoint.MONTH.rawValue
+
+        val actual = vm.timeSummary
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `time summary with week`() {
+        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
+        val expected = TimeIntervalStartingPoint.WEEK.rawValue
+
+        val actual = vm.timeSummary
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `is ongoing notification enabled with default value`() {
         val actual = vm.ongoingNotificationEnabled
 
