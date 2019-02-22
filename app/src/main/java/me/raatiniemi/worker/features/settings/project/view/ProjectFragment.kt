@@ -38,7 +38,6 @@ import me.raatiniemi.worker.util.Notifications
 import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeListener {
     private val keyValueStore: KeyValueStore by inject()
@@ -88,32 +87,26 @@ class ProjectFragment : BasePreferenceFragment(), Preference.OnPreferenceChangeL
     }
 
     private fun configureTimeSummaryStartingPoint() {
-        try {
-            val value = keyValueStore.int(
+        configurePreference<ListPreference>(TIME_SUMMARY_KEY) {
+            val timeSummary = keyValueStore.int(
                     AppKeys.TIME_SUMMARY.rawValue,
                     TimeIntervalStartingPoint.MONTH.rawValue
             )
 
-            val preference = findPreference(TIME_SUMMARY_KEY) as ListPreference
-            preference.value = value.toString()
-            preference.onPreferenceChangeListener = this
-        } catch (e: ClassCastException) {
-            Timber.w(e, "Unable to find preference with key: $TIME_SUMMARY_KEY")
+            value = timeSummary.toString()
+            onPreferenceChangeListener = this@ProjectFragment
         }
     }
 
     private fun configureTimeReportSummaryFormat() {
-        try {
-            val value = keyValueStore.int(
+        configurePreference<ListPreference>(TIME_REPORT_SUMMARY_FORMAT_KEY) {
+            val timeReportSummaryFormat = keyValueStore.int(
                     AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
                     TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
             )
 
-            val preference = findPreference(TIME_REPORT_SUMMARY_FORMAT_KEY) as ListPreference
-            preference.value = value.toString()
-            preference.onPreferenceChangeListener = this
-        } catch (e: ClassCastException) {
-            Timber.w(e, "Unable to find preference with key: $TIME_SUMMARY_KEY")
+            value = timeReportSummaryFormat.toString()
+            onPreferenceChangeListener = this@ProjectFragment
         }
     }
 
