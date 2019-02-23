@@ -20,23 +20,11 @@ import me.raatiniemi.worker.WorkerApplication
 import java.io.File
 import java.util.*
 
-class Backup(private val directory: File?) {
-    private val timestamp: Long?
-        get() {
-            directory ?: return null
+class Backup(directory: File) {
+    private val timestamp = directory.name
+            .replaceFirst(WorkerApplication.STORAGE_BACKUP_DIRECTORY_PATTERN.toRegex(), "$1")
+            .toLong()
 
-            val timestamp = directory.name.replaceFirst(
-                    WorkerApplication.STORAGE_BACKUP_DIRECTORY_PATTERN.toRegex(),
-                    "$1"
-            )
-
-            return timestamp.toLong()
-        }
-
-    val date: Date?
-        get() {
-            val timestamp = timestamp ?: return null
-
-            return Date(timestamp)
-        }
+    val date: Date
+        get() = Date(timestamp)
 }

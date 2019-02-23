@@ -23,34 +23,40 @@ import android.view.View
 import androidx.annotation.IntRange
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
 import androidx.preference.Preference
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.service.data.BackupService
 import me.raatiniemi.worker.data.service.data.RestoreService
-import me.raatiniemi.worker.features.settings.data.model.Backup
 import me.raatiniemi.worker.features.settings.data.model.BackupSuccessfulEvent
-import me.raatiniemi.worker.features.settings.data.presenter.DataPresenter
+import me.raatiniemi.worker.features.settings.data.model.DataViewActions
+import me.raatiniemi.worker.features.settings.data.viewmodel.DataViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
+import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
-import me.raatiniemi.worker.util.NullUtil.isNull
 import me.raatiniemi.worker.util.PermissionUtil
-import me.raatiniemi.worker.util.PresenterUtil.detachViewIfNotNull
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
-class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnRequestPermissionsResultCallback {
+class DataFragment : BasePreferenceFragment(), CoroutineScope, ActivityCompat.OnRequestPermissionsResultCallback {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + Job()
+
     private val eventBus = EventBus.getDefault()
+
     private val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.forLanguageTag("en_US"))
 
-    private var snackBar: Snackbar? = null
+    private val vm: DataViewModel by viewModel()
 
-    private val presenter: DataPresenter by inject()
+    private var snackBar: Snackbar? = null
 
     override val title = R.string.activity_settings_data
 
@@ -58,9 +64,6 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
         super.onCreate(savedInstanceState)
 
         eventBus.register(this)
-        presenter.attachView(this)
-
-        // Check for the latest backup.
         checkLatestBackup()
     }
 
@@ -68,12 +71,61 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
         addPreferencesFromResource(R.xml.settings_data)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        vm.viewActions.observeAndConsume(this, Observer {
+            configureView(it)
+        })
+    }
+
+    private fun configureView(action: DataViewActions) {
+        configureBackupPreference(action)
+        configureRestorePreference(action)
+    }
+
+    private fun configureBackupPreference(action: DataViewActions) {
+        configurePreference<Preference>(SETTINGS_DATA_BACKUP_KEY) {
+            summary = when (action) {
+                is DataViewActions.UnableToFindBackup ->
+                    getString(R.string.activity_settings_backup_unable_to_find)
+
+                is DataViewActions.NoBackupIsAvailable ->
+                    getString(R.string.activity_settings_backup_none_available)
+
+                is DataViewActions.LatestBackup -> getString(
+                        R.string.activity_settings_backup_performed_at,
+                        format.format(action.backup.date)
+                )
+            }
+        }
+    }
+
+    private fun configureRestorePreference(action: DataViewActions) {
+        configurePreference<Preference>(SETTINGS_DATA_RESTORE_KEY) {
+            summary = when (action) {
+                is DataViewActions.UnableToFindBackup ->
+                    getString(R.string.activity_settings_restore_unable_to_find)
+
+                is DataViewActions.NoBackupIsAvailable ->
+                    getString(R.string.activity_settings_restore_none_available)
+
+                is DataViewActions.LatestBackup -> getString(
+                        R.string.activity_settings_restore_from,
+                        format.format(action.backup.date)
+                )
+            }
+            isEnabled = action is DataViewActions.LatestBackup
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
         snackBar?.dismiss()
         eventBus.unregister(this)
-        detachViewIfNotNull(presenter)
+
+        coroutineContext.cancel()
     }
 
     override fun onRequestPermissionsResult(
@@ -188,7 +240,9 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
         if (PermissionUtil.havePermission(requireContext(), READ_EXTERNAL_STORAGE)) {
             // Tell the SettingsActivity to fetch the latest backup.
             Timber.d("Permission for reading external storage is granted")
-            presenter.getLatestBackup()
+            launch {
+                vm.getLatestBackup()
+            }
 
             // No need to go any further.
             return
@@ -206,71 +260,7 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: BackupSuccessfulEvent) {
-        setLatestBackup(event.backup)
-    }
-
-    override fun setLatestBackup(backup: Backup?) {
-        setBackupSummary(backup)
-        setRestoreSummary(backup)
-    }
-
-    /**
-     * Set the backup summary based on the latest backup.
-     *
-     * @param backup Latest available backup.
-     */
-    private fun setBackupSummary(backup: Backup?) {
-        val preference = findPreference(SETTINGS_DATA_BACKUP_KEY)
-        if (isNull(preference)) {
-            Timber.w("Unable to find preference with key: %s", SETTINGS_DATA_BACKUP_KEY)
-            return
-        }
-
-        if (backup == null) {
-            preference.summary = getString(R.string.activity_settings_backup_unable_to_find)
-            return
-        }
-
-        if (backup.date == null) {
-            preference.summary = getString(R.string.activity_settings_backup_none_available)
-            return
-        }
-
-        preference.summary = getString(
-                R.string.activity_settings_backup_performed_at,
-                format.format(backup.date)
-        )
-    }
-
-    /**
-     * Set the restore summary based on the latest backup.
-     *
-     * @param backup Latest available backup.
-     */
-    private fun setRestoreSummary(backup: Backup?) {
-        val preference = findPreference(SETTINGS_DATA_RESTORE_KEY)
-        if (isNull(preference)) {
-            Timber.w("Unable to find preference with key: %s", SETTINGS_DATA_RESTORE_KEY)
-            return
-        }
-
-        var text = getString(R.string.activity_settings_restore_unable_to_find)
-        var enable = false
-        if (backup != null) {
-            text = getString(R.string.activity_settings_restore_none_available)
-
-            val date = backup.date
-            if (date != null) {
-                text = getString(
-                        R.string.activity_settings_restore_from,
-                        format.format(date)
-                )
-                enable = true
-            }
-        }
-
-        preference.summary = text
-        preference.isEnabled = enable
+        configureView(DataViewActions.LatestBackup(event.backup))
     }
 
     companion object {

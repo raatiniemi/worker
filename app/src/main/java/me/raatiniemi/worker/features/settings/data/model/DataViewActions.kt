@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.data.view
+package me.raatiniemi.worker.features.settings.data.model
 
-import me.raatiniemi.worker.features.settings.data.model.Backup
-import me.raatiniemi.worker.features.shared.view.MvpView
+sealed class DataViewActions {
+    object UnableToFindBackup : DataViewActions()
 
-interface DataView : MvpView {
-    /**
-     * Update the view with the latest backup.
-     *
-     * @param backup Latest backup.
-     */
-    fun setLatestBackup(backup: Backup?)
+    object NoBackupIsAvailable : DataViewActions()
+
+    data class LatestBackup(val backup: Backup) : DataViewActions()
 }
