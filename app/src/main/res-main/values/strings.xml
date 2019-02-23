@@ -104,9 +104,6 @@
     <string name="error_message_project_name_missing">You have to supply a name</string>
     <string name="error_message_project_name_already_exists">Project name already exists</string>
 
-    <string name="error_message_preference_screen_not_implemented">Preference screen is not implemented.</string>
-    <string name="error_message_preference_not_implemented">Preference is not implemented.</string>
-
     <string name="message_change_time_summary_starting_point_week">Time summary will show current week</string>
     <string name="message_change_time_summary_starting_point_month">Time summary will show current month</string>
     <string name="error_message_change_time_summary_starting_point">Unable to change time summary starting point.</string>
