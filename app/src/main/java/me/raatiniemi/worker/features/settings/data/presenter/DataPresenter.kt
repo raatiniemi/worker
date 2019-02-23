@@ -18,32 +18,21 @@ package me.raatiniemi.worker.features.settings.data.presenter
 
 import me.raatiniemi.worker.data.util.ExternalStorage
 import me.raatiniemi.worker.features.settings.data.model.Backup
-import me.raatiniemi.worker.features.settings.data.model.BackupSuccessfulEvent
 import me.raatiniemi.worker.features.settings.data.view.DataView
 import me.raatiniemi.worker.features.shared.presenter.BasePresenter
 import me.raatiniemi.worker.util.RxUtil
 import me.raatiniemi.worker.util.RxUtil.unsubscribeIfNotNull
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import rx.Observable
 import rx.Subscriber
 import rx.Subscription
 import timber.log.Timber
 
-class DataPresenter(private val eventBus: EventBus) : BasePresenter<DataView>() {
+class DataPresenter : BasePresenter<DataView>() {
     private var getLatestBackupSubscription: Subscription? = null
-
-    override fun attachView(view: DataView) {
-        super.attachView(view)
-
-        eventBus.register(this)
-    }
 
     override fun detachView() {
         super.detachView()
 
-        eventBus.unregister(this)
         unsubscribeIfNotNull(getLatestBackupSubscription)
     }
 
@@ -79,10 +68,5 @@ class DataPresenter(private val eventBus: EventBus) : BasePresenter<DataView>() 
                         Timber.d("getLatestBackup onCompleted")
                     }
                 })
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEventMainThread(event: BackupSuccessfulEvent) {
-        performWithView { view -> view.setLatestBackup(event.backup) }
     }
 }

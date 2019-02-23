@@ -29,18 +29,23 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.service.data.BackupService
 import me.raatiniemi.worker.data.service.data.RestoreService
 import me.raatiniemi.worker.features.settings.data.model.Backup
+import me.raatiniemi.worker.features.settings.data.model.BackupSuccessfulEvent
 import me.raatiniemi.worker.features.settings.data.presenter.DataPresenter
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
 import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 import me.raatiniemi.worker.util.NullUtil.isNull
 import me.raatiniemi.worker.util.PermissionUtil
 import me.raatiniemi.worker.util.PresenterUtil.detachViewIfNotNull
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
 class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnRequestPermissionsResultCallback {
+    private val eventBus = EventBus.getDefault()
     private val format = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.forLanguageTag("en_US"))
 
     private var snackBar: Snackbar? = null
@@ -52,6 +57,7 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        eventBus.register(this)
         presenter.attachView(this)
 
         // Check for the latest backup.
@@ -66,6 +72,7 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
         super.onDestroyView()
 
         snackBar?.dismiss()
+        eventBus.unregister(this)
         detachViewIfNotNull(presenter)
     }
 
@@ -195,6 +202,11 @@ class DataFragment : BasePreferenceFragment(), DataView, ActivityCompat.OnReques
                 arrayOf(READ_EXTERNAL_STORAGE),
                 REQUEST_READ_EXTERNAL_STORAGE
         )
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEventMainThread(event: BackupSuccessfulEvent) {
+        setLatestBackup(event.backup)
     }
 
     override fun setLatestBackup(backup: Backup?) {
