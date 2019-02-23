@@ -85,7 +85,7 @@
     <string name="activity_settings_restore_from">Restore backup from %s.\nAfter restore you have to restart the application.</string>
     <string name="activity_settings_about">About</string>
     <string name="activity_settings_about_version">Version</string>
-    <string name="activity_settings_about_version_format">%s (%s)</string>
+    <string name="activity_settings_about_version_format">%s (%d)</string>
 
     <string name="notification_backup_title">Backup complete</string>
     <string name="notification_backup_message">Backup to external storage was successful.</string>
