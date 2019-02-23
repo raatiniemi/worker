@@ -14,21 +14,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.presenter;
+package me.raatiniemi.worker.features.settings.view
 
-import androidx.annotation.NonNull;
+import androidx.annotation.StringRes
+import androidx.preference.PreferenceFragmentCompat
 
-/**
- * Represents an action performed with the view, if the view is available.
- *
- * @param <V> Type of the view on which to operate.
- */
-@FunctionalInterface
-public interface ViewAction<V> {
-    /**
-     * Performs an action with the view.
-     *
-     * @param view View on which to operate.
-     */
-    void perform(@NonNull V view);
+abstract class BasePreferenceFragment : PreferenceFragmentCompat() {
+    @get:StringRes
+    protected abstract val title: Int
+
+    override fun onResume() {
+        super.onResume()
+
+        // Set the title for the preference fragment.
+        requireActivity().setTitle(title)
+    }
 }

@@ -30,6 +30,7 @@ import me.raatiniemi.worker.data.Repositories;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent;
+import me.raatiniemi.worker.util.AppKeys;
 import me.raatiniemi.worker.util.KeyValueStore;
 import me.raatiniemi.worker.util.Notifications;
 import me.raatiniemi.worker.util.OngoingUriCommunicator;
@@ -95,11 +96,11 @@ public abstract class OngoingService extends IntentService {
     }
 
     boolean isOngoingNotificationEnabled() {
-        return keyValueStore.ongoingNotification();
+        return keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.getRawValue(), true);
     }
 
     boolean isOngoingNotificationChronometerEnabled() {
-        return keyValueStore.ongoingNotificationChronometer();
+        return keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.getRawValue(), true);
     }
 
     void updateUserInterface(long projectId) {

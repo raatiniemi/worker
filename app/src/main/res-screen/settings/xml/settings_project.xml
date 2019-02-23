@@ -1,67 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2016 Worker Project
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, version 2 of the License.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    <androidx.preference.PreferenceCategory android:title="@string/activity_settings_project_general">
 
-    <PreferenceCategory
-        android:title="@string/activity_settings_project_general"
-        >
-
-        <CheckBoxPreference
+        <androidx.preference.CheckBoxPreference
             android:key="settings_project_confirm_clock_out"
-            android:title="@string/activity_settings_project_confirm_clock_out_title"
             android:summary="@string/activity_settings_project_confirm_clock_out_summary"
-            />
+            android:title="@string/activity_settings_project_confirm_clock_out_title" />
 
-        <ListPreference
-            android:key="settings_project_time_summary"
-            android:title="@string/activity_settings_project_time_summary_title"
-            android:summary="@string/activity_settings_project_time_summary_summary"
+        <androidx.preference.ListPreference
             android:entries="@array/project_time_summary_alternative_text"
             android:entryValues="@array/project_time_summary_alternative_value"
-            />
+            android:key="settings_project_time_summary"
+            android:summary="@string/activity_settings_project_time_summary_summary"
+            android:title="@string/activity_settings_project_time_summary_title" />
 
-        <ListPreference
-            android:key="settings_project_time_report_summary_format"
-            android:title="@string/activity_settings_project_time_report_summary_format_title"
-            android:summary="@string/activity_settings_project_time_report_summary_format_summary"
+        <androidx.preference.ListPreference
             android:entries="@array/project_time_report_summary_format_alternative_text"
             android:entryValues="@array/project_time_report_summary_format_alternative_value"
-            />
+            android:key="settings_project_time_report_summary_format"
+            android:summary="@string/activity_settings_project_time_report_summary_format_summary"
+            android:title="@string/activity_settings_project_time_report_summary_format_title" />
 
-    </PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/activity_settings_project_ongoing_notification"
-        >
+    <androidx.preference.PreferenceCategory android:title="@string/activity_settings_project_ongoing_notification">
 
-        <CheckBoxPreference
+        <androidx.preference.CheckBoxPreference
             android:key="settings_project_ongoing_notification_enable"
-            android:title="@string/activity_settings_project_ongoing_notification_enable"
-            />
+            android:title="@string/activity_settings_project_ongoing_notification_enable" />
 
-        <CheckBoxPreference
+        <androidx.preference.CheckBoxPreference
             android:key="settings_project_ongoing_notification_chronometer"
-            android:title="@string/activity_settings_project_ongoing_notification_chronometer_title"
             android:summary="@string/activity_settings_project_ongoing_notification_chronometer_summary"
-            />
+            android:title="@string/activity_settings_project_ongoing_notification_chronometer_title" />
 
-    </PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

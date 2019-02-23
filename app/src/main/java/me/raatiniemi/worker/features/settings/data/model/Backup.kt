@@ -14,17 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.data.view;
+package me.raatiniemi.worker.features.settings.data.model
 
-import androidx.annotation.Nullable;
-import me.raatiniemi.worker.features.settings.data.model.Backup;
-import me.raatiniemi.worker.features.shared.view.MvpView;
+import me.raatiniemi.worker.WorkerApplication
+import java.io.File
+import java.util.*
 
-public interface DataView extends MvpView {
-    /**
-     * Update the view with the latest backup.
-     *
-     * @param backup Latest backup.
-     */
-    void setLatestBackup(@Nullable Backup backup);
+class Backup(directory: File) {
+    private val timestamp = directory.name
+            .replaceFirst(WorkerApplication.STORAGE_BACKUP_DIRECTORY_PATTERN.toRegex(), "$1")
+            .toLong()
+
+    val date: Date
+        get() = Date(timestamp)
 }

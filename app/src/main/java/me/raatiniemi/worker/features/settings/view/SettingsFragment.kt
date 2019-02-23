@@ -14,10 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.project.exception;
+package me.raatiniemi.worker.features.settings.view
 
-public class InvalidTimeReportSummaryFormatException extends RuntimeException {
-    public InvalidTimeReportSummaryFormatException(String message) {
-        super(message);
+import android.os.Bundle
+import me.raatiniemi.worker.R
+
+class SettingsFragment : BasePreferenceFragment() {
+    public override val title = R.string.activity_settings_title
+
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        addPreferencesFromResource(R.xml.settings)
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,19 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings.data.model;
+package me.raatiniemi.worker.features.shared.view
 
-import androidx.annotation.NonNull;
+import androidx.preference.CheckBoxPreference
+import timber.log.Timber
 
-public class BackupSuccessfulEvent {
-    private final Backup backup;
+fun CheckBoxPreference.onCheckChange(onChange: (Boolean) -> Boolean) {
+    setOnPreferenceChangeListener { _, newValue ->
+        if (newValue is Boolean) {
+            return@setOnPreferenceChangeListener onChange(newValue)
+        }
 
-    public BackupSuccessfulEvent(@NonNull Backup backup) {
-        this.backup = backup;
-    }
-
-    @NonNull
-    public Backup getBackup() {
-        return backup;
+        Timber.w("Unsupported value: ${newValue.javaClass.name}")
+        return@setOnPreferenceChangeListener false
     }
 }

@@ -14,22 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util;
+package me.raatiniemi.worker.features.settings.project.model
 
-import androidx.annotation.Nullable;
-import me.raatiniemi.worker.features.shared.presenter.BasePresenter;
-
-import static me.raatiniemi.worker.util.NullUtil.isNull;
-
-public class PresenterUtil {
-    private PresenterUtil() {
-    }
-
-    public static void detachViewIfNotNull(@Nullable BasePresenter presenter) {
-        if (isNull(presenter)) {
-            return;
-        }
-
-        presenter.detachView();
-    }
-}
+class TimeSummaryStartingPointChangeEvent

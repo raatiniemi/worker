@@ -38,6 +38,7 @@ import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.visibleIf
+import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import me.raatiniemi.worker.util.KeyValueStore
 import org.greenrobot.eventbus.EventBus
@@ -181,7 +182,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
                 return@launch
             }
 
-            if (!keyValueStore.confirmClockOut()) {
+            if (!keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT.rawValue, true)) {
                 projectsViewModel.clockOut(item, Date())
                 return@launch
             }

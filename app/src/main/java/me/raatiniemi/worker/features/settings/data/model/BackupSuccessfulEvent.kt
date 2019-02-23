@@ -14,17 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.settings
+package me.raatiniemi.worker.features.settings.data.model
 
-import me.raatiniemi.worker.features.settings.data.presenter.DataPresenter
-import me.raatiniemi.worker.features.settings.project.presenter.ProjectPresenter
-import org.greenrobot.eventbus.EventBus
-import org.koin.dsl.module.module
-
-val settingsModule = module {
-    single {
-        ProjectPresenter(get(), EventBus.getDefault())
-    }
-
-    single { DataPresenter(EventBus.getDefault()) }
-}
+class BackupSuccessfulEvent(val backup: Backup)

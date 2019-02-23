@@ -16,13 +16,17 @@
 
 package me.raatiniemi.worker.features.settings
 
-import me.raatiniemi.worker.features.settings.data.presenter.DataPresenter
-import me.raatiniemi.worker.features.settings.project.presenter.ProjectPresenter
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import me.raatiniemi.worker.features.settings.data.viewmodel.DataViewModel
+import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
+import org.koin.android.viewmodel.ext.koin.viewModel
+import org.koin.dsl.module.module
 
-class Presenters : KoinComponent {
-    val project: ProjectPresenter by inject()
+val settingsModule = module {
+    viewModel {
+        ProjectViewModel(get())
+    }
 
-    val data: DataPresenter by inject()
+    viewModel {
+        DataViewModel()
+    }
 }

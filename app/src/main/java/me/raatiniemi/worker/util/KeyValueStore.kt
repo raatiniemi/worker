@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.util
 
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-
 interface KeyValueStore {
     fun set(key: String, value: Boolean)
     fun set(key: String, value: Int)
@@ -33,62 +31,6 @@ interface KeyValueStore {
 
     fun hideRegisteredTime(): Boolean {
         return bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
-    }
-
-    fun setConfirmClockOut(value: Boolean) {
-        return set(AppKeys.CONFIRM_CLOCK_OUT.rawValue, value)
-    }
-
-    fun confirmClockOut(): Boolean {
-        return bool(AppKeys.CONFIRM_CLOCK_OUT.rawValue, true)
-    }
-
-    fun enableOngoingNotification() {
-        set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
-    }
-
-    fun disableOngoingNotification() {
-        set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, false)
-    }
-
-    fun ongoingNotification(): Boolean {
-        return bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
-    }
-
-    fun enableOngoingNotificationChronometer() {
-        set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
-    }
-
-    fun disableOngoingNotificationChronometer() {
-        set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, false)
-    }
-
-    fun ongoingNotificationChronometer(): Boolean {
-        return bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
-    }
-
-    fun useWeekForTimeSummaryStartingPoint() {
-        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
-    }
-
-    fun useMonthForTimeSummaryStartingPoint() {
-        set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
-    }
-
-    fun startingPointForTimeSummary(): Int {
-        return int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
-    }
-
-    fun useFractionAsTimeReportSummaryFormat() {
-        set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_FRACTION)
-    }
-
-    fun useDigitalClockAsTimeReportSummaryFormat() {
-        set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
-    }
-
-    fun timeReportSummaryFormat(): Int {
-        return int(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
     }
 }
 

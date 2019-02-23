@@ -19,8 +19,8 @@ package me.raatiniemi.worker.util
 import android.content.Context
 import android.content.SharedPreferences
 import me.raatiniemi.worker.RobolectricTestCase
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 
@@ -87,130 +87,5 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
         val actual = keyValueStore.hideRegisteredTime()
 
         assertTrue(actual)
-    }
-
-    @Test
-    fun confirmClockOut_withoutValue() {
-        val actual = keyValueStore.confirmClockOut()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun confirmClockOut_whenDisabled() {
-        keyValueStore.setConfirmClockOut(false)
-
-        val actual = keyValueStore.confirmClockOut()
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun confirmClockOut_whenEnabled() {
-        keyValueStore.setConfirmClockOut(true)
-
-        val actual = keyValueStore.confirmClockOut()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun ongoingNotification_withoutValue() {
-        val actual = keyValueStore.ongoingNotification()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun ongoingNotification_whenDisabled() {
-        keyValueStore.disableOngoingNotification()
-
-        val actual = keyValueStore.ongoingNotification()
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun ongoingNotification_whenEnabled() {
-        keyValueStore.enableOngoingNotification()
-
-        val actual = keyValueStore.ongoingNotification()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun ongoingNotificationChronometer_withoutValue() {
-        val actual = keyValueStore.ongoingNotificationChronometer()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun ongoingNotificationChronometer_whenDisabled() {
-        keyValueStore.disableOngoingNotificationChronometer()
-
-        val actual = keyValueStore.ongoingNotificationChronometer()
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun ongoingNotificationChronometer_whenEnabled() {
-        keyValueStore.enableOngoingNotificationChronometer()
-
-        val actual = keyValueStore.ongoingNotificationChronometer()
-
-        assertTrue(actual)
-    }
-
-    @Test
-    fun startingPointForTimeSummary_withoutValue() {
-        val actual = keyValueStore.startingPointForTimeSummary()
-
-        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, actual)
-    }
-
-    @Test
-    fun startingPointForTimeSummary_withWeek() {
-        keyValueStore.useWeekForTimeSummaryStartingPoint()
-
-        val actual = keyValueStore.startingPointForTimeSummary()
-
-        assertEquals(TimeIntervalStartingPoint.WEEK.rawValue, actual)
-    }
-
-    @Test
-    fun startingPointForTimeSummary_withMonth() {
-        keyValueStore.useMonthForTimeSummaryStartingPoint()
-
-        val actual = keyValueStore.startingPointForTimeSummary()
-
-        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, actual)
-    }
-
-    @Test
-    fun timeSheetSummaryFormat_withoutValue() {
-        val actual = keyValueStore.timeReportSummaryFormat()
-
-        assertEquals(TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK, actual)
-    }
-
-    @Test
-    fun timeSheetSummaryFormat_withFraction() {
-        keyValueStore.useFractionAsTimeReportSummaryFormat()
-
-        val actual = keyValueStore.timeReportSummaryFormat()
-
-        assertEquals(TIME_REPORT_SUMMARY_FORMAT_FRACTION, actual)
-    }
-
-    @Test
-    fun timeSheetSummaryFormat_withDigitalClock() {
-        keyValueStore.useDigitalClockAsTimeReportSummaryFormat()
-
-        val actual = keyValueStore.timeReportSummaryFormat()
-
-        assertEquals(TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK, actual)
     }
 }

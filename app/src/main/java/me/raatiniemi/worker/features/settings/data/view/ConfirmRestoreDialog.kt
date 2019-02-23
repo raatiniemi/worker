@@ -14,25 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.presenter;
+package me.raatiniemi.worker.features.settings.data.view
 
-import me.raatiniemi.worker.features.shared.view.MvpView;
+import android.content.Context
+import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
-/**
- * Interface for the presenter.
- *
- * @param <V> Reference type for the view attached to the presenter.
- */
-public interface MvpPresenter<V extends MvpView> {
-    /**
-     * Attach a view to the presenter.
-     *
-     * @param view View to attach to the presenter.
-     */
-    void attachView(V view);
+internal object ConfirmRestoreDialog {
+    private const val TITLE = R.string.activity_settings_restore_confirm_title
+    private const val MESSAGE = R.string.activity_settings_restore_confirm_message
 
-    /**
-     * Detach the view from the presenter.
-     */
-    void detachView();
+    suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }
