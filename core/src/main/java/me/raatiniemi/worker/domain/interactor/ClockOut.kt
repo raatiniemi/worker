@@ -16,12 +16,9 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import java.util.Date
-
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
-import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.util.Optional
+import java.util.*
 
 /**
  * Use case for clocking out.
