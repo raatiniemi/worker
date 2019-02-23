@@ -23,21 +23,6 @@
 -dontnote kotlin.jvm.internal.**
 -dontnote kotlin.coroutines.jvm.internal.**
 
-# RxJava/RxAndroid
--dontwarn rx.internal.util.unsafe.**
--dontnote rx.internal.util.**
-
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
-    long producerIndex;
-    long consumerIndex;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
-}
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
-}
-
 # EventBus
 -keepattributes *Annotation*
 -keepclassmembers class ** {
