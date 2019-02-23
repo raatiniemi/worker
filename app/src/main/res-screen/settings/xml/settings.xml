@@ -16,4 +16,12 @@
 
     </androidx.preference.PreferenceCategory>
 
+    <androidx.preference.PreferenceCategory android:title="@string/activity_settings_about">
+
+        <Preference
+            android:key="settings_about_version"
+            android:title="@string/activity_settings_about_version" />
+
+    </androidx.preference.PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

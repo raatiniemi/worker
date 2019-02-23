@@ -1,4 +1,1 @@
-rename time sheet references to time report.
-convert time report to kotlin and views to constraint layout.
-improve implementation for infinite scroll in time report.
-add empty view for time report.
+include app version under settings.
