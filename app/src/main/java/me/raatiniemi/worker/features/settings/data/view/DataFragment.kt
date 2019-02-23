@@ -34,8 +34,8 @@ import me.raatiniemi.worker.features.settings.data.model.BackupSuccessfulEvent
 import me.raatiniemi.worker.features.settings.data.model.DataViewActions
 import me.raatiniemi.worker.features.settings.data.viewmodel.DataViewModel
 import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
+import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.configurePreference
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
 import me.raatiniemi.worker.util.PermissionUtil
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -213,22 +213,18 @@ class DataFragment : BasePreferenceFragment(), CoroutineScope, ActivityCompat.On
     /**
      * Initiate the restore action.
      */
-    private fun runRestore() {
-        ConfirmRestoreDialog.show(requireContext())
-                .filter { RxAlertDialog.isPositive(it) }
-                .subscribe(
-                        {
-                            val snackBar = Snackbar.make(
-                                    requireActivity().findViewById(android.R.id.content),
-                                    R.string.message_restoring_data,
-                                    Snackbar.LENGTH_SHORT
-                            )
-                            snackBar.show()
+    private fun runRestore() = launch {
+        val confirmAction = ConfirmRestoreDialog.show(requireContext())
+        if (ConfirmAction.YES == confirmAction) {
+            val snackBar = Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    R.string.message_restoring_data,
+                    Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
 
-                            RestoreService.startRestore(activity)
-                        },
-                        { Timber.w(it) }
-                )
+            RestoreService.startRestore(activity)
+        }
     }
 
     /**

@@ -18,11 +18,11 @@ package me.raatiniemi.worker.features.settings.data.view
 
 import android.content.Context
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.shared.view.dialog.RxAlertDialog
+import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
 internal object ConfirmRestoreDialog {
     private const val TITLE = R.string.activity_settings_restore_confirm_title
     private const val MESSAGE = R.string.activity_settings_restore_confirm_message
 
-    fun show(context: Context) = RxAlertDialog.build(context, TITLE, MESSAGE)
+    suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }
