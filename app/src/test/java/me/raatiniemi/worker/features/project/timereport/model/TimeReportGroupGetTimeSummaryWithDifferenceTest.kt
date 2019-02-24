@@ -21,7 +21,6 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
-import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -52,78 +51,6 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            "1.00 (-7.00)",
-                            FractionIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 3600000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "8.00",
-                            FractionIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 28800000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "9.00 (+1.00)",
-                            FractionIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 32400000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "9.12 (+1.12)",
-                            FractionIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 14380327
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 18407820
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "8.77 (+0.77)",
-                            FractionIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 13956031
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 17594386
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "7.87 (-0.13)",
-                            FractionIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 11661632
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 16707601
-                                    }
-                            )
-                    ),
                     arrayOf(
                             "1:00 (-7:00)",
                             DigitalHoursMinutesIntervalFormat(),
