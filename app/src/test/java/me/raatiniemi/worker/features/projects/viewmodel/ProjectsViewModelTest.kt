@@ -272,7 +272,7 @@ class ProjectsViewModelTest {
         vm.remove(item)
 
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertEquals(ProjectsViewActions.DismissNotification(project), it)
         }
     }
 
@@ -288,7 +288,7 @@ class ProjectsViewModelTest {
         val actual = projectRepository.findAll()
         assertEquals(emptyList<Project>(), actual)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertEquals(ProjectsViewActions.DismissNotification(project), it)
         }
     }
 }
