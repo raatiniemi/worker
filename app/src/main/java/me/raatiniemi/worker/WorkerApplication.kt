@@ -75,11 +75,6 @@ open class WorkerApplication : Application() {
     }
 
     companion object {
-        /**
-         * Name of the application database.
-         */
-        const val DATABASE_NAME = "worker"
-
         const val NOTIFICATION_ON_GOING_ID = 3
     }
 }
