@@ -265,18 +265,6 @@ class ProjectsViewModelTest {
     }
 
     @Test
-    fun `remove project without project id`() = runBlocking {
-        val project = Project(1, "Project #1")
-        val item = ProjectsItem(project, emptyList())
-
-        vm.remove(item)
-
-        vm.viewActions.observeForever {
-            assertNull(it)
-        }
-    }
-
-    @Test
     fun `remove project without project`() = runBlocking {
         val project = Project(1, "Project #1")
         val item = ProjectsItem(project, emptyList())
@@ -284,7 +272,7 @@ class ProjectsViewModelTest {
         vm.remove(item)
 
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertEquals(ProjectsViewActions.DismissNotification(project), it)
         }
     }
 
@@ -300,7 +288,7 @@ class ProjectsViewModelTest {
         val actual = projectRepository.findAll()
         assertEquals(emptyList<Project>(), actual)
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertEquals(ProjectsViewActions.DismissNotification(project), it)
         }
     }
 }

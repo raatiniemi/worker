@@ -16,19 +16,38 @@
 
 package me.raatiniemi.worker.features.projects.model
 
+import android.app.NotificationManager
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
+import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import timber.log.Timber
 
 internal sealed class ProjectsViewActions {
     data class UpdateNotification(val project: Project) : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             ProjectNotificationService.startServiceWithContext(activity, project)
+        }
+    }
+
+    data class DismissNotification(val project: Project) : ProjectsViewActions(), ContextViewAction {
+        override fun action(context: Context) {
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+            if (notificationManager == null) {
+                Timber.w("Unable to get notification manager from context")
+                return
+            }
+
+            notificationManager.cancel(
+                    project.id.toString(),
+                    WorkerApplication.NOTIFICATION_ON_GOING_ID
+            )
         }
     }
 

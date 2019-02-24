@@ -143,8 +143,10 @@ internal class ProjectsViewModel(
 
     suspend fun remove(item: ProjectsItem) = withContext(Dispatchers.IO) {
         try {
-            removeProject(item.asProject())
+            val project = item.asProject()
+            removeProject(project)
 
+            viewActions.postValue(ProjectsViewActions.DismissNotification(project))
             reloadProjects()
         } catch (e: Exception) {
             viewActions.postValue(ProjectsViewActions.ShowUnableToDeleteProjectErrorMessage)
