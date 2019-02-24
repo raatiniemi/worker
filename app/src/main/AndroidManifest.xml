@@ -64,16 +64,6 @@
             />
 
         <service
-            android:name=".data.service.data.BackupService"
-            android:exported="false"
-            />
-
-        <service
-            android:name=".data.service.data.RestoreService"
-            android:exported="false"
-            />
-
-        <service
             android:name=".data.service.ongoing.PauseService"
             android:exported="false"
             />

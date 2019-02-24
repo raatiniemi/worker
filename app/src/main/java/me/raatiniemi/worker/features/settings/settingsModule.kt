@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.features.settings
 
-import me.raatiniemi.worker.features.settings.data.viewmodel.DataViewModel
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
@@ -24,9 +23,5 @@ import org.koin.dsl.module.module
 val settingsModule = module {
     viewModel {
         ProjectViewModel(get())
-    }
-
-    viewModel {
-        DataViewModel()
     }
 }
