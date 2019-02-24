@@ -29,9 +29,6 @@ import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-/**
- * Stores application constants.
- */
 open class WorkerApplication : Application() {
     private val notificationManager: NotificationManager
         get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
