@@ -67,10 +67,6 @@ open class WorkerApplication : Application() {
                     notificationManager,
                     Notifications.ongoingChannel(resources)
             )
-            Notifications.createChannel(
-                    notificationManager,
-                    Notifications.backupChannel(resources)
-            )
         } catch (e: ClassCastException) {
             Timber.e(e)
         } catch (e: NullPointerException) {
@@ -89,8 +85,6 @@ open class WorkerApplication : Application() {
          */
         const val DATABASE_NAME = "worker"
 
-        const val NOTIFICATION_BACKUP_SERVICE_ID = 1
-        const val NOTIFICATION_RESTORE_SERVICE_ID = 2
         const val NOTIFICATION_ON_GOING_ID = 3
 
         /**
