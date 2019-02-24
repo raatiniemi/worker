@@ -76,26 +76,11 @@ open class WorkerApplication : Application() {
 
     companion object {
         /**
-         * Package for the application.
-         */
-        const val PACKAGE = "me.raatiniemi.worker"
-
-        /**
          * Name of the application database.
          */
         const val DATABASE_NAME = "worker"
 
         const val NOTIFICATION_ON_GOING_ID = 3
-
-        /**
-         * Prefix for backup directories.
-         */
-        const val STORAGE_BACKUP_DIRECTORY_PREFIX = "backup-"
-
-        /**
-         * Pattern for the backup directories.
-         */
-        const val STORAGE_BACKUP_DIRECTORY_PATTERN = WorkerApplication.STORAGE_BACKUP_DIRECTORY_PREFIX + "(\\d+)"
 
         /**
          * Intent action for restarting the application.
