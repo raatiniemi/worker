@@ -29,43 +29,43 @@ import timber.log.Timber
 class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
     var confirmClockOut: Boolean
         @MainThread
-        get() = keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT.rawValue, true)
+        get() = keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)
         @MainThread
         set(value) {
-            keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT.rawValue, value)
+            keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, value)
         }
 
     val timeSummary: Int
         @MainThread
-        get() = keyValueStore.int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+        get() = keyValueStore.int(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
 
     var ongoingNotificationEnabled: Boolean
         @MainThread
-        get() = keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, true)
+        get() = keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED, true)
         @MainThread
         set(value) {
-            keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_ENABLED.rawValue, value)
+            keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_ENABLED, value)
         }
 
     var ongoingNotificationChronometerEnabled: Boolean
         @MainThread
         get() {
             return if (ongoingNotificationEnabled) {
-                keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, true)
+                keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true)
             } else {
                 false
             }
         }
         @MainThread
         set(value) {
-            keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.rawValue, value)
+            keyValueStore.set(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, value)
         }
 
     val viewActions = ConsumableLiveData<ProjectViewActions>()
 
     @MainThread
     fun changeTimeSummaryStartingPoint(newStartingPoint: Int) {
-        val currentStartingPoint = keyValueStore.int(AppKeys.TIME_SUMMARY.rawValue)
+        val currentStartingPoint = keyValueStore.int(AppKeys.TIME_SUMMARY)
         if (currentStartingPoint == newStartingPoint) {
             Timber.d("New time summary starting point is same as current starting point")
             return
@@ -77,13 +77,13 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
                 TimeIntervalStartingPoint.WEEK -> {
                     Timber.d("Changing time summary starting point to week")
 
-                    keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
+                    keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.WEEK.rawValue)
                     ProjectViewActions.ShowTimeSummaryStartingPointChangedToWeek
                 }
                 TimeIntervalStartingPoint.MONTH -> {
                     Timber.d("Changing time summary starting point to month")
 
-                    keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+                    keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
                     ProjectViewActions.ShowTimeSummaryStartingPointChangedToMonth
                 }
                 else -> throw InvalidStartingPointException("Starting point '$newStartingPoint' is not valid")

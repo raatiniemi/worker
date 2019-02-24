@@ -184,7 +184,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
                 return@launch
             }
 
-            if (!keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT.rawValue, true)) {
+            if (!keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
                 projectsViewModel.clockOut(item, Date())
                 return@launch
             }

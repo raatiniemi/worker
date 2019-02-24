@@ -152,7 +152,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock in project with month time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
         val item = ProjectsItem(project, emptyList())
 
         vm.clockIn(item, Date())
@@ -164,7 +164,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock in project with day time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.DAY.rawValue)
         val item = ProjectsItem(project, emptyList())
 
         vm.clockIn(item, Date())
@@ -176,7 +176,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock in project with invalid time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, -1)
         val item = ProjectsItem(project, emptyList())
 
         vm.clockIn(item, Date())
@@ -215,7 +215,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out project with month time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
         val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
         timeIntervalRepository.add(newTimeInterval)
         val timeIntervals = listOf(
@@ -232,7 +232,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out project with day time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.DAY.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.DAY.rawValue)
         val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
         timeIntervalRepository.add(newTimeInterval)
         val timeIntervals = listOf(
@@ -249,7 +249,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out project with invalid time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, -1)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, -1)
         val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
         timeIntervalRepository.add(newTimeInterval)
         val timeIntervals = listOf(

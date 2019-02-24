@@ -53,7 +53,7 @@ internal class ProjectsViewModel(
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
             val startingPoint = keyValueStore.int(
-                    AppKeys.TIME_SUMMARY.rawValue,
+                    AppKeys.TIME_SUMMARY,
                     defaultValue.rawValue
             )
 

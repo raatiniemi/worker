@@ -19,73 +19,62 @@ package me.raatiniemi.worker.util
 import android.content.Context
 import android.content.SharedPreferences
 import me.raatiniemi.worker.RobolectricTestCase
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 
 class SharedKeyValueStoreTest : RobolectricTestCase() {
-    private val key = "my_key"
-    private val sharedPreferences: SharedPreferences = {
+    private val sharedPreferences: SharedPreferences by lazy {
         RuntimeEnvironment.application
                 .getSharedPreferences("preference_name", Context.MODE_PRIVATE)
-    }()
-    private val keyValueStore: KeyValueStore = SharedKeyValueStore(sharedPreferences)
+    }
+    private lateinit var keyValueStore: KeyValueStore
 
-    @Test
-    fun bool_withFalseDefaultValue() {
-        val actual = keyValueStore.bool(key, defaultValue = false)
-
-        assertFalse(actual)
+    @Before
+    fun setUp() {
+        keyValueStore = SharedKeyValueStore(sharedPreferences)
     }
 
     @Test
-    fun bool_withTrueDefaultValue() {
-        val actual = keyValueStore.bool(key, defaultValue = true)
+    fun `bool without value for key`() {
+        val expected = false
 
-        assertTrue(actual)
+        val actual = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, expected)
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun bool_withFalseValue() {
-        keyValueStore.set(key, false)
+    fun `bool with value for key`() {
+        val expected = true
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
 
-        val actual = keyValueStore.bool(key, defaultValue = true)
+        val actual = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
 
-        assertFalse(actual)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun bool_withTrueValue() {
-        keyValueStore.set(key, true)
+    fun `int without value for key`() {
+        val expected = TimeIntervalStartingPoint.WEEK.rawValue
 
-        val actual = keyValueStore.bool(key, defaultValue = false)
+        val actual = keyValueStore.int(AppKeys.TIME_SUMMARY, expected)
 
-        assertTrue(actual)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun hideRegisteredTime_withoutValue() {
-        val actual = keyValueStore.hideRegisteredTime()
+    fun `int with value for key`() {
+        val expected = TimeIntervalStartingPoint.WEEK.rawValue
+        keyValueStore.set(AppKeys.TIME_SUMMARY, expected)
 
-        assertFalse(actual)
-    }
+        val actual = keyValueStore.int(
+                AppKeys.TIME_SUMMARY,
+                TimeIntervalStartingPoint.MONTH.rawValue
+        )
 
-    @Test
-    fun hideRegisteredTime_whenDisabled() {
-        keyValueStore.setHideRegisteredTime(false)
-
-        val actual = keyValueStore.hideRegisteredTime()
-
-        assertFalse(actual)
-    }
-
-    @Test
-    fun hideRegisteredTime_whenEnabled() {
-        keyValueStore.setHideRegisteredTime(true)
-
-        val actual = keyValueStore.hideRegisteredTime()
-
-        assertTrue(actual)
+        assertEquals(expected, actual)
     }
 }
