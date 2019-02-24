@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
-import me.raatiniemi.worker.domain.util.FractionIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -43,20 +42,6 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            "1.00",
-                            FractionIntervalFormat(),
-                            TimeInterval.builder(1L, 1L)
-                                    .stopInMilliseconds(3600000)
-                                    .build()
-                    ),
-                    arrayOf(
-                            "9.00",
-                            FractionIntervalFormat(),
-                            TimeInterval.builder(1L, 1L)
-                                    .stopInMilliseconds(32400000)
-                                    .build()
-                    ),
                     arrayOf(
                             "1:00",
                             DigitalHoursMinutesIntervalFormat(),

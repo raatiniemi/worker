@@ -63,37 +63,4 @@ sealed class ProjectViewActions : ActivityViewAction {
             snackBar.show()
         }
     }
-
-    object ShowTimeReportSummaryChangedToDigitalClock : ProjectViewActions() {
-        override fun action(activity: FragmentActivity) {
-            val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
-                    R.string.message_change_time_report_summary_format_digital_clock,
-                    Snackbar.LENGTH_LONG
-            )
-            snackBar.show()
-        }
-    }
-
-    object ShowTimeReportSummaryChangedToFraction : ProjectViewActions() {
-        override fun action(activity: FragmentActivity) {
-            val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
-                    R.string.message_change_time_report_summary_format_fraction,
-                    Snackbar.LENGTH_LONG
-            )
-            snackBar.show()
-        }
-    }
-
-    object ShowUnableToChangeTimeReportSummaryErrorMessage : ProjectViewActions() {
-        override fun action(activity: FragmentActivity) {
-            val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
-                    R.string.error_message_change_time_report_summary_format,
-                    Snackbar.LENGTH_LONG
-            )
-            snackBar.show()
-        }
-    }
 }

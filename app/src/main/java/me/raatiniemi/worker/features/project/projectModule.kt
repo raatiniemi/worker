@@ -19,13 +19,9 @@ package me.raatiniemi.worker.features.project
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
-import me.raatiniemi.worker.domain.util.FractionIntervalFormat
+import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
-import me.raatiniemi.worker.util.AppKeys
-import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_FRACTION
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
@@ -34,18 +30,8 @@ val projectModule = module {
         ProjectHolder()
     }
 
-    factory {
-        val keyValueStore: KeyValueStore = get()
-        val timeReportSummaryFormat = keyValueStore.int(
-                AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
-                TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-        )
-
-        if (timeReportSummaryFormat == TIME_REPORT_SUMMARY_FORMAT_FRACTION) {
-            FractionIntervalFormat()
-        } else {
-            DigitalHoursMinutesIntervalFormat()
-        }
+    single<HoursMinutesFormat> {
+        DigitalHoursMinutesIntervalFormat()
     }
 
     viewModel {

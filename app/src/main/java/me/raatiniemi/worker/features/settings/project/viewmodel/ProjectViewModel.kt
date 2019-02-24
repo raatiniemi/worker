@@ -24,8 +24,6 @@ import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
-import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-import me.raatiniemi.worker.util.TIME_REPORT_SUMMARY_FORMAT_FRACTION
 import timber.log.Timber
 
 class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
@@ -40,13 +38,6 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
     val timeSummary: Int
         @MainThread
         get() = keyValueStore.int(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
-
-    val timeReportSummaryFormat: Int
-        @MainThread
-        get() = keyValueStore.int(
-                AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
-                TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-        )
 
     var ongoingNotificationEnabled: Boolean
         @MainThread
@@ -104,41 +95,5 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
 
             viewActions.postValue(ProjectViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage)
         }
-    }
-
-    @MainThread
-    fun changeTimeReportSummaryFormat(newFormat: Int) {
-        val currentFormat = keyValueStore.int(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue)
-        if (currentFormat == newFormat) {
-            Timber.d("New time report summary format is same as current format")
-            return
-        }
-
-        val viewAction = when (newFormat) {
-            TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK -> {
-                Timber.d("Changing time report summary format to digital clock")
-
-                keyValueStore.set(
-                        AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
-                        TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-                )
-                ProjectViewActions.ShowTimeReportSummaryChangedToDigitalClock
-            }
-            TIME_REPORT_SUMMARY_FORMAT_FRACTION -> {
-                Timber.d("Changing time report summary format to fraction")
-
-                keyValueStore.set(
-                        AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue,
-                        TIME_REPORT_SUMMARY_FORMAT_FRACTION
-                )
-                ProjectViewActions.ShowTimeReportSummaryChangedToFraction
-            }
-            else -> {
-                Timber.w("Unable to change time report summary format due to invalid value: $newFormat")
-                ProjectViewActions.ShowUnableToChangeTimeReportSummaryErrorMessage
-            }
-        }
-
-        viewActions.postValue(viewAction)
     }
 }
