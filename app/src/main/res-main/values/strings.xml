@@ -72,12 +72,6 @@
     <string name="activity_settings_about_version">Version</string>
     <string name="activity_settings_about_version_format">%s (%d)</string>
 
-    <string name="notification_backup_title">Backup complete</string>
-    <string name="notification_backup_message">Backup to external storage was successful.</string>
-
-    <string name="notification_restore_title">Restore complete</string>
-    <string name="notification_restore_message">Press notification to restart application.</string>
-
     <string name="notification_pause_action_pause">Pause</string>
     <string name="notification_pause_action_clock_out">Clock out</string>
     <string name="notification_pause_action_resume">Resume</string>
@@ -93,12 +87,6 @@
     <string name="message_change_time_report_summary_format_fraction">Time report summary will use fraction format</string>
     <string name="message_change_time_report_summary_format_digital_clock">Time report summary will use digital clock</string>
     <string name="error_message_change_time_report_summary_format">Unable to change time report summary format.</string>
-
-    <string name="error_notification_backup_title">Backup failed</string>
-    <string name="error_notification_backup_message">Backup to external storage failed.</string>
-
-    <string name="error_notification_restore_title">Restore failed</string>
-    <string name="error_notification_restore_message">Data restore from backup failed.</string>
 
     <string name="error_notification_pause_title">Failed to pause project</string>
     <string name="error_notification_pause_message">An internal error has occurred.</string>
