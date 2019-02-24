@@ -29,7 +29,7 @@ internal class TimeReportDataSource(
 ) : PositionalDataSource<TimeReportDay>() {
     private val shouldHideRegisteredTime: Boolean
         get() = keyValueStore.bool(
-                AppKeys.HIDE_REGISTERED_TIME.rawValue,
+                AppKeys.HIDE_REGISTERED_TIME,
                 false
         )
 

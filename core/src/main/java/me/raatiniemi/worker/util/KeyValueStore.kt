@@ -17,19 +17,19 @@
 package me.raatiniemi.worker.util
 
 interface KeyValueStore {
-    fun set(key: String, value: Boolean)
-    fun set(key: String, value: Int)
+    fun set(key: AppKeys, value: Boolean)
+    fun set(key: AppKeys, value: Int)
 
-    fun bool(key: String, defaultValue: Boolean): Boolean
-    fun int(key: String, defaultValue: Int = 0): Int
+    fun bool(key: AppKeys, defaultValue: Boolean): Boolean
+    fun int(key: AppKeys, defaultValue: Int = 0): Int
 
     // TODO: Move configurations to extensions when calling code is in kotlin.
 
     fun setHideRegisteredTime(value: Boolean) {
-        set(AppKeys.HIDE_REGISTERED_TIME.rawValue, value)
+        set(AppKeys.HIDE_REGISTERED_TIME, value)
     }
 
     fun hideRegisteredTime(): Boolean {
-        return bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
+        return bool(AppKeys.HIDE_REGISTERED_TIME, false)
     }
 }

@@ -78,7 +78,7 @@ class ProjectViewModelTest {
 
     @Test
     fun `time summary with month`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
         val expected = TimeIntervalStartingPoint.MONTH.rawValue
 
         val actual = vm.timeSummary
@@ -88,7 +88,7 @@ class ProjectViewModelTest {
 
     @Test
     fun `time summary with week`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.WEEK.rawValue)
         val expected = TimeIntervalStartingPoint.WEEK.rawValue
 
         val actual = vm.timeSummary
@@ -153,11 +153,11 @@ class ProjectViewModelTest {
 
     @Test
     fun `change time summary starting point with current starting point`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
 
         vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
 
-        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, keyValueStore.int(AppKeys.TIME_SUMMARY.rawValue))
+        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, keyValueStore.int(AppKeys.TIME_SUMMARY))
     }
 
     @Test
@@ -171,7 +171,7 @@ class ProjectViewModelTest {
 
     @Test
     fun `change time summary starting point from month to week`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.MONTH.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
 
         vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK.rawValue)
 
@@ -182,7 +182,7 @@ class ProjectViewModelTest {
 
     @Test
     fun `change time summary starting point from week to month`() {
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, TimeIntervalStartingPoint.WEEK.rawValue)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.WEEK.rawValue)
 
         vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
 

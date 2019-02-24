@@ -19,24 +19,24 @@ package me.raatiniemi.worker.util
 import android.content.SharedPreferences
 
 class SharedKeyValueStore(private val sharedPreferences: SharedPreferences) : KeyValueStore {
-    override fun set(key: String, value: Boolean) {
+    override fun set(key: AppKeys, value: Boolean) {
         sharedPreferences.edit {
-            putBoolean(key, value)
+            putBoolean(key.rawValue, value)
         }
     }
 
-    override fun set(key: String, value: Int) {
+    override fun set(key: AppKeys, value: Int) {
         sharedPreferences.edit {
-            putInt(key, value)
+            putInt(key.rawValue, value)
         }
     }
 
-    override fun bool(key: String, defaultValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(key, defaultValue)
+    override fun bool(key: AppKeys, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key.rawValue, defaultValue)
     }
 
-    override fun int(key: String, defaultValue: Int): Int {
-        return sharedPreferences.getInt(key, defaultValue)
+    override fun int(key: AppKeys, defaultValue: Int): Int {
+        return sharedPreferences.getInt(key.rawValue, defaultValue)
     }
 }
 

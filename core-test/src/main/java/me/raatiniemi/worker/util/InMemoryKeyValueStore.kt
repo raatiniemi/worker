@@ -17,17 +17,17 @@
 package me.raatiniemi.worker.util
 
 class InMemoryKeyValueStore : KeyValueStore {
-    private var store = mutableMapOf<String, Any>()
+    private var store = mutableMapOf<AppKeys, Any>()
 
-    override fun set(key: String, value: Boolean) {
+    override fun set(key: AppKeys, value: Boolean) {
         store[key] = value
     }
 
-    override fun set(key: String, value: Int) {
+    override fun set(key: AppKeys, value: Int) {
         store[key] = value
     }
 
-    override fun bool(key: String, defaultValue: Boolean): Boolean {
+    override fun bool(key: AppKeys, defaultValue: Boolean): Boolean {
         val value = store[key]
         if (value is Boolean) {
             return value
@@ -36,7 +36,7 @@ class InMemoryKeyValueStore : KeyValueStore {
         return defaultValue
     }
 
-    override fun int(key: String, defaultValue: Int): Int {
+    override fun int(key: AppKeys, defaultValue: Int): Int {
         val value = store[key]
         if (value is Int) {
             return value

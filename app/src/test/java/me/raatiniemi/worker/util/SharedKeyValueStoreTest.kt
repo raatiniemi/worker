@@ -41,7 +41,7 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
     fun `bool without value for key`() {
         val expected = false
 
-        val actual = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, expected)
+        val actual = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, expected)
 
         assertEquals(expected, actual)
     }
@@ -49,9 +49,9 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
     @Test
     fun `bool with value for key`() {
         val expected = true
-        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME.rawValue, true)
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
 
-        val actual = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
+        val actual = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
 
         assertEquals(expected, actual)
     }
@@ -60,7 +60,7 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
     fun `int without value for key`() {
         val expected = TimeIntervalStartingPoint.WEEK.rawValue
 
-        val actual = keyValueStore.int(AppKeys.TIME_SUMMARY.rawValue, expected)
+        val actual = keyValueStore.int(AppKeys.TIME_SUMMARY, expected)
 
         assertEquals(expected, actual)
     }
@@ -68,10 +68,10 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
     @Test
     fun `int with value for key`() {
         val expected = TimeIntervalStartingPoint.WEEK.rawValue
-        keyValueStore.set(AppKeys.TIME_SUMMARY.rawValue, expected)
+        keyValueStore.set(AppKeys.TIME_SUMMARY, expected)
 
         val actual = keyValueStore.int(
-                AppKeys.TIME_SUMMARY.rawValue,
+                AppKeys.TIME_SUMMARY,
                 TimeIntervalStartingPoint.MONTH.rawValue
         )
 

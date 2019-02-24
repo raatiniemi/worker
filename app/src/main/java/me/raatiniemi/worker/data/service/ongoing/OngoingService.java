@@ -96,11 +96,11 @@ public abstract class OngoingService extends IntentService {
     }
 
     boolean isOngoingNotificationEnabled() {
-        return keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED.getRawValue(), true);
+        return keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_ENABLED, true);
     }
 
     boolean isOngoingNotificationChronometerEnabled() {
-        return keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED.getRawValue(), true);
+        return keyValueStore.bool(AppKeys.ONGOING_NOTIFICATION_CHRONOMETER_ENABLED, true);
     }
 
     void updateUserInterface(long projectId) {
