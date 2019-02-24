@@ -9,11 +9,6 @@
             android:title="@string/activity_settings_project"
             app:fragment="me.raatiniemi.worker.features.settings.project.view.ProjectFragment" />
 
-        <Preference
-            android:key="settings_data"
-            android:title="@string/activity_settings_data"
-            app:fragment="me.raatiniemi.worker.features.settings.data.view.DataFragment" />
-
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/activity_settings_about">

@@ -49,12 +49,6 @@
     <string name="error_message_register_time_report">Failed to update item(s).</string>
     <string name="error_message_delete_time_report">Failed to delete item(s).</string>
 
-    <string name="message_permission_write_backup">Need permission to backup.</string>
-    <string name="message_permission_read_backup">Need permission to read backup.</string>
-
-    <string name="message_backing_up_data">Backing up data…</string>
-    <string name="message_restoring_data">Restoring data…</string>
-
     <string name="activity_settings_title">Settings</string>
     <string name="activity_settings_preferences">Preferences</string>
     <string name="activity_settings_project">Project</string>
@@ -74,27 +68,9 @@
     <string name="activity_settings_project_ongoing_notification_enable_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
     <string name="activity_settings_project_ongoing_notification_chronometer_title">Notification timer</string>
     <string name="activity_settings_project_ongoing_notification_chronometer_summary">Include notification timer for total time worked today, or length of current break (depends on project state).</string>
-    <string name="activity_settings_data">Data</string>
-    <string name="activity_settings_backup">Backup</string>
-    <string name="activity_settings_backup_unable_to_find">Unable to locate latest backup.</string>
-    <string name="activity_settings_backup_none_available">No backup have been performed.</string>
-    <string name="activity_settings_backup_performed_at">Last backup was performed at %s.</string>
-    <string name="activity_settings_restore">Restore</string>
-    <string name="activity_settings_restore_unable_to_find">Unable to restore, failed to locate backups.</string>
-    <string name="activity_settings_restore_none_available">Nothing to restore, no backup is available.</string>
-    <string name="activity_settings_restore_from">Restore backup from %s.\nAfter restore you have to restart the application.</string>
     <string name="activity_settings_about">About</string>
     <string name="activity_settings_about_version">Version</string>
     <string name="activity_settings_about_version_format">%s (%d)</string>
-
-    <string name="notification_backup_title">Backup complete</string>
-    <string name="notification_backup_message">Backup to external storage was successful.</string>
-
-    <string name="notification_restore_title">Restore complete</string>
-    <string name="notification_restore_message">Press notification to restart application.</string>
-
-    <string name="activity_settings_restore_confirm_title">Restore data</string>
-    <string name="activity_settings_restore_confirm_message">Restoring data will override the current data and is not reversible.\n\nDo you which to continue?</string>
 
     <string name="notification_pause_action_pause">Pause</string>
     <string name="notification_pause_action_clock_out">Clock out</string>
@@ -112,12 +88,6 @@
     <string name="message_change_time_report_summary_format_digital_clock">Time report summary will use digital clock</string>
     <string name="error_message_change_time_report_summary_format">Unable to change time report summary format.</string>
 
-    <string name="error_notification_backup_title">Backup failed</string>
-    <string name="error_notification_backup_message">Backup to external storage failed.</string>
-
-    <string name="error_notification_restore_title">Restore failed</string>
-    <string name="error_notification_restore_message">Data restore from backup failed.</string>
-
     <string name="error_notification_pause_title">Failed to pause project</string>
     <string name="error_notification_pause_message">An internal error has occurred.</string>
 
@@ -129,8 +99,5 @@
 
     <string name="notification_channel_ongoing_title">Ongoing</string>
     <string name="notification_channel_ongoing_description">Shows while a project is either active or paused.</string>
-
-    <string name="notification_channel_backup_title">Backup</string>
-    <string name="notification_channel_backup_description">Shows when performing either backup or restore.</string>
 
 </resources>

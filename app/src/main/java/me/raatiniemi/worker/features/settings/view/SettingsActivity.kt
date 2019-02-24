@@ -24,7 +24,6 @@ import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.settings.data.view.DataFragment
 import me.raatiniemi.worker.features.settings.project.view.ProjectFragment
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
 import me.raatiniemi.worker.util.NullUtil.isNull
@@ -71,7 +70,6 @@ class SettingsActivity : BaseActivity(), PreferenceFragmentCompat.OnPreferenceSt
         val fragment: Fragment
         when (pref.key) {
             SETTINGS_PROJECT_KEY -> fragment = ProjectFragment()
-            SETTINGS_DATA_KEY -> fragment = DataFragment()
             else -> return false
         }
 
@@ -85,7 +83,6 @@ class SettingsActivity : BaseActivity(), PreferenceFragmentCompat.OnPreferenceSt
 
     companion object {
         private const val SETTINGS_PROJECT_KEY = "settings_project"
-        private const val SETTINGS_DATA_KEY = "settings_data"
 
         fun newIntent(context: Context): Intent {
             return Intent(context, SettingsActivity::class.java)

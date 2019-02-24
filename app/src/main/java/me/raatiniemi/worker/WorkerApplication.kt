@@ -29,9 +29,6 @@ import org.koin.android.ext.android.startKoin
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-/**
- * Stores application constants.
- */
 open class WorkerApplication : Application() {
     private val notificationManager: NotificationManager
         get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -67,10 +64,6 @@ open class WorkerApplication : Application() {
                     notificationManager,
                     Notifications.ongoingChannel(resources)
             )
-            Notifications.createChannel(
-                    notificationManager,
-                    Notifications.backupChannel(resources)
-            )
         } catch (e: ClassCastException) {
             Timber.e(e)
         } catch (e: NullPointerException) {
@@ -79,33 +72,6 @@ open class WorkerApplication : Application() {
     }
 
     companion object {
-        /**
-         * Package for the application.
-         */
-        const val PACKAGE = "me.raatiniemi.worker"
-
-        /**
-         * Name of the application database.
-         */
-        const val DATABASE_NAME = "worker"
-
-        const val NOTIFICATION_BACKUP_SERVICE_ID = 1
-        const val NOTIFICATION_RESTORE_SERVICE_ID = 2
         const val NOTIFICATION_ON_GOING_ID = 3
-
-        /**
-         * Prefix for backup directories.
-         */
-        const val STORAGE_BACKUP_DIRECTORY_PREFIX = "backup-"
-
-        /**
-         * Pattern for the backup directories.
-         */
-        const val STORAGE_BACKUP_DIRECTORY_PATTERN = WorkerApplication.STORAGE_BACKUP_DIRECTORY_PREFIX + "(\\d+)"
-
-        /**
-         * Intent action for restarting the application.
-         */
-        const val INTENT_ACTION_RESTART = "action_restart"
     }
 }

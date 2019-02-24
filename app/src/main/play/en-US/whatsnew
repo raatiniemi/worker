@@ -1,2 +1,3 @@
 include app version under settings.
 dismiss ongoing notification when project is removed.
+remove support for backup/restore due to broken functionality.

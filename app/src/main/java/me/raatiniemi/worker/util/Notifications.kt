@@ -32,10 +32,6 @@ class Notifications {
         private const val ongoingTitle = R.string.notification_channel_ongoing_title
         private const val ongoingDescription = R.string.notification_channel_ongoing_description
 
-        private const val backupId = "backup"
-        private const val backupTitle = R.string.notification_channel_backup_title
-        private const val backupDescription = R.string.notification_channel_backup_description
-
         fun createChannel(notificationManager: NotificationManager, channel: NotificationChannel) {
             notificationManager.createNotificationChannel(channel)
         }
@@ -60,28 +56,6 @@ class Notifications {
 
         fun ongoingBuilder(context: Context): NotificationCompat.Builder {
             return NotificationCompat.Builder(context, ongoingId)
-        }
-
-        fun isBackupChannelDisabled(notificationManager: NotificationManager): Boolean {
-            val channel = notificationManager.getNotificationChannel(backupId)
-
-            return NotificationManager.IMPORTANCE_NONE == channel.importance
-        }
-
-        fun backupChannel(resources: Resources): NotificationChannel {
-            val channel = NotificationChannel(
-                    backupId,
-                    resources.getString(backupTitle),
-                    NotificationManager.IMPORTANCE_LOW
-            )
-            channel.description = resources.getString(backupDescription)
-            channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-
-            return channel
-        }
-
-        fun backupBuilder(context: Context): NotificationCompat.Builder {
-            return NotificationCompat.Builder(context, backupId)
         }
     }
 }

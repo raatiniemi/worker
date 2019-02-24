@@ -21,10 +21,6 @@
     package="me.raatiniemi.worker"
     >
 
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        />
-
     <application
         android:name=".WorkerApplication"
         android:allowBackup="true"
@@ -61,16 +57,6 @@
         <activity
             android:name="me.raatiniemi.worker.features.settings.view.SettingsActivity"
             android:parentActivityName="me.raatiniemi.worker.features.projects.view.ProjectsActivity"
-            />
-
-        <service
-            android:name=".data.service.data.BackupService"
-            android:exported="false"
-            />
-
-        <service
-            android:name=".data.service.data.RestoreService"
-            android:exported="false"
             />
 
         <service

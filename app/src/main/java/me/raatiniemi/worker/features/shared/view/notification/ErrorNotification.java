@@ -39,16 +39,4 @@ public class ErrorNotification {
                 .setSmallIcon(SMALL_ICON)
                 .build();
     }
-
-    public static Notification buildBackup(
-            Context context,
-            String title,
-            String text
-    ) {
-        return Notifications.Companion.backupBuilder(context)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setSmallIcon(SMALL_ICON)
-                .build();
-    }
 }
