@@ -33,7 +33,3 @@ interface KeyValueStore {
         return bool(AppKeys.HIDE_REGISTERED_TIME.rawValue, false)
     }
 }
-
-// TODO: Should time sheet summary format constants be moved to a better location?
-const val TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK: Int = 1
-const val TIME_REPORT_SUMMARY_FORMAT_FRACTION: Int = 2
