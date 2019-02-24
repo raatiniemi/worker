@@ -16,16 +16,11 @@
 
 package me.raatiniemi.worker.features.projects.view
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectFragment
 import me.raatiniemi.worker.features.settings.view.SettingsActivity
@@ -35,7 +30,6 @@ import me.raatiniemi.worker.util.NullUtil.nonNull
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
 
 class ProjectsActivity : BaseActivity() {
     private val eventBus = EventBus.getDefault()
@@ -43,11 +37,6 @@ class ProjectsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_projects)
-
-        if (shouldRestartApplication()) {
-            restart()
-            return
-        }
 
         if (isNull(savedInstanceState)) {
             val fragment = ProjectsFragment()
@@ -58,34 +47,6 @@ class ProjectsActivity : BaseActivity() {
         }
 
         eventBus.register(this)
-    }
-
-    private fun shouldRestartApplication(): Boolean {
-        val action = intent.action ?: false
-
-        return WorkerApplication.INTENT_ACTION_RESTART == action
-    }
-
-    private fun restart() {
-        try {
-            // The AlarmManager will allow us to send the start intent after
-            // we have stopped the application, i.e. it will restart.
-            val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-            val intent = Intent(this, ProjectsActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-            val pendingIntent = PendingIntent.getActivity(
-                    this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT
-            )
-
-            manager.set(AlarmManager.RTC, System.currentTimeMillis() + 100, pendingIntent)
-        } catch (e: ClassCastException) {
-            Timber.w(e, "Unable to cast the AlarmManager")
-        }
-
-        finish()
     }
 
     public override fun onDestroy() {

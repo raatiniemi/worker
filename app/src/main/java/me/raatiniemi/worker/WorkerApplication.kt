@@ -81,10 +81,5 @@ open class WorkerApplication : Application() {
         const val DATABASE_NAME = "worker"
 
         const val NOTIFICATION_ON_GOING_ID = 3
-
-        /**
-         * Intent action for restarting the application.
-         */
-        const val INTENT_ACTION_RESTART = "action_restart"
     }
 }
