@@ -15,13 +15,6 @@
             android:summary="@string/activity_settings_project_time_summary_summary"
             android:title="@string/activity_settings_project_time_summary_title" />
 
-        <androidx.preference.ListPreference
-            android:entries="@array/project_time_report_summary_format_alternative_text"
-            android:entryValues="@array/project_time_report_summary_format_alternative_value"
-            android:key="settings_project_time_report_summary_format"
-            android:summary="@string/activity_settings_project_time_report_summary_format_summary"
-            android:title="@string/activity_settings_project_time_report_summary_format_title" />
-
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/activity_settings_project_ongoing_notification">

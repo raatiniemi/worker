@@ -59,7 +59,6 @@ class ProjectFragment : BasePreferenceFragment() {
     private fun configureView() {
         configureConfirmClockOut()
         configureTimeSummaryStartingPoint()
-        configureTimeReportSummaryFormat()
         configureOngoingNotification()
     }
 
@@ -81,19 +80,6 @@ class ProjectFragment : BasePreferenceFragment() {
             setOnPreferenceChangeListener { _, newValue ->
                 val startingPoint = Integer.parseInt(newValue as String)
                 vm.changeTimeSummaryStartingPoint(startingPoint)
-
-                true
-            }
-        }
-    }
-
-    private fun configureTimeReportSummaryFormat() {
-        configurePreference<ListPreference>(TIME_REPORT_SUMMARY_FORMAT_KEY) {
-            value = vm.timeReportSummaryFormat.toString()
-
-            setOnPreferenceChangeListener { _, newValue ->
-                val newFormat = Integer.parseInt(newValue as String)
-                vm.changeTimeReportSummaryFormat(newFormat)
 
                 true
             }
@@ -139,7 +125,6 @@ class ProjectFragment : BasePreferenceFragment() {
     companion object {
         private const val CONFIRM_CLOCK_OUT_KEY = "settings_project_confirm_clock_out"
         private const val TIME_SUMMARY_KEY = "settings_project_time_summary"
-        private const val TIME_REPORT_SUMMARY_FORMAT_KEY = "settings_project_time_report_summary_format"
         private const val ONGOING_NOTIFICATION_ENABLE_KEY = "settings_project_ongoing_notification_enable"
         private const val ONGOING_NOTIFICATION_CHRONOMETER_KEY = "settings_project_ongoing_notification_chronometer"
     }

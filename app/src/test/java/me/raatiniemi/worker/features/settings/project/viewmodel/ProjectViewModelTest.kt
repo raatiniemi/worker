@@ -97,35 +97,6 @@ class ProjectViewModelTest {
     }
 
     @Test
-    fun `time report summary format with default value`() {
-        val expected = TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-
-        val actual = vm.timeReportSummaryFormat
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `time report summary format with digital clock`() {
-        val expected = TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK
-        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, expected)
-
-        val actual = vm.timeReportSummaryFormat
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `time report summary format with fraction`() {
-        val expected = TIME_REPORT_SUMMARY_FORMAT_FRACTION
-        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, expected)
-
-        val actual = vm.timeReportSummaryFormat
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
     fun `is ongoing notification enabled with default value`() {
         val actual = vm.ongoingNotificationEnabled
 
@@ -217,49 +188,6 @@ class ProjectViewModelTest {
 
         vm.viewActions.observeForever {
             assertEquals(ProjectViewActions.ShowTimeSummaryStartingPointChangedToMonth, it)
-        }
-    }
-
-    @Test
-    fun `change time report summary format with current format`() {
-        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
-
-        vm.changeTimeReportSummaryFormat(TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
-
-        assertEquals(
-                TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK,
-                keyValueStore.int(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue)
-        )
-    }
-
-    @Test
-    fun `change time report summary format with unknown format`() {
-        vm.changeTimeReportSummaryFormat(-1)
-
-        vm.viewActions.observeForever {
-            assertEquals(ProjectViewActions.ShowUnableToChangeTimeReportSummaryErrorMessage, it)
-        }
-    }
-
-    @Test
-    fun `change time report summary format from fraction to digital clock`() {
-        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_FRACTION)
-
-        vm.changeTimeReportSummaryFormat(TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
-
-        vm.viewActions.observeForever {
-            assertEquals(ProjectViewActions.ShowTimeReportSummaryChangedToDigitalClock, it)
-        }
-    }
-
-    @Test
-    fun `change time report summary format from digital clock to fraction`() {
-        keyValueStore.set(AppKeys.TIME_REPORT_SUMMARY_FORMAT.rawValue, TIME_REPORT_SUMMARY_FORMAT_DIGITAL_CLOCK)
-
-        vm.changeTimeReportSummaryFormat(TIME_REPORT_SUMMARY_FORMAT_FRACTION)
-
-        vm.viewActions.observeForever {
-            assertEquals(ProjectViewActions.ShowTimeReportSummaryChangedToFraction, it)
         }
     }
 }

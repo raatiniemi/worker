@@ -59,10 +59,6 @@
     <string name="activity_settings_project_time_summary_summary">Starting point for the collection of registered time used for the time summary.</string>
     <string name="activity_settings_project_time_summary_week">Week</string>
     <string name="activity_settings_project_time_summary_month">Month</string>
-    <string name="activity_settings_project_time_report_summary_format_title">Format for time report summary</string>
-    <string name="activity_settings_project_time_report_summary_format_summary">Which format should be used to show the summary on the time report view.</string>
-    <string name="activity_settings_project_time_report_summary_format_fraction">Fraction</string>
-    <string name="activity_settings_project_time_report_summary_format_digital">Digital</string>
     <string name="activity_settings_project_ongoing_notification">Ongoing notification</string>
     <string name="activity_settings_project_ongoing_notification_enable">Enable</string>
     <string name="activity_settings_project_ongoing_notification_enable_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
@@ -83,10 +79,6 @@
     <string name="message_change_time_summary_starting_point_week">Time summary will show current week</string>
     <string name="message_change_time_summary_starting_point_month">Time summary will show current month</string>
     <string name="error_message_change_time_summary_starting_point">Unable to change time summary starting point.</string>
-
-    <string name="message_change_time_report_summary_format_fraction">Time report summary will use fraction format</string>
-    <string name="message_change_time_report_summary_format_digital_clock">Time report summary will use digital clock</string>
-    <string name="error_message_change_time_report_summary_format">Unable to change time report summary format.</string>
 
     <string name="error_notification_pause_title">Failed to pause project</string>
     <string name="error_notification_pause_message">An internal error has occurred.</string>
