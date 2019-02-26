@@ -26,7 +26,6 @@ import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.debounce
@@ -86,30 +85,20 @@ class CreateProjectViewModel(
         }
     }
 
-    suspend fun createProject() {
-        withContext(Dispatchers.IO) {
-            try {
-                val project = executeUseCase()
+    suspend fun createProject() = withContext(Dispatchers.IO) {
+        try {
+            val project = createProject(projectName)
 
-                val viewAction = CreateProjectViewActions.CreatedProject(project)
-                _viewActions.postValue(viewAction)
-            } catch (e: Exception) {
-                handle(exception = e)
+            val viewAction = CreateProjectViewActions.CreatedProject(project)
+            _viewActions.postValue(viewAction)
+        } catch (e: Exception) {
+            val viewAction: CreateProjectViewActions = when (e) {
+                is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage
+                is ProjectAlreadyExistsException -> CreateProjectViewActions.DuplicateNameErrorMessage
+                else -> CreateProjectViewActions.UnknownErrorMessage
             }
+
+            _viewActions.postValue(viewAction)
         }
-    }
-
-    private fun executeUseCase(): Project {
-        return createProject(projectName)
-    }
-
-    private fun handle(exception: Exception) {
-        val viewAction: CreateProjectViewActions = when (exception) {
-            is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage
-            is ProjectAlreadyExistsException -> CreateProjectViewActions.DuplicateNameErrorMessage
-            else -> CreateProjectViewActions.UnknownErrorMessage
-        }
-
-        _viewActions.postValue(viewAction)
     }
 }
