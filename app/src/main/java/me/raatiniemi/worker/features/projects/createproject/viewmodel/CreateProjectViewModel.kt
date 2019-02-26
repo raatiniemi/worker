@@ -28,7 +28,7 @@ import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.validator.ProjectName
-import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.debounce
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 
@@ -53,7 +53,7 @@ class CreateProjectViewModel(
         ProjectName.isValid(it)
     }
 
-    private val isProjectNameAvailable: LiveData<CreateProjectEditTextActions?> =
+    private val isProjectNameAvailable: LiveData<CreateProjectViewActions?> =
             Transformations.map(_projectName.debounce(context = this)) {
                 if (it.isNullOrBlank()) {
                     return@map null
@@ -61,12 +61,12 @@ class CreateProjectViewModel(
 
                 findProject(it) ?: return@map null
 
-                CreateProjectEditTextActions.DuplicateNameErrorMessage
+                CreateProjectViewActions.DuplicateNameErrorMessage
             }
 
-    private val _viewActions = MutableLiveData<CreateProjectEditTextActions?>()
-    val viewActions: LiveData<CreateProjectEditTextActions?> =
-            MediatorLiveData<CreateProjectEditTextActions?>().apply {
+    private val _viewActions = MutableLiveData<CreateProjectViewActions?>()
+    val viewActions: LiveData<CreateProjectViewActions?> =
+            MediatorLiveData<CreateProjectViewActions?>().apply {
                 addSource(_viewActions) {
                     value = it
                 }
@@ -106,12 +106,12 @@ class CreateProjectViewModel(
     }
 
     private fun handle(exception: Exception) {
-        val action = when (exception) {
-            is InvalidProjectNameException -> CreateProjectEditTextActions.InvalidProjectNameErrorMessage
-            is ProjectAlreadyExistsException -> CreateProjectEditTextActions.DuplicateNameErrorMessage
-            else -> CreateProjectEditTextActions.UnknownErrorMessage
+        val viewAction: CreateProjectViewActions = when (exception) {
+            is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage
+            is ProjectAlreadyExistsException -> CreateProjectViewActions.DuplicateNameErrorMessage
+            else -> CreateProjectViewActions.UnknownErrorMessage
         }
 
-        _viewActions.postValue(action)
+        _viewActions.postValue(viewAction)
     }
 }

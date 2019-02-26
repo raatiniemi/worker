@@ -21,20 +21,20 @@ import android.widget.EditText
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.model.EditTextViewAction
 
-sealed class CreateProjectEditTextActions : EditTextViewAction {
-    object InvalidProjectNameErrorMessage : CreateProjectEditTextActions() {
+sealed class CreateProjectViewActions : EditTextViewAction {
+    object InvalidProjectNameErrorMessage : CreateProjectViewActions() {
         override fun action(context: Context, editText: EditText) {
             editText.error = context.getString(R.string.error_message_project_name_missing)
         }
     }
 
-    object DuplicateNameErrorMessage : CreateProjectEditTextActions() {
+    object DuplicateNameErrorMessage : CreateProjectViewActions() {
         override fun action(context: Context, editText: EditText) {
             editText.error = context.getString(R.string.error_message_project_name_already_exists)
         }
     }
 
-    object UnknownErrorMessage : CreateProjectEditTextActions() {
+    object UnknownErrorMessage : CreateProjectViewActions() {
         override fun action(context: Context, editText: EditText) {
             editText.error = context.getString(R.string.error_message_unknown)
         }

@@ -23,7 +23,7 @@ import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
-import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -57,7 +57,7 @@ class CreateProjectViewModelTest {
         vm.createProject()
 
         vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
+            assertTrue(it is CreateProjectViewActions.InvalidProjectNameErrorMessage)
         }
     }
 
@@ -69,7 +69,7 @@ class CreateProjectViewModelTest {
         vm.createProject()
 
         vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+            assertTrue(it is CreateProjectViewActions.DuplicateNameErrorMessage)
         }
     }
 
@@ -118,7 +118,7 @@ class CreateProjectViewModelTest {
         vm.createProject()
 
         vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
+            assertTrue(it is CreateProjectViewActions.InvalidProjectNameErrorMessage)
         }
         vm.isCreateEnabled.observeForever {
             assertFalse(it)
@@ -133,7 +133,7 @@ class CreateProjectViewModelTest {
         vm.createProject()
 
         vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+            assertTrue(it is CreateProjectViewActions.DuplicateNameErrorMessage)
         }
         vm.isCreateEnabled.observeForever {
             assertFalse(it)
