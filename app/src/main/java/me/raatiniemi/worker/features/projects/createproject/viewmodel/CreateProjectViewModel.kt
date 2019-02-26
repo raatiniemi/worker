@@ -86,15 +86,13 @@ class CreateProjectViewModel(
         }
     }
 
-    private val _project = MutableLiveData<Project>()
-    val project: LiveData<Project> = _project
-
     suspend fun createProject() {
         withContext(Dispatchers.IO) {
             try {
                 val project = executeUseCase()
 
-                _project.postValue(project)
+                val viewAction = CreateProjectViewActions.CreatedProject(project)
+                _viewActions.postValue(viewAction)
             } catch (e: Exception) {
                 handle(exception = e)
             }

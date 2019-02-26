@@ -79,11 +79,12 @@ class CreateProjectViewModelTest {
 
         vm.createProject()
 
+        val project = Project(id = 1, name = "Name")
         vm.viewActions.observeForever {
-            assertNull(it)
+            assertEquals(CreateProjectViewActions.CreatedProject(project), it)
         }
         val actual = repository.findAll()
-        assertEquals(listOf(Project(id = 1, name = "Name")), actual)
+        assertEquals(listOf(project), actual)
     }
 
     @Test

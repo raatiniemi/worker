@@ -18,25 +18,39 @@ package me.raatiniemi.worker.features.projects.createproject.model
 
 import android.content.Context
 import android.widget.EditText
+import androidx.fragment.app.DialogFragment
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.features.shared.model.DialogFragmentViewAction
 import me.raatiniemi.worker.features.shared.model.EditTextViewAction
+import org.greenrobot.eventbus.EventBus
 
-sealed class CreateProjectViewActions : EditTextViewAction {
-    object InvalidProjectNameErrorMessage : CreateProjectViewActions() {
+sealed class CreateProjectViewActions {
+    object InvalidProjectNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
         override fun action(context: Context, editText: EditText) {
             editText.error = context.getString(R.string.error_message_project_name_missing)
         }
     }
 
-    object DuplicateNameErrorMessage : CreateProjectViewActions() {
+    object DuplicateNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
         override fun action(context: Context, editText: EditText) {
             editText.error = context.getString(R.string.error_message_project_name_already_exists)
         }
     }
 
-    object UnknownErrorMessage : CreateProjectViewActions() {
+    object UnknownErrorMessage : CreateProjectViewActions(), EditTextViewAction {
         override fun action(context: Context, editText: EditText) {
             editText.error = context.getString(R.string.error_message_unknown)
+        }
+    }
+
+    data class CreatedProject(val project: Project) : CreateProjectViewActions(), DialogFragmentViewAction {
+        override fun action(fragment: DialogFragment) {
+            with(EventBus.getDefault()) {
+                post(CreateProjectEvent(project))
+            }
+
+            fragment.dismiss()
         }
     }
 }

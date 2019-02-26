@@ -24,17 +24,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_create_project.*
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
+import me.raatiniemi.worker.features.shared.model.EditTextViewAction
 import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.util.Keyboard
 import me.raatiniemi.worker.util.NullUtil.isNull
-import org.greenrobot.eventbus.EventBus
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.OnShowListener {
-    private val eventBus = EventBus.getDefault()
     private val vm: CreateProjectViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -59,13 +58,10 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
         })
 
         vm.viewActions.observe(this, Observer {
-            it?.apply { action(requireContext(), etProjectName) }
-        })
-
-        vm.project.observe(this, Observer {
-            eventBus.post(CreateProjectEvent(it))
-
-            dismiss()
+            when (it) {
+                is CreateProjectViewActions.CreatedProject -> it.action(this)
+                is EditTextViewAction -> it.action(requireContext(), etProjectName)
+            }
         })
     }
 
