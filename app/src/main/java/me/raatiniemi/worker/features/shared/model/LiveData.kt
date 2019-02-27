@@ -25,7 +25,7 @@ internal fun <T, R> LiveData<T>.map(function: (T) -> R): LiveData<R> {
     return Transformations.map(this) { function(it) }
 }
 
-fun <T> LiveData<T>.debounce(
+internal fun <T> LiveData<T>.debounce(
         duration: Long = 250,
         context: CoroutineScope = GlobalScope
 ) = MediatorLiveData<T>().also { mld ->
