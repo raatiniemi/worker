@@ -57,7 +57,7 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
             btnCreate.isEnabled = it
         })
 
-        vm.viewActions.observe(this, Observer {
+        vm.viewActions.observeAndConsume(this, Observer {
             when (it) {
                 is CreateProjectViewActions.CreatedProject -> it.action(this)
                 is EditTextViewAction -> it.action(requireContext(), etProjectName)

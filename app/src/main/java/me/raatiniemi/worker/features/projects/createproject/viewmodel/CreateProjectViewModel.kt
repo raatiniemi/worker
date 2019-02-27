@@ -17,9 +17,7 @@
 package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
@@ -28,8 +26,10 @@ import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.debounce
 import me.raatiniemi.worker.features.shared.model.map
+import me.raatiniemi.worker.features.shared.model.zip
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 
 class CreateProjectViewModel(
@@ -40,56 +40,39 @@ class CreateProjectViewModel(
         value = ""
     }
 
+    private val isProjectNameValid = _projectName.map { ProjectName.isValid(it) }
+
+    private val isProjectNameAvailable = _projectName.debounce(context = this)
+            .map {
+                if (it.isNullOrBlank()) {
+                    return@map true
+                }
+
+                findProject(it) ?: return@map true
+
+                viewActions.postValue(CreateProjectViewActions.DuplicateNameErrorMessage)
+                false
+            }
+
     var projectName: String
         get() {
             return _projectName.value ?: ""
         }
         set(value) {
             _projectName.value = value
-            _viewActions.value = null
         }
 
-    private val isProjectNameValid = _projectName.map { ProjectName.isValid(it) }
+    val isCreateEnabled: LiveData<Boolean> = zip(isProjectNameValid, isProjectNameAvailable)
+            .map { it.first && it.second }
 
-    private val isProjectNameAvailable: LiveData<CreateProjectViewActions?> =
-            Transformations.map(_projectName.debounce(context = this)) {
-                if (it.isNullOrBlank()) {
-                    return@map null
-                }
-
-                findProject(it) ?: return@map null
-
-                CreateProjectViewActions.DuplicateNameErrorMessage
-            }
-
-    private val _viewActions = MutableLiveData<CreateProjectViewActions?>()
-    val viewActions: LiveData<CreateProjectViewActions?> =
-            MediatorLiveData<CreateProjectViewActions?>().apply {
-                addSource(_viewActions) {
-                    value = it
-                }
-
-                addSource(isProjectNameAvailable) {
-                    value = it
-                }
-            }
-
-    val isCreateEnabled: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        addSource(isProjectNameValid) {
-            value = it && viewActions.value == null
-        }
-
-        addSource(viewActions) {
-            value = it == null && isProjectNameValid.value ?: false
-        }
-    }
+    val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
     suspend fun createProject() = withContext(Dispatchers.IO) {
         try {
             val project = createProject(projectName)
 
             val viewAction = CreateProjectViewActions.CreatedProject(project)
-            _viewActions.postValue(viewAction)
+            viewActions.postValue(viewAction)
         } catch (e: Exception) {
             val viewAction: CreateProjectViewActions = when (e) {
                 is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage
@@ -97,7 +80,7 @@ class CreateProjectViewModel(
                 else -> CreateProjectViewActions.UnknownErrorMessage
             }
 
-            _viewActions.postValue(viewAction)
+            viewActions.postValue(viewAction)
         }
     }
 }

@@ -41,3 +41,28 @@ fun <T> LiveData<T>.debounce(
         }
     }
 }
+
+internal fun <T, R> zip(lhs: LiveData<T>, rhs: LiveData<R>): LiveData<Pair<T, R>> {
+    return MediatorLiveData<Pair<T, R>>().apply {
+        var lhsValue: T? = lhs.value
+        var rhsValue: R? = rhs.value
+
+        fun checkForUpdate() {
+            val first = lhsValue ?: return
+            val second = rhsValue ?: return
+
+            value = Pair(first, second)
+        }
+
+        addSource(lhs) {
+            lhsValue = it
+
+            checkForUpdate()
+        }
+        addSource(rhs) {
+            rhsValue = it
+
+            checkForUpdate()
+        }
+    }
+}
