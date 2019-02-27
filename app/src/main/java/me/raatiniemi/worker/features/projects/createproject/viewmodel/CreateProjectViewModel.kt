@@ -29,6 +29,7 @@ import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.debounce
+import me.raatiniemi.worker.features.shared.model.map
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 
 class CreateProjectViewModel(
@@ -48,9 +49,7 @@ class CreateProjectViewModel(
             _viewActions.value = null
         }
 
-    private val isProjectNameValid = Transformations.map(_projectName) {
-        ProjectName.isValid(it)
-    }
+    private val isProjectNameValid = _projectName.map { ProjectName.isValid(it) }
 
     private val isProjectNameAvailable: LiveData<CreateProjectViewActions?> =
             Transformations.map(_projectName.debounce(context = this)) {

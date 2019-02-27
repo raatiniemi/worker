@@ -18,7 +18,12 @@ package me.raatiniemi.worker.features.shared.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.Transformations
 import kotlinx.coroutines.*
+
+internal fun <T, R> LiveData<T>.map(function: (T) -> R): LiveData<R> {
+    return Transformations.map(this) { function(it) }
+}
 
 fun <T> LiveData<T>.debounce(
         duration: Long = 250,
