@@ -51,43 +51,6 @@ class CreateProjectViewModelTest {
     }
 
     @Test
-    fun `createProject with empty name`() = runBlocking {
-        vm.name = ""
-
-        vm.createProject()
-
-        vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectViewActions.InvalidProjectNameErrorMessage)
-        }
-    }
-
-    @Test
-    fun `createProject with duplicated name`() = runBlocking {
-        repository.add(NewProject("Name"))
-        vm.name = "Name"
-
-        vm.createProject()
-
-        vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectViewActions.DuplicateNameErrorMessage)
-        }
-    }
-
-    @Test
-    fun `createProject with valid name`() = runBlocking {
-        vm.name = "Name"
-
-        vm.createProject()
-
-        val project = Project(id = 1, name = "Name")
-        vm.viewActions.observeForever {
-            assertEquals(CreateProjectViewActions.CreatedProject(project), it)
-        }
-        val actual = repository.findAll()
-        assertEquals(listOf(project), actual)
-    }
-
-    @Test
     fun `isCreateEnabled with initial value`() {
         vm.isCreateEnabled.observeForever {
             assertFalse(it)
@@ -139,5 +102,42 @@ class CreateProjectViewModelTest {
         vm.isCreateEnabled.observeForever {
             assertFalse(it)
         }
+    }
+
+    @Test
+    fun `createProject with empty name`() = runBlocking {
+        vm.name = ""
+
+        vm.createProject()
+
+        vm.viewActions.observeForever {
+            assertTrue(it is CreateProjectViewActions.InvalidProjectNameErrorMessage)
+        }
+    }
+
+    @Test
+    fun `createProject with duplicated name`() = runBlocking {
+        repository.add(NewProject("Name"))
+        vm.name = "Name"
+
+        vm.createProject()
+
+        vm.viewActions.observeForever {
+            assertTrue(it is CreateProjectViewActions.DuplicateNameErrorMessage)
+        }
+    }
+
+    @Test
+    fun `createProject with valid name`() = runBlocking {
+        vm.name = "Name"
+
+        vm.createProject()
+
+        val project = Project(id = 1, name = "Name")
+        vm.viewActions.observeForever {
+            assertEquals(CreateProjectViewActions.CreatedProject(project), it)
+        }
+        val actual = repository.findAll()
+        assertEquals(listOf(project), actual)
     }
 }
