@@ -29,7 +29,7 @@ import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectV
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.debounce
 import me.raatiniemi.worker.features.shared.model.map
-import me.raatiniemi.worker.features.shared.model.zip
+import me.raatiniemi.worker.features.shared.model.combineLatest
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 
 class CreateProjectViewModel(
@@ -62,7 +62,7 @@ class CreateProjectViewModel(
             _projectName.value = value
         }
 
-    val isCreateEnabled: LiveData<Boolean> = zip(isProjectNameValid, isProjectNameAvailable)
+    val isCreateEnabled: LiveData<Boolean> = combineLatest(isProjectNameValid, isProjectNameAvailable)
             .map { it.first && it.second }
 
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()

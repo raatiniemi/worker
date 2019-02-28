@@ -42,7 +42,7 @@ internal fun <T> LiveData<T>.debounce(
     }
 }
 
-internal fun <T, R> zip(lhs: LiveData<T>, rhs: LiveData<R>): LiveData<Pair<T, R>> {
+internal fun <T, R> combineLatest(lhs: LiveData<T>, rhs: LiveData<R>): LiveData<Pair<T, R>> {
     return MediatorLiveData<Pair<T, R>>().apply {
         var lhsValue: T? = lhs.value
         var rhsValue: R? = rhs.value
