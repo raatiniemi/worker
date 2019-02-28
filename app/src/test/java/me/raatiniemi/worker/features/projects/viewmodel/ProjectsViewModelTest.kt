@@ -27,9 +27,11 @@ import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
+import me.raatiniemi.worker.features.shared.model.observeNoValue
+import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -90,9 +92,7 @@ class ProjectsViewModelTest {
     fun `refresh active projects without projects`() = runBlocking {
         vm.refreshActiveProjects(emptyList())
 
-        vm.viewActions.observeForever {
-            assertNull(it)
-        }
+        vm.viewActions.observeNoValue()
     }
 
     @Test
@@ -103,9 +103,7 @@ class ProjectsViewModelTest {
 
         vm.refreshActiveProjects(items)
 
-        vm.viewActions.observeForever {
-            assertNull(it)
-        }
+        vm.viewActions.observeNoValue()
     }
 
     @Test
@@ -117,9 +115,8 @@ class ProjectsViewModelTest {
 
         vm.refreshActiveProjects(items)
 
-        vm.viewActions.observeForever {
-            val expected = ProjectsViewActions.RefreshProjects(positions = listOf(1))
-            assertEquals(expected, it)
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.RefreshProjects(listOf(1)), it)
         }
     }
 
@@ -134,8 +131,8 @@ class ProjectsViewModelTest {
 
         vm.clockIn(item, Date())
 
-        vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.ShowUnableToClockInErrorMessage)
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowUnableToClockInErrorMessage, it)
         }
     }
 
@@ -145,7 +142,7 @@ class ProjectsViewModelTest {
 
         vm.clockIn(item, Date())
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -157,7 +154,7 @@ class ProjectsViewModelTest {
 
         vm.clockIn(item, Date())
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -169,7 +166,7 @@ class ProjectsViewModelTest {
 
         vm.clockIn(item, Date())
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -181,7 +178,7 @@ class ProjectsViewModelTest {
 
         vm.clockIn(item, Date())
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -192,8 +189,8 @@ class ProjectsViewModelTest {
 
         vm.clockOut(item, Date())
 
-        vm.viewActions.observeForever {
-            assertTrue(it is ProjectsViewActions.ShowUnableToClockOutErrorMessage)
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
         }
     }
 
@@ -208,7 +205,7 @@ class ProjectsViewModelTest {
 
         vm.clockOut(item, Date())
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -225,7 +222,7 @@ class ProjectsViewModelTest {
 
         vm.clockOut(item, Date())
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -242,7 +239,7 @@ class ProjectsViewModelTest {
 
         vm.clockOut(item, Date())
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -259,7 +256,7 @@ class ProjectsViewModelTest {
 
         vm.clockOut(item, Date())
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -271,7 +268,7 @@ class ProjectsViewModelTest {
 
         vm.remove(item)
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.DismissNotification(project), it)
         }
     }
@@ -282,12 +279,13 @@ class ProjectsViewModelTest {
         val project = Project(1, "Project #1")
         val item = ProjectsItem(project, emptyList())
         projectRepository.add(newProject)
+        val expected = emptyList<Project>()
 
         vm.remove(item)
 
         val actual = projectRepository.findAll()
-        assertEquals(emptyList<Project>(), actual)
-        vm.viewActions.observeForever {
+        assertEquals(expected, actual)
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.DismissNotification(project), it)
         }
     }

@@ -17,101 +17,70 @@
 package me.raatiniemi.worker.features.projects.createproject.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
-import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.validator.ProjectName
-import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
+import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.debounce
+import me.raatiniemi.worker.features.shared.model.map
+import me.raatiniemi.worker.features.shared.model.combineLatest
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 
 class CreateProjectViewModel(
         private val createProject: CreateProject,
         private val findProject: FindProject
 ) : CoroutineScopedViewModel() {
-    private val _projectName = MutableLiveData<String>().apply {
+    private val _name = MutableLiveData<String>().apply {
         value = ""
     }
 
-    var projectName: String
+    private val isNameValid = _name.map { ProjectName.isValid(it) }
+
+    private val isNameAvailable = _name.debounce(this)
+            .map {
+                if (it.isNullOrBlank()) {
+                    return@map true
+                }
+
+                findProject(it) ?: return@map true
+
+                viewActions.postValue(CreateProjectViewActions.DuplicateNameErrorMessage)
+                false
+            }
+
+    var name: String
         get() {
-            return _projectName.value ?: ""
+            return _name.value ?: ""
         }
         set(value) {
-            _projectName.value = value
-            _viewActions.value = null
+            _name.value = value
         }
 
-    private val isProjectNameValid = Transformations.map(_projectName) {
-        ProjectName.isValid(it)
-    }
+    val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
+            .map { it.first && it.second }
 
-    private val isProjectNameAvailable: LiveData<CreateProjectEditTextActions?> =
-            Transformations.map(_projectName.debounce(context = this)) {
-                if (it.isNullOrBlank()) {
-                    return@map null
-                }
+    val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
-                findProject(it) ?: return@map null
+    suspend fun createProject() = withContext(Dispatchers.IO) {
+        try {
+            val project = createProject(name)
 
-                CreateProjectEditTextActions.DuplicateNameErrorMessage
+            val viewAction = CreateProjectViewActions.CreatedProject(project)
+            viewActions.postValue(viewAction)
+        } catch (e: Exception) {
+            val viewAction: CreateProjectViewActions = when (e) {
+                is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage
+                is ProjectAlreadyExistsException -> CreateProjectViewActions.DuplicateNameErrorMessage
+                else -> CreateProjectViewActions.UnknownErrorMessage
             }
 
-    private val _viewActions = MutableLiveData<CreateProjectEditTextActions?>()
-    val viewActions: LiveData<CreateProjectEditTextActions?> =
-            MediatorLiveData<CreateProjectEditTextActions?>().apply {
-                addSource(_viewActions) {
-                    value = it
-                }
-
-                addSource(isProjectNameAvailable) {
-                    value = it
-                }
-            }
-
-    val isCreateEnabled: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        addSource(isProjectNameValid) {
-            value = it && viewActions.value == null
+            viewActions.postValue(viewAction)
         }
-
-        addSource(viewActions) {
-            value = it == null && isProjectNameValid.value ?: false
-        }
-    }
-
-    private val _project = MutableLiveData<Project>()
-    val project: LiveData<Project> = _project
-
-    suspend fun createProject() {
-        withContext(Dispatchers.IO) {
-            try {
-                val project = executeUseCase()
-
-                _project.postValue(project)
-            } catch (e: Exception) {
-                handle(exception = e)
-            }
-        }
-    }
-
-    private fun executeUseCase(): Project {
-        return createProject(projectName)
-    }
-
-    private fun handle(exception: Exception) {
-        val action = when (exception) {
-            is InvalidProjectNameException -> CreateProjectEditTextActions.InvalidProjectNameErrorMessage
-            is ProjectAlreadyExistsException -> CreateProjectEditTextActions.DuplicateNameErrorMessage
-            else -> CreateProjectEditTextActions.UnknownErrorMessage
-        }
-
-        _viewActions.postValue(action)
     }
 }

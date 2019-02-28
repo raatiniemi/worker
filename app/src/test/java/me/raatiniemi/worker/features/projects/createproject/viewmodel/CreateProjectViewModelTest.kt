@@ -23,7 +23,9 @@ import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
-import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEditTextActions
+import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
+import me.raatiniemi.worker.features.shared.model.observeNoValue
+import me.raatiniemi.worker.features.shared.model.observeNonNull
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -36,6 +38,8 @@ class CreateProjectViewModelTest {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
+
+    private val debounceDurationInMilliseconds: Long = 300
 
     private val repository = ProjectInMemoryRepository()
 
@@ -51,92 +55,78 @@ class CreateProjectViewModelTest {
     }
 
     @Test
-    fun `createProject with empty name`() = runBlocking {
-        vm.projectName = ""
-
-        vm.createProject()
-
-        vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
+    fun `is create enabled with initial value`() = runBlocking {
+        vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
+            assertFalse(it)
         }
+        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
     }
 
     @Test
-    fun `createProject with duplicated name`() = runBlocking {
+    fun `is create enabled with empty name`() = runBlocking {
         repository.add(NewProject("Name"))
-        vm.projectName = "Name"
+        vm.name = ""
 
-        vm.createProject()
-
-        vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
-        }
-    }
-
-    @Test
-    fun `createProject with valid name`() = runBlocking {
-        vm.projectName = "Name"
-
-        vm.createProject()
-
-        vm.viewActions.observeForever {
-            assertNull(it)
-        }
-        val actual = repository.findAll()
-        assertEquals(listOf(Project(id = 1, name = "Name")), actual)
-    }
-
-    @Test
-    fun `isCreateEnabled with initial value`() {
-        vm.isCreateEnabled.observeForever {
+        vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertFalse(it)
         }
+        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
     }
 
     @Test
-    fun `isCreateEnabled with empty name`() {
-        vm.projectName = ""
+    fun `is create enabled with duplicated name`() = runBlocking {
+        vm.name = "Name"
 
-        vm.isCreateEnabled.observeForever {
-            assertFalse(it)
-        }
-    }
-
-    @Test
-    fun `isCreateEnabled with valid name`() {
-        vm.projectName = "Name"
-
-        vm.isCreateEnabled.observeForever {
+        vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertTrue(it)
         }
+        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
     }
 
     @Test
-    fun `isCreateEnabled with invalid name`() = runBlocking {
-        vm.projectName = ""
+    fun `is create enabled with valid name`() = runBlocking {
+        vm.name = "Name"
+
+        vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
+            assertTrue(it)
+        }
+        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
+    }
+
+    @Test
+    fun `create project with empty name`() = runBlocking {
+        vm.name = ""
 
         vm.createProject()
 
-        vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.InvalidProjectNameErrorMessage)
-        }
-        vm.isCreateEnabled.observeForever {
-            assertFalse(it)
+        vm.viewActions.observeNonNull {
+            assertEquals(CreateProjectViewActions.InvalidProjectNameErrorMessage, it)
         }
     }
 
     @Test
-    fun `isCreateEnabled with duplicated name`() = runBlocking {
+    fun `create project with duplicated name`() = runBlocking {
         repository.add(NewProject("Name"))
-        vm.projectName = "Name"
+        vm.name = "Name"
 
         vm.createProject()
 
-        vm.viewActions.observeForever {
-            assertTrue(it is CreateProjectEditTextActions.DuplicateNameErrorMessage)
+        vm.viewActions.observeNonNull {
+            assertEquals(CreateProjectViewActions.DuplicateNameErrorMessage, it)
         }
-        vm.isCreateEnabled.observeForever {
-            assertFalse(it)
+    }
+
+    @Test
+    fun `create project with valid name`() = runBlocking {
+        vm.name = "Name"
+
+        vm.createProject()
+
+        val project = Project(id = 1, name = "Name")
+        vm.viewActions.observeNonNull {
+            assertEquals(CreateProjectViewActions.CreatedProject(project), it)
         }
+        val actual = repository.findAll()
+        assertEquals(listOf(project), actual)
     }
 }
