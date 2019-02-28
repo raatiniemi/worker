@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.settings.project.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
+import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.util.*
 import org.junit.Assert.*
 import org.junit.Before
@@ -164,7 +165,7 @@ class ProjectViewModelTest {
     fun `change time summary starting point with invalid starting point`() {
         vm.changeTimeSummaryStartingPoint(-1)
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage, it)
         }
     }
@@ -175,7 +176,7 @@ class ProjectViewModelTest {
 
         vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.WEEK.rawValue)
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectViewActions.ShowTimeSummaryStartingPointChangedToWeek, it)
         }
     }
@@ -186,7 +187,7 @@ class ProjectViewModelTest {
 
         vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
 
-        vm.viewActions.observeForever {
+        vm.viewActions.observeNonNull {
             assertEquals(ProjectViewActions.ShowTimeSummaryStartingPointChangedToMonth, it)
         }
     }
