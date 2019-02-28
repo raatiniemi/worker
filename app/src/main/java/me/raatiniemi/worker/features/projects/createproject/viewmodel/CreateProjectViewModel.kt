@@ -42,7 +42,7 @@ class CreateProjectViewModel(
 
     private val isProjectNameValid = _projectName.map { ProjectName.isValid(it) }
 
-    private val isProjectNameAvailable = _projectName.debounce(context = this)
+    private val isProjectNameAvailable = _projectName.debounce(this)
             .map {
                 if (it.isNullOrBlank()) {
                     return@map true

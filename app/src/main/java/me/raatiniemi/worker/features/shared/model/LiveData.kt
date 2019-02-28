@@ -19,22 +19,25 @@ package me.raatiniemi.worker.features.shared.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 internal fun <T, R> LiveData<T>.map(function: (T) -> R): LiveData<R> {
     return Transformations.map(this) { function(it) }
 }
 
 internal fun <T> LiveData<T>.debounce(
-        duration: Long = 250,
-        context: CoroutineScope = GlobalScope
+        scope: CoroutineScope,
+        duration: Long = 250
 ) = MediatorLiveData<T>().also { mld ->
     var job: Job? = null
 
     mld.addSource(this) {
         job?.cancel()
 
-        job = context.launch {
+        job = scope.launch {
             delay(duration)
 
             mld.postValue(it)
