@@ -36,13 +36,13 @@ class CreateProjectViewModel(
         private val createProject: CreateProject,
         private val findProject: FindProject
 ) : CoroutineScopedViewModel() {
-    private val _projectName = MutableLiveData<String>().apply {
+    private val _name = MutableLiveData<String>().apply {
         value = ""
     }
 
-    private val isProjectNameValid = _projectName.map { ProjectName.isValid(it) }
+    private val isNameValid = _name.map { ProjectName.isValid(it) }
 
-    private val isProjectNameAvailable = _projectName.debounce(this)
+    private val isNameAvailable = _name.debounce(this)
             .map {
                 if (it.isNullOrBlank()) {
                     return@map true
@@ -54,22 +54,22 @@ class CreateProjectViewModel(
                 false
             }
 
-    var projectName: String
+    var name: String
         get() {
-            return _projectName.value ?: ""
+            return _name.value ?: ""
         }
         set(value) {
-            _projectName.value = value
+            _name.value = value
         }
 
-    val isCreateEnabled: LiveData<Boolean> = combineLatest(isProjectNameValid, isProjectNameAvailable)
+    val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
             .map { it.first && it.second }
 
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
     suspend fun createProject() = withContext(Dispatchers.IO) {
         try {
-            val project = createProject(projectName)
+            val project = createProject(name)
 
             val viewAction = CreateProjectViewActions.CreatedProject(project)
             viewActions.postValue(viewAction)

@@ -66,7 +66,7 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
     }
 
     private fun bindUserInterfaceToViewModel() {
-        etProjectName.onChange { vm.projectName = it }
+        etProjectName.onChange { vm.name = it }
         etProjectName.on(EditorAction.DONE) {
             vm.createProject()
         }
