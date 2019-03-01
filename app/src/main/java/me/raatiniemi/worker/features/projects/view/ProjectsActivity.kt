@@ -38,6 +38,8 @@ class ProjectsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_projects)
 
+        title = getString(R.string.activity_projects_title)
+
         if (isNull(savedInstanceState)) {
             val fragment = ProjectsFragment()
 

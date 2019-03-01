@@ -3,6 +3,8 @@
 
     <string name="name">Worker</string>
 
+    <string name="activity_projects_title">Projects</string>
+
     <string name="menu_title_actions">Actions</string>
 
     <string name="menu_actions_projects_create_project">Create project</string>
