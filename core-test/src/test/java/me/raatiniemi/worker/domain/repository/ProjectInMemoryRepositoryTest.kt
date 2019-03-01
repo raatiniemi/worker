@@ -18,7 +18,8 @@ package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -139,14 +140,16 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `findAll withoutProjects`() {
+    fun `find all without projects`() {
+        val expected = emptyList<Project>()
+
         val actual = repository.findAll()
 
-        assertEquals(emptyList<Project>(), actual)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `findAll withProject`() {
+    fun `find all with project`() {
         repository.add(NewProject("Project #1"))
         val expected = listOf(
                 Project(1, "Project #1")
@@ -158,7 +161,7 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `findAll withProjects`() {
+    fun `find all with projects`() {
         repository.add(NewProject("Project #1"))
         repository.add(NewProject("Project #2"))
         val expected = listOf(
@@ -172,77 +175,74 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `findByName withoutProject`() {
+    fun `find by name without project`() {
         val actual = repository.findByName("Project #1")
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
-    fun `findByName withoutMatchingProject`() {
+    fun `find by name without matching project`() {
         repository.add(NewProject("Project #1"))
 
         val actual = repository.findByName("Project #2")
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
-    fun `findByName withProject`() {
+    fun `find by name with project`() {
         repository.add(NewProject("Project #1"))
         val expected = Project(1, "Project #1")
 
         val actual = repository.findByName("Project #1")
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `findByName with lowercase project name`() {
+    fun `find by name with lowercase project name`() {
         repository.add(NewProject("Project #1"))
         val expected = Project(1, "Project #1")
 
         val actual = repository.findByName("project #1")
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `findById withoutProject`() {
+    fun `find by id without project`() {
         val actual = repository.findById(1)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
-    fun `findById withoutMatchingProject`() {
+    fun `find by id without matching project`() {
         repository.add(NewProject("Project #1"))
 
         val actual = repository.findById(2)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
-    fun `findById withProject`() {
+    fun `find by id with project`() {
         repository.add(NewProject("Project #1"))
         val expected = Project(1, "Project #1")
 
         val actual = repository.findById(1)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `remove withoutProject`() {
+    fun `remove without project`() {
         repository.remove(1)
     }
 
     @Test
-    fun `remove withoutMatchingProject`() {
+    fun `remove without matching project`() {
         repository.add(NewProject("Project #1"))
         val expected = listOf(
                 Project(1, "Project #1")
@@ -255,12 +255,13 @@ class ProjectInMemoryRepositoryTest {
     }
 
     @Test
-    fun `remove withProject`() {
+    fun `remove with project`() {
         repository.add(NewProject("Project #1"))
+        val expected = emptyList<Project>()
 
         repository.remove(1)
 
         val actual = repository.findAll()
-        assertEquals(emptyList<Project>(), actual)
+        assertEquals(expected, actual)
     }
 }

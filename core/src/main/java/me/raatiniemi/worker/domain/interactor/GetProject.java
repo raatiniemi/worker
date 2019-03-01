@@ -19,7 +19,6 @@ package me.raatiniemi.worker.domain.interactor;
 import me.raatiniemi.worker.domain.exception.NoProjectException;
 import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.repository.ProjectRepository;
-import me.raatiniemi.worker.util.Optional;
 
 /**
  * Use case for getting a project.
@@ -38,11 +37,11 @@ public class GetProject {
      * @return Project with id, or null if not found.
      */
     public Project execute(long projectId) {
-        Optional<Project> value = projectRepository.findById(projectId);
-        if (value.isPresent()) {
-            return value.get();
+        Project project = projectRepository.findById(projectId);
+        if (project == null) {
+            throw new NoProjectException();
         }
 
-        throw new NoProjectException();
+        return project;
     }
 }

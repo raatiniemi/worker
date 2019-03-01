@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.exception.NoProjectException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
@@ -25,19 +24,14 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
 /**
  * Use case for creating a project.
  */
-class CreateProject(val findProject: FindProject, private val repository: ProjectRepository) {
+class CreateProject(private val findProject: FindProject, private val repository: ProjectRepository) {
     operator fun invoke(projectName: String): Project {
         if (isProjectNameInUse(projectName)) {
             throw ProjectAlreadyExistsException("Project '$projectName' already exists")
         }
 
         val newProject = NewProject(projectName)
-        val value = repository.add(newProject)
-        if (value.isPresent) {
-            return value.get()
-        }
-
-        throw NoProjectException()
+        return repository.add(newProject)
     }
 
     private fun isProjectNameInUse(projectName: String): Boolean {

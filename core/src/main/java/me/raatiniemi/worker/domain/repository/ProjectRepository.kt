@@ -18,7 +18,6 @@ package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.util.Optional
 
 /**
  * Represent a unified interface for working with projects using different data sources.
@@ -41,7 +40,7 @@ interface ProjectRepository {
      * @param projectName Project name to search for.
      * @return Project with name, or null.
      */
-    fun findByName(projectName: String): Optional<Project>
+    fun findByName(projectName: String): Project?
 
     /**
      * Get project by id.
@@ -49,7 +48,7 @@ interface ProjectRepository {
      * @param id Id for the project.
      * @return Project, or null if none was found.
      */
-    fun findById(id: Long): Optional<Project>
+    fun findById(id: Long): Project?
 
     /**
      * Add new project to the repository.
@@ -57,7 +56,7 @@ interface ProjectRepository {
      * @param newProject Project to add.
      * @return Added project.
      */
-    fun add(newProject: NewProject): Optional<Project>
+    fun add(newProject: NewProject): Project
 
     /**
      * Remove project by id.

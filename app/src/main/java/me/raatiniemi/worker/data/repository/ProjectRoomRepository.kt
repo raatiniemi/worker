@@ -21,7 +21,6 @@ import me.raatiniemi.worker.data.projects.ProjectEntity
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.util.Optional
 
 internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
     override fun count() = projects.count()
@@ -37,22 +36,20 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
                 .toMutableList()
     }
 
-    override fun findByName(projectName: String): Optional<Project> {
-        val entity = projects.findByName(projectName) ?: return Optional.empty()
-
-        return Optional.of(entity.toProject())
+    override fun findByName(projectName: String): Project? {
+        return projects.findByName(projectName)
+                ?.run { toProject() }
     }
 
-    override fun findById(id: Long): Optional<Project> {
-        val entity = projects.findById(id) ?: return Optional.empty()
-
-        return Optional.of(entity.toProject())
+    override fun findById(id: Long): Project? {
+        return projects.findById(id)
+                ?.run { toProject() }
     }
 
-    override fun add(newProject: NewProject): Optional<Project> {
+    override fun add(newProject: NewProject): Project {
         projects.add(ProjectEntity(name = newProject.name))
 
-        return findByName(newProject.name)
+        return findByName(newProject.name) ?: throw UnableToFindNewProjectException()
     }
 
     override fun remove(id: Long) {
