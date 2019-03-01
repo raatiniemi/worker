@@ -19,7 +19,6 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.util.Optional
 import java.util.concurrent.atomic.AtomicLong
 
 class TimeIntervalInMemoryRepository : TimeIntervalRepository {
@@ -32,53 +31,32 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         }
     }
 
-    override fun findById(id: Long): Optional<TimeInterval> {
-        val timeInterval = timeIntervals.firstOrNull { it.id == id }
+    override fun findById(id: Long) =
+            timeIntervals.firstOrNull { it.id == id }
 
-        return Optional.ofNullable(timeInterval)
-    }
+    override fun findActiveByProjectId(projectId: Long) =
+            timeIntervals.firstOrNull { it.projectId == projectId && it.isActive }
 
-    override fun findActiveByProjectId(projectId: Long): Optional<TimeInterval> {
-        val timeInterval = timeIntervals.firstOrNull { it.projectId == projectId && it.isActive }
-
-        return Optional.ofNullable(timeInterval)
-    }
-
-    override fun add(newTimeInterval: NewTimeInterval): Optional<TimeInterval> {
-        val timeInterval = TimeInterval(
+    override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
+        return TimeInterval(
                 id = incrementedId.incrementAndGet(),
                 projectId = newTimeInterval.projectId,
                 startInMilliseconds = newTimeInterval.startInMilliseconds,
                 stopInMilliseconds = newTimeInterval.stopInMilliseconds,
                 isRegistered = newTimeInterval.isRegistered
-        )
-        timeIntervals.add(timeInterval)
-
-        return Optional.of(timeInterval)
+        ).also { timeIntervals.add(it) }
     }
 
-    override fun update(timeInterval: TimeInterval): Optional<TimeInterval> {
-        val existingTimeInterval = timeIntervals.firstOrNull { it.id == timeInterval.id }
-                ?: return Optional.empty()
+    override fun update(timeInterval: TimeInterval) =
+            findById(timeInterval.id)?.let {
+                val index = timeIntervals.indexOf(it)
+                timeIntervals[index] = timeInterval
 
-        val index = timeIntervals.indexOf(existingTimeInterval)
-        timeIntervals[index] = timeInterval
+                timeInterval
+            }
 
-        return Optional.of(timeInterval)
-    }
-
-    override fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
-        return timeIntervals.filter { existingTimeInterval(it) }
-                .map { update(it) }
-                .filter { it.isPresent }
-                .map { it.get() }
-    }
-
-    private fun existingTimeInterval(timeInterval: TimeInterval): Boolean {
-        val id = timeInterval.id
-
-        return findById(id).isPresent
-    }
+    override fun update(timeIntervals: List<TimeInterval>) =
+            timeIntervals.mapNotNull { update(it) }
 
     override fun remove(id: Long) {
         timeIntervals.removeIf { it.id == id }

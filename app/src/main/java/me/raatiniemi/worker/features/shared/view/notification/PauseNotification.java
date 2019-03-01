@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import me.raatiniemi.worker.R;
 import me.raatiniemi.worker.data.Repositories;
@@ -35,7 +36,6 @@ import me.raatiniemi.worker.domain.model.Project;
 import me.raatiniemi.worker.domain.model.TimeInterval;
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint;
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
-import me.raatiniemi.worker.util.Optional;
 import timber.log.Timber;
 
 /**
@@ -68,6 +68,10 @@ public class PauseNotification extends OngoingNotification {
         return notification.build();
     }
 
+    private static GetProjectTimeSince buildRegisteredTimeUseCase(TimeIntervalRepository repository) {
+        return new GetProjectTimeSince(repository);
+    }
+
     private void populateRegisteredTime() {
         useChronometer = true;
 
@@ -94,21 +98,17 @@ public class PauseNotification extends OngoingNotification {
         );
     }
 
-    private static GetProjectTimeSince buildRegisteredTimeUseCase(TimeIntervalRepository repository) {
-        return new GetProjectTimeSince(repository);
-    }
-
     private long includeActiveTime(long registeredTime) {
-        Optional<TimeInterval> value = getActiveTimeIntervalForProject();
-        if (value.isPresent()) {
-            TimeInterval activeTimeInterval = value.get();
+        TimeInterval activeTimeInterval = getActiveTimeIntervalForProject();
+        if (activeTimeInterval != null) {
             return registeredTime + activeTimeInterval.getInterval();
         }
 
         return registeredTime;
     }
 
-    private Optional<TimeInterval> getActiveTimeIntervalForProject() {
+    @Nullable
+    private TimeInterval getActiveTimeIntervalForProject() {
         return repository.findActiveByProjectId(getProject().getId());
     }
 

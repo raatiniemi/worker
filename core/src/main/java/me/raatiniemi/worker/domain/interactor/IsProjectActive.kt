@@ -20,8 +20,6 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 class IsProjectActive(private val repository: TimeIntervalRepository) {
     operator fun invoke(projectId: Long): Boolean {
-        val value = repository.findActiveByProjectId(projectId)
-
-        return value.isPresent
+        return repository.findActiveByProjectId(projectId) != null
     }
 }

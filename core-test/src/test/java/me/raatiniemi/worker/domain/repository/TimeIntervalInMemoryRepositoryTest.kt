@@ -20,7 +20,8 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -98,7 +99,7 @@ class TimeIntervalInMemoryRepositoryTest {
     fun `find by id without time interval`() {
         val actual = repository.findById(1)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -116,15 +117,14 @@ class TimeIntervalInMemoryRepositoryTest {
 
         val actual = repository.findById(1)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
     fun `find active by project id without time intervals`() {
         val actual = repository.findActiveByProjectId(1)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -137,7 +137,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
         val actual = repository.findActiveByProjectId(1)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -153,8 +153,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
         val actual = repository.findActiveByProjectId(1)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -167,7 +166,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
         val actual = repository.update(timeInterval)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -185,8 +184,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
         val actual = repository.update(expected)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test

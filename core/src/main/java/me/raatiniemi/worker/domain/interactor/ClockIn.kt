@@ -26,8 +26,8 @@ import java.util.*
  */
 class ClockIn(private val timeIntervalRepository: TimeIntervalRepository) {
     operator fun invoke(projectId: Long, date: Date) {
-        val value = timeIntervalRepository.findActiveByProjectId(projectId)
-        if (value.isPresent) {
+        val timeInterval = timeIntervalRepository.findActiveByProjectId(projectId)
+        if (timeInterval != null) {
             throw ActiveProjectException()
         }
 
