@@ -61,10 +61,8 @@ abstract class OngoingNotification {
     protected abstract int getSmallIcon();
 
     private PendingIntent buildContentAction() {
-        Intent intent = ProjectActivity.newIntent(
-                context,
-                project.getId()
-        );
+        Intent intent = ProjectActivity.newIntent(context, project);
+
         return buildPendingIntentWithActivity(intent);
     }
 

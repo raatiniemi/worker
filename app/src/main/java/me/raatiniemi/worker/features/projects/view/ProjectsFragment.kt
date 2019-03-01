@@ -171,9 +171,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
     }
 
     private fun onItemClick(item: ProjectsItem) {
-        val (id) = item.asProject()
-
-        val intent = ProjectActivity.newIntent(requireActivity(), id)
+        val intent = ProjectActivity.newIntent(requireActivity(), item.asProject())
         startActivity(intent)
     }
 

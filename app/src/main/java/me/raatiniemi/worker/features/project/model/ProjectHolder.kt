@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.features.project.model
 
-// TODO: Replace value `Long` with `Project`.
 class ProjectHolder {
     var project: Long = 0
 }
