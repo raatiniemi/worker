@@ -29,30 +29,30 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class IsProjectActiveTest {
     private lateinit var repository: TimeIntervalRepository
-    private lateinit var useCase: IsProjectActive
+    private lateinit var isProjectActive: IsProjectActive
 
     @Before
     fun setUp() {
         repository = TimeIntervalInMemoryRepository()
-        useCase = IsProjectActive(repository)
+        isProjectActive = IsProjectActive(repository)
     }
 
     @Test
-    fun execute_withoutTime() {
-        val actual = useCase.execute(1)
+    fun `is project active without time interval`() {
+        val actual = isProjectActive(1)
 
         assertFalse(actual)
     }
 
     @Test
-    fun execute_withActiveTime() {
+    fun `is project active with active time interval`() {
         val newTimeInterval = newTimeInterval {
             startInMilliseconds = 1
             stopInMilliseconds = 0
         }
         repository.add(newTimeInterval)
 
-        val actual = useCase.execute(1)
+        val actual = isProjectActive(1)
 
         assertTrue(actual)
     }

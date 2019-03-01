@@ -48,7 +48,7 @@ public class ProjectNotificationService extends OngoingService {
             }
 
             IsProjectActive isProjectActive = buildIsProjectActiveUseCase();
-            if (isProjectActive.execute(projectId)) {
+            if (isProjectActive.invoke(projectId)) {
                 GetProject getProject = buildGetProjectUseCase();
                 Project project = getProject.execute(projectId);
 
