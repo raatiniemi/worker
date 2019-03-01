@@ -14,22 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor;
+package me.raatiniemi.worker.domain.exception
 
-import me.raatiniemi.worker.domain.model.TimeInterval;
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository;
-import me.raatiniemi.worker.util.Optional;
-
-public class IsProjectActive {
-    private final TimeIntervalRepository timeIntervalRepository;
-
-    public IsProjectActive(TimeIntervalRepository timeIntervalRepository) {
-        this.timeIntervalRepository = timeIntervalRepository;
-    }
-
-    public boolean execute(long projectId) {
-        Optional<TimeInterval> value = timeIntervalRepository.findActiveByProjectId(projectId);
-
-        return value.isPresent();
-    }
-}
+class NoProjectException : DomainException()

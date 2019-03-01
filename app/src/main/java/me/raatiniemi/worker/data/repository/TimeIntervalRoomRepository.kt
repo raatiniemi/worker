@@ -22,7 +22,6 @@ import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.util.Optional
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) : TimeIntervalRepository {
     override fun findAll(project: Project, milliseconds: Long): List<TimeInterval> {
@@ -31,29 +30,26 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
                 .toList()
     }
 
-    override fun findById(id: Long): Optional<TimeInterval> {
-        val entity = timeIntervals.find(id) ?: return Optional.empty()
-
-        return Optional.ofNullable(entity.toTimeInterval())
+    override fun findById(id: Long): TimeInterval? {
+        return timeIntervals.find(id)
+                ?.run { toTimeInterval() }
     }
 
-    override fun findActiveByProjectId(projectId: Long): Optional<TimeInterval> {
-        val entity = timeIntervals.findActiveTime(projectId) ?: return Optional.empty()
-
-        return Optional.of(entity.toTimeInterval())
+    override fun findActiveByProjectId(projectId: Long): TimeInterval? {
+        return timeIntervals.findActiveTime(projectId)
+                ?.run { toTimeInterval() }
     }
 
-    override fun add(newTimeInterval: NewTimeInterval): Optional<TimeInterval> {
+    override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
         val id = timeIntervals.add(newTimeInterval.toEntity())
 
-        return findById(id)
+        return findById(id) ?: throw UnableToFindNewTimeIntervalException()
     }
 
-    override fun update(timeInterval: TimeInterval): Optional<TimeInterval> {
-        val entity = timeInterval.toEntity()
-        timeIntervals.update(listOf(entity))
-
-        return findById(entity.id)
+    override fun update(timeInterval: TimeInterval): TimeInterval? {
+        return timeInterval.toEntity()
+                .also { timeIntervals.update(listOf(it)) }
+                .run { findById(id) }
     }
 
     override fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {

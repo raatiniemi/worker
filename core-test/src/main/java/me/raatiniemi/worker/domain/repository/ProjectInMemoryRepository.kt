@@ -18,7 +18,6 @@ package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.util.Optional
 import java.util.concurrent.atomic.AtomicLong
 
 class ProjectInMemoryRepository : ProjectRepository {
@@ -37,24 +36,22 @@ class ProjectInMemoryRepository : ProjectRepository {
 
     override fun findAll(): List<Project> = projects.sortedBy { it.name }
 
-    override fun findByName(projectName: String): Optional<Project> {
-        val project = projects.firstOrNull { it.name.equals(projectName, true) }
-
-        return Optional.ofNullable(project)
+    override fun findByName(projectName: String): Project? {
+        return projects.firstOrNull { it.name.equals(projectName, true) }
     }
 
-    override fun findById(id: Long): Optional<Project> {
-        val project = projects.firstOrNull { it.id == id }
-
-        return Optional.ofNullable(project)
+    override fun findById(id: Long): Project? {
+        return projects.firstOrNull { it.id == id }
     }
 
-    override fun add(newProject: NewProject): Optional<Project> {
-        val id = incrementedId.incrementAndGet()
-        val project = Project(id, newProject.name)
+    override fun add(newProject: NewProject): Project {
+        val project = Project(
+                id = incrementedId.incrementAndGet(),
+                name = newProject.name
+        )
         projects.add(project)
 
-        return findById(id)
+        return project
     }
 
     override fun remove(id: Long) {

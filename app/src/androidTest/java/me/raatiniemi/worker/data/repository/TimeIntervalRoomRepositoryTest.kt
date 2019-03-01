@@ -30,7 +30,8 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -153,7 +154,7 @@ class TimeIntervalRoomRepositoryTest {
     fun findById_withoutTimeInterval() {
         val actual = repository.findById(1)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -170,15 +171,14 @@ class TimeIntervalRoomRepositoryTest {
 
         val actual = repository.findById(1)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
     fun findActiveByProjectId_withoutTimeInterval() {
         val actual = repository.findActiveByProjectId(1)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -187,7 +187,7 @@ class TimeIntervalRoomRepositoryTest {
 
         val actual = repository.findActiveByProjectId(1)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -204,8 +204,7 @@ class TimeIntervalRoomRepositoryTest {
 
         val actual = repository.findActiveByProjectId(1)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -224,8 +223,7 @@ class TimeIntervalRoomRepositoryTest {
 
         val actual = repository.add(newTimeInterval)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -239,7 +237,7 @@ class TimeIntervalRoomRepositoryTest {
 
         val actual = repository.update(timeInterval)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -256,8 +254,7 @@ class TimeIntervalRoomRepositoryTest {
 
         val actual = repository.update(expected)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test

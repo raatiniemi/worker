@@ -21,11 +21,6 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 class FindProject(private val repository: ProjectRepository) {
     operator fun invoke(projectName: String): Project? {
-        val project = repository.findByName(projectName)
-        if (project.isPresent) {
-            return project.get()
-        }
-
-        return null
+        return repository.findByName(projectName)
     }
 }

@@ -19,7 +19,6 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.util.Optional
 
 /**
  * Represent a unified interface for working with time intervals using different data sources.
@@ -35,20 +34,20 @@ interface TimeIntervalRepository {
     fun findAll(project: Project, milliseconds: Long): List<TimeInterval>
 
     /**
-     * Get time by id.
+     * Get time interval by id.
      *
-     * @param id Id for the time.
-     * @return Time, or null if none was found.
+     * @param id Id for the time interval.
+     * @return Time interval, or null if none was found.
      */
-    fun findById(id: Long): Optional<TimeInterval>
+    fun findById(id: Long): TimeInterval?
 
     /**
-     * Get active time for project.
+     * Get active time interval for project.
      *
      * @param projectId Id for project.
-     * @return Active time for project, or null if project is inactive.
+     * @return Active time interval for project, or null if project is inactive.
      */
-    fun findActiveByProjectId(projectId: Long): Optional<TimeInterval>
+    fun findActiveByProjectId(projectId: Long): TimeInterval?
 
     /**
      * Add new time interval to the repository.
@@ -56,21 +55,21 @@ interface TimeIntervalRepository {
      * @param newTimeInterval New time interval to add.
      * @return Added time interval.
      */
-    fun add(newTimeInterval: NewTimeInterval): Optional<TimeInterval>
+    fun add(newTimeInterval: NewTimeInterval): TimeInterval
 
     /**
-     * Update time.
+     * Update time interval.
      *
-     * @param timeInterval Time to update.
-     * @return Updated time.
+     * @param timeInterval Time interval to update.
+     * @return Updated time interval.
      */
-    fun update(timeInterval: TimeInterval): Optional<TimeInterval>
+    fun update(timeInterval: TimeInterval): TimeInterval?
 
     /**
-     * Update items.
+     * Update time interval items.
      *
-     * @param timeIntervals Items to update.
-     * @return Updated items.
+     * @param timeIntervals Time interval item to update.
+     * @return Updated time interval items.
      */
     fun update(timeIntervals: List<TimeInterval>): List<TimeInterval>
 

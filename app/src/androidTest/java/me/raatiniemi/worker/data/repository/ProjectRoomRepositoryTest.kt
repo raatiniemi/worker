@@ -190,7 +190,7 @@ class ProjectRoomRepositoryTest {
     fun findByName_withoutProject() {
         val actual = repository.findByName("Name")
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -200,15 +200,14 @@ class ProjectRoomRepositoryTest {
 
         val actual = repository.findByName("Name")
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
     fun findById_withoutProjects() {
         val actual = repository.findById(1)
 
-        assertFalse(actual.isPresent)
+        assertNull(actual)
     }
 
     @Test
@@ -218,8 +217,7 @@ class ProjectRoomRepositoryTest {
 
         val actual = repository.findById(1)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -230,8 +228,7 @@ class ProjectRoomRepositoryTest {
 
         val actual = repository.findById(2)
 
-        assertTrue(actual.isPresent)
-        assertEquals(expected, actual.get())
+        assertEquals(expected, actual)
     }
 
     @Test
