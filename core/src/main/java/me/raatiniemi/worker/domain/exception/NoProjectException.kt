@@ -14,10 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.exception
 
-public class NoProjectException extends DomainException {
-    public NoProjectException() {
-        super();
-    }
-}
+class NoProjectException : DomainException()
