@@ -4,6 +4,7 @@
     <string name="name">Worker</string>
 
     <string name="activity_projects_title">Projects</string>
+    <string name="activity_project_default_title">Project</string>
 
     <string name="menu_title_actions">Actions</string>
 

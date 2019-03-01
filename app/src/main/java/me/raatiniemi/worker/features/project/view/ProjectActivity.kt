@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.view.TimeReportFragment
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
@@ -39,6 +40,9 @@ class ProjectActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
+
+        title = intent.getStringExtra(ProjectActivity.MESSAGE_PROJECT_NAME)
+                ?: getString(R.string.activity_project_default_title)
 
         projectHolder.project = intent.getLongExtra(ProjectActivity.MESSAGE_PROJECT_ID, -1)
         timeReportFragment = TimeReportFragment.newInstance()
@@ -84,7 +88,8 @@ class ProjectActivity : BaseActivity() {
     }
 
     companion object {
-        const val MESSAGE_PROJECT_ID = "project id"
+        private const val MESSAGE_PROJECT_ID = "project id"
+        private const val MESSAGE_PROJECT_NAME = "project name"
 
         /**
          * Tag for the time report fragment.
@@ -92,10 +97,11 @@ class ProjectActivity : BaseActivity() {
         private const val FRAGMENT_TIME_REPORT_TAG = "time report"
 
         @JvmStatic
-        fun newIntent(context: Context, projectId: Long?): Intent {
+        fun newIntent(context: Context, project: Project): Intent {
             val intent = Intent(context, ProjectActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            intent.putExtra(ProjectActivity.MESSAGE_PROJECT_ID, projectId)
+            intent.putExtra(ProjectActivity.MESSAGE_PROJECT_ID, project.id)
+            intent.putExtra(ProjectActivity.MESSAGE_PROJECT_NAME, project.name)
 
             return intent
         }
