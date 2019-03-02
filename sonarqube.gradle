@@ -69,7 +69,7 @@ project(':core-test') {
 
 project(':app') {
     sonarqube {
-        def javaDirectory = 'build/intermediates/javac/'
+        def javaDirectory = 'build/intermediates/javac'
         def javaBinaries = "$javaDirectory/release/compileReleaseJavaWithJavac/classes"
         def javaTestBinaries = "$javaDirectory/releaseUnitTest/compileReleaseUnitTestJavaWithJavac/classes"
 
