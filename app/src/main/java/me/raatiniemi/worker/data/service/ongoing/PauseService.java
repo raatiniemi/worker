@@ -79,7 +79,7 @@ public class PauseService extends OngoingService {
     private void sendResumeNotification(Project project) {
         sendNotification(
                 project.getId(),
-                ResumeNotification.build(this, project, isOngoingNotificationChronometerEnabled())
+                ResumeNotification.Companion.build(this, project, isOngoingNotificationChronometerEnabled())
         );
     }
 
@@ -90,7 +90,7 @@ public class PauseService extends OngoingService {
     private void sendErrorNotification(long projectId) {
         sendNotification(
                 projectId,
-                ErrorNotification.buildOngoing(
+                ErrorNotification.INSTANCE.buildOngoing(
                         this,
                         getString(R.string.error_notification_pause_title),
                         getString(R.string.error_notification_pause_message)
