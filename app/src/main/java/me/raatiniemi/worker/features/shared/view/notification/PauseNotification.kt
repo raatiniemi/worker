@@ -40,7 +40,7 @@ internal class PauseNotification private constructor(
         context: Context,
         project: Project,
         private var useChronometer: Boolean
-) : OngoingNotification(context, project) {
+) : OngoingNotification(context, project, isOngoing = true) {
     private val repositories = Repositories()
     private val repository = repositories.timeInterval
     private var registeredTime: Long = 0

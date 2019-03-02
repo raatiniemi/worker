@@ -30,7 +30,11 @@ import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.util.Notifications
 import me.raatiniemi.worker.util.OngoingUriCommunicator
 
-internal abstract class OngoingNotification(val context: Context, val project: Project) {
+internal abstract class OngoingNotification(
+        val context: Context,
+        val project: Project,
+        isOngoing: Boolean
+) {
     private val dataUri: Uri = OngoingUriCommunicator.createWith(project.id)
     private val builder: NotificationCompat.Builder
 
@@ -44,7 +48,7 @@ internal abstract class OngoingNotification(val context: Context, val project: P
         builder = Notifications.ongoingBuilder(context)
                 .setContentTitle(project.name)
                 .setContentIntent(buildContentAction())
-                .setOngoing(true)
+                .setOngoing(isOngoing)
     }
 
     private fun buildContentAction(): PendingIntent {
