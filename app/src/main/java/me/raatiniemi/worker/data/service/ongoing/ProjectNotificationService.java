@@ -54,7 +54,7 @@ public class ProjectNotificationService extends OngoingService {
 
                 sendNotification(
                         project.getId(),
-                        PauseNotification.build(this, project, isOngoingNotificationChronometerEnabled())
+                        PauseNotification.Companion.build(this, project, isOngoingNotificationChronometerEnabled())
                 );
                 return;
             }
