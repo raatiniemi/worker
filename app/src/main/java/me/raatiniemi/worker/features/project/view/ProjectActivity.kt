@@ -41,10 +41,16 @@ class ProjectActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
 
-        title = intent.getStringExtra(ProjectActivity.MESSAGE_PROJECT_NAME)
-                ?: getString(R.string.activity_project_default_title)
+        val project = intent.run {
+            val id = getLongExtra(ProjectActivity.MESSAGE_PROJECT_ID, 0)
+            val name = getStringExtra(ProjectActivity.MESSAGE_PROJECT_NAME)
 
-        projectHolder.project = intent.getLongExtra(ProjectActivity.MESSAGE_PROJECT_ID, -1)
+            Project(id, name)
+        }
+        projectHolder.project = project
+
+        title = project.name
+
         timeReportFragment = TimeReportFragment.newInstance()
 
         if (isNull(savedInstanceState)) {

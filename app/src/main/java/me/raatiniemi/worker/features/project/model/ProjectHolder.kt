@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.features.project.model
 
+import me.raatiniemi.worker.domain.model.Project
+
 class ProjectHolder {
-    var project: Long = 0
+    var project: Project? = null
 }
