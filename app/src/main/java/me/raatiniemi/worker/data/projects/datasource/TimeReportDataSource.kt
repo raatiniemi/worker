@@ -69,6 +69,6 @@ internal class TimeReportDataSource(
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<TimeReportDay>) {
-        callback.onResult(repository.findAll(projectId, params.startPosition, params.loadSize))
+        callback.onResult(loadData(params.startPosition, params.loadSize))
     }
 }
