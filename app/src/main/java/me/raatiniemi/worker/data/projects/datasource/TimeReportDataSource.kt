@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.PositionalDataSource
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.project.model.ProjectHolder
@@ -35,22 +36,24 @@ internal class TimeReportDataSource(
                 false
         )
 
-    private val projectId: Long
+    private val project: Project?
         get() {
             val project = projectHolder.project
             if (project == null) {
                 Timber.w("No project is available from `ProjectHolder`")
-                return 0
+                return null
             }
 
-            return project.id
+            return project
         }
 
     private fun countTotal(): Int {
+        val project = this.project ?: return 0
+
         return if (shouldHideRegisteredTime) {
-            repository.countNotRegistered(projectId)
+            repository.countNotRegistered(project.id)
         } else {
-            repository.count(projectId)
+            repository.count(project.id)
         }
     }
 
@@ -62,10 +65,14 @@ internal class TimeReportDataSource(
         callback.onResult(loadData(position, loadSize), position, totalCount)
     }
 
-    private fun loadData(position: Int, loadSize: Int) = if (shouldHideRegisteredTime) {
-        repository.findNotRegistered(projectId, position, loadSize)
-    } else {
-        repository.findAll(projectId, position, loadSize)
+    private fun loadData(position: Int, loadSize: Int): List<TimeReportDay> {
+        val project = this.project ?: return emptyList()
+
+        return if (shouldHideRegisteredTime) {
+            repository.findNotRegistered(project.id, position, loadSize)
+        } else {
+            repository.findAll(project.id, position, loadSize)
+        }
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<TimeReportDay>) {
