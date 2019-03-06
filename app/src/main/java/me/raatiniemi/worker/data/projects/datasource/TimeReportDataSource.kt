@@ -37,8 +37,8 @@ internal class TimeReportDataSource(
         )
 
     private val project: Project?
-        get() {
-            val project = projectHolder.project
+        get() = projectHolder.value.run {
+            val project = value
             if (project == null) {
                 Timber.w("No project is available from `ProjectHolder`")
                 return null

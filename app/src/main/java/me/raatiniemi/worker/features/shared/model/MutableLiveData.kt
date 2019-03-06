@@ -14,9 +14,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.model
+package me.raatiniemi.worker.features.shared.model
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.features.shared.model.ObservableValueHolder
+import android.os.Looper
+import androidx.lifecycle.MutableLiveData
 
-internal class ProjectHolder : ObservableValueHolder<Project>()
+internal operator fun <T> MutableLiveData<T>.plusAssign(value: T) {
+    // If the `Looper.getMainLooper()` return `null` it means that we are most likely running tests,
+    // and therefor should assume always that we are not running on the main thread since we should
+    // use `InstantTaskExecutorRule` and `runBlocking` to simulate main thread behavior.
+    val isMainThread = Looper.getMainLooper()?.isCurrentThread ?: false
+    if (isMainThread) {
+        setValue(value)
+        return
+    }
+
+    postValue(value)
+}

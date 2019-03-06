@@ -42,10 +42,9 @@ class TimeReportViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     private val project = Project(1, "Project name #1")
+    private val projectHolder = ProjectHolder()
+            .also { it += project }
 
-    private val projectHolder = ProjectHolder().apply {
-        project = 1
-    }
     private val keyValueStore = InMemoryKeyValueStore()
 
     private lateinit var timeReportRepository: TimeReportRepository

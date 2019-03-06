@@ -14,9 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.model
+package me.raatiniemi.worker.features.shared.model
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.features.shared.model.ObservableValueHolder
+import androidx.lifecycle.LiveData
 
-internal class ProjectHolder : ObservableValueHolder<Project>()
+internal interface ObservableValueProvider<T> {
+    val value: LiveData<T>
+}

@@ -150,12 +150,14 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        if (event.projectId == projectHolder.project?.id) {
-            vm.reloadTimeReport()
-            return
-        }
+        projectHolder.value.run {
+            if (value?.id == event.projectId) {
+                vm.reloadTimeReport()
+                return@run
+            }
 
-        Timber.d("No need to refresh, event is related to another project")
+            Timber.d("No need to refresh, event is related to another project")
+        }
     }
 
     companion object {
