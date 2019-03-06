@@ -43,12 +43,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class TimeReportFragment : CoroutineScopedFragment() {
+    private val eventBus = EventBus.getDefault()
     private val projectHolder: ProjectHolder by inject()
 
     private val vm: TimeReportViewModel by viewModel()
-
-    private val eventBus = EventBus.getDefault()
-
     private val timeReportAdapter: TimeReportAdapter by lazy {
         TimeReportAdapter(get(), vm)
     }
