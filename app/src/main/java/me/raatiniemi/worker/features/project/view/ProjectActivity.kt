@@ -41,12 +41,7 @@ class ProjectActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
 
-        val project = intent.run {
-            val id = getLongExtra(ProjectActivity.MESSAGE_PROJECT_ID, 0)
-            val name = getStringExtra(ProjectActivity.MESSAGE_PROJECT_NAME)
-
-            Project(id, name)
-        }
+        val project = readProject(intent)
         projectHolder.project = project
 
         title = project.name
@@ -61,6 +56,27 @@ class ProjectActivity : BaseActivity() {
                             ProjectActivity.FRAGMENT_TIME_REPORT_TAG
                     )
                     .commit()
+        }
+    }
+
+    private fun readProject(intent: Intent): Project {
+        return intent.run {
+            val id = getLongExtra(MESSAGE_PROJECT_ID, 0)
+            val name = getStringExtra(MESSAGE_PROJECT_NAME)
+
+            Project(id, name)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+
+        val project = readProject(intent)
+        if (projectHolder.project != project) {
+            projectHolder.project = project
+
+            title = project.name
+            timeReportFragment.reloadTimeReport()
         }
     }
 
