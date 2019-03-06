@@ -48,7 +48,7 @@ class TimeReportViewModel internal constructor(
         private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
     private val factory = TimeReportDataSourceFactory(
-            projectHolder.project?.id ?: 0,
+            projectHolder,
             keyValueStore,
             repository
     )

@@ -19,11 +19,13 @@ package me.raatiniemi.worker.data.projects.datasource
 import androidx.paging.PositionalDataSource
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
+import timber.log.Timber
 
 internal class TimeReportDataSource(
-        private val projectId: Long,
+        private val projectHolder: ProjectHolder,
         private val keyValueStore: KeyValueStore,
         private val repository: TimeReportRepository
 ) : PositionalDataSource<TimeReportDay>() {
@@ -32,6 +34,17 @@ internal class TimeReportDataSource(
                 AppKeys.HIDE_REGISTERED_TIME,
                 false
         )
+
+    private val projectId: Long
+        get() {
+            val project = projectHolder.project
+            if (project == null) {
+                Timber.w("No project is available from `ProjectHolder`")
+                return 0
+            }
+
+            return project.id
+        }
 
     private fun countTotal(): Int {
         return if (shouldHideRegisteredTime) {
