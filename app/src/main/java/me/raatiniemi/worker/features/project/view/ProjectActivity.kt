@@ -21,6 +21,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.project.model.ProjectHolder
@@ -41,10 +42,11 @@ class ProjectActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
 
-        title = intent.getStringExtra(ProjectActivity.MESSAGE_PROJECT_NAME)
-                ?: getString(R.string.activity_project_default_title)
+        projectHolder += readProject(intent)
+        projectHolder.value.observe(this, Observer {
+            title = it.name
+        })
 
-        projectHolder.project = intent.getLongExtra(ProjectActivity.MESSAGE_PROJECT_ID, -1)
         timeReportFragment = TimeReportFragment.newInstance()
 
         if (isNull(savedInstanceState)) {
@@ -55,6 +57,29 @@ class ProjectActivity : BaseActivity() {
                             ProjectActivity.FRAGMENT_TIME_REPORT_TAG
                     )
                     .commit()
+        }
+    }
+
+    private fun readProject(intent: Intent): Project {
+        return intent.run {
+            val id = getLongExtra(MESSAGE_PROJECT_ID, 0)
+            val name = getStringExtra(MESSAGE_PROJECT_NAME)
+
+            Project(id, name)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+
+        val newProject = readProject(intent)
+        projectHolder.value.run {
+            val project = value ?: return@run
+
+            if (project != newProject) {
+                projectHolder += newProject
+                timeReportFragment.reloadTimeReport()
+            }
         }
     }
 

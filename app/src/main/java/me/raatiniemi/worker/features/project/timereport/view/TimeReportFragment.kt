@@ -43,12 +43,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class TimeReportFragment : CoroutineScopedFragment() {
+    private val eventBus = EventBus.getDefault()
     private val projectHolder: ProjectHolder by inject()
 
     private val vm: TimeReportViewModel by viewModel()
-
-    private val eventBus = EventBus.getDefault()
-
     private val timeReportAdapter: TimeReportAdapter by lazy {
         TimeReportAdapter(get(), vm)
     }
@@ -150,12 +148,14 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        if (event.projectId == projectHolder.project) {
-            vm.reloadTimeReport()
-            return
-        }
+        projectHolder.value.run {
+            if (value?.id == event.projectId) {
+                vm.reloadTimeReport()
+                return@run
+            }
 
-        Timber.d("No need to refresh, event is related to another project")
+            Timber.d("No need to refresh, event is related to another project")
+        }
     }
 
     companion object {

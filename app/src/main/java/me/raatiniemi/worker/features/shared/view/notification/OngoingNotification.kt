@@ -58,7 +58,7 @@ internal abstract class OngoingNotification(
     }
 
     private fun buildPendingIntentWithActivity(intent: Intent): PendingIntent {
-        return PendingIntent.getActivity(context, 0, intent, PENDING_INTENT_FLAG)
+        return PendingIntent.getActivity(context, project.id.toInt(), intent, PENDING_INTENT_FLAG)
     }
 
     fun buildIntentWithService(serviceClass: Class<*>): Intent {
@@ -67,7 +67,7 @@ internal abstract class OngoingNotification(
     }
 
     fun buildPendingIntentWithService(intent: Intent): PendingIntent {
-        return PendingIntent.getService(context, 0, intent, PENDING_INTENT_FLAG)
+        return PendingIntent.getService(context, project.id.toInt(), intent, PENDING_INTENT_FLAG)
     }
 
     fun getStringWithResourceId(@StringRes resourceId: Int): String {

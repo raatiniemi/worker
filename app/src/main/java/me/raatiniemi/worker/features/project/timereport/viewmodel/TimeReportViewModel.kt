@@ -19,7 +19,6 @@ package me.raatiniemi.worker.features.project.timereport.viewmodel
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -37,6 +36,7 @@ import me.raatiniemi.worker.features.project.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.model.map
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
@@ -48,7 +48,7 @@ class TimeReportViewModel internal constructor(
         private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
     private val factory = TimeReportDataSourceFactory(
-            projectHolder.project,
+            projectHolder,
             keyValueStore,
             repository
     )
@@ -56,11 +56,9 @@ class TimeReportViewModel internal constructor(
     private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
     private val expandedDays = mutableSetOf<Int>()
 
-    val timeReport: LiveData<PagedList<TimeReportDay>>
+    val isSelectionActivated: LiveData<Boolean> = _selectedItems.map { isSelectionActivated(it) }
 
-    val isSelectionActivated: LiveData<Boolean> = Transformations.map(_selectedItems) {
-        isSelectionActivated(it)
-    }
+    val timeReport: LiveData<PagedList<TimeReportDay>>
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 

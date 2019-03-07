@@ -14,9 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.project.model
+package me.raatiniemi.worker.features.shared.model
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.features.shared.model.ObservableValueHolder
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 
-internal class ProjectHolder : ObservableValueHolder<Project>()
+internal open class ObservableValueHolder<T> : ObservableValueProvider<T> {
+    private val _value = MutableLiveData<T>()
+    override val value: LiveData<T> = _value
+
+    operator fun plusAssign(value: T) {
+        _value += value
+    }
+}

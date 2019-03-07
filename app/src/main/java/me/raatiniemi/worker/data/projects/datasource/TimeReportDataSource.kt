@@ -17,13 +17,16 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.PositionalDataSource
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
+import timber.log.Timber
 
 internal class TimeReportDataSource(
-        private val projectId: Long,
+        private val projectHolder: ProjectHolder,
         private val keyValueStore: KeyValueStore,
         private val repository: TimeReportRepository
 ) : PositionalDataSource<TimeReportDay>() {
@@ -33,11 +36,24 @@ internal class TimeReportDataSource(
                 false
         )
 
+    private val project: Project?
+        get() = projectHolder.value.run {
+            val project = value
+            if (project == null) {
+                Timber.w("No project is available from `ProjectHolder`")
+                return null
+            }
+
+            return project
+        }
+
     private fun countTotal(): Int {
+        val project = this.project ?: return 0
+
         return if (shouldHideRegisteredTime) {
-            repository.countNotRegistered(projectId)
+            repository.countNotRegistered(project.id)
         } else {
-            repository.count(projectId)
+            repository.count(project.id)
         }
     }
 
@@ -49,13 +65,17 @@ internal class TimeReportDataSource(
         callback.onResult(loadData(position, loadSize), position, totalCount)
     }
 
-    private fun loadData(position: Int, loadSize: Int) = if (shouldHideRegisteredTime) {
-        repository.findNotRegistered(projectId, position, loadSize)
-    } else {
-        repository.findAll(projectId, position, loadSize)
+    private fun loadData(position: Int, loadSize: Int): List<TimeReportDay> {
+        val project = this.project ?: return emptyList()
+
+        return if (shouldHideRegisteredTime) {
+            repository.findNotRegistered(project.id, position, loadSize)
+        } else {
+            repository.findAll(project.id, position, loadSize)
+        }
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<TimeReportDay>) {
-        callback.onResult(repository.findAll(projectId, params.startPosition, params.loadSize))
+        callback.onResult(loadData(params.startPosition, params.loadSize))
     }
 }
