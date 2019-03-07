@@ -56,9 +56,9 @@ class TimeReportViewModel internal constructor(
     private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
     private val expandedDays = mutableSetOf<Int>()
 
-    val timeReport: LiveData<PagedList<TimeReportDay>>
-
     val isSelectionActivated: LiveData<Boolean> = _selectedItems.map { isSelectionActivated(it) }
+
+    val timeReport: LiveData<PagedList<TimeReportDay>>
 
     val viewActions = ConsumableLiveData<TimeReportViewActions>()
 
