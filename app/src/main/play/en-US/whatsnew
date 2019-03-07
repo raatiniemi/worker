@@ -1,3 +1,7 @@
-include app version under settings.
-dismiss ongoing notification when project is removed.
-remove support for backup/restore due to broken functionality.
+allow resume notification to be dismissed.
+open correct time report view from ongoing notification.
+resolve issue with time report not properly respecting hide registered configuration.
+remove support for fraction calculations in time report.
+show Projects as title for project list.
+show project name as title for time report.
+reduce margin for project/time report cards.
