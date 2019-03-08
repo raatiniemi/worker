@@ -24,12 +24,20 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import timber.log.Timber
 
 internal sealed class ProjectsViewActions {
+    data class OpenProject(private val project: Project) : ProjectsViewActions(), ActivityViewAction {
+        override fun action(activity: FragmentActivity) {
+            ProjectActivity.newIntent(activity, project)
+                    .also { activity.startActivity(it) }
+        }
+    }
+
     data class UpdateNotification(val project: Project) : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             ProjectNotificationService.startServiceWithContext(activity, project)

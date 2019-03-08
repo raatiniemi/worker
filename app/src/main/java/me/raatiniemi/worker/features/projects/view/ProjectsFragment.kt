@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.model.ProjectsAction
@@ -70,10 +69,10 @@ class ProjectsFragment : CoroutineScopedFragment() {
         projectsAdapter = ProjectsAdapter(
                 object : ProjectsActionConsumer {
                     override fun accept(action: ProjectsAction) = when (action) {
-                        is ProjectsAction.Open -> onItemClick(action.item)
                         is ProjectsAction.Toggle -> onClockActivityToggle(action.item)
                         is ProjectsAction.At -> onClockActivityAt(action.item)
                         is ProjectsAction.Remove -> onDelete(action.item)
+                        else -> projectsViewModel.accept(action)
                     }
                 },
                 HintedImageButtonListener(requireActivity())
@@ -168,11 +167,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
         projectsViewModel.reloadProjects()
-    }
-
-    private fun onItemClick(item: ProjectsItem) {
-        val intent = ProjectActivity.newIntent(requireActivity(), item.asProject())
-        startActivity(intent)
     }
 
     private fun onClockActivityToggle(item: ProjectsItem) {

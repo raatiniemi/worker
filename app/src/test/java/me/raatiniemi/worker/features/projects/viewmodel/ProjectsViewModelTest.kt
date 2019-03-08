@@ -25,6 +25,7 @@ import me.raatiniemi.worker.domain.interactor.RemoveProject
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
@@ -117,6 +118,17 @@ class ProjectsViewModelTest {
 
         vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.RefreshProjects(listOf(1)), it)
+        }
+    }
+
+    @Test
+    fun `accept project action open`() {
+        val projectsItem = getProjectsItem(project)
+
+        vm.accept(ProjectsAction.Open(projectsItem))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.OpenProject(project), it)
         }
     }
 

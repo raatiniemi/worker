@@ -33,9 +33,12 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
+import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
@@ -48,7 +51,7 @@ internal class ProjectsViewModel(
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val removeProject: RemoveProject
-) : ViewModel() {
+) : ViewModel(), ProjectsActionConsumer {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
@@ -113,6 +116,15 @@ internal class ProjectsViewModel(
 
         val viewAction = ProjectsViewActions.RefreshProjects(positions)
         viewActions.postValue(viewAction)
+    }
+
+    override fun accept(action: ProjectsAction) {
+        when (action) {
+            is ProjectsAction.Open -> {
+                viewActions += ProjectsViewActions.OpenProject(action.item.asProject())
+            }
+            else -> Timber.w("Unable to process action: ${action::class}")
+        }
     }
 
     suspend fun clockIn(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
