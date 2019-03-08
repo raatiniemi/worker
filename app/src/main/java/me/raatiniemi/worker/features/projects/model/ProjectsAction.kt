@@ -16,9 +16,11 @@
 
 package me.raatiniemi.worker.features.projects.model
 
-internal sealed class ProjectsAction(val item: ProjectsItem) {
+import java.util.*
+
+internal sealed class ProjectsAction(open val item: ProjectsItem) {
     class Open(item: ProjectsItem) : ProjectsAction(item)
-    class Toggle(item: ProjectsItem) : ProjectsAction(item)
+    data class Toggle(override val item: ProjectsItem, val date: Date) : ProjectsAction(item)
     class At(item: ProjectsItem) : ProjectsAction(item)
     class Remove(item: ProjectsItem) : ProjectsAction(item)
 }

@@ -25,6 +25,7 @@ import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
 import me.raatiniemi.worker.features.projects.view.ViewHolder
 import me.raatiniemi.worker.util.HintedImageButtonListener
+import java.util.*
 
 internal class ProjectsAdapter(
         private val consumer: ProjectsActionConsumer,
@@ -59,7 +60,7 @@ internal class ProjectsAdapter(
 
             with(clockActivityToggle) {
                 setOnClickListener {
-                    consumer.accept(ProjectsAction.Toggle(item))
+                    consumer.accept(ProjectsAction.Toggle(item, Date()))
                 }
                 setOnLongClickListener(hintedImageButtonListener)
             }

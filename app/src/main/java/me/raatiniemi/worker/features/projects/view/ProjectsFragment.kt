@@ -69,7 +69,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
         projectsAdapter = ProjectsAdapter(
                 object : ProjectsActionConsumer {
                     override fun accept(action: ProjectsAction) = when (action) {
-                        is ProjectsAction.Toggle -> onClockActivityToggle(action.item)
+                        is ProjectsAction.Toggle -> onClockActivityToggle(action)
                         is ProjectsAction.At -> onClockActivityAt(action.item)
                         is ProjectsAction.Remove -> onDelete(action.item)
                         else -> projectsViewModel.accept(action)
@@ -169,21 +169,23 @@ class ProjectsFragment : CoroutineScopedFragment() {
         projectsViewModel.reloadProjects()
     }
 
-    private fun onClockActivityToggle(item: ProjectsItem) {
+    private fun onClockActivityToggle(action: ProjectsAction.Toggle) {
         launch {
-            if (!item.isActive) {
-                projectsViewModel.clockIn(item, Date())
-                return@launch
-            }
+            with(action) {
+                if (!item.isActive) {
+                    projectsViewModel.clockIn(item, date)
+                    return@launch
+                }
 
-            if (!keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
-                projectsViewModel.clockOut(item, Date())
-                return@launch
-            }
+                if (!keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
+                    projectsViewModel.clockOut(item, date)
+                    return@launch
+                }
 
-            val confirmAction = ConfirmClockOutDialog.show(requireContext())
-            if (ConfirmAction.YES == confirmAction) {
-                projectsViewModel.clockOut(item, Date())
+                val confirmAction = ConfirmClockOutDialog.show(requireContext())
+                if (ConfirmAction.YES == confirmAction) {
+                    projectsViewModel.clockOut(item, date)
+                }
             }
         }
     }
