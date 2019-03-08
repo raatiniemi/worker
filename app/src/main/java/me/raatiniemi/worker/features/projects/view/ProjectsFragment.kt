@@ -38,13 +38,10 @@ import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.visibleIf
-import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.HintedImageButtonListener
-import me.raatiniemi.worker.util.KeyValueStore
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.util.*
@@ -54,8 +51,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
 
     private val projectsViewModel: ProjectsViewModel by viewModel()
-
-    private val keyValueStore: KeyValueStore by inject()
 
     private var refreshActiveProjectsTimer: Timer? = null
 
@@ -69,7 +64,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
         projectsAdapter = ProjectsAdapter(
                 object : ProjectsActionConsumer {
                     override fun accept(action: ProjectsAction) = when (action) {
-                        is ProjectsAction.Toggle -> onClockActivityToggle(action)
                         is ProjectsAction.At -> onClockActivityAt(action.item)
                         is ProjectsAction.Remove -> onDelete(action.item)
                         else -> projectsViewModel.accept(action)
@@ -112,6 +106,12 @@ class ProjectsFragment : CoroutineScopedFragment() {
     private fun processViewAction(viewAction: ProjectsViewActions) {
         when (viewAction) {
             is ProjectsViewActions.RefreshProjects -> viewAction.action(projectsAdapter)
+            is ProjectsViewActions.ShowConfirmClockOutMessage -> launch {
+                val confirmAction = ConfirmClockOutDialog.show(requireContext())
+                if (ConfirmAction.YES == confirmAction) {
+                    projectsViewModel.clockOut(viewAction.item, viewAction.date)
+                }
+            }
             is ActivityViewAction -> viewAction.action(requireActivity())
             is ContextViewAction -> viewAction.action(requireContext())
             else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
@@ -167,27 +167,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
         projectsViewModel.reloadProjects()
-    }
-
-    private fun onClockActivityToggle(action: ProjectsAction.Toggle) {
-        launch {
-            with(action) {
-                if (!item.isActive) {
-                    projectsViewModel.clockIn(item, date)
-                    return@launch
-                }
-
-                if (!keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
-                    projectsViewModel.clockOut(item, date)
-                    return@launch
-                }
-
-                val confirmAction = ConfirmClockOutDialog.show(requireContext())
-                if (ConfirmAction.YES == confirmAction) {
-                    projectsViewModel.clockOut(item, date)
-                }
-            }
-        }
     }
 
     private fun onClockActivityAt(item: ProjectsItem) {

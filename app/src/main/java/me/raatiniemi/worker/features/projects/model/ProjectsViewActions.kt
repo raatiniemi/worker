@@ -29,6 +29,7 @@ import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import timber.log.Timber
+import java.util.*
 
 internal sealed class ProjectsViewActions {
     data class OpenProject(private val project: Project) : ProjectsViewActions(), ActivityViewAction {
@@ -80,6 +81,8 @@ internal sealed class ProjectsViewActions {
             snackBar.show()
         }
     }
+
+    data class ShowConfirmClockOutMessage(val item: ProjectsItem, val date: Date) : ProjectsViewActions()
 
     object ShowUnableToDeleteProjectErrorMessage : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {

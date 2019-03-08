@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.domain.exception.DomainException
@@ -39,6 +39,7 @@ import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
+import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
@@ -51,7 +52,7 @@ internal class ProjectsViewModel(
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val removeProject: RemoveProject
-) : ViewModel(), ProjectsActionConsumer {
+) : CoroutineScopedViewModel(), ProjectsActionConsumer {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
@@ -119,9 +120,24 @@ internal class ProjectsViewModel(
     }
 
     override fun accept(action: ProjectsAction) {
+        val item = action.item
+
         when (action) {
             is ProjectsAction.Open -> {
-                viewActions += ProjectsViewActions.OpenProject(action.item.asProject())
+                viewActions += ProjectsViewActions.OpenProject(item.asProject())
+            }
+            is ProjectsAction.Toggle -> launch {
+                if (item.isActive) {
+                    if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
+                        viewActions += ProjectsViewActions.ShowConfirmClockOutMessage(item, action.date)
+                        return@launch
+                    }
+
+                    clockOut(item, action.date)
+                    return@launch
+                }
+
+                clockIn(item, action.date)
             }
             else -> Timber.w("Unable to process action: ${action::class}")
         }

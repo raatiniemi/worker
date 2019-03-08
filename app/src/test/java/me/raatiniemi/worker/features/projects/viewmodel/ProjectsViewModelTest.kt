@@ -133,6 +133,76 @@ class ProjectsViewModelTest {
     }
 
     @Test
+    fun `accept toggle clock out project with confirm clock out`() = runBlocking {
+        val item = getProjectsItem(project, true)
+        val date = Date()
+
+        vm.accept(ProjectsAction.Toggle(item, date))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowConfirmClockOutMessage(item, date), it)
+        }
+    }
+
+    @Test
+    fun `accept toggle clock out project with already inactive project`() = runBlocking {
+        keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
+        val item = getProjectsItem(project, true)
+        val date = Date()
+
+        vm.accept(ProjectsAction.Toggle(item, date))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
+        }
+    }
+
+    @Test
+    fun `accept toggle clock out project`() = runBlocking {
+        keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val timeIntervals = listOf(
+                timeInterval { stopInMilliseconds = 0 }
+        )
+        val item = ProjectsItem(project, timeIntervals)
+        val date = Date()
+
+        vm.accept(ProjectsAction.Toggle(item, date))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
+        }
+    }
+
+    @Test
+    fun `accept toggle clock in project with already active project`() {
+        keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
+        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
+        timeIntervalRepository.add(newTimeInterval)
+        val item = ProjectsItem(project, emptyList())
+        val date = Date()
+
+        vm.accept(ProjectsAction.Toggle(item, date))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowUnableToClockInErrorMessage, it)
+        }
+    }
+
+    @Test
+    fun `accept toggle clock in project`() {
+        val item = ProjectsItem(project, emptyList())
+        val date = Date()
+
+        vm.accept(ProjectsAction.Toggle(item, date))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
+        }
+    }
+
+    @Test
     fun `clock in with already active project`() = runBlocking {
         val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
         timeIntervalRepository.add(newTimeInterval)
