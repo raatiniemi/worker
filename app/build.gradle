@@ -88,8 +88,7 @@ android {
     sourceSets {
         main {
             res.srcDirs = [
-                    'src/main/res-main',
-                    'src/main/res-screen/settings'
+                    'src/main/res-main'
             ]
         }
         test {
