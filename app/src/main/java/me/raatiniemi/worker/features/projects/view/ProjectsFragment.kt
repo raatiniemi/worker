@@ -115,25 +115,25 @@ class ProjectsFragment : CoroutineScopedFragment() {
             is ProjectsViewActions.ShowConfirmClockOutMessage -> launch {
                 val confirmAction = ConfirmClockOutDialog.show(requireContext())
                 if (ConfirmAction.YES == confirmAction) {
-                    vm.clockOut(viewAction.item, viewAction.date)
+                    vm.clockOut(viewAction.item.asProject(), viewAction.date)
                 }
             }
             is ProjectsViewActions.ShowChooseTimeForClockActivity -> {
                 viewAction.action(childFragmentManager) { projectsItem, date ->
                     launch {
                         if (projectsItem.isActive) {
-                            vm.clockOut(projectsItem, date)
+                            vm.clockOut(projectsItem.asProject(), date)
                             return@launch
                         }
 
-                        vm.clockIn(projectsItem, date)
+                        vm.clockIn(projectsItem.asProject(), date)
                     }
                 }
             }
             is ProjectsViewActions.ShowConfirmRemoveProjectMessage -> launch {
                 val confirmAction = RemoveProjectDialog.show(requireContext())
                 if (ConfirmAction.YES == confirmAction) {
-                    vm.remove(viewAction.item)
+                    vm.remove(viewAction.item.asProject())
                 }
             }
             is ActivityViewAction -> viewAction.action(requireActivity())

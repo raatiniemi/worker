@@ -133,11 +133,11 @@ internal class ProjectsViewModel(
                         return@launch
                     }
 
-                    clockOut(item, action.date)
+                    clockOut(item.asProject(), action.date)
                     return@launch
                 }
 
-                clockIn(item, action.date)
+                clockIn(item.asProject(), action.date)
             }
             is ProjectsAction.At -> {
                 viewActions += ProjectsViewActions.ShowChooseTimeForClockActivity(item)
@@ -148,10 +148,8 @@ internal class ProjectsViewModel(
         }
     }
 
-    suspend fun clockIn(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockIn(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            val project = item.asProject()
-
             clockIn(project.id, date)
 
             viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
@@ -161,10 +159,8 @@ internal class ProjectsViewModel(
         }
     }
 
-    suspend fun clockOut(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockOut(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            val project = item.asProject()
-
             clockOut(project.id, date)
 
             viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
@@ -174,9 +170,8 @@ internal class ProjectsViewModel(
         }
     }
 
-    suspend fun remove(item: ProjectsItem) = withContext(Dispatchers.IO) {
+    suspend fun remove(project: Project) = withContext(Dispatchers.IO) {
         try {
-            val project = item.asProject()
             removeProject(project)
 
             viewActions.postValue(ProjectsViewActions.DismissNotification(project))
