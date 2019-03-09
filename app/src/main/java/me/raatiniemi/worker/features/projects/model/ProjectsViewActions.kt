@@ -34,6 +34,14 @@ import timber.log.Timber
 import java.util.*
 
 internal sealed class ProjectsViewActions {
+    data class RefreshProjects(private val positions: List<Int>) : ProjectsViewActions() {
+        fun action(adapter: ProjectsAdapter) {
+            Timber.d("Refreshing %d projects", positions.size)
+
+            positions.forEach { adapter.notifyItemChanged(it) }
+        }
+    }
+
     data class OpenProject(private val project: Project) : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             ProjectActivity.newIntent(activity, project)
@@ -41,24 +49,17 @@ internal sealed class ProjectsViewActions {
         }
     }
 
-    data class UpdateNotification(val project: Project) : ProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
-            ProjectNotificationService.startServiceWithContext(activity, project)
-        }
-    }
+    data class ShowConfirmClockOutMessage(val item: ProjectsItem, val date: Date) : ProjectsViewActions()
 
-    data class DismissNotification(val project: Project) : ProjectsViewActions(), ContextViewAction {
-        override fun action(context: Context) {
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
-            if (notificationManager == null) {
-                Timber.w("Unable to get notification manager from context")
-                return
+    data class ShowChooseTimeForClockActivity(val item: ProjectsItem) : ProjectsViewActions() {
+        fun action(fragmentManager: FragmentManager, onChooseTime: (ProjectsItem, Date) -> Unit) {
+            val fragment = ClockActivityAtFragment.newInstance(item) {
+                onChooseTime(item, it.time)
             }
 
-            notificationManager.cancel(
-                    project.id.toString(),
-                    WorkerApplication.NOTIFICATION_ON_GOING_ID
-            )
+            fragmentManager.beginTransaction()
+                    .add(fragment, "clock activity at")
+                    .commit()
         }
     }
 
@@ -84,20 +85,6 @@ internal sealed class ProjectsViewActions {
         }
     }
 
-    data class ShowChooseTimeForClockActivity(val item: ProjectsItem) : ProjectsViewActions() {
-        fun action(fragmentManager: FragmentManager, onChooseTime: (ProjectsItem, Date) -> Unit) {
-            val fragment = ClockActivityAtFragment.newInstance(item) {
-                onChooseTime(item, it.time)
-            }
-
-            fragmentManager.beginTransaction()
-                    .add(fragment, "clock activity at")
-                    .commit()
-        }
-    }
-
-    data class ShowConfirmClockOutMessage(val item: ProjectsItem, val date: Date) : ProjectsViewActions()
-
     data class ShowConfirmRemoveProjectMessage(val item: ProjectsItem) : ProjectsViewActions()
 
     object ShowUnableToDeleteProjectErrorMessage : ProjectsViewActions(), ActivityViewAction {
@@ -111,11 +98,24 @@ internal sealed class ProjectsViewActions {
         }
     }
 
-    data class RefreshProjects(private val positions: List<Int>) : ProjectsViewActions() {
-        fun action(adapter: ProjectsAdapter) {
-            Timber.d("Refreshing %d projects", positions.size)
+    data class UpdateNotification(val project: Project) : ProjectsViewActions(), ActivityViewAction {
+        override fun action(activity: FragmentActivity) {
+            ProjectNotificationService.startServiceWithContext(activity, project)
+        }
+    }
 
-            positions.forEach { adapter.notifyItemChanged(it) }
+    data class DismissNotification(val project: Project) : ProjectsViewActions(), ContextViewAction {
+        override fun action(context: Context) {
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+            if (notificationManager == null) {
+                Timber.w("Unable to get notification manager from context")
+                return
+            }
+
+            notificationManager.cancel(
+                    project.id.toString(),
+                    WorkerApplication.NOTIFICATION_ON_GOING_ID
+            )
         }
     }
 }
