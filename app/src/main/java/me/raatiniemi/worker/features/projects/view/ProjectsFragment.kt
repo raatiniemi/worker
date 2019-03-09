@@ -28,7 +28,6 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.model.ProjectsAction
-import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
@@ -63,10 +62,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
 
         projectsAdapter = ProjectsAdapter(
                 object : ProjectsActionConsumer {
-                    override fun accept(action: ProjectsAction) = when (action) {
-                        is ProjectsAction.At -> onClockActivityAt(action.item)
-                        else -> projectsViewModel.accept(action)
-                    }
+                    override fun accept(action: ProjectsAction) = projectsViewModel.accept(action)
                 },
                 HintedImageButtonListener(requireActivity())
         )
@@ -109,6 +105,18 @@ class ProjectsFragment : CoroutineScopedFragment() {
                 val confirmAction = ConfirmClockOutDialog.show(requireContext())
                 if (ConfirmAction.YES == confirmAction) {
                     projectsViewModel.clockOut(viewAction.item, viewAction.date)
+                }
+            }
+            is ProjectsViewActions.ShowChooseTimeForClockActivity -> {
+                viewAction.action(childFragmentManager) { projectsItem, date ->
+                    launch {
+                        if (projectsItem.isActive) {
+                            projectsViewModel.clockOut(projectsItem, date)
+                            return@launch
+                        }
+
+                        projectsViewModel.clockIn(projectsItem, date)
+                    }
                 }
             }
             is ProjectsViewActions.ShowConfirmRemoveProjectMessage -> launch {
@@ -172,28 +180,5 @@ class ProjectsFragment : CoroutineScopedFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
         projectsViewModel.reloadProjects()
-    }
-
-    private fun onClockActivityAt(item: ProjectsItem) {
-        val fragment = ClockActivityAtFragment.newInstance(
-                item
-        ) { calendar ->
-            launch {
-                if (item.isActive) {
-                    projectsViewModel.clockOut(item, calendar.time)
-                    return@launch
-                }
-
-                projectsViewModel.clockIn(item, calendar.time)
-            }
-        }
-
-        childFragmentManager.beginTransaction()
-                .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
-                .commit()
-    }
-
-    companion object {
-        private const val FRAGMENT_CLOCK_ACTIVITY_AT_TAG = "clock activity at"
     }
 }

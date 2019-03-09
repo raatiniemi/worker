@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.projects.model
 import android.app.NotificationManager
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
@@ -26,6 +27,7 @@ import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
+import me.raatiniemi.worker.features.projects.view.ClockActivityAtFragment
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import timber.log.Timber
@@ -79,6 +81,18 @@ internal sealed class ProjectsViewActions {
                     Snackbar.LENGTH_SHORT
             )
             snackBar.show()
+        }
+    }
+
+    data class ShowChooseTimeForClockActivity(val item: ProjectsItem) : ProjectsViewActions() {
+        fun action(fragmentManager: FragmentManager, onChooseTime: (ProjectsItem, Date) -> Unit) {
+            val fragment = ClockActivityAtFragment.newInstance(item) {
+                onChooseTime(item, it.time)
+            }
+
+            fragmentManager.beginTransaction()
+                    .add(fragment, "clock activity at")
+                    .commit()
         }
     }
 

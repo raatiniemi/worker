@@ -203,6 +203,17 @@ class ProjectsViewModelTest {
     }
 
     @Test
+    fun `accept at`() {
+        val item = ProjectsItem(project, emptyList())
+
+        vm.accept(ProjectsAction.At(item))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowChooseTimeForClockActivity(item), it)
+        }
+    }
+
+    @Test
     fun `accept remove project`() {
         val item = ProjectsItem(project, emptyList())
 
