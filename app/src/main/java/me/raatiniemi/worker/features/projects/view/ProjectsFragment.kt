@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
-import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
@@ -53,19 +52,14 @@ class ProjectsFragment : CoroutineScopedFragment() {
 
     private var refreshActiveProjectsTimer: Timer? = null
 
-    private lateinit var projectsAdapter: ProjectsAdapter
+    private val projectsAdapter: ProjectsAdapter by lazy {
+        ProjectsAdapter(projectsViewModel, HintedImageButtonListener(requireActivity()))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         eventBus.register(this)
-
-        projectsAdapter = ProjectsAdapter(
-                object : ProjectsActionConsumer {
-                    override fun accept(action: ProjectsAction) = projectsViewModel.accept(action)
-                },
-                HintedImageButtonListener(requireActivity())
-        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
