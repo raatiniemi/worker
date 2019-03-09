@@ -72,6 +72,24 @@ class ProjectsFragment : CoroutineScopedFragment() {
         observeViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        startRefreshTimer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        cancelRefreshTimer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        eventBus.unregister(this)
+    }
+
     private fun configureView() {
         rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -124,12 +142,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        startRefreshTimer()
-    }
-
     private fun startRefreshTimer() {
         cancelRefreshTimer()
 
@@ -143,21 +155,9 @@ class ProjectsFragment : CoroutineScopedFragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        cancelRefreshTimer()
-    }
-
     private fun cancelRefreshTimer() {
         refreshActiveProjectsTimer?.cancel()
         refreshActiveProjectsTimer = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        eventBus.unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
