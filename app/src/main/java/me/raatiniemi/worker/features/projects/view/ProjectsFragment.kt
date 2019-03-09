@@ -48,12 +48,12 @@ import kotlin.concurrent.schedule
 class ProjectsFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
 
-    private val projectsViewModel: ProjectsViewModel by viewModel()
+    private val vm: ProjectsViewModel by viewModel()
 
     private var refreshActiveProjectsTimer: Timer? = null
 
     private val projectsAdapter: ProjectsAdapter by lazy {
-        ProjectsAdapter(projectsViewModel, HintedImageButtonListener(requireActivity()))
+        ProjectsAdapter(vm, HintedImageButtonListener(requireActivity()))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,13 +81,13 @@ class ProjectsFragment : CoroutineScopedFragment() {
     }
 
     private fun observeViewModel() {
-        projectsViewModel.projects.observe(this, Observer {
+        vm.projects.observe(this, Observer {
             projectsAdapter.submitList(it)
 
             tvEmptyProjects.visibleIf { it.isEmpty() }
         })
 
-        projectsViewModel.viewActions.observeAndConsume(this, Observer {
+        vm.viewActions.observeAndConsume(this, Observer {
             processViewAction(it)
         })
     }
@@ -98,25 +98,25 @@ class ProjectsFragment : CoroutineScopedFragment() {
             is ProjectsViewActions.ShowConfirmClockOutMessage -> launch {
                 val confirmAction = ConfirmClockOutDialog.show(requireContext())
                 if (ConfirmAction.YES == confirmAction) {
-                    projectsViewModel.clockOut(viewAction.item, viewAction.date)
+                    vm.clockOut(viewAction.item, viewAction.date)
                 }
             }
             is ProjectsViewActions.ShowChooseTimeForClockActivity -> {
                 viewAction.action(childFragmentManager) { projectsItem, date ->
                     launch {
                         if (projectsItem.isActive) {
-                            projectsViewModel.clockOut(projectsItem, date)
+                            vm.clockOut(projectsItem, date)
                             return@launch
                         }
 
-                        projectsViewModel.clockIn(projectsItem, date)
+                        vm.clockIn(projectsItem, date)
                     }
                 }
             }
             is ProjectsViewActions.ShowConfirmRemoveProjectMessage -> launch {
                 val confirmAction = RemoveProjectDialog.show(requireContext())
                 if (ConfirmAction.YES == confirmAction) {
-                    projectsViewModel.remove(viewAction.item)
+                    vm.remove(viewAction.item)
                 }
             }
             is ActivityViewAction -> viewAction.action(requireActivity())
@@ -139,7 +139,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
             launch {
                 val projects = projectsAdapter.currentList ?: return@launch
 
-                projectsViewModel.refreshActiveProjects(projects)
+                vm.refreshActiveProjects(projects)
             }
         }
     }
@@ -163,16 +163,16 @@ class ProjectsFragment : CoroutineScopedFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: CreateProjectEvent) {
-        projectsViewModel.reloadProjects()
+        vm.reloadProjects()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: OngoingNotificationActionEvent) {
-        projectsViewModel.reloadProjects()
+        vm.reloadProjects()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: TimeSummaryStartingPointChangeEvent) {
-        projectsViewModel.reloadProjects()
+        vm.reloadProjects()
     }
 }
