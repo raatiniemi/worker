@@ -247,39 +247,6 @@ class ProjectsViewModelTest {
     }
 
     @Test
-    fun `clock in project with month time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
-
-        vm.clockIn(project, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock in project with day time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.DAY.rawValue)
-
-        vm.clockIn(project, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock in project with invalid time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, -1)
-
-        vm.clockIn(project, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
     fun `clock out without active project`() = runBlocking {
         vm.clockOut(project, Date())
 
@@ -290,48 +257,6 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out project`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
-
-        vm.clockOut(project, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock out project with month time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
-
-        vm.clockOut(project, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock out project with day time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.DAY.rawValue)
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
-
-        vm.clockOut(project, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock out project with invalid time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, -1)
         timeIntervalRepository.add(newTimeInterval {
             stopInMilliseconds = 0
         })
