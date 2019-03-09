@@ -16,9 +16,15 @@
 
 package me.raatiniemi.worker.features.projects.view
 
-import me.raatiniemi.worker.features.projects.model.ProjectsAction
+import me.raatiniemi.worker.features.projects.model.ProjectsItem
+import java.util.*
 
-@FunctionalInterface
-internal interface ProjectsActionConsumer {
-    fun accept(action: ProjectsAction)
+internal interface ProjectsActionListener {
+    fun open(item: ProjectsItem)
+
+    fun toggle(item: ProjectsItem, date: Date)
+
+    fun at(item: ProjectsItem)
+
+    fun remove(item: ProjectsItem)
 }

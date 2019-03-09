@@ -33,10 +33,9 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
-import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
+import me.raatiniemi.worker.features.projects.view.ProjectsActionListener
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
@@ -52,7 +51,7 @@ internal class ProjectsViewModel(
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val removeProject: RemoveProject
-) : CoroutineScopedViewModel(), ProjectsActionConsumer {
+) : CoroutineScopedViewModel(), ProjectsActionListener {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
@@ -119,33 +118,32 @@ internal class ProjectsViewModel(
         viewActions.postValue(viewAction)
     }
 
-    override fun accept(action: ProjectsAction) {
-        val item = action.item
+    override fun open(item: ProjectsItem) {
+        viewActions += ProjectsViewActions.OpenProject(item.asProject())
+    }
 
-        when (action) {
-            is ProjectsAction.Open -> {
-                viewActions += ProjectsViewActions.OpenProject(item.asProject())
+    override fun toggle(item: ProjectsItem, date: Date) {
+        launch {
+            if (!item.isActive) {
+                clockIn(item.asProject(), date)
+                return@launch
             }
-            is ProjectsAction.Toggle -> launch {
-                if (item.isActive) {
-                    if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
-                        viewActions += ProjectsViewActions.ShowConfirmClockOutMessage(item, action.date)
-                        return@launch
-                    }
 
-                    clockOut(item.asProject(), action.date)
-                    return@launch
-                }
+            if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
+                viewActions += ProjectsViewActions.ShowConfirmClockOutMessage(item, date)
+                return@launch
+            }
 
-                clockIn(item.asProject(), action.date)
-            }
-            is ProjectsAction.At -> {
-                viewActions += ProjectsViewActions.ShowChooseTimeForClockActivity(item)
-            }
-            is ProjectsAction.Remove -> {
-                viewActions += ProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
-            }
+            clockOut(item.asProject(), date)
         }
+    }
+
+    override fun at(item: ProjectsItem) {
+        viewActions += ProjectsViewActions.ShowChooseTimeForClockActivity(item)
+    }
+
+    override fun remove(item: ProjectsItem) {
+        viewActions += ProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
 
     suspend fun clockIn(project: Project, date: Date) = withContext(Dispatchers.IO) {
