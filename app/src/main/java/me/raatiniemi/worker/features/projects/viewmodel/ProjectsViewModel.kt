@@ -114,8 +114,7 @@ internal class ProjectsViewModel(
             return@withContext
         }
 
-        val viewAction = ProjectsViewActions.RefreshProjects(positions)
-        viewActions.postValue(viewAction)
+        viewActions += ProjectsViewActions.RefreshProjects(positions)
     }
 
     override fun open(item: ProjectsItem) {
@@ -150,10 +149,10 @@ internal class ProjectsViewModel(
         try {
             clockIn(project.id, date)
 
-            viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
+            viewActions += ProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions.postValue(ProjectsViewActions.ShowUnableToClockInErrorMessage)
+            viewActions += ProjectsViewActions.ShowUnableToClockInErrorMessage
         }
     }
 
@@ -161,10 +160,10 @@ internal class ProjectsViewModel(
         try {
             clockOut(project.id, date)
 
-            viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
+            viewActions += ProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions.postValue(ProjectsViewActions.ShowUnableToClockOutErrorMessage)
+            viewActions += ProjectsViewActions.ShowUnableToClockOutErrorMessage
         }
     }
 
@@ -172,10 +171,10 @@ internal class ProjectsViewModel(
         try {
             removeProject(project)
 
-            viewActions.postValue(ProjectsViewActions.DismissNotification(project))
+            viewActions += ProjectsViewActions.DismissNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions.postValue(ProjectsViewActions.ShowUnableToDeleteProjectErrorMessage)
+            viewActions += ProjectsViewActions.ShowUnableToDeleteProjectErrorMessage
         }
     }
 }
