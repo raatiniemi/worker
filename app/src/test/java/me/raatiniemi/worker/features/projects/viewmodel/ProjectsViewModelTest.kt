@@ -203,6 +203,17 @@ class ProjectsViewModelTest {
     }
 
     @Test
+    fun `accept remove project`() {
+        val item = ProjectsItem(project, emptyList())
+
+        vm.accept(ProjectsAction.Remove(item))
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowConfirmRemoveProjectMessage(item), it)
+        }
+    }
+
+    @Test
     fun `clock in with already active project`() = runBlocking {
         val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
         timeIntervalRepository.add(newTimeInterval)

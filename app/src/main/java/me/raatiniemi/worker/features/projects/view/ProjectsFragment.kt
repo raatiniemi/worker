@@ -65,7 +65,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
                 object : ProjectsActionConsumer {
                     override fun accept(action: ProjectsAction) = when (action) {
                         is ProjectsAction.At -> onClockActivityAt(action.item)
-                        is ProjectsAction.Remove -> onDelete(action.item)
                         else -> projectsViewModel.accept(action)
                     }
                 },
@@ -110,6 +109,12 @@ class ProjectsFragment : CoroutineScopedFragment() {
                 val confirmAction = ConfirmClockOutDialog.show(requireContext())
                 if (ConfirmAction.YES == confirmAction) {
                     projectsViewModel.clockOut(viewAction.item, viewAction.date)
+                }
+            }
+            is ProjectsViewActions.ShowConfirmRemoveProjectMessage -> launch {
+                val confirmAction = RemoveProjectDialog.show(requireContext())
+                if (ConfirmAction.YES == confirmAction) {
+                    projectsViewModel.remove(viewAction.item)
                 }
             }
             is ActivityViewAction -> viewAction.action(requireActivity())
@@ -186,15 +191,6 @@ class ProjectsFragment : CoroutineScopedFragment() {
         childFragmentManager.beginTransaction()
                 .add(fragment, FRAGMENT_CLOCK_ACTIVITY_AT_TAG)
                 .commit()
-    }
-
-    private fun onDelete(item: ProjectsItem) {
-        launch {
-            val confirmAction = RemoveProjectDialog.show(requireContext())
-            if (ConfirmAction.YES == confirmAction) {
-                projectsViewModel.remove(item)
-            }
-        }
     }
 
     companion object {

@@ -139,6 +139,9 @@ internal class ProjectsViewModel(
 
                 clockIn(item, action.date)
             }
+            is ProjectsAction.Remove -> {
+                viewActions += ProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
+            }
             else -> Timber.w("Unable to process action: ${action::class}")
         }
     }

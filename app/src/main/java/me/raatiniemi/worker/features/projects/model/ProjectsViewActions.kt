@@ -84,6 +84,8 @@ internal sealed class ProjectsViewActions {
 
     data class ShowConfirmClockOutMessage(val item: ProjectsItem, val date: Date) : ProjectsViewActions()
 
+    data class ShowConfirmRemoveProjectMessage(val item: ProjectsItem) : ProjectsViewActions()
+
     object ShowUnableToDeleteProjectErrorMessage : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
