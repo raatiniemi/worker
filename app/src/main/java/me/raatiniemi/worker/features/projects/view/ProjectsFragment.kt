@@ -49,12 +49,11 @@ class ProjectsFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
 
     private val vm: ProjectsViewModel by viewModel()
-
-    private var refreshActiveProjectsTimer: Timer? = null
-
     private val projectsAdapter: ProjectsAdapter by lazy {
         ProjectsAdapter(vm, HintedImageButtonListener(requireActivity()))
     }
+
+    private var refreshActiveProjectsTimer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
