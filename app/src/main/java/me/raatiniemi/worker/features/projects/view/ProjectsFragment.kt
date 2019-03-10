@@ -112,33 +112,41 @@ class ProjectsFragment : CoroutineScopedFragment() {
     private fun processViewAction(viewAction: ProjectsViewActions) {
         when (viewAction) {
             is ProjectsViewActions.RefreshProjects -> viewAction.action(projectsAdapter)
-            is ProjectsViewActions.ShowConfirmClockOutMessage -> launch {
-                val confirmAction = ConfirmClockOutDialog.show(requireContext())
-                if (ConfirmAction.YES == confirmAction) {
-                    vm.clockOut(viewAction.item.asProject(), viewAction.date)
-                }
-            }
-            is ProjectsViewActions.ShowChooseTimeForClockActivity -> {
-                viewAction.action(childFragmentManager) { projectsItem, date ->
-                    launch {
-                        if (projectsItem.isActive) {
-                            vm.clockOut(projectsItem.asProject(), date)
-                            return@launch
-                        }
-
-                        vm.clockIn(projectsItem.asProject(), date)
-                    }
-                }
-            }
-            is ProjectsViewActions.ShowConfirmRemoveProjectMessage -> launch {
-                val confirmAction = RemoveProjectDialog.show(requireContext())
-                if (ConfirmAction.YES == confirmAction) {
-                    vm.remove(viewAction.item.asProject())
-                }
-            }
+            is ProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(viewAction)
+            is ProjectsViewActions.ShowChooseTimeForClockActivity -> showChooseTimeForClockActivity(viewAction)
+            is ProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(viewAction)
             is ActivityViewAction -> viewAction.action(requireActivity())
             is ContextViewAction -> viewAction.action(requireContext())
             else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
+        }
+    }
+
+    private fun showConfirmClockOutMessage(viewAction: ProjectsViewActions.ShowConfirmClockOutMessage) = launch {
+        val confirmAction = ConfirmClockOutDialog.show(requireContext())
+        if (ConfirmAction.YES == confirmAction) {
+            vm.clockOut(viewAction.item.asProject(), viewAction.date)
+        }
+    }
+
+    private fun showChooseTimeForClockActivity(viewAction: ProjectsViewActions.ShowChooseTimeForClockActivity) {
+        viewAction.action(childFragmentManager) { projectsItem, date ->
+            launch {
+                if (projectsItem.isActive) {
+                    vm.clockOut(projectsItem.asProject(), date)
+                    return@launch
+                }
+
+                vm.clockIn(projectsItem.asProject(), date)
+            }
+        }
+    }
+
+    private fun showConfirmRemoveProjectMessage(
+            viewAction: ProjectsViewActions.ShowConfirmRemoveProjectMessage
+    ) = launch {
+        val confirmAction = RemoveProjectDialog.show(requireContext())
+        if (ConfirmAction.YES == confirmAction) {
+            vm.remove(viewAction.item.asProject())
         }
     }
 
