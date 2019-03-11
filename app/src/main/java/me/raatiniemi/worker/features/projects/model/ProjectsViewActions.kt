@@ -19,35 +19,47 @@ package me.raatiniemi.worker.features.projects.model
 import android.app.NotificationManager
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
+import me.raatiniemi.worker.features.projects.view.ClockActivityAtFragment
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import timber.log.Timber
+import java.util.*
 
 internal sealed class ProjectsViewActions {
-    data class UpdateNotification(val project: Project) : ProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
-            ProjectNotificationService.startServiceWithContext(activity, project)
+    data class RefreshProjects(private val positions: List<Int>) : ProjectsViewActions() {
+        fun action(adapter: ProjectsAdapter) {
+            Timber.d("Refreshing %d projects", positions.size)
+
+            positions.forEach { adapter.notifyItemChanged(it) }
         }
     }
 
-    data class DismissNotification(val project: Project) : ProjectsViewActions(), ContextViewAction {
-        override fun action(context: Context) {
-            val notificationManager = context.getSystemService(NotificationManager::class.java)
-            if (notificationManager == null) {
-                Timber.w("Unable to get notification manager from context")
-                return
+    data class OpenProject(private val project: Project) : ProjectsViewActions(), ActivityViewAction {
+        override fun action(activity: FragmentActivity) {
+            ProjectActivity.newIntent(activity, project)
+                    .also { activity.startActivity(it) }
+        }
+    }
+
+    data class ShowConfirmClockOutMessage(val item: ProjectsItem, val date: Date) : ProjectsViewActions()
+
+    data class ShowChooseTimeForClockActivity(val item: ProjectsItem) : ProjectsViewActions() {
+        fun action(fragmentManager: FragmentManager, onChooseTime: (ProjectsItem, Date) -> Unit) {
+            val fragment = ClockActivityAtFragment.newInstance(item) {
+                onChooseTime(item, it.time)
             }
 
-            notificationManager.cancel(
-                    project.id.toString(),
-                    WorkerApplication.NOTIFICATION_ON_GOING_ID
-            )
+            fragmentManager.beginTransaction()
+                    .add(fragment, "clock activity at")
+                    .commit()
         }
     }
 
@@ -73,6 +85,8 @@ internal sealed class ProjectsViewActions {
         }
     }
 
+    data class ShowConfirmRemoveProjectMessage(val item: ProjectsItem) : ProjectsViewActions()
+
     object ShowUnableToDeleteProjectErrorMessage : ProjectsViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
@@ -84,11 +98,24 @@ internal sealed class ProjectsViewActions {
         }
     }
 
-    data class RefreshProjects(private val positions: List<Int>) : ProjectsViewActions() {
-        fun action(adapter: ProjectsAdapter) {
-            Timber.d("Refreshing %d projects", positions.size)
+    data class UpdateNotification(val project: Project) : ProjectsViewActions(), ActivityViewAction {
+        override fun action(activity: FragmentActivity) {
+            ProjectNotificationService.startServiceWithContext(activity, project)
+        }
+    }
 
-            positions.forEach { adapter.notifyItemChanged(it) }
+    data class DismissNotification(val project: Project) : ProjectsViewActions(), ContextViewAction {
+        override fun action(context: Context) {
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+            if (notificationManager == null) {
+                Timber.w("Unable to get notification manager from context")
+                return
+            }
+
+            notificationManager.cancel(
+                    project.id.toString(),
+                    WorkerApplication.NOTIFICATION_ON_GOING_ID
+            )
         }
     }
 }

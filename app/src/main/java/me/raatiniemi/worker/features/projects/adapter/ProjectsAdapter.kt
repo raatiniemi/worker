@@ -20,14 +20,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.projects.model.ProjectsAction
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.view.ProjectsActionConsumer
+import me.raatiniemi.worker.features.projects.view.ProjectsActionListener
 import me.raatiniemi.worker.features.projects.view.ViewHolder
 import me.raatiniemi.worker.util.HintedImageButtonListener
+import java.util.*
 
 internal class ProjectsAdapter(
-        private val consumer: ProjectsActionConsumer,
+        private val listener: ProjectsActionListener,
         private val hintedImageButtonListener: HintedImageButtonListener
 ) : PagedListAdapter<ProjectsItem, ViewHolder>(projectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
@@ -54,26 +54,26 @@ internal class ProjectsAdapter(
             bind(item)
 
             itemView.setOnClickListener {
-                consumer.accept(ProjectsAction.Open(item))
+                listener.open(item)
             }
 
             with(clockActivityToggle) {
                 setOnClickListener {
-                    consumer.accept(ProjectsAction.Toggle(item))
+                    listener.toggle(item, Date())
                 }
                 setOnLongClickListener(hintedImageButtonListener)
             }
 
             with(clockActivityAt) {
                 setOnClickListener {
-                    consumer.accept(ProjectsAction.At(item))
+                    listener.at(item)
                 }
                 setOnLongClickListener(hintedImageButtonListener)
             }
 
             with(delete) {
                 setOnClickListener {
-                    consumer.accept(ProjectsAction.Remove(item))
+                    listener.remove(item)
                 }
                 setOnLongClickListener(hintedImageButtonListener)
             }

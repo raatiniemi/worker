@@ -22,7 +22,10 @@ import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.RemoveProject
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.NewProject
+import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.newTimeInterval
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
@@ -121,15 +124,113 @@ class ProjectsViewModelTest {
     }
 
     @Test
-    fun `clock in with already active project`() = runBlocking {
-        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
-        timeIntervalRepository.add(newTimeInterval)
-        val timeIntervals = listOf(
-                timeInterval { stopInMilliseconds = 0 }
-        )
-        val item = ProjectsItem(project, timeIntervals)
+    fun `open project`() {
+        val projectsItem = ProjectsItem(project, emptyList())
 
-        vm.clockIn(item, Date())
+        vm.open(projectsItem)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.OpenProject(project), it)
+        }
+    }
+
+    @Test
+    fun `toggle clock in with inactive project`() {
+        val item = ProjectsItem(project, emptyList())
+        val date = Date()
+
+        vm.toggle(item, date)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
+        }
+    }
+
+    @Test
+    fun `toggle clock in with active project`() {
+        timeIntervalRepository.add(newTimeInterval {
+            stopInMilliseconds = 0
+        })
+        val item = ProjectsItem(project, emptyList())
+        val date = Date()
+
+        vm.toggle(item, date)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowUnableToClockInErrorMessage, it)
+        }
+    }
+
+    @Test
+    fun `toggle clock out with confirm clock out`() = runBlocking {
+        val item = getProjectsItem(project, true)
+        val date = Date()
+
+        vm.toggle(item, date)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowConfirmClockOutMessage(item, date), it)
+        }
+    }
+
+    @Test
+    fun `toggle clock out project without confirm clock out with active project`() = runBlocking {
+        keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
+        timeIntervalRepository.add(newTimeInterval {
+            stopInMilliseconds = 0
+        })
+        val item = getProjectsItem(project, true)
+        val date = Date()
+
+        vm.toggle(item, date)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
+        }
+    }
+
+    @Test
+    fun `toggle clock out project without confirm clock out and active project`() = runBlocking {
+        keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
+        val item = getProjectsItem(project, true)
+        val date = Date()
+
+        vm.toggle(item, date)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
+        }
+    }
+
+    @Test
+    fun at() {
+        val item = ProjectsItem(project, emptyList())
+
+        vm.at(item)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowChooseTimeForClockActivity(item), it)
+        }
+    }
+
+    @Test
+    fun `remove project`() {
+        val item = ProjectsItem(project, emptyList())
+
+        vm.remove(item)
+
+        vm.viewActions.observeNonNull {
+            assertEquals(ProjectsViewActions.ShowConfirmRemoveProjectMessage(item), it)
+        }
+    }
+
+    @Test
+    fun `clock in with already active project`() = runBlocking {
+        timeIntervalRepository.add(newTimeInterval {
+            stopInMilliseconds = 0
+        })
+
+        vm.clockIn(project, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.ShowUnableToClockInErrorMessage, it)
@@ -138,45 +239,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock in project`() = runBlocking {
-        val item = ProjectsItem(project, emptyList())
-
-        vm.clockIn(item, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock in project with month time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
-        val item = ProjectsItem(project, emptyList())
-
-        vm.clockIn(item, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock in project with day time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.DAY.rawValue)
-        val item = ProjectsItem(project, emptyList())
-
-        vm.clockIn(item, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock in project with invalid time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, -1)
-        val item = ProjectsItem(project, emptyList())
-
-        vm.clockIn(item, Date())
+        vm.clockIn(project, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -185,9 +248,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out without active project`() = runBlocking {
-        val item = ProjectsItem(project, emptyList())
-
-        vm.clockOut(item, Date())
+        vm.clockOut(project, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
@@ -196,65 +257,11 @@ class ProjectsViewModelTest {
 
     @Test
     fun `clock out project`() = runBlocking {
-        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
-        timeIntervalRepository.add(newTimeInterval)
-        val timeIntervals = listOf(
-                timeInterval { stopInMilliseconds = 0 }
-        )
-        val item = ProjectsItem(project, timeIntervals)
+        timeIntervalRepository.add(newTimeInterval {
+            stopInMilliseconds = 0
+        })
 
-        vm.clockOut(item, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock out project with month time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
-        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
-        timeIntervalRepository.add(newTimeInterval)
-        val timeIntervals = listOf(
-                timeInterval { stopInMilliseconds = 0 }
-        )
-        val item = ProjectsItem(project, timeIntervals)
-
-        vm.clockOut(item, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock out project with day time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.DAY.rawValue)
-        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
-        timeIntervalRepository.add(newTimeInterval)
-        val timeIntervals = listOf(
-                timeInterval { stopInMilliseconds = 0 }
-        )
-        val item = ProjectsItem(project, timeIntervals)
-
-        vm.clockOut(item, Date())
-
-        vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
-        }
-    }
-
-    @Test
-    fun `clock out project with invalid time interval starting point`() = runBlocking {
-        keyValueStore.set(AppKeys.TIME_SUMMARY, -1)
-        val newTimeInterval = newTimeInterval { stopInMilliseconds = 0 }
-        timeIntervalRepository.add(newTimeInterval)
-        val timeIntervals = listOf(
-                timeInterval { stopInMilliseconds = 0 }
-        )
-        val item = ProjectsItem(project, timeIntervals)
-
-        vm.clockOut(item, Date())
+        vm.clockOut(project, Date())
 
         vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.UpdateNotification(project), it)
@@ -263,10 +270,7 @@ class ProjectsViewModelTest {
 
     @Test
     fun `remove project without project`() = runBlocking {
-        val project = Project(1, "Project #1")
-        val item = ProjectsItem(project, emptyList())
-
-        vm.remove(item)
+        vm.remove(project)
 
         vm.viewActions.observeNonNull {
             assertEquals(ProjectsViewActions.DismissNotification(project), it)
@@ -275,13 +279,11 @@ class ProjectsViewModelTest {
 
     @Test
     fun `remove project with project`() = runBlocking {
-        val newProject = NewProject("Project #1")
+        projectRepository.add(NewProject("Project #1"))
         val project = Project(1, "Project #1")
-        val item = ProjectsItem(project, emptyList())
-        projectRepository.add(newProject)
         val expected = emptyList<Project>()
 
-        vm.remove(item)
+        vm.remove(project)
 
         val actual = projectRepository.findAll()
         assertEquals(expected, actual)

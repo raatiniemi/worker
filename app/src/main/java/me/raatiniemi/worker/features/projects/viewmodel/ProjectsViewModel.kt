@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.features.projects.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.ProjectDataSourceFactory
 import me.raatiniemi.worker.domain.exception.DomainException
@@ -35,7 +35,10 @@ import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.features.projects.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
+import me.raatiniemi.worker.features.projects.view.ProjectsActionListener
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
+import me.raatiniemi.worker.features.shared.model.plusAssign
+import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
@@ -48,7 +51,7 @@ internal class ProjectsViewModel(
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val removeProject: RemoveProject
-) : ViewModel() {
+) : CoroutineScopedViewModel(), ProjectsActionListener {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
@@ -111,45 +114,67 @@ internal class ProjectsViewModel(
             return@withContext
         }
 
-        val viewAction = ProjectsViewActions.RefreshProjects(positions)
-        viewActions.postValue(viewAction)
+        viewActions += ProjectsViewActions.RefreshProjects(positions)
     }
 
-    suspend fun clockIn(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
-        try {
-            val project = item.asProject()
+    override fun open(item: ProjectsItem) {
+        viewActions += ProjectsViewActions.OpenProject(item.asProject())
+    }
 
+    override fun toggle(item: ProjectsItem, date: Date) {
+        launch {
+            if (!item.isActive) {
+                clockIn(item.asProject(), date)
+                return@launch
+            }
+
+            if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
+                viewActions += ProjectsViewActions.ShowConfirmClockOutMessage(item, date)
+                return@launch
+            }
+
+            clockOut(item.asProject(), date)
+        }
+    }
+
+    override fun at(item: ProjectsItem) {
+        viewActions += ProjectsViewActions.ShowChooseTimeForClockActivity(item)
+    }
+
+    override fun remove(item: ProjectsItem) {
+        viewActions += ProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
+    }
+
+    suspend fun clockIn(project: Project, date: Date) = withContext(Dispatchers.IO) {
+        try {
             clockIn(project.id, date)
 
-            viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
+            viewActions += ProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions.postValue(ProjectsViewActions.ShowUnableToClockInErrorMessage)
+            viewActions += ProjectsViewActions.ShowUnableToClockInErrorMessage
         }
     }
 
-    suspend fun clockOut(item: ProjectsItem, date: Date) = withContext(Dispatchers.IO) {
+    suspend fun clockOut(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
-            val project = item.asProject()
-
             clockOut(project.id, date)
 
-            viewActions.postValue(ProjectsViewActions.UpdateNotification(project))
+            viewActions += ProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions.postValue(ProjectsViewActions.ShowUnableToClockOutErrorMessage)
+            viewActions += ProjectsViewActions.ShowUnableToClockOutErrorMessage
         }
     }
 
-    suspend fun remove(item: ProjectsItem) = withContext(Dispatchers.IO) {
+    suspend fun remove(project: Project) = withContext(Dispatchers.IO) {
         try {
-            val project = item.asProject()
             removeProject(project)
 
-            viewActions.postValue(ProjectsViewActions.DismissNotification(project))
+            viewActions += ProjectsViewActions.DismissNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions.postValue(ProjectsViewActions.ShowUnableToDeleteProjectErrorMessage)
+            viewActions += ProjectsViewActions.ShowUnableToDeleteProjectErrorMessage
         }
     }
 }
