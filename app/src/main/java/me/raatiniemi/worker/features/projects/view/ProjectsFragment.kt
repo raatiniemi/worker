@@ -17,19 +17,20 @@
 package me.raatiniemi.worker.features.projects.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
+import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectFragment
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
+import me.raatiniemi.worker.features.settings.view.SettingsActivity
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
@@ -90,7 +91,36 @@ class ProjectsFragment : CoroutineScopedFragment() {
         eventBus.unregister(this)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.actions_projects, menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
+        R.id.actions_main_create_project -> {
+            openCreateProject()
+            true
+        }
+        R.id.actions_main_settings -> {
+            openSettings()
+            true
+        }
+        else -> super.onOptionsItemSelected(menuItem)
+    }
+
+    private fun openCreateProject() {
+        CreateProjectFragment.newInstance()
+                .show(childFragmentManager, "create project")
+    }
+
+    private fun openSettings() {
+        startActivity(SettingsActivity.newIntent(requireContext()))
+    }
+
     private fun configureView() {
+        setHasOptionsMenu(true)
+
         rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = projectsAdapter
@@ -171,6 +201,15 @@ class ProjectsFragment : CoroutineScopedFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: CreateProjectEvent) {
         vm.reloadProjects()
+
+        with(requireActivity()) {
+            val snackBar = Snackbar.make(
+                    findViewById(android.R.id.content),
+                    R.string.message_project_created,
+                    Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

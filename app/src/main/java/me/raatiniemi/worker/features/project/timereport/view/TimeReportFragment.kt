@@ -17,10 +17,7 @@
 package me.raatiniemi.worker.features.project.timereport.view
 
 import android.os.Bundle
-import android.view.ActionMode
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
@@ -66,13 +63,43 @@ class TimeReportFragment : CoroutineScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureView()
+        observeViewModel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        eventBus.unregister(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.actions_project, menu)
+        menu.findItem(R.id.actions_project_hide_registered)?.let {
+            it.isChecked = vm.shouldHideRegisteredTime
+        }
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (R.id.actions_project_hide_registered == item.itemId) {
+            item.isChecked = !item.isChecked
+            vm.shouldHideRegisteredTime = item.isChecked
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun configureView() {
+        setHasOptionsMenu(true)
+
         rvTimeReport.apply {
             adapter = timeReportAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)
         }
-
-        observeViewModel()
     }
 
     private fun observeViewModel() {
@@ -93,12 +120,6 @@ class TimeReportFragment : CoroutineScopedFragment() {
         vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        eventBus.unregister(this)
     }
 
     fun reloadTimeReport() {
