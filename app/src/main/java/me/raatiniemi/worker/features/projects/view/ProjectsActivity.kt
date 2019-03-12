@@ -17,11 +17,7 @@
 package me.raatiniemi.worker.features.projects.view
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectFragment
-import me.raatiniemi.worker.features.settings.view.SettingsActivity
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
 import me.raatiniemi.worker.util.NullUtil.isNull
 
@@ -41,40 +37,7 @@ class ProjectsActivity : BaseActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.actions_projects, menu)
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
-        R.id.actions_main_create_project -> {
-            openCreateProject()
-            true
-        }
-        R.id.actions_main_settings -> {
-            openSettings()
-            true
-        }
-        else -> super.onOptionsItemSelected(menuItem)
-    }
-
-    private fun openCreateProject() {
-        val createProjectFragment = CreateProjectFragment.newInstance()
-
-        supportFragmentManager.beginTransaction()
-                .add(createProjectFragment, FRAGMENT_CREATE_PROJECT_TAG)
-                .commit()
-    }
-
-    private fun openSettings() {
-        val intent = SettingsActivity.newIntent(this)
-        startActivity(intent)
-    }
-
     companion object {
         private const val FRAGMENT_PROJECT_LIST_TAG = "project list"
-        private const val FRAGMENT_CREATE_PROJECT_TAG = "create project"
     }
 }
