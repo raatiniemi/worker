@@ -19,7 +19,6 @@ package me.raatiniemi.worker.features.projects.view
 import android.os.Bundle
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
-import me.raatiniemi.worker.util.NullUtil.isNull
 
 class ProjectsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,17 +26,5 @@ class ProjectsActivity : BaseActivity() {
         setContentView(R.layout.activity_projects)
 
         title = getString(R.string.activity_projects_title)
-
-        if (isNull(savedInstanceState)) {
-            val fragment = ProjectsFragment()
-
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.flFragmentContainer, fragment, FRAGMENT_PROJECT_LIST_TAG)
-                    .commit()
-        }
-    }
-
-    companion object {
-        private const val FRAGMENT_PROJECT_LIST_TAG = "project list"
     }
 }
