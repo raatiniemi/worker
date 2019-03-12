@@ -70,6 +70,12 @@ class TimeReportFragment : CoroutineScopedFragment() {
         observeViewModel()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        eventBus.unregister(this)
+    }
+
     private fun configureView() {
         rvTimeReport.apply {
             adapter = timeReportAdapter
@@ -96,12 +102,6 @@ class TimeReportFragment : CoroutineScopedFragment() {
         vm.viewActions.observeAndConsume(this, Observer {
             it.action(requireActivity())
         })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        eventBus.unregister(this)
     }
 
     fun reloadTimeReport() {
