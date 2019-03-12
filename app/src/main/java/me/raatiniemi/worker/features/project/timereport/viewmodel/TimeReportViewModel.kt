@@ -37,12 +37,13 @@ import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapActio
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.map
+import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 class TimeReportViewModel internal constructor(
         projectHolder: ProjectHolder,
-        keyValueStore: KeyValueStore,
+        private val keyValueStore: KeyValueStore,
         repository: TimeReportRepository,
         private val markRegisteredTime: MarkRegisteredTime,
         private val removeTime: RemoveTime
@@ -55,6 +56,13 @@ class TimeReportViewModel internal constructor(
 
     private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
     private val expandedDays = mutableSetOf<Int>()
+
+    var shouldHideRegisteredTime: Boolean
+        get() = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
+        set(value) {
+            keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, value)
+            reloadTimeReport()
+        }
 
     val isSelectionActivated: LiveData<Boolean> = _selectedItems.map { isSelectionActivated(it) }
 

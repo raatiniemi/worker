@@ -19,21 +19,16 @@ package me.raatiniemi.worker.features.project.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.lifecycle.Observer
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.view.TimeReportFragment
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
-import me.raatiniemi.worker.util.KeyValueStore
 import me.raatiniemi.worker.util.NullUtil.isNull
-import me.raatiniemi.worker.util.NullUtil.nonNull
 import org.koin.android.ext.android.inject
 
 class ProjectActivity : BaseActivity() {
-    private val keyValueStore: KeyValueStore by inject()
     private val projectHolder: ProjectHolder by inject()
 
     private lateinit var timeReportFragment: TimeReportFragment
@@ -81,35 +76,6 @@ class ProjectActivity : BaseActivity() {
                 timeReportFragment.reloadTimeReport()
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.actions_project, menu)
-
-        // Set the selected value for the option, otherwise the value will be set to default each
-        // time the activity is created.
-        val hideRegistered = menu.findItem(R.id.actions_project_hide_registered)
-        if (nonNull(hideRegistered)) {
-            hideRegistered.isChecked = keyValueStore.hideRegisteredTime()
-        }
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (R.id.actions_project_hide_registered == item.itemId) {
-            handleHideRegisteredTimeChange(item)
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun handleHideRegisteredTimeChange(item: MenuItem) {
-        item.isChecked = !item.isChecked
-
-        keyValueStore.setHideRegisteredTime(item.isChecked)
-        timeReportFragment.reloadTimeReport()
     }
 
     companion object {
