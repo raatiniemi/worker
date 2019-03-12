@@ -66,13 +66,16 @@ class TimeReportFragment : CoroutineScopedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configureView()
+        observeViewModel()
+    }
+
+    private fun configureView() {
         rvTimeReport.apply {
             adapter = timeReportAdapter
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(false)
         }
-
-        observeViewModel()
     }
 
     private fun observeViewModel() {
