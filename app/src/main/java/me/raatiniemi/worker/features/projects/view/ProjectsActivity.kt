@@ -44,7 +44,7 @@ class ProjectsActivity : BaseActivity() {
             val fragment = ProjectsFragment()
 
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment, FRAGMENT_PROJECT_LIST_TAG)
+                    .replace(R.id.flFragmentContainer, fragment, FRAGMENT_PROJECT_LIST_TAG)
                     .commit()
         }
 

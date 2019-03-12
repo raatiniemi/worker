@@ -52,7 +52,7 @@ class ProjectActivity : BaseActivity() {
         if (isNull(savedInstanceState)) {
             supportFragmentManager.beginTransaction()
                     .replace(
-                            R.id.fragment_container,
+                            R.id.flFragmentContainer,
                             timeReportFragment,
                             ProjectActivity.FRAGMENT_TIME_REPORT_TAG
                     )
