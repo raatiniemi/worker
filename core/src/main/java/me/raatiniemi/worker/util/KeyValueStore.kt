@@ -22,14 +22,4 @@ interface KeyValueStore {
 
     fun bool(key: AppKeys, defaultValue: Boolean): Boolean
     fun int(key: AppKeys, defaultValue: Int = 0): Int
-
-    // TODO: Move configurations to extensions when calling code is in kotlin.
-
-    fun setHideRegisteredTime(value: Boolean) {
-        set(AppKeys.HIDE_REGISTERED_TIME, value)
-    }
-
-    fun hideRegisteredTime(): Boolean {
-        return bool(AppKeys.HIDE_REGISTERED_TIME, false)
-    }
 }
