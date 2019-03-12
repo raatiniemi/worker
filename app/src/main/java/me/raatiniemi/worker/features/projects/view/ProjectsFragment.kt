@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
@@ -171,6 +172,15 @@ class ProjectsFragment : CoroutineScopedFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEventMainThread(event: CreateProjectEvent) {
         vm.reloadProjects()
+
+        with(requireActivity()) {
+            val snackBar = Snackbar.make(
+                    findViewById(android.R.id.content),
+                    R.string.message_project_created,
+                    Snackbar.LENGTH_SHORT
+            )
+            snackBar.show()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
