@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.activity_project.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.project.model.ProjectHolder
@@ -36,10 +37,13 @@ class ProjectActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
+        configureView()
 
         projectHolder += readProject(intent)
         projectHolder.value.observe(this, Observer {
-            title = it.name
+            supportActionBar?.apply {
+                title = it.name
+            }
         })
 
         timeReportFragment = TimeReportFragment.newInstance()
@@ -75,6 +79,14 @@ class ProjectActivity : BaseActivity() {
                 projectHolder += newProject
                 timeReportFragment.reloadTimeReport()
             }
+        }
+    }
+
+    private fun configureView() {
+        setSupportActionBar(tbMain)
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
         }
     }
 

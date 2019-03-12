@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.features.projects.view
 
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_projects.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
 
@@ -25,6 +26,14 @@ class ProjectsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_projects)
 
-        title = getString(R.string.activity_projects_title)
+        configureView()
+    }
+
+    private fun configureView() {
+        setSupportActionBar(tbMain)
+
+        supportActionBar?.apply {
+            title = getString(R.string.activity_projects_title)
+        }
     }
 }

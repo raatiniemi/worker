@@ -23,6 +23,7 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import kotlinx.android.synthetic.main.activity_settings.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.settings.project.view.ProjectFragment
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
@@ -32,6 +33,7 @@ class SettingsActivity : BaseActivity(), PreferenceFragmentCompat.OnPreferenceSt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        configureView()
 
         if (isNull(savedInstanceState)) {
             supportFragmentManager.beginTransaction()
@@ -64,6 +66,15 @@ class SettingsActivity : BaseActivity(), PreferenceFragmentCompat.OnPreferenceSt
 
         val settings = SettingsFragment::class.java
         return settings != fragment?.javaClass
+    }
+
+    private fun configureView() {
+        setSupportActionBar(tbMain)
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = getString(R.string.activity_settings_title)
+        }
     }
 
     override fun onPreferenceStartFragment(caller: PreferenceFragmentCompat, pref: Preference): Boolean {
