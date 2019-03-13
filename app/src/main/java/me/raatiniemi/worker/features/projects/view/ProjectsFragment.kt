@@ -30,7 +30,6 @@ import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectFr
 import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
 import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
-import me.raatiniemi.worker.features.settings.view.SettingsActivity
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
@@ -102,20 +101,12 @@ class ProjectsFragment : CoroutineScopedFragment() {
             openCreateProject()
             true
         }
-        R.id.actions_main_settings -> {
-            openSettings()
-            true
-        }
         else -> super.onOptionsItemSelected(menuItem)
     }
 
     private fun openCreateProject() {
         CreateProjectFragment.newInstance()
                 .show(childFragmentManager, "create project")
-    }
-
-    private fun openSettings() {
-        startActivity(SettingsActivity.newIntent(requireContext()))
     }
 
     private fun configureView() {

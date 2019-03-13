@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/actions_main_create_project"
-        android:title="@string/menu_actions_projects_create_project"
         android:icon="@android:drawable/ic_menu_add"
-        />
-
-    <item
-        android:id="@+id/actions_main_settings"
-        android:title="@string/menu_actions_projects_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
-        />
-
+        android:title="@string/menu_actions_projects_create_project" />
 </menu>

@@ -19,6 +19,7 @@ package me.raatiniemi.worker.features.projects.view
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_projects.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.settings.view.SettingsActivity
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
 
 class ProjectsActivity : BaseActivity() {
@@ -34,6 +35,13 @@ class ProjectsActivity : BaseActivity() {
 
         supportActionBar?.apply {
             title = getString(R.string.activity_projects_title)
+        }
+
+        nvProjects.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.actions_main_settings -> startActivity(SettingsActivity.newIntent(this))
+            }
+            true
         }
     }
 }
