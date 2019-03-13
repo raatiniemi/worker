@@ -3,7 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/actions_main_settings"
-            android:title="@string/menu_actions_projects_settings"
+            android:title="@string/main_navigation_settings"
             android:icon="@android:drawable/ic_menu_preferences" />
     </group>
 </menu>
