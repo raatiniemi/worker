@@ -43,6 +43,8 @@ class ProjectsActivity : BaseActivity() {
                 R.id.actions_main_settings -> startActivity(SettingsActivity.newIntent(this))
                 else -> Timber.w("No navigation is available for: ${it.title}")
             }
+
+            dlProjects.closeDrawers()
             true
         }
     }
