@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_projects.*
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.settings.view.SettingsActivity
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
+import timber.log.Timber
 
 class ProjectsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +41,7 @@ class ProjectsActivity : BaseActivity() {
         nvProjects.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.actions_main_settings -> startActivity(SettingsActivity.newIntent(this))
+                else -> Timber.w("No navigation is available for: ${it.title}")
             }
             true
         }
