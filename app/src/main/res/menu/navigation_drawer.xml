@@ -7,7 +7,7 @@
             android:title="@string/main_navigation_projects" />
         <item
             android:id="@+id/navSettings"
-            android:icon="@android:drawable/ic_menu_preferences"
+            android:icon="@drawable/ic_outline_settings_24px"
             android:title="@string/main_navigation_settings" />
     </group>
 </menu>
