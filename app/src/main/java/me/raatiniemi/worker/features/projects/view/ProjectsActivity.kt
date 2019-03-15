@@ -38,14 +38,16 @@ class ProjectsActivity : BaseActivity() {
             title = getString(R.string.activity_projects_title)
         }
 
+        nvProjects.menu.findItem(R.id.navProjects).isChecked = true
         nvProjects.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.actions_main_settings -> startActivity(SettingsActivity.newIntent(this))
+                R.id.navProjects -> Unit
+                R.id.navSettings -> startActivity(SettingsActivity.newIntent(this))
                 else -> Timber.w("No navigation is available for: ${it.title}")
             }
 
             dlProjects.closeDrawers()
-            true
+            false
         }
     }
 }
