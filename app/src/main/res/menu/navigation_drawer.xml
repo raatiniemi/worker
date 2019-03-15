@@ -3,6 +3,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/navProjects"
+            android:icon="@drawable/ic_outline_assignment_24px"
             android:title="@string/main_navigation_projects" />
         <item
             android:id="@+id/navSettings"
