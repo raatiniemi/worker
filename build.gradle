@@ -48,6 +48,12 @@ allprojects {
         maven {
             url 'https://maven.google.com/'
         }
+        // When updating Room to 2.1.0-alpha05 the project is failing to compile, due to
+        // kotlinx-metadata-jvm not being on maven central. Adding explicit dependency until issue
+        // is resolved, ref: https://youtrack.jetbrains.com/issue/KT-27991
+        maven {
+            url "https://kotlin.bintray.com/kotlinx/"
+        }
     }
 
     tasks.withType(JavaCompile) {
