@@ -17,11 +17,12 @@
 package me.raatiniemi.worker.features.projects.view
 
 import android.os.Bundle
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_projects.*
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.settings.view.SettingsActivity
 import me.raatiniemi.worker.features.shared.view.activity.BaseActivity
-import timber.log.Timber
 
 class ProjectsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,22 +33,9 @@ class ProjectsActivity : BaseActivity() {
     }
 
     private fun configureView() {
-        setSupportActionBar(tbMain)
-
-        supportActionBar?.apply {
-            title = getString(R.string.activity_projects_title)
-        }
-
-        nvProjects.menu.findItem(R.id.navProjects).isChecked = true
-        nvProjects.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.navProjects -> Unit
-                R.id.navSettings -> startActivity(SettingsActivity.newIntent(this))
-                else -> Timber.w("No navigation is available for: ${it.title}")
-            }
-
-            dlProjects.closeDrawers()
-            false
-        }
+        val navController = findNavController(R.id.fragmentContainer)
+        val appBarConfiguration = AppBarConfiguration(navController.graph, dlProjects)
+        tbMain.setupWithNavController(navController, appBarConfiguration)
+        nvProjects.setupWithNavController(navController)
     }
 }

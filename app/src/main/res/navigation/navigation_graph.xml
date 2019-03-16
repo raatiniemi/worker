@@ -3,12 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/projects">
+    app:startDestination="@id/navProjects">
 
     <fragment
-        android:id="@+id/projects"
+        android:id="@+id/navProjects"
         android:name="me.raatiniemi.worker.features.projects.view.ProjectsFragment"
-        android:label="ProjectsFragment"
+        android:label="@string/activity_projects_title"
         tools:layout="@layout/fragment_projects" />
+
+    <fragment
+        android:id="@+id/navSettings"
+        android:name="me.raatiniemi.worker.features.settings.view.SettingsFragment"
+        android:label="@string/activity_settings_title" />
 
 </navigation>
