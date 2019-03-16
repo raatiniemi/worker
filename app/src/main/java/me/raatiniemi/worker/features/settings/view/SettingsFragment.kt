@@ -20,13 +20,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.BuildConfig
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.configurePreference
 
-class SettingsFragment : BasePreferenceFragment() {
-    public override val title = R.string.activity_settings_title
-
+class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings)
     }

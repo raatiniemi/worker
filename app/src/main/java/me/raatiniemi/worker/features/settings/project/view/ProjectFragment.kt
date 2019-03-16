@@ -23,15 +23,15 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
+import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
-import me.raatiniemi.worker.features.settings.view.BasePreferenceFragment
 import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.onCheckChange
 import me.raatiniemi.worker.util.Notifications
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ProjectFragment : BasePreferenceFragment() {
+class ProjectFragment : PreferenceFragmentCompat() {
     private val vm: ProjectViewModel by viewModel()
 
     private val isOngoingChannelEnabled: Boolean by lazy {
@@ -42,8 +42,6 @@ class ProjectFragment : BasePreferenceFragment() {
             return@lazy true
         }
     }
-
-    override val title = R.string.activity_settings_project
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings_project)
