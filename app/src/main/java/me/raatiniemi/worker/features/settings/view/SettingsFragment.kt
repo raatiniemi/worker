@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.settings.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import me.raatiniemi.worker.BuildConfig
 import me.raatiniemi.worker.R
@@ -41,5 +42,12 @@ class SettingsFragment : BasePreferenceFragment() {
                     BuildConfig.VERSION_CODE
             )
         }
+    }
+
+    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+        when (preference?.key) {
+            "settings_project" -> findNavController().navigate(R.id.settings_project)
+        }
+        return super.onPreferenceTreeClick(preference)
     }
 }
