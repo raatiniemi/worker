@@ -3,8 +3,6 @@
 
     <string name="name">Worker</string>
 
-    <string name="activity_projects_title">Projects</string>
-
     <string name="main_navigation_projects">Projects</string>
     <string name="main_navigation_settings">Settings</string>
 
@@ -53,7 +51,6 @@
     <string name="error_message_register_time_report">Failed to update item(s).</string>
     <string name="error_message_delete_time_report">Failed to delete item(s).</string>
 
-    <string name="activity_settings_title">Settings</string>
     <string name="activity_settings_preferences">Preferences</string>
     <string name="activity_settings_project">Project</string>
     <string name="activity_settings_project_general">General</string>

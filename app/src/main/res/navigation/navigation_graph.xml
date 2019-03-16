@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/navProjects"
         android:name="me.raatiniemi.worker.features.projects.view.ProjectsFragment"
-        android:label="@string/activity_projects_title"
+        android:label="@string/main_navigation_projects"
         tools:layout="@layout/fragment_projects" />
 
     <fragment
         android:id="@+id/navSettings"
         android:name="me.raatiniemi.worker.features.settings.view.SettingsFragment"
-        android:label="@string/activity_settings_title">
+        android:label="@string/main_navigation_settings">
 
         <action
             android:id="@+id/settings_project"
