@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2018 Tobias Raatiniemi
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2019 Tobias Raatiniemi
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -15,64 +14,46 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="me.raatiniemi.worker"
-    >
+    package="me.raatiniemi.worker">
 
     <application
         android:name=".WorkerApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_scheme"
-        android:label="@string/name"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/Theme"
+        android:label="@string/name"
         android:supportsRtl="true"
+        android:theme="@style/Theme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity
-            android:name="me.raatiniemi.worker.features.home.view.HomeActivity"
-            >
-
+        <activity android:name="me.raatiniemi.worker.features.home.view.HomeActivity">
             <intent-filter>
-
-                <action
-                    android:name="android.intent.action.MAIN"
-                    />
-
-                <category
-                    android:name="android.intent.category.LAUNCHER"
-                    />
-
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <service
             android:name=".data.service.ongoing.PauseService"
-            android:exported="false"
-            />
+            android:exported="false" />
 
         <service
             android:name=".data.service.ongoing.ClockOutService"
-            android:exported="false"
-            />
+            android:exported="false" />
 
         <service
             android:name=".data.service.ongoing.ResumeService"
-            android:exported="false"
-            />
+            android:exported="false" />
 
         <service
             android:name=".data.service.ongoing.ReloadNotificationService"
-            android:exported="false"
-            />
+            android:exported="false" />
 
         <service
             android:name=".data.service.ongoing.ProjectNotificationService"
-            android:exported="false"
-            />
+            android:exported="false" />
 
     </application>
 
