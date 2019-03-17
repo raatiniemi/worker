@@ -42,7 +42,7 @@ internal class TimeReportAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.fragment_time_report_day, parent, false)
+        val view = inflater.inflate(R.layout.fragment_project_time_report_day, parent, false)
 
         return DayViewHolder(view)
     }
@@ -89,7 +89,7 @@ internal class TimeReportAdapter(
 
         parent.removeAllViews()
         items.forEach { item ->
-            val view = layoutInflater.inflate(R.layout.fragment_time_report_item, parent, false)
+            val view = layoutInflater.inflate(R.layout.fragment_project_time_report_item, parent, false)
             bindTimeReportItemViewHolder(view, item)
 
             parent.addView(view)

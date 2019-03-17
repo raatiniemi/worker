@@ -21,7 +21,7 @@
         android:id="@+id/navTimeReport"
         android:name="me.raatiniemi.worker.features.projects.timereport.view.TimeReportFragment"
         android:label="Project"
-        tools:layout="@layout/fragment_time_report">
+        tools:layout="@layout/fragment_project_time_report">
 
         <argument
             android:name="projectId"

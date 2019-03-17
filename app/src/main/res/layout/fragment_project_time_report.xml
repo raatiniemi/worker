@@ -9,7 +9,7 @@
         android:id="@+id/rvTimeReport"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/fragment_time_report_day" />
+        tools:listitem="@layout/fragment_project_time_report_day" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvEmptyTimeReport"

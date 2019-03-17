@@ -21,7 +21,7 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_time_report.*
+import kotlinx.android.synthetic.main.fragment_project_time_report.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
@@ -64,7 +64,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_time_report, container, false)
+        return inflater.inflate(R.layout.fragment_project_time_report, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
