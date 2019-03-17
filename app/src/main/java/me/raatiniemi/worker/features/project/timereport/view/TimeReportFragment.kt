@@ -19,10 +19,12 @@ package me.raatiniemi.worker.features.project.timereport.view
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_time_report.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.project.model.ProjectHolder
 import me.raatiniemi.worker.features.project.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportAction
@@ -41,6 +43,7 @@ import timber.log.Timber
 
 class TimeReportFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
+    private val arguments: TimeReportFragmentArgs by navArgs()
     private val projectHolder: ProjectHolder by inject()
 
     private val vm: TimeReportViewModel by viewModel()
@@ -54,6 +57,10 @@ class TimeReportFragment : CoroutineScopedFragment() {
         super.onCreate(savedInstanceState)
 
         eventBus.register(this)
+        projectHolder += Project(
+                id = arguments.projectId,
+                name = arguments.projectName
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

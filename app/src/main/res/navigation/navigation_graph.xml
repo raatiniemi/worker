@@ -9,7 +9,28 @@
         android:id="@+id/navProjects"
         android:name="me.raatiniemi.worker.features.projects.view.ProjectsFragment"
         android:label="@string/main_navigation_projects"
-        tools:layout="@layout/fragment_projects" />
+        tools:layout="@layout/fragment_projects">
+
+        <action
+            android:id="@+id/open_time_report"
+            app:destination="@id/navTimeReport" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navTimeReport"
+        android:name="me.raatiniemi.worker.features.project.timereport.view.TimeReportFragment"
+        android:label="Project"
+        tools:layout="@layout/fragment_time_report">
+
+        <argument
+            android:name="projectId"
+            app:argType="long" />
+        <argument
+            android:name="projectName"
+            app:argType="string" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navSettings"

@@ -133,6 +133,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
     private fun processViewAction(viewAction: ProjectsViewActions) {
         when (viewAction) {
             is ProjectsViewActions.RefreshProjects -> viewAction.action(projectsAdapter)
+            is ProjectsViewActions.OpenProject -> viewAction.action(this)
             is ProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(viewAction)
             is ProjectsViewActions.ShowChooseTimeForClockActivity -> showChooseTimeForClockActivity(viewAction)
             is ProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(viewAction)

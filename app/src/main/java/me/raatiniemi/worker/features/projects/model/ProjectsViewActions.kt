@@ -18,18 +18,21 @@ package me.raatiniemi.worker.features.projects.model
 
 import android.app.NotificationManager
 import android.content.Context
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
 import me.raatiniemi.worker.features.projects.view.ClockActivityAtFragment
+import me.raatiniemi.worker.features.projects.view.ProjectsFragmentDirections
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
+import me.raatiniemi.worker.features.shared.model.FragmentViewAction
 import timber.log.Timber
 import java.util.*
 
@@ -42,10 +45,12 @@ internal sealed class ProjectsViewActions {
         }
     }
 
-    data class OpenProject(private val project: Project) : ProjectsViewActions(), ActivityViewAction {
-        override fun action(activity: FragmentActivity) {
-            ProjectActivity.newIntent(activity, project)
-                    .also { activity.startActivity(it) }
+    data class OpenProject(private val project: Project) : ProjectsViewActions(), FragmentViewAction {
+        override fun action(fragment: Fragment) {
+            val destinationAction = ProjectsFragmentDirections.openTimeReport(project.id, project.name)
+
+            fragment.findNavController()
+                    .navigate(destinationAction)
         }
     }
 
