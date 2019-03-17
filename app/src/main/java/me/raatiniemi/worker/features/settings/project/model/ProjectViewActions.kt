@@ -31,7 +31,7 @@ sealed class ProjectViewActions : ActivityViewAction {
 
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
-                    R.string.message_change_time_summary_starting_point_week,
+                    R.string.fragment_settings_project_time_summary_changed_to_week,
                     Snackbar.LENGTH_LONG
             )
             snackBar.show()
@@ -46,7 +46,7 @@ sealed class ProjectViewActions : ActivityViewAction {
 
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
-                    R.string.message_change_time_summary_starting_point_month,
+                    R.string.fragment_settings_project_time_summary_changed_to_month,
                     Snackbar.LENGTH_LONG
             )
             snackBar.show()
@@ -57,7 +57,7 @@ sealed class ProjectViewActions : ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
-                    R.string.error_message_change_time_summary_starting_point,
+                    R.string.fragment_settings_project_time_summary_unable_to_change_error_message,
                     Snackbar.LENGTH_LONG
             )
             snackBar.show()

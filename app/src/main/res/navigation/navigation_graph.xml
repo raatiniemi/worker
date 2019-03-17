@@ -29,6 +29,6 @@
     <fragment
         android:id="@+id/navSettingsProject"
         android:name="me.raatiniemi.worker.features.settings.project.view.ProjectFragment"
-        android:label="@string/activity_settings_project" />
+        android:label="@string/fragment_settings_project_title" />
 
 </navigation>
