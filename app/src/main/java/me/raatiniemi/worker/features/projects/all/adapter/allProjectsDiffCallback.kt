@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.projects.all.adapter
 import androidx.recyclerview.widget.DiffUtil
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 
-internal val projectsDiffCallback = object : DiffUtil.ItemCallback<ProjectsItem>() {
+internal val allProjectsDiffCallback = object : DiffUtil.ItemCallback<ProjectsItem>() {
     override fun areItemsTheSame(old: ProjectsItem, new: ProjectsItem) = old.title == new.title
 
     override fun areContentsTheSame(old: ProjectsItem, new: ProjectsItem) = old == new

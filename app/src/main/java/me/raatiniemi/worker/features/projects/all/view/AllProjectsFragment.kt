@@ -21,12 +21,12 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_projects.*
+import kotlinx.android.synthetic.main.fragment_all_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.projects.all.adapter.ProjectsAdapter
-import me.raatiniemi.worker.features.projects.all.model.ProjectsViewActions
-import me.raatiniemi.worker.features.projects.all.viewmodel.ProjectsViewModel
+import me.raatiniemi.worker.features.projects.all.adapter.AllProjectsAdapter
+import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
+import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectFragment
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
@@ -45,12 +45,12 @@ import timber.log.Timber
 import java.util.*
 import kotlin.concurrent.schedule
 
-class ProjectsFragment : CoroutineScopedFragment() {
+class AllProjectsFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
 
-    private val vm: ProjectsViewModel by viewModel()
-    private val projectsAdapter: ProjectsAdapter by lazy {
-        ProjectsAdapter(vm, HintedImageButtonListener(requireActivity()))
+    private val vm: AllProjectsViewModel by viewModel()
+    private val allProjectsAdapter: AllProjectsAdapter by lazy {
+        AllProjectsAdapter(vm, HintedImageButtonListener(requireActivity()))
     }
 
     private var refreshActiveProjectsTimer: Timer? = null
@@ -62,7 +62,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_projects, container, false)
+        return inflater.inflate(R.layout.fragment_all_projects, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -114,13 +114,13 @@ class ProjectsFragment : CoroutineScopedFragment() {
 
         rvProjects.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = projectsAdapter
+            adapter = allProjectsAdapter
         }
     }
 
     private fun observeViewModel() {
         vm.projects.observe(this, Observer {
-            projectsAdapter.submitList(it)
+            allProjectsAdapter.submitList(it)
 
             tvEmptyProjects.visibleIf { it.isEmpty() }
         })
@@ -130,27 +130,27 @@ class ProjectsFragment : CoroutineScopedFragment() {
         })
     }
 
-    private fun processViewAction(viewAction: ProjectsViewActions) {
+    private fun processViewAction(viewAction: AllProjectsViewActions) {
         when (viewAction) {
-            is ProjectsViewActions.RefreshProjects -> viewAction.action(projectsAdapter)
-            is ProjectsViewActions.OpenProject -> viewAction.action(this)
-            is ProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(viewAction)
-            is ProjectsViewActions.ShowChooseTimeForClockActivity -> showChooseTimeForClockActivity(viewAction)
-            is ProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(viewAction)
+            is AllProjectsViewActions.RefreshProjects -> viewAction.action(allProjectsAdapter)
+            is AllProjectsViewActions.OpenProject -> viewAction.action(this)
+            is AllProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(viewAction)
+            is AllProjectsViewActions.ShowChooseTimeForClockActivity -> showChooseTimeForClockActivity(viewAction)
+            is AllProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(viewAction)
             is ActivityViewAction -> viewAction.action(requireActivity())
             is ContextViewAction -> viewAction.action(requireContext())
             else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
         }
     }
 
-    private fun showConfirmClockOutMessage(viewAction: ProjectsViewActions.ShowConfirmClockOutMessage) = launch {
+    private fun showConfirmClockOutMessage(viewAction: AllProjectsViewActions.ShowConfirmClockOutMessage) = launch {
         val confirmAction = ConfirmClockOutDialog.show(requireContext())
         if (ConfirmAction.YES == confirmAction) {
             vm.clockOut(viewAction.item.asProject(), viewAction.date)
         }
     }
 
-    private fun showChooseTimeForClockActivity(viewAction: ProjectsViewActions.ShowChooseTimeForClockActivity) {
+    private fun showChooseTimeForClockActivity(viewAction: AllProjectsViewActions.ShowChooseTimeForClockActivity) {
         viewAction.action(childFragmentManager) { projectsItem, date ->
             launch {
                 if (projectsItem.isActive) {
@@ -164,7 +164,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
     }
 
     private fun showConfirmRemoveProjectMessage(
-            viewAction: ProjectsViewActions.ShowConfirmRemoveProjectMessage
+            viewAction: AllProjectsViewActions.ShowConfirmRemoveProjectMessage
     ) = launch {
         val confirmAction = RemoveProjectDialog.show(requireContext())
         if (ConfirmAction.YES == confirmAction) {
@@ -178,7 +178,7 @@ class ProjectsFragment : CoroutineScopedFragment() {
         refreshActiveProjectsTimer = Timer()
         refreshActiveProjectsTimer?.schedule(Date(), 60_000) {
             launch {
-                val projects = projectsAdapter.currentList ?: return@launch
+                val projects = allProjectsAdapter.currentList ?: return@launch
 
                 vm.refreshActiveProjects(projects)
             }

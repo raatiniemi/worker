@@ -21,19 +21,19 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.all.view.ProjectsActionListener
+import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.projects.all.view.ViewHolder
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import java.util.*
 
-internal class ProjectsAdapter(
-        private val listener: ProjectsActionListener,
+internal class AllProjectsAdapter(
+        private val listener: AllProjectsActionListener,
         private val hintedImageButtonListener: HintedImageButtonListener
-) : PagedListAdapter<ProjectsItem, ViewHolder>(projectsDiffCallback) {
+) : PagedListAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
 
     override fun getItemViewType(position: Int): Int {
-        return R.layout.fragment_projects_item
+        return R.layout.fragment_all_projects_item
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

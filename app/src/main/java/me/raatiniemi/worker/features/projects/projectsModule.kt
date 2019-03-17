@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.projects
 import me.raatiniemi.worker.domain.interactor.*
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
-import me.raatiniemi.worker.features.projects.all.viewmodel.ProjectsViewModel
+import me.raatiniemi.worker.features.projects.all.viewmodel.AllProjectsViewModel
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
@@ -34,7 +34,7 @@ val projectsModule = module {
         val clockOut = ClockOut(get())
         val removeProject = RemoveProject(get())
 
-        ProjectsViewModel(
+        AllProjectsViewModel(
                 keyValueStore = get(),
                 projectRepository = get(),
                 getProjectTimeSince = getProjectTimeSince,

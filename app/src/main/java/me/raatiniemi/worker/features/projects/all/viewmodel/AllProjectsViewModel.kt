@@ -34,8 +34,8 @@ import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.all.model.ProjectsViewActions
-import me.raatiniemi.worker.features.projects.all.view.ProjectsActionListener
+import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
+import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
@@ -44,14 +44,14 @@ import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 import java.util.*
 
-internal class ProjectsViewModel(
+internal class AllProjectsViewModel(
         private val keyValueStore: KeyValueStore,
         projectRepository: ProjectRepository,
         private val getProjectTimeSince: GetProjectTimeSince,
         private val clockIn: ClockIn,
         private val clockOut: ClockOut,
         private val removeProject: RemoveProject
-) : CoroutineScopedViewModel(), ProjectsActionListener {
+) : CoroutineScopedViewModel(), AllProjectsActionListener {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
@@ -73,7 +73,7 @@ internal class ProjectsViewModel(
     private val factory = ProjectDataSourceFactory(projectRepository)
             .map { buildProjectsItem(it) }
 
-    val viewActions = ConsumableLiveData<ProjectsViewActions>()
+    val viewActions = ConsumableLiveData<AllProjectsViewActions>()
 
     init {
         val config = PagedList.Config.Builder()
@@ -114,11 +114,11 @@ internal class ProjectsViewModel(
             return@withContext
         }
 
-        viewActions += ProjectsViewActions.RefreshProjects(positions)
+        viewActions += AllProjectsViewActions.RefreshProjects(positions)
     }
 
     override fun open(item: ProjectsItem) {
-        viewActions += ProjectsViewActions.OpenProject(item.asProject())
+        viewActions += AllProjectsViewActions.OpenProject(item.asProject())
     }
 
     override fun toggle(item: ProjectsItem, date: Date) {
@@ -129,7 +129,7 @@ internal class ProjectsViewModel(
             }
 
             if (keyValueStore.bool(AppKeys.CONFIRM_CLOCK_OUT, true)) {
-                viewActions += ProjectsViewActions.ShowConfirmClockOutMessage(item, date)
+                viewActions += AllProjectsViewActions.ShowConfirmClockOutMessage(item, date)
                 return@launch
             }
 
@@ -138,21 +138,21 @@ internal class ProjectsViewModel(
     }
 
     override fun at(item: ProjectsItem) {
-        viewActions += ProjectsViewActions.ShowChooseTimeForClockActivity(item)
+        viewActions += AllProjectsViewActions.ShowChooseTimeForClockActivity(item)
     }
 
     override fun remove(item: ProjectsItem) {
-        viewActions += ProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
+        viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
 
     suspend fun clockIn(project: Project, date: Date) = withContext(Dispatchers.IO) {
         try {
             clockIn(project.id, date)
 
-            viewActions += ProjectsViewActions.UpdateNotification(project)
+            viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions += ProjectsViewActions.ShowUnableToClockInErrorMessage
+            viewActions += AllProjectsViewActions.ShowUnableToClockInErrorMessage
         }
     }
 
@@ -160,10 +160,10 @@ internal class ProjectsViewModel(
         try {
             clockOut(project.id, date)
 
-            viewActions += ProjectsViewActions.UpdateNotification(project)
+            viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions += ProjectsViewActions.ShowUnableToClockOutErrorMessage
+            viewActions += AllProjectsViewActions.ShowUnableToClockOutErrorMessage
         }
     }
 
@@ -171,10 +171,10 @@ internal class ProjectsViewModel(
         try {
             removeProject(project)
 
-            viewActions += ProjectsViewActions.DismissNotification(project)
+            viewActions += AllProjectsViewActions.DismissNotification(project)
             reloadProjects()
         } catch (e: Exception) {
-            viewActions += ProjectsViewActions.ShowUnableToDeleteProjectErrorMessage
+            viewActions += AllProjectsViewActions.ShowUnableToDeleteProjectErrorMessage
         }
     }
 }

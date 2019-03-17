@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navProjects"
-        android:name="me.raatiniemi.worker.features.projects.all.view.ProjectsFragment"
+        android:name="me.raatiniemi.worker.features.projects.all.view.AllProjectsFragment"
         android:label="@string/main_navigation_projects"
-        tools:layout="@layout/fragment_projects">
+        tools:layout="@layout/fragment_all_projects">
 
         <action
             android:id="@+id/open_time_report"

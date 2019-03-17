@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        tools:listitem="@layout/fragment_projects_item" />
+        tools:listitem="@layout/fragment_all_projects_item" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvEmptyProjects"

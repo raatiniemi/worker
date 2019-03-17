@@ -19,7 +19,7 @@ package me.raatiniemi.worker.features.projects.all.view
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import java.util.*
 
-internal interface ProjectsActionListener {
+internal interface AllProjectsActionListener {
     fun open(item: ProjectsItem)
 
     fun toggle(item: ProjectsItem, date: Date)

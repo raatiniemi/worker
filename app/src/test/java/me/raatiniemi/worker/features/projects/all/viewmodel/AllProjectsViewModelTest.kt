@@ -28,8 +28,8 @@ import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
+import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.all.model.ProjectsViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.util.AppKeys
@@ -43,7 +43,7 @@ import org.junit.runners.JUnit4
 import java.util.*
 
 @RunWith(JUnit4::class)
-class ProjectsViewModelTest {
+class AllProjectsViewModelTest {
     @JvmField
     @Rule
     val rule = InstantTaskExecutorRule()
@@ -56,7 +56,7 @@ class ProjectsViewModelTest {
     private lateinit var clockIn: ClockIn
     private lateinit var clockOut: ClockOut
     private lateinit var removeProject: RemoveProject
-    private lateinit var vm: ProjectsViewModel
+    private lateinit var vm: AllProjectsViewModel
 
     private val project = Project(1L, "Project #1")
 
@@ -66,7 +66,7 @@ class ProjectsViewModelTest {
         clockIn = ClockIn(timeIntervalRepository)
         clockOut = ClockOut(timeIntervalRepository)
         removeProject = RemoveProject(projectRepository)
-        vm = ProjectsViewModel(
+        vm = AllProjectsViewModel(
                 keyValueStore,
                 projectRepository,
                 getProjectTimeSince,
@@ -119,7 +119,7 @@ class ProjectsViewModelTest {
         vm.refreshActiveProjects(items)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.RefreshProjects(listOf(1)), it)
+            assertEquals(AllProjectsViewActions.RefreshProjects(listOf(1)), it)
         }
     }
 
@@ -130,7 +130,7 @@ class ProjectsViewModelTest {
         vm.open(projectsItem)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.OpenProject(project), it)
+            assertEquals(AllProjectsViewActions.OpenProject(project), it)
         }
     }
 
@@ -142,7 +142,7 @@ class ProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
+            assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -157,7 +157,7 @@ class ProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.ShowUnableToClockInErrorMessage, it)
+            assertEquals(AllProjectsViewActions.ShowUnableToClockInErrorMessage, it)
         }
     }
 
@@ -169,7 +169,7 @@ class ProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.ShowConfirmClockOutMessage(item, date), it)
+            assertEquals(AllProjectsViewActions.ShowConfirmClockOutMessage(item, date), it)
         }
     }
 
@@ -185,7 +185,7 @@ class ProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
+            assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -198,7 +198,7 @@ class ProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
+            assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
         }
     }
 
@@ -209,7 +209,7 @@ class ProjectsViewModelTest {
         vm.at(item)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.ShowChooseTimeForClockActivity(item), it)
+            assertEquals(AllProjectsViewActions.ShowChooseTimeForClockActivity(item), it)
         }
     }
 
@@ -220,7 +220,7 @@ class ProjectsViewModelTest {
         vm.remove(item)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.ShowConfirmRemoveProjectMessage(item), it)
+            assertEquals(AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item), it)
         }
     }
 
@@ -233,7 +233,7 @@ class ProjectsViewModelTest {
         vm.clockIn(project, Date())
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.ShowUnableToClockInErrorMessage, it)
+            assertEquals(AllProjectsViewActions.ShowUnableToClockInErrorMessage, it)
         }
     }
 
@@ -242,7 +242,7 @@ class ProjectsViewModelTest {
         vm.clockIn(project, Date())
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
+            assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -251,7 +251,7 @@ class ProjectsViewModelTest {
         vm.clockOut(project, Date())
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
+            assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
         }
     }
 
@@ -264,7 +264,7 @@ class ProjectsViewModelTest {
         vm.clockOut(project, Date())
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.UpdateNotification(project), it)
+            assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
 
@@ -273,7 +273,7 @@ class ProjectsViewModelTest {
         vm.remove(project)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.DismissNotification(project), it)
+            assertEquals(AllProjectsViewActions.DismissNotification(project), it)
         }
     }
 
@@ -288,7 +288,7 @@ class ProjectsViewModelTest {
         val actual = projectRepository.findAll()
         assertEquals(expected, actual)
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectsViewActions.DismissNotification(project), it)
+            assertEquals(AllProjectsViewActions.DismissNotification(project), it)
         }
     }
 }
