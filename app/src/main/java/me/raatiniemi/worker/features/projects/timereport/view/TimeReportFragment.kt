@@ -129,10 +129,6 @@ class TimeReportFragment : CoroutineScopedFragment() {
         })
     }
 
-    fun reloadTimeReport() {
-        vm.reloadTimeReport()
-    }
-
     private fun showActionMode() {
         if (actionMode != null) {
             return
@@ -184,10 +180,5 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
             Timber.d("No need to refresh, event is related to another project")
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = TimeReportFragment()
     }
 }
