@@ -49,11 +49,6 @@
 
         </activity>
 
-        <activity
-            android:name="me.raatiniemi.worker.features.project.view.ProjectActivity"
-            android:parentActivityName="me.raatiniemi.worker.features.projects.view.ProjectsActivity"
-            />
-
         <service
             android:name=".data.service.ongoing.PauseService"
             android:exported="false"
