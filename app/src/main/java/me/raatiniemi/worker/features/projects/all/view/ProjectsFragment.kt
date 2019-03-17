@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.view
+package me.raatiniemi.worker.features.projects.all.view
 
 import android.os.Bundle
 import android.view.*
@@ -24,11 +24,11 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_projects.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
+import me.raatiniemi.worker.features.projects.all.adapter.ProjectsAdapter
+import me.raatiniemi.worker.features.projects.all.model.ProjectsViewActions
+import me.raatiniemi.worker.features.projects.all.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectEvent
 import me.raatiniemi.worker.features.projects.createproject.view.CreateProjectFragment
-import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
-import me.raatiniemi.worker.features.projects.viewmodel.ProjectsViewModel
 import me.raatiniemi.worker.features.settings.project.model.TimeSummaryStartingPointChangeEvent
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction

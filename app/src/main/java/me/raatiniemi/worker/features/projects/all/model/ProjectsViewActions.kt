@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.model
+package me.raatiniemi.worker.features.projects.all.model
 
 import android.app.NotificationManager
 import android.content.Context
@@ -27,9 +27,9 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.WorkerApplication
 import me.raatiniemi.worker.data.service.ongoing.ProjectNotificationService
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.features.projects.adapter.ProjectsAdapter
-import me.raatiniemi.worker.features.projects.view.ClockActivityAtFragment
-import me.raatiniemi.worker.features.projects.view.ProjectsFragmentDirections
+import me.raatiniemi.worker.features.projects.all.adapter.ProjectsAdapter
+import me.raatiniemi.worker.features.projects.all.view.ClockActivityAtFragment
+import me.raatiniemi.worker.features.projects.all.view.ProjectsFragmentDirections
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.FragmentViewAction

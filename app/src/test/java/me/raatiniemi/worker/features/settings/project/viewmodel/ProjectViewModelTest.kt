@@ -20,7 +20,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.features.settings.project.model.ProjectViewActions
 import me.raatiniemi.worker.features.shared.model.observeNonNull
-import me.raatiniemi.worker.util.*
+import me.raatiniemi.worker.util.AppKeys
+import me.raatiniemi.worker.util.InMemoryKeyValueStore
+import me.raatiniemi.worker.util.KeyValueStore
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule

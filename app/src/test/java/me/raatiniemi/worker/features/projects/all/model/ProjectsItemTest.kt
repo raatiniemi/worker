@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.model
+package me.raatiniemi.worker.features.projects.all.model
 
 import me.raatiniemi.worker.domain.model.Project
 import org.junit.Assert.assertEquals

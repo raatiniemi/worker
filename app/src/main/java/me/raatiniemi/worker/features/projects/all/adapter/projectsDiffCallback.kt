@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,15 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.view
+package me.raatiniemi.worker.features.projects.all.adapter
 
-import android.content.Context
-import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
+import androidx.recyclerview.widget.DiffUtil
+import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 
-internal object ConfirmClockOutDialog {
-    private const val TITLE = R.string.confirm_clock_out_title
-    private const val MESSAGE = R.string.confirm_clock_out_message
+internal val projectsDiffCallback = object : DiffUtil.ItemCallback<ProjectsItem>() {
+    override fun areItemsTheSame(old: ProjectsItem, new: ProjectsItem) = old.title == new.title
 
-    suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
+    override fun areContentsTheSame(old: ProjectsItem, new: ProjectsItem) = old == new
 }

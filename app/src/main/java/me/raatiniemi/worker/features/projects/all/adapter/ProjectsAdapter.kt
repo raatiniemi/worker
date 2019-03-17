@@ -14,15 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.adapter
+package me.raatiniemi.worker.features.projects.all.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.features.projects.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.view.ProjectsActionListener
-import me.raatiniemi.worker.features.projects.view.ViewHolder
+import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
+import me.raatiniemi.worker.features.projects.all.view.ProjectsActionListener
+import me.raatiniemi.worker.features.projects.all.view.ViewHolder
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import java.util.*
 

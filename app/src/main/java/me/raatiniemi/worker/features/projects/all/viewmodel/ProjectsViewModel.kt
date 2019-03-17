@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.viewmodel
+package me.raatiniemi.worker.features.projects.all.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
@@ -33,9 +33,9 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.features.projects.model.ProjectsItem
-import me.raatiniemi.worker.features.projects.model.ProjectsViewActions
-import me.raatiniemi.worker.features.projects.view.ProjectsActionListener
+import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
+import me.raatiniemi.worker.features.projects.all.model.ProjectsViewActions
+import me.raatiniemi.worker.features.projects.all.view.ProjectsActionListener
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel

@@ -14,15 +14,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.view
+package me.raatiniemi.worker.features.projects.all.view
 
 import android.content.Context
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
-internal object RemoveProjectDialog {
-    private const val TITLE = R.string.confirm_delete_project_title
-    private const val MESSAGE = R.string.confirm_delete_project_message
+internal object ConfirmClockOutDialog {
+    private const val TITLE = R.string.confirm_clock_out_title
+    private const val MESSAGE = R.string.confirm_clock_out_message
 
     suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }
