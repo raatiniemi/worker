@@ -32,7 +32,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name="me.raatiniemi.worker.features.projects.view.ProjectsActivity"
+            android:name="me.raatiniemi.worker.features.home.view.HomeActivity"
             >
 
             <intent-filter>

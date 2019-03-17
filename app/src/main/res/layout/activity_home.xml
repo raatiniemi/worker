@@ -5,7 +5,7 @@
     android:id="@+id/dlProjects"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.projects.view.ProjectsActivity">
+    tools:context=".features.home.view.HomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
