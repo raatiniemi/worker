@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navTimeReport"
-        android:name="me.raatiniemi.worker.features.project.timereport.view.TimeReportFragment"
+        android:name="me.raatiniemi.worker.features.projects.timereport.view.TimeReportFragment"
         android:label="Project"
         tools:layout="@layout/fragment_time_report">
 

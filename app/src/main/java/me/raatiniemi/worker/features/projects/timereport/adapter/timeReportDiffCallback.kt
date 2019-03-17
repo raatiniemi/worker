@@ -14,18 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects.datasource
+package me.raatiniemi.worker.features.projects.timereport.adapter
 
-import androidx.paging.DataSource
+import androidx.recyclerview.widget.DiffUtil
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.repository.TimeReportRepository
-import me.raatiniemi.worker.features.projects.model.ProjectProvider
-import me.raatiniemi.worker.util.KeyValueStore
 
-internal class TimeReportDataSourceFactory(
-        private val projectProvider: ProjectProvider,
-        private val keyValueStore: KeyValueStore,
-        private val repository: TimeReportRepository
-) : DataSource.Factory<Int, TimeReportDay>() {
-    override fun create() = TimeReportDataSource(projectProvider, keyValueStore, repository)
+internal val timeReportDiffCallback = object : DiffUtil.ItemCallback<TimeReportDay>() {
+    override fun areItemsTheSame(old: TimeReportDay, new: TimeReportDay) = old.date == new.date
+
+    override fun areContentsTheSame(old: TimeReportDay, new: TimeReportDay) = old == new
 }

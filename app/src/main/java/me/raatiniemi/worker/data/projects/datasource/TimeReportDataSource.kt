@@ -20,7 +20,7 @@ import androidx.paging.PositionalDataSource
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
-import me.raatiniemi.worker.features.project.model.ProjectProvider
+import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber

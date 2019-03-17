@@ -14,18 +14,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects.datasource
+package me.raatiniemi.worker.features.projects.timereport.model
 
-import androidx.paging.DataSource
 import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.repository.TimeReportRepository
-import me.raatiniemi.worker.features.projects.model.ProjectProvider
-import me.raatiniemi.worker.util.KeyValueStore
+import me.raatiniemi.worker.domain.model.TimeReportItem
 
-internal class TimeReportDataSourceFactory(
-        private val projectProvider: ProjectProvider,
-        private val keyValueStore: KeyValueStore,
-        private val repository: TimeReportRepository
-) : DataSource.Factory<Int, TimeReportDay>() {
-    override fun create() = TimeReportDataSource(projectProvider, keyValueStore, repository)
+sealed class TimeReportLongPressAction : TimeReportSelectAction {
+    data class LongPressDay(val day: TimeReportDay) : TimeReportLongPressAction() {
+        override val items = day.items
+    }
+
+    data class LongPressItem(val item: TimeReportItem) : TimeReportLongPressAction() {
+        override val items = listOf(item)
+    }
 }
