@@ -30,7 +30,7 @@ import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
-import me.raatiniemi.worker.features.project.model.ProjectHolder
+import me.raatiniemi.worker.features.project.model.ProjectProvider
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportState
 import me.raatiniemi.worker.features.project.timereport.model.TimeReportTapAction
@@ -42,14 +42,14 @@ import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 class TimeReportViewModel internal constructor(
-        projectHolder: ProjectHolder,
+        projectProvider: ProjectProvider,
         private val keyValueStore: KeyValueStore,
         repository: TimeReportRepository,
         private val markRegisteredTime: MarkRegisteredTime,
         private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
     private val factory = TimeReportDataSourceFactory(
-            projectHolder,
+            projectProvider,
             keyValueStore,
             repository
     )

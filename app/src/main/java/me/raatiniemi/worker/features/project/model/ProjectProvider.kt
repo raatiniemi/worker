@@ -17,6 +17,6 @@
 package me.raatiniemi.worker.features.project.model
 
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.features.shared.model.ObservableValueHolder
+import me.raatiniemi.worker.features.shared.model.ObservableValueProvider
 
-internal class ProjectHolder : ObservableValueHolder<Project>(), ProjectProvider
+internal interface ProjectProvider : ObservableValueProvider<Project>

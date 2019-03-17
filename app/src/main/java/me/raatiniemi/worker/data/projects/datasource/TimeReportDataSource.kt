@@ -20,13 +20,13 @@ import androidx.paging.PositionalDataSource
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
-import me.raatiniemi.worker.features.project.model.ProjectHolder
+import me.raatiniemi.worker.features.project.model.ProjectProvider
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 internal class TimeReportDataSource(
-        private val projectHolder: ProjectHolder,
+        private val projectProvider: ProjectProvider,
         private val keyValueStore: KeyValueStore,
         private val repository: TimeReportRepository
 ) : PositionalDataSource<TimeReportDay>() {
@@ -37,7 +37,7 @@ internal class TimeReportDataSource(
         )
 
     private val project: Project?
-        get() = projectHolder.value.run {
+        get() = projectProvider.value.run {
             val project = value
             if (project == null) {
                 Timber.w("No project is available from `ProjectHolder`")

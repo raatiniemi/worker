@@ -21,6 +21,7 @@ import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import me.raatiniemi.worker.features.project.model.ProjectHolder
+import me.raatiniemi.worker.features.project.model.ProjectProvider
 import me.raatiniemi.worker.features.project.timereport.viewmodel.TimeReportViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
@@ -28,6 +29,10 @@ import org.koin.dsl.module.module
 val projectModule = module {
     single {
         ProjectHolder()
+    }
+
+    single<ProjectProvider> {
+        get<ProjectHolder>()
     }
 
     single<HoursMinutesFormat> {
