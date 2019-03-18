@@ -71,7 +71,12 @@ android {
         }
     }
     buildTypes {
+        debug {
+            manifestPlaceholders = [enableCrashReporting: "false"]
+        }
         release {
+            manifestPlaceholders = [enableCrashReporting: "true"]
+
             if (System.getenv("CI")) {
                 signingConfig signingConfigs.release
             }
@@ -143,8 +148,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha04'
 
-    releaseImplementation 'com.google.firebase:firebase-core:16.0.8'
-    releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0'
