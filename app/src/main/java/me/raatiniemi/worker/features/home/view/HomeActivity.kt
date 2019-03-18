@@ -33,6 +33,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun configureView() {
+        setSupportActionBar(tbMain)
+
         val navController = findNavController(R.id.fragmentContainer)
         val appBarConfiguration = AppBarConfiguration(navController.graph, dlProjects)
         tbMain.setupWithNavController(navController, appBarConfiguration)
