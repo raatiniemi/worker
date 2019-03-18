@@ -139,7 +139,7 @@ dependencies {
     implementation 'androidx.paging:paging-runtime:2.1.0'
     implementation 'com.google.android.material:material:1.1.0-alpha04'
 
-    releaseImplementation 'com.google.firebase:firebase-core:16.0.7'
+    releaseImplementation 'com.google.firebase:firebase-core:16.0.8'
     releaseImplementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
