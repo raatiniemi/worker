@@ -18,14 +18,14 @@ package me.raatiniemi.worker.features.settings.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.BuildConfig
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.configurePreference
 
-class SettingsFragment : BasePreferenceFragment() {
-    public override val title = R.string.activity_settings_title
-
+class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings)
     }
@@ -36,10 +36,17 @@ class SettingsFragment : BasePreferenceFragment() {
         configurePreference<Preference>("settings_about_version") {
             isSelectable = false
             summary = getString(
-                    R.string.activity_settings_about_version_format,
+                    R.string.fragment_settings_about_version_summary,
                     BuildConfig.VERSION_NAME,
                     BuildConfig.VERSION_CODE
             )
         }
+    }
+
+    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+        when (preference?.key) {
+            "settings_project" -> findNavController().navigate(R.id.settings_project)
+        }
+        return super.onPreferenceTreeClick(preference)
     }
 }

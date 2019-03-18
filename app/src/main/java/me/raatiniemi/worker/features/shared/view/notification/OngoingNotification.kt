@@ -21,12 +21,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-
+import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
+import androidx.navigation.NavDeepLinkBuilder
+import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.features.project.view.ProjectActivity
 import me.raatiniemi.worker.util.Notifications
 import me.raatiniemi.worker.util.OngoingUriCommunicator
 
@@ -52,13 +53,16 @@ internal abstract class OngoingNotification(
     }
 
     private fun buildContentAction(): PendingIntent {
-        val intent = ProjectActivity.newIntent(context, project)
+        val arguments = Bundle().apply {
+            putLong("projectId", project.id)
+            putString("projectName", project.name)
+        }
 
-        return buildPendingIntentWithActivity(intent)
-    }
-
-    private fun buildPendingIntentWithActivity(intent: Intent): PendingIntent {
-        return PendingIntent.getActivity(context, project.id.toInt(), intent, PENDING_INTENT_FLAG)
+        return NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.navigation_graph)
+                .setDestination(R.id.navTimeReport)
+                .setArguments(arguments)
+                .createPendingIntent()
     }
 
     fun buildIntentWithService(serviceClass: Class<*>): Intent {

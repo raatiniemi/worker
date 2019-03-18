@@ -2,20 +2,20 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.PreferenceCategory android:title="@string/activity_settings_preferences">
+    <androidx.preference.PreferenceCategory android:title="@string/fragment_settings_preferences_title">
 
         <Preference
             android:key="settings_project"
-            android:title="@string/activity_settings_project"
+            android:title="@string/fragment_settings_project"
             app:fragment="me.raatiniemi.worker.features.settings.project.view.ProjectFragment" />
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/activity_settings_about">
+    <androidx.preference.PreferenceCategory android:title="@string/fragment_settings_about_title">
 
         <Preference
             android:key="settings_about_version"
-            android:title="@string/activity_settings_about_version" />
+            android:title="@string/fragment_settings_about_version_title" />
 
     </androidx.preference.PreferenceCategory>
 

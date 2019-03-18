@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navProjects"
+            android:icon="@drawable/ic_outline_assignment_24px"
+            android:title="@string/main_navigation_projects" />
+        <item
+            android:id="@+id/navSettings"
+            android:icon="@drawable/ic_outline_settings_24px"
+            android:title="@string/main_navigation_settings" />
+    </group>
+</menu>

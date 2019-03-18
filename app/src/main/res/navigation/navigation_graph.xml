@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/navProjects">
+
+    <fragment
+        android:id="@+id/navProjects"
+        android:name="me.raatiniemi.worker.features.projects.all.view.AllProjectsFragment"
+        android:label="@string/main_navigation_projects"
+        tools:layout="@layout/fragment_all_projects">
+
+        <action
+            android:id="@+id/open_time_report"
+            app:destination="@id/navTimeReport" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navTimeReport"
+        android:name="me.raatiniemi.worker.features.projects.timereport.view.TimeReportFragment"
+        android:label="Project"
+        tools:layout="@layout/fragment_project_time_report">
+
+        <argument
+            android:name="projectId"
+            app:argType="long" />
+        <argument
+            android:name="projectName"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navSettings"
+        android:name="me.raatiniemi.worker.features.settings.view.SettingsFragment"
+        android:label="@string/main_navigation_settings">
+
+        <action
+            android:id="@+id/settings_project"
+            app:destination="@+id/navSettingsProject"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navSettingsProject"
+        android:name="me.raatiniemi.worker.features.settings.project.view.ProjectFragment"
+        android:label="@string/fragment_settings_project_title" />
+
+</navigation>
