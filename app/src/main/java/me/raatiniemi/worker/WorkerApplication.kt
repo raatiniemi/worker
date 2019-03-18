@@ -23,6 +23,7 @@ import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
+import me.raatiniemi.worker.util.CrashlyticsTree
 import me.raatiniemi.worker.util.Notifications
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
@@ -46,13 +47,18 @@ open class WorkerApplication : Application() {
                     settingsModule
             ))
 
+            configureLogging()
             registerNotificationChannel()
             ReloadNotificationService.startServiceWithContext(this)
         }
+    }
 
+    private fun configureLogging() {
         if (BuildConfig.DEBUG) {
             Timber.plant(DebugTree())
         }
+
+        Timber.plant(CrashlyticsTree())
     }
 
     private fun registerNotificationChannel() {
