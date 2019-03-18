@@ -30,6 +30,12 @@
         <item name="colorControlHighlight">@android:color/white</item>
     </style>
 
+    <style name="NavigationView">
+        <item name="android:textColorPrimary">@color/textSecondary</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorControlHighlight">@android:color/transparent</item>
+    </style>
+
     <style name="Theme.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">false</item>
 
