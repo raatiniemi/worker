@@ -36,10 +36,12 @@ import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.visibleIf
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.HintedImageButtonListener
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.util.*
@@ -48,6 +50,7 @@ import kotlin.concurrent.schedule
 class AllProjectsFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
 
+    private val usageAnalytics: UsageAnalytics by inject()
     private val vm: AllProjectsViewModel by viewModel()
     private val allProjectsAdapter: AllProjectsAdapter by lazy {
         AllProjectsAdapter(vm, HintedImageButtonListener(requireActivity()))
@@ -75,6 +78,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     override fun onResume() {
         super.onResume()
 
+        usageAnalytics.setCurrentScreen(this)
         startRefreshTimer()
     }
 
