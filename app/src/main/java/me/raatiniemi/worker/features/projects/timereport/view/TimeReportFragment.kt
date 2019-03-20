@@ -34,6 +34,7 @@ import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
 import me.raatiniemi.worker.features.shared.view.setTitle
 import me.raatiniemi.worker.features.shared.view.visibleIf
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -47,6 +48,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
     private val arguments: TimeReportFragmentArgs by navArgs()
     private val projectHolder: ProjectHolder by inject()
 
+    private val usageAnalytics: UsageAnalytics by inject()
     private val vm: TimeReportViewModel by viewModel()
     private val timeReportAdapter: TimeReportAdapter by lazy {
         TimeReportAdapter(get(), vm)
@@ -76,6 +78,12 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
         configureView()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        usageAnalytics.setCurrentScreen(this)
     }
 
     override fun onDestroy() {
