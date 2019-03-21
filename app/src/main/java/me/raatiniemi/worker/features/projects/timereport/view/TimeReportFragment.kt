@@ -32,6 +32,7 @@ import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportVie
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
+import me.raatiniemi.worker.features.shared.view.setTitle
 import me.raatiniemi.worker.features.shared.view.visibleIf
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -61,6 +62,9 @@ class TimeReportFragment : CoroutineScopedFragment() {
                 id = arguments.projectId,
                 name = arguments.projectName
         )
+        projectHolder.value.observe(this, Observer {
+            setTitle(it.name)
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
