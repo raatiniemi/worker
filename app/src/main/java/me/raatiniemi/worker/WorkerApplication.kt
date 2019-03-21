@@ -19,6 +19,7 @@ package me.raatiniemi.worker
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
+import io.fabric.sdk.android.Fabric
 import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 import me.raatiniemi.worker.features.projects.projectsModule
@@ -58,7 +59,9 @@ open class WorkerApplication : Application() {
             Timber.plant(DebugTree())
         }
 
-        Timber.plant(CrashlyticsTree())
+        if (Fabric.isInitialized()) {
+            Timber.plant(CrashlyticsTree())
+        }
     }
 
     private fun registerNotificationChannel() {
