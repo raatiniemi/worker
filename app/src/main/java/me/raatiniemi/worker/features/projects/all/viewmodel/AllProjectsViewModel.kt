@@ -163,6 +163,7 @@ internal class AllProjectsViewModel(
             viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
+            Timber.w(e, "Unable to clock in project")
             viewActions += AllProjectsViewActions.ShowUnableToClockInErrorMessage
         }
     }
@@ -174,6 +175,7 @@ internal class AllProjectsViewModel(
             viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
+            Timber.w(e, "Unable to clock out project")
             viewActions += AllProjectsViewActions.ShowUnableToClockOutErrorMessage
         }
     }
@@ -185,6 +187,7 @@ internal class AllProjectsViewModel(
             viewActions += AllProjectsViewActions.DismissNotification(project)
             reloadProjects()
         } catch (e: Exception) {
+            Timber.w(e, "Unable to remove project")
             viewActions += AllProjectsViewActions.ShowUnableToDeleteProjectErrorMessage
         }
     }
