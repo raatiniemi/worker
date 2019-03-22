@@ -32,6 +32,8 @@ import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
@@ -49,6 +51,7 @@ class AllProjectsViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     private val keyValueStore = InMemoryKeyValueStore()
+    private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectRepository = ProjectInMemoryRepository()
     private val timeIntervalRepository = TimeIntervalInMemoryRepository()
 
@@ -68,6 +71,7 @@ class AllProjectsViewModelTest {
         removeProject = RemoveProject(projectRepository)
         vm = AllProjectsViewModel(
                 keyValueStore,
+                usageAnalytics,
                 projectRepository,
                 getProjectTimeSince,
                 clockIn,
@@ -129,6 +133,7 @@ class AllProjectsViewModelTest {
 
         vm.open(projectsItem)
 
+        assertEquals(listOf(Event.OpenProject), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.OpenProject(project), it)
         }

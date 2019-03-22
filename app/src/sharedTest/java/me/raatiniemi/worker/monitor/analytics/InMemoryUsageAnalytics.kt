@@ -16,10 +16,23 @@
 
 package me.raatiniemi.worker.monitor.analytics
 
-sealed class Event(val name: String, val parameters: Map<String, String> = emptyMap()) {
-    object OpenProject : Event(OPEN_PROJECT_NAME)
+import androidx.annotation.MainThread
+import androidx.fragment.app.Fragment
 
-    companion object {
-        private const val OPEN_PROJECT_NAME = "open_project"
+class InMemoryUsageAnalytics : UsageAnalytics {
+    private var _currentScreen: String = ""
+
+    @MainThread
+    override fun setCurrentScreen(fragment: Fragment) {
+        _currentScreen = fragment.javaClass.simpleName
+    }
+
+    private val _events = mutableListOf<Event>()
+    val events: List<Event>
+        get() = _events
+
+    @MainThread
+    override fun log(event: Event) {
+        _events.add(event)
     }
 }

@@ -33,12 +33,14 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
+import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
@@ -46,6 +48,7 @@ import java.util.*
 
 internal class AllProjectsViewModel(
         private val keyValueStore: KeyValueStore,
+        private val usageAnalytics: UsageAnalytics,
         projectRepository: ProjectRepository,
         private val getProjectTimeSince: GetProjectTimeSince,
         private val clockIn: ClockIn,
@@ -118,6 +121,8 @@ internal class AllProjectsViewModel(
     }
 
     override fun open(item: ProjectsItem) {
+        usageAnalytics.log(Event.OpenProject)
+
         viewActions += AllProjectsViewActions.OpenProject(item.asProject())
     }
 
