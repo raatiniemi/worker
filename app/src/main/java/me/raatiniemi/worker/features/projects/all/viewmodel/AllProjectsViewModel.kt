@@ -151,6 +151,8 @@ internal class AllProjectsViewModel(
     }
 
     override fun remove(item: ProjectsItem) {
+        usageAnalytics.log(Event.RemoveProject)
+
         viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
 

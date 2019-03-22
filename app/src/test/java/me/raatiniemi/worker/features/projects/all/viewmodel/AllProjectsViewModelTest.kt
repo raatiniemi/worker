@@ -230,6 +230,7 @@ class AllProjectsViewModelTest {
 
         vm.remove(item)
 
+        assertEquals(listOf(Event.RemoveProject), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item), it)
         }

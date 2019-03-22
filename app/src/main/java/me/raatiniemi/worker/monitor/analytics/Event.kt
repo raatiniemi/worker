@@ -20,10 +20,12 @@ sealed class Event(val name: String, val parameters: Map<String, String> = empty
     object OpenProject : Event(OPEN_PROJECT_NAME)
     object ToggleProject : Event(TOGGLE_PROJECT_NAME)
     object AtProject : Event(AT_PROJECT_NAME)
+    object RemoveProject : Event(REMOVE_PROJECT_NAME)
 
     companion object {
         private const val OPEN_PROJECT_NAME = "open_project"
         private const val TOGGLE_PROJECT_NAME = "toggle_project"
         private const val AT_PROJECT_NAME = "at_project"
+        private const val REMOVE_PROJECT_NAME = "remove_project"
     }
 }
