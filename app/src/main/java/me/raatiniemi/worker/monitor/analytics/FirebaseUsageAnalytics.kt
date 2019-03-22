@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.monitor.analytics
 
+import android.os.Bundle
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -50,4 +51,22 @@ class FirebaseUsageAnalytics(private val firebaseAnalytics: FirebaseAnalytics) :
             // the `FirebaseAnalytics.setCurrentScreen` method.
             return javaClass.simpleName.truncate(36)
         }
+
+    @MainThread
+    override fun log(event: Event) {
+        with(event) {
+            firebaseAnalytics.logEvent(
+                    name.truncate(40),
+                    transformToBundle(parameters)
+            )
+        }
+    }
+
+    private fun transformToBundle(parameters: Map<String, String>): Bundle {
+        return Bundle().apply {
+            parameters.forEach { key, value ->
+                putString(key, value)
+            }
+        }
+    }
 }

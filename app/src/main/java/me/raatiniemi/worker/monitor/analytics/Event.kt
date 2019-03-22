@@ -16,13 +16,4 @@
 
 package me.raatiniemi.worker.monitor.analytics
 
-import androidx.annotation.MainThread
-import androidx.fragment.app.Fragment
-
-internal interface UsageAnalytics {
-    @MainThread
-    fun setCurrentScreen(fragment: Fragment)
-
-    @MainThread
-    fun log(event: Event)
-}
+sealed class Event(val name: String, val parameters: Map<String, String> = emptyMap())
