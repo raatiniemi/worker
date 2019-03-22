@@ -31,9 +31,20 @@ class CrashlyticsTree : Timber.Tree() {
             return
         }
 
-        Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority)
+        Crashlytics.setString(CRASHLYTICS_KEY_PRIORITY, readable(priority))
         Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
         Crashlytics.logException(t)
+    }
+
+    private fun readable(priority: Int): String {
+        return when (priority) {
+            Log.VERBOSE -> "Verbose"
+            Log.DEBUG -> "Debug"
+            Log.INFO -> "Information"
+            Log.WARN -> "Warning"
+            Log.ERROR -> "Error"
+            else -> "Unknown"
+        }
     }
 
     private fun shouldDiscardExceptionBasedOnPriority(priority: Int) =
