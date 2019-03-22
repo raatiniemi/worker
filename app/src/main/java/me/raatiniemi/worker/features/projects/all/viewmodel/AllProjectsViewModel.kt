@@ -121,13 +121,13 @@ internal class AllProjectsViewModel(
     }
 
     override fun open(item: ProjectsItem) {
-        usageAnalytics.log(Event.OpenProject)
+        usageAnalytics.log(Event.TapOpenProject)
 
         viewActions += AllProjectsViewActions.OpenProject(item.asProject())
     }
 
     override fun toggle(item: ProjectsItem, date: Date) {
-        usageAnalytics.log(Event.ToggleProject)
+        usageAnalytics.log(Event.TapToggleProject)
 
         launch {
             if (!item.isActive) {
@@ -145,13 +145,13 @@ internal class AllProjectsViewModel(
     }
 
     override fun at(item: ProjectsItem) {
-        usageAnalytics.log(Event.AtProject)
+        usageAnalytics.log(Event.TapAtProject)
 
         viewActions += AllProjectsViewActions.ShowChooseTimeForClockActivity(item)
     }
 
     override fun remove(item: ProjectsItem) {
-        usageAnalytics.log(Event.RemoveProject)
+        usageAnalytics.log(Event.TapRemoveProject)
 
         viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
