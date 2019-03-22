@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.monitor.logging
 
 import android.util.Log
 import com.crashlytics.android.Crashlytics
