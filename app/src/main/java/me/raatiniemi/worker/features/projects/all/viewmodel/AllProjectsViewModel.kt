@@ -145,6 +145,8 @@ internal class AllProjectsViewModel(
     }
 
     override fun at(item: ProjectsItem) {
+        usageAnalytics.log(Event.AtProject)
+
         viewActions += AllProjectsViewActions.ShowChooseTimeForClockActivity(item)
     }
 

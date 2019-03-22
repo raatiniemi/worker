@@ -218,6 +218,7 @@ class AllProjectsViewModelTest {
 
         vm.at(item)
 
+        assertEquals(listOf(Event.AtProject), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowChooseTimeForClockActivity(item), it)
         }
