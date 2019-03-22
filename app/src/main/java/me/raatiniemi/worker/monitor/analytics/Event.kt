@@ -18,8 +18,10 @@ package me.raatiniemi.worker.monitor.analytics
 
 sealed class Event(val name: String, val parameters: Map<String, String> = emptyMap()) {
     object OpenProject : Event(OPEN_PROJECT_NAME)
+    object ToggleProject : Event(TOGGLE_PROJECT_NAME)
 
     companion object {
         private const val OPEN_PROJECT_NAME = "open_project"
+        private const val TOGGLE_PROJECT_NAME = "toggle_project"
     }
 }

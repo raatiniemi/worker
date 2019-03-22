@@ -146,6 +146,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
+        assertEquals(listOf(Event.ToggleProject), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
@@ -161,6 +162,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
+        assertEquals(listOf(Event.ToggleProject), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockInErrorMessage, it)
         }
@@ -173,6 +175,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
+        assertEquals(listOf(Event.ToggleProject), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowConfirmClockOutMessage(item, date), it)
         }
@@ -189,6 +192,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
+        assertEquals(listOf(Event.ToggleProject), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
@@ -202,6 +206,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
+        assertEquals(listOf(Event.ToggleProject), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
         }

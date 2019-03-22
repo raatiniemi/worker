@@ -127,6 +127,8 @@ internal class AllProjectsViewModel(
     }
 
     override fun toggle(item: ProjectsItem, date: Date) {
+        usageAnalytics.log(Event.ToggleProject)
+
         launch {
             if (!item.isActive) {
                 clockIn(item.asProject(), date)
