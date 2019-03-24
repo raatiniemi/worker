@@ -24,8 +24,8 @@ import me.raatiniemi.worker.data.dataModule
 import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
-import me.raatiniemi.worker.monitor.monitorModule
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
+import me.raatiniemi.worker.monitor.monitorModule
 import me.raatiniemi.worker.util.Notifications
 import org.koin.android.ext.android.startKoin
 import timber.log.Timber
@@ -47,7 +47,8 @@ open class WorkerApplication : Application() {
                     preferenceModule,
                     dataModule,
                     projectsModule,
-                    settingsModule
+                    settingsModule,
+                    useCaseModule
             ))
 
             configureLogging()

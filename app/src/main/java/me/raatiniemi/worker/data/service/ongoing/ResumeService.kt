@@ -24,47 +24,35 @@ import me.raatiniemi.worker.domain.interactor.GetProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.util.*
 
 internal class ResumeService : OngoingService("ResumeService") {
+    private val clockIn: ClockIn by inject()
+    private val getProject: GetProject by inject()
+
     override fun onHandleIntent(intent: Intent?) {
         val projectId = getProjectId(intent)
 
         try {
-            clockInProjectNow(projectId)
+            clockIn(projectId, Date())
 
             updateUserInterface(projectId)
 
             if (isOngoingNotificationEnabled) {
-                val getProject = buildGetProjectUseCase()
                 val project = getProject(projectId)
 
                 sendPauseNotification(project)
                 return
             }
             dismissResumeNotification(projectId)
+        } catch (e: ActiveProjectException) {
+            Timber.e(e, "Resume service called with active project")
         } catch (e: Exception) {
             Timber.w(e, "Unable to resume project")
             sendErrorNotification(projectId)
         }
-    }
-
-    private fun clockInProjectNow(projectId: Long) {
-        try {
-            val clockIn = buildClockInUseCase()
-            clockIn(projectId, Date())
-        } catch (e: ActiveProjectException) {
-            Timber.e(e, "Resume service called with active project")
-        }
-    }
-
-    private fun buildClockInUseCase(): ClockIn {
-        return ClockIn(timeIntervalRepository)
-    }
-
-    private fun buildGetProjectUseCase(): GetProject {
-        return GetProject(projectRepository)
     }
 
     private fun sendPauseNotification(project: Project) {
