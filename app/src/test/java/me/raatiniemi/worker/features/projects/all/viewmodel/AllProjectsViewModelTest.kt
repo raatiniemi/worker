@@ -133,7 +133,7 @@ class AllProjectsViewModelTest {
 
         vm.open(projectsItem)
 
-        assertEquals(listOf(Event.TapOpenProject), usageAnalytics.events)
+        assertEquals(listOf(Event.TapProjectOpen), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.OpenProject(project), it)
         }
@@ -146,7 +146,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
-        assertEquals(listOf(Event.TapToggleProject), usageAnalytics.events)
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
@@ -162,7 +162,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
-        assertEquals(listOf(Event.TapToggleProject), usageAnalytics.events)
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockInErrorMessage, it)
         }
@@ -175,7 +175,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
-        assertEquals(listOf(Event.TapToggleProject), usageAnalytics.events)
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowConfirmClockOutMessage(item, date), it)
         }
@@ -192,7 +192,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
-        assertEquals(listOf(Event.TapToggleProject), usageAnalytics.events)
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
@@ -206,7 +206,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
-        assertEquals(listOf(Event.TapToggleProject), usageAnalytics.events)
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
         }
@@ -218,7 +218,7 @@ class AllProjectsViewModelTest {
 
         vm.at(item)
 
-        assertEquals(listOf(Event.TapAtProject), usageAnalytics.events)
+        assertEquals(listOf(Event.TapProjectAt), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowChooseTimeForClockActivity(item), it)
         }
@@ -230,7 +230,7 @@ class AllProjectsViewModelTest {
 
         vm.remove(item)
 
-        assertEquals(listOf(Event.TapRemoveProject), usageAnalytics.events)
+        assertEquals(listOf(Event.TapProjectRemove), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item), it)
         }

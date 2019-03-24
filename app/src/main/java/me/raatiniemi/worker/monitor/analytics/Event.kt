@@ -17,15 +17,15 @@
 package me.raatiniemi.worker.monitor.analytics
 
 sealed class Event(val name: String, val parameters: Map<String, String> = emptyMap()) {
-    object TapOpenProject : Event(TAP_OPEN_PROJECT_NAME)
-    object TapToggleProject : Event(TAP_TOGGLE_PROJECT_NAME)
-    object TapAtProject : Event(TAP_AT_PROJECT_NAME)
-    object TapRemoveProject : Event(TAP_REMOVE_PROJECT_NAME)
+    object TapProjectOpen : Event(TAP_PROJECT_OPEN_NAME)
+    object TapProjectToggle : Event(TAP_PROJECT_TOGGLE_NAME)
+    object TapProjectAt : Event(TAP_PROJECT_AT_NAME)
+    object TapProjectRemove : Event(TAP_PROJECT_REMOVE_NAME)
 
     companion object {
-        private const val TAP_OPEN_PROJECT_NAME = "tap_open_project"
-        private const val TAP_TOGGLE_PROJECT_NAME = "tap_toggle_project"
-        private const val TAP_AT_PROJECT_NAME = "tap_at_project"
-        private const val TAP_REMOVE_PROJECT_NAME = "tap_remove_project"
+        private const val TAP_PROJECT_OPEN_NAME = "tap_project_open"
+        private const val TAP_PROJECT_TOGGLE_NAME = "tap_project_toggle"
+        private const val TAP_PROJECT_AT_NAME = "tap_project_at"
+        private const val TAP_PROJECT_REMOVE_NAME = "tap_project_remove"
     }
 }
