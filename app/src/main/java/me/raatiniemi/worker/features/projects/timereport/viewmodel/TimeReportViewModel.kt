@@ -37,11 +37,14 @@ import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapActi
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.map
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 class TimeReportViewModel internal constructor(
+        private val usageAnalytics: UsageAnalytics,
         projectProvider: ProjectProvider,
         private val keyValueStore: KeyValueStore,
         repository: TimeReportRepository,
@@ -101,6 +104,7 @@ class TimeReportViewModel internal constructor(
 
             markRegisteredTime(timeIntervals)
 
+            usageAnalytics.log(Event.TimeReportToggle(timeIntervals.size))
             reloadTimeReport()
         } catch (e: Exception) {
             Timber.e(e, "Unable to toggle registered state with selected items")
@@ -115,6 +119,7 @@ class TimeReportViewModel internal constructor(
 
             removeTime(timeIntervals)
 
+            usageAnalytics.log(Event.TimeReportRemove(timeIntervals.size))
             reloadTimeReport()
         } catch (e: Exception) {
             Timber.e(e, "Unable to remove selected items")

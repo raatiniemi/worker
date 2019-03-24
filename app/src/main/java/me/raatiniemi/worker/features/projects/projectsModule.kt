@@ -69,6 +69,7 @@ val projectsModule = module {
                 get(),
                 get(),
                 get(),
+                get(),
                 MarkRegisteredTime(get()),
                 RemoveTime(get())
         )
