@@ -41,7 +41,7 @@ internal class PauseService : OngoingService("PauseService") {
         try {
             clockOut(projectId, Date())
 
-            usageAnalytics.log(Event.ProjectClockOut)
+            usageAnalytics.log(Event.NotificationClockOut)
             updateUserInterface(projectId)
 
             if (isOngoingNotificationEnabled) {

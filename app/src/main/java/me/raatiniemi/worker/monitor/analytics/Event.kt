@@ -23,9 +23,19 @@ sealed class Event(val name: String, val parameters: Map<String, String> = empty
     object TapProjectRemove : Event(TAP_PROJECT_REMOVE_NAME)
 
     object ProjectCreate : Event(PROJECT_CREATE_NAME)
-    object ProjectClockIn : Event(PROJECT_CLOCK_IN_NAME)
-    object ProjectClockOut : Event(PROJECT_CLOCK_OUT_NAME)
+    object ProjectClockIn : Event(PROJECT_CLOCK_IN_NAME, mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_CARD_SOURCE))
+    object ProjectClockOut : Event(PROJECT_CLOCK_OUT_NAME, mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_CARD_SOURCE))
     object ProjectRemove : Event(PROJECT_REMOVE_NAME)
+
+    object NotificationClockIn : Event(
+            PROJECT_CLOCK_IN_NAME,
+            mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_NOTIFICATION_SOURCE)
+    )
+
+    object NotificationClockOut : Event(
+            PROJECT_CLOCK_OUT_NAME,
+            mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_NOTIFICATION_SOURCE)
+    )
 
     data class TimeReportToggle(private val count: Int) : Event(
             TIME_REPORT_TOGGLE_NAME,
@@ -51,6 +61,10 @@ sealed class Event(val name: String, val parameters: Map<String, String> = empty
         private const val TIME_REPORT_TOGGLE_NAME = "time_report_toggle"
         private const val TIME_REPORT_REMOVE_NAME = "time_report_remove"
 
+        private const val PARAMETER_SOURCE_NAME = "source"
         private const val PARAMETER_COUNT_NAME = "count"
+
+        private const val CLOCK_IN_OUT_CARD_SOURCE = "card"
+        private const val CLOCK_IN_OUT_NOTIFICATION_SOURCE = "notification"
     }
 }

@@ -37,7 +37,7 @@ internal class ClockOutService : OngoingService("ClockOutService") {
         try {
             clockOut(projectId, Date())
 
-            usageAnalytics.log(Event.ProjectClockOut)
+            usageAnalytics.log(Event.NotificationClockOut)
             dismissNotification(projectId)
             updateUserInterface(projectId)
         } catch (e: InactiveProjectException) {

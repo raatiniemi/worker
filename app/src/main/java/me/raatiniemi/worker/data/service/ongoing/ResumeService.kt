@@ -41,7 +41,7 @@ internal class ResumeService : OngoingService("ResumeService") {
         try {
             clockIn(projectId, Date())
 
-            usageAnalytics.log(Event.ProjectClockIn)
+            usageAnalytics.log(Event.NotificationClockIn)
             updateUserInterface(projectId)
 
             if (isOngoingNotificationEnabled) {
