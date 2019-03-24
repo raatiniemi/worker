@@ -22,9 +22,12 @@ import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.FindActiveProjects
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class ReloadNotificationService : OngoingService("ReloadNotificationService") {
+    private val findActiveProjects: FindActiveProjects by inject()
+
     private val isOngoingNotificationDisabled: Boolean
         get() = !isOngoingNotificationEnabled
 
@@ -34,17 +37,12 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService") {
         }
 
         try {
-            val findActiveProjects = buildFindActiveProjectsUseCase()
             findActiveProjects().forEach {
                 sendPauseNotification(it)
             }
         } catch (e: DomainException) {
             Timber.e(e, "Unable to reload notifications")
         }
-    }
-
-    private fun buildFindActiveProjectsUseCase(): FindActiveProjects {
-        return FindActiveProjects(projectRepository, timeIntervalRepository)
     }
 
     private fun sendPauseNotification(project: Project) {
