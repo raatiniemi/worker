@@ -20,6 +20,7 @@ import android.os.Bundle
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
+import me.raatiniemi.worker.util.runOnMainThread
 import me.raatiniemi.worker.util.truncate
 import timber.log.Timber
 
@@ -52,8 +53,7 @@ class FirebaseUsageAnalytics(private val firebaseAnalytics: FirebaseAnalytics) :
             return javaClass.simpleName.truncate(36)
         }
 
-    @MainThread
-    override fun log(event: Event) {
+    override fun log(event: Event) = runOnMainThread {
         with(event) {
             firebaseAnalytics.logEvent(
                     name.truncate(40),

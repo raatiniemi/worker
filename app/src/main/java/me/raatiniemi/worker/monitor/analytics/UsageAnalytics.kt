@@ -23,6 +23,5 @@ internal interface UsageAnalytics {
     @MainThread
     fun setCurrentScreen(fragment: Fragment)
 
-    @MainThread
     fun log(event: Event)
 }

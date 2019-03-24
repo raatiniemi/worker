@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.util
 
+import android.os.Handler
 import android.os.Looper
 
 // If the `Looper.getMainLooper()` return `null` it means that we are most
@@ -24,3 +25,13 @@ import android.os.Looper
 // and `runBlocking` to simulate main thread behavior.
 internal val isMainThread: Boolean
     get() = Looper.getMainLooper()?.isCurrentThread ?: false
+
+internal fun runOnMainThread(closure: () -> Unit) {
+    val mainLooper = Looper.getMainLooper()
+    if (mainLooper == null) {
+        closure()
+        return
+    }
+
+    Handler(mainLooper).post(closure)
+}

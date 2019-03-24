@@ -31,7 +31,6 @@ class InMemoryUsageAnalytics : UsageAnalytics {
     val events: List<Event>
         get() = _events
 
-    @MainThread
     override fun log(event: Event) {
         _events.add(event)
     }
