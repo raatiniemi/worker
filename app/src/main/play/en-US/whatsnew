@@ -1,1 +1,2 @@
 use navigation drawer to navigate between projects and settings.
+resolve inconsistent back stack for open project via notification.
