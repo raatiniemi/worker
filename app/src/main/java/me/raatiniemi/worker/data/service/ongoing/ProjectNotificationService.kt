@@ -39,7 +39,7 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
             val isProjectActive = buildIsProjectActiveUseCase()
             if (isProjectActive(projectId)) {
                 val getProject = buildGetProjectUseCase()
-                val project = getProject.execute(projectId)
+                val project = getProject(projectId)
 
                 sendNotification(
                         project.id,

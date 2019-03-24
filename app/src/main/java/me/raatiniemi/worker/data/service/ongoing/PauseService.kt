@@ -38,7 +38,7 @@ internal class PauseService : OngoingService("PauseService") {
 
             if (isOngoingNotificationEnabled) {
                 val getProject = buildGetProjectUseCase()
-                val project = getProject.execute(projectId)
+                val project = getProject(projectId)
 
                 sendResumeNotification(project)
                 return

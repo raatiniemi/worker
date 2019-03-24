@@ -17,38 +17,14 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.NoProjectException
-import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 
-@RunWith(JUnit4::class)
-class GetProjectTest {
-    private val repository: ProjectRepository = ProjectInMemoryRepository()
-    private lateinit var getProject: GetProject
-
-    @Before
-    fun setUp() {
-        getProject = GetProject(repository)
-    }
-
-    @Test
-    fun execute() {
-        repository.add(NewProject("Project name"))
-        val expected = Project(1L, "Project name")
-
-        val actual = getProject(1)
-
-        assertEquals(expected, actual)
-    }
-
-    @Test(expected = NoProjectException::class)
-    fun `execute withoutProject`() {
-        getProject(1)
+/**
+ * Use case for getting a project.
+ */
+class GetProject(private val repository: ProjectRepository) {
+    operator fun invoke(projectId: Long): Project {
+        return repository.findById(projectId) ?: throw NoProjectException()
     }
 }
