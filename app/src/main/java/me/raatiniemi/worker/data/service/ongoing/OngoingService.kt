@@ -22,8 +22,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import me.raatiniemi.worker.WorkerApplication
-import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
@@ -37,8 +35,6 @@ abstract class OngoingService internal constructor(name: String) : IntentService
     private val eventBus: EventBus = EventBus.getDefault()
 
     private val keyValueStore: KeyValueStore by inject()
-    protected val projectRepository: ProjectRepository by inject()
-    protected val timeIntervalRepository: TimeIntervalRepository  by inject()
 
     private val notificationManager: NotificationManager by lazy {
         getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
