@@ -28,6 +28,7 @@ import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.*
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
+import timber.log.Timber
 
 class CreateProjectViewModel(
         private val createProject: CreateProject,
@@ -73,7 +74,10 @@ class CreateProjectViewModel(
             when (e) {
                 is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage
                 is ProjectAlreadyExistsException -> CreateProjectViewActions.DuplicateNameErrorMessage
-                else -> CreateProjectViewActions.UnknownErrorMessage
+                else -> {
+                    Timber.w(e, "Unable to create project")
+                    CreateProjectViewActions.UnknownErrorMessage
+                }
             }
         }
         viewActions += viewAction
