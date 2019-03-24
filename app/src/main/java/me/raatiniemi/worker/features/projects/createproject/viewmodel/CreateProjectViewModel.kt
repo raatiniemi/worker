@@ -26,10 +26,7 @@ import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
-import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
-import me.raatiniemi.worker.features.shared.model.combineLatest
-import me.raatiniemi.worker.features.shared.model.debounce
-import me.raatiniemi.worker.features.shared.model.map
+import me.raatiniemi.worker.features.shared.model.*
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
 
 class CreateProjectViewModel(
@@ -68,19 +65,17 @@ class CreateProjectViewModel(
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 
     suspend fun createProject() = withContext(Dispatchers.IO) {
-        try {
+        val viewAction: CreateProjectViewActions = try {
             val project = createProject(name)
 
-            val viewAction = CreateProjectViewActions.CreatedProject(project)
-            viewActions.postValue(viewAction)
+            CreateProjectViewActions.CreatedProject(project)
         } catch (e: Exception) {
-            val viewAction: CreateProjectViewActions = when (e) {
+            when (e) {
                 is InvalidProjectNameException -> CreateProjectViewActions.InvalidProjectNameErrorMessage
                 is ProjectAlreadyExistsException -> CreateProjectViewActions.DuplicateNameErrorMessage
                 else -> CreateProjectViewActions.UnknownErrorMessage
             }
-
-            viewActions.postValue(viewAction)
         }
+        viewActions += viewAction
     }
 }
