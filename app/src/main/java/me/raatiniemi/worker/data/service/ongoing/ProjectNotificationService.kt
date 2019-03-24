@@ -24,9 +24,13 @@ import me.raatiniemi.worker.domain.interactor.IsProjectActive
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
 import me.raatiniemi.worker.util.OngoingUriCommunicator
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 class ProjectNotificationService : OngoingService("ProjectNotificationService") {
+    private val getProject: GetProject by inject()
+    private val isProjectActive: IsProjectActive by inject()
+
     override fun onHandleIntent(intent: Intent?) {
         val projectId = getProjectId(intent)
 
@@ -36,9 +40,7 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
                 return
             }
 
-            val isProjectActive = buildIsProjectActiveUseCase()
             if (isProjectActive(projectId)) {
-                val getProject = buildGetProjectUseCase()
                 val project = getProject(projectId)
 
                 sendNotification(
@@ -52,14 +54,6 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
         } catch (e: Exception) {
             Timber.w(e, "Unable to pause project")
         }
-    }
-
-    private fun buildIsProjectActiveUseCase(): IsProjectActive {
-        return IsProjectActive(timeIntervalRepository)
-    }
-
-    private fun buildGetProjectUseCase(): GetProject {
-        return GetProject(projectRepository)
     }
 
     companion object {

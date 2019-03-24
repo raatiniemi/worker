@@ -19,6 +19,7 @@ package me.raatiniemi.worker
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProject
+import me.raatiniemi.worker.domain.interactor.IsProjectActive
 import org.koin.dsl.module.module
 
 val useCaseModule = module {
@@ -32,5 +33,9 @@ val useCaseModule = module {
 
     single {
         GetProject(get())
+    }
+
+    single {
+        IsProjectActive(get())
     }
 }
