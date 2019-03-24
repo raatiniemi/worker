@@ -14,16 +14,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.model
+package me.raatiniemi.worker.monitor.analytics
 
-import androidx.lifecycle.MutableLiveData
-import me.raatiniemi.worker.util.isMainThread
+import androidx.annotation.MainThread
+import androidx.fragment.app.Fragment
 
-internal operator fun <T> MutableLiveData<T>.plusAssign(value: T) {
-    if (isMainThread) {
-        setValue(value)
-        return
+class InMemoryUsageAnalytics : UsageAnalytics {
+    private var _currentScreen: String = ""
+
+    @MainThread
+    override fun setCurrentScreen(fragment: Fragment) {
+        _currentScreen = fragment.javaClass.simpleName
     }
 
-    postValue(value)
+    private val _events = mutableListOf<Event>()
+    val events: List<Event>
+        get() = _events
+
+    override fun log(event: Event) {
+        _events.add(event)
+    }
 }

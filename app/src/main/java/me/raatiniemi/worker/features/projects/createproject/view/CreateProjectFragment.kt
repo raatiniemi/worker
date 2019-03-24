@@ -28,12 +28,15 @@ import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectV
 import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProjectViewModel
 import me.raatiniemi.worker.features.shared.model.EditTextViewAction
 import me.raatiniemi.worker.features.shared.view.*
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.Keyboard
 import me.raatiniemi.worker.util.NullUtil.isNull
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.OnShowListener {
+    private val usageAnalytics: UsageAnalytics by inject()
     private val vm: CreateProjectViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -50,6 +53,12 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
 
         observeViewModel()
         bindUserInterfaceToViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        usageAnalytics.setCurrentScreen(this)
     }
 
     private fun observeViewModel() {

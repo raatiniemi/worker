@@ -24,8 +24,12 @@ import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.BuildConfig
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.configurePreference
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import org.koin.android.ext.android.inject
 
 class SettingsFragment : PreferenceFragmentCompat() {
+    private val usageAnalytics: UsageAnalytics by inject()
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.settings)
     }
@@ -41,6 +45,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     BuildConfig.VERSION_CODE
             )
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        usageAnalytics.setCurrentScreen(this)
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {

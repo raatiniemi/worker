@@ -33,12 +33,14 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.ProjectRepository
-import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
+import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
@@ -46,6 +48,7 @@ import java.util.*
 
 internal class AllProjectsViewModel(
         private val keyValueStore: KeyValueStore,
+        private val usageAnalytics: UsageAnalytics,
         projectRepository: ProjectRepository,
         private val getProjectTimeSince: GetProjectTimeSince,
         private val clockIn: ClockIn,
@@ -118,10 +121,14 @@ internal class AllProjectsViewModel(
     }
 
     override fun open(item: ProjectsItem) {
+        usageAnalytics.log(Event.TapProjectOpen)
+
         viewActions += AllProjectsViewActions.OpenProject(item.asProject())
     }
 
     override fun toggle(item: ProjectsItem, date: Date) {
+        usageAnalytics.log(Event.TapProjectToggle)
+
         launch {
             if (!item.isActive) {
                 clockIn(item.asProject(), date)
@@ -138,10 +145,14 @@ internal class AllProjectsViewModel(
     }
 
     override fun at(item: ProjectsItem) {
+        usageAnalytics.log(Event.TapProjectAt)
+
         viewActions += AllProjectsViewActions.ShowChooseTimeForClockActivity(item)
     }
 
     override fun remove(item: ProjectsItem) {
+        usageAnalytics.log(Event.TapProjectRemove)
+
         viewActions += AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item)
     }
 
@@ -149,9 +160,11 @@ internal class AllProjectsViewModel(
         try {
             clockIn(project.id, date)
 
+            usageAnalytics.log(Event.ProjectClockIn)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
+            Timber.w(e, "Unable to clock in project")
             viewActions += AllProjectsViewActions.ShowUnableToClockInErrorMessage
         }
     }
@@ -160,9 +173,11 @@ internal class AllProjectsViewModel(
         try {
             clockOut(project.id, date)
 
+            usageAnalytics.log(Event.ProjectClockOut)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
+            Timber.w(e, "Unable to clock out project")
             viewActions += AllProjectsViewActions.ShowUnableToClockOutErrorMessage
         }
     }
@@ -171,9 +186,11 @@ internal class AllProjectsViewModel(
         try {
             removeProject(project)
 
+            usageAnalytics.log(Event.ProjectRemove)
             viewActions += AllProjectsViewActions.DismissNotification(project)
             reloadProjects()
         } catch (e: Exception) {
+            Timber.w(e, "Unable to remove project")
             viewActions += AllProjectsViewActions.ShowUnableToDeleteProjectErrorMessage
         }
     }

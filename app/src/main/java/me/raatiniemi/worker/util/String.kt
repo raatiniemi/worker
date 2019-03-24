@@ -14,16 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.model
+package me.raatiniemi.worker.util
 
-import androidx.lifecycle.MutableLiveData
-import me.raatiniemi.worker.util.isMainThread
-
-internal operator fun <T> MutableLiveData<T>.plusAssign(value: T) {
-    if (isMainThread) {
-        setValue(value)
-        return
+internal fun String.truncate(maxLength: Int): String {
+    if (length <= maxLength) {
+        return this
     }
 
-    postValue(value)
+    return substring(0, maxLength)
 }

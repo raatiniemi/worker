@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,12 +14,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker
+package me.raatiniemi.worker.monitor
 
-import me.raatiniemi.worker.util.*
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import com.google.firebase.analytics.FirebaseAnalytics
+import me.raatiniemi.worker.monitor.analytics.FirebaseUsageAnalytics
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module.module
 
-class Preferences : KoinComponent {
-    val keyValueStore: KeyValueStore by inject()
+val monitorModule = module {
+    single<UsageAnalytics> {
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(androidContext())
+
+        FirebaseUsageAnalytics(firebaseAnalytics)
+    }
 }

@@ -28,6 +28,8 @@ import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -42,6 +44,7 @@ class TimeReportViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     private val project = Project(1, "Project name #1")
+    private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectHolder = ProjectHolder()
             .also { it += project }
 
@@ -68,6 +71,7 @@ class TimeReportViewModelTest {
         }
 
         return TimeReportViewModel(
+                usageAnalytics,
                 projectHolder,
                 keyValueStore,
                 timeReportRepository,
@@ -92,6 +96,7 @@ class TimeReportViewModelTest {
         vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
         vm.toggleRegisteredStateForSelectedItems()
 
+        assertEquals(listOf(Event.TimeReportToggle(1)), usageAnalytics.events)
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
     }
@@ -117,6 +122,7 @@ class TimeReportViewModelTest {
         vm.consume(TimeReportTapAction.TapItem(secondTimeReportItem))
         vm.toggleRegisteredStateForSelectedItems()
 
+        assertEquals(listOf(Event.TimeReportToggle(2)), usageAnalytics.events)
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
     }
@@ -133,6 +139,7 @@ class TimeReportViewModelTest {
         vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
         vm.removeSelectedItems()
 
+        assertEquals(listOf(Event.TimeReportRemove(1)), usageAnalytics.events)
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
     }
@@ -151,6 +158,7 @@ class TimeReportViewModelTest {
         vm.consume(TimeReportTapAction.TapItem(secondTimeReportItem))
         vm.removeSelectedItems()
 
+        assertEquals(listOf(Event.TimeReportRemove(2)), usageAnalytics.events)
         val actual = timeIntervalRepository.findAll(project, 0)
         assertEquals(expected, actual)
     }

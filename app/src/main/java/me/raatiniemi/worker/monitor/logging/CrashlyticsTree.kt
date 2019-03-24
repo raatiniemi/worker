@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.util
+package me.raatiniemi.worker.monitor.logging
 
 import android.util.Log
 import com.crashlytics.android.Crashlytics
@@ -23,7 +23,7 @@ import timber.log.Timber
 class CrashlyticsTree : Timber.Tree() {
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         if (t == null) {
-            Crashlytics.log(priority, tag, message)
+            Crashlytics.log(message)
             return
         }
 
@@ -31,10 +31,20 @@ class CrashlyticsTree : Timber.Tree() {
             return
         }
 
-        Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority)
-        Crashlytics.setString(CRASHLYTICS_KEY_TAG, tag)
+        Crashlytics.setString(CRASHLYTICS_KEY_PRIORITY, readable(priority))
         Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
         Crashlytics.logException(t)
+    }
+
+    private fun readable(priority: Int): String {
+        return when (priority) {
+            Log.VERBOSE -> "Verbose"
+            Log.DEBUG -> "Debug"
+            Log.INFO -> "Information"
+            Log.WARN -> "Warning"
+            Log.ERROR -> "Error"
+            else -> "Unknown"
+        }
     }
 
     private fun shouldDiscardExceptionBasedOnPriority(priority: Int) =
@@ -42,7 +52,6 @@ class CrashlyticsTree : Timber.Tree() {
 
     companion object {
         private const val CRASHLYTICS_KEY_PRIORITY = "priority"
-        private const val CRASHLYTICS_KEY_TAG = "tag"
         private const val CRASHLYTICS_KEY_MESSAGE = "message"
     }
 }

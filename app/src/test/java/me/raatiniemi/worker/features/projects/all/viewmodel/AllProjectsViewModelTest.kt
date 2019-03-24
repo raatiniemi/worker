@@ -32,6 +32,8 @@ import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
@@ -49,6 +51,7 @@ class AllProjectsViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     private val keyValueStore = InMemoryKeyValueStore()
+    private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectRepository = ProjectInMemoryRepository()
     private val timeIntervalRepository = TimeIntervalInMemoryRepository()
 
@@ -68,6 +71,7 @@ class AllProjectsViewModelTest {
         removeProject = RemoveProject(projectRepository)
         vm = AllProjectsViewModel(
                 keyValueStore,
+                usageAnalytics,
                 projectRepository,
                 getProjectTimeSince,
                 clockIn,
@@ -129,6 +133,7 @@ class AllProjectsViewModelTest {
 
         vm.open(projectsItem)
 
+        assertEquals(listOf(Event.TapProjectOpen), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.OpenProject(project), it)
         }
@@ -142,6 +147,7 @@ class AllProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
+            assertEquals(listOf(Event.TapProjectToggle, Event.ProjectClockIn), usageAnalytics.events)
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -156,6 +162,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockInErrorMessage, it)
         }
@@ -168,6 +175,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowConfirmClockOutMessage(item, date), it)
         }
@@ -185,6 +193,7 @@ class AllProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
+            assertEquals(listOf(Event.TapProjectToggle, Event.ProjectClockOut), usageAnalytics.events)
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -197,6 +206,7 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
+        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowUnableToClockOutErrorMessage, it)
         }
@@ -208,6 +218,7 @@ class AllProjectsViewModelTest {
 
         vm.at(item)
 
+        assertEquals(listOf(Event.TapProjectAt), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowChooseTimeForClockActivity(item), it)
         }
@@ -219,6 +230,7 @@ class AllProjectsViewModelTest {
 
         vm.remove(item)
 
+        assertEquals(listOf(Event.TapProjectRemove), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.ShowConfirmRemoveProjectMessage(item), it)
         }
@@ -241,6 +253,7 @@ class AllProjectsViewModelTest {
     fun `clock in project`() = runBlocking {
         vm.clockIn(project, Date())
 
+        assertEquals(listOf(Event.ProjectClockIn), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
@@ -263,6 +276,7 @@ class AllProjectsViewModelTest {
 
         vm.clockOut(project, Date())
 
+        assertEquals(listOf(Event.ProjectClockOut), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
@@ -272,6 +286,7 @@ class AllProjectsViewModelTest {
     fun `remove project without project`() = runBlocking {
         vm.remove(project)
 
+        assertEquals(listOf(Event.ProjectRemove), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.DismissNotification(project), it)
         }
@@ -285,6 +300,7 @@ class AllProjectsViewModelTest {
 
         vm.remove(project)
 
+        assertEquals(listOf(Event.ProjectRemove), usageAnalytics.events)
         val actual = projectRepository.findAll()
         assertEquals(expected, actual)
         vm.viewActions.observeNonNull {

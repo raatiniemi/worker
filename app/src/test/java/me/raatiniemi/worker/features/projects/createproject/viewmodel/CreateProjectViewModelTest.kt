@@ -26,6 +26,8 @@ import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
 import me.raatiniemi.worker.features.shared.model.observeNonNull
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -42,6 +44,7 @@ class CreateProjectViewModelTest {
     private val debounceDurationInMilliseconds: Long = 300
 
     private val repository = ProjectInMemoryRepository()
+    private val usageAnalytics = InMemoryUsageAnalytics()
 
     private lateinit var findProject: FindProject
     private lateinit var createProject: CreateProject
@@ -51,7 +54,7 @@ class CreateProjectViewModelTest {
     fun setUp() {
         findProject = FindProject(repository)
         createProject = CreateProject(findProject, repository)
-        vm = CreateProjectViewModel(createProject, findProject)
+        vm = CreateProjectViewModel(usageAnalytics, createProject, findProject)
     }
 
     @Test
@@ -99,6 +102,7 @@ class CreateProjectViewModelTest {
 
         vm.createProject()
 
+        assertEquals(emptyList<Event>(), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(CreateProjectViewActions.InvalidProjectNameErrorMessage, it)
         }
@@ -111,6 +115,7 @@ class CreateProjectViewModelTest {
 
         vm.createProject()
 
+        assertEquals(emptyList<Event>(), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(CreateProjectViewActions.DuplicateNameErrorMessage, it)
         }
@@ -122,6 +127,7 @@ class CreateProjectViewModelTest {
 
         vm.createProject()
 
+        assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
         val project = Project(id = 1, name = "Name")
         vm.viewActions.observeNonNull {
             assertEquals(CreateProjectViewActions.CreatedProject(project), it)
