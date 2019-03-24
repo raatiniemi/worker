@@ -21,36 +21,28 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.util.*
 
 internal class ClockOutService : OngoingService("ClockOutService") {
+    private val clockOut: ClockOut by inject()
+
     override fun onHandleIntent(intent: Intent?) {
         val projectId = getProjectId(intent)
 
         try {
-            clockOutProjectNow(projectId)
+            clockOut(projectId, Date())
 
             dismissPauseNotification(projectId)
             updateUserInterface(projectId)
+        } catch (e: InactiveProjectException) {
+            Timber.e(e, "Clock out service called with inactive project")
         } catch (e: Exception) {
             Timber.w(e, "Unable to clock out project")
 
             sendErrorNotification(projectId)
         }
-    }
-
-    private fun clockOutProjectNow(projectId: Long) {
-        try {
-            val clockOut = buildClockOutUseCase()
-            clockOut(projectId, Date())
-        } catch (e: InactiveProjectException) {
-            Timber.e(e, "Clock out service called with inactive project")
-        }
-    }
-
-    private fun buildClockOutUseCase(): ClockOut {
-        return ClockOut(timeIntervalRepository)
     }
 
     private fun dismissPauseNotification(projectId: Long) {
