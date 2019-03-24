@@ -14,16 +14,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.model
+package me.raatiniemi.worker.util
 
-import androidx.lifecycle.MutableLiveData
-import me.raatiniemi.worker.util.isMainThread
+import android.os.Looper
 
-internal operator fun <T> MutableLiveData<T>.plusAssign(value: T) {
-    if (isMainThread) {
-        setValue(value)
-        return
-    }
-
-    postValue(value)
-}
+// If the `Looper.getMainLooper()` return `null` it means that we are most
+// likely running tests, and therefor should assume always that we are not
+// running on the main thread since we should use `InstantTaskExecutorRule`
+// and `runBlocking` to simulate main thread behavior.
+internal val isMainThread: Boolean
+    get() = Looper.getMainLooper()?.isCurrentThread ?: false
