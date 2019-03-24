@@ -49,7 +49,7 @@ val projectsModule = module {
         val findProject = FindProject(get())
         val createProject = CreateProject(findProject, get())
 
-        CreateProjectViewModel(createProject, findProject)
+        CreateProjectViewModel(get(), createProject, findProject)
     }
 
     single {

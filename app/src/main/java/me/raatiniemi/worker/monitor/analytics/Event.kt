@@ -22,10 +22,14 @@ sealed class Event(val name: String, val parameters: Map<String, String> = empty
     object TapProjectAt : Event(TAP_PROJECT_AT_NAME)
     object TapProjectRemove : Event(TAP_PROJECT_REMOVE_NAME)
 
+    object ProjectCreate : Event(PROJECT_CREATE_NAME)
+
     companion object {
         private const val TAP_PROJECT_OPEN_NAME = "tap_project_open"
         private const val TAP_PROJECT_TOGGLE_NAME = "tap_project_toggle"
         private const val TAP_PROJECT_AT_NAME = "tap_project_at"
         private const val TAP_PROJECT_REMOVE_NAME = "tap_project_remove"
+
+        private const val PROJECT_CREATE_NAME = "project_create"
     }
 }

@@ -28,9 +28,12 @@ import me.raatiniemi.worker.domain.validator.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.*
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import timber.log.Timber
 
-class CreateProjectViewModel(
+internal class CreateProjectViewModel(
+        private val usageAnalytics: UsageAnalytics,
         private val createProject: CreateProject,
         private val findProject: FindProject
 ) : CoroutineScopedViewModel() {
@@ -69,6 +72,7 @@ class CreateProjectViewModel(
         val viewAction: CreateProjectViewActions = try {
             val project = createProject(name)
 
+            usageAnalytics.log(Event.ProjectCreate)
             CreateProjectViewActions.CreatedProject(project)
         } catch (e: Exception) {
             when (e) {
