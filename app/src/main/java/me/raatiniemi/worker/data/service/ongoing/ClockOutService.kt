@@ -21,11 +21,14 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.util.*
 
 internal class ClockOutService : OngoingService("ClockOutService") {
+    private val usageAnalytics: UsageAnalytics by inject()
     private val clockOut: ClockOut by inject()
 
     override fun onHandleIntent(intent: Intent?) {
@@ -34,6 +37,7 @@ internal class ClockOutService : OngoingService("ClockOutService") {
         try {
             clockOut(projectId, Date())
 
+            usageAnalytics.log(Event.ProjectClockOut)
             dismissNotification(projectId)
             updateUserInterface(projectId)
         } catch (e: InactiveProjectException) {

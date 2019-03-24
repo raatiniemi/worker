@@ -24,11 +24,14 @@ import me.raatiniemi.worker.domain.interactor.GetProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
+import me.raatiniemi.worker.monitor.analytics.Event
+import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.util.*
 
 internal class ResumeService : OngoingService("ResumeService") {
+    private val usageAnalytics: UsageAnalytics by inject()
     private val clockIn: ClockIn by inject()
     private val getProject: GetProject by inject()
 
@@ -38,6 +41,7 @@ internal class ResumeService : OngoingService("ResumeService") {
         try {
             clockIn(projectId, Date())
 
+            usageAnalytics.log(Event.ProjectClockIn)
             updateUserInterface(projectId)
 
             if (isOngoingNotificationEnabled) {
