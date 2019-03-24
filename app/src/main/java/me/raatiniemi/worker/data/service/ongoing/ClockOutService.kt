@@ -34,19 +34,14 @@ internal class ClockOutService : OngoingService("ClockOutService") {
         try {
             clockOut(projectId, Date())
 
-            dismissPauseNotification(projectId)
+            dismissNotification(projectId)
             updateUserInterface(projectId)
         } catch (e: InactiveProjectException) {
             Timber.e(e, "Clock out service called with inactive project")
         } catch (e: Exception) {
             Timber.w(e, "Unable to clock out project")
-
             sendErrorNotification(projectId)
         }
-    }
-
-    private fun dismissPauseNotification(projectId: Long) {
-        dismissNotification(projectId)
     }
 
     private fun sendErrorNotification(projectId: Long) {

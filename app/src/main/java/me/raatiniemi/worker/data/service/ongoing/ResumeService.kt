@@ -42,11 +42,10 @@ internal class ResumeService : OngoingService("ResumeService") {
 
             if (isOngoingNotificationEnabled) {
                 val project = getProject(projectId)
-
                 sendPauseNotification(project)
                 return
             }
-            dismissResumeNotification(projectId)
+            dismissNotification(projectId)
         } catch (e: ActiveProjectException) {
             Timber.e(e, "Resume service called with active project")
         } catch (e: Exception) {
@@ -60,10 +59,6 @@ internal class ResumeService : OngoingService("ResumeService") {
                 project.id,
                 PauseNotification.build(this, project, isOngoingNotificationChronometerEnabled)
         )
-    }
-
-    private fun dismissResumeNotification(projectId: Long) {
-        dismissNotification(projectId)
     }
 
     private fun sendErrorNotification(projectId: Long) {

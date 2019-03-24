@@ -33,7 +33,6 @@ import timber.log.Timber
 
 abstract class OngoingService internal constructor(name: String) : IntentService(name) {
     private val eventBus: EventBus = EventBus.getDefault()
-
     private val keyValueStore: KeyValueStore by inject()
 
     private val notificationManager: NotificationManager by lazy {
