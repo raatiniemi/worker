@@ -160,6 +160,7 @@ internal class AllProjectsViewModel(
         try {
             clockIn(project.id, date)
 
+            usageAnalytics.log(Event.ProjectClockIn)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
@@ -172,6 +173,7 @@ internal class AllProjectsViewModel(
         try {
             clockOut(project.id, date)
 
+            usageAnalytics.log(Event.ProjectClockOut)
             viewActions += AllProjectsViewActions.UpdateNotification(project)
             reloadProjects()
         } catch (e: Exception) {
@@ -184,6 +186,7 @@ internal class AllProjectsViewModel(
         try {
             removeProject(project)
 
+            usageAnalytics.log(Event.ProjectRemove)
             viewActions += AllProjectsViewActions.DismissNotification(project)
             reloadProjects()
         } catch (e: Exception) {

@@ -146,8 +146,8 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
-        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
+            assertEquals(listOf(Event.TapProjectToggle, Event.ProjectClockIn), usageAnalytics.events)
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -192,8 +192,8 @@ class AllProjectsViewModelTest {
 
         vm.toggle(item, date)
 
-        assertEquals(listOf(Event.TapProjectToggle), usageAnalytics.events)
         vm.viewActions.observeNonNull {
+            assertEquals(listOf(Event.TapProjectToggle, Event.ProjectClockOut), usageAnalytics.events)
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -253,6 +253,7 @@ class AllProjectsViewModelTest {
     fun `clock in project`() = runBlocking {
         vm.clockIn(project, Date())
 
+        assertEquals(listOf(Event.ProjectClockIn), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
@@ -275,6 +276,7 @@ class AllProjectsViewModelTest {
 
         vm.clockOut(project, Date())
 
+        assertEquals(listOf(Event.ProjectClockOut), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
@@ -284,6 +286,7 @@ class AllProjectsViewModelTest {
     fun `remove project without project`() = runBlocking {
         vm.remove(project)
 
+        assertEquals(listOf(Event.ProjectRemove), usageAnalytics.events)
         vm.viewActions.observeNonNull {
             assertEquals(AllProjectsViewActions.DismissNotification(project), it)
         }
@@ -297,6 +300,7 @@ class AllProjectsViewModelTest {
 
         vm.remove(project)
 
+        assertEquals(listOf(Event.ProjectRemove), usageAnalytics.events)
         val actual = projectRepository.findAll()
         assertEquals(expected, actual)
         vm.viewActions.observeNonNull {

@@ -23,6 +23,9 @@ sealed class Event(val name: String, val parameters: Map<String, String> = empty
     object TapProjectRemove : Event(TAP_PROJECT_REMOVE_NAME)
 
     object ProjectCreate : Event(PROJECT_CREATE_NAME)
+    object ProjectClockIn : Event(PROJECT_CLOCK_IN_NAME)
+    object ProjectClockOut : Event(PROJECT_CLOCK_OUT_NAME)
+    object ProjectRemove : Event(PROJECT_REMOVE_NAME)
 
     companion object {
         private const val TAP_PROJECT_OPEN_NAME = "tap_project_open"
@@ -31,5 +34,8 @@ sealed class Event(val name: String, val parameters: Map<String, String> = empty
         private const val TAP_PROJECT_REMOVE_NAME = "tap_project_remove"
 
         private const val PROJECT_CREATE_NAME = "project_create"
+        private const val PROJECT_CLOCK_IN_NAME = "project_clock_in"
+        private const val PROJECT_CLOCK_OUT_NAME = "project_clock_out"
+        private const val PROJECT_REMOVE_NAME = "project_remove"
     }
 }
