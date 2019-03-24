@@ -17,12 +17,17 @@
 package me.raatiniemi.worker
 
 import me.raatiniemi.worker.domain.interactor.ClockIn
+import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProject
 import org.koin.dsl.module.module
 
 val useCaseModule = module {
     single {
         ClockIn(get())
+    }
+
+    single {
+        ClockOut(get())
     }
 
     single {
