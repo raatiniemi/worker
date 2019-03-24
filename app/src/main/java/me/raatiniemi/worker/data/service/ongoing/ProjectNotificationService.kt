@@ -42,18 +42,20 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
 
             if (isProjectActive(projectId)) {
                 val project = getProject(projectId)
-
-                sendNotification(
-                        project.id,
-                        PauseNotification.build(this, project, isOngoingNotificationChronometerEnabled)
-                )
+                sendPauseNotification(project)
                 return
             }
-
             dismissNotification(projectId)
         } catch (e: Exception) {
             Timber.w(e, "Unable to pause project")
         }
+    }
+
+    private fun sendPauseNotification(project: Project) {
+        sendNotification(
+                project.id,
+                PauseNotification.build(this, project, isOngoingNotificationChronometerEnabled)
+        )
     }
 
     companion object {
