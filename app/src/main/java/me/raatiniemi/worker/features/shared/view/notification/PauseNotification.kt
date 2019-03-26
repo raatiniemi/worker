@@ -49,10 +49,10 @@ internal class PauseNotification private constructor(
         get() = repository.findActiveByProjectId(project.id)
 
     private val textForPauseAction: String by lazy {
-        getStringWithResourceId(R.string.notification_pause_action_pause)
+        getStringWithResourceId(R.string.ongoing_notification_action_pause)
     }
     private val textForClockOutAction: String by lazy {
-        getStringWithResourceId(R.string.notification_pause_action_clock_out)
+        getStringWithResourceId(R.string.ongoing_notification_action_clock_out)
     }
 
     @DrawableRes

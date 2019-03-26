@@ -53,8 +53,8 @@ internal class ClockOutService : OngoingService("ClockOutService") {
                 projectId,
                 ErrorNotification.buildOngoing(
                         this,
-                        getString(R.string.error_notification_clock_out_title),
-                        getString(R.string.error_notification_clock_out_message)
+                        getString(R.string.ongoing_notification_unable_to_clock_out_title),
+                        getString(R.string.ongoing_notification_unable_to_clock_out_message)
                 )
         )
     }

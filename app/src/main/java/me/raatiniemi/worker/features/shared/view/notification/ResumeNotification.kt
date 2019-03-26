@@ -34,7 +34,7 @@ internal class ResumeNotification private constructor(
         override val shouldUseChronometer: Boolean
 ) : OngoingNotification(context, project, isOngoing = false) {
     private val textForResumeAction: String by lazy {
-        getStringWithResourceId(R.string.notification_pause_action_resume)
+        getStringWithResourceId(R.string.ongoing_notification_action_resume)
     }
 
     @DrawableRes

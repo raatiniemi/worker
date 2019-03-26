@@ -29,8 +29,8 @@ import me.raatiniemi.worker.R
 class Notifications {
     companion object {
         private const val ongoingId = "ongoing"
-        private const val ongoingTitle = R.string.notification_channel_ongoing_title
-        private const val ongoingDescription = R.string.notification_channel_ongoing_description
+        private const val ongoingTitle = R.string.ongoing_notification_channel_title
+        private const val ongoingDescription = R.string.ongoing_notification_channel_description
 
         fun createChannel(notificationManager: NotificationManager, channel: NotificationChannel) {
             notificationManager.createNotificationChannel(channel)

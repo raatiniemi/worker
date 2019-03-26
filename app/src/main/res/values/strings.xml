@@ -106,21 +106,21 @@
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Notification -> Ongoing">-->
-    <string name="notification_channel_ongoing_title">Ongoing</string>
-    <string name="notification_channel_ongoing_description">Shows while a project is either active or paused.</string>
+    <string name="ongoing_notification_channel_title">Ongoing</string>
+    <string name="ongoing_notification_channel_description">Shows while a project is either active or paused.</string>
 
-    <string name="notification_pause_action_pause">Pause</string>
-    <string name="notification_pause_action_clock_out">Clock out</string>
-    <string name="notification_pause_action_resume">Resume</string>
+    <string name="ongoing_notification_action_pause">Pause</string>
+    <string name="ongoing_notification_action_clock_out">Clock out</string>
+    <string name="ongoing_notification_action_resume">Resume</string>
 
-    <string name="error_notification_pause_title">Failed to pause project</string>
-    <string name="error_notification_pause_message">An internal error has occurred.</string>
+    <string name="ongoing_notification_unable_to_pause_title">Failed to pause project</string>
+    <string name="ongoing_notification_unable_to_pause_message">An internal error has occurred.</string>
 
-    <string name="error_notification_resume_title">Failed to resume project</string>
-    <string name="error_notification_resume_message">An internal error has occurred.</string>
+    <string name="ongoing_notification_unable_to_resume_title">Failed to resume project</string>
+    <string name="ongoing_notification_unable_to_resume_message">An internal error has occurred.</string>
 
-    <string name="error_notification_clock_out_title">Failed to clock out project</string>
-    <string name="error_notification_clock_out_message">An internal error has occurred.</string>
+    <string name="ongoing_notification_unable_to_clock_out_title">Failed to clock out project</string>
+    <string name="ongoing_notification_unable_to_clock_out_message">An internal error has occurred.</string>
     <!--</editor-fold>-->
 
 </resources>
