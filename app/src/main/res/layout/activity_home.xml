@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="@string/main_navigation_projects" />
+            app:title="@string/home_navigation_projects" />
 
         <fragment
             android:id="@+id/fragmentContainer"
