@@ -17,8 +17,8 @@
 
 <resources>
     <string-array name="project_time_summary_alternative_text">
-        <item>@string/fragment_settings_project_time_summary_alternative_week</item>
-        <item>@string/fragment_settings_project_time_summary_alternative_month</item>
+        <item>@string/settings_project_time_summary_starting_point_week</item>
+        <item>@string/settings_project_time_summary_starting_point_month</item>
     </string-array>
     <string-array name="project_time_summary_alternative_value">
         <item>1</item>

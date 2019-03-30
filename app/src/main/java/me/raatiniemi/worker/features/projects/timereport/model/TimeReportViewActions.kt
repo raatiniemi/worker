@@ -26,7 +26,7 @@ sealed class TimeReportViewActions : ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
-                    R.string.error_message_register_time_report,
+                    R.string.projects_time_report_unable_to_register_message,
                     Snackbar.LENGTH_SHORT
             )
             snackBar.show()
@@ -37,7 +37,7 @@ sealed class TimeReportViewActions : ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
-                    R.string.error_message_delete_time_report,
+                    R.string.projects_time_report_unable_to_delete_message,
                     Snackbar.LENGTH_SHORT
             )
             snackBar.show()

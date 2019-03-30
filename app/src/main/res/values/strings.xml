@@ -3,109 +3,116 @@
 
     <string name="name">Worker</string>
 
-    <string name="main_navigation_projects">Projects</string>
-    <string name="main_navigation_settings">Settings</string>
+    <!--<editor-fold desc="Home">-->
+    <string name="home_navigation_projects">Projects</string>
+    <string name="home_navigation_settings">Settings</string>
+    <!--</editor-fold>-->
 
-    <string name="menu_title_actions">Actions</string>
+    <!--<editor-fold desc="Projects">-->
+    <string name="projects_all_menu_create_project">Create project</string>
+    <string name="projects_all_project_created_message">New project have been created</string>
 
-    <string name="menu_actions_projects_create_project">Create project</string>
+    <string name="projects_all_empty_text">You haven\'t created\na project yet…</string>
 
-    <string name="menu_actions_project_hide_registered">Hide registered</string>
+    <string name="projects_all_clock_in">Clock in %s</string>
+    <string name="projects_all_clock_in_at">Clock in %s at</string>
 
-    <string name="menu_actions_project_time_report_register">Mark as registered</string>
-    <string name="menu_actions_project_time_report_delete">Delete</string>
+    <string name="projects_all_unable_to_clock_in_message">Failed to clock in project.</string>
 
-    <string name="projects_empty_text">You haven\'t created\na project yet…</string>
+    <string name="projects_all_clock_out">Clock out %s</string>
+    <string name="projects_all_clock_out_at">Clock out %s at</string>
 
-    <string name="fragment_projects_item_clocked_in_since" formatted="false">Since %s (%s)</string>
-    <string name="fragment_projects_item_clock_in">Clock in %s</string>
-    <string name="fragment_projects_item_clock_in_at">Clock in %s at</string>
-    <string name="fragment_projects_item_clock_out">Clock out %s</string>
-    <string name="fragment_projects_item_clock_out_at">Clock out %s at</string>
-    <string name="fragment_projects_item_delete">Delete %s</string>
+    <string name="projects_all_confirm_clock_out_title">You are about to clock out</string>
+    <string name="projects_all_confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
 
-    <string name="fragment_create_project_title">Create project</string>
-    <string name="fragment_create_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
-    <string name="fragment_create_project_name_hint">Project name&#8230;</string>
-    <string name="fragment_create_project_submit">Create</string>
-    <string name="fragment_create_project_dismiss">Cancel</string>
+    <string name="projects_all_unable_to_clock_out_message">Failed to clock out project.</string>
 
-    <string name="fragment_time_report_group_item_selection_content_description">Select or deselect item group</string>
-    <string name="time_report_empty_text">No time report entries\nwas found…</string>
+    <string name="projects_all_delete">Delete %s</string>
 
-    <string name="confirm_clock_out_title">You are about to clock out</string>
-    <string name="confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
+    <string name="projects_all_confirm_delete_project_title">Delete project</string>
+    <string name="projects_all_confirm_delete_project_message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
 
-    <string name="confirm_delete_project_title">Delete project</string>
-    <string name="confirm_delete_project_message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
+    <string name="projects_all_unable_to_delete_message">Failed to delete project.</string>
 
-    <string name="confirm_delete_time_title">Delete time</string>
-    <string name="confirm_delete_time_message">Are you sure you want to delete the registered time?</string>
+    <string name="projects_all_clocked_in_since" formatted="false">Since %s (%s)</string>
 
-    <string name="message_project_created">New project have been created</string>
-    <string name="error_message_project_deleted">Failed to delete project.</string>
+    <string name="projects_create_title">Create project</string>
+    <string name="projects_create_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
+    <string name="projects_create_name_hint">Project name&#8230;</string>
 
-    <string name="error_message_clock_in">Failed to clock in project.</string>
-    <string name="error_message_clock_out">Failed to clock out project.</string>
+    <string name="projects_create_submit">Create</string>
+    <string name="projects_create_dismiss">Cancel</string>
 
-    <string name="error_message_register_time_report">Failed to update item(s).</string>
-    <string name="error_message_delete_time_report">Failed to delete item(s).</string>
+    <string name="projects_create_missing_name_error_message">You have to supply a name</string>
+    <string name="projects_create_project_already_exists_error_message">Project name already exists</string>
+    <string name="projects_create_unknown_error_message">An unknown error has occurred</string>
+
+    <string name="projects_time_report_menu_hide_registered">Hide registered</string>
+    <string name="projects_time_report_empty_text">No time report entries\nwas found…</string>
+
+    <string name="projects_time_report_menu_title">Actions</string>
+    <string name="projects_time_report_menu_register">Mark as registered</string>
+    <string name="projects_time_report_menu_delete">Delete</string>
+
+    <string name="projects_time_report_group_selection_content_description">Select or deselect item group</string>
+
+    <string name="projects_time_report_unable_to_register_message">Failed to update item(s).</string>
+
+    <string name="projects_time_report_unable_to_delete_message">Failed to delete item(s).</string>
+
+    <string name="projects_time_report_confirm_delete_title">Delete time</string>
+    <string name="projects_time_report_confirm_delete_message">Are you sure you want to delete the registered time?</string>
+    <!--</editor-fold>-->
 
     <!--<editor-fold desc="Settings">-->
-    <string name="fragment_settings_preferences_title">Preferences</string>
+    <string name="settings_title">Preferences</string>
 
-    <string name="fragment_settings_project">Project</string>
+    <string name="settings_project_title">Project</string>
 
-    <string name="fragment_settings_about_title">About</string>
+    <string name="settings_project_general_title">General</string>
 
-    <string name="fragment_settings_about_version_title">Version</string>
-    <string name="fragment_settings_about_version_summary" formatted="false">%s (%d)</string>
+    <string name="settings_project_confirm_clock_out_title">Confirm clock out</string>
+    <string name="settings_project_confirm_clock_out_summary">Require confirmation when clocking out to prevent accidental clocking out. Clock out from ongoing notification is not yet supported.</string>
+
+    <string name="settings_project_time_summary_title">Time summary</string>
+    <string name="settings_project_time_summary_summary">Starting point for the collection of registered time used for the time summary.</string>
+    <string name="settings_project_time_summary_starting_point_week">Week</string>
+    <string name="settings_project_time_summary_starting_point_month">Month</string>
+
+    <string name="settings_project_time_summary_changed_starting_point_to_week_message">Time summary will show current week</string>
+    <string name="settings_project_time_summary_changed_starting_point_to_month_message">Time summary will show current month</string>
+    <string name="settings_project_time_summary_unable_to_change_starting_point_message">Unable to change time summary starting point.</string>
+
+    <string name="settings_project_ongoing_notification_title">Ongoing notification</string>
+
+    <string name="settings_project_ongoing_notification_enable_title">Enable</string>
+    <string name="settings_project_ongoing_notification_enable_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
+
+    <string name="settings_project_ongoing_notification_chronometer_title">Notification timer</string>
+    <string name="settings_project_ongoing_notification_chronometer_summary">Include notification timer for total time worked today, or length of current break (depends on project state).</string>
+
+    <string name="settings_about_title">About</string>
+
+    <string name="settings_about_version_title">Version</string>
+    <string name="settings_about_version_summary" formatted="false">%s (%d)</string>
     <!--</editor-fold>-->
 
-    <!--<editor-fold desc="Settings -> Project">-->
-    <string name="fragment_settings_project_title">Project</string>
+    <!--<editor-fold desc="Ongoing notification">-->
+    <string name="ongoing_notification_channel_title">Ongoing</string>
+    <string name="ongoing_notification_channel_description">Shows while a project is either active or paused.</string>
 
-    <string name="fragment_settings_project_general_title">General</string>
+    <string name="ongoing_notification_action_pause">Pause</string>
+    <string name="ongoing_notification_action_clock_out">Clock out</string>
+    <string name="ongoing_notification_action_resume">Resume</string>
 
-    <string name="fragment_settings_project_confirm_clock_out_title">Confirm clock out</string>
-    <string name="fragment_settings_project_confirm_clock_out_summary">Require confirmation when clocking out to prevent accidental clocking out. Clock out from ongoing notification is not yet supported.</string>
+    <string name="ongoing_notification_unable_to_pause_title">Failed to pause project</string>
+    <string name="ongoing_notification_unable_to_pause_message">An internal error has occurred.</string>
 
-    <string name="fragment_settings_project_time_summary_title">Time summary</string>
-    <string name="fragment_settings_project_time_summary_summary">Starting point for the collection of registered time used for the time summary.</string>
-    <string name="fragment_settings_project_time_summary_alternative_week">Week</string>
-    <string name="fragment_settings_project_time_summary_alternative_month">Month</string>
+    <string name="ongoing_notification_unable_to_resume_title">Failed to resume project</string>
+    <string name="ongoing_notification_unable_to_resume_message">An internal error has occurred.</string>
 
-    <string name="fragment_settings_project_time_summary_changed_to_week">Time summary will show current week</string>
-    <string name="fragment_settings_project_time_summary_changed_to_month">Time summary will show current month</string>
-    <string name="fragment_settings_project_time_summary_unable_to_change_error_message">Unable to change time summary starting point.</string>
-
-    <string name="fragment_settings_project_ongoing_notification_title">Ongoing notification</string>
-
-    <string name="fragment_settings_project_ongoing_notification_enable_title">Enable</string>
-    <string name="fragment_settings_project_ongoing_notification_enable_summary">For devices running Android Oreo (8.0) or later, notifications can also be enabled/disabled through the appropriate notification channel.\n\nToggling this preference do not affect the notification channel state.</string>
-
-    <string name="fragment_settings_project_ongoing_notification_chronometer_title">Notification timer</string>
-    <string name="fragment_settings_project_ongoing_notification_chronometer_summary">Include notification timer for total time worked today, or length of current break (depends on project state).</string>
+    <string name="ongoing_notification_unable_to_clock_out_title">Failed to clock out project</string>
+    <string name="ongoing_notification_unable_to_clock_out_message">An internal error has occurred.</string>
     <!--</editor-fold>-->
-
-    <string name="notification_pause_action_pause">Pause</string>
-    <string name="notification_pause_action_clock_out">Clock out</string>
-    <string name="notification_pause_action_resume">Resume</string>
-
-    <string name="error_message_unknown">An unknown error has occurred</string>
-    <string name="error_message_project_name_missing">You have to supply a name</string>
-    <string name="error_message_project_name_already_exists">Project name already exists</string>
-
-    <string name="error_notification_pause_title">Failed to pause project</string>
-    <string name="error_notification_pause_message">An internal error has occurred.</string>
-
-    <string name="error_notification_resume_title">Failed to resume project</string>
-    <string name="error_notification_resume_message">An internal error has occurred.</string>
-
-    <string name="error_notification_clock_out_title">Failed to clock out project</string>
-    <string name="error_notification_clock_out_message">An internal error has occurred.</string>
-
-    <string name="notification_channel_ongoing_title">Ongoing</string>
-    <string name="notification_channel_ongoing_description">Shows while a project is either active or paused.</string>
 
 </resources>

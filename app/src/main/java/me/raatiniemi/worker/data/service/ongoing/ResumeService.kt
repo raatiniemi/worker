@@ -70,8 +70,8 @@ internal class ResumeService : OngoingService("ResumeService") {
                 projectId,
                 ErrorNotification.buildOngoing(
                         this,
-                        getString(R.string.error_notification_resume_title),
-                        getString(R.string.error_notification_resume_message)
+                        getString(R.string.ongoing_notification_unable_to_resume_title),
+                        getString(R.string.ongoing_notification_unable_to_resume_message)
                 )
         )
     }

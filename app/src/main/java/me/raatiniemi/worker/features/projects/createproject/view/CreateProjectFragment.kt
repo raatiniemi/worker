@@ -47,7 +47,7 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
         super.onViewCreated(view, savedInstanceState)
 
         dialog?.also {
-            it.setTitle(R.string.fragment_create_project_title)
+            it.setTitle(R.string.projects_create_title)
             it.setOnShowListener(this)
         }
 

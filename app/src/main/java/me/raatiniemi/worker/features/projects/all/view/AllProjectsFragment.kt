@@ -201,7 +201,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         with(requireActivity()) {
             val snackBar = Snackbar.make(
                     findViewById(android.R.id.content),
-                    R.string.message_project_created,
+                    R.string.projects_all_project_created_message,
                     Snackbar.LENGTH_SHORT
             )
             snackBar.show()

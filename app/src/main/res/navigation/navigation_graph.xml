@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navProjects"
         android:name="me.raatiniemi.worker.features.projects.all.view.AllProjectsFragment"
-        android:label="@string/main_navigation_projects"
+        android:label="@string/home_navigation_projects"
         tools:layout="@layout/fragment_all_projects">
 
         <action
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/navSettings"
         android:name="me.raatiniemi.worker.features.settings.view.SettingsFragment"
-        android:label="@string/main_navigation_settings">
+        android:label="@string/home_navigation_settings">
 
         <action
             android:id="@+id/settings_project"
@@ -50,6 +50,6 @@
     <fragment
         android:id="@+id/navSettingsProject"
         android:name="me.raatiniemi.worker.features.settings.project.view.ProjectFragment"
-        android:label="@string/fragment_settings_project_title" />
+        android:label="@string/settings_project_title" />
 
 </navigation>

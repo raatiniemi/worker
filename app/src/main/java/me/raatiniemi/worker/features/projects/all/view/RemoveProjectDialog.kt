@@ -21,8 +21,8 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
 internal object RemoveProjectDialog {
-    private const val TITLE = R.string.confirm_delete_project_title
-    private const val MESSAGE = R.string.confirm_delete_project_message
+    private const val TITLE = R.string.projects_all_confirm_delete_project_title
+    private const val MESSAGE = R.string.projects_all_confirm_delete_project_message
 
     suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }

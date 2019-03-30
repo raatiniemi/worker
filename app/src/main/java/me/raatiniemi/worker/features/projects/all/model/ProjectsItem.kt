@@ -90,7 +90,7 @@ data class ProjectsItem(private val project: Project, private val registeredTime
         }
 
         private fun getClockedInSinceFormatTemplate(resources: Resources): String {
-            return resources.getString(R.string.fragment_projects_item_clocked_in_since)
+            return resources.getString(R.string.projects_all_clocked_in_since)
         }
     }
 }

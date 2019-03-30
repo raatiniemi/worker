@@ -40,7 +40,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         configurePreference<Preference>("settings_about_version") {
             isSelectable = false
             summary = getString(
-                    R.string.fragment_settings_about_version_summary,
+                    R.string.settings_about_version_summary,
                     BuildConfig.VERSION_NAME,
                     BuildConfig.VERSION_CODE
             )

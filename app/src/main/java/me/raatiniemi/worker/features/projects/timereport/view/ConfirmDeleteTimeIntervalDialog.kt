@@ -21,8 +21,8 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
 internal object ConfirmDeleteTimeIntervalDialog {
-    private const val TITLE = R.string.confirm_delete_time_title
-    private const val MESSAGE = R.string.confirm_delete_time_message
+    private const val TITLE = R.string.projects_time_report_confirm_delete_title
+    private const val MESSAGE = R.string.projects_time_report_confirm_delete_message
 
     suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }

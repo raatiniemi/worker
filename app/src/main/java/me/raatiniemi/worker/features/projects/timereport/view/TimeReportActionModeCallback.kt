@@ -26,7 +26,7 @@ import timber.log.Timber
 internal class TimeReportActionModeCallback(private val consumer: TimeReportActionConsumer) : ActionMode.Callback {
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         mode?.apply {
-            setTitle(R.string.menu_title_actions)
+            setTitle(R.string.projects_time_report_menu_title)
             menuInflater?.inflate(R.menu.actions_project_time_report, menu)
         }
         return true

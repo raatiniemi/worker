@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/actions_project_hide_registered"
-        android:title="@string/menu_actions_project_hide_registered"
+        android:title="@string/projects_time_report_menu_hide_registered"
         android:checked="false"
         android:checkable="true"
         />

@@ -43,22 +43,22 @@ internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         with(clockActivityToggle) {
             isActivated = projectsItem.isActive
             contentDescription = if (projectsItem.isActive) {
-                resources.getString(R.string.fragment_projects_item_clock_out, projectsItem.title)
+                resources.getString(R.string.projects_all_clock_out, projectsItem.title)
             } else {
-                resources.getString(R.string.fragment_projects_item_clock_in, projectsItem.title)
+                resources.getString(R.string.projects_all_clock_in, projectsItem.title)
             }
         }
 
         with(clockActivityAt) {
             contentDescription = if (projectsItem.isActive) {
-                resources.getString(R.string.fragment_projects_item_clock_out_at, projectsItem.title)
+                resources.getString(R.string.projects_all_clock_out_at, projectsItem.title)
             } else {
-                resources.getString(R.string.fragment_projects_item_clock_in_at, projectsItem.title)
+                resources.getString(R.string.projects_all_clock_in_at, projectsItem.title)
             }
         }
 
         with(delete) {
-            contentDescription = resources.getString(R.string.fragment_projects_item_delete, projectsItem.title)
+            contentDescription = resources.getString(R.string.projects_all_delete, projectsItem.title)
         }
 
         clockedInSince.visibleIf { projectsItem.isActive }

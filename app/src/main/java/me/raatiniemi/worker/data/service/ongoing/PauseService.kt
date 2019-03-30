@@ -70,8 +70,8 @@ internal class PauseService : OngoingService("PauseService") {
                 projectId,
                 ErrorNotification.buildOngoing(
                         this,
-                        getString(R.string.error_notification_pause_title),
-                        getString(R.string.error_notification_pause_message)
+                        getString(R.string.ongoing_notification_unable_to_pause_title),
+                        getString(R.string.ongoing_notification_unable_to_pause_message)
                 )
         )
     }

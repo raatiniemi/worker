@@ -48,7 +48,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     private void dismissDialogWithInvalidState() {
         Snackbar.make(
                 getActivity().findViewById(android.R.id.content),
-                R.string.error_message_unknown,
+                R.string.projects_create_unknown_error_message,
                 Snackbar.LENGTH_SHORT
         ).show();
 
