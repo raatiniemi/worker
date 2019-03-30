@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.preference.PreferenceCategory android:title="@string/fragment_settings_project_general_title">
+    <androidx.preference.PreferenceCategory android:title="@string/settings_project_general_title">
 
         <androidx.preference.CheckBoxPreference
             android:key="settings_project_confirm_clock_out"
-            android:summary="@string/fragment_settings_project_confirm_clock_out_summary"
-            android:title="@string/fragment_settings_project_confirm_clock_out_title" />
+            android:summary="@string/settings_project_confirm_clock_out_summary"
+            android:title="@string/settings_project_confirm_clock_out_title" />
 
         <androidx.preference.ListPreference
             android:entries="@array/project_time_summary_alternative_text"
             android:entryValues="@array/project_time_summary_alternative_value"
             android:key="settings_project_time_summary"
-            android:summary="@string/fragment_settings_project_time_summary_summary"
-            android:title="@string/fragment_settings_project_time_summary_title" />
+            android:summary="@string/settings_project_time_summary_summary"
+            android:title="@string/settings_project_time_summary_title" />
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory android:title="@string/fragment_settings_project_ongoing_notification_title">
+    <androidx.preference.PreferenceCategory android:title="@string/settings_project_ongoing_notification_title">
 
         <androidx.preference.CheckBoxPreference
             android:key="settings_project_ongoing_notification_enable"
-            android:title="@string/fragment_settings_project_ongoing_notification_enable_title" />
+            android:title="@string/settings_project_ongoing_notification_enable_title" />
 
         <androidx.preference.CheckBoxPreference
             android:key="settings_project_ongoing_notification_chronometer"
-            android:summary="@string/fragment_settings_project_ongoing_notification_chronometer_summary"
-            android:title="@string/fragment_settings_project_ongoing_notification_chronometer_title" />
+            android:summary="@string/settings_project_ongoing_notification_chronometer_summary"
+            android:title="@string/settings_project_ongoing_notification_chronometer_title" />
 
     </androidx.preference.PreferenceCategory>
 

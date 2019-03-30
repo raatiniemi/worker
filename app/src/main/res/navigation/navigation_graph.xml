@@ -50,6 +50,6 @@
     <fragment
         android:id="@+id/navSettingsProject"
         android:name="me.raatiniemi.worker.features.settings.project.view.ProjectFragment"
-        android:label="@string/fragment_settings_project_title" />
+        android:label="@string/settings_project_title" />
 
 </navigation>

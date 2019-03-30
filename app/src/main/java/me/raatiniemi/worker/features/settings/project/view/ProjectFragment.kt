@@ -97,7 +97,7 @@ class ProjectFragment : PreferenceFragmentCompat() {
         configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_ENABLE_KEY) {
             isEnabled = isOngoingChannelEnabled
             isChecked = vm.ongoingNotificationEnabled
-            setSummary(R.string.fragment_settings_project_ongoing_notification_enable_summary)
+            setSummary(R.string.settings_project_ongoing_notification_enable_summary)
 
             onCheckChange {
                 vm.ongoingNotificationEnabled = it
