@@ -105,7 +105,7 @@
     <string name="fragment_settings_project_ongoing_notification_chronometer_summary">Include notification timer for total time worked today, or length of current break (depends on project state).</string>
     <!--</editor-fold>-->
 
-    <!--<editor-fold desc="Notification -> Ongoing">-->
+    <!--<editor-fold desc="Ongoing notification">-->
     <string name="ongoing_notification_channel_title">Ongoing</string>
     <string name="ongoing_notification_channel_description">Shows while a project is either active or paused.</string>
 
