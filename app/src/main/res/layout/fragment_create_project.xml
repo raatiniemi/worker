@@ -12,7 +12,7 @@
         android:id="@+id/tvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/fragment_create_project_description"
+        android:text="@string/projects_create_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/accent"
-            android:hint="@string/fragment_create_project_name_hint"
+            android:hint="@string/projects_create_name_hint"
             android:imeOptions="actionDone"
             android:importantForAutofill="no"
             android:inputType="text"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/btnCreate"
-        android:text="@string/fragment_create_project_dismiss"
+        android:text="@string/projects_create_dismiss"
         android:textColor="@drawable/button_foreground"
         app:layout_constraintEnd_toStartOf="@id/btnCreate"
         app:layout_constraintTop_toTopOf="@id/btnCreate" />
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="@string/fragment_create_project_submit"
+        android:text="@string/projects_create_submit"
         android:textColor="@drawable/button_foreground"
         app:layout_constraintEnd_toEndOf="@id/tilProjectName"
         app:layout_constraintTop_toBottomOf="@id/tilProjectName" />

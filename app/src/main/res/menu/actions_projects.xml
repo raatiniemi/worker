@@ -3,5 +3,5 @@
     <item
         android:id="@+id/actions_main_create_project"
         android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/menu_actions_projects_create_project" />
+        android:title="@string/projects_all_menu_create_project" />
 </menu>

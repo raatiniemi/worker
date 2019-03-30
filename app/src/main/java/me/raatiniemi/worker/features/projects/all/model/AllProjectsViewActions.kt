@@ -72,7 +72,7 @@ internal sealed class AllProjectsViewActions {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
-                    R.string.error_message_clock_in,
+                    R.string.projects_all_unable_to_clock_in_message,
                     Snackbar.LENGTH_SHORT
             )
             snackBar.show()
@@ -83,7 +83,7 @@ internal sealed class AllProjectsViewActions {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
-                    R.string.error_message_clock_out,
+                    R.string.projects_all_unable_to_clock_out_message,
                     Snackbar.LENGTH_SHORT
             )
             snackBar.show()
@@ -96,7 +96,7 @@ internal sealed class AllProjectsViewActions {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
                     activity.findViewById(android.R.id.content),
-                    R.string.error_message_project_deleted,
+                    R.string.projects_all_unable_to_delete_message,
                     Snackbar.LENGTH_SHORT
             )
             snackBar.show()

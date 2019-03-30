@@ -8,64 +8,60 @@
     <string name="main_navigation_settings">Settings</string>
     <!--</editor-fold>-->
 
-    <!--<editor-fold desc="Projects -> All">-->
-    <string name="menu_actions_projects_create_project">Create project</string>
-    <string name="message_project_created">New project have been created</string>
+    <!--<editor-fold desc="Projects">-->
+    <string name="projects_all_menu_create_project">Create project</string>
+    <string name="projects_all_project_created_message">New project have been created</string>
 
-    <string name="projects_empty_text">You haven\'t created\na project yet…</string>
-    <string name="fragment_projects_item_clocked_in_since" formatted="false">Since %s (%s)</string>
+    <string name="projects_all_empty_text">You haven\'t created\na project yet…</string>
 
-    <string name="fragment_projects_item_clock_in">Clock in %s</string>
-    <string name="fragment_projects_item_clock_in_at">Clock in %s at</string>
+    <string name="projects_all_clock_in">Clock in %s</string>
+    <string name="projects_all_clock_in_at">Clock in %s at</string>
 
-    <string name="error_message_clock_in">Failed to clock in project.</string>
+    <string name="projects_all_unable_to_clock_in_message">Failed to clock in project.</string>
 
-    <string name="fragment_projects_item_clock_out">Clock out %s</string>
-    <string name="fragment_projects_item_clock_out_at">Clock out %s at</string>
+    <string name="projects_all_clock_out">Clock out %s</string>
+    <string name="projects_all_clock_out_at">Clock out %s at</string>
 
-    <string name="confirm_clock_out_title">You are about to clock out</string>
-    <string name="confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
+    <string name="projects_all_confirm_clock_out_title">You are about to clock out</string>
+    <string name="projects_all_confirm_clock_out_message">Are you sure you\'d like to clock out?</string>
 
-    <string name="error_message_clock_out">Failed to clock out project.</string>
+    <string name="projects_all_unable_to_clock_out_message">Failed to clock out project.</string>
 
-    <string name="fragment_projects_item_delete">Delete %s</string>
+    <string name="projects_all_delete">Delete %s</string>
 
-    <string name="confirm_delete_project_title">Delete project</string>
-    <string name="confirm_delete_project_message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
+    <string name="projects_all_confirm_delete_project_title">Delete project</string>
+    <string name="projects_all_confirm_delete_project_message">Are you sure you want to delete the project?\n\nThis action cannot be undone!</string>
 
-    <string name="error_message_project_deleted">Failed to delete project.</string>
-    <!--</editor-fold>-->
+    <string name="projects_all_unable_to_delete_message">Failed to delete project.</string>
 
-    <!--<editor-fold desc="Projects -> Create">-->
-    <string name="fragment_create_project_title">Create project</string>
-    <string name="fragment_create_project_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
-    <string name="fragment_create_project_name_hint">Project name&#8230;</string>
+    <string name="projects_all_clocked_in_since" formatted="false">Since %s (%s)</string>
 
-    <string name="fragment_create_project_submit">Create</string>
-    <string name="fragment_create_project_dismiss">Cancel</string>
+    <string name="projects_create_title">Create project</string>
+    <string name="projects_create_description">Enter the name of the project you\'d wish to create. Note, the name have to be unique.</string>
+    <string name="projects_create_name_hint">Project name&#8230;</string>
 
-    <string name="error_message_unknown">An unknown error has occurred</string>
-    <string name="error_message_project_name_missing">You have to supply a name</string>
-    <string name="error_message_project_name_already_exists">Project name already exists</string>
-    <!--</editor-fold>-->
+    <string name="projects_create_submit">Create</string>
+    <string name="projects_create_dismiss">Cancel</string>
 
-    <!--<editor-fold desc="Projects -> Time report">-->
-    <string name="menu_actions_project_hide_registered">Hide registered</string>
-    <string name="time_report_empty_text">No time report entries\nwas found…</string>
+    <string name="projects_create_missing_name_error_message">You have to supply a name</string>
+    <string name="projects_create_project_already_exists_error_message">Project name already exists</string>
+    <string name="projects_create_unknown_error_message">An unknown error has occurred</string>
 
-    <string name="menu_title_actions">Actions</string>
-    <string name="fragment_time_report_group_item_selection_content_description">Select or deselect item group</string>
+    <string name="projects_time_report_menu_hide_registered">Hide registered</string>
+    <string name="projects_time_report_empty_text">No time report entries\nwas found…</string>
 
-    <string name="menu_actions_project_time_report_register">Mark as registered</string>
+    <string name="projects_time_report_menu_title">Actions</string>
+    <string name="projects_time_report_menu_register">Mark as registered</string>
+    <string name="projects_time_report_menu_delete">Delete</string>
 
-    <string name="error_message_register_time_report">Failed to update item(s).</string>
+    <string name="projects_time_report_group_selection_content_description">Select or deselect item group</string>
 
-    <string name="menu_actions_project_time_report_delete">Delete</string>
+    <string name="projects_time_report_unable_to_register_message">Failed to update item(s).</string>
 
-    <string name="confirm_delete_time_title">Delete time</string>
-    <string name="confirm_delete_time_message">Are you sure you want to delete the registered time?</string>
+    <string name="projects_time_report_unable_to_delete_message">Failed to delete item(s).</string>
 
-    <string name="error_message_delete_time_report">Failed to delete item(s).</string>
+    <string name="projects_time_report_confirm_delete_title">Delete time</string>
+    <string name="projects_time_report_confirm_delete_message">Are you sure you want to delete the registered time?</string>
     <!--</editor-fold>-->
 
     <!--<editor-fold desc="Settings">-->

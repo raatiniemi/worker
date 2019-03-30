@@ -21,8 +21,8 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.shared.view.CoroutineConfirmAlertDialog
 
 internal object ConfirmClockOutDialog {
-    private const val TITLE = R.string.confirm_clock_out_title
-    private const val MESSAGE = R.string.confirm_clock_out_message
+    private const val TITLE = R.string.projects_all_confirm_clock_out_title
+    private const val MESSAGE = R.string.projects_all_confirm_clock_out_message
 
     suspend fun show(context: Context) = CoroutineConfirmAlertDialog.build(context, TITLE, MESSAGE)
 }

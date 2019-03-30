@@ -28,19 +28,19 @@ import org.greenrobot.eventbus.EventBus
 sealed class CreateProjectViewActions {
     object InvalidProjectNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
         override fun action(context: Context, editText: EditText) {
-            editText.error = context.getString(R.string.error_message_project_name_missing)
+            editText.error = context.getString(R.string.projects_create_missing_name_error_message)
         }
     }
 
     object DuplicateNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
         override fun action(context: Context, editText: EditText) {
-            editText.error = context.getString(R.string.error_message_project_name_already_exists)
+            editText.error = context.getString(R.string.projects_create_project_already_exists_error_message)
         }
     }
 
     object UnknownErrorMessage : CreateProjectViewActions(), EditTextViewAction {
         override fun action(context: Context, editText: EditText) {
-            editText.error = context.getString(R.string.error_message_unknown)
+            editText.error = context.getString(R.string.projects_create_unknown_error_message)
         }
     }
 
