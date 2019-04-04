@@ -75,9 +75,9 @@ open class WorkerApplication : Application() {
                     Notifications.ongoingChannel(resources)
             )
         } catch (e: ClassCastException) {
-            Timber.e(e)
+            Timber.e(e, "Unable to register notification channel")
         } catch (e: NullPointerException) {
-            Timber.e(e)
+            Timber.e(e, "Unable to register notification channel")
         }
     }
 
