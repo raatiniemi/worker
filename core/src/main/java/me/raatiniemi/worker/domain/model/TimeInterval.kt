@@ -49,6 +49,14 @@ data class TimeInterval(
         }
     }
 
+    fun calculateInterval(stopForActive: Date = Date()): Long {
+        if (isActive) {
+            return calculateInterval(stopForActive.time)
+        }
+
+        return calculateInterval(stopInMilliseconds)
+    }
+
     fun markAsRegistered(): TimeInterval {
         return if (isRegistered) {
             this
