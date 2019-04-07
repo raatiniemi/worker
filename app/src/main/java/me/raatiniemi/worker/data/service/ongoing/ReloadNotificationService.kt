@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data.service.ongoing
 import android.content.Context
 import android.content.Intent
 import me.raatiniemi.worker.domain.exception.DomainException
+import me.raatiniemi.worker.domain.interactor.CalculateTimeToday
 import me.raatiniemi.worker.domain.interactor.FindActiveProjects
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.view.notification.PauseNotification
@@ -27,6 +28,7 @@ import timber.log.Timber
 
 class ReloadNotificationService : OngoingService("ReloadNotificationService") {
     private val findActiveProjects: FindActiveProjects by inject()
+    private val calculateTimeToday: CalculateTimeToday by inject()
 
     private val isOngoingNotificationDisabled: Boolean
         get() = !isOngoingNotificationEnabled
@@ -46,14 +48,13 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService") {
     }
 
     private fun sendPauseNotification(project: Project) {
-        sendNotification(
-                project.id,
-                PauseNotification.build(
-                        this,
-                        project,
-                        isOngoingNotificationChronometerEnabled
-                )
+        val notification = PauseNotification.build(
+                this,
+                project,
+                calculateTimeToday(project),
+                isOngoingNotificationChronometerEnabled
         )
+        sendNotification(project.id, notification)
     }
 
     companion object {

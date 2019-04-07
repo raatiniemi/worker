@@ -184,4 +184,29 @@ class TimeIntervalTest {
 
         assertEquals(10L, timeInterval.interval)
     }
+
+    @Test
+    fun `calculate interval for active time interval`() {
+        val expected = 10L
+        val timeInterval = timeInterval {
+            startInMilliseconds = 0
+        }
+
+        val actual = timeInterval.calculateInterval(stopForActive = Date(10))
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `calculate interval for inactive time interval`() {
+        val expected = 10L
+        val timeInterval = timeInterval {
+            startInMilliseconds = 0
+            stopInMilliseconds = 10
+        }
+
+        val actual = timeInterval.calculateInterval()
+
+        assertEquals(expected, actual)
+    }
 }

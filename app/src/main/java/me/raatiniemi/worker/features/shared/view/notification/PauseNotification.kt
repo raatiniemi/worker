@@ -21,16 +21,9 @@ import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.data.Repositories
 import me.raatiniemi.worker.data.service.ongoing.ClockOutService
 import me.raatiniemi.worker.data.service.ongoing.PauseService
-import me.raatiniemi.worker.domain.exception.DomainException
-import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import timber.log.Timber
 import java.util.*
 
 /**
@@ -39,15 +32,9 @@ import java.util.*
 internal class PauseNotification private constructor(
         context: Context,
         project: Project,
-        private var useChronometer: Boolean
+        registeredTime: Long,
+        useChronometer: Boolean
 ) : OngoingNotification(context, project, isOngoing = true) {
-    private val repositories = Repositories()
-    private val repository = repositories.timeInterval
-    private var registeredTime: Long = 0
-
-    private val activeTimeIntervalForProject: TimeInterval?
-        get() = repository.findActiveByProjectId(project.id)
-
     private val textForPauseAction: String by lazy {
         getStringWithResourceId(R.string.ongoing_notification_action_pause)
     }
@@ -58,53 +45,9 @@ internal class PauseNotification private constructor(
     @DrawableRes
     override val smallIcon: Int = R.drawable.ic_pause_notification
 
-    override val shouldUseChronometer: Boolean
-        get() = useChronometer
+    override val shouldUseChronometer = useChronometer
 
-    override val whenForChronometer: Long
-        get() {
-            val currentTimestamp = Date().time
-            return currentTimestamp - registeredTime
-        }
-
-    init {
-        if (this.useChronometer) {
-            populateRegisteredTime()
-        }
-    }
-
-    private fun populateRegisteredTime() {
-        useChronometer = true
-
-        try {
-            var accumulatedTime = 0L
-
-            for (timeInterval in getRegisteredTime()) {
-                accumulatedTime += timeInterval.time
-            }
-
-            registeredTime = includeActiveTime(accumulatedTime)
-        } catch (e: DomainException) {
-            Timber.w(e, "Unable to populate registered time")
-            useChronometer = false
-        }
-    }
-
-    private fun getRegisteredTime(): List<TimeInterval> {
-        val registeredTimeUseCase = buildRegisteredTimeUseCase(repository)
-
-        return registeredTimeUseCase.invoke(
-                project,
-                TimeIntervalStartingPoint.DAY
-        )
-    }
-
-    private fun includeActiveTime(registeredTime: Long): Long {
-        val activeTimeInterval = activeTimeIntervalForProject
-        return if (activeTimeInterval != null) {
-            registeredTime + activeTimeInterval.interval
-        } else registeredTime
-    }
+    override val whenForChronometer = registeredTime.let { Date().time - it }
 
     private fun buildPauseAction(): NotificationCompat.Action {
         val intent = buildIntentWithService(PauseService::class.java)
@@ -134,13 +77,9 @@ internal class PauseNotification private constructor(
         private const val PAUSE_ICON = 0
         private const val CLOCK_OUT_ICON = 0
 
-        fun build(context: Context, project: Project, useChronometer: Boolean): Notification {
-            return PauseNotification(context, project, useChronometer)
+        fun build(context: Context, project: Project, registeredTime: Long, useChronometer: Boolean): Notification {
+            return PauseNotification(context, project, registeredTime, useChronometer)
                     .run { build() }
-        }
-
-        private fun buildRegisteredTimeUseCase(repository: TimeIntervalRepository): GetProjectTimeSince {
-            return GetProjectTimeSince(repository)
         }
     }
 }

@@ -29,8 +29,7 @@ data class TimeInterval(
         val stopInMilliseconds: Long = 0,
         val isRegistered: Boolean = false
 ) {
-    val isActive: Boolean
-        get() = 0L == stopInMilliseconds
+    val isActive = 0L == stopInMilliseconds
 
     val time: Long
         get() = if (isActive) {
@@ -48,6 +47,14 @@ data class TimeInterval(
                 throw ClockOutBeforeClockInException()
             }
         }
+    }
+
+    fun calculateInterval(stopForActive: Date = Date()): Long {
+        if (isActive) {
+            return calculateInterval(stopForActive.time)
+        }
+
+        return calculateInterval(stopInMilliseconds)
     }
 
     fun markAsRegistered(): TimeInterval {

@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data.service.ongoing
 import android.content.Intent
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
+import me.raatiniemi.worker.domain.interactor.CalculateTimeToday
 import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.GetProject
 import me.raatiniemi.worker.domain.model.Project
@@ -34,6 +35,7 @@ internal class ResumeService : OngoingService("ResumeService") {
     private val usageAnalytics: UsageAnalytics by inject()
     private val clockIn: ClockIn by inject()
     private val getProject: GetProject by inject()
+    private val calculateTimeToday: CalculateTimeToday by inject()
 
     override fun onHandleIntent(intent: Intent?) {
         val projectId = getProjectId(intent)
@@ -59,10 +61,13 @@ internal class ResumeService : OngoingService("ResumeService") {
     }
 
     private fun sendPauseNotification(project: Project) {
-        sendNotification(
-                project.id,
-                PauseNotification.build(this, project, isOngoingNotificationChronometerEnabled)
+        val notification = PauseNotification.build(
+                this,
+                project,
+                calculateTimeToday(project),
+                isOngoingNotificationChronometerEnabled
         )
+        sendNotification(project.id, notification)
     }
 
     private fun sendErrorNotification(projectId: Long) {
