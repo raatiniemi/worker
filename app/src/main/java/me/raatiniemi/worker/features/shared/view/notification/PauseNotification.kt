@@ -33,7 +33,7 @@ internal class PauseNotification private constructor(
         context: Context,
         project: Project,
         registeredTime: Long,
-        private var useChronometer: Boolean
+        useChronometer: Boolean
 ) : OngoingNotification(context, project, isOngoing = true) {
     private val textForPauseAction: String by lazy {
         getStringWithResourceId(R.string.ongoing_notification_action_pause)
@@ -45,8 +45,7 @@ internal class PauseNotification private constructor(
     @DrawableRes
     override val smallIcon: Int = R.drawable.ic_pause_notification
 
-    override val shouldUseChronometer: Boolean
-        get() = useChronometer
+    override val shouldUseChronometer = useChronometer
 
     override val whenForChronometer = registeredTime.let { Date().time - it }
 
