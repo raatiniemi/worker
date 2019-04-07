@@ -39,4 +39,8 @@ val useCaseModule = module {
     single {
         IsProjectActive(get())
     }
+
+    single {
+        CalculateTimeToday(get())
+    }
 }

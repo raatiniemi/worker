@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Context
 import android.content.Intent
+import me.raatiniemi.worker.domain.interactor.CalculateTimeToday
 
 import me.raatiniemi.worker.domain.interactor.GetProject
 import me.raatiniemi.worker.domain.interactor.IsProjectActive
@@ -30,6 +31,7 @@ import timber.log.Timber
 class ProjectNotificationService : OngoingService("ProjectNotificationService") {
     private val getProject: GetProject by inject()
     private val isProjectActive: IsProjectActive by inject()
+    private val calculateTimeToday: CalculateTimeToday by inject()
 
     override fun onHandleIntent(intent: Intent?) {
         val projectId = getProjectId(intent)
@@ -52,10 +54,13 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
     }
 
     private fun sendPauseNotification(project: Project) {
-        sendNotification(
-                project.id,
-                PauseNotification.build(this, project, isOngoingNotificationChronometerEnabled)
+        val notification = PauseNotification.build(
+                this,
+                project,
+                calculateTimeToday(project),
+                isOngoingNotificationChronometerEnabled
         )
+        sendNotification(project.id, notification)
     }
 
     companion object {
