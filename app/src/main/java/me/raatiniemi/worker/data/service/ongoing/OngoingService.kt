@@ -22,6 +22,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import me.raatiniemi.worker.WorkerApplication
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
@@ -56,6 +57,15 @@ abstract class OngoingService internal constructor(name: String) : IntentService
         }
 
         return projectId
+    }
+
+    protected fun sendOrDismissOngoingNotification(project: Project, producer: () -> Notification) {
+        if (isOngoingNotificationEnabled) {
+            sendNotification(project.id, producer())
+            return
+        }
+
+        dismissNotification(project.id)
     }
 
     protected fun sendNotification(projectId: Long, notification: Notification) {
