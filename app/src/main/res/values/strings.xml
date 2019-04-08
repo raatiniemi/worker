@@ -107,9 +107,6 @@
 
     <string name="ongoing_notification_unable_to_pause_title">Failed to pause project</string>
     <string name="ongoing_notification_unable_to_pause_message">An internal error has occurred.</string>
-
-    <string name="ongoing_notification_unable_to_clock_out_title">Failed to clock out project</string>
-    <string name="ongoing_notification_unable_to_clock_out_message">An internal error has occurred.</string>
     <!--</editor-fold>-->
 
 </resources>
