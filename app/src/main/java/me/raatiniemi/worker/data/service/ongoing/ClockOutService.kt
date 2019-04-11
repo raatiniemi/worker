@@ -38,7 +38,7 @@ internal class ClockOutService : OngoingService("ClockOutService") {
             updateUserInterface(projectId)
             dismissNotification(projectId)
         } catch (e: Exception) {
-            Timber.w(e, "Unable to clock out project")
+            Timber.e(e, "Unable to clock out project")
         }
     }
 
@@ -48,7 +48,7 @@ internal class ClockOutService : OngoingService("ClockOutService") {
 
             usageAnalytics.log(Event.NotificationClockOut)
         } catch (e: InactiveProjectException) {
-            Timber.e(e, "Clock out service called with inactive project")
+            Timber.w(e, "Clock out service called with inactive project")
         }
     }
 }

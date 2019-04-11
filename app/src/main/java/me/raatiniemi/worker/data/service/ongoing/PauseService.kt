@@ -47,7 +47,7 @@ internal class PauseService : OngoingService("PauseService") {
             // We should never resend the resume notification since that would cause
             // the timer to reset giving an incorrect time elapsed for the pause.
         } catch (e: Exception) {
-            Timber.w(e, "Unable to pause project")
+            Timber.e(e, "Unable to pause project")
         }
     }
 

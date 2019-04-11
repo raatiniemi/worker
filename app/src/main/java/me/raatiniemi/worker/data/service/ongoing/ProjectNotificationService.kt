@@ -44,7 +44,7 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
             }
             dismissNotification(project.id)
         } catch (e: Exception) {
-            Timber.w(e, "Unable to update notification for project")
+            Timber.e(e, "Unable to update notification for project")
         }
     }
 

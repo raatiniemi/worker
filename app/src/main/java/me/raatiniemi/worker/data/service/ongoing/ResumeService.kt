@@ -45,7 +45,7 @@ internal class ResumeService : OngoingService("ResumeService") {
             updateUserInterface(project.id)
             sendOrDismissPauseNotification(project)
         } catch (e: Exception) {
-            Timber.w(e, "Unable to resume project")
+            Timber.e(e, "Unable to resume project")
         }
     }
 
@@ -55,7 +55,7 @@ internal class ResumeService : OngoingService("ResumeService") {
 
             usageAnalytics.log(Event.NotificationClockIn)
         } catch (e: ActiveProjectException) {
-            Timber.e(e, "Resume service called with active project")
+            Timber.w(e, "Resume service called with active project")
         }
     }
 
