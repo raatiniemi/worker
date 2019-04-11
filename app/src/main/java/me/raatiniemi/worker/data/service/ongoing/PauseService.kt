@@ -17,12 +17,10 @@
 package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Intent
-import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProject
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification
 import me.raatiniemi.worker.features.shared.view.notification.ResumeNotification
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
@@ -36,43 +34,36 @@ internal class PauseService : OngoingService("PauseService") {
     private val getProject: GetProject by inject()
 
     override fun onHandleIntent(intent: Intent?) {
-        val projectId = getProjectId(intent)
-
         try {
-            clockOut(projectId, Date())
+            val projectId = getProjectId(intent)
+            val project = getProject(projectId)
 
-            usageAnalytics.log(Event.NotificationClockOut)
+            clockOut(project)
+
             updateUserInterface(projectId)
-
-            if (isOngoingNotificationEnabled) {
-                val project = getProject(projectId)
-                sendResumeNotification(project)
-                return
-            }
-            dismissNotification(projectId)
+            sendOrDismissResumeNotification(project)
         } catch (e: InactiveProjectException) {
-            Timber.e(e, "Pause service called with inactive project")
+            Timber.w(e, "Pause service called with inactive project")
+            // We should never resend the resume notification since that would cause
+            // the timer to reset giving an incorrect time elapsed for the pause.
         } catch (e: Exception) {
-            Timber.w(e, "Unable to pause project")
-            sendErrorNotification(projectId)
+            Timber.e(e, "Unable to pause project")
         }
     }
 
-    private fun sendResumeNotification(project: Project) {
-        sendNotification(
-                project.id,
-                ResumeNotification.build(this, project, isOngoingNotificationChronometerEnabled)
-        )
+    private fun clockOut(project: Project) {
+        clockOut(project.id, Date())
+
+        usageAnalytics.log(Event.NotificationClockOut)
     }
 
-    private fun sendErrorNotification(projectId: Long) {
-        sendNotification(
-                projectId,
-                ErrorNotification.buildOngoing(
-                        this,
-                        getString(R.string.ongoing_notification_unable_to_pause_title),
-                        getString(R.string.ongoing_notification_unable_to_pause_message)
-                )
-        )
+    private fun sendOrDismissResumeNotification(project: Project) {
+        sendOrDismissOngoingNotification(project) {
+            ResumeNotification.build(
+                    this,
+                    project,
+                    isOngoingNotificationChronometerEnabled
+            )
+        }
     }
 }

@@ -40,21 +40,22 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService") {
 
         try {
             findActiveProjects().forEach {
-                sendPauseNotification(it)
+                sendOrDismissPauseNotification(it)
             }
         } catch (e: DomainException) {
             Timber.e(e, "Unable to reload notifications")
         }
     }
 
-    private fun sendPauseNotification(project: Project) {
-        val notification = PauseNotification.build(
-                this,
-                project,
-                calculateTimeToday(project),
-                isOngoingNotificationChronometerEnabled
-        )
-        sendNotification(project.id, notification)
+    private fun sendOrDismissPauseNotification(project: Project) {
+        sendOrDismissOngoingNotification(project) {
+            PauseNotification.build(
+                    this,
+                    project,
+                    calculateTimeToday(project),
+                    isOngoingNotificationChronometerEnabled
+            )
+        }
     }
 
     companion object {

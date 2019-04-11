@@ -23,6 +23,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_home.*
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,12 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         configureView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        ReloadNotificationService.startServiceWithContext(this)
     }
 
     private fun configureView() {

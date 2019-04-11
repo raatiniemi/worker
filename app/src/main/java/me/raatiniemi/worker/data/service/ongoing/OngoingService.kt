@@ -22,6 +22,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import me.raatiniemi.worker.WorkerApplication
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
@@ -58,12 +59,20 @@ abstract class OngoingService internal constructor(name: String) : IntentService
         return projectId
     }
 
-    protected fun sendNotification(projectId: Long, notification: Notification) {
-        if (Notifications.isOngoingChannelDisabled(notificationManager)) {
+    protected fun sendOrDismissOngoingNotification(project: Project, producer: () -> Notification) {
+        if (isOngoingNotificationEnabled) {
+            if (!Notifications.isOngoingChannelDisabled(notificationManager)) {
+                sendNotification(project.id, producer())
+                return
+            }
+
             Timber.d("Ongoing notification channel is disabled, ignoring notification")
-            return
         }
 
+        dismissNotification(project.id)
+    }
+
+    private fun sendNotification(projectId: Long, notification: Notification) {
         notificationManager.notify(
                 buildNotificationTag(projectId),
                 WorkerApplication.NOTIFICATION_ON_GOING_ID,

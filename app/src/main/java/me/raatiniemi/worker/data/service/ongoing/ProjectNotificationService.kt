@@ -34,33 +34,29 @@ class ProjectNotificationService : OngoingService("ProjectNotificationService") 
     private val calculateTimeToday: CalculateTimeToday by inject()
 
     override fun onHandleIntent(intent: Intent?) {
-        val projectId = getProjectId(intent)
-
         try {
-            if (!isOngoingNotificationEnabled) {
-                dismissNotification(projectId)
-                return
-            }
+            val projectId = getProjectId(intent)
+            val project = getProject(projectId)
 
-            if (isProjectActive(projectId)) {
-                val project = getProject(projectId)
-                sendPauseNotification(project)
+            if (isProjectActive(project.id)) {
+                sendOrDismissPauseNotification(project)
                 return
             }
-            dismissNotification(projectId)
+            dismissNotification(project.id)
         } catch (e: Exception) {
-            Timber.w(e, "Unable to pause project")
+            Timber.e(e, "Unable to update notification for project")
         }
     }
 
-    private fun sendPauseNotification(project: Project) {
-        val notification = PauseNotification.build(
-                this,
-                project,
-                calculateTimeToday(project),
-                isOngoingNotificationChronometerEnabled
-        )
-        sendNotification(project.id, notification)
+    private fun sendOrDismissPauseNotification(project: Project) {
+        sendOrDismissOngoingNotification(project) {
+            PauseNotification.build(
+                    this,
+                    project,
+                    calculateTimeToday(project),
+                    isOngoingNotificationChronometerEnabled
+            )
+        }
     }
 
     companion object {

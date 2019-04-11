@@ -17,10 +17,8 @@
 package me.raatiniemi.worker.data.service.ongoing
 
 import android.content.Intent
-import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
 import me.raatiniemi.worker.domain.interactor.ClockOut
-import me.raatiniemi.worker.features.shared.view.notification.ErrorNotification
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import org.koin.android.ext.android.inject
@@ -32,30 +30,25 @@ internal class ClockOutService : OngoingService("ClockOutService") {
     private val clockOut: ClockOut by inject()
 
     override fun onHandleIntent(intent: Intent?) {
-        val projectId = getProjectId(intent)
+        try {
+            val projectId = getProjectId(intent)
 
+            clockOut(projectId)
+
+            updateUserInterface(projectId)
+            dismissNotification(projectId)
+        } catch (e: Exception) {
+            Timber.e(e, "Unable to clock out project")
+        }
+    }
+
+    private fun clockOut(projectId: Long) {
         try {
             clockOut(projectId, Date())
 
             usageAnalytics.log(Event.NotificationClockOut)
-            dismissNotification(projectId)
-            updateUserInterface(projectId)
         } catch (e: InactiveProjectException) {
-            Timber.e(e, "Clock out service called with inactive project")
-        } catch (e: Exception) {
-            Timber.w(e, "Unable to clock out project")
-            sendErrorNotification(projectId)
+            Timber.w(e, "Clock out service called with inactive project")
         }
-    }
-
-    private fun sendErrorNotification(projectId: Long) {
-        sendNotification(
-                projectId,
-                ErrorNotification.buildOngoing(
-                        this,
-                        getString(R.string.ongoing_notification_unable_to_clock_out_title),
-                        getString(R.string.ongoing_notification_unable_to_clock_out_message)
-                )
-        )
     }
 }
