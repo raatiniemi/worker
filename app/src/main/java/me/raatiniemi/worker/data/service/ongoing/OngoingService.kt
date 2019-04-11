@@ -61,19 +61,18 @@ abstract class OngoingService internal constructor(name: String) : IntentService
 
     protected fun sendOrDismissOngoingNotification(project: Project, producer: () -> Notification) {
         if (isOngoingNotificationEnabled) {
-            sendNotification(project.id, producer())
-            return
+            if (!Notifications.isOngoingChannelDisabled(notificationManager)) {
+                sendNotification(project.id, producer())
+                return
+            }
+
+            Timber.d("Ongoing notification channel is disabled, ignoring notification")
         }
 
         dismissNotification(project.id)
     }
 
-    protected fun sendNotification(projectId: Long, notification: Notification) {
-        if (Notifications.isOngoingChannelDisabled(notificationManager)) {
-            Timber.d("Ongoing notification channel is disabled, ignoring notification")
-            return
-        }
-
+    private fun sendNotification(projectId: Long, notification: Notification) {
         notificationManager.notify(
                 buildNotificationTag(projectId),
                 WorkerApplication.NOTIFICATION_ON_GOING_ID,
