@@ -21,7 +21,6 @@ import android.app.NotificationManager
 import android.content.Context
 import io.fabric.sdk.android.Fabric
 import me.raatiniemi.worker.data.dataModule
-import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 import me.raatiniemi.worker.features.projects.projectsModule
 import me.raatiniemi.worker.features.settings.settingsModule
 import me.raatiniemi.worker.monitor.logging.CrashlyticsTree
@@ -53,7 +52,6 @@ open class WorkerApplication : Application() {
 
             configureLogging()
             registerNotificationChannel()
-            ReloadNotificationService.startServiceWithContext(this)
         }
     }
 
