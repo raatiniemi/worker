@@ -17,6 +17,9 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.PositionalDataSource
+import me.raatiniemi.worker.domain.model.LoadPosition
+import me.raatiniemi.worker.domain.model.LoadRange
+import me.raatiniemi.worker.domain.model.LoadSize
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
@@ -28,10 +31,18 @@ internal class ProjectDataSource(
         val position = computeInitialLoadPosition(params, totalCount)
         val loadSize = computeInitialLoadSize(params, position, totalCount)
 
-        callback.onResult(repository.findAll(position, loadSize), position, totalCount)
+        val loadRange = LoadRange(
+            LoadPosition(position),
+            LoadSize(loadSize)
+        )
+        callback.onResult(repository.findAll(loadRange), position, totalCount)
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Project>) {
-        callback.onResult(repository.findAll(params.startPosition, params.loadSize))
+        val loadRange = LoadRange(
+            LoadPosition(params.startPosition),
+            LoadSize(params.loadSize)
+        )
+        callback.onResult(repository.findAll(loadRange))
     }
 }

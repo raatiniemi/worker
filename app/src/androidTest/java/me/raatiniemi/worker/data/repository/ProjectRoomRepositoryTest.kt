@@ -21,8 +21,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.data.Database
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.After
 import org.junit.Assert.*
@@ -83,8 +82,12 @@ class ProjectRoomRepositoryTest {
     @Test
     fun findAll_pagingWithoutProjects() {
         val expected = emptyList<Project>()
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(0, 10)
+        val actual = repository.findAll(loadRange)
 
         assertEquals(expected, actual)
     }
@@ -95,8 +98,12 @@ class ProjectRoomRepositoryTest {
         val expected = listOf(
             Project(1, "Project name #1")
         )
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(0, 10)
+        val actual = repository.findAll(loadRange)
 
         assertEquals(expected, actual)
     }
@@ -109,8 +116,12 @@ class ProjectRoomRepositoryTest {
             Project(1, "Project name #1"),
             Project(2, "Project name #2")
         )
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(0, 10)
+        val actual = repository.findAll(loadRange)
 
         assertEquals(expected, actual)
     }
@@ -122,8 +133,12 @@ class ProjectRoomRepositoryTest {
         val expected = listOf(
             Project(2, "Project name #2")
         )
+        val loadRange = LoadRange(
+            LoadPosition(1),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(1, 10)
+        val actual = repository.findAll(loadRange)
 
         assertEquals(expected, actual)
     }
@@ -135,8 +150,12 @@ class ProjectRoomRepositoryTest {
         val expected = listOf(
             Project(1, "Project name #1")
         )
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(1)
+        )
 
-        val actual = repository.findAll(0, 1)
+        val actual = repository.findAll(loadRange)
 
         assertEquals(expected, actual)
     }
@@ -149,8 +168,12 @@ class ProjectRoomRepositoryTest {
             Project(2, "Project name #1"),
             Project(1, "Project name #2")
         )
+        val loadRange = LoadRange(
+            LoadPosition(0),
+            LoadSize(10)
+        )
 
-        val actual = repository.findAll(0, 10)
+        val actual = repository.findAll(loadRange)
 
         assertEquals(expected, actual)
     }

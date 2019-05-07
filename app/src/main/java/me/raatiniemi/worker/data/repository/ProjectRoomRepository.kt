@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.ProjectDao
 import me.raatiniemi.worker.data.projects.ProjectEntity
+import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
@@ -25,8 +26,9 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
 internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
     override fun count() = projects.count()
 
-    override fun findAll(position: Int, pageSize: Int): List<Project> {
-        return projects.findAll(position, pageSize)
+    override fun findAll(loadRange: LoadRange): List<Project> {
+        val (position, size) = loadRange
+        return projects.findAll(position.value, size.value)
             .map { it.toProject() }
     }
 
