@@ -25,15 +25,15 @@ import java.util.*
 
 @RunWith(Parameterized::class)
 class TimeReportDayTest(
-        private val expectedTimeSummary: HoursMinutes,
-        private val expectedTimeDifference: HoursMinutes,
-        private val timeIntervals: List<TimeInterval>
+    private val expectedTimeSummary: HoursMinutes,
+    private val expectedTimeDifference: HoursMinutes,
+    private val timeIntervals: List<TimeInterval>
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
         val day = TimeReportDay(
-                Date(),
-                timeIntervals.map { TimeReportItem.with(it) }
+            Date(),
+            timeIntervals.map { TimeReportItem.with(it) }
         )
 
         assertEquals(expectedTimeSummary, day.timeSummary)
@@ -46,78 +46,78 @@ class TimeReportDayTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            HoursMinutes(1, 0),
-                            HoursMinutes(-7, 0),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 3600000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            HoursMinutes(8, 0),
-                            HoursMinutes.empty,
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 28800000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            HoursMinutes(9, 0),
-                            HoursMinutes(1, 0),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 32400000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            HoursMinutes(9, 7),
-                            HoursMinutes(1, 7),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 14380327
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 18407820
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            HoursMinutes(8, 46),
-                            HoursMinutes(0, 46),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 13956031
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 17594386
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            HoursMinutes(7, 52),
-                            HoursMinutes(0, -8),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 11661632
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 16707601
-                                    }
-                            )
+                arrayOf(
+                    HoursMinutes(1, 0),
+                    HoursMinutes(-7, 0),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 3600000
+                        }
                     )
+                ),
+                arrayOf(
+                    HoursMinutes(8, 0),
+                    HoursMinutes.empty,
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 28800000
+                        }
+                    )
+                ),
+                arrayOf(
+                    HoursMinutes(9, 0),
+                    HoursMinutes(1, 0),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 32400000
+                        }
+                    )
+                ),
+                arrayOf(
+                    HoursMinutes(9, 7),
+                    HoursMinutes(1, 7),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 14380327
+                        },
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 18407820
+                        }
+                    )
+                ),
+                arrayOf(
+                    HoursMinutes(8, 46),
+                    HoursMinutes(0, 46),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 13956031
+                        },
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 17594386
+                        }
+                    )
+                ),
+                arrayOf(
+                    HoursMinutes(7, 52),
+                    HoursMinutes(0, -8),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 11661632
+                        },
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 16707601
+                        }
+                    )
+                )
             )
 
     }

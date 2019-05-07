@@ -21,11 +21,11 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 class FindActiveProjects(
-        private val projectRepository: ProjectRepository,
-        private val timeIntervalRepository: TimeIntervalRepository
+    private val projectRepository: ProjectRepository,
+    private val timeIntervalRepository: TimeIntervalRepository
 ) {
     operator fun invoke(): List<Project> = projectRepository.findAll()
-            .filter { isActive(it) }
+        .filter { isActive(it) }
 
     private fun isActive(project: Project): Boolean {
         return timeIntervalRepository.findActiveByProjectId(project.id) != null

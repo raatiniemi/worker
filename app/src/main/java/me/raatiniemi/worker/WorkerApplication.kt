@@ -41,14 +41,17 @@ open class WorkerApplication : Application() {
         super.onCreate()
 
         if (!isUnitTesting) {
-            startKoin(this, listOf(
+            startKoin(
+                this,
+                listOf(
                     monitorModule,
                     preferenceModule,
                     dataModule,
                     projectsModule,
                     settingsModule,
                     useCaseModule
-            ))
+                )
+            )
 
             configureLogging()
             registerNotificationChannel()
@@ -69,8 +72,8 @@ open class WorkerApplication : Application() {
         try {
             val notificationManager = notificationManager
             Notifications.createChannel(
-                    notificationManager,
-                    Notifications.ongoingChannel(resources)
+                notificationManager,
+                Notifications.ongoingChannel(resources)
             )
         } catch (e: ClassCastException) {
             Timber.e(e, "Unable to register notification channel")

@@ -35,13 +35,13 @@ val projectsModule = module {
         val removeProject = RemoveProject(get())
 
         AllProjectsViewModel(
-                keyValueStore = get(),
-                usageAnalytics = get(),
-                projectRepository = get(),
-                getProjectTimeSince = getProjectTimeSince,
-                clockIn = clockIn,
-                clockOut = clockOut,
-                removeProject = removeProject
+            keyValueStore = get(),
+            usageAnalytics = get(),
+            projectRepository = get(),
+            getProjectTimeSince = getProjectTimeSince,
+            clockIn = clockIn,
+            clockOut = clockOut,
+            removeProject = removeProject
         )
     }
 
@@ -66,12 +66,12 @@ val projectsModule = module {
 
     viewModel {
         TimeReportViewModel(
-                usageAnalytics = get(),
-                projectProvider = get(),
-                keyValueStore = get(),
-                repository = get(),
-                markRegisteredTime = MarkRegisteredTime(get()),
-                removeTime = RemoveTime(get())
+            usageAnalytics = get(),
+            projectProvider = get(),
+            keyValueStore = get(),
+            repository = get(),
+            markRegisteredTime = MarkRegisteredTime(get()),
+            removeTime = RemoveTime(get())
         )
     }
 }

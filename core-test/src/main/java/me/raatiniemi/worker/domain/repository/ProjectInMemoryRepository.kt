@@ -31,7 +31,7 @@ class ProjectInMemoryRepository : ProjectRepository {
         val toIndex = indexWithCountCap(position + pageSize, count())
 
         return projects.sortedBy { it.name }
-                .subList(fromIndex, toIndex)
+            .subList(fromIndex, toIndex)
     }
 
     override fun findAll(): List<Project> = projects.sortedBy { it.name }
@@ -46,8 +46,8 @@ class ProjectInMemoryRepository : ProjectRepository {
 
     override fun add(newProject: NewProject): Project {
         val project = Project(
-                id = incrementedId.incrementAndGet(),
-                name = newProject.name
+            id = incrementedId.incrementAndGet(),
+            name = newProject.name
         )
         projects.add(project)
 

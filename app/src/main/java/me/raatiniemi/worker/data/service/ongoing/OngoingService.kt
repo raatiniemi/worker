@@ -74,22 +74,22 @@ abstract class OngoingService internal constructor(name: String) : IntentService
 
     private fun sendNotification(projectId: Long, notification: Notification) {
         notificationManager.notify(
-                buildNotificationTag(projectId),
-                WorkerApplication.NOTIFICATION_ON_GOING_ID,
-                notification
+            buildNotificationTag(projectId),
+            WorkerApplication.NOTIFICATION_ON_GOING_ID,
+            notification
         )
     }
 
     protected fun dismissNotification(projectId: Long) {
         notificationManager.cancel(
-                buildNotificationTag(projectId),
-                WorkerApplication.NOTIFICATION_ON_GOING_ID
+            buildNotificationTag(projectId),
+            WorkerApplication.NOTIFICATION_ON_GOING_ID
         )
     }
 
     protected fun updateUserInterface(projectId: Long) {
         eventBus.post(
-                OngoingNotificationActionEvent(projectId)
+            OngoingNotificationActionEvent(projectId)
         )
     }
 }

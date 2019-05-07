@@ -29,9 +29,9 @@ import java.util.*
  * Notification for resuming an inactive project.
  */
 internal class ResumeNotification private constructor(
-        context: Context,
-        project: Project,
-        override val shouldUseChronometer: Boolean
+    context: Context,
+    project: Project,
+    override val shouldUseChronometer: Boolean
 ) : OngoingNotification(context, project, isOngoing = false) {
     private val textForResumeAction: String by lazy {
         getStringWithResourceId(R.string.ongoing_notification_action_resume)
@@ -46,9 +46,9 @@ internal class ResumeNotification private constructor(
         val intent = buildIntentWithService(ResumeService::class.java)
 
         return NotificationCompat.Action(
-                RESUME_ICON,
-                textForResumeAction,
-                buildPendingIntentWithService(intent)
+            RESUME_ICON,
+            textForResumeAction,
+            buildPendingIntentWithService(intent)
         )
     }
 
@@ -59,7 +59,7 @@ internal class ResumeNotification private constructor(
 
         fun build(context: Context, project: Project, useChronometer: Boolean): Notification {
             return ResumeNotification(context, project, useChronometer)
-                    .run { build() }
+                .run { build() }
         }
     }
 }

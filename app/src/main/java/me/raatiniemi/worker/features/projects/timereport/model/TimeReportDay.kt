@@ -26,13 +26,13 @@ fun TimeReportDay.getTimeSummaryWithDifference(formatter: HoursMinutesFormat): S
     val calculatedDifference = timeDifference
 
     return String.format(
-            Locale.getDefault(),
-            "%s%s",
-            timeSummary,
-            formatTimeDifference(
-                    getTimeDifferenceFormat(calculatedDifference),
-                    formatter.apply(calculatedDifference)
-            )
+        Locale.getDefault(),
+        "%s%s",
+        timeSummary,
+        formatTimeDifference(
+            getTimeDifferenceFormat(calculatedDifference),
+            formatter.apply(calculatedDifference)
+        )
     )
 }
 

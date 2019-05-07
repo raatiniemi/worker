@@ -31,10 +31,10 @@ class HoursMinutesIntervalFormat : DateIntervalFormat, HoursMinutesFormat {
 
     override fun apply(hoursMinutes: HoursMinutes): String {
         return String.format(
-                Locale.forLanguageTag("en_US"),
-                getFormatTemplate(hoursMinutes),
-                hoursMinutes.hours,
-                hoursMinutes.minutes
+            Locale.forLanguageTag("en_US"),
+            getFormatTemplate(hoursMinutes),
+            hoursMinutes.hours,
+            hoursMinutes.minutes
         )
     }
 

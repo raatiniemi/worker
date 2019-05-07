@@ -39,8 +39,8 @@ class ProjectRoomRepositoryTest {
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(context, Database::class.java)
-                .allowMainThreadQueries()
-                .build()
+            .allowMainThreadQueries()
+            .build()
 
         repository = ProjectRoomRepository(database.projects())
     }
@@ -93,7 +93,7 @@ class ProjectRoomRepositoryTest {
     fun findAll_pagingWithProject() {
         repository.add(NewProject("Project name #1"))
         val expected = listOf(
-                Project(1, "Project name #1")
+            Project(1, "Project name #1")
         )
 
         val actual = repository.findAll(0, 10)
@@ -106,8 +106,8 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject("Project name #1"))
         repository.add(NewProject("Project name #2"))
         val expected = listOf(
-                Project(1, "Project name #1"),
-                Project(2, "Project name #2")
+            Project(1, "Project name #1"),
+            Project(2, "Project name #2")
         )
 
         val actual = repository.findAll(0, 10)
@@ -120,7 +120,7 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject("Project name #1"))
         repository.add(NewProject("Project name #2"))
         val expected = listOf(
-                Project(2, "Project name #2")
+            Project(2, "Project name #2")
         )
 
         val actual = repository.findAll(1, 10)
@@ -133,7 +133,7 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject("Project name #1"))
         repository.add(NewProject("Project name #2"))
         val expected = listOf(
-                Project(1, "Project name #1")
+            Project(1, "Project name #1")
         )
 
         val actual = repository.findAll(0, 1)
@@ -146,8 +146,8 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject("Project name #2"))
         repository.add(NewProject("Project name #1"))
         val expected = listOf(
-                Project(2, "Project name #1"),
-                Project(1, "Project name #2")
+            Project(2, "Project name #1"),
+            Project(1, "Project name #2")
         )
 
         val actual = repository.findAll(0, 10)
@@ -177,8 +177,8 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject("Name #2"))
         repository.add(NewProject("Name #1"))
         val expected = listOf(
-                Project(2, "Name #1"),
-                Project(1, "Name #2")
+            Project(2, "Name #1"),
+            Project(1, "Name #2")
         )
 
         val actual = repository.findAll()
@@ -251,7 +251,7 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject("Name #2"))
         repository.add(NewProject("Name #1"))
         val expected = listOf(
-                Project(2, "Name #1")
+            Project(2, "Name #1")
         )
 
         repository.remove(1)

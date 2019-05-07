@@ -24,7 +24,10 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
 /**
  * Use case for creating a project.
  */
-class CreateProject(private val findProject: FindProject, private val repository: ProjectRepository) {
+class CreateProject(
+    private val findProject: FindProject,
+    private val repository: ProjectRepository
+) {
     operator fun invoke(projectName: String): Project {
         if (isProjectNameInUse(projectName)) {
             throw ProjectAlreadyExistsException("Project '$projectName' already exists")

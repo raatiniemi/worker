@@ -17,17 +17,17 @@
 package me.raatiniemi.worker.domain.model
 
 data class NewTimeIntervalBuilder(
-        var projectId: Long = 1,
-        var startInMilliseconds: Long = 0,
-        var stopInMilliseconds: Long = 0,
-        var isRegistered: Boolean = false
+    var projectId: Long = 1,
+    var startInMilliseconds: Long = 0,
+    var stopInMilliseconds: Long = 0,
+    var isRegistered: Boolean = false
 ) {
     fun build(): NewTimeInterval {
         return NewTimeInterval(
-                projectId = projectId,
-                startInMilliseconds = startInMilliseconds,
-                stopInMilliseconds = stopInMilliseconds,
-                isRegistered = isRegistered
+            projectId = projectId,
+            startInMilliseconds = startInMilliseconds,
+            stopInMilliseconds = stopInMilliseconds,
+            isRegistered = isRegistered
         )
     }
 }
@@ -40,8 +40,8 @@ fun newTimeInterval(configure: NewTimeIntervalBuilder.() -> Unit): NewTimeInterv
 }
 
 fun newTimeIntervalStartBefore(
-        startingPoint: TimeIntervalStartingPoint,
-        configure: NewTimeIntervalBuilder.() -> Unit
+    startingPoint: TimeIntervalStartingPoint,
+    configure: NewTimeIntervalBuilder.() -> Unit
 ): NewTimeInterval {
     val builder = NewTimeIntervalBuilder()
     builder.configure()
@@ -58,8 +58,8 @@ fun newTimeIntervalStartBefore(
 }
 
 fun newTimeIntervalStartAfter(
-        startingPoint: TimeIntervalStartingPoint,
-        configure: NewTimeIntervalBuilder.() -> Unit
+    startingPoint: TimeIntervalStartingPoint,
+    configure: NewTimeIntervalBuilder.() -> Unit
 ): NewTimeInterval {
     val builder = NewTimeIntervalBuilder()
     builder.configure()

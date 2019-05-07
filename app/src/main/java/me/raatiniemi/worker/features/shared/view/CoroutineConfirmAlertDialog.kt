@@ -24,8 +24,9 @@ import kotlin.coroutines.suspendCoroutine
 enum class ConfirmAction { YES, NO }
 
 object CoroutineConfirmAlertDialog {
-    suspend fun build(context: Context, title: Int, message: Int) = suspendCoroutine<ConfirmAction> {
-        val alert = AlertDialog.Builder(context)
+    suspend fun build(context: Context, title: Int, message: Int) =
+        suspendCoroutine<ConfirmAction> {
+            val alert = AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes) { _, _ ->
@@ -36,6 +37,6 @@ object CoroutineConfirmAlertDialog {
                 }
                 .create()
 
-        alert.show()
-    }
+            alert.show()
+        }
 }

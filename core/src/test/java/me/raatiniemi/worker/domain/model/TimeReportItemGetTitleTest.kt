@@ -25,9 +25,9 @@ import java.util.*
 
 @RunWith(Parameterized::class)
 class TimeReportItemGetTitleTest(
-        private val message: String,
-        private val expected: String,
-        private val timeInterval: TimeInterval
+    private val message: String,
+    private val expected: String,
+    private val timeInterval: TimeInterval
 ) {
     @Test
     fun getTitle() {
@@ -44,21 +44,21 @@ class TimeReportItemGetTitleTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            "active time interval",
-                            "08:00",
-                            TimeInterval.builder(1L, 1L)
-                                    .startInMilliseconds(START.timeInMillis)
-                                    .build()
-                    ),
-                    arrayOf(
-                            "inactive time interval",
-                            "08:00 - 11:30",
-                            TimeInterval.builder(1L, 1L)
-                                    .startInMilliseconds(START.timeInMillis)
-                                    .stopInMilliseconds(STOP.timeInMillis)
-                                    .build()
-                    )
+                arrayOf(
+                    "active time interval",
+                    "08:00",
+                    TimeInterval.builder(1L, 1L)
+                        .startInMilliseconds(START.timeInMillis)
+                        .build()
+                ),
+                arrayOf(
+                    "inactive time interval",
+                    "08:00 - 11:30",
+                    TimeInterval.builder(1L, 1L)
+                        .startInMilliseconds(START.timeInMillis)
+                        .stopInMilliseconds(STOP.timeInMillis)
+                        .build()
+                )
             )
     }
 }

@@ -20,17 +20,21 @@ import androidx.room.*
 
 @Dao
 internal interface TimeIntervalDao {
-    @Query("""SELECT * FROM time_intervals
+    @Query(
+        """SELECT * FROM time_intervals
         WHERE project_id = :projectId AND
             (start_in_milliseconds >= :startInMilliseconds OR stop_in_milliseconds = 0)
-        ORDER BY stop_in_milliseconds ASC, start_in_milliseconds ASC""")
+        ORDER BY stop_in_milliseconds ASC, start_in_milliseconds ASC"""
+    )
     fun findAll(projectId: Long, startInMilliseconds: Long): List<TimeIntervalEntity>
 
     @Query("SELECT * FROM time_intervals WHERE _id = :id LIMIT 1")
     fun find(id: Long): TimeIntervalEntity?
 
-    @Query("""SELECT * FROM time_intervals
-        WHERE project_id = :projectId AND stop_in_milliseconds = 0""")
+    @Query(
+        """SELECT * FROM time_intervals
+        WHERE project_id = :projectId AND stop_in_milliseconds = 0"""
+    )
     fun findActiveTime(projectId: Long): TimeIntervalEntity?
 
     @Insert

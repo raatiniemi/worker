@@ -83,7 +83,10 @@ class ProjectViewModel(private val keyValueStore: KeyValueStore) : ViewModel() {
                 TimeIntervalStartingPoint.MONTH -> {
                     Timber.d("Changing time summary starting point to month")
 
-                    keyValueStore.set(AppKeys.TIME_SUMMARY, TimeIntervalStartingPoint.MONTH.rawValue)
+                    keyValueStore.set(
+                        AppKeys.TIME_SUMMARY,
+                        TimeIntervalStartingPoint.MONTH.rawValue
+                    )
                     ProjectViewActions.ShowTimeSummaryStartingPointChangedToMonth
                 }
                 else -> throw InvalidStartingPointException("Starting point '$newStartingPoint' is not valid")

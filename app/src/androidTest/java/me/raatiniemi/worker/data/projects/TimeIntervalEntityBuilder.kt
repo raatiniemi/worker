@@ -17,28 +17,28 @@
 package me.raatiniemi.worker.data.projects
 
 internal data class TimeIntervalEntityBuilder(
-        var id: Long = 0,
-        var projectId: Long = 1,
-        var startInMilliseconds: Long = 1,
-        var stopInMilliseconds: Long = 2,
-        var registered: Boolean = false
+    var id: Long = 0,
+    var projectId: Long = 1,
+    var startInMilliseconds: Long = 1,
+    var stopInMilliseconds: Long = 2,
+    var registered: Boolean = false
 )
 
 internal fun timeIntervalEntity(
-        configure: (TimeIntervalEntityBuilder.() -> Unit)? = null
+    configure: (TimeIntervalEntityBuilder.() -> Unit)? = null
 ): TimeIntervalEntity {
     val builder = TimeIntervalEntityBuilder()
     configure?.let { builder.it() }
 
     return TimeIntervalEntity(
-            id = builder.id,
-            projectId = builder.projectId,
-            startInMilliseconds = builder.startInMilliseconds,
-            stopInMilliseconds = builder.stopInMilliseconds,
-            registered = if (builder.registered) {
-                1L
-            } else {
-                0L
-            }
+        id = builder.id,
+        projectId = builder.projectId,
+        startInMilliseconds = builder.startInMilliseconds,
+        stopInMilliseconds = builder.stopInMilliseconds,
+        registered = if (builder.registered) {
+            1L
+        } else {
+            0L
+        }
     )
 }

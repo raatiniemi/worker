@@ -19,19 +19,19 @@ package me.raatiniemi.worker.domain.model
 import java.lang.Math.abs
 
 data class TimeIntervalBuilder(
-        var id: Long = 1,
-        var projectId: Long = 1,
-        var startInMilliseconds: Long = 0,
-        var stopInMilliseconds: Long = 0,
-        var isRegistered: Boolean = false
+    var id: Long = 1,
+    var projectId: Long = 1,
+    var startInMilliseconds: Long = 0,
+    var stopInMilliseconds: Long = 0,
+    var isRegistered: Boolean = false
 ) {
     fun build(): TimeInterval {
         return TimeInterval(
-                id = id,
-                projectId = projectId,
-                startInMilliseconds = startInMilliseconds,
-                stopInMilliseconds = stopInMilliseconds,
-                isRegistered = isRegistered
+            id = id,
+            projectId = projectId,
+            startInMilliseconds = startInMilliseconds,
+            stopInMilliseconds = stopInMilliseconds,
+            isRegistered = isRegistered
         )
     }
 }
@@ -44,8 +44,8 @@ fun timeInterval(configure: TimeIntervalBuilder.() -> Unit): TimeInterval {
 }
 
 fun timeIntervalStartAfter(
-        startingPoint: TimeIntervalStartingPoint,
-        configure: TimeIntervalBuilder.() -> Unit
+    startingPoint: TimeIntervalStartingPoint,
+    configure: TimeIntervalBuilder.() -> Unit
 ): TimeInterval {
     val builder = TimeIntervalBuilder()
     builder.configure()

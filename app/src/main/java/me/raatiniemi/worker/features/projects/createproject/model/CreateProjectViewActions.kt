@@ -34,7 +34,8 @@ sealed class CreateProjectViewActions {
 
     object DuplicateNameErrorMessage : CreateProjectViewActions(), EditTextViewAction {
         override fun action(context: Context, editText: EditText) {
-            editText.error = context.getString(R.string.projects_create_project_already_exists_error_message)
+            editText.error =
+                context.getString(R.string.projects_create_project_already_exists_error_message)
         }
     }
 
@@ -44,7 +45,8 @@ sealed class CreateProjectViewActions {
         }
     }
 
-    data class CreatedProject(val project: Project) : CreateProjectViewActions(), DialogFragmentViewAction {
+    data class CreatedProject(val project: Project) : CreateProjectViewActions(),
+        DialogFragmentViewAction {
         override fun action(fragment: DialogFragment) {
             with(EventBus.getDefault()) {
                 post(CreateProjectEvent(project))

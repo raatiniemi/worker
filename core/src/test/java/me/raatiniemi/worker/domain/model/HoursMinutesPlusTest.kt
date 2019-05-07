@@ -23,50 +23,50 @@ import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
 class HoursMinutesPlusTest(
-        private val expected: HoursMinutes,
-        private val lhs: HoursMinutes,
-        private val rhs: HoursMinutes
+    private val expected: HoursMinutes,
+    private val lhs: HoursMinutes,
+    private val rhs: HoursMinutes
 ) {
     companion object {
         @JvmStatic
         @Parameterized.Parameters
         fun data(): Collection<Array<Any>> {
             return listOf<Array<Any>>(
-                    arrayOf(
-                            HoursMinutes(hours = 1, minutes = 0),
-                            HoursMinutes(hours = 1, minutes = 0),
-                            HoursMinutes.empty
-                    ),
-                    arrayOf(
-                            HoursMinutes(hours = 1, minutes = 0),
-                            HoursMinutes.empty,
-                            HoursMinutes(hours = 1, minutes = 0)
-                    ),
-                    arrayOf(
-                            HoursMinutes(hours = 1, minutes = 45),
-                            HoursMinutes(hours = 1, minutes = 0),
-                            HoursMinutes(hours = 0, minutes = 45)
-                    ),
-                    arrayOf(
-                            HoursMinutes(hours = 3, minutes = 30),
-                            HoursMinutes(hours = 1, minutes = 45),
-                            HoursMinutes(hours = 1, minutes = 45)
-                    ),
-                    arrayOf(
-                            HoursMinutes(hours = 4, minutes = 0),
-                            HoursMinutes(hours = 2, minutes = 45),
-                            HoursMinutes(hours = 1, minutes = 15)
-                    ),
-                    arrayOf(
-                            HoursMinutes(hours = 0, minutes = 45),
-                            HoursMinutes(hours = -1, minutes = 0),
-                            HoursMinutes(hours = 1, minutes = 45)
-                    ),
-                    arrayOf(
-                            HoursMinutes(hours = -2, minutes = 45),
-                            HoursMinutes(hours = -1, minutes = 0),
-                            HoursMinutes(hours = -1, minutes = 45)
-                    )
+                arrayOf(
+                    HoursMinutes(hours = 1, minutes = 0),
+                    HoursMinutes(hours = 1, minutes = 0),
+                    HoursMinutes.empty
+                ),
+                arrayOf(
+                    HoursMinutes(hours = 1, minutes = 0),
+                    HoursMinutes.empty,
+                    HoursMinutes(hours = 1, minutes = 0)
+                ),
+                arrayOf(
+                    HoursMinutes(hours = 1, minutes = 45),
+                    HoursMinutes(hours = 1, minutes = 0),
+                    HoursMinutes(hours = 0, minutes = 45)
+                ),
+                arrayOf(
+                    HoursMinutes(hours = 3, minutes = 30),
+                    HoursMinutes(hours = 1, minutes = 45),
+                    HoursMinutes(hours = 1, minutes = 45)
+                ),
+                arrayOf(
+                    HoursMinutes(hours = 4, minutes = 0),
+                    HoursMinutes(hours = 2, minutes = 45),
+                    HoursMinutes(hours = 1, minutes = 15)
+                ),
+                arrayOf(
+                    HoursMinutes(hours = 0, minutes = 45),
+                    HoursMinutes(hours = -1, minutes = 0),
+                    HoursMinutes(hours = 1, minutes = 45)
+                ),
+                arrayOf(
+                    HoursMinutes(hours = -2, minutes = 45),
+                    HoursMinutes(hours = -1, minutes = 0),
+                    HoursMinutes(hours = -1, minutes = 45)
+                )
             )
         }
     }

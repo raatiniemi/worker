@@ -29,8 +29,8 @@ internal fun <T, R> LiveData<T>.map(function: (T) -> R): LiveData<R> {
 }
 
 internal fun <T> LiveData<T>.debounce(
-        scope: CoroutineScope,
-        duration: Long = 250
+    scope: CoroutineScope,
+    duration: Long = 250
 ) = MediatorLiveData<T>().also { mld ->
     var job: Job? = null
 

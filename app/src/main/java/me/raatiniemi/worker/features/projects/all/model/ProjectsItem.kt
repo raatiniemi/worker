@@ -25,7 +25,10 @@ import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class ProjectsItem(private val project: Project, private val registeredTime: List<TimeInterval>) {
+data class ProjectsItem(
+    private val project: Project,
+    private val registeredTime: List<TimeInterval>
+) {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
     private val registeredTimeSummary: Long
     private val activeTimeInterval: TimeInterval?
@@ -67,10 +70,10 @@ data class ProjectsItem(private val project: Project, private val registeredTime
         val activeTimeInterval = this.activeTimeInterval ?: return null
 
         return String.format(
-                Locale.forLanguageTag("en_US"),
-                getClockedInSinceFormatTemplate(resources),
-                formattedClockedInSince,
-                formattedElapsedTime(activeTimeInterval.interval)
+            Locale.forLanguageTag("en_US"),
+            getClockedInSinceFormatTemplate(resources),
+            formattedClockedInSince,
+            formattedElapsedTime(activeTimeInterval.interval)
         )
     }
 

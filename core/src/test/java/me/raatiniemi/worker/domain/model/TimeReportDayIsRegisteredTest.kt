@@ -25,8 +25,8 @@ import java.util.*
 
 @RunWith(Parameterized::class)
 class TimeReportDayIsRegisteredTest(
-        private val expected: Boolean,
-        private val items: List<TimeReportItem>
+    private val expected: Boolean,
+    private val items: List<TimeReportItem>
 ) {
     @Test
     fun isRegistered() {
@@ -48,22 +48,22 @@ class TimeReportDayIsRegisteredTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            true,
-                            listOf(REGISTERED_TIME)
-                    ),
-                    arrayOf(
-                            false,
-                            listOf(NOT_REGISTERED_TIME)
-                    ),
-                    arrayOf(
-                            false,
-                            listOf(NOT_REGISTERED_TIME, REGISTERED_TIME)
-                    ),
-                    arrayOf(
-                            true,
-                            listOf(REGISTERED_TIME, REGISTERED_TIME)
-                    )
+                arrayOf(
+                    true,
+                    listOf(REGISTERED_TIME)
+                ),
+                arrayOf(
+                    false,
+                    listOf(NOT_REGISTERED_TIME)
+                ),
+                arrayOf(
+                    false,
+                    listOf(NOT_REGISTERED_TIME, REGISTERED_TIME)
+                ),
+                arrayOf(
+                    true,
+                    listOf(REGISTERED_TIME, REGISTERED_TIME)
+                )
             )
     }
 }

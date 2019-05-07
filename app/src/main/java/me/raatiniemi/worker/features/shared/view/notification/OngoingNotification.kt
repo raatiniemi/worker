@@ -32,9 +32,9 @@ import me.raatiniemi.worker.util.Notifications
 import me.raatiniemi.worker.util.OngoingUriCommunicator
 
 internal abstract class OngoingNotification(
-        val context: Context,
-        val project: Project,
-        isOngoing: Boolean
+    val context: Context,
+    val project: Project,
+    isOngoing: Boolean
 ) {
     private val dataUri: Uri = OngoingUriCommunicator.createWith(project.id)
     private val builder: NotificationCompat.Builder
@@ -47,9 +47,9 @@ internal abstract class OngoingNotification(
 
     init {
         builder = Notifications.ongoingBuilder(context)
-                .setContentTitle(project.name)
-                .setContentIntent(buildContentAction())
-                .setOngoing(isOngoing)
+            .setContentTitle(project.name)
+            .setContentIntent(buildContentAction())
+            .setOngoing(isOngoing)
     }
 
     private fun buildContentAction(): PendingIntent {
@@ -59,15 +59,15 @@ internal abstract class OngoingNotification(
         }
 
         return NavDeepLinkBuilder(context)
-                .setGraph(R.navigation.navigation_graph)
-                .setDestination(R.id.navTimeReport)
-                .setArguments(arguments)
-                .createPendingIntent()
+            .setGraph(R.navigation.navigation_graph)
+            .setDestination(R.id.navTimeReport)
+            .setArguments(arguments)
+            .createPendingIntent()
     }
 
     fun buildIntentWithService(serviceClass: Class<*>): Intent {
         return Intent(context, serviceClass)
-                .apply { data = dataUri }
+            .apply { data = dataUri }
     }
 
     fun buildPendingIntentWithService(intent: Intent): PendingIntent {
@@ -83,8 +83,8 @@ internal abstract class OngoingNotification(
 
         if (shouldUseChronometer) {
             builder.setWhen(whenForChronometer)
-                    .setShowWhen(shouldUseChronometer)
-                    .setUsesChronometer(shouldUseChronometer)
+                .setShowWhen(shouldUseChronometer)
+                .setUsesChronometer(shouldUseChronometer)
         }
 
         actions.forEach { builder.addAction(it) }

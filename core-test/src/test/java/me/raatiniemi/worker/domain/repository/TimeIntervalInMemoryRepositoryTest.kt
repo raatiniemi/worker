@@ -83,11 +83,11 @@ class TimeIntervalInMemoryRepositoryTest {
         }
         repository.add(newTimeInterval)
         val expected = listOf(
-                timeInterval {
-                    id = 1
-                    startInMilliseconds = 10
-                    stopInMilliseconds = 15
-                }
+            timeInterval {
+                id = 1
+                startInMilliseconds = 10
+                stopInMilliseconds = 15
+            }
         )
 
         val actual = repository.findAll(project, 1)
@@ -190,11 +190,11 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `update without time intervals`() {
         val timeIntervals = listOf(
-                timeInterval {
-                    id = 1
-                    startInMilliseconds = 1
-                    stopInMilliseconds = 10
-                }
+            timeInterval {
+                id = 1
+                startInMilliseconds = 1
+                stopInMilliseconds = 10
+            }
         )
         val expected = emptyList<TimeInterval>()
 
@@ -211,11 +211,11 @@ class TimeIntervalInMemoryRepositoryTest {
         }
         repository.add(newTimeInterval)
         val expected = listOf(
-                timeInterval {
-                    id = 1
-                    startInMilliseconds = 1
-                    stopInMilliseconds = 5
-                }
+            timeInterval {
+                id = 1
+                startInMilliseconds = 1
+                stopInMilliseconds = 5
+            }
         )
 
         val actual = repository.update(expected)
@@ -263,11 +263,11 @@ class TimeIntervalInMemoryRepositoryTest {
         }
         repository.add(newTimeInterval)
         val timeIntervals = listOf(
-                timeInterval {
-                    id = 1
-                    startInMilliseconds = 1
-                    stopInMilliseconds = 10
-                }
+            timeInterval {
+                id = 1
+                startInMilliseconds = 1
+                stopInMilliseconds = 10
+            }
         )
         val expected = emptyList<TimeInterval>()
 

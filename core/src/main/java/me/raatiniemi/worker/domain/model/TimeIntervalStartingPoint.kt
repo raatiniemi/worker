@@ -47,7 +47,7 @@ enum class TimeIntervalStartingPoint(val rawValue: Int) {
                 WEEK.rawValue -> WEEK
                 MONTH.rawValue -> MONTH
                 else -> throw InvalidStartingPointException(
-                        "Starting point '$startingPoint' is not valid"
+                    "Starting point '$startingPoint' is not valid"
                 )
             }
         }

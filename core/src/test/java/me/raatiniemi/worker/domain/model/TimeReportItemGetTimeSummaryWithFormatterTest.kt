@@ -26,9 +26,9 @@ import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
 class TimeReportItemGetTimeSummaryWithFormatterTest(
-        private val expected: String,
-        private val formatter: HoursMinutesFormat,
-        private val timeInterval: TimeInterval
+    private val expected: String,
+    private val formatter: HoursMinutesFormat,
+    private val timeInterval: TimeInterval
 ) {
     @Test
     fun getTimeSummary() {
@@ -42,20 +42,20 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            "1:00",
-                            DigitalHoursMinutesIntervalFormat(),
-                            TimeInterval.builder(1L, 1L)
-                                    .stopInMilliseconds(3600000)
-                                    .build()
-                    ),
-                    arrayOf(
-                            "9:00",
-                            DigitalHoursMinutesIntervalFormat(),
-                            TimeInterval.builder(1L, 1L)
-                                    .stopInMilliseconds(32400000)
-                                    .build()
-                    )
+                arrayOf(
+                    "1:00",
+                    DigitalHoursMinutesIntervalFormat(),
+                    TimeInterval.builder(1L, 1L)
+                        .stopInMilliseconds(3600000)
+                        .build()
+                ),
+                arrayOf(
+                    "9:00",
+                    DigitalHoursMinutesIntervalFormat(),
+                    TimeInterval.builder(1L, 1L)
+                        .stopInMilliseconds(32400000)
+                        .build()
+                )
             )
     }
 }

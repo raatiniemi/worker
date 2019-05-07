@@ -26,8 +26,8 @@ val preferenceModule = module {
     single<KeyValueStore> {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(androidContext())
         sharedPreferences.edit()
-                .remove("pref_time_sheet_summary_format")
-                .apply()
+            .remove("pref_time_sheet_summary_format")
+            .apply()
 
         SharedKeyValueStore(sharedPreferences)
     }

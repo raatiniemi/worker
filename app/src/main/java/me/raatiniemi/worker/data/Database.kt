@@ -21,12 +21,12 @@ import androidx.room.RoomDatabase
 import me.raatiniemi.worker.data.projects.*
 
 @Database(
-        entities = [
-            ProjectEntity::class,
-            TimeIntervalEntity::class
-        ],
-        version = 3,
-        exportSchema = true
+    entities = [
+        ProjectEntity::class,
+        TimeIntervalEntity::class
+    ],
+    version = 3,
+    exportSchema = true
 )
 internal abstract class Database : RoomDatabase() {
     abstract fun projects(): ProjectDao

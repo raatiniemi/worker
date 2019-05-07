@@ -27,8 +27,8 @@ import java.util.*
 
 @RunWith(Parameterized::class)
 class ProjectsItemIsActiveTest(
-        private val expected: Boolean,
-        private val timeIntervals: List<TimeInterval>
+    private val expected: Boolean,
+    private val timeIntervals: List<TimeInterval>
 ) {
     @Test
     fun isActive() {
@@ -43,23 +43,23 @@ class ProjectsItemIsActiveTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = Arrays.asList(
-                    arrayOf(
-                            false,
-                            getTimeIntervals(false)
-                    ),
-                    arrayOf(
-                            true,
-                            getTimeIntervals(true)
-                    )
+                arrayOf(
+                    false,
+                    getTimeIntervals(false)
+                ),
+                arrayOf(
+                    true,
+                    getTimeIntervals(true)
+                )
             )
 
         private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
                 return listOf(
-                        TimeInterval.builder(1L, 1L)
-                                .startInMilliseconds(1)
-                                .stopInMilliseconds(0)
-                                .build()
+                    TimeInterval.builder(1L, 1L)
+                        .startInMilliseconds(1)
+                        .stopInMilliseconds(0)
+                        .build()
                 )
             }
 

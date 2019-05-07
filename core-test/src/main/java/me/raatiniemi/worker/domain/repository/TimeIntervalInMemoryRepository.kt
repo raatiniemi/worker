@@ -32,31 +32,31 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     }
 
     override fun findById(id: Long) =
-            timeIntervals.firstOrNull { it.id == id }
+        timeIntervals.firstOrNull { it.id == id }
 
     override fun findActiveByProjectId(projectId: Long) =
-            timeIntervals.firstOrNull { it.projectId == projectId && it.isActive }
+        timeIntervals.firstOrNull { it.projectId == projectId && it.isActive }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
         return TimeInterval(
-                id = incrementedId.incrementAndGet(),
-                projectId = newTimeInterval.projectId,
-                startInMilliseconds = newTimeInterval.startInMilliseconds,
-                stopInMilliseconds = newTimeInterval.stopInMilliseconds,
-                isRegistered = newTimeInterval.isRegistered
+            id = incrementedId.incrementAndGet(),
+            projectId = newTimeInterval.projectId,
+            startInMilliseconds = newTimeInterval.startInMilliseconds,
+            stopInMilliseconds = newTimeInterval.stopInMilliseconds,
+            isRegistered = newTimeInterval.isRegistered
         ).also { timeIntervals.add(it) }
     }
 
     override fun update(timeInterval: TimeInterval) =
-            findById(timeInterval.id)?.let {
-                val index = timeIntervals.indexOf(it)
-                timeIntervals[index] = timeInterval
+        findById(timeInterval.id)?.let {
+            val index = timeIntervals.indexOf(it)
+            timeIntervals[index] = timeInterval
 
-                timeInterval
-            }
+            timeInterval
+        }
 
     override fun update(timeIntervals: List<TimeInterval>) =
-            timeIntervals.mapNotNull { update(it) }
+        timeIntervals.mapNotNull { update(it) }
 
     override fun remove(id: Long) {
         timeIntervals.removeIf { it.id == id }
@@ -64,6 +64,6 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
 
     override fun remove(timeIntervals: List<TimeInterval>) {
         timeIntervals.map { it.id }
-                .forEach { remove(it) }
+            .forEach { remove(it) }
     }
 }

@@ -58,7 +58,8 @@ internal class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
 
         with(delete) {
-            contentDescription = resources.getString(R.string.projects_all_delete, projectsItem.title)
+            contentDescription =
+                resources.getString(R.string.projects_all_delete, projectsItem.title)
         }
 
         clockedInSince.visibleIf { projectsItem.isActive }

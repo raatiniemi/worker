@@ -21,5 +21,5 @@ import java.util.*
 
 fun shortDayMonthDayInMonth(date: Date): String {
     return SimpleDateFormat("EEE (MMM d)", Locale.getDefault())
-            .run { format(date) }
+        .run { format(date) }
 }

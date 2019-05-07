@@ -26,10 +26,10 @@ import java.util.*
 class DigitalHoursMinutesIntervalFormat : HoursMinutesFormat {
     override fun apply(hoursMinutes: HoursMinutes): String {
         return String.format(
-                Locale.forLanguageTag("en_US"),
-                formatFor(hoursMinutes),
-                abs(hoursMinutes.hours),
-                padWithZeroes(abs(hoursMinutes.minutes))
+            Locale.forLanguageTag("en_US"),
+            formatFor(hoursMinutes),
+            abs(hoursMinutes.hours),
+            padWithZeroes(abs(hoursMinutes.minutes))
         )
     }
 

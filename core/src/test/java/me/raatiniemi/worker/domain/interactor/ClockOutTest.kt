@@ -53,11 +53,11 @@ class ClockOutTest {
         }
         repository.add(newTimeInterval)
         val expected = listOf(
-                timeInterval {
-                    id = 1
-                    startInMilliseconds = 1
-                    stopInMilliseconds = date.time
-                }
+            timeInterval {
+                id = 1
+                startInMilliseconds = 1
+                stopInMilliseconds = date.time
+            }
         )
 
         clockOut(1L, date)

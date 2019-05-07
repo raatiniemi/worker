@@ -24,41 +24,41 @@ import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
 class HoursMinutesAccumulatedTest(
-        private val message: String,
-        private val expected: HoursMinutes,
-        private val values: List<HoursMinutes>
+    private val message: String,
+    private val expected: HoursMinutes,
+    private val values: List<HoursMinutes>
 ) {
     companion object {
         @JvmStatic
         @Parameters
         fun data(): Collection<Array<Any>> {
             return listOf(
-                    arrayOf(
-                            "With empty list of items",
-                            HoursMinutes.empty,
-                            listOf<HoursMinutes>()
-                    ),
-                    arrayOf(
-                            "With single item",
-                            HoursMinutes(hours = 1, minutes = 0),
-                            listOf(HoursMinutes(hours = 1, minutes = 0))
-                    ),
-                    arrayOf(
-                            "With multiple items",
-                            HoursMinutes(hours = 2, minutes = 0),
-                            listOf(
-                                    HoursMinutes(hours = 1, minutes = 0),
-                                    HoursMinutes(hours = 1, minutes = 0)
-                            )
-                    ),
-                    arrayOf(
-                            "With overflowing minutes",
-                            HoursMinutes(hours = 3, minutes = 15),
-                            listOf(
-                                    HoursMinutes(hours = 1, minutes = 30),
-                                    HoursMinutes(hours = 1, minutes = 45)
-                            )
+                arrayOf(
+                    "With empty list of items",
+                    HoursMinutes.empty,
+                    listOf<HoursMinutes>()
+                ),
+                arrayOf(
+                    "With single item",
+                    HoursMinutes(hours = 1, minutes = 0),
+                    listOf(HoursMinutes(hours = 1, minutes = 0))
+                ),
+                arrayOf(
+                    "With multiple items",
+                    HoursMinutes(hours = 2, minutes = 0),
+                    listOf(
+                        HoursMinutes(hours = 1, minutes = 0),
+                        HoursMinutes(hours = 1, minutes = 0)
                     )
+                ),
+                arrayOf(
+                    "With overflowing minutes",
+                    HoursMinutes(hours = 3, minutes = 15),
+                    listOf(
+                        HoursMinutes(hours = 1, minutes = 30),
+                        HoursMinutes(hours = 1, minutes = 45)
+                    )
+                )
             )
         }
     }

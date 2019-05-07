@@ -19,11 +19,12 @@ package me.raatiniemi.worker.features.shared.view.fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import me.raatiniemi.worker.R;
 
 import static me.raatiniemi.worker.util.NullUtil.nonNull;

@@ -23,21 +23,22 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
-internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) : TimeIntervalRepository {
+internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) :
+    TimeIntervalRepository {
     override fun findAll(project: Project, milliseconds: Long): List<TimeInterval> {
         return timeIntervals.findAll(projectId = project.id, startInMilliseconds = milliseconds)
-                .map { it.toTimeInterval() }
-                .toList()
+            .map { it.toTimeInterval() }
+            .toList()
     }
 
     override fun findById(id: Long): TimeInterval? {
         return timeIntervals.find(id)
-                ?.run { toTimeInterval() }
+            ?.run { toTimeInterval() }
     }
 
     override fun findActiveByProjectId(projectId: Long): TimeInterval? {
         return timeIntervals.findActiveTime(projectId)
-                ?.run { toTimeInterval() }
+            ?.run { toTimeInterval() }
     }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
@@ -48,8 +49,8 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
 
     override fun update(timeInterval: TimeInterval): TimeInterval? {
         return timeInterval.toEntity()
-                .also { timeIntervals.update(listOf(it)) }
-                .run { findById(id) }
+            .also { timeIntervals.update(listOf(it)) }
+            .run { findById(id) }
     }
 
     override fun update(timeIntervals: List<TimeInterval>): List<TimeInterval> {
@@ -57,9 +58,9 @@ internal class TimeIntervalRoomRepository(private val timeIntervals: TimeInterva
         this.timeIntervals.update(entities)
 
         return timeIntervals.map { it.id }
-                .mapNotNull { this.timeIntervals.find(it) }
-                .map { it.toTimeInterval() }
-                .toList()
+            .mapNotNull { this.timeIntervals.find(it) }
+            .map { it.toTimeInterval() }
+            .toList()
     }
 
     override fun remove(id: Long) {

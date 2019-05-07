@@ -22,60 +22,60 @@ import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.TimeInterval
 
 @Entity(
-        tableName = "time_intervals",
-        foreignKeys = [
-            ForeignKey(
-                    entity = ProjectEntity::class,
-                    parentColumns = ["_id"],
-                    childColumns = ["project_id"],
-                    onDelete = CASCADE
-            )
-        ],
-        indices = [
-            Index(name = "index_project_id", value = ["project_id"])
-        ]
+    tableName = "time_intervals",
+    foreignKeys = [
+        ForeignKey(
+            entity = ProjectEntity::class,
+            parentColumns = ["_id"],
+            childColumns = ["project_id"],
+            onDelete = CASCADE
+        )
+    ],
+    indices = [
+        Index(name = "index_project_id", value = ["project_id"])
+    ]
 )
 internal data class TimeIntervalEntity(
-        @PrimaryKey(autoGenerate = true)
-        @ColumnInfo(name = "_id")
-        val id: Long = 0,
-        @ColumnInfo(name = "project_id")
-        val projectId: Long,
-        @ColumnInfo(name = "start_in_milliseconds")
-        val startInMilliseconds: Long,
-        @ColumnInfo(name = "stop_in_milliseconds")
-        val stopInMilliseconds: Long,
-        val registered: Long
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
+    val id: Long = 0,
+    @ColumnInfo(name = "project_id")
+    val projectId: Long,
+    @ColumnInfo(name = "start_in_milliseconds")
+    val startInMilliseconds: Long,
+    @ColumnInfo(name = "stop_in_milliseconds")
+    val stopInMilliseconds: Long,
+    val registered: Long
 ) {
     fun toTimeInterval() = TimeInterval(
-            id = id,
-            projectId = projectId,
-            startInMilliseconds = startInMilliseconds,
-            stopInMilliseconds = stopInMilliseconds,
-            isRegistered = registered == 1L
-    )
-}
-
-internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(
-        id = 0,
-        projectId = projectId,
-        startInMilliseconds = startInMilliseconds,
-        stopInMilliseconds = stopInMilliseconds,
-        registered = if (isRegistered) {
-            1
-        } else {
-            0
-        }
-)
-
-internal fun TimeInterval.toEntity() = TimeIntervalEntity(
         id = id,
         projectId = projectId,
         startInMilliseconds = startInMilliseconds,
         stopInMilliseconds = stopInMilliseconds,
-        registered = if (isRegistered) {
-            1
-        } else {
-            0
-        }
+        isRegistered = registered == 1L
+    )
+}
+
+internal fun NewTimeInterval.toEntity() = TimeIntervalEntity(
+    id = 0,
+    projectId = projectId,
+    startInMilliseconds = startInMilliseconds,
+    stopInMilliseconds = stopInMilliseconds,
+    registered = if (isRegistered) {
+        1
+    } else {
+        0
+    }
+)
+
+internal fun TimeInterval.toEntity() = TimeIntervalEntity(
+    id = id,
+    projectId = projectId,
+    startInMilliseconds = startInMilliseconds,
+    stopInMilliseconds = stopInMilliseconds,
+    registered = if (isRegistered) {
+        1
+    } else {
+        0
+    }
 )

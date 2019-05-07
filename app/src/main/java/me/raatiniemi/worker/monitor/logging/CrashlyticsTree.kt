@@ -48,7 +48,7 @@ class CrashlyticsTree : Timber.Tree() {
     }
 
     private fun shouldDiscardExceptionBasedOnPriority(priority: Int) =
-            priority == Log.VERBOSE || priority == Log.DEBUG || priority == Log.INFO
+        priority == Log.VERBOSE || priority == Log.DEBUG || priority == Log.INFO
 
     companion object {
         private const val CRASHLYTICS_KEY_PRIORITY = "priority"

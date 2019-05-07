@@ -50,10 +50,10 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService") {
     private fun sendOrDismissPauseNotification(project: Project) {
         sendOrDismissOngoingNotification(project) {
             PauseNotification.build(
-                    this,
-                    project,
-                    calculateTimeToday(project),
-                    isOngoingNotificationChronometerEnabled
+                this,
+                project,
+                calculateTimeToday(project),
+                isOngoingNotificationChronometerEnabled
             )
         }
     }

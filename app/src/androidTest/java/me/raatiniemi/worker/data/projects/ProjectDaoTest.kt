@@ -66,10 +66,10 @@ class ProjectDaoTest : BaseDaoTest() {
     fun findAll_pagingWithProject() {
         projects.add(projectEntity { name = "Project name #1" })
         val expected = listOf(
-                projectEntity {
-                    id = 1
-                    name = "Project name #1"
-                }
+            projectEntity {
+                id = 1
+                name = "Project name #1"
+            }
         )
 
         val actual = projects.findAll(0, 10)
@@ -82,14 +82,14 @@ class ProjectDaoTest : BaseDaoTest() {
         projects.add(projectEntity { name = "Project name #1" })
         projects.add(projectEntity { name = "Project name #2" })
         val expected = listOf(
-                projectEntity {
-                    id = 1
-                    name = "Project name #1"
-                },
-                projectEntity {
-                    id = 2
-                    name = "Project name #2"
-                }
+            projectEntity {
+                id = 1
+                name = "Project name #1"
+            },
+            projectEntity {
+                id = 2
+                name = "Project name #2"
+            }
         )
 
         val actual = projects.findAll(0, 10)
@@ -102,10 +102,10 @@ class ProjectDaoTest : BaseDaoTest() {
         projects.add(projectEntity { name = "Project name #1" })
         projects.add(projectEntity { name = "Project name #2" })
         val expected = listOf(
-                projectEntity {
-                    id = 2
-                    name = "Project name #2"
-                }
+            projectEntity {
+                id = 2
+                name = "Project name #2"
+            }
         )
 
         val actual = projects.findAll(1, 10)
@@ -118,10 +118,10 @@ class ProjectDaoTest : BaseDaoTest() {
         projects.add(projectEntity { name = "Project name #1" })
         projects.add(projectEntity { name = "Project name #2" })
         val expected = listOf(
-                projectEntity {
-                    id = 1
-                    name = "Project name #1"
-                }
+            projectEntity {
+                id = 1
+                name = "Project name #1"
+            }
         )
 
         val actual = projects.findAll(0, 1)
@@ -134,14 +134,14 @@ class ProjectDaoTest : BaseDaoTest() {
         projects.add(projectEntity { name = "Project name #2" })
         projects.add(projectEntity { name = "Project name #1" })
         val expected = listOf(
-                projectEntity {
-                    id = 2
-                    name = "Project name #1"
-                },
-                projectEntity {
-                    id = 1
-                    name = "Project name #2"
-                }
+            projectEntity {
+                id = 2
+                name = "Project name #1"
+            },
+            projectEntity {
+                id = 1
+                name = "Project name #2"
+            }
         )
 
         val actual = projects.findAll(0, 10)
@@ -173,18 +173,18 @@ class ProjectDaoTest : BaseDaoTest() {
         projects.add(projectEntity { name = "Name #1" })
         projects.add(projectEntity { name = "Name #2" })
         val expected = listOf(
-                projectEntity {
-                    id = 2
-                    name = "Name #1"
-                },
-                projectEntity {
-                    id = 3
-                    name = "Name #2"
-                },
-                projectEntity {
-                    id = 1
-                    name = "Name #3"
-                }
+            projectEntity {
+                id = 2
+                name = "Name #1"
+            },
+            projectEntity {
+                id = 3
+                name = "Name #2"
+            },
+            projectEntity {
+                id = 1
+                name = "Name #3"
+            }
         )
 
         val actual = projects.findAll()
@@ -310,14 +310,14 @@ class ProjectDaoTest : BaseDaoTest() {
             name = "Name #2"
         }
         val expected = listOf(
-                projectEntity {
-                    id = 2
-                    name = "Name #1"
-                },
-                projectEntity {
-                    id = 1
-                    name = "Name #3"
-                }
+            projectEntity {
+                id = 2
+                name = "Name #1"
+            },
+            projectEntity {
+                id = 1
+                name = "Name #3"
+            }
         )
 
         projects.remove(entity)

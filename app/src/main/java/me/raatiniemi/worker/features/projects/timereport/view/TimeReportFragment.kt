@@ -61,15 +61,19 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
         eventBus.register(this)
         projectHolder += Project(
-                id = arguments.projectId,
-                name = arguments.projectName
+            id = arguments.projectId,
+            name = arguments.projectName
         )
         projectHolder.value.observe(this, Observer {
             setTitle(it.name)
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_project_time_report, container, false)
     }
 

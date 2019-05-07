@@ -21,16 +21,17 @@ import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import java.util.*
 
-class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) : TimeReportRepository {
+class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) :
+    TimeReportRepository {
     override fun count(projectId: Long) = timeIntervals
-            .filter { it.projectId == projectId }
-            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
-            .count()
+        .filter { it.projectId == projectId }
+        .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+        .count()
 
     override fun countNotRegistered(projectId: Long) = timeIntervals
-            .filter { it.projectId == projectId && !it.isRegistered }
-            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
-            .count()
+        .filter { it.projectId == projectId && !it.isRegistered }
+        .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+        .count()
 
     private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
         val calendar = Calendar.getInstance()
@@ -46,20 +47,20 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
     // TODO: Implement proper support for pagination.
     private fun filterAndBuildResult(predicate: (TimeInterval) -> Boolean): List<TimeReportDay> {
         return timeIntervals.filter { predicate(it) }
-                .groupBy { resetToStartOfDay(it.startInMilliseconds) }
-                .map { entry ->
-                    TimeReportDay(
-                            entry.key,
-                            entry.value.sortedByDescending { it.startInMilliseconds }
-                                    .map { TimeReportItem(it) }
-                    )
-                }
-                .sortedByDescending { it.date }
+            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+            .map { entry ->
+                TimeReportDay(
+                    entry.key,
+                    entry.value.sortedByDescending { it.startInMilliseconds }
+                        .map { TimeReportItem(it) }
+                )
+            }
+            .sortedByDescending { it.date }
     }
 
     override fun findAll(projectId: Long, position: Int, pageSize: Int) =
-            filterAndBuildResult { it.projectId == projectId }
+        filterAndBuildResult { it.projectId == projectId }
 
     override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int) =
-            filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
+        filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
 }

@@ -23,11 +23,11 @@ import java.util.*
  * Represent a time interval registered to a project.
  */
 data class TimeInterval(
-        val id: Long,
-        val projectId: Long,
-        val startInMilliseconds: Long,
-        val stopInMilliseconds: Long = 0,
-        val isRegistered: Boolean = false
+    val id: Long,
+    val projectId: Long,
+    val startInMilliseconds: Long,
+    val stopInMilliseconds: Long = 0,
+    val isRegistered: Boolean = false
 ) {
     val isActive = 0L == stopInMilliseconds
 

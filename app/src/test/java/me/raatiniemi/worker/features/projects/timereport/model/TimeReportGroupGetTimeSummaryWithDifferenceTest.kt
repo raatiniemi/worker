@@ -31,15 +31,15 @@ import java.util.*
 
 @RunWith(Parameterized::class)
 class TimeReportGroupGetTimeSummaryWithDifferenceTest(
-        private val expected: String,
-        private val formatter: HoursMinutesFormat,
-        private val timeIntervals: List<TimeInterval>
+    private val expected: String,
+    private val formatter: HoursMinutesFormat,
+    private val timeIntervals: List<TimeInterval>
 ) {
     @Test
     fun getTimeSummaryWithDifference() {
         val day = TimeReportDay(
-                Date(),
-                timeIntervals.map { TimeReportItem.with(it) }
+            Date(),
+            timeIntervals.map { TimeReportItem.with(it) }
         )
 
         assertEquals(expected, day.getTimeSummaryWithDifference(formatter))
@@ -51,78 +51,78 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            "1:00 (-7:00)",
-                            DigitalHoursMinutesIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 3600000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "8:00",
-                            DigitalHoursMinutesIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 28800000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "9:00 (+1:00)",
-                            DigitalHoursMinutesIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 32400000
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "9:07 (+1:07)",
-                            DigitalHoursMinutesIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 14380327
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 18407820
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "8:46 (+0:46)",
-                            DigitalHoursMinutesIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 13956031
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 17594386
-                                    }
-                            )
-                    ),
-                    arrayOf(
-                            "7:52 (-0:08)",
-                            DigitalHoursMinutesIntervalFormat(),
-                            listOf(
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 11661632
-                                    },
-                                    timeInterval {
-                                        startInMilliseconds = 1
-                                        stopInMilliseconds = 16707601
-                                    }
-                            )
+                arrayOf(
+                    "1:00 (-7:00)",
+                    DigitalHoursMinutesIntervalFormat(),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 3600000
+                        }
                     )
+                ),
+                arrayOf(
+                    "8:00",
+                    DigitalHoursMinutesIntervalFormat(),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 28800000
+                        }
+                    )
+                ),
+                arrayOf(
+                    "9:00 (+1:00)",
+                    DigitalHoursMinutesIntervalFormat(),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 32400000
+                        }
+                    )
+                ),
+                arrayOf(
+                    "9:07 (+1:07)",
+                    DigitalHoursMinutesIntervalFormat(),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 14380327
+                        },
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 18407820
+                        }
+                    )
+                ),
+                arrayOf(
+                    "8:46 (+0:46)",
+                    DigitalHoursMinutesIntervalFormat(),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 13956031
+                        },
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 17594386
+                        }
+                    )
+                ),
+                arrayOf(
+                    "7:52 (-0:08)",
+                    DigitalHoursMinutesIntervalFormat(),
+                    listOf(
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 11661632
+                        },
+                        timeInterval {
+                            startInMilliseconds = 1
+                            stopInMilliseconds = 16707601
+                        }
+                    )
+                )
             )
 
     }

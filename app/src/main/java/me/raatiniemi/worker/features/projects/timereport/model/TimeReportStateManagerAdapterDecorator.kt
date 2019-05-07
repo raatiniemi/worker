@@ -23,19 +23,19 @@ import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportStateManager
 
 class TimeReportStateManagerAdapterDecorator(
-        private val adapter: RecyclerView.Adapter<*>,
-        private val stateManager: TimeReportStateManager
+    private val adapter: RecyclerView.Adapter<*>,
+    private val stateManager: TimeReportStateManager
 ) : TimeReportStateManager {
     @MainThread
     override fun expanded(position: Int): Boolean = stateManager.expanded(position)
 
     @MainThread
     override fun expand(position: Int) = stateManager.expand(position)
-            .apply { adapter.notifyItemChanged(position) }
+        .apply { adapter.notifyItemChanged(position) }
 
     @MainThread
     override fun collapse(position: Int) = stateManager.collapse(position)
-            .apply { adapter.notifyItemChanged(position) }
+        .apply { adapter.notifyItemChanged(position) }
 
     @MainThread
     override fun state(day: TimeReportDay) = stateManager.state(day)
@@ -46,12 +46,12 @@ class TimeReportStateManagerAdapterDecorator(
     @MainThread
     override fun consume(longPress: TimeReportLongPressAction): Boolean {
         return stateManager.consume(longPress)
-                .apply { adapter.notifyDataSetChanged() }
+            .apply { adapter.notifyDataSetChanged() }
     }
 
     @MainThread
     override fun consume(tap: TimeReportTapAction) {
         return stateManager.consume(tap)
-                .apply { adapter.notifyDataSetChanged() }
+            .apply { adapter.notifyDataSetChanged() }
     }
 }

@@ -23,9 +23,9 @@ import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.util.KeyValueStore
 
 internal class TimeReportDataSourceFactory(
-        private val projectProvider: ProjectProvider,
-        private val keyValueStore: KeyValueStore,
-        private val repository: TimeReportRepository
+    private val projectProvider: ProjectProvider,
+    private val keyValueStore: KeyValueStore,
+    private val repository: TimeReportRepository
 ) : DataSource.Factory<Int, TimeReportDay>() {
     override fun create() = TimeReportDataSource(projectProvider, keyValueStore, repository)
 }

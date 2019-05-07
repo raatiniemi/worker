@@ -28,7 +28,7 @@ data class TimeReportDay(val date: Date, val items: List<TimeReportItem>) {
 
     private fun accumulatedHoursMinutes(): HoursMinutes {
         return items.map { it.hoursMinutes }
-                .accumulated()
+            .accumulated()
     }
 
     val timeDifference: HoursMinutes by lazy {

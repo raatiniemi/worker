@@ -41,38 +41,38 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple unregistered items`() {
         val newTimeIntervals = listOf(
-                newTimeInterval { },
-                newTimeInterval { },
-                newTimeInterval { },
-                newTimeInterval { }
+            newTimeInterval { },
+            newTimeInterval { },
+            newTimeInterval { },
+            newTimeInterval { }
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
-                timeInterval { id = 1 },
-                timeInterval { id = 2 },
-                timeInterval { id = 3 },
-                timeInterval { id = 4 }
+            timeInterval { id = 1 },
+            timeInterval { id = 2 },
+            timeInterval { id = 3 },
+            timeInterval { id = 4 }
         )
 
         markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-                timeInterval {
-                    id = 1
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 2
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 3
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 4
-                    isRegistered = true
-                }
+            timeInterval {
+                id = 1
+                isRegistered = true
+            },
+            timeInterval {
+                id = 2
+                isRegistered = true
+            },
+            timeInterval {
+                id = 3
+                isRegistered = true
+            },
+            timeInterval {
+                id = 4
+                isRegistered = true
+            }
         )
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(expected, actual)
@@ -81,38 +81,38 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple registered items`() {
         val newTimeIntervals = listOf(
-                newTimeInterval { isRegistered = true },
-                newTimeInterval { isRegistered = true },
-                newTimeInterval { isRegistered = true },
-                newTimeInterval { isRegistered = true }
+            newTimeInterval { isRegistered = true },
+            newTimeInterval { isRegistered = true },
+            newTimeInterval { isRegistered = true },
+            newTimeInterval { isRegistered = true }
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
-                timeInterval {
-                    id = 1
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 2
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 3
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 4
-                    isRegistered = true
-                }
+            timeInterval {
+                id = 1
+                isRegistered = true
+            },
+            timeInterval {
+                id = 2
+                isRegistered = true
+            },
+            timeInterval {
+                id = 3
+                isRegistered = true
+            },
+            timeInterval {
+                id = 4
+                isRegistered = true
+            }
         )
 
         markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-                timeInterval { id = 1 },
-                timeInterval { id = 2 },
-                timeInterval { id = 3 },
-                timeInterval { id = 4 }
+            timeInterval { id = 1 },
+            timeInterval { id = 2 },
+            timeInterval { id = 3 },
+            timeInterval { id = 4 }
         )
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(expected, actual)
@@ -121,47 +121,47 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple items`() {
         val newTimeIntervals = listOf(
-                newTimeInterval { },
-                newTimeInterval { isRegistered = true },
-                newTimeInterval { isRegistered = true },
-                newTimeInterval { isRegistered = true }
+            newTimeInterval { },
+            newTimeInterval { isRegistered = true },
+            newTimeInterval { isRegistered = true },
+            newTimeInterval { isRegistered = true }
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
-                timeInterval { id = 1 },
-                timeInterval {
-                    id = 2
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 3
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 4
-                    isRegistered = true
-                }
+            timeInterval { id = 1 },
+            timeInterval {
+                id = 2
+                isRegistered = true
+            },
+            timeInterval {
+                id = 3
+                isRegistered = true
+            },
+            timeInterval {
+                id = 4
+                isRegistered = true
+            }
         )
 
         markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-                timeInterval {
-                    id = 1
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 2
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 3
-                    isRegistered = true
-                },
-                timeInterval {
-                    id = 4
-                    isRegistered = true
-                }
+            timeInterval {
+                id = 1
+                isRegistered = true
+            },
+            timeInterval {
+                id = 2
+                isRegistered = true
+            },
+            timeInterval {
+                id = 3
+                isRegistered = true
+            },
+            timeInterval {
+                id = 4
+                isRegistered = true
+            }
         )
         val actual = repository.findAll(Project(1, "Project name"), 0)
         assertEquals(expected, actual)

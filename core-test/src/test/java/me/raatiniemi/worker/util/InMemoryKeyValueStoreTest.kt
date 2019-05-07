@@ -86,8 +86,8 @@ class InMemoryKeyValueStoreTest {
         keyValueStore.set(AppKeys.TIME_SUMMARY, expected)
 
         val actual = keyValueStore.int(
-                AppKeys.TIME_SUMMARY,
-                TimeIntervalStartingPoint.MONTH.rawValue
+            AppKeys.TIME_SUMMARY,
+            TimeIntervalStartingPoint.MONTH.rawValue
         )
 
         assertEquals(expected, actual)

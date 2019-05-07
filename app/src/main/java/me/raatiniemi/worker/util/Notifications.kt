@@ -44,9 +44,9 @@ class Notifications {
 
         fun ongoingChannel(resources: Resources): NotificationChannel {
             val channel = NotificationChannel(
-                    ongoingId,
-                    resources.getString(ongoingTitle),
-                    NotificationManager.IMPORTANCE_LOW
+                ongoingId,
+                resources.getString(ongoingTitle),
+                NotificationManager.IMPORTANCE_LOW
             )
             channel.description = resources.getString(ongoingDescription)
             channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC

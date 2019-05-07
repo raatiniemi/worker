@@ -26,14 +26,14 @@ import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 internal class TimeReportDataSource(
-        private val projectProvider: ProjectProvider,
-        private val keyValueStore: KeyValueStore,
-        private val repository: TimeReportRepository
+    private val projectProvider: ProjectProvider,
+    private val keyValueStore: KeyValueStore,
+    private val repository: TimeReportRepository
 ) : PositionalDataSource<TimeReportDay>() {
     private val shouldHideRegisteredTime: Boolean
         get() = keyValueStore.bool(
-                AppKeys.HIDE_REGISTERED_TIME,
-                false
+            AppKeys.HIDE_REGISTERED_TIME,
+            false
         )
 
     private val project: Project?
@@ -57,7 +57,10 @@ internal class TimeReportDataSource(
         }
     }
 
-    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<TimeReportDay>) {
+    override fun loadInitial(
+        params: LoadInitialParams,
+        callback: LoadInitialCallback<TimeReportDay>
+    ) {
         val totalCount = countTotal()
         val position = computeInitialLoadPosition(params, totalCount)
         val loadSize = computeInitialLoadSize(params, position, totalCount)

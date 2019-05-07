@@ -25,9 +25,9 @@ object ErrorNotification {
     private const val SMALL_ICON = R.drawable.ic_error_notification
 
     fun buildOngoing(context: Context, title: String, text: String): Notification =
-            Notifications.ongoingBuilder(context)
-                    .setSmallIcon(SMALL_ICON)
-                    .setContentTitle(title)
-                    .setContentText(text)
-                    .build()
+        Notifications.ongoingBuilder(context)
+            .setSmallIcon(SMALL_ICON)
+            .setContentTitle(title)
+            .setContentText(text)
+            .build()
 }

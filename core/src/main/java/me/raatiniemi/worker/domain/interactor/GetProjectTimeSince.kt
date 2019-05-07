@@ -22,8 +22,8 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 class GetProjectTimeSince(private val repository: TimeIntervalRepository) {
     operator fun invoke(project: Project, startingPoint: TimeIntervalStartingPoint) =
-            repository.findAll(
-                    project,
-                    startingPoint.calculateMilliseconds()
-            )
+        repository.findAll(
+            project,
+            startingPoint.calculateMilliseconds()
+        )
 }

@@ -17,10 +17,10 @@
 package me.raatiniemi.worker.data.projects
 
 internal data class TimeReportQueryGroup(
-        val dateInMilliseconds: Long,
-        val ids: String
+    val dateInMilliseconds: Long,
+    val ids: String
 ) : Iterable<Long> {
     override fun iterator() = ids.split(",")
-            .mapNotNull { it.toLongOrNull() }
-            .iterator()
+        .mapNotNull { it.toLongOrNull() }
+        .iterator()
 }

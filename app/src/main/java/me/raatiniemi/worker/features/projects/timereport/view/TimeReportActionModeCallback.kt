@@ -23,7 +23,8 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportAction
 import timber.log.Timber
 
-internal class TimeReportActionModeCallback(private val consumer: TimeReportActionConsumer) : ActionMode.Callback {
+internal class TimeReportActionModeCallback(private val consumer: TimeReportActionConsumer) :
+    ActionMode.Callback {
     override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
         mode?.apply {
             setTitle(R.string.projects_time_report_menu_title)

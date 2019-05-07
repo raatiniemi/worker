@@ -26,7 +26,7 @@ import java.util.*
 class ClockOut(private val timeIntervalRepository: TimeIntervalRepository) {
     operator fun invoke(projectId: Long, date: Date) {
         val timeInterval = timeIntervalRepository.findActiveByProjectId(projectId)
-                ?: throw InactiveProjectException()
+            ?: throw InactiveProjectException()
 
         timeIntervalRepository.update(timeInterval.clockOutAt(date))
     }

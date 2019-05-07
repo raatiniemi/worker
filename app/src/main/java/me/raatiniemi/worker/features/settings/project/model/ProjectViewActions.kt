@@ -30,9 +30,9 @@ sealed class ProjectViewActions : ActivityViewAction {
             }
 
             val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
-                    R.string.settings_project_time_summary_changed_starting_point_to_week_message,
-                    Snackbar.LENGTH_LONG
+                activity.findViewById(android.R.id.content),
+                R.string.settings_project_time_summary_changed_starting_point_to_week_message,
+                Snackbar.LENGTH_LONG
             )
             snackBar.show()
         }
@@ -45,9 +45,9 @@ sealed class ProjectViewActions : ActivityViewAction {
             }
 
             val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
-                    R.string.settings_project_time_summary_changed_starting_point_to_month_message,
-                    Snackbar.LENGTH_LONG
+                activity.findViewById(android.R.id.content),
+                R.string.settings_project_time_summary_changed_starting_point_to_month_message,
+                Snackbar.LENGTH_LONG
             )
             snackBar.show()
         }
@@ -56,9 +56,9 @@ sealed class ProjectViewActions : ActivityViewAction {
     object ShowUnableToChangeTimeSummaryStartingPointErrorMessage : ProjectViewActions() {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(
-                    activity.findViewById(android.R.id.content),
-                    R.string.settings_project_time_summary_unable_to_change_starting_point_message,
-                    Snackbar.LENGTH_LONG
+                activity.findViewById(android.R.id.content),
+                R.string.settings_project_time_summary_unable_to_change_starting_point_message,
+                Snackbar.LENGTH_LONG
             )
             snackBar.show()
         }

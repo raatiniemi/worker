@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.data.projects
 
 internal data class ProjectEntityBuilder(
-        var id: Long = 0,
-        var name: String = "Name"
+    var id: Long = 0,
+    var name: String = "Name"
 )
 
 internal fun projectEntity(configure: (ProjectEntityBuilder.() -> Unit)? = null): ProjectEntity {
@@ -26,7 +26,7 @@ internal fun projectEntity(configure: (ProjectEntityBuilder.() -> Unit)? = null)
     configure?.let { builder.it() }
 
     return ProjectEntity(
-            id = builder.id,
-            name = builder.name
+        id = builder.id,
+        name = builder.name
     )
 }

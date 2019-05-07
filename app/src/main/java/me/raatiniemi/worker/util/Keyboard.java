@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import timber.log.Timber;
 
 import static me.raatiniemi.worker.util.NullUtil.isNull;

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/actions_project_hide_registered"
         android:title="@string/projects_time_report_menu_hide_registered"
         android:checked="false"
-        android:checkable="true"
-        />
+        android:checkable="true" />
 
 </menu>

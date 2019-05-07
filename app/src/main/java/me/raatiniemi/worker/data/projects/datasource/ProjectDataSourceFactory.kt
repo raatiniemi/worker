@@ -21,7 +21,7 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 internal class ProjectDataSourceFactory(
-        val repository: ProjectRepository
+    val repository: ProjectRepository
 ) : DataSource.Factory<Int, Project>() {
     override fun create() = ProjectDataSource(repository)
 }

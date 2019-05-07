@@ -21,8 +21,8 @@ import androidx.preference.PreferenceFragmentCompat
 import timber.log.Timber
 
 internal inline fun <reified T : Preference> PreferenceFragmentCompat.configurePreference(
-        key: CharSequence,
-        configure: T.() -> Unit
+    key: CharSequence,
+    configure: T.() -> Unit
 ) {
     val preference = findPreference(key)
     when (preference) {

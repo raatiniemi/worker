@@ -34,11 +34,11 @@ import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.features.shared.view.widget.LetterDrawable
 
 internal class TimeReportAdapter(
-        private val formatter: HoursMinutesFormat,
-        stateManager: TimeReportStateManager
+    private val formatter: HoursMinutesFormat,
+    stateManager: TimeReportStateManager
 ) : PagedListAdapter<TimeReportDay, DayViewHolder>(timeReportDiffCallback) {
     private val stateManager: TimeReportStateManager =
-            TimeReportStateManagerAdapterDecorator(this, stateManager)
+        TimeReportStateManagerAdapterDecorator(this, stateManager)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -89,7 +89,8 @@ internal class TimeReportAdapter(
 
         parent.removeAllViews()
         items.forEach { item ->
-            val view = layoutInflater.inflate(R.layout.fragment_project_time_report_item, parent, false)
+            val view =
+                layoutInflater.inflate(R.layout.fragment_project_time_report_item, parent, false)
             bindTimeReportItemViewHolder(view, item)
 
             parent.addView(view)

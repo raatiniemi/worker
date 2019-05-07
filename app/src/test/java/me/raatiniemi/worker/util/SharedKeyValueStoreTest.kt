@@ -28,7 +28,7 @@ import org.robolectric.RuntimeEnvironment
 class SharedKeyValueStoreTest : RobolectricTestCase() {
     private val sharedPreferences: SharedPreferences by lazy {
         RuntimeEnvironment.application
-                .getSharedPreferences("preference_name", Context.MODE_PRIVATE)
+            .getSharedPreferences("preference_name", Context.MODE_PRIVATE)
     }
     private lateinit var keyValueStore: KeyValueStore
 
@@ -71,8 +71,8 @@ class SharedKeyValueStoreTest : RobolectricTestCase() {
         keyValueStore.set(AppKeys.TIME_SUMMARY, expected)
 
         val actual = keyValueStore.int(
-                AppKeys.TIME_SUMMARY,
-                TimeIntervalStartingPoint.MONTH.rawValue
+            AppKeys.TIME_SUMMARY,
+            TimeIntervalStartingPoint.MONTH.rawValue
         )
 
         assertEquals(expected, actual)

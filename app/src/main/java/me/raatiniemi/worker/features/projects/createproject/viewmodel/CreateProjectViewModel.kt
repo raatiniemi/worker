@@ -33,9 +33,9 @@ import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import timber.log.Timber
 
 internal class CreateProjectViewModel(
-        private val usageAnalytics: UsageAnalytics,
-        private val createProject: CreateProject,
-        private val findProject: FindProject
+    private val usageAnalytics: UsageAnalytics,
+    private val createProject: CreateProject,
+    private val findProject: FindProject
 ) : CoroutineScopedViewModel() {
     private val _name = MutableLiveData<String>().apply {
         value = ""
@@ -44,16 +44,16 @@ internal class CreateProjectViewModel(
     private val isNameValid = _name.map { ProjectName.isValid(it) }
 
     private val isNameAvailable = _name.debounce(this)
-            .map {
-                if (it.isNullOrBlank()) {
-                    return@map true
-                }
-
-                findProject(it) ?: return@map true
-
-                viewActions.postValue(CreateProjectViewActions.DuplicateNameErrorMessage)
-                false
+        .map {
+            if (it.isNullOrBlank()) {
+                return@map true
             }
+
+            findProject(it) ?: return@map true
+
+            viewActions.postValue(CreateProjectViewActions.DuplicateNameErrorMessage)
+            false
+        }
 
     var name: String
         get() {
@@ -64,7 +64,7 @@ internal class CreateProjectViewModel(
         }
 
     val isCreateEnabled: LiveData<Boolean> = combineLatest(isNameValid, isNameAvailable)
-            .map { it.first && it.second }
+        .map { it.first && it.second }
 
     val viewActions = ConsumableLiveData<CreateProjectViewActions>()
 

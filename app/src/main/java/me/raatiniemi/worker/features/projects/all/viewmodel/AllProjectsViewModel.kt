@@ -47,20 +47,20 @@ import timber.log.Timber
 import java.util.*
 
 internal class AllProjectsViewModel(
-        private val keyValueStore: KeyValueStore,
-        private val usageAnalytics: UsageAnalytics,
-        projectRepository: ProjectRepository,
-        private val getProjectTimeSince: GetProjectTimeSince,
-        private val clockIn: ClockIn,
-        private val clockOut: ClockOut,
-        private val removeProject: RemoveProject
+    private val keyValueStore: KeyValueStore,
+    private val usageAnalytics: UsageAnalytics,
+    projectRepository: ProjectRepository,
+    private val getProjectTimeSince: GetProjectTimeSince,
+    private val clockIn: ClockIn,
+    private val clockOut: ClockOut,
+    private val removeProject: RemoveProject
 ) : CoroutineScopedViewModel(), AllProjectsActionListener {
     private val startingPoint: TimeIntervalStartingPoint
         get() {
             val defaultValue = TimeIntervalStartingPoint.MONTH
             val startingPoint = keyValueStore.int(
-                    AppKeys.TIME_SUMMARY,
-                    defaultValue.rawValue
+                AppKeys.TIME_SUMMARY,
+                defaultValue.rawValue
             )
 
             return try {
@@ -74,15 +74,15 @@ internal class AllProjectsViewModel(
     val projects: LiveData<PagedList<ProjectsItem>>
 
     private val factory = ProjectDataSourceFactory(projectRepository)
-            .map { buildProjectsItem(it) }
+        .map { buildProjectsItem(it) }
 
     val viewActions = ConsumableLiveData<AllProjectsViewActions>()
 
     init {
         val config = PagedList.Config.Builder()
-                .setPageSize(10)
-                .setEnablePlaceholders(true)
-                .build()
+            .setPageSize(10)
+            .setEnablePlaceholders(true)
+            .build()
 
         projects = LivePagedListBuilder(factory, config).build()
     }
@@ -108,17 +108,18 @@ internal class AllProjectsViewModel(
         }
     }
 
-    suspend fun refreshActiveProjects(projects: List<ProjectsItem?>) = withContext(Dispatchers.Default) {
-        val positions = projects.filterNotNull()
+    suspend fun refreshActiveProjects(projects: List<ProjectsItem?>) =
+        withContext(Dispatchers.Default) {
+            val positions = projects.filterNotNull()
                 .filter { it.isActive }
                 .map { projects.indexOf(it) }
 
-        if (positions.isEmpty()) {
-            return@withContext
-        }
+            if (positions.isEmpty()) {
+                return@withContext
+            }
 
-        viewActions += AllProjectsViewActions.RefreshProjects(positions)
-    }
+            viewActions += AllProjectsViewActions.RefreshProjects(positions)
+        }
 
     override fun open(item: ProjectsItem) {
         usageAnalytics.log(Event.TapProjectOpen)

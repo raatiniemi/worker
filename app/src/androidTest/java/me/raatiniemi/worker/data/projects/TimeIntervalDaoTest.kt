@@ -53,7 +53,7 @@ class TimeIntervalDaoTest : BaseDaoTest() {
     fun findAll_withTimeIntervals() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                timeIntervalEntity { id = 1 }
+            timeIntervalEntity { id = 1 }
         )
 
         val actual = timeIntervals.findAll(1, 0)
@@ -65,7 +65,7 @@ class TimeIntervalDaoTest : BaseDaoTest() {
     fun findAll_withTimeIntervalsOnStart() {
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                timeIntervalEntity { id = 1 }
+            timeIntervalEntity { id = 1 }
         )
 
         val actual = timeIntervals.findAll(1, 1)
@@ -86,10 +86,10 @@ class TimeIntervalDaoTest : BaseDaoTest() {
     fun findAll_withActiveTimeIntervalsBeforeStart() {
         timeIntervals.add(timeIntervalEntity { stopInMilliseconds = 0 })
         val expected = listOf(
-                timeIntervalEntity {
-                    id = 1
-                    stopInMilliseconds = 0
-                }
+            timeIntervalEntity {
+                id = 1
+                stopInMilliseconds = 0
+            }
         )
 
         val actual = timeIntervals.findAll(1, 2)
@@ -146,9 +146,9 @@ class TimeIntervalDaoTest : BaseDaoTest() {
     @Test
     fun update_withoutExistingTimeInterval() {
         timeIntervals.update(
-                listOf(
-                        timeIntervalEntity { id = 1 }
-                )
+            listOf(
+                timeIntervalEntity { id = 1 }
+            )
         )
 
         val actual = timeIntervals.findAll(1, 0)
@@ -163,22 +163,22 @@ class TimeIntervalDaoTest : BaseDaoTest() {
             stopInMilliseconds = 0
         })
         val expected = listOf(
-                timeIntervalEntity { id = 1 },
+            timeIntervalEntity { id = 1 },
+            timeIntervalEntity {
+                id = 2
+                startInMilliseconds = 4
+                stopInMilliseconds = 6
+            }
+        )
+
+        timeIntervals.update(
+            listOf(
                 timeIntervalEntity {
                     id = 2
                     startInMilliseconds = 4
                     stopInMilliseconds = 6
                 }
-        )
-
-        timeIntervals.update(
-                listOf(
-                        timeIntervalEntity {
-                            id = 2
-                            startInMilliseconds = 4
-                            stopInMilliseconds = 6
-                        }
-                )
+            )
         )
 
         val actual = timeIntervals.findAll(1, 0)
@@ -188,9 +188,9 @@ class TimeIntervalDaoTest : BaseDaoTest() {
     @Test
     fun remove_withoutExistingTimeInterval() {
         timeIntervals.remove(
-                listOf(
-                        timeIntervalEntity { id = 1 }
-                )
+            listOf(
+                timeIntervalEntity { id = 1 }
+            )
         )
 
         val actual = timeIntervals.findAll(1, 0)
@@ -202,13 +202,13 @@ class TimeIntervalDaoTest : BaseDaoTest() {
         timeIntervals.add(timeIntervalEntity())
         timeIntervals.add(timeIntervalEntity())
         val expected = listOf(
-                timeIntervalEntity { id = 2 }
+            timeIntervalEntity { id = 2 }
         )
 
         timeIntervals.remove(
-                listOf(
-                        timeIntervalEntity { id = 1 }
-                )
+            listOf(
+                timeIntervalEntity { id = 1 }
+            )
         )
 
         val actual = timeIntervals.findAll(1, 0)

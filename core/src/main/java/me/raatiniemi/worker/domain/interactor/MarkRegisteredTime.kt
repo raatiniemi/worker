@@ -45,5 +45,5 @@ open class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
     }
 
     operator fun invoke(timeIntervals: List<TimeInterval>) =
-            repository.update(collectTimeToUpdate(timeIntervals))
+        repository.update(collectTimeToUpdate(timeIntervals))
 }

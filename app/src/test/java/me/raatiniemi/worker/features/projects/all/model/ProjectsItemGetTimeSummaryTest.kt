@@ -26,8 +26,8 @@ import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
 class ProjectsItemGetTimeSummaryTest(
-        private val expected: String,
-        private val timeIntervals: List<TimeInterval>
+    private val expected: String,
+    private val timeIntervals: List<TimeInterval>
 ) {
     @Test
     fun getTimeSummary() {
@@ -42,33 +42,33 @@ class ProjectsItemGetTimeSummaryTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            "1h 0m",
-                            listOf(
-                                    TimeInterval.builder(1L, 1L)
-                                            .stopInMilliseconds(3600000)
-                                            .build()
-                            )
-                    ),
-                    arrayOf(
-                            "2h 30m",
-                            listOf(
-                                    TimeInterval.builder(1L, 1L)
-                                            .stopInMilliseconds(9000000)
-                                            .build()
-                            )
-                    ),
-                    arrayOf(
-                            "3h 30m",
-                            listOf(
-                                    TimeInterval.builder(1L, 1L)
-                                            .stopInMilliseconds(3600000)
-                                            .build(),
-                                    TimeInterval.builder(1L, 1L)
-                                            .stopInMilliseconds(9000000)
-                                            .build()
-                            )
+                arrayOf(
+                    "1h 0m",
+                    listOf(
+                        TimeInterval.builder(1L, 1L)
+                            .stopInMilliseconds(3600000)
+                            .build()
                     )
+                ),
+                arrayOf(
+                    "2h 30m",
+                    listOf(
+                        TimeInterval.builder(1L, 1L)
+                            .stopInMilliseconds(9000000)
+                            .build()
+                    )
+                ),
+                arrayOf(
+                    "3h 30m",
+                    listOf(
+                        TimeInterval.builder(1L, 1L)
+                            .stopInMilliseconds(3600000)
+                            .build(),
+                        TimeInterval.builder(1L, 1L)
+                            .stopInMilliseconds(9000000)
+                            .build()
+                    )
+                )
             )
     }
 }

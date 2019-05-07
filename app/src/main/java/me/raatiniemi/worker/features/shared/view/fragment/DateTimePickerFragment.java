@@ -22,14 +22,15 @@ import android.os.Bundle;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Calendar;
-
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Calendar;
+
 import me.raatiniemi.worker.R;
 import timber.log.Timber;
 

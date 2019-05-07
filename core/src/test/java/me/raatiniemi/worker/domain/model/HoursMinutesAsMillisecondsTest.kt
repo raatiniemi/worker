@@ -23,7 +23,10 @@ import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
-class HoursMinutesAsMillisecondsTest(private val expected: Long, private val hoursMinutes: HoursMinutes) {
+class HoursMinutesAsMillisecondsTest(
+    private val expected: Long,
+    private val hoursMinutes: HoursMinutes
+) {
     @Test
     fun asMilliseconds() {
         assertEquals(expected, hoursMinutes.asMilliseconds())
@@ -34,16 +37,16 @@ class HoursMinutesAsMillisecondsTest(private val expected: Long, private val hou
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(60000L, HoursMinutes(0, 1)),
-                    arrayOf(600000L, HoursMinutes(0, 10)),
-                    arrayOf(900000L, HoursMinutes(0, 15)),
-                    arrayOf(1800000L, HoursMinutes(0, 30)),
-                    arrayOf(3600000L, HoursMinutes(1, 0)),
-                    arrayOf(4500000L, HoursMinutes(1, 15)),
-                    arrayOf(7200000L, HoursMinutes(2, 0)),
-                    arrayOf(27000000L, HoursMinutes(7, 30)),
-                    arrayOf(108000000L, HoursMinutes(30, 0)),
-                    arrayOf(203100000L, HoursMinutes(56, 25))
+                arrayOf(60000L, HoursMinutes(0, 1)),
+                arrayOf(600000L, HoursMinutes(0, 10)),
+                arrayOf(900000L, HoursMinutes(0, 15)),
+                arrayOf(1800000L, HoursMinutes(0, 30)),
+                arrayOf(3600000L, HoursMinutes(1, 0)),
+                arrayOf(4500000L, HoursMinutes(1, 15)),
+                arrayOf(7200000L, HoursMinutes(2, 0)),
+                arrayOf(27000000L, HoursMinutes(7, 30)),
+                arrayOf(108000000L, HoursMinutes(30, 0)),
+                arrayOf(203100000L, HoursMinutes(56, 25))
             )
     }
 }

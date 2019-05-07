@@ -43,9 +43,9 @@ class GetProjectTimeSinceTest {
         repository.add(newTimeIntervalStartBefore(TimeIntervalStartingPoint.DAY) { })
         repository.add(newTimeIntervalStartAfter(TimeIntervalStartingPoint.DAY) { })
         val expected = listOf(
-                timeIntervalStartAfter(TimeIntervalStartingPoint.DAY) {
-                    id = 2
-                }
+            timeIntervalStartAfter(TimeIntervalStartingPoint.DAY) {
+                id = 2
+            }
         )
 
         val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.DAY)
@@ -58,9 +58,9 @@ class GetProjectTimeSinceTest {
         repository.add(newTimeIntervalStartBefore(TimeIntervalStartingPoint.WEEK) { })
         repository.add(newTimeIntervalStartAfter(TimeIntervalStartingPoint.WEEK) { })
         val expected = listOf(
-                timeIntervalStartAfter(TimeIntervalStartingPoint.WEEK) {
-                    id = 2
-                }
+            timeIntervalStartAfter(TimeIntervalStartingPoint.WEEK) {
+                id = 2
+            }
         )
 
         val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.WEEK)
@@ -73,9 +73,9 @@ class GetProjectTimeSinceTest {
         repository.add(newTimeIntervalStartBefore(TimeIntervalStartingPoint.MONTH) { })
         repository.add(newTimeIntervalStartAfter(TimeIntervalStartingPoint.MONTH) { })
         val expected = listOf(
-                timeIntervalStartAfter(TimeIntervalStartingPoint.MONTH) {
-                    id = 2
-                }
+            timeIntervalStartAfter(TimeIntervalStartingPoint.MONTH) {
+                id = 2
+            }
         )
 
         val actual = getProjectTimeSince(project, TimeIntervalStartingPoint.MONTH)

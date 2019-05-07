@@ -23,28 +23,32 @@ sealed class Event(val name: String, val parameters: Map<String, String> = empty
     object TapProjectRemove : Event(TAP_PROJECT_REMOVE_NAME)
 
     object ProjectCreate : Event(PROJECT_CREATE_NAME)
-    object ProjectClockIn : Event(PROJECT_CLOCK_IN_NAME, mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_CARD_SOURCE))
-    object ProjectClockOut : Event(PROJECT_CLOCK_OUT_NAME, mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_CARD_SOURCE))
+    object ProjectClockIn :
+        Event(PROJECT_CLOCK_IN_NAME, mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_CARD_SOURCE))
+
+    object ProjectClockOut :
+        Event(PROJECT_CLOCK_OUT_NAME, mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_CARD_SOURCE))
+
     object ProjectRemove : Event(PROJECT_REMOVE_NAME)
 
     object NotificationClockIn : Event(
-            PROJECT_CLOCK_IN_NAME,
-            mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_NOTIFICATION_SOURCE)
+        PROJECT_CLOCK_IN_NAME,
+        mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_NOTIFICATION_SOURCE)
     )
 
     object NotificationClockOut : Event(
-            PROJECT_CLOCK_OUT_NAME,
-            mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_NOTIFICATION_SOURCE)
+        PROJECT_CLOCK_OUT_NAME,
+        mapOf(PARAMETER_SOURCE_NAME to CLOCK_IN_OUT_NOTIFICATION_SOURCE)
     )
 
     data class TimeReportToggle(private val count: Int) : Event(
-            TIME_REPORT_TOGGLE_NAME,
-            mapOf(PARAMETER_COUNT_NAME to count.toString())
+        TIME_REPORT_TOGGLE_NAME,
+        mapOf(PARAMETER_COUNT_NAME to count.toString())
     )
 
     data class TimeReportRemove(private val count: Int) : Event(
-            TIME_REPORT_REMOVE_NAME,
-            mapOf(PARAMETER_COUNT_NAME to count.toString())
+        TIME_REPORT_REMOVE_NAME,
+        mapOf(PARAMETER_COUNT_NAME to count.toString())
     )
 
     companion object {

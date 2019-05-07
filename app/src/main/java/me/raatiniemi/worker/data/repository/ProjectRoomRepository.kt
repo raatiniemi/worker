@@ -27,23 +27,23 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
 
     override fun findAll(position: Int, pageSize: Int): List<Project> {
         return projects.findAll(position, pageSize)
-                .map { it.toProject() }
+            .map { it.toProject() }
     }
 
     override fun findAll(): List<Project> {
         return projects.findAll()
-                .map { it.toProject() }
-                .toMutableList()
+            .map { it.toProject() }
+            .toMutableList()
     }
 
     override fun findByName(projectName: String): Project? {
         return projects.findByName(projectName)
-                ?.run { toProject() }
+            ?.run { toProject() }
     }
 
     override fun findById(id: Long): Project? {
         return projects.findById(id)
-                ?.run { toProject() }
+            ?.run { toProject() }
     }
 
     override fun add(newProject: NewProject): Project {

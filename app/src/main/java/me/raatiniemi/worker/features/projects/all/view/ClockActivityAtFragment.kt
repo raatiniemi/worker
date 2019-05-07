@@ -20,7 +20,8 @@ import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.shared.view.fragment.DateTimePickerFragment
 import java.util.*
 
-internal class ClockActivityAtFragment : DateTimePickerFragment(), DateTimePickerFragment.OnDateTimeSetListener {
+internal class ClockActivityAtFragment : DateTimePickerFragment(),
+    DateTimePickerFragment.OnDateTimeSetListener {
     private lateinit var onDateTimeSetListener: (Calendar) -> Unit
 
     init {
@@ -32,7 +33,10 @@ internal class ClockActivityAtFragment : DateTimePickerFragment(), DateTimePicke
     }
 
     companion object {
-        fun newInstance(projectsItem: ProjectsItem, onDateTimeSet: (Calendar) -> Unit): ClockActivityAtFragment {
+        fun newInstance(
+            projectsItem: ProjectsItem,
+            onDateTimeSet: (Calendar) -> Unit
+        ): ClockActivityAtFragment {
             val fragment = ClockActivityAtFragment()
             fragment.onDateTimeSetListener = onDateTimeSet
 

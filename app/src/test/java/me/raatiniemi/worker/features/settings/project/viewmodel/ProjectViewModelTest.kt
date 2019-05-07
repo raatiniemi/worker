@@ -160,7 +160,10 @@ class ProjectViewModelTest {
 
         vm.changeTimeSummaryStartingPoint(TimeIntervalStartingPoint.MONTH.rawValue)
 
-        assertEquals(TimeIntervalStartingPoint.MONTH.rawValue, keyValueStore.int(AppKeys.TIME_SUMMARY))
+        assertEquals(
+            TimeIntervalStartingPoint.MONTH.rawValue,
+            keyValueStore.int(AppKeys.TIME_SUMMARY)
+        )
     }
 
     @Test
@@ -168,7 +171,10 @@ class ProjectViewModelTest {
         vm.changeTimeSummaryStartingPoint(-1)
 
         vm.viewActions.observeNonNull {
-            assertEquals(ProjectViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage, it)
+            assertEquals(
+                ProjectViewActions.ShowUnableToChangeTimeSummaryStartingPointErrorMessage,
+                it
+            )
         }
     }
 

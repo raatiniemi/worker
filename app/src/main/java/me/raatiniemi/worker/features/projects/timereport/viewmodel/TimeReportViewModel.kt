@@ -44,17 +44,17 @@ import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
 class TimeReportViewModel internal constructor(
-        private val usageAnalytics: UsageAnalytics,
-        projectProvider: ProjectProvider,
-        private val keyValueStore: KeyValueStore,
-        repository: TimeReportRepository,
-        private val markRegisteredTime: MarkRegisteredTime,
-        private val removeTime: RemoveTime
+    private val usageAnalytics: UsageAnalytics,
+    projectProvider: ProjectProvider,
+    private val keyValueStore: KeyValueStore,
+    repository: TimeReportRepository,
+    private val markRegisteredTime: MarkRegisteredTime,
+    private val removeTime: RemoveTime
 ) : ViewModel(), TimeReportStateManager {
     private val factory = TimeReportDataSourceFactory(
-            projectProvider,
-            keyValueStore,
-            repository
+        projectProvider,
+        keyValueStore,
+        repository
     )
 
     private val _selectedItems = MutableLiveData<HashSet<TimeReportItem>?>()
@@ -75,12 +75,12 @@ class TimeReportViewModel internal constructor(
 
     init {
         val config = PagedList.Config.Builder()
-                .setInitialLoadSizeHint(1)
-                .setPrefetchDistance(2)
-                .setPageSize(8)
-                .setMaxSize(15)
-                .setEnablePlaceholders(true)
-                .build()
+            .setInitialLoadSizeHint(1)
+            .setPrefetchDistance(2)
+            .setPageSize(8)
+            .setMaxSize(15)
+            .setEnablePlaceholders(true)
+            .build()
 
         timeReport = LivePagedListBuilder(factory, config).build()
     }
@@ -155,7 +155,7 @@ class TimeReportViewModel internal constructor(
     }
 
     private fun isSelected(selectedItems: HashSet<TimeReportItem>?, items: List<TimeReportItem>) =
-            selectedItems?.run { containsAll(items) } ?: false
+        selectedItems?.run { containsAll(items) } ?: false
 
     @MainThread
     override fun state(item: TimeReportItem): TimeReportState {
@@ -172,7 +172,7 @@ class TimeReportViewModel internal constructor(
     }
 
     private fun isSelected(selectedItems: HashSet<TimeReportItem>?, item: TimeReportItem) =
-            selectedItems?.run { contains(item) } ?: false
+        selectedItems?.run { contains(item) } ?: false
 
     @MainThread
     override fun consume(longPress: TimeReportLongPressAction): Boolean {

@@ -49,16 +49,16 @@ class TimeReportRoomRepositoryTest {
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(context, Database::class.java)
-                .allowMainThreadQueries()
-                .build()
+            .allowMainThreadQueries()
+            .build()
 
         database.projects()
-                .add(
-                        projectEntity {
-                            id = project.id
-                            name = project.name
-                        }
-                )
+            .add(
+                projectEntity {
+                    id = project.id
+                    name = project.name
+                }
+            )
         timeReport = database.timeReport()
         timeIntervals = database.timeIntervals()
         repository = TimeReportRoomRepository(timeReport, timeIntervals)
@@ -189,17 +189,17 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withoutTimeIntervalForProject() {
         database.projects().add(
-                projectEntity {
-                    id = 2
-                    name = "Name #2"
-                }
+            projectEntity {
+                id = 2
+                name = "Name #2"
+            }
         )
         timeIntervals.add(
-                timeIntervalEntity {
-                    projectId = 2
-                    startInMilliseconds = 1
-                    stopInMilliseconds = 10
-                }
+            timeIntervalEntity {
+                projectId = 2
+                startInMilliseconds = 1
+                stopInMilliseconds = 10
+            }
         )
         val expected = emptyList<TimeReportDay>()
 
@@ -221,14 +221,14 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val timeIntervals = listOf(
-                secondTimeInterval.copy(id = 2).toTimeInterval(),
-                firstTimeInterval.copy(id = 1).toTimeInterval()
+            secondTimeInterval.copy(id = 2).toTimeInterval(),
+            firstTimeInterval.copy(id = 1).toTimeInterval()
         )
         val expected = listOf(
-                TimeReportDay(
-                        Date(firstTimeInterval.startInMilliseconds),
-                        timeIntervals.map { TimeReportItem(it) }
-                )
+            TimeReportDay(
+                Date(firstTimeInterval.startInMilliseconds),
+                timeIntervals.map { TimeReportItem(it) }
+            )
         )
 
         val actual = repository.findAll(1, 0, 10)
@@ -249,18 +249,18 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val expected = listOf(
-                TimeReportDay(
-                        Date(secondTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                        )
-                ),
-                TimeReportDay(
-                        Date(firstTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
-                        )
+            TimeReportDay(
+                Date(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
+            ),
+            TimeReportDay(
+                Date(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                )
+            )
         )
 
         val actual = repository.findAll(1, 0, 10)
@@ -281,12 +281,12 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val expected = listOf(
-                TimeReportDay(
-                        Date(firstTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
-                        )
+            TimeReportDay(
+                Date(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
                 )
+            )
         )
 
         val actual = repository.findAll(1, 1, 10)
@@ -307,12 +307,12 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val expected = listOf(
-                TimeReportDay(
-                        Date(secondTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                        )
+            TimeReportDay(
+                Date(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
+            )
         )
 
         val actual = repository.findAll(1, 0, 1)
@@ -332,17 +332,17 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withoutTimeIntervalForProject() {
         database.projects().add(
-                projectEntity {
-                    id = 2
-                    name = "Name #2"
-                }
+            projectEntity {
+                id = 2
+                name = "Name #2"
+            }
         )
         timeIntervals.add(
-                timeIntervalEntity {
-                    projectId = 2
-                    startInMilliseconds = 1
-                    stopInMilliseconds = 10
-                }
+            timeIntervalEntity {
+                projectId = 2
+                startInMilliseconds = 1
+                stopInMilliseconds = 10
+            }
         )
         val expected = emptyList<TimeReportDay>()
 
@@ -364,13 +364,13 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val expected = listOf(
-                TimeReportDay(
-                        Date(firstTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval()),
-                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
-                        )
+            TimeReportDay(
+                Date(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval()),
+                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
                 )
+            )
         )
 
         val actual = repository.findNotRegistered(1, 0, 10)
@@ -391,18 +391,18 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val expected = listOf(
-                TimeReportDay(
-                        Date(secondTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                        )
-                ),
-                TimeReportDay(
-                        Date(firstTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
-                        )
+            TimeReportDay(
+                Date(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
+            ),
+            TimeReportDay(
+                Date(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
+                )
+            )
         )
 
         val actual = repository.findNotRegistered(1, 0, 10)
@@ -423,12 +423,12 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val expected = listOf(
-                TimeReportDay(
-                        Date(firstTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
-                        )
+            TimeReportDay(
+                Date(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval.copy(id = 1).toTimeInterval())
                 )
+            )
         )
 
         val actual = repository.findNotRegistered(1, 1, 10)
@@ -449,12 +449,12 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val expected = listOf(
-                TimeReportDay(
-                        Date(secondTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                        )
+            TimeReportDay(
+                Date(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
+            )
         )
 
         val actual = repository.findNotRegistered(1, 0, 1)
@@ -476,12 +476,12 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(firstTimeInterval)
         timeIntervals.add(secondTimeInterval)
         val expected = listOf(
-                TimeReportDay(
-                        Date(secondTimeInterval.startInMilliseconds),
-                        listOf(
-                                TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
-                        )
+            TimeReportDay(
+                Date(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval.copy(id = 2).toTimeInterval())
                 )
+            )
         )
 
         val actual = repository.findNotRegistered(1, 0, 10)

@@ -70,23 +70,23 @@ class AllProjectsViewModelTest {
         clockOut = ClockOut(timeIntervalRepository)
         removeProject = RemoveProject(projectRepository)
         vm = AllProjectsViewModel(
-                keyValueStore,
-                usageAnalytics,
-                projectRepository,
-                getProjectTimeSince,
-                clockIn,
-                clockOut,
-                removeProject
+            keyValueStore,
+            usageAnalytics,
+            projectRepository,
+            getProjectTimeSince,
+            clockIn,
+            clockOut,
+            removeProject
         )
     }
 
     private fun getProjectsItem(project: Project, isActive: Boolean = false): ProjectsItem {
         val registeredTime = if (isActive) {
             listOf(
-                    timeInterval {
-                        projectId = project.id
-                        startInMilliseconds = 1
-                    }
+                timeInterval {
+                    projectId = project.id
+                    startInMilliseconds = 1
+                }
             )
         } else {
             emptyList()
@@ -105,7 +105,7 @@ class AllProjectsViewModelTest {
     @Test
     fun `refresh active projects without active projects`() = runBlocking {
         val items = listOf(
-                getProjectsItem(Project(1, "Project Name"))
+            getProjectsItem(Project(1, "Project Name"))
         )
 
         vm.refreshActiveProjects(items)
@@ -116,8 +116,8 @@ class AllProjectsViewModelTest {
     @Test
     fun `refresh active projects with active project`() = runBlocking {
         val items = listOf(
-                getProjectsItem(Project(1, "Project Name #1")),
-                getProjectsItem(Project(2, "Project Name #2"), true)
+            getProjectsItem(Project(1, "Project Name #1")),
+            getProjectsItem(Project(2, "Project Name #2"), true)
         )
 
         vm.refreshActiveProjects(items)
@@ -147,7 +147,10 @@ class AllProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
-            assertEquals(listOf(Event.TapProjectToggle, Event.ProjectClockIn), usageAnalytics.events)
+            assertEquals(
+                listOf(Event.TapProjectToggle, Event.ProjectClockIn),
+                usageAnalytics.events
+            )
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }
@@ -193,7 +196,10 @@ class AllProjectsViewModelTest {
         vm.toggle(item, date)
 
         vm.viewActions.observeNonNull {
-            assertEquals(listOf(Event.TapProjectToggle, Event.ProjectClockOut), usageAnalytics.events)
+            assertEquals(
+                listOf(Event.TapProjectToggle, Event.ProjectClockOut),
+                usageAnalytics.events
+            )
             assertEquals(AllProjectsViewActions.UpdateNotification(project), it)
         }
     }

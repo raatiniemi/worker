@@ -21,7 +21,7 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 internal class ProjectDataSource(
-        private val repository: ProjectRepository
+    private val repository: ProjectRepository
 ) : PositionalDataSource<Project>() {
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Project>) {
         val totalCount = repository.count()

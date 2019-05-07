@@ -64,7 +64,11 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         eventBus.register(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_all_projects, container, false)
     }
 
@@ -110,7 +114,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
 
     private fun openCreateProject() {
         CreateProjectFragment.newInstance()
-                .show(childFragmentManager, "create project")
+            .show(childFragmentManager, "create project")
     }
 
     private fun configureView() {
@@ -138,21 +142,28 @@ class AllProjectsFragment : CoroutineScopedFragment() {
         when (viewAction) {
             is AllProjectsViewActions.RefreshProjects -> viewAction.action(allProjectsAdapter)
             is AllProjectsViewActions.OpenProject -> viewAction.action(this)
-            is AllProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(viewAction)
-            is AllProjectsViewActions.ShowChooseTimeForClockActivity -> showChooseTimeForClockActivity(viewAction)
-            is AllProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(viewAction)
+            is AllProjectsViewActions.ShowConfirmClockOutMessage -> showConfirmClockOutMessage(
+                viewAction
+            )
+            is AllProjectsViewActions.ShowChooseTimeForClockActivity -> showChooseTimeForClockActivity(
+                viewAction
+            )
+            is AllProjectsViewActions.ShowConfirmRemoveProjectMessage -> showConfirmRemoveProjectMessage(
+                viewAction
+            )
             is ActivityViewAction -> viewAction.action(requireActivity())
             is ContextViewAction -> viewAction.action(requireContext())
             else -> Timber.w("Unable to handle view action ${viewAction.javaClass.simpleName}")
         }
     }
 
-    private fun showConfirmClockOutMessage(viewAction: AllProjectsViewActions.ShowConfirmClockOutMessage) = launch {
-        val confirmAction = ConfirmClockOutDialog.show(requireContext())
-        if (ConfirmAction.YES == confirmAction) {
-            vm.clockOut(viewAction.item.asProject(), viewAction.date)
+    private fun showConfirmClockOutMessage(viewAction: AllProjectsViewActions.ShowConfirmClockOutMessage) =
+        launch {
+            val confirmAction = ConfirmClockOutDialog.show(requireContext())
+            if (ConfirmAction.YES == confirmAction) {
+                vm.clockOut(viewAction.item.asProject(), viewAction.date)
+            }
         }
-    }
 
     private fun showChooseTimeForClockActivity(viewAction: AllProjectsViewActions.ShowChooseTimeForClockActivity) {
         viewAction.action(childFragmentManager) { projectsItem, date ->
@@ -168,7 +179,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     }
 
     private fun showConfirmRemoveProjectMessage(
-            viewAction: AllProjectsViewActions.ShowConfirmRemoveProjectMessage
+        viewAction: AllProjectsViewActions.ShowConfirmRemoveProjectMessage
     ) = launch {
         val confirmAction = RemoveProjectDialog.show(requireContext())
         if (ConfirmAction.YES == confirmAction) {
@@ -200,9 +211,9 @@ class AllProjectsFragment : CoroutineScopedFragment() {
 
         with(requireActivity()) {
             val snackBar = Snackbar.make(
-                    findViewById(android.R.id.content),
-                    R.string.projects_all_project_created_message,
-                    Snackbar.LENGTH_SHORT
+                findViewById(android.R.id.content),
+                R.string.projects_all_project_created_message,
+                Snackbar.LENGTH_SHORT
             )
             snackBar.show()
         }

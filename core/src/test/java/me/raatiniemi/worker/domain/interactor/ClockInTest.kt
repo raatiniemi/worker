@@ -54,10 +54,10 @@ class ClockInTest {
     fun execute() {
         val date = Date()
         val expected = listOf(
-                timeInterval {
-                    id = 1
-                    startInMilliseconds = date.time
-                }
+            timeInterval {
+                id = 1
+                startInMilliseconds = date.time
+            }
         )
 
         clockIn(1, date)

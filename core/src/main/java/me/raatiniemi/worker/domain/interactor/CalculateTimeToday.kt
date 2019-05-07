@@ -26,6 +26,6 @@ class CalculateTimeToday(private val repository: TimeIntervalRepository) {
         val startingPointInMilliseconds = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         val timeIntervals = repository.findAll(project, startingPointInMilliseconds)
         return timeIntervals.map { it.calculateInterval(stopForActive) }
-                .sum()
+            .sum()
     }
 }

@@ -33,16 +33,23 @@ class FirebaseUsageAnalytics(private val firebaseAnalytics: FirebaseAnalytics) :
             // We need to check that the current screen is not the same as the previous
             // screen since that would cause a warning to be sent to the log.
             screenName.takeUnless { it == lastScreenName }
-                    ?.also { newScreenName ->
-                        Timber.v("Set current screen to: $newScreenName")
-                        lastScreenName = newScreenName
+                ?.also { newScreenName ->
+                    Timber.v("Set current screen to: $newScreenName")
+                    lastScreenName = newScreenName
 
-                        try {
-                            firebaseAnalytics.setCurrentScreen(requireActivity(), newScreenName, newScreenName)
-                        } catch (e: IllegalStateException) {
-                            Timber.w(e, "Unable to set current screen to $newScreenName, no activity is available")
-                        }
+                    try {
+                        firebaseAnalytics.setCurrentScreen(
+                            requireActivity(),
+                            newScreenName,
+                            newScreenName
+                        )
+                    } catch (e: IllegalStateException) {
+                        Timber.w(
+                            e,
+                            "Unable to set current screen to $newScreenName, no activity is available"
+                        )
                     }
+                }
         }
     }
 
@@ -56,8 +63,8 @@ class FirebaseUsageAnalytics(private val firebaseAnalytics: FirebaseAnalytics) :
     override fun log(event: Event) = runOnMainThread {
         with(event) {
             firebaseAnalytics.logEvent(
-                    name.truncate(40),
-                    transformToBundle(parameters)
+                name.truncate(40),
+                transformToBundle(parameters)
             )
         }
     }

@@ -30,10 +30,10 @@ import java.util.*
  * Notification for pausing or clocking out an active project.
  */
 internal class PauseNotification private constructor(
-        context: Context,
-        project: Project,
-        registeredTime: Long,
-        useChronometer: Boolean
+    context: Context,
+    project: Project,
+    registeredTime: Long,
+    useChronometer: Boolean
 ) : OngoingNotification(context, project, isOngoing = true) {
     private val textForPauseAction: String by lazy {
         getStringWithResourceId(R.string.ongoing_notification_action_pause)
@@ -53,9 +53,9 @@ internal class PauseNotification private constructor(
         val intent = buildIntentWithService(PauseService::class.java)
 
         return NotificationCompat.Action(
-                PAUSE_ICON,
-                textForPauseAction,
-                buildPendingIntentWithService(intent)
+            PAUSE_ICON,
+            textForPauseAction,
+            buildPendingIntentWithService(intent)
         )
     }
 
@@ -63,9 +63,9 @@ internal class PauseNotification private constructor(
         val intent = buildIntentWithService(ClockOutService::class.java)
 
         return NotificationCompat.Action(
-                CLOCK_OUT_ICON,
-                textForClockOutAction,
-                buildPendingIntentWithService(intent)
+            CLOCK_OUT_ICON,
+            textForClockOutAction,
+            buildPendingIntentWithService(intent)
         )
     }
 
@@ -77,9 +77,14 @@ internal class PauseNotification private constructor(
         private const val PAUSE_ICON = 0
         private const val CLOCK_OUT_ICON = 0
 
-        fun build(context: Context, project: Project, registeredTime: Long, useChronometer: Boolean): Notification {
+        fun build(
+            context: Context,
+            project: Project,
+            registeredTime: Long,
+            useChronometer: Boolean
+        ): Notification {
             return PauseNotification(context, project, registeredTime, useChronometer)
-                    .run { build() }
+                .run { build() }
         }
     }
 }

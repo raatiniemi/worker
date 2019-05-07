@@ -25,8 +25,8 @@ import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import java.util.*
 
 internal class TimeReportRoomRepository(
-        private val timeReport: TimeReportDao,
-        private val timeIntervals: TimeIntervalDao
+    private val timeReport: TimeReportDao,
+    private val timeIntervals: TimeIntervalDao
 ) : TimeReportRepository {
     override fun count(projectId: Long) = timeReport.count(projectId)
 
@@ -34,23 +34,27 @@ internal class TimeReportRoomRepository(
 
     private fun transform(group: TimeReportQueryGroup): TimeReportDay {
         val map = group.mapNotNull { timeIntervals.find(it) }
-                .map { it.toTimeInterval() }
-                .sortedByDescending { it.startInMilliseconds }
-                .map { TimeReportItem.with(it) }
+            .map { it.toTimeInterval() }
+            .sortedByDescending { it.startInMilliseconds }
+            .map { TimeReportItem.with(it) }
 
         return TimeReportDay(
-                Date(group.dateInMilliseconds),
-                map
+            Date(group.dateInMilliseconds),
+            map
         )
     }
 
     override fun findAll(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay> {
         return timeReport.findAll(projectId, position, pageSize)
-                .map { transform(it) }
+            .map { transform(it) }
     }
 
-    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int): List<TimeReportDay> {
+    override fun findNotRegistered(
+        projectId: Long,
+        position: Int,
+        pageSize: Int
+    ): List<TimeReportDay> {
         return timeReport.findNotRegistered(projectId, position, pageSize)
-                .map { transform(it) }
+            .map { transform(it) }
     }
 }

@@ -60,9 +60,9 @@ internal class PauseService : OngoingService("PauseService") {
     private fun sendOrDismissResumeNotification(project: Project) {
         sendOrDismissOngoingNotification(project) {
             ResumeNotification.build(
-                    this,
-                    project,
-                    isOngoingNotificationChronometerEnabled
+                this,
+                project,
+                isOngoingNotificationChronometerEnabled
             )
         }
     }

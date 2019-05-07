@@ -46,7 +46,7 @@ class TimeReportViewModelTest {
     private val project = Project(1, "Project name #1")
     private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectHolder = ProjectHolder()
-            .also { it += project }
+        .also { it += project }
 
     private val keyValueStore = InMemoryKeyValueStore()
 
@@ -55,15 +55,15 @@ class TimeReportViewModelTest {
 
     private fun setUpViewModel(newTimeIntervals: List<NewTimeInterval>): TimeReportViewModel {
         timeReportRepository = TimeReportInMemoryRepository(
-                newTimeIntervals.mapIndexed { index: Int, newTimeInterval: NewTimeInterval ->
-                    timeInterval {
-                        id = index + 1L
-                        projectId = newTimeInterval.projectId
-                        startInMilliseconds = newTimeInterval.startInMilliseconds
-                        stopInMilliseconds = newTimeInterval.stopInMilliseconds
-                        isRegistered = newTimeInterval.isRegistered
-                    }
+            newTimeIntervals.mapIndexed { index: Int, newTimeInterval: NewTimeInterval ->
+                timeInterval {
+                    id = index + 1L
+                    projectId = newTimeInterval.projectId
+                    startInMilliseconds = newTimeInterval.startInMilliseconds
+                    stopInMilliseconds = newTimeInterval.stopInMilliseconds
+                    isRegistered = newTimeInterval.isRegistered
                 }
+            }
         )
         timeIntervalRepository = TimeIntervalInMemoryRepository()
         newTimeIntervals.forEach {
@@ -71,26 +71,26 @@ class TimeReportViewModelTest {
         }
 
         return TimeReportViewModel(
-                usageAnalytics,
-                projectHolder,
-                keyValueStore,
-                timeReportRepository,
-                MarkRegisteredTime(timeIntervalRepository),
-                RemoveTime(timeIntervalRepository)
+            usageAnalytics,
+            projectHolder,
+            keyValueStore,
+            timeReportRepository,
+            MarkRegisteredTime(timeIntervalRepository),
+            RemoveTime(timeIntervalRepository)
         )
     }
 
     @Test
     fun `toggle registered state with selected item`() = runBlocking {
         val vm = setUpViewModel(
-                listOf(
-                        newTimeInterval { }
-                )
+            listOf(
+                newTimeInterval { }
+            )
         )
         val timeInterval = timeInterval { id = 1 }
         val timeReportItem = TimeReportItem.with(timeInterval)
         val expected = listOf(
-                timeInterval.copy(isRegistered = true)
+            timeInterval.copy(isRegistered = true)
         )
 
         vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
@@ -104,18 +104,18 @@ class TimeReportViewModelTest {
     @Test
     fun `toggle registered state for selected items`() = runBlocking {
         val vm = setUpViewModel(
-                listOf(
-                        newTimeInterval { },
-                        newTimeInterval { }
-                )
+            listOf(
+                newTimeInterval { },
+                newTimeInterval { }
+            )
         )
         val firstTimeInterval = timeInterval { id = 1 }
         val secondTimeInterval = timeInterval { id = 2 }
         val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
         val secondTimeReportItem = TimeReportItem.with(secondTimeInterval)
         val expected = listOf(
-                firstTimeInterval.copy(isRegistered = true),
-                secondTimeInterval.copy(isRegistered = true)
+            firstTimeInterval.copy(isRegistered = true),
+            secondTimeInterval.copy(isRegistered = true)
         )
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))
@@ -130,7 +130,7 @@ class TimeReportViewModelTest {
     @Test
     fun `remove with single item`() = runBlocking {
         val vm = setUpViewModel(listOf(
-                newTimeInterval { }
+            newTimeInterval { }
         ))
         val timeInterval = timeInterval { id = 1 }
         val timeReportItem = TimeReportItem(timeInterval)
@@ -147,8 +147,8 @@ class TimeReportViewModelTest {
     @Test
     fun `remove with multiple items`() = runBlocking {
         val vm = setUpViewModel(listOf(
-                newTimeInterval { },
-                newTimeInterval { }
+            newTimeInterval { },
+            newTimeInterval { }
         ))
         val firstTimeReportItem = TimeReportItem(timeInterval { id = 1 })
         val secondTimeReportItem = TimeReportItem(timeInterval { id = 2 })

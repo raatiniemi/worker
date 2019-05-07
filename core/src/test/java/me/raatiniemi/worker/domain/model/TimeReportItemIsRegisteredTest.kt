@@ -24,9 +24,9 @@ import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
 class TimeReportItemIsRegisteredTest(
-        private val message: String,
-        private val expected: Boolean,
-        private val timeInterval: TimeInterval
+    private val message: String,
+    private val expected: Boolean,
+    private val timeInterval: TimeInterval
 ) {
     @Test
     fun isRegistered() {
@@ -40,19 +40,19 @@ class TimeReportItemIsRegisteredTest(
         val parameters: Collection<Array<Any>>
             @Parameters
             get() = listOf(
-                    arrayOf(
-                            "is registered",
-                            true,
-                            TimeInterval.builder(1L, 1L)
-                                    .register()
-                                    .build()
-                    ),
-                    arrayOf(
-                            "is not registered",
-                            false,
-                            TimeInterval.builder(1L, 1L)
-                                    .build()
-                    )
+                arrayOf(
+                    "is registered",
+                    true,
+                    TimeInterval.builder(1L, 1L)
+                        .register()
+                        .build()
+                ),
+                arrayOf(
+                    "is not registered",
+                    false,
+                    TimeInterval.builder(1L, 1L)
+                        .build()
+                )
             )
     }
 }

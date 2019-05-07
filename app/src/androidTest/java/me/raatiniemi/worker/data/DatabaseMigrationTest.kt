@@ -37,9 +37,9 @@ class DatabaseMigrationTest {
     @Before
     fun setUp() {
         migrationHelper = MigrationTestHelper(
-                InstrumentationRegistry.getInstrumentation(),
-                Database::class.java.canonicalName,
-                FrameworkSQLiteOpenHelperFactory()
+            InstrumentationRegistry.getInstrumentation(),
+            Database::class.java.canonicalName,
+            FrameworkSQLiteOpenHelperFactory()
         )
         prepareDatabaseWithData()
     }
@@ -76,21 +76,21 @@ class DatabaseMigrationTest {
     @Test
     fun migration1To2() {
         migrationHelper.runMigrationsAndValidate(
-                DATABASE_NAME,
-                2,
-                true,
-                Migration1To2()
+            DATABASE_NAME,
+            2,
+            true,
+            Migration1To2()
         )
     }
 
     @Test
     fun migration1To3() {
         migrationHelper.runMigrationsAndValidate(
-                DATABASE_NAME,
-                3,
-                true,
-                Migration1To2(),
-                Migration2To3()
+            DATABASE_NAME,
+            3,
+            true,
+            Migration1To2(),
+            Migration2To3()
         )
     }
 

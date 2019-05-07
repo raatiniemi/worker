@@ -27,8 +27,8 @@ import me.raatiniemi.worker.util.HintedImageButtonListener
 import java.util.*
 
 internal class AllProjectsAdapter(
-        private val listener: AllProjectsActionListener,
-        private val hintedImageButtonListener: HintedImageButtonListener
+    private val listener: AllProjectsActionListener,
+    private val hintedImageButtonListener: HintedImageButtonListener
 ) : PagedListAdapter<ProjectsItem, ViewHolder>(allProjectsDiffCallback) {
     operator fun get(position: Int) = getItem(position)
 
