@@ -14,15 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects.datasource
+package me.raatiniemi.worker.domain.interactor
 
-import androidx.paging.DataSource
-import me.raatiniemi.worker.domain.interactor.findProjects
+import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
-internal class ProjectDataSourceFactory(
-    val repository: ProjectRepository
-) : DataSource.Factory<Int, Project>() {
-    override fun create() = ProjectDataSource(repository, findProjects(repository))
+typealias FindProjects = (LoadRange) -> List<Project>
+
+fun findProjects(repository: ProjectRepository): FindProjects {
+    return {
+        repository.findAll(it)
+    }
 }
