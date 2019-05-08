@@ -113,11 +113,6 @@ android {
         xmlReport false
     }
 
-    // AndroidHttpClient was removed from the SDK in v23 of the build tools.
-    // This causes issues since robolectric is running against an earlier
-    // version of the SDK, and expects the class to be present.
-    useLibrary 'org.apache.http.legacy'
-
     testOptions {
         unitTests.includeAndroidResources = true
         unitTests.returnDefaultValues = true
@@ -165,7 +160,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'androidx.arch.core:core-testing:2.0.1'
     testImplementation 'org.mockito:mockito-core:2.23.4'
-    testImplementation 'org.robolectric:robolectric:3.8'
 
     androidTestImplementation 'androidx.test:core:1.1.0'
     androidTestImplementation 'androidx.test:runner:1.1.1'
