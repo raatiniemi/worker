@@ -20,7 +20,14 @@ import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
+typealias CountProjects = () -> Int
 typealias FindProjects = (LoadRange) -> List<Project>
+
+fun countProjects(repository: ProjectRepository): CountProjects {
+    return {
+        repository.count()
+    }
+}
 
 fun findProjects(repository: ProjectRepository): FindProjects {
     return {

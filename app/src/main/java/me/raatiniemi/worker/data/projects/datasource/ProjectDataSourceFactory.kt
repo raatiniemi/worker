@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
+import me.raatiniemi.worker.domain.interactor.countProjects
 import me.raatiniemi.worker.domain.interactor.findProjects
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.repository.ProjectRepository
@@ -24,5 +25,8 @@ import me.raatiniemi.worker.domain.repository.ProjectRepository
 internal class ProjectDataSourceFactory(
     val repository: ProjectRepository
 ) : DataSource.Factory<Int, Project>() {
-    override fun create() = ProjectDataSource(repository, findProjects(repository))
+    override fun create() = ProjectDataSource(
+        countProjects(repository),
+        findProjects(repository)
+    )
 }

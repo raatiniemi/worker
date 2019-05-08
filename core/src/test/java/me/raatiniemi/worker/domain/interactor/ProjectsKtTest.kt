@@ -29,13 +29,45 @@ import org.junit.runners.JUnit4
 class ProjectsKtTest {
     private lateinit var repository: ProjectRepository
 
+    private lateinit var countProjects: CountProjects
     private lateinit var findProjects: FindProjects
 
     @Before
     fun setUp() {
         repository = ProjectInMemoryRepository()
 
+        countProjects = countProjects(repository)
         findProjects = findProjects(repository)
+    }
+
+    @Test
+    fun `count projects without projects`() {
+        val expected = 0
+
+        val actual = countProjects()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count projects with project`() {
+        repository.add(NewProject("Project #1"))
+        val expected = 1
+
+        val actual = countProjects()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `count projects with projects`() {
+        repository.add(NewProject("Project #1"))
+        repository.add(NewProject("Project #2"))
+        val expected = 2
+
+        val actual = countProjects()
+
+        assertEquals(expected, actual)
     }
 
     @Test
