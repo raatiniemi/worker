@@ -18,6 +18,10 @@
 
 -dontshrink
 
+# Application
+-keep @androidx.room.Dao class me.raatiniemi.worker.** { *; }
+-keepclassmembers class me.raatiniemi.worker.domain.repository.** { *; }
+
 # Kotlin
 -dontnote kotlin.internal.**
 -dontnote kotlin.jvm.internal.**
