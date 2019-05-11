@@ -28,9 +28,6 @@
 -keep class androidx.sqlite.db.SupportSQLiteDatabase { *; }
 
 # Kotlin
--dontnote kotlin.internal.**
--dontnote kotlin.jvm.internal.**
--dontnote kotlin.coroutines.jvm.internal.**
 -keep class kotlin.jvm.functions.** { *; }
 
 # Most of volatile fields are updated with AFU and should not be mangled
