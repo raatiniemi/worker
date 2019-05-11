@@ -22,6 +22,11 @@
 -keep @androidx.room.Dao class me.raatiniemi.worker.** { *; }
 -keepclassmembers class me.raatiniemi.worker.domain.repository.** { *; }
 
+# AndroidX
+-keep class androidx.sqlite.db.SupportSQLiteOpenHelper$Factory { *; }
+-keepclassmembers class androidx.sqlite.db.SupportSQLiteOpenHelper { *; }
+-keep class androidx.sqlite.db.SupportSQLiteDatabase { *; }
+
 # Kotlin
 -dontnote kotlin.internal.**
 -dontnote kotlin.jvm.internal.**
