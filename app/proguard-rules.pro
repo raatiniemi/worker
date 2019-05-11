@@ -31,6 +31,7 @@
 -dontnote kotlin.internal.**
 -dontnote kotlin.jvm.internal.**
 -dontnote kotlin.coroutines.jvm.internal.**
+-keep class kotlin.jvm.functions.** { *; }
 
 # EventBus
 -keepattributes *Annotation*
