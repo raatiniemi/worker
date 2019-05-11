@@ -40,11 +40,6 @@
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
 
-# Coroutine (not needed for R8)
-# ServiceLoader support
--keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
--keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
-
 # Most of volatile fields are updated with AFU and should not be mangled
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
