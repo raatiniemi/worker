@@ -26,6 +26,7 @@
 -keep class androidx.sqlite.db.SupportSQLiteOpenHelper$Factory { *; }
 -keepclassmembers class androidx.sqlite.db.SupportSQLiteOpenHelper { *; }
 -keep class androidx.sqlite.db.SupportSQLiteDatabase { *; }
+-keepclassmembers class androidx.room.RoomOpenHelper$Delegate { *; }
 
 # Kotlin
 -keep class kotlin.jvm.functions.** { *; }
