@@ -16,8 +16,14 @@
 
 package me.raatiniemi.worker.data.projects.datasource
 
-internal data class PositionalDataSourceResult<T>(
-    val data: List<T>,
-    val position: Int,
-    val totalCount: Int = 0
-)
+internal sealed class PositionalDataSourceResult<T> {
+    abstract val data: List<T>
+
+    internal data class Initial<T>(
+        override val data: List<T>,
+        val position: Int,
+        val totalCount: Int = 0
+    ) : PositionalDataSourceResult<T>()
+
+    internal data class Range<T>(override val data: List<T>) : PositionalDataSourceResult<T>()
+}

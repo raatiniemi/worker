@@ -31,15 +31,28 @@ internal fun loadInitialParams(
 )
 
 internal fun <T> loadInitialCallback(
-    onResult: (PositionalDataSourceResult<T>) -> Unit
+    onResult: (PositionalDataSourceResult.Initial<T>) -> Unit
 ): PositionalDataSource.LoadInitialCallback<T> {
     return object : PositionalDataSource.LoadInitialCallback<T>() {
         override fun onResult(data: MutableList<T>, position: Int, totalCount: Int) {
-            onResult(PositionalDataSourceResult(data, position, totalCount))
+            onResult(PositionalDataSourceResult.Initial(data, position, totalCount))
         }
 
         override fun onResult(data: MutableList<T>, position: Int) {
-            onResult(PositionalDataSourceResult(data, position))
+            onResult(PositionalDataSourceResult.Initial(data, position))
+        }
+    }
+}
+
+internal fun loadRangeParams(startPosition: Int = 0, loadSize: Int = 10) =
+    PositionalDataSource.LoadRangeParams(startPosition, loadSize)
+
+internal fun <T> loadRangeCallback(
+    onResult: (PositionalDataSourceResult.Range<T>) -> Unit
+): PositionalDataSource.LoadRangeCallback<T> {
+    return object : PositionalDataSource.LoadRangeCallback<T>() {
+        override fun onResult(data: MutableList<T>) {
+            onResult(PositionalDataSourceResult.Range(data))
         }
     }
 }
