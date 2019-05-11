@@ -18,10 +18,23 @@
 
 -dontshrink
 
+# Application
+-keep @androidx.room.Dao class me.raatiniemi.worker.** { *; }
+-keepclassmembers class me.raatiniemi.worker.domain.repository.** { *; }
+
+# AndroidX
+-keep class androidx.sqlite.db.SupportSQLiteOpenHelper$Factory { *; }
+-keepclassmembers class androidx.sqlite.db.SupportSQLiteOpenHelper { *; }
+-keep class androidx.sqlite.db.SupportSQLiteDatabase { *; }
+-keepclassmembers class androidx.room.RoomOpenHelper$Delegate { *; }
+
 # Kotlin
--dontnote kotlin.internal.**
--dontnote kotlin.jvm.internal.**
--dontnote kotlin.coroutines.jvm.internal.**
+-keep class kotlin.jvm.functions.** { *; }
+
+# Most of volatile fields are updated with AFU and should not be mangled
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
+}
 
 # EventBus
 -keepattributes *Annotation*
@@ -29,13 +42,3 @@
     @org.greenrobot.eventbus.Subscribe <methods>;
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
-
-# Coroutine (not needed for R8)
-# ServiceLoader support
--keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
--keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
-
-# Most of volatile fields are updated with AFU and should not be mangled
--keepclassmembernames class kotlinx.** {
-    volatile <fields>;
-}
