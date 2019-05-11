@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import java.util.concurrent.atomic.AtomicLong
@@ -26,9 +27,10 @@ class ProjectInMemoryRepository : ProjectRepository {
 
     override fun count() = projects.count()
 
-    override fun findAll(position: Int, pageSize: Int): List<Project> {
-        val fromIndex = indexWithCountCap(position, count())
-        val toIndex = indexWithCountCap(position + pageSize, count())
+    override fun findAll(loadRange: LoadRange): List<Project> {
+        val (position, size) = loadRange
+        val fromIndex = indexWithCountCap(position.value, count())
+        val toIndex = indexWithCountCap(position.value + size.value, count())
 
         return projects.sortedBy { it.name }
             .subList(fromIndex, toIndex)

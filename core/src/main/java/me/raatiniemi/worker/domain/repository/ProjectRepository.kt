@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 
@@ -25,7 +26,7 @@ import me.raatiniemi.worker.domain.model.Project
 interface ProjectRepository {
     fun count(): Int
 
-    fun findAll(position: Int, pageSize: Int): List<Project>
+    fun findAll(loadRange: LoadRange): List<Project>
 
     /**
      * Get projects.

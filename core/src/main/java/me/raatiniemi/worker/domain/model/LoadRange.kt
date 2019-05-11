@@ -14,19 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.data.projects.datasource
+package me.raatiniemi.worker.domain.model
 
-import androidx.paging.DataSource
-import me.raatiniemi.worker.domain.interactor.countProjects
-import me.raatiniemi.worker.domain.interactor.findProjects
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+data class LoadRange(val position: LoadPosition, val size: LoadSize)
 
-internal class ProjectDataSourceFactory(
-    val repository: ProjectRepository
-) : DataSource.Factory<Int, Project>() {
-    override fun create() = ProjectDataSource(
-        countProjects(repository),
-        findProjects(repository)
-    )
-}
+inline class LoadPosition(val value: Int)
+
+inline class LoadSize(val value: Int)

@@ -16,17 +16,14 @@
 
 package me.raatiniemi.worker.data.projects.datasource
 
-import androidx.paging.DataSource
-import me.raatiniemi.worker.domain.interactor.countProjects
-import me.raatiniemi.worker.domain.interactor.findProjects
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+internal sealed class PositionalDataSourceResult<T> {
+    abstract val data: List<T>
 
-internal class ProjectDataSourceFactory(
-    val repository: ProjectRepository
-) : DataSource.Factory<Int, Project>() {
-    override fun create() = ProjectDataSource(
-        countProjects(repository),
-        findProjects(repository)
-    )
+    internal data class Initial<T>(
+        override val data: List<T>,
+        val position: Int,
+        val totalCount: Int = 0
+    ) : PositionalDataSourceResult<T>()
+
+    internal data class Range<T>(override val data: List<T>) : PositionalDataSourceResult<T>()
 }
