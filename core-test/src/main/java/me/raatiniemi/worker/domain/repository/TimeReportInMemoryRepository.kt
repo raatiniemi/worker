@@ -19,7 +19,6 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
-import java.util.*
 
 class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) :
     TimeReportRepository {
@@ -32,17 +31,6 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
         .filter { it.projectId == projectId && !it.isRegistered }
         .groupBy { resetToStartOfDay(it.startInMilliseconds) }
         .count()
-
-    private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timeInMilliseconds
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        return calendar.time
-    }
 
     // TODO: Implement proper support for pagination.
     private fun filterAndBuildResult(predicate: (TimeInterval) -> Boolean): List<TimeReportDay> {

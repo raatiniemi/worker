@@ -27,17 +27,6 @@ import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportInMemoryRepositoryTest {
-    private fun resetToStartOfDay(timeInMilliseconds: Long): Date {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timeInMilliseconds
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        return calendar.time
-    }
-
     @Test
     fun `count without time intervals`() {
         val expected = 0
