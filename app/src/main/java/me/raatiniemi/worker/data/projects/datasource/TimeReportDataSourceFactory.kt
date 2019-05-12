@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.DataSource
 import me.raatiniemi.worker.domain.interactor.countTimeReports
+import me.raatiniemi.worker.domain.interactor.findTimeReports
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
@@ -31,7 +32,6 @@ internal class TimeReportDataSourceFactory(
     override fun create() = TimeReportDataSource(
         projectProvider,
         countTimeReports(keyValueStore, repository),
-        keyValueStore,
-        repository
+        findTimeReports(keyValueStore, repository)
     )
 }
