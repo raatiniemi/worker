@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.PositionalDataSource
+import me.raatiniemi.worker.domain.interactor.CountTimeReports
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
@@ -26,6 +27,7 @@ import timber.log.Timber
 
 internal class TimeReportDataSource(
     private val projectProvider: ProjectProvider,
+    private val countTimeReports: CountTimeReports,
     private val keyValueStore: KeyValueStore,
     private val repository: TimeReportRepository
 ) : PositionalDataSource<TimeReportDay>() {
@@ -47,13 +49,7 @@ internal class TimeReportDataSource(
         }
 
     private fun countTotal(): Int {
-        val project = this.project ?: return 0
-
-        return if (shouldHideRegisteredTime) {
-            repository.countNotRegistered(project)
-        } else {
-            repository.count(project)
-        }
+        return project?.let(countTimeReports) ?: 0
     }
 
     override fun loadInitial(
