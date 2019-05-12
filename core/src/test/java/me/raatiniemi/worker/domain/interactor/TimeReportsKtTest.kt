@@ -16,12 +16,8 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
-import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.repository.*
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import me.raatiniemi.worker.util.KeyValueStore
@@ -41,6 +37,7 @@ class TimeReportsKtTest {
     private lateinit var repository: TimeReportRepository
 
     private lateinit var countTimeReports: CountTimeReports
+    private lateinit var findTimeReports: FindTimeReports
 
     @Before
     fun setUp() {
@@ -49,6 +46,7 @@ class TimeReportsKtTest {
         repository = TimeReportInMemoryRepository(timeIntervalRepository)
 
         countTimeReports = countTimeReports(keyValueStore, repository)
+        findTimeReports = findTimeReports(keyValueStore, repository)
     }
 
     @Test
@@ -226,6 +224,316 @@ class TimeReportsKtTest {
         )
 
         val actual = countTimeReports(project)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports without time intervals`() {
+        val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with unregistered time interval`() {
+        val timeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(timeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(timeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with unregistered time intervals on same day`() {
+        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val secondTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval),
+                    TimeReportItem(secondTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with unregistered time intervals on different days`() {
+        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val secondTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                startInMilliseconds = Date().time
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval)
+                )
+            ),
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with registered time interval`() {
+        val timeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                isRegistered = true
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(timeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(timeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with registered time intervals on same day`() {
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                isRegistered = true
+            }
+        )
+        val secondTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                isRegistered = true
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval),
+                    TimeReportItem(secondTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with registered time intervals on different days`() {
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                isRegistered = true
+            }
+        )
+        val secondTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                startInMilliseconds = Date().time
+                isRegistered = true
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval)
+                )
+            ),
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with time intervals on same day`() {
+        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val secondTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                isRegistered = true
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval),
+                    TimeReportItem(secondTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with time intervals on different days`() {
+        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val secondTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                startInMilliseconds = Date().time
+                isRegistered = true
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval)
+                )
+            ),
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with time intervals on same day when hiding registered time`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                isRegistered = true
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with time intervals on different days when hiding registered time`() {
+        keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
+        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                startInMilliseconds = Date().time
+                isRegistered = true
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with time intervals filter using position`() {
+        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                startInMilliseconds = Date().time
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
+
+        val actual = findTimeReports(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find time reports with time intervals filter using page size`() {
+        timeIntervalRepository.add(newTimeInterval { })
+        val secondTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                startInMilliseconds = Date().time
+            }
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
+
+        val actual = findTimeReports(project, loadRange)
 
         assertEquals(expected, actual)
     }

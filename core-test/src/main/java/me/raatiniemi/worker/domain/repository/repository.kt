@@ -32,7 +32,7 @@ internal fun indexWithCountCap(index: Int, count: Int): Int {
 /**
  * Reset timestamp in milliseconds to start of day.
  */
-internal fun resetToStartOfDay(timeInMilliseconds: Long): Date = Calendar.getInstance()
+fun resetToStartOfDay(timeInMilliseconds: Long): Date = Calendar.getInstance()
     .apply { timeInMillis = timeInMilliseconds }
     .also {
         it.set(Calendar.HOUR_OF_DAY, 0)

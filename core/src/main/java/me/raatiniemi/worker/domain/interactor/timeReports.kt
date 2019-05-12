@@ -16,12 +16,15 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 
 typealias CountTimeReports = (Project) -> Int
+typealias FindTimeReports = (Project, LoadRange) -> List<TimeReportDay>
 
 fun countTimeReports(
     keyValueStore: KeyValueStore,
@@ -33,6 +36,20 @@ fun countTimeReports(
             repository.countNotRegistered(project)
         } else {
             repository.count(project)
+        }
+    }
+}
+
+fun findTimeReports(
+    keyValueStore: KeyValueStore,
+    repository: TimeReportRepository
+): FindTimeReports {
+    return { project, loadRange ->
+        val shouldHideRegisteredTime = keyValueStore.bool(AppKeys.HIDE_REGISTERED_TIME, false)
+        if (shouldHideRegisteredTime) {
+            repository.findNotRegistered(project, loadRange)
+        } else {
+            repository.findAll(project, loadRange)
         }
     }
 }
