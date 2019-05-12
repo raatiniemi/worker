@@ -17,8 +17,7 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.paging.PositionalDataSource
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeReportDay
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.util.AppKeys
@@ -51,9 +50,9 @@ internal class TimeReportDataSource(
         val project = this.project ?: return 0
 
         return if (shouldHideRegisteredTime) {
-            repository.countNotRegistered(project.id)
+            repository.countNotRegistered(project)
         } else {
-            repository.count(project.id)
+            repository.count(project)
         }
     }
 
@@ -70,11 +69,12 @@ internal class TimeReportDataSource(
 
     private fun loadData(position: Int, loadSize: Int): List<TimeReportDay> {
         val project = this.project ?: return emptyList()
+        val loadRange = LoadRange(LoadPosition(position), LoadSize(loadSize))
 
         return if (shouldHideRegisteredTime) {
-            repository.findNotRegistered(project.id, position, loadSize)
+            repository.findNotRegistered(project, loadRange)
         } else {
-            repository.findAll(project.id, position, loadSize)
+            repository.findAll(project, loadRange)
         }
     }
 

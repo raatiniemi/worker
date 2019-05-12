@@ -25,9 +25,7 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -73,7 +71,7 @@ class TimeReportRoomRepositoryTest {
     fun count_withoutTimeIntervals() {
         val expected = 0
 
-        val actual = repository.count(1)
+        val actual = repository.count(project)
 
         assertEquals(expected, actual)
     }
@@ -83,7 +81,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 1
         timeIntervals.add(timeIntervalEntity { })
 
-        val actual = repository.count(1)
+        val actual = repository.count(project)
 
         assertEquals(expected, actual)
     }
@@ -94,7 +92,7 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(timeIntervalEntity { })
         timeIntervals.add(timeIntervalEntity { })
 
-        val actual = repository.count(1)
+        val actual = repository.count(project)
 
         assertEquals(expected, actual)
     }
@@ -105,7 +103,7 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(timeIntervalEntity { })
         timeIntervals.add(timeIntervalEntity { startInMilliseconds = Date().time })
 
-        val actual = repository.count(1)
+        val actual = repository.count(project)
 
         assertEquals(expected, actual)
     }
@@ -114,7 +112,7 @@ class TimeReportRoomRepositoryTest {
     fun countNotRegistered_withoutTimeIntervals() {
         val expected = 0
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -124,7 +122,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 0
         timeIntervals.add(timeIntervalEntity { registered = true })
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -134,7 +132,7 @@ class TimeReportRoomRepositoryTest {
         val expected = 1
         timeIntervals.add(timeIntervalEntity { })
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -145,7 +143,7 @@ class TimeReportRoomRepositoryTest {
         timeIntervals.add(timeIntervalEntity { })
         timeIntervals.add(timeIntervalEntity { })
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -159,7 +157,7 @@ class TimeReportRoomRepositoryTest {
             registered = true
         })
 
-        val actual = timeReport.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -172,7 +170,7 @@ class TimeReportRoomRepositoryTest {
             startInMilliseconds = Date().time
         })
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -180,8 +178,9 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withoutTimeIntervals() {
         val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(1, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -202,8 +201,9 @@ class TimeReportRoomRepositoryTest {
             }
         )
         val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(1, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -230,8 +230,9 @@ class TimeReportRoomRepositoryTest {
                 timeIntervals.map { TimeReportItem(it) }
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(1, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -262,8 +263,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(1, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -288,8 +290,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
 
-        val actual = repository.findAll(1, 1, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -314,8 +317,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
 
-        val actual = repository.findAll(1, 0, 1)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -323,8 +327,9 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withoutTimeIntervals() {
         val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -345,8 +350,9 @@ class TimeReportRoomRepositoryTest {
             }
         )
         val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -372,8 +378,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -404,8 +411,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -430,8 +438,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
 
-        val actual = repository.findNotRegistered(1, 1, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -456,8 +465,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
 
-        val actual = repository.findNotRegistered(1, 0, 1)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -483,8 +493,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
