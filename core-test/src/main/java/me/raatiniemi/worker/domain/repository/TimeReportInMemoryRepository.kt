@@ -31,15 +31,18 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
         .groupBy { resetToStartOfDay(it.startInMilliseconds) }
         .count()
 
-    // TODO: Implement proper support for pagination.
     override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
         val matchingTimeIntervals = timeIntervals.filter {
             it.projectId == project.id
         }
 
-        return groupByDay(matchingTimeIntervals)
-            .map(::buildTimeReportDay)
-            .sortedByDescending { it.date }
+        return with(loadRange) {
+            groupByDay(matchingTimeIntervals)
+                .map(::buildTimeReportDay)
+                .sortedByDescending { it.date }
+                .drop(position.value)
+                .take(size.value)
+        }
     }
 
     override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> {
@@ -47,9 +50,13 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
             it.projectId == project.id && !it.isRegistered
         }
 
-        return groupByDay(matchingTimeIntervals)
-            .map(::buildTimeReportDay)
-            .sortedByDescending { it.date }
+        return with(loadRange) {
+            groupByDay(matchingTimeIntervals)
+                .map(::buildTimeReportDay)
+                .sortedByDescending { it.date }
+                .drop(position.value)
+                .take(size.value)
+        }
     }
 
     private fun groupByDay(timeIntervals: List<TimeInterval>): Map<Date, List<TimeInterval>> {

@@ -280,6 +280,72 @@ class TimeReportInMemoryRepositoryTest {
     }
 
     @Test
+    fun `find all with position`() {
+        val firstTimeIntervals = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            startInMilliseconds = 90000000
+            stopInMilliseconds = 93000000
+        }
+        val repository = TimeReportInMemoryRepository(
+            listOf(
+                firstTimeIntervals,
+                secondTimeInterval
+            )
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(firstTimeIntervals.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeIntervals)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
+
+        val actual = repository.findAll(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all with load size`() {
+        val firstTimeIntervals = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            startInMilliseconds = 90000000
+            stopInMilliseconds = 93000000
+        }
+        val repository = TimeReportInMemoryRepository(
+            listOf(
+                firstTimeIntervals,
+                secondTimeInterval
+            )
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
+
+        val actual = repository.findAll(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `find not registered without time intervals`() {
         val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(emptyList())
@@ -391,6 +457,72 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
+
+        val actual = repository.findNotRegistered(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find not registered with position`() {
+        val firstTimeIntervals = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            startInMilliseconds = 90000000
+            stopInMilliseconds = 93000000
+        }
+        val repository = TimeReportInMemoryRepository(
+            listOf(
+                firstTimeIntervals,
+                secondTimeInterval
+            )
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(firstTimeIntervals.startInMilliseconds),
+                listOf(
+                    TimeReportItem(firstTimeIntervals)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
+
+        val actual = repository.findNotRegistered(project, loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find not registered with load size`() {
+        val firstTimeIntervals = timeInterval {
+            id = 1
+            startInMilliseconds = 1
+            stopInMilliseconds = 10
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            startInMilliseconds = 90000000
+            stopInMilliseconds = 93000000
+        }
+        val repository = TimeReportInMemoryRepository(
+            listOf(
+                firstTimeIntervals,
+                secondTimeInterval
+            )
+        )
+        val expected = listOf(
+            TimeReportDay(
+                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                listOf(
+                    TimeReportItem(secondTimeInterval)
+                )
+            )
+        )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
 
         val actual = repository.findNotRegistered(project, loadRange)
 
