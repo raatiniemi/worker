@@ -19,25 +19,23 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.model.*
 import java.util.*
 
-class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) :
+class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeIntervalRepository) :
     TimeReportRepository {
-    override fun count(project: Project): Int = timeIntervals
-        .filter { it.projectId == project.id }
+    override fun count(project: Project): Int = timeIntervalRepository.findAll(project, 0)
         .groupBy { resetToStartOfDay(it.startInMilliseconds) }
         .count()
 
-    override fun countNotRegistered(project: Project): Int = timeIntervals
-        .filter { it.projectId == project.id && !it.isRegistered }
-        .groupBy { resetToStartOfDay(it.startInMilliseconds) }
-        .count()
+    override fun countNotRegistered(project: Project): Int =
+        timeIntervalRepository.findAll(project, 0)
+            .filter { !it.isRegistered }
+            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+            .count()
 
     override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
-        val matchingTimeIntervals = timeIntervals.filter {
-            it.projectId == project.id
-        }
+        val timeIntervals = timeIntervalRepository.findAll(project, 0)
 
         return with(loadRange) {
-            groupByDay(matchingTimeIntervals)
+            groupByDay(timeIntervals)
                 .map(::buildTimeReportDay)
                 .sortedByDescending { it.date }
                 .drop(position.value)
@@ -46,12 +44,11 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
     }
 
     override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> {
-        val matchingTimeIntervals = timeIntervals.filter {
-            it.projectId == project.id && !it.isRegistered
-        }
+        val timeIntervals = timeIntervalRepository.findAll(project, 0)
+            .filter { !it.isRegistered }
 
         return with(loadRange) {
-            groupByDay(matchingTimeIntervals)
+            groupByDay(timeIntervals)
                 .map(::buildTimeReportDay)
                 .sortedByDescending { it.date }
                 .drop(position.value)

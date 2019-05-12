@@ -32,6 +32,7 @@ import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,24 +54,14 @@ class TimeReportViewModelTest {
     private lateinit var timeReportRepository: TimeReportRepository
     private lateinit var timeIntervalRepository: TimeIntervalRepository
 
-    private fun setUpViewModel(newTimeIntervals: List<NewTimeInterval>): TimeReportViewModel {
-        timeReportRepository = TimeReportInMemoryRepository(
-            newTimeIntervals.mapIndexed { index: Int, newTimeInterval: NewTimeInterval ->
-                timeInterval {
-                    id = index + 1L
-                    projectId = newTimeInterval.projectId
-                    startInMilliseconds = newTimeInterval.startInMilliseconds
-                    stopInMilliseconds = newTimeInterval.stopInMilliseconds
-                    isRegistered = newTimeInterval.isRegistered
-                }
-            }
-        )
-        timeIntervalRepository = TimeIntervalInMemoryRepository()
-        newTimeIntervals.forEach {
-            timeIntervalRepository.add(it)
-        }
+    private lateinit var vm: TimeReportViewModel
 
-        return TimeReportViewModel(
+    @Before
+    fun setUp() {
+        timeIntervalRepository = TimeIntervalInMemoryRepository()
+        timeReportRepository = TimeReportInMemoryRepository(timeIntervalRepository)
+
+        vm = TimeReportViewModel(
             usageAnalytics,
             projectHolder,
             keyValueStore,
@@ -82,11 +73,7 @@ class TimeReportViewModelTest {
 
     @Test
     fun `toggle registered state with selected item`() = runBlocking {
-        val vm = setUpViewModel(
-            listOf(
-                newTimeInterval { }
-            )
-        )
+        timeIntervalRepository.add(newTimeInterval { })
         val timeInterval = timeInterval { id = 1 }
         val timeReportItem = TimeReportItem.with(timeInterval)
         val expected = listOf(
@@ -103,12 +90,8 @@ class TimeReportViewModelTest {
 
     @Test
     fun `toggle registered state for selected items`() = runBlocking {
-        val vm = setUpViewModel(
-            listOf(
-                newTimeInterval { },
-                newTimeInterval { }
-            )
-        )
+        timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(newTimeInterval { })
         val firstTimeInterval = timeInterval { id = 1 }
         val secondTimeInterval = timeInterval { id = 2 }
         val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
@@ -129,9 +112,7 @@ class TimeReportViewModelTest {
 
     @Test
     fun `remove with single item`() = runBlocking {
-        val vm = setUpViewModel(listOf(
-            newTimeInterval { }
-        ))
+        timeIntervalRepository.add(newTimeInterval { })
         val timeInterval = timeInterval { id = 1 }
         val timeReportItem = TimeReportItem(timeInterval)
         val expected = emptyList<TimeInterval>()
@@ -146,10 +127,8 @@ class TimeReportViewModelTest {
 
     @Test
     fun `remove with multiple items`() = runBlocking {
-        val vm = setUpViewModel(listOf(
-            newTimeInterval { },
-            newTimeInterval { }
-        ))
+        timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(newTimeInterval { })
         val firstTimeReportItem = TimeReportItem(timeInterval { id = 1 })
         val secondTimeReportItem = TimeReportItem(timeInterval { id = 2 })
         val expected = emptyList<TimeInterval>()
