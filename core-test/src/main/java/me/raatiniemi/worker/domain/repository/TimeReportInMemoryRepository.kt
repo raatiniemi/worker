@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.repository
 
 import me.raatiniemi.worker.domain.model.*
+import java.util.*
 
 class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) :
     TimeReportRepository {
@@ -31,22 +32,38 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
         .count()
 
     // TODO: Implement proper support for pagination.
-    private fun filterAndBuildResult(predicate: (TimeInterval) -> Boolean): List<TimeReportDay> {
-        return timeIntervals.filter { predicate(it) }
-            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
-            .map { entry ->
-                TimeReportDay(
-                    entry.key,
-                    entry.value.sortedByDescending { it.startInMilliseconds }
-                        .map { TimeReportItem(it) }
-                )
-            }
+    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
+        val matchingTimeIntervals = timeIntervals.filter {
+            it.projectId == project.id
+        }
+
+        return groupByDay(matchingTimeIntervals)
+            .map(::buildTimeReportDay)
             .sortedByDescending { it.date }
     }
 
-    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> =
-        filterAndBuildResult { it.projectId == project.id }
+    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> {
+        val matchingTimeIntervals = timeIntervals.filter {
+            it.projectId == project.id && !it.isRegistered
+        }
 
-    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> =
-        filterAndBuildResult { it.projectId == project.id && !it.isRegistered }
+        return groupByDay(matchingTimeIntervals)
+            .map(::buildTimeReportDay)
+            .sortedByDescending { it.date }
+    }
+
+    private fun groupByDay(timeIntervals: List<TimeInterval>): Map<Date, List<TimeInterval>> {
+        return timeIntervals.groupBy {
+            resetToStartOfDay(it.startInMilliseconds)
+        }
+    }
+
+    private fun buildTimeReportDay(entry: Map.Entry<Date, List<TimeInterval>>) =
+        entry.let { (date, timeIntervals) ->
+            val timeReportItems = timeIntervals
+                .sortedByDescending { it.startInMilliseconds }
+                .map { TimeReportItem(it) }
+
+            TimeReportDay(date, timeReportItems)
+        }
 }
