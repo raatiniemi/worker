@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
 
@@ -24,7 +25,7 @@ interface TimeReportRepository {
 
     fun countNotRegistered(project: Project): Int
 
-    fun findAll(project: Project, position: Int, pageSize: Int): List<TimeReportDay>
+    fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay>
 
-    fun findNotRegistered(project: Project, position: Int, pageSize: Int): List<TimeReportDay>
+    fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay>
 }

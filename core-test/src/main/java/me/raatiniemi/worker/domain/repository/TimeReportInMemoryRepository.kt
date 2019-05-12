@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.*
 
 class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) :
     TimeReportRepository {
@@ -47,13 +44,9 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
             .sortedByDescending { it.date }
     }
 
-    override fun findAll(project: Project, position: Int, pageSize: Int): List<TimeReportDay> =
+    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> =
         filterAndBuildResult { it.projectId == project.id }
 
-    override fun findNotRegistered(
-        project: Project,
-        position: Int,
-        pageSize: Int
-    ): List<TimeReportDay> =
+    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> =
         filterAndBuildResult { it.projectId == project.id && !it.isRegistered }
 }

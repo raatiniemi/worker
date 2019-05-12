@@ -19,6 +19,7 @@ package me.raatiniemi.worker.data.repository
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.TimeReportQueryGroup
+import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
@@ -46,17 +47,15 @@ internal class TimeReportRoomRepository(
         )
     }
 
-    override fun findAll(project: Project, position: Int, pageSize: Int): List<TimeReportDay> {
-        return timeReport.findAll(project.id, position, pageSize)
-            .map { transform(it) }
-    }
+    override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> =
+        with(loadRange) {
+            return timeReport.findAll(project.id, position.value, size.value)
+                .map(::transform)
+        }
 
-    override fun findNotRegistered(
-        project: Project,
-        position: Int,
-        pageSize: Int
-    ): List<TimeReportDay> {
-        return timeReport.findNotRegistered(project.id, position, pageSize)
-            .map { transform(it) }
-    }
+    override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> =
+        with(loadRange) {
+            return timeReport.findNotRegistered(project.id, position.value, size.value)
+                .map(::transform)
+        }
 }

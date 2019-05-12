@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -187,8 +184,9 @@ class TimeReportInMemoryRepositoryTest {
     fun `find all without time intervals`() {
         val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(emptyList())
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(project, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -206,8 +204,9 @@ class TimeReportInMemoryRepositoryTest {
                 }
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(project, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -234,8 +233,9 @@ class TimeReportInMemoryRepositoryTest {
                     .map { TimeReportItem(it) }
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(project, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -272,8 +272,9 @@ class TimeReportInMemoryRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(project, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -282,8 +283,9 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered without time intervals`() {
         val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(emptyList())
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -301,8 +303,9 @@ class TimeReportInMemoryRepositoryTest {
                 }
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -341,8 +344,9 @@ class TimeReportInMemoryRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -386,8 +390,9 @@ class TimeReportInMemoryRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -405,8 +410,9 @@ class TimeReportInMemoryRepositoryTest {
                 }
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }

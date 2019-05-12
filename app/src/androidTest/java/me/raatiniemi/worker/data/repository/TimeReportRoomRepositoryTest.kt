@@ -25,9 +25,7 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeReportDao
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -180,8 +178,9 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findAll_withoutTimeIntervals() {
         val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(project, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -202,8 +201,9 @@ class TimeReportRoomRepositoryTest {
             }
         )
         val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(project, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -230,8 +230,9 @@ class TimeReportRoomRepositoryTest {
                 timeIntervals.map { TimeReportItem(it) }
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(project, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -262,8 +263,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findAll(project, 0, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -288,8 +290,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
 
-        val actual = repository.findAll(project, 1, 10)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -314,8 +317,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
 
-        val actual = repository.findAll(project, 0, 1)
+        val actual = repository.findAll(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -323,8 +327,9 @@ class TimeReportRoomRepositoryTest {
     @Test
     fun findNotRegistered_withoutTimeIntervals() {
         val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -345,8 +350,9 @@ class TimeReportRoomRepositoryTest {
             }
         )
         val expected = emptyList<TimeReportDay>()
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -372,8 +378,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -404,8 +411,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -430,8 +438,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(1), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 1, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -456,8 +465,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(1))
 
-        val actual = repository.findNotRegistered(project, 0, 1)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
@@ -483,8 +493,9 @@ class TimeReportRoomRepositoryTest {
                 )
             )
         )
+        val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
 
-        val actual = repository.findNotRegistered(project, 0, 10)
+        val actual = repository.findNotRegistered(project, loadRange)
 
         assertEquals(expected, actual)
     }
