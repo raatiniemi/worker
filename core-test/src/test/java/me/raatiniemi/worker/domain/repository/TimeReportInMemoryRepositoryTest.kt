@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
@@ -27,12 +28,14 @@ import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportInMemoryRepositoryTest {
+    private val project = Project(1, "Project #1")
+
     @Test
     fun `count without time intervals`() {
         val expected = 0
         val repository = TimeReportInMemoryRepository(emptyList())
 
-        val actual = repository.count(1)
+        val actual = repository.count(project)
 
         assertEquals(expected, actual)
     }
@@ -46,7 +49,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.count(1)
+        val actual = repository.count(project)
 
         assertEquals(expected, actual)
     }
@@ -61,7 +64,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.count(1)
+        val actual = repository.count(project)
 
         assertEquals(expected, actual)
     }
@@ -82,7 +85,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.count(1)
+        val actual = repository.count(project)
 
         assertEquals(expected, actual)
     }
@@ -92,7 +95,7 @@ class TimeReportInMemoryRepositoryTest {
         val expected = 0
         val repository = TimeReportInMemoryRepository(emptyList())
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -109,7 +112,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -123,7 +126,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -138,7 +141,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -157,7 +160,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -175,7 +178,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.countNotRegistered(1)
+        val actual = repository.countNotRegistered(project)
 
         assertEquals(expected, actual)
     }
@@ -185,7 +188,7 @@ class TimeReportInMemoryRepositoryTest {
         val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(emptyList())
 
-        val actual = repository.findAll(1, 0, 10)
+        val actual = repository.findAll(project, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -204,7 +207,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findAll(1, 0, 10)
+        val actual = repository.findAll(project, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -232,7 +235,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findAll(1, 0, 10)
+        val actual = repository.findAll(project, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -270,7 +273,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findAll(1, 0, 10)
+        val actual = repository.findAll(project, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -280,7 +283,7 @@ class TimeReportInMemoryRepositoryTest {
         val expected = emptyList<TimeReportDay>()
         val repository = TimeReportInMemoryRepository(emptyList())
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -299,7 +302,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -339,7 +342,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -384,7 +387,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, 0, 10)
 
         assertEquals(expected, actual)
     }
@@ -403,7 +406,7 @@ class TimeReportInMemoryRepositoryTest {
             )
         )
 
-        val actual = repository.findNotRegistered(1, 0, 10)
+        val actual = repository.findNotRegistered(project, 0, 10)
 
         assertEquals(expected, actual)
     }

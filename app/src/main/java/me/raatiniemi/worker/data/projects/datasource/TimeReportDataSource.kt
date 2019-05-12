@@ -51,9 +51,9 @@ internal class TimeReportDataSource(
         val project = this.project ?: return 0
 
         return if (shouldHideRegisteredTime) {
-            repository.countNotRegistered(project.id)
+            repository.countNotRegistered(project)
         } else {
-            repository.count(project.id)
+            repository.count(project)
         }
     }
 
@@ -72,9 +72,9 @@ internal class TimeReportDataSource(
         val project = this.project ?: return emptyList()
 
         return if (shouldHideRegisteredTime) {
-            repository.findNotRegistered(project.id, position, loadSize)
+            repository.findNotRegistered(project, position, loadSize)
         } else {
-            repository.findAll(project.id, position, loadSize)
+            repository.findAll(project, position, loadSize)
         }
     }
 

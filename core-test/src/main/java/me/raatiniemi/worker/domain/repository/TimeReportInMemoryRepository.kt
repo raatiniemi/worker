@@ -16,19 +16,20 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 
 class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>) :
     TimeReportRepository {
-    override fun count(projectId: Long) = timeIntervals
-        .filter { it.projectId == projectId }
+    override fun count(project: Project): Int = timeIntervals
+        .filter { it.projectId == project.id }
         .groupBy { resetToStartOfDay(it.startInMilliseconds) }
         .count()
 
-    override fun countNotRegistered(projectId: Long) = timeIntervals
-        .filter { it.projectId == projectId && !it.isRegistered }
+    override fun countNotRegistered(project: Project): Int = timeIntervals
+        .filter { it.projectId == project.id && !it.isRegistered }
         .groupBy { resetToStartOfDay(it.startInMilliseconds) }
         .count()
 
@@ -46,9 +47,13 @@ class TimeReportInMemoryRepository(private val timeIntervals: List<TimeInterval>
             .sortedByDescending { it.date }
     }
 
-    override fun findAll(projectId: Long, position: Int, pageSize: Int) =
-        filterAndBuildResult { it.projectId == projectId }
+    override fun findAll(project: Project, position: Int, pageSize: Int): List<TimeReportDay> =
+        filterAndBuildResult { it.projectId == project.id }
 
-    override fun findNotRegistered(projectId: Long, position: Int, pageSize: Int) =
-        filterAndBuildResult { it.projectId == projectId && !it.isRegistered }
+    override fun findNotRegistered(
+        project: Project,
+        position: Int,
+        pageSize: Int
+    ): List<TimeReportDay> =
+        filterAndBuildResult { it.projectId == project.id && !it.isRegistered }
 }
