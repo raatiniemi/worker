@@ -18,12 +18,13 @@
 buildscript {
     repositories {
         google()
+        maven { url "https://plugins.gradle.org/m2/" }
         jcenter()
     }
 
     dependencies {
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.0.0'
-        classpath 'com.github.triplet.gradle:play-publisher:1.2.2'
+        classpath 'com.github.triplet.gradle:play-publisher:2.2.1'
     }
 }
 
@@ -119,10 +120,13 @@ android {
     }
 }
 
-if (System.getenv("GOOGLE_PLAY_ANDROID_DEVELOPER_KEY_NAME")) {
-    play {
-        track = 'internal'
-        jsonFile = file(System.getenv("GOOGLE_PLAY_ANDROID_DEVELOPER_KEY_NAME"))
+play {
+    track = 'internal'
+    enabled = false
+
+    if (System.getenv("GOOGLE_PLAY_ANDROID_DEVELOPER_KEY_NAME")) {
+        enabled = true
+        serviceAccountCredentials = file(System.getenv("GOOGLE_PLAY_ANDROID_DEVELOPER_KEY_NAME"))
     }
 }
 
