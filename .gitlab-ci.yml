@@ -96,7 +96,7 @@ deploy:
     - bin/configure-signing-environment
     - bin/configure-deploy-environment
   script:
-    - ./gradlew publishApkRelease
+    - ./gradlew publishReleaseApk
   dependencies:
     - build
   only:
