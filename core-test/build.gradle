@@ -26,6 +26,14 @@ jacoco {
     toolVersion = '0.8.3'
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled false
+    }
+}
+
 dependencies {
     compileOnly project(':core')
 
