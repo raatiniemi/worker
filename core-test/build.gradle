@@ -14,7 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'kotlin'
+plugins {
+    id 'kotlin'
+}
 
 sourceCompatibility = sourceCompatibilityVersion
 targetCompatibility = targetCompatibilityVersion
