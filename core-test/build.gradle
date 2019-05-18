@@ -16,10 +16,15 @@
 
 plugins {
     id 'kotlin'
+    id 'jacoco'
 }
 
 sourceCompatibility = sourceCompatibilityVersion
 targetCompatibility = targetCompatibilityVersion
+
+jacoco {
+    toolVersion = '0.8.3'
+}
 
 dependencies {
     compileOnly project(':core')
