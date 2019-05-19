@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.data.service.ongoing
 
-import android.content.Context
 import android.content.Intent
 import me.raatiniemi.worker.domain.exception.DomainException
 import me.raatiniemi.worker.domain.interactor.CalculateTimeToday
@@ -55,14 +54,6 @@ class ReloadNotificationService : OngoingService("ReloadNotificationService") {
                 calculateTimeToday(project),
                 isOngoingNotificationChronometerEnabled
             )
-        }
-    }
-
-    companion object {
-        fun startServiceWithContext(context: Context) {
-            val intent = Intent(context, ReloadNotificationService::class.java)
-
-            context.startService(intent)
         }
     }
 }
