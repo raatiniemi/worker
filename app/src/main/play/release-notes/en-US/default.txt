@@ -1,1 +1,1 @@
-improve internal communication for ongoing notifications
+resolve issue with application crashing on start up
