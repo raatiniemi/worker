@@ -18,3 +18,26 @@ apply plugin: 'jacoco'
 jacoco {
     toolVersion = '0.8.3'
 }
+
+def javaDirectory = 'intermediates/javac/release/compileReleaseJavaWithJavac/classes'
+def kotlinDirectory = 'tmp/kotlin-classes/release'
+def classPattern = 'me/raatiniemi/worker/**/*.class'
+
+def androidExclusion = ['**/R.class', '**/R$*.class', '**/BuildConfig.class']
+
+task jacocoTestReport(type: JacocoReport) {
+    group = 'verification'
+    description = 'Generates code coverage report for the test task.'
+
+    reports {
+        xml.enabled = true
+        html.enabled = false
+    }
+
+    classDirectories = fileTree(dir: project.buildDir, excludes: androidExclusion).matching {
+        include "$javaDirectory/$classPattern"
+        include "$kotlinDirectory/$classPattern"
+    }
+    sourceDirectories = files('src/main/java/me/raatiniemi/worker')
+    executionData = files('build/jacoco/testReleaseUnitTest.exec')
+}
