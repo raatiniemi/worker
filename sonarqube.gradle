@@ -51,7 +51,6 @@ project(':core') {
             properties['sonar.java.test.binaries'] = 'build/classes'
 
             properties['sonar.junit.reportPaths'] = 'build/test-results/test'
-            properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec'])
         }
     }
 }
@@ -69,7 +68,6 @@ project(':core-test') {
             properties['sonar.java.test.binaries'] = 'build/classes'
 
             properties['sonar.junit.reportPaths'] = 'build/test-results/test'
-            properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec'])
         }
     }
 }
@@ -96,7 +94,6 @@ project(':app') {
             properties['sonar.java.test.binaries'] = testBinaries
 
             properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
-            properties['sonar.jacoco.reportPaths'] = fileTree(dir: 'build', includes: ['**/*.exec'])
         }
     }
 }
