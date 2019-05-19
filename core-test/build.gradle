@@ -14,10 +14,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'kotlin'
+plugins {
+    id 'kotlin'
+    id 'jacoco'
+}
 
 sourceCompatibility = sourceCompatibilityVersion
 targetCompatibility = targetCompatibilityVersion
+
+jacoco {
+    toolVersion = '0.8.3'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled false
+    }
+}
 
 dependencies {
     compileOnly project(':core')
