@@ -51,6 +51,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun reloadOngoingNotifications() {
         Intent(this, ReloadNotificationService::class.java)
-            .also { startForegroundService(it) }
+            .also { startService(it) }
     }
 }
