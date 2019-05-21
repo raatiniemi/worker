@@ -16,7 +16,6 @@
 
 package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -63,40 +62,6 @@ class TimeIntervalTest {
         val timeInterval = initial.unmarkRegistered()
 
         assertFalse(timeInterval.isRegistered)
-    }
-
-    @Test(expected = ClockOutBeforeClockInException::class)
-    fun clockOutAt_clockOutBeforeClockIn() {
-        val date = Date()
-        val timeInterval = timeInterval {
-            startInMilliseconds = date.time + 1
-        }
-
-        timeInterval.clockOutAt(date)
-    }
-
-    @Test
-    fun clockOutAt() {
-        val date = Date()
-        val initial = timeInterval { }
-
-        val timeInterval = initial.clockOutAt(date)
-
-        assertEquals(date.time, timeInterval.stopInMilliseconds)
-        assertFalse(timeInterval.isRegistered)
-    }
-
-    @Test
-    fun clockOutAt_withRegistered() {
-        val date = Date()
-        val initial = timeInterval {
-            isRegistered = true
-        }
-
-        val timeInterval = initial.clockOutAt(date)
-
-        assertEquals(date.time, timeInterval.stopInMilliseconds)
-        assertTrue(timeInterval.isRegistered)
     }
 
     @Test

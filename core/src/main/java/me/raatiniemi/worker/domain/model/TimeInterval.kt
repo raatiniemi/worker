@@ -69,16 +69,6 @@ data class TimeInterval(
         } else copy(isRegistered = false)
     }
 
-    /**
-     * Set the clock out timestamp at given date.
-     *
-     * @param date Date at which to clock out.
-     * @throws NullPointerException If date argument is null.
-     */
-    fun clockOutAt(date: Date): TimeInterval {
-        return copy(stopInMilliseconds = date.time)
-    }
-
     private fun calculateInterval(stopInMilliseconds: Long): Long {
         return stopInMilliseconds - startInMilliseconds
     }

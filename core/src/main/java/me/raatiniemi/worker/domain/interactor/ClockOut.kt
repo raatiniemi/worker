@@ -28,6 +28,10 @@ class ClockOut(private val timeIntervalRepository: TimeIntervalRepository) {
         val timeInterval = timeIntervalRepository.findActiveByProjectId(projectId)
             ?: throw InactiveProjectException()
 
-        timeIntervalRepository.update(timeInterval.clockOutAt(date))
+        timeIntervalRepository.update(
+            timeInterval.copy(
+                stopInMilliseconds = date.time
+            )
+        )
     }
 }

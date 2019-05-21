@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.newTimeInterval
@@ -31,6 +32,8 @@ import java.util.*
 
 @RunWith(JUnit4::class)
 class ClockOutTest {
+    private val project = Project(1, "Project name")
+
     private lateinit var repository: TimeIntervalRepository
     private lateinit var clockOut: ClockOut
 
@@ -41,17 +44,28 @@ class ClockOutTest {
     }
 
     @Test(expected = InactiveProjectException::class)
-    fun execute_withoutActiveTime() {
+    fun `clock out with inactive project`() {
         clockOut(1L, Date())
     }
 
-    @Test
-    fun execute() {
+    @Test(expected = ClockOutBeforeClockInException::class)
+    fun `clock out with date before clock in`() {
         val date = Date()
-        val newTimeInterval = newTimeInterval {
+        repository.add(
+            newTimeInterval {
+                startInMilliseconds = date.time + 3600
+            }
+        )
+
+        clockOut(1, date)
+    }
+
+    @Test
+    fun `clock out with active project`() {
+        val date = Date()
+        repository.add(newTimeInterval {
             startInMilliseconds = 1
-        }
-        repository.add(newTimeInterval)
+        })
         val expected = listOf(
             timeInterval {
                 id = 1
@@ -60,9 +74,9 @@ class ClockOutTest {
             }
         )
 
-        clockOut(1L, date)
+        clockOut(1, date)
 
-        val actual = repository.findAll(Project(1, "Project name"), 0)
+        val actual = repository.findAll(project, 0)
         assertEquals(expected, actual)
     }
 }
