@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.timeInterval
 import java.util.concurrent.atomic.AtomicLong
 
 class TimeIntervalInMemoryRepository : TimeIntervalRepository {
@@ -38,13 +39,13 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         timeIntervals.firstOrNull { it.projectId == projectId && it.isActive }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
-        return TimeInterval(
-            id = incrementedId.incrementAndGet(),
-            projectId = newTimeInterval.projectId,
-            startInMilliseconds = newTimeInterval.startInMilliseconds,
-            stopInMilliseconds = newTimeInterval.stopInMilliseconds,
+        return timeInterval {
+            id = incrementedId.incrementAndGet()
+            projectId = newTimeInterval.projectId
+            startInMilliseconds = newTimeInterval.startInMilliseconds
+            stopInMilliseconds = newTimeInterval.stopInMilliseconds
             isRegistered = newTimeInterval.isRegistered
-        ).also { timeIntervals.add(it) }
+        }.also { timeIntervals.add(it) }
     }
 
     override fun update(timeInterval: TimeInterval) =
