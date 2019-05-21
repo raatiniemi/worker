@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.projects.all.model
 
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.timeInterval
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,6 +40,7 @@ class ProjectsItemIsActiveTest(
     }
 
     companion object {
+        @Suppress("unused")
         @JvmStatic
         val parameters: Collection<Array<Any>>
             @Parameters
@@ -56,10 +58,10 @@ class ProjectsItemIsActiveTest(
         private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
                 return listOf(
-                    TimeInterval.builder(1L, 1L)
-                        .startInMilliseconds(1)
-                        .stopInMilliseconds(0)
-                        .build()
+                    timeInterval {
+                        startInMilliseconds = 1
+                        stopInMilliseconds = 0
+                    }
                 )
             }
 

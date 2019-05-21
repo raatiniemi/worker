@@ -47,17 +47,17 @@ class TimeReportItemGetTitleTest(
                 arrayOf(
                     "active time interval",
                     "08:00",
-                    TimeInterval.builder(1L, 1L)
-                        .startInMilliseconds(START.timeInMillis)
-                        .build()
+                    timeInterval {
+                        startInMilliseconds = START.timeInMillis
+                    }
                 ),
                 arrayOf(
                     "inactive time interval",
                     "08:00 - 11:30",
-                    TimeInterval.builder(1L, 1L)
-                        .startInMilliseconds(START.timeInMillis)
-                        .stopInMilliseconds(STOP.timeInMillis)
-                        .build()
+                    timeInterval {
+                        startInMilliseconds = START.timeInMillis
+                        stopInMilliseconds = STOP.timeInMillis
+                    }
                 )
             )
     }

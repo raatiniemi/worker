@@ -45,16 +45,16 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
                 arrayOf(
                     "1:00",
                     DigitalHoursMinutesIntervalFormat(),
-                    TimeInterval.builder(1L, 1L)
-                        .stopInMilliseconds(3600000)
-                        .build()
+                    timeInterval {
+                        stopInMilliseconds = 3600000
+                    }
                 ),
                 arrayOf(
                     "9:00",
                     DigitalHoursMinutesIntervalFormat(),
-                    TimeInterval.builder(1L, 1L)
-                        .stopInMilliseconds(32400000)
-                        .build()
+                    timeInterval {
+                        stopInMilliseconds = 32400000
+                    }
                 )
             )
     }

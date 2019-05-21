@@ -82,36 +82,4 @@ data class TimeInterval(
     private fun calculateInterval(stopInMilliseconds: Long): Long {
         return stopInMilliseconds - startInMilliseconds
     }
-
-    class Builder(internal val id: Long, internal val projectId: Long) {
-        internal var startInMilliseconds = 0L
-        internal var stopInMilliseconds = 0L
-        internal var registered = false
-
-        fun startInMilliseconds(startInMilliseconds: Long): Builder {
-            this.startInMilliseconds = startInMilliseconds
-            return this
-        }
-
-        fun stopInMilliseconds(stopInMilliseconds: Long): Builder {
-            this.stopInMilliseconds = stopInMilliseconds
-            return this
-        }
-
-        fun register(): Builder {
-            registered = true
-            return this
-        }
-
-        fun build(): TimeInterval {
-            return TimeInterval(id, projectId, startInMilliseconds, stopInMilliseconds, registered)
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun builder(id: Long, projectId: Long): Builder {
-            return Builder(id = id, projectId = projectId)
-        }
-    }
 }
