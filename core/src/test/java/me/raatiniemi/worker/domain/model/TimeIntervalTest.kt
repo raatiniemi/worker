@@ -25,46 +25,6 @@ import java.util.*
 @RunWith(JUnit4::class)
 class TimeIntervalTest {
     @Test
-    fun markAsRegistered() {
-        val initial = timeInterval {}
-
-        val timeInterval = initial.markAsRegistered()
-
-        assertTrue(timeInterval.isRegistered)
-    }
-
-    @Test
-    fun markAsRegistered_alreadyRegistered() {
-        val initial = timeInterval {
-            isRegistered = true
-        }
-
-        val timeInterval = initial.markAsRegistered()
-
-        assertTrue(timeInterval.isRegistered)
-    }
-
-    @Test
-    fun unmarkRegistered() {
-        val initial = timeInterval {
-            isRegistered = true
-        }
-
-        val timeInterval = initial.unmarkRegistered()
-
-        assertFalse(timeInterval.isRegistered)
-    }
-
-    @Test
-    fun unmarkRegistered_notRegistered() {
-        val initial = timeInterval { }
-
-        val timeInterval = initial.unmarkRegistered()
-
-        assertFalse(timeInterval.isRegistered)
-    }
-
-    @Test
     fun isActive_whenActive() {
         val timeInterval = timeInterval { }
 

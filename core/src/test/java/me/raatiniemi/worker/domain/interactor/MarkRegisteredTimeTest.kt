@@ -29,6 +29,8 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class MarkRegisteredTimeTest {
+    private val project = Project(1, "Project name")
+
     private lateinit var repository: TimeIntervalRepository
     private lateinit var markRegisteredTime: MarkRegisteredTime
 
@@ -74,7 +76,7 @@ class MarkRegisteredTimeTest {
                 isRegistered = true
             }
         )
-        val actual = repository.findAll(Project(1, "Project name"), 0)
+        val actual = repository.findAll(project, 0)
         assertEquals(expected, actual)
     }
 
@@ -114,7 +116,7 @@ class MarkRegisteredTimeTest {
             timeInterval { id = 3 },
             timeInterval { id = 4 }
         )
-        val actual = repository.findAll(Project(1, "Project name"), 0)
+        val actual = repository.findAll(project, 0)
         assertEquals(expected, actual)
     }
 
@@ -163,7 +165,7 @@ class MarkRegisteredTimeTest {
                 isRegistered = true
             }
         )
-        val actual = repository.findAll(Project(1, "Project name"), 0)
+        val actual = repository.findAll(project, 0)
         assertEquals(expected, actual)
     }
 }

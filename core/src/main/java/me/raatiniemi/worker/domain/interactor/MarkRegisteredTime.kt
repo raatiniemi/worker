@@ -29,19 +29,19 @@ open class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
     private fun collectTimeToUpdate(timeIntervals: List<TimeInterval>): List<TimeInterval> {
         val shouldMarkAsRegistered = shouldMarkAsRegistered(timeIntervals)
 
-        return timeIntervals.map {
-            if (shouldMarkAsRegistered) {
-                it.markAsRegistered()
-            } else {
-                it.unmarkRegistered()
-            }
-        }
+        return timeIntervals.map(toggleRegistered(shouldMarkAsRegistered))
     }
 
     private fun shouldMarkAsRegistered(timeIntervals: List<TimeInterval>): Boolean {
         val timeInterval = timeIntervals.firstOrNull() ?: return false
 
         return !timeInterval.isRegistered
+    }
+
+    private fun toggleRegistered(isRegistered: Boolean): (TimeInterval) -> TimeInterval {
+        return {
+            it.copy(isRegistered = isRegistered)
+        }
     }
 
     operator fun invoke(timeIntervals: List<TimeInterval>) =

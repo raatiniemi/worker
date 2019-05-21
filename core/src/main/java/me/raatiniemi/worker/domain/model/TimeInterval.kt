@@ -57,18 +57,6 @@ data class TimeInterval(
         return calculateInterval(stopInMilliseconds)
     }
 
-    fun markAsRegistered(): TimeInterval {
-        return if (isRegistered) {
-            this
-        } else copy(isRegistered = true)
-    }
-
-    fun unmarkRegistered(): TimeInterval {
-        return if (!isRegistered) {
-            this
-        } else copy(isRegistered = false)
-    }
-
     private fun calculateInterval(stopInMilliseconds: Long): Long {
         return stopInMilliseconds - startInMilliseconds
     }
