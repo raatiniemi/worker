@@ -54,10 +54,12 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with registered time`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(newTimeInterval {
-            startInMilliseconds = startingPoint
-            stopInMilliseconds = startingPoint + 1.hours
-        })
+        repository.add(
+            newTimeInterval {
+                start = Date(startingPoint)
+                stopInMilliseconds = startingPoint + 1.hours
+            }
+        )
         val expected = 1.hours
 
         val actual = calculateTimeToday(project)
@@ -68,9 +70,11 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with active time interval`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(newTimeInterval {
-            startInMilliseconds = startingPoint
-        })
+        repository.add(
+            newTimeInterval {
+                start = Date(startingPoint)
+            }
+        )
         val stopForActive = Date(startingPoint + 1.hours)
         val expected = 1.hours
 
@@ -82,13 +86,17 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with registered time and active time interval`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(newTimeInterval {
-            startInMilliseconds = startingPoint
-            stopInMilliseconds = startingPoint + 1.hours
-        })
-        repository.add(newTimeInterval {
-            startInMilliseconds = startingPoint
-        })
+        repository.add(
+            newTimeInterval {
+                start = Date(startingPoint)
+                stopInMilliseconds = startingPoint + 1.hours
+            }
+        )
+        repository.add(
+            newTimeInterval {
+                start = Date(startingPoint)
+            }
+        )
         val stopForActive = Date(startingPoint + 1.hours)
         val expected = 2.hours
 

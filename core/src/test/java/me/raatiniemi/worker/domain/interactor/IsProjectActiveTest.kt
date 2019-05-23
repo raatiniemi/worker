@@ -25,6 +25,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class IsProjectActiveTest {
@@ -47,7 +48,7 @@ class IsProjectActiveTest {
     @Test
     fun `is project active with active time interval`() {
         val newTimeInterval = newTimeInterval {
-            startInMilliseconds = 1
+            start = Date(1)
             stopInMilliseconds = 0
         }
         repository.add(newTimeInterval)

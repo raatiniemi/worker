@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
 import me.raatiniemi.worker.domain.model.Project
@@ -53,7 +55,7 @@ class ClockOutTest {
         val date = Date()
         repository.add(
             newTimeInterval {
-                startInMilliseconds = date.time + 3600
+                start = date + 1.hours
             }
         )
 
@@ -63,9 +65,11 @@ class ClockOutTest {
     @Test
     fun `clock out with active project`() {
         val date = Date()
-        repository.add(newTimeInterval {
-            startInMilliseconds = 1
-        })
+        repository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
         val expected = listOf(
             timeInterval {
                 id = 1

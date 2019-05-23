@@ -16,9 +16,11 @@
 
 package me.raatiniemi.worker.domain.model
 
+import java.util.*
+
 data class NewTimeInterval(
     val projectId: Long,
-    val startInMilliseconds: Long,
+    val start: Date,
     val stopInMilliseconds: Long = 0,
     val isRegistered: Boolean = false
 )

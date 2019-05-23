@@ -16,6 +16,10 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.date.minus
+import me.raatiniemi.worker.domain.date.minutes
+import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.*
 import me.raatiniemi.worker.util.AppKeys
@@ -82,10 +86,14 @@ class TimeReportsKtTest {
     @Test
     fun `count time reports with unregistered time intervals on different days`() {
         val expected = 2
-        timeIntervalRepository.add(newTimeInterval { })
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date() - 25.hours
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date()
             }
         )
 
@@ -154,7 +162,7 @@ class TimeReportsKtTest {
         )
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
                 isRegistered = true
             }
         )
@@ -182,10 +190,14 @@ class TimeReportsKtTest {
     @Test
     fun `count time reports with time intervals on different days`() {
         val expected = 2
-        timeIntervalRepository.add(newTimeInterval { })
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date() - 25.hours
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date()
                 isRegistered = true
             }
         )
@@ -218,7 +230,7 @@ class TimeReportsKtTest {
         timeIntervalRepository.add(newTimeInterval { })
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
                 isRegistered = true
             }
         )
@@ -258,14 +270,22 @@ class TimeReportsKtTest {
 
     @Test
     fun `find time reports with unregistered time intervals on same day`() {
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
-        val secondTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
+        val secondTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(11)
+            }
+        )
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(firstTimeInterval),
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem(secondTimeInterval),
+                    TimeReportItem(firstTimeInterval)
                 )
             )
         )
@@ -278,10 +298,14 @@ class TimeReportsKtTest {
 
     @Test
     fun `find time reports with unregistered time intervals on different days`() {
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date() - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
             }
         )
         val expected = listOf(
@@ -336,6 +360,7 @@ class TimeReportsKtTest {
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                start = Date() + 1.minutes
                 isRegistered = true
             }
         )
@@ -343,8 +368,8 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(firstTimeInterval),
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem(secondTimeInterval),
+                    TimeReportItem(firstTimeInterval)
                 )
             )
         )
@@ -359,12 +384,12 @@ class TimeReportsKtTest {
     fun `find time reports with registered time intervals on different days`() {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                start = Date() - 25.hours
                 isRegistered = true
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
                 isRegistered = true
             }
         )
@@ -391,9 +416,14 @@ class TimeReportsKtTest {
 
     @Test
     fun `find time reports with time intervals on same day`() {
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
+                start = Date(11)
                 isRegistered = true
             }
         )
@@ -401,8 +431,8 @@ class TimeReportsKtTest {
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.startInMilliseconds),
                 listOf(
-                    TimeReportItem(firstTimeInterval),
-                    TimeReportItem(secondTimeInterval)
+                    TimeReportItem(secondTimeInterval),
+                    TimeReportItem(firstTimeInterval)
                 )
             )
         )
@@ -415,10 +445,13 @@ class TimeReportsKtTest {
 
     @Test
     fun `find time reports with time intervals on different days`() {
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date() - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
                 isRegistered = true
             }
         )
@@ -473,7 +506,6 @@ class TimeReportsKtTest {
         val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
                 isRegistered = true
             }
         )
@@ -494,12 +526,12 @@ class TimeReportsKtTest {
 
     @Test
     fun `find time reports with time intervals filter using position`() {
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
-        timeIntervalRepository.add(
+        val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date() - 25.hours
             }
         )
+        timeIntervalRepository.add(newTimeInterval { })
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(firstTimeInterval.startInMilliseconds),
@@ -517,12 +549,12 @@ class TimeReportsKtTest {
 
     @Test
     fun `find time reports with time intervals filter using page size`() {
-        timeIntervalRepository.add(newTimeInterval { })
-        val secondTimeInterval = timeIntervalRepository.add(
+        timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date() - 25.hours
             }
         )
+        val secondTimeInterval = timeIntervalRepository.add(newTimeInterval { })
         val expected = listOf(
             TimeReportDay(
                 resetToStartOfDay(secondTimeInterval.startInMilliseconds),

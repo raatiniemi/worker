@@ -26,6 +26,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class FindActiveProjectsTest {
@@ -62,16 +63,20 @@ class FindActiveProjectsTest {
     fun `invoke with active project`() {
         projectRepository.add(NewProject("Project name #1"))
         projectRepository.add(NewProject("Project name #2"))
-        timeIntervalRepository.add(newTimeInterval {
-            projectId = 1
-            startInMilliseconds = 1
-            stopInMilliseconds = 10
-        })
-        timeIntervalRepository.add(newTimeInterval {
-            projectId = 2
-            startInMilliseconds = 1
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                projectId = 1
+                start = Date(1)
+                stopInMilliseconds = 10
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                projectId = 2
+                start = Date(1)
+                stopInMilliseconds = 0
+            }
+        )
         val expected = listOf(Project(2, "Project name #2"))
 
         val actual = findActiveProjects()
@@ -83,16 +88,20 @@ class FindActiveProjectsTest {
     fun `invoke with active projects`() {
         projectRepository.add(NewProject("Project name #1"))
         projectRepository.add(NewProject("Project name #2"))
-        timeIntervalRepository.add(newTimeInterval {
-            projectId = 1
-            startInMilliseconds = 1
-            stopInMilliseconds = 0
-        })
-        timeIntervalRepository.add(newTimeInterval {
-            projectId = 2
-            startInMilliseconds = 1
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                projectId = 1
+                start = Date(1)
+                stopInMilliseconds = 0
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                projectId = 2
+                start = Date(1)
+                stopInMilliseconds = 0
+            }
+        )
         val expected = listOf(
             Project(1, "Project name #1"),
             Project(2, "Project name #2")

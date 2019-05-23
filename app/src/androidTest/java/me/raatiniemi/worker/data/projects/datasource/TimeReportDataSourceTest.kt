@@ -17,6 +17,8 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.date.minus
 import me.raatiniemi.worker.domain.interactor.countTimeReports
 import me.raatiniemi.worker.domain.interactor.findTimeReports
 import me.raatiniemi.worker.domain.model.Project
@@ -100,10 +102,14 @@ class TimeReportDataSourceTest {
     @Test
     fun loadInitial_withTimeIntervals() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date() - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
             }
         )
         val data = listOf(
@@ -130,10 +136,14 @@ class TimeReportDataSourceTest {
     @Test
     fun loadInitial_withTimeIntervalsFilterUsingPosition() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date() - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
             }
         )
         val data = listOf(
@@ -163,10 +173,14 @@ class TimeReportDataSourceTest {
     @Test
     fun loadInitial_withTimeIntervalsFilterUsingPageSize() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date() - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
             }
         )
         val data = listOf(
@@ -229,10 +243,14 @@ class TimeReportDataSourceTest {
     @Test
     fun loadRange_withTimeIntervals() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date() - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
             }
         )
         val data = listOf(
@@ -255,10 +273,14 @@ class TimeReportDataSourceTest {
     @Test
     fun loadRange_withTimeIntervalsFilterUsingPosition() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date() - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
             }
         )
         val data = listOf(
@@ -284,10 +306,14 @@ class TimeReportDataSourceTest {
     @Test
     fun loadRange_withTimeIntervalsFilterUsingPageSize() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date() - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Date()
             }
         )
         val data = listOf(

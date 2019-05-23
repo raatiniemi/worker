@@ -16,16 +16,18 @@
 
 package me.raatiniemi.worker.domain.model
 
+import java.util.*
+
 data class NewTimeIntervalBuilder(
     var projectId: Long = 1,
-    var startInMilliseconds: Long = 0,
+    var start: Date = Date(),
     var stopInMilliseconds: Long = 0,
     var isRegistered: Boolean = false
 ) {
     fun build(): NewTimeInterval {
         return NewTimeInterval(
             projectId = projectId,
-            startInMilliseconds = startInMilliseconds,
+            start = start,
             stopInMilliseconds = stopInMilliseconds,
             isRegistered = isRegistered
         )
@@ -50,7 +52,7 @@ fun newTimeIntervalStartBefore(
     val stopInMilliseconds = startInMilliseconds + Math.abs(builder.stopInMilliseconds)
 
     return builder.let {
-        it.startInMilliseconds = startInMilliseconds
+        it.start = Date(startInMilliseconds)
         it.stopInMilliseconds = stopInMilliseconds
 
         it.build()
@@ -68,7 +70,7 @@ fun newTimeIntervalStartAfter(
     val stopInMilliseconds = startInMilliseconds + Math.abs(builder.stopInMilliseconds)
 
     return builder.let {
-        it.startInMilliseconds = startInMilliseconds
+        it.start = Date(startInMilliseconds)
         it.stopInMilliseconds = stopInMilliseconds
 
         it.build()
