@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.model.newTimeInterval
@@ -53,11 +54,12 @@ class CalculateTimeTodayTest {
 
     @Test
     fun `calculate time today with registered time`() {
-        val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
+        val startingPointInMilliseconds = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
+        val startingPoint = Date(startingPointInMilliseconds)
         repository.add(
             newTimeInterval {
-                start = Date(startingPoint)
-                stopInMilliseconds = startingPoint + 1.hours
+                start = startingPoint
+                stop = startingPoint + 1.hours
             }
         )
         val expected = 1.hours
@@ -69,13 +71,14 @@ class CalculateTimeTodayTest {
 
     @Test
     fun `calculate time today with active time interval`() {
-        val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
+        val startingPointInMilliseconds = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
+        val startingPoint = Date(startingPointInMilliseconds)
         repository.add(
             newTimeInterval {
-                start = Date(startingPoint)
+                start = startingPoint
             }
         )
-        val stopForActive = Date(startingPoint + 1.hours)
+        val stopForActive = startingPoint + 1.hours
         val expected = 1.hours
 
         val actual = calculateTimeToday(project, stopForActive)
@@ -85,19 +88,20 @@ class CalculateTimeTodayTest {
 
     @Test
     fun `calculate time today with registered time and active time interval`() {
-        val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
+        val startingPointInMilliseconds = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
+        val startingPoint = Date(startingPointInMilliseconds)
         repository.add(
             newTimeInterval {
-                start = Date(startingPoint)
-                stopInMilliseconds = startingPoint + 1.hours
+                start = startingPoint
+                stop = startingPoint + 1.hours
             }
         )
         repository.add(
             newTimeInterval {
-                start = Date(startingPoint)
+                start = startingPoint
             }
         )
-        val stopForActive = Date(startingPoint + 1.hours)
+        val stopForActive = Date(startingPointInMilliseconds + 1.hours)
         val expected = 2.hours
 
         val actual = calculateTimeToday(project, stopForActive)

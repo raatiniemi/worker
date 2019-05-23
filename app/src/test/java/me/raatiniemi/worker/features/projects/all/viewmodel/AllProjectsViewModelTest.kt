@@ -157,9 +157,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock in with active project`() {
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(newTimeInterval { })
         val item = ProjectsItem(project, emptyList())
         val date = Date()
 
@@ -187,9 +185,7 @@ class AllProjectsViewModelTest {
     @Test
     fun `toggle clock out project without confirm clock out with active project`() = runBlocking {
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(newTimeInterval { })
         val item = getProjectsItem(project, true)
         val date = Date()
 
@@ -244,9 +240,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock in with already active project`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(newTimeInterval { })
 
         vm.clockIn(project, Date())
 
@@ -276,9 +270,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock out project`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(newTimeInterval { })
 
         vm.clockOut(project, Date())
 

@@ -45,7 +45,7 @@ class RemoveTimeTest {
         repository.add(
             newTimeInterval {
                 start = Date(1)
-                stopInMilliseconds = 10
+                stop = Date(10)
             }
         )
         val timeInterval = timeInterval {
@@ -66,7 +66,7 @@ class RemoveTimeTest {
         repository.add(
             newTimeInterval {
                 start = Date(1)
-                stopInMilliseconds = 10
+                stop = Date(10)
             }
         )
         val timeInterval = timeInterval {

@@ -21,6 +21,6 @@ import java.util.*
 data class NewTimeInterval(
     val projectId: Long,
     val start: Date,
-    val stopInMilliseconds: Long = 0,
+    val stop: Date? = null,
     val isRegistered: Boolean = false
 )

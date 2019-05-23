@@ -209,7 +209,7 @@ class TimeIntervalRoomRepositoryTest {
         val newTimeInterval = newTimeInterval {
             projectId = 1
             start = Date(1)
-            stopInMilliseconds = 2
+            stop = Date(2)
         }
         val expected = timeInterval {
             projectId = 1

@@ -49,7 +49,6 @@ class IsProjectActiveTest {
     fun `is project active with active time interval`() {
         val newTimeInterval = newTimeInterval {
             start = Date(1)
-            stopInMilliseconds = 0
         }
         repository.add(newTimeInterval)
 

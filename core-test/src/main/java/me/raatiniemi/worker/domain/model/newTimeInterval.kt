@@ -21,14 +21,14 @@ import java.util.*
 data class NewTimeIntervalBuilder(
     var projectId: Long = 1,
     var start: Date = Date(),
-    var stopInMilliseconds: Long = 0,
+    var stop: Date? = null,
     var isRegistered: Boolean = false
 ) {
     fun build(): NewTimeInterval {
         return NewTimeInterval(
             projectId = projectId,
             start = start,
-            stopInMilliseconds = stopInMilliseconds,
+            stop = stop,
             isRegistered = isRegistered
         )
     }
@@ -49,11 +49,11 @@ fun newTimeIntervalStartBefore(
     builder.configure()
 
     val startInMilliseconds = startingPoint.calculateMilliseconds() - 3_600_000
-    val stopInMilliseconds = startInMilliseconds + Math.abs(builder.stopInMilliseconds)
+    val stopInMilliseconds = startInMilliseconds + (builder.stop?.time ?: 0)
 
     return builder.let {
         it.start = Date(startInMilliseconds)
-        it.stopInMilliseconds = stopInMilliseconds
+        it.stop = Date(stopInMilliseconds)
 
         it.build()
     }
@@ -67,11 +67,11 @@ fun newTimeIntervalStartAfter(
     builder.configure()
 
     val startInMilliseconds = startingPoint.calculateMilliseconds() + 3_600_000
-    val stopInMilliseconds = startInMilliseconds + Math.abs(builder.stopInMilliseconds)
+    val stopInMilliseconds = startInMilliseconds + (builder.stop?.time ?: 0)
 
     return builder.let {
         it.start = Date(startInMilliseconds)
-        it.stopInMilliseconds = stopInMilliseconds
+        it.stop = Date(stopInMilliseconds)
 
         it.build()
     }

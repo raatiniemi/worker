@@ -67,14 +67,13 @@ class FindActiveProjectsTest {
             newTimeInterval {
                 projectId = 1
                 start = Date(1)
-                stopInMilliseconds = 10
+                stop = Date(10)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 2
                 start = Date(1)
-                stopInMilliseconds = 0
             }
         )
         val expected = listOf(Project(2, "Project name #2"))
@@ -92,14 +91,12 @@ class FindActiveProjectsTest {
             newTimeInterval {
                 projectId = 1
                 start = Date(1)
-                stopInMilliseconds = 0
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 2
                 start = Date(1)
-                stopInMilliseconds = 0
             }
         )
         val expected = listOf(

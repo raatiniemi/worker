@@ -63,7 +63,7 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval {
                 start = Date(10)
-                stopInMilliseconds = 15
+                stop = Date(15)
             }
         )
         val expected = emptyList<TimeInterval>()
@@ -78,7 +78,7 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval {
                 start = Date(10)
-                stopInMilliseconds = 15
+                stop = Date(15)
             }
         )
         val expected = listOf(
@@ -106,7 +106,7 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval {
                 start = Date(1)
-                stopInMilliseconds = 10
+                stop = Date(10)
             }
         )
         val expected = timeInterval {
@@ -132,7 +132,7 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval {
                 start = Date(1)
-                stopInMilliseconds = 10
+                stop = Date(10)
             }
         )
 
@@ -235,7 +235,7 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval {
                 start = Date(1)
-                stopInMilliseconds = 10
+                stop = Date(10)
             }
         )
         val expected = emptyList<TimeInterval>()
@@ -263,7 +263,7 @@ class TimeIntervalInMemoryRepositoryTest {
         repository.add(
             newTimeInterval {
                 start = Date(1)
-                stopInMilliseconds = 10
+                stop = Date(10)
             }
         )
         val timeIntervals = listOf(
