@@ -16,8 +16,6 @@
 
 package me.raatiniemi.worker.domain.model
 
-import java.lang.Math.abs
-
 data class TimeIntervalBuilder(
     var id: Long = 1,
     var projectId: Long = 1,
@@ -42,22 +40,4 @@ fun timeInterval(configure: TimeIntervalBuilder.() -> Unit): TimeInterval {
     builder.configure()
 
     return builder.build()
-}
-
-fun timeIntervalStartAfter(
-    startingPoint: TimeIntervalStartingPoint,
-    configure: TimeIntervalBuilder.() -> Unit
-): TimeInterval {
-    val builder = TimeIntervalBuilder()
-    builder.configure()
-
-    val startInMilliseconds = after(startingPoint)
-    val stopInMilliseconds = startInMilliseconds + abs(builder.stopInMilliseconds)
-
-    return builder.let {
-        it.startInMilliseconds = startInMilliseconds
-        it.stopInMilliseconds = stopInMilliseconds
-
-        it.build()
-    }
 }
