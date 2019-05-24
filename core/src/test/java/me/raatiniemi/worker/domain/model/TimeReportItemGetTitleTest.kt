@@ -48,14 +48,14 @@ class TimeReportItemGetTitleTest(
                     "active time interval",
                     "08:00",
                     timeInterval {
-                        startInMilliseconds = START.timeInMillis
+                        start = Milliseconds(START.timeInMillis)
                     }
                 ),
                 arrayOf(
                     "inactive time interval",
                     "08:00 - 11:30",
                     timeInterval {
-                        startInMilliseconds = START.timeInMillis
+                        start = Milliseconds(START.timeInMillis)
                         stopInMilliseconds = STOP.timeInMillis
                     }
                 )

@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.comparator
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.timeInterval
 import org.junit.Assert.assertEquals
@@ -47,13 +48,13 @@ class TimeReportItemComparatorTest(
                     0,
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 0
                         }
                     ),
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 0
                         }
                     )
@@ -63,13 +64,13 @@ class TimeReportItemComparatorTest(
                     -1,
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 2
+                            start = Milliseconds(2)
                             stopInMilliseconds = 0
                         }
                     ),
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 0
                         }
                     )
@@ -79,13 +80,13 @@ class TimeReportItemComparatorTest(
                     1,
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 0
                         }
                     ),
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 2
+                            start = Milliseconds(2)
                             stopInMilliseconds = 0
                         }
                     )
@@ -95,13 +96,13 @@ class TimeReportItemComparatorTest(
                     0,
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 2
                         }
                     ),
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 2
                         }
                     )
@@ -111,13 +112,13 @@ class TimeReportItemComparatorTest(
                     -1,
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 2
+                            start = Milliseconds(2)
                             stopInMilliseconds = 2
                         }
                     ),
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 2
                         }
                     )
@@ -127,13 +128,13 @@ class TimeReportItemComparatorTest(
                     1,
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 2
                         }
                     ),
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 2
+                            start = Milliseconds(2)
                             stopInMilliseconds = 2
                         }
                     )
@@ -143,13 +144,13 @@ class TimeReportItemComparatorTest(
                     -1,
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 2
                         }
                     ),
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 1
                         }
                     )
@@ -159,13 +160,13 @@ class TimeReportItemComparatorTest(
                     1,
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 1
                         }
                     ),
                     TimeReportItem.with(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 2
                         }
                     )

@@ -37,6 +37,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportViewModelTest {
@@ -73,8 +74,15 @@ class TimeReportViewModelTest {
 
     @Test
     fun `toggle registered state with selected item`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval { })
-        val timeInterval = timeInterval { id = 1 }
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
+        val timeInterval = timeInterval {
+            id = 1
+            start = Milliseconds(1)
+        }
         val timeReportItem = TimeReportItem.with(timeInterval)
         val expected = listOf(
             timeInterval.copy(isRegistered = true)
@@ -90,10 +98,24 @@ class TimeReportViewModelTest {
 
     @Test
     fun `toggle registered state for selected items`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval { })
-        timeIntervalRepository.add(newTimeInterval { })
-        val firstTimeInterval = timeInterval { id = 1 }
-        val secondTimeInterval = timeInterval { id = 2 }
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
+        val firstTimeInterval = timeInterval {
+            id = 1
+            start = Milliseconds(1)
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            start = Milliseconds(1)
+        }
         val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
         val secondTimeReportItem = TimeReportItem.with(secondTimeInterval)
         val expected = listOf(
@@ -112,8 +134,15 @@ class TimeReportViewModelTest {
 
     @Test
     fun `remove with single item`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval { })
-        val timeInterval = timeInterval { id = 1 }
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
+        val timeInterval = timeInterval {
+            id = 1
+            start = Milliseconds(1)
+        }
         val timeReportItem = TimeReportItem(timeInterval)
         val expected = emptyList<TimeInterval>()
 
@@ -127,10 +156,28 @@ class TimeReportViewModelTest {
 
     @Test
     fun `remove with multiple items`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval { })
-        timeIntervalRepository.add(newTimeInterval { })
-        val firstTimeReportItem = TimeReportItem(timeInterval { id = 1 })
-        val secondTimeReportItem = TimeReportItem(timeInterval { id = 2 })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Date(1)
+            }
+        )
+        val firstTimeReportItem = TimeReportItem(
+            timeInterval {
+                id = 1
+                start = Milliseconds(1)
+            }
+        )
+        val secondTimeReportItem = TimeReportItem(
+            timeInterval {
+                id = 2
+                start = Milliseconds(1)
+            }
+        )
         val expected = emptyList<TimeInterval>()
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))

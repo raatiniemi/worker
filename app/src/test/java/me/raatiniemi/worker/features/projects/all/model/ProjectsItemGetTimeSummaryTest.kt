@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.all.model
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
@@ -48,6 +49,7 @@ class ProjectsItemGetTimeSummaryTest(
                     "1h 0m",
                     listOf(
                         timeInterval {
+                            start = Milliseconds(0)
                             stopInMilliseconds = 3600000
                         }
                     )
@@ -56,6 +58,7 @@ class ProjectsItemGetTimeSummaryTest(
                     "2h 30m",
                     listOf(
                         timeInterval {
+                            start = Milliseconds(0)
                             stopInMilliseconds = 9000000
                         }
                     )
@@ -64,9 +67,11 @@ class ProjectsItemGetTimeSummaryTest(
                     "3h 30m",
                     listOf(
                         timeInterval {
+                            start = Milliseconds(0)
                             stopInMilliseconds = 3600000
                         },
                         timeInterval {
+                            start = Milliseconds(0)
                             stopInMilliseconds = 9000000
                         }
                     )

@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.all.model
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
@@ -59,7 +60,7 @@ class ProjectsItemIsActiveTest(
             if (isProjectActive) {
                 return listOf(
                     timeInterval {
-                        startInMilliseconds = 1
+                        start = Milliseconds(1)
                         stopInMilliseconds = 0
                     }
                 )

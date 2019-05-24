@@ -51,7 +51,7 @@ class TimeReportDayTest(
                     HoursMinutes(-7, 0),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 3600000
                         }
                     )
@@ -61,7 +61,7 @@ class TimeReportDayTest(
                     HoursMinutes.empty,
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 28800000
                         }
                     )
@@ -71,7 +71,7 @@ class TimeReportDayTest(
                     HoursMinutes(1, 0),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 32400000
                         }
                     )
@@ -81,11 +81,11 @@ class TimeReportDayTest(
                     HoursMinutes(1, 7),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 14380327
                         },
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 18407820
                         }
                     )
@@ -95,11 +95,11 @@ class TimeReportDayTest(
                     HoursMinutes(0, 46),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 13956031
                         },
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 17594386
                         }
                     )
@@ -109,11 +109,11 @@ class TimeReportDayTest(
                     HoursMinutes(0, -8),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 11661632
                         },
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 16707601
                         }
                     )

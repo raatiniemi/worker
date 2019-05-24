@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.timereport.model
 
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesFormat
 import org.junit.Assert.assertEquals
@@ -56,7 +53,7 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 3600000
                         }
                     )
@@ -66,7 +63,7 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 28800000
                         }
                     )
@@ -76,7 +73,7 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 32400000
                         }
                     )
@@ -86,11 +83,11 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 14380327
                         },
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 18407820
                         }
                     )
@@ -100,11 +97,11 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 13956031
                         },
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 17594386
                         }
                     )
@@ -114,11 +111,11 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 11661632
                         },
                         timeInterval {
-                            startInMilliseconds = 1
+                            start = Milliseconds(1)
                             stopInMilliseconds = 16707601
                         }
                     )

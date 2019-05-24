@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.model
 data class TimeIntervalBuilder(
     var id: Long = 1,
     var projectId: Long = 1,
-    var startInMilliseconds: Long = 0,
+    var start: Milliseconds? = null,
     var stopInMilliseconds: Long = 0,
     var isRegistered: Boolean = false
 ) {
@@ -27,7 +27,7 @@ data class TimeIntervalBuilder(
         return TimeInterval(
             id = id,
             projectId = projectId,
-            start = Milliseconds(startInMilliseconds),
+            start = requireNotNull(start),
             stop = stopInMilliseconds.takeUnless { 0L == it }
                 ?.let { Milliseconds(it) },
             isRegistered = isRegistered

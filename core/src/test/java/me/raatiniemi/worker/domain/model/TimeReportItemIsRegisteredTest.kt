@@ -44,13 +44,16 @@ class TimeReportItemIsRegisteredTest(
                     "is registered",
                     true,
                     timeInterval {
+                        start = Milliseconds(1)
                         isRegistered = true
                     }
                 ),
                 arrayOf(
                     "is not registered",
                     false,
-                    timeInterval { }
+                    timeInterval {
+                        start = Milliseconds(1)
+                    }
                 )
             )
     }

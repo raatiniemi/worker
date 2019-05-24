@@ -57,7 +57,7 @@ class GetProjectTimeSinceTest {
         val expected = listOf(
             timeInterval {
                 id = 2
-                startInMilliseconds = newTimeInterval.start.value
+                start = newTimeInterval.start
                 stopInMilliseconds = requireNotNull(newTimeInterval.stop).value
             }
         )
@@ -83,7 +83,7 @@ class GetProjectTimeSinceTest {
         val expected = listOf(
             timeInterval {
                 id = 2
-                startInMilliseconds = newTimeInterval.start.value
+                start = newTimeInterval.start
                 stopInMilliseconds = requireNotNull(newTimeInterval.stop).value
             }
         )
@@ -109,7 +109,7 @@ class GetProjectTimeSinceTest {
         val expected = listOf(
             timeInterval {
                 id = 2
-                startInMilliseconds = newTimeInterval.start.value
+                start = newTimeInterval.start
                 stopInMilliseconds = requireNotNull(newTimeInterval.stop).value
             }
         )

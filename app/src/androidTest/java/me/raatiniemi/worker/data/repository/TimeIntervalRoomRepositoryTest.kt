@@ -25,10 +25,7 @@ import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.TimeIntervalEntity
 import me.raatiniemi.worker.data.projects.projectEntity
 import me.raatiniemi.worker.data.projects.timeIntervalEntity
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -93,7 +90,7 @@ class TimeIntervalRoomRepositoryTest {
         val expected = listOf(
             timeInterval {
                 projectId = entity.projectId
-                startInMilliseconds = entity.startInMilliseconds
+                start = Milliseconds(entity.startInMilliseconds)
                 stopInMilliseconds = entity.stopInMilliseconds
                 isRegistered = entity.registered == 1L
             }
@@ -111,7 +108,7 @@ class TimeIntervalRoomRepositoryTest {
         val expected = listOf(
             timeInterval {
                 projectId = entity.projectId
-                startInMilliseconds = entity.startInMilliseconds
+                start = Milliseconds(entity.startInMilliseconds)
                 stopInMilliseconds = entity.stopInMilliseconds
                 isRegistered = entity.registered == 1L
             }
@@ -138,7 +135,7 @@ class TimeIntervalRoomRepositoryTest {
         val expected = listOf(
             timeInterval {
                 projectId = entity.projectId
-                startInMilliseconds = entity.startInMilliseconds
+                start = Milliseconds(entity.startInMilliseconds)
                 stopInMilliseconds = entity.stopInMilliseconds
                 isRegistered = entity.registered == 1L
             }
@@ -162,7 +159,7 @@ class TimeIntervalRoomRepositoryTest {
         timeIntervals.add(entity)
         val expected = timeInterval {
             projectId = entity.projectId
-            startInMilliseconds = entity.startInMilliseconds
+            start = Milliseconds(entity.startInMilliseconds)
             stopInMilliseconds = entity.stopInMilliseconds
             isRegistered = entity.registered == 1L
         }
@@ -194,7 +191,7 @@ class TimeIntervalRoomRepositoryTest {
         timeIntervals.add(entity)
         val expected = timeInterval {
             projectId = entity.projectId
-            startInMilliseconds = entity.startInMilliseconds
+            start = Milliseconds(entity.startInMilliseconds)
             stopInMilliseconds = entity.stopInMilliseconds
             isRegistered = entity.registered == 1L
         }
@@ -213,7 +210,7 @@ class TimeIntervalRoomRepositoryTest {
         }
         val expected = timeInterval {
             projectId = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 2
         }
 
@@ -226,7 +223,7 @@ class TimeIntervalRoomRepositoryTest {
     fun update_withoutTimeInterval() {
         val timeInterval = timeInterval {
             projectId = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 2
         }
 
@@ -241,7 +238,7 @@ class TimeIntervalRoomRepositoryTest {
         timeIntervals.add(entity)
         val expected = timeInterval {
             projectId = entity.projectId
-            startInMilliseconds = entity.startInMilliseconds
+            start = Milliseconds(entity.startInMilliseconds)
             stopInMilliseconds = entity.stopInMilliseconds
             isRegistered = entity.registered == 1L
         }
@@ -256,7 +253,7 @@ class TimeIntervalRoomRepositoryTest {
         val timeInterval = timeInterval {
             id = 1
             projectId = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 2
         }
 
@@ -273,13 +270,13 @@ class TimeIntervalRoomRepositoryTest {
             timeInterval {
                 id = 1
                 projectId = 1
-                startInMilliseconds = 1
+                start = Milliseconds(1)
                 stopInMilliseconds = 2
             },
             timeInterval {
                 id = 2
                 projectId = 1
-                startInMilliseconds = 4
+                start = Milliseconds(4)
                 stopInMilliseconds = 6
             }
         )
@@ -324,7 +321,7 @@ class TimeIntervalRoomRepositoryTest {
     fun remove_withoutTimeIntervals() {
         val timeInterval = timeInterval {
             projectId = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 2
         }
 
@@ -347,7 +344,7 @@ class TimeIntervalRoomRepositoryTest {
         timeIntervals.add(entity)
         val timeInterval = timeInterval {
             projectId = entity.projectId
-            startInMilliseconds = entity.startInMilliseconds
+            start = Milliseconds(entity.startInMilliseconds)
             stopInMilliseconds = entity.stopInMilliseconds
         }
         val expected = listOf(entity)

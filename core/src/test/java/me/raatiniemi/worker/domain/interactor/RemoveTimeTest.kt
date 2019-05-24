@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -50,7 +47,7 @@ class RemoveTimeTest {
         )
         val timeInterval = timeInterval {
             id = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 10
         }
         val expected = emptyList<TimeInterval>()
@@ -71,7 +68,7 @@ class RemoveTimeTest {
         )
         val timeInterval = timeInterval {
             id = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 10
         }
         val expected = emptyList<TimeInterval>()

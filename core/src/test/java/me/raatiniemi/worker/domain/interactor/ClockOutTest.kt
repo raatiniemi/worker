@@ -20,6 +20,7 @@ import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
@@ -73,7 +74,7 @@ class ClockOutTest {
         val expected = listOf(
             timeInterval {
                 id = 1
-                startInMilliseconds = 1
+                start = Milliseconds(1)
                 stopInMilliseconds = date.time
             }
         )

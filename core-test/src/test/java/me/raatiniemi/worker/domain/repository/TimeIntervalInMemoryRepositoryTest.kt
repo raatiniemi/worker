@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Before
@@ -84,7 +81,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val expected = listOf(
             timeInterval {
                 id = 1
-                startInMilliseconds = 10
+                start = Milliseconds(10)
                 stopInMilliseconds = 15
             }
         )
@@ -111,7 +108,7 @@ class TimeIntervalInMemoryRepositoryTest {
         )
         val expected = timeInterval {
             id = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 10
         }
 
@@ -150,7 +147,7 @@ class TimeIntervalInMemoryRepositoryTest {
         )
         val expected = timeInterval {
             id = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
         }
 
         val actual = repository.findActiveByProjectId(1)
@@ -162,7 +159,7 @@ class TimeIntervalInMemoryRepositoryTest {
     fun `update without time interval`() {
         val timeInterval = timeInterval {
             id = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 10
         }
 
@@ -180,7 +177,7 @@ class TimeIntervalInMemoryRepositoryTest {
         )
         val expected = timeInterval {
             id = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 5
         }
 
@@ -194,7 +191,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val timeIntervals = listOf(
             timeInterval {
                 id = 1
-                startInMilliseconds = 1
+                start = Milliseconds(1)
                 stopInMilliseconds = 10
             }
         )
@@ -215,7 +212,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val expected = listOf(
             timeInterval {
                 id = 1
-                startInMilliseconds = 1
+                start = Milliseconds(1)
                 stopInMilliseconds = 5
             }
         )
@@ -250,7 +247,7 @@ class TimeIntervalInMemoryRepositoryTest {
     fun `remove without time intervals`() {
         val timeInterval = timeInterval {
             id = 1
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 10
         }
         val timeIntervals = listOf(timeInterval)
@@ -269,7 +266,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val timeIntervals = listOf(
             timeInterval {
                 id = 1
-                startInMilliseconds = 1
+                start = Milliseconds(1)
                 stopInMilliseconds = 10
             }
         )

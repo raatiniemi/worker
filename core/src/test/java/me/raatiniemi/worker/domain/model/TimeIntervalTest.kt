@@ -26,7 +26,9 @@ import java.util.*
 class TimeIntervalTest {
     @Test
     fun isActive_whenActive() {
-        val timeInterval = timeInterval { }
+        val timeInterval = timeInterval {
+            start = Milliseconds(1)
+        }
 
         assertTrue(timeInterval.isActive)
     }
@@ -34,6 +36,7 @@ class TimeIntervalTest {
     @Test
     fun isActive_whenInactive() {
         val timeInterval = timeInterval {
+            start = Milliseconds(1)
             stopInMilliseconds = 1
         }
 
@@ -43,7 +46,7 @@ class TimeIntervalTest {
     @Test
     fun getTime_whenActive() {
         val timeInterval = timeInterval {
-            startInMilliseconds = 1
+            start = Milliseconds(1)
         }
 
         assertEquals(0L, timeInterval.time)
@@ -52,7 +55,7 @@ class TimeIntervalTest {
     @Test
     fun getTime_whenInactive() {
         val timeInterval = timeInterval {
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 11
         }
 
@@ -62,7 +65,7 @@ class TimeIntervalTest {
     @Test
     fun getInterval_whenActive() {
         val timeInterval = timeInterval {
-            startInMilliseconds = 1
+            start = Milliseconds(1)
         }
 
         // TODO: Fix better interval measurement when active.
@@ -73,7 +76,7 @@ class TimeIntervalTest {
     @Test
     fun getInterval_whenInactive() {
         val timeInterval = timeInterval {
-            startInMilliseconds = 1
+            start = Milliseconds(1)
             stopInMilliseconds = 11
         }
 
@@ -84,7 +87,7 @@ class TimeIntervalTest {
     fun `calculate interval for active time interval`() {
         val expected = 10L
         val timeInterval = timeInterval {
-            startInMilliseconds = 0
+            start = Milliseconds(0)
         }
 
         val actual = timeInterval.calculateInterval(stopForActive = Date(10))
@@ -96,7 +99,7 @@ class TimeIntervalTest {
     fun `calculate interval for inactive time interval`() {
         val expected = 10L
         val timeInterval = timeInterval {
-            startInMilliseconds = 0
+            start = Milliseconds(0)
             stopInMilliseconds = 10
         }
 

@@ -46,6 +46,7 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
                     "1:00",
                     DigitalHoursMinutesIntervalFormat(),
                     timeInterval {
+                        start = Milliseconds(0)
                         stopInMilliseconds = 3600000
                     }
                 ),
@@ -53,6 +54,7 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
                     "9:00",
                     DigitalHoursMinutesIntervalFormat(),
                     timeInterval {
+                        start = Milliseconds(0)
                         stopInMilliseconds = 32400000
                     }
                 )

@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
@@ -26,6 +27,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class MarkRegisteredTimeTest {
@@ -43,17 +45,29 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple unregistered items`() {
         val newTimeIntervals = listOf(
-            newTimeInterval { },
-            newTimeInterval { },
-            newTimeInterval { },
-            newTimeInterval { }
+            newTimeInterval { start = Date(1) },
+            newTimeInterval { start = Date(1) },
+            newTimeInterval { start = Date(1) },
+            newTimeInterval { start = Date(1) }
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
-            timeInterval { id = 1 },
-            timeInterval { id = 2 },
-            timeInterval { id = 3 },
-            timeInterval { id = 4 }
+            timeInterval {
+                id = 1
+                start = Milliseconds(1)
+            },
+            timeInterval {
+                id = 2
+                start = Milliseconds(1)
+            },
+            timeInterval {
+                id = 3
+                start = Milliseconds(1)
+            },
+            timeInterval {
+                id = 4
+                start = Milliseconds(1)
+            }
         )
 
         markRegisteredTime(timeIntervals)
@@ -61,18 +75,22 @@ class MarkRegisteredTimeTest {
         val expected = listOf(
             timeInterval {
                 id = 1
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 2
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 3
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 4
+                start = Milliseconds(1)
                 isRegistered = true
             }
         )
@@ -83,27 +101,43 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple registered items`() {
         val newTimeIntervals = listOf(
-            newTimeInterval { isRegistered = true },
-            newTimeInterval { isRegistered = true },
-            newTimeInterval { isRegistered = true },
-            newTimeInterval { isRegistered = true }
+            newTimeInterval {
+                start = Date(1)
+                isRegistered = true
+            },
+            newTimeInterval {
+                start = Date(1)
+                isRegistered = true
+            },
+            newTimeInterval {
+                start = Date(1)
+                isRegistered = true
+            },
+            newTimeInterval {
+                start = Date(1)
+                isRegistered = true
+            }
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
             timeInterval {
                 id = 1
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 2
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 3
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 4
+                start = Milliseconds(1)
                 isRegistered = true
             }
         )
@@ -111,10 +145,22 @@ class MarkRegisteredTimeTest {
         markRegisteredTime(timeIntervals)
 
         val expected = listOf(
-            timeInterval { id = 1 },
-            timeInterval { id = 2 },
-            timeInterval { id = 3 },
-            timeInterval { id = 4 }
+            timeInterval {
+                id = 1
+                start = Milliseconds(1)
+            },
+            timeInterval {
+                id = 2
+                start = Milliseconds(1)
+            },
+            timeInterval {
+                id = 3
+                start = Milliseconds(1)
+            },
+            timeInterval {
+                id = 4
+                start = Milliseconds(1)
+            }
         )
         val actual = repository.findAll(project, 0)
         assertEquals(expected, actual)
@@ -123,24 +169,41 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple items`() {
         val newTimeIntervals = listOf(
-            newTimeInterval { },
-            newTimeInterval { isRegistered = true },
-            newTimeInterval { isRegistered = true },
-            newTimeInterval { isRegistered = true }
+            newTimeInterval {
+                start = Date(1)
+            },
+            newTimeInterval {
+                start = Date(1)
+                isRegistered = true
+            },
+            newTimeInterval {
+                start = Date(1)
+                isRegistered = true
+            },
+            newTimeInterval {
+                start = Date(1)
+                isRegistered = true
+            }
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
-            timeInterval { id = 1 },
+            timeInterval {
+                id = 1
+                start = Milliseconds(1)
+            },
             timeInterval {
                 id = 2
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 3
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 4
+                start = Milliseconds(1)
                 isRegistered = true
             }
         )
@@ -150,18 +213,22 @@ class MarkRegisteredTimeTest {
         val expected = listOf(
             timeInterval {
                 id = 1
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 2
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 3
+                start = Milliseconds(1)
                 isRegistered = true
             },
             timeInterval {
                 id = 4
+                start = Milliseconds(1)
                 isRegistered = true
             }
         )

@@ -22,10 +22,7 @@ import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.RemoveProject
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
@@ -85,7 +82,7 @@ class AllProjectsViewModelTest {
             listOf(
                 timeInterval {
                     projectId = project.id
-                    startInMilliseconds = 1
+                    start = Milliseconds(1)
                 }
             )
         } else {

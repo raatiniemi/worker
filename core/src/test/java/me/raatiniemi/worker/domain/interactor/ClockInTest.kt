@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.model.timeInterval
@@ -53,7 +54,7 @@ class ClockInTest {
         val expected = listOf(
             timeInterval {
                 id = 1
-                startInMilliseconds = date.time
+                start = Milliseconds(date.time)
             }
         )
 
