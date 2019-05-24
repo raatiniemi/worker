@@ -22,13 +22,13 @@ import java.util.*
 class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeIntervalRepository) :
     TimeReportRepository {
     override fun count(project: Project): Int = timeIntervalRepository.findAll(project, 0)
-        .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+        .groupBy { resetToStartOfDay(it.start.value) }
         .count()
 
     override fun countNotRegistered(project: Project): Int =
         timeIntervalRepository.findAll(project, 0)
             .filter { !it.isRegistered }
-            .groupBy { resetToStartOfDay(it.startInMilliseconds) }
+            .groupBy { resetToStartOfDay(it.start.value) }
             .count()
 
     override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
@@ -58,14 +58,14 @@ class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeInter
 
     private fun groupByDay(timeIntervals: List<TimeInterval>): Map<Date, List<TimeInterval>> {
         return timeIntervals.groupBy {
-            resetToStartOfDay(it.startInMilliseconds)
+            resetToStartOfDay(it.start.value)
         }
     }
 
     private fun buildTimeReportDay(entry: Map.Entry<Date, List<TimeInterval>>) =
         entry.let { (date, timeIntervals) ->
             val timeReportItems = timeIntervals
-                .sortedByDescending { it.startInMilliseconds }
+                .sortedByDescending { it.start.value }
                 .map { TimeReportItem(it) }
 
             TimeReportDay(date, timeReportItems)

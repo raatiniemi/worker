@@ -45,11 +45,11 @@ class TimeReportItemComparator : Comparator<TimeReportItem> {
             }
         }
 
-        if (isAfter(lhs.startInMilliseconds, rhs.startInMilliseconds)) {
+        if (isAfter(lhs.start.value, rhs.start.value)) {
             return -1
         }
 
-        if (isBefore(lhs.startInMilliseconds, rhs.startInMilliseconds)) {
+        if (isBefore(lhs.start.value, rhs.start.value)) {
             return 1
         }
 

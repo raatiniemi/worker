@@ -53,7 +53,7 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
     }
 
     private fun buildDateFromStartTime(): Date {
-        return buildDateFromMilliseconds(timeInterval.startInMilliseconds)
+        return buildDateFromMilliseconds(timeInterval.start.value)
     }
 
     private fun appendStopTimeWithSeparator(title: StringBuilder) {

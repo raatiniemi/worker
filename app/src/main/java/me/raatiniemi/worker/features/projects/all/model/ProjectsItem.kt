@@ -49,7 +49,7 @@ data class ProjectsItem(
         }
 
     val clockedInSinceInMilliseconds: Long
-        get() = activeTimeInterval?.startInMilliseconds ?: 0
+        get() = activeTimeInterval?.start?.value ?: 0
 
     init {
         registeredTimeSummary = calculateSummaryFromRegisteredTime(registeredTime)

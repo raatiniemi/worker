@@ -38,7 +38,7 @@ internal class TimeReportRoomRepository(
     private fun transform(group: TimeReportQueryGroup): TimeReportDay {
         val map = group.mapNotNull { timeIntervals.find(it) }
             .map { it.toTimeInterval() }
-            .sortedByDescending { it.startInMilliseconds }
+            .sortedByDescending { it.start.value }
             .map { TimeReportItem.with(it) }
 
         return TimeReportDay(

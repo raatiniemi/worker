@@ -25,7 +25,7 @@ import java.util.*
 data class TimeInterval(
     val id: Long,
     val projectId: Long,
-    val startInMilliseconds: Long,
+    val start: Milliseconds,
     val stopInMilliseconds: Long = 0,
     val isRegistered: Boolean = false
 ) {
@@ -43,7 +43,7 @@ data class TimeInterval(
 
     init {
         if (stopInMilliseconds > 0) {
-            if (stopInMilliseconds < startInMilliseconds) {
+            if (stopInMilliseconds < start.value) {
                 throw ClockOutBeforeClockInException()
             }
         }
@@ -58,6 +58,6 @@ data class TimeInterval(
     }
 
     private fun calculateInterval(stopInMilliseconds: Long): Long {
-        return stopInMilliseconds - startInMilliseconds
+        return stopInMilliseconds - start.value
     }
 }

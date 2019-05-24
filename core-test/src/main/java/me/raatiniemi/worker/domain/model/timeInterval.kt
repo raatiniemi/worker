@@ -29,7 +29,7 @@ data class TimeIntervalBuilder(
         return TimeInterval(
             id = id,
             projectId = projectId,
-            startInMilliseconds = startInMilliseconds,
+            start = Milliseconds(startInMilliseconds),
             stopInMilliseconds = stopInMilliseconds,
             isRegistered = isRegistered
         )
