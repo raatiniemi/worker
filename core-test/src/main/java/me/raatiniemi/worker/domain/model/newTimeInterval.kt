@@ -27,8 +27,8 @@ data class NewTimeIntervalBuilder(
     fun build(): NewTimeInterval {
         return NewTimeInterval(
             projectId = projectId,
-            start = start,
-            stop = stop,
+            start = Milliseconds(start.time),
+            stop = stop?.let { Milliseconds(it.time) },
             isRegistered = isRegistered
         )
     }

@@ -42,8 +42,8 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         return timeInterval {
             id = incrementedId.incrementAndGet()
             projectId = newTimeInterval.projectId
-            startInMilliseconds = newTimeInterval.start.time
-            stopInMilliseconds = newTimeInterval.stop?.time ?: 0
+            startInMilliseconds = newTimeInterval.start.value
+            stopInMilliseconds = newTimeInterval.stop?.value ?: 0
             isRegistered = newTimeInterval.isRegistered
         }.also { timeIntervals.add(it) }
     }
