@@ -23,15 +23,13 @@ data class TimeIntervalBuilder(
     var stop: Milliseconds? = null,
     var isRegistered: Boolean = false
 ) {
-    fun build(): TimeInterval {
-        return TimeInterval(
-            id = id,
-            projectId = projectId,
-            start = requireNotNull(start),
-            stop = stop,
-            isRegistered = isRegistered
-        )
-    }
+    fun build() = TimeInterval(
+        id = id,
+        projectId = projectId,
+        start = requireNotNull(start),
+        stop = stop,
+        isRegistered = isRegistered
+    )
 }
 
 fun timeInterval(configure: TimeIntervalBuilder.() -> Unit): TimeInterval {
