@@ -213,7 +213,7 @@ class TimeReportInMemoryRepositoryTest {
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(1),
+                resetToStartOfDay(Milliseconds(1)),
                 timeIntervals.reversed()
                     .map { TimeReportItem(it) }
             )
@@ -241,13 +241,13 @@ class TimeReportInMemoryRepositoryTest {
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval)
                 )
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     TimeReportItem(firstTimeInterval)
                 )
@@ -276,7 +276,7 @@ class TimeReportInMemoryRepositoryTest {
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(firstTimeIntervals.start.value),
+                resetToStartOfDay(firstTimeIntervals.start),
                 listOf(
                     TimeReportItem(firstTimeIntervals)
                 )
@@ -305,7 +305,7 @@ class TimeReportInMemoryRepositoryTest {
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval)
                 )
@@ -368,7 +368,7 @@ class TimeReportInMemoryRepositoryTest {
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval),
                     TimeReportItem(firstTimeInterval)
@@ -405,13 +405,13 @@ class TimeReportInMemoryRepositoryTest {
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval)
                 )
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     TimeReportItem(firstTimeInterval)
                 )
@@ -440,7 +440,7 @@ class TimeReportInMemoryRepositoryTest {
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(firstTimeIntervals.start.value),
+                resetToStartOfDay(firstTimeIntervals.start),
                 listOf(
                     TimeReportItem(firstTimeIntervals)
                 )
@@ -469,7 +469,7 @@ class TimeReportInMemoryRepositoryTest {
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval)
                 )

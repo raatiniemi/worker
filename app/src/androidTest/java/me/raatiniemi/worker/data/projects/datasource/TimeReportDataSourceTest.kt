@@ -84,7 +84,7 @@ class TimeReportDataSourceTest {
         val timeInterval = timeIntervalRepository.add(newTimeInterval { })
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(timeInterval.start.value),
+                resetToStartOfDay(timeInterval.start),
                 listOf(TimeReportItem(timeInterval))
             )
         )
@@ -114,11 +114,11 @@ class TimeReportDataSourceTest {
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -148,11 +148,11 @@ class TimeReportDataSourceTest {
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -185,11 +185,11 @@ class TimeReportDataSourceTest {
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -229,7 +229,7 @@ class TimeReportDataSourceTest {
         val timeInterval = timeIntervalRepository.add(newTimeInterval { })
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(timeInterval.start.value),
+                resetToStartOfDay(timeInterval.start),
                 listOf(TimeReportItem(timeInterval))
             )
         )
@@ -255,11 +255,11 @@ class TimeReportDataSourceTest {
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -285,11 +285,11 @@ class TimeReportDataSourceTest {
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -318,11 +318,11 @@ class TimeReportDataSourceTest {
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.start.value),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.start.value),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
