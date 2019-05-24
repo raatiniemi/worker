@@ -26,24 +26,24 @@ data class TimeInterval(
     val id: Long,
     val projectId: Long,
     val start: Milliseconds,
-    val stopInMilliseconds: Long = 0,
+    val stop: Milliseconds? = null,
     val isRegistered: Boolean = false
 ) {
-    val isActive = 0L == stopInMilliseconds
+    val isActive = null == stop
 
     val time: Long
         get() = if (isActive) {
             0L
-        } else calculateInterval(stopInMilliseconds)
+        } else calculateInterval(stop?.value ?: 0)
 
     val interval: Long
         get() = if (isActive) {
             calculateInterval(Date().time)
-        } else calculateInterval(stopInMilliseconds)
+        } else calculateInterval(stop?.value ?: 0)
 
     init {
-        if (stopInMilliseconds > 0) {
-            if (stopInMilliseconds < start.value) {
+        if (stop != null) {
+            if (stop.value < start.value) {
                 throw ClockOutBeforeClockInException()
             }
         }
@@ -54,7 +54,7 @@ data class TimeInterval(
             return calculateInterval(stopForActive.time)
         }
 
-        return calculateInterval(stopInMilliseconds)
+        return calculateInterval(stop?.value ?: 0)
     }
 
     private fun calculateInterval(stopInMilliseconds: Long): Long {

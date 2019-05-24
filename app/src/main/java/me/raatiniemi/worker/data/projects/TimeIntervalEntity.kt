@@ -52,7 +52,8 @@ internal data class TimeIntervalEntity(
         id = id,
         projectId = projectId,
         start = Milliseconds(startInMilliseconds),
-        stopInMilliseconds = stopInMilliseconds,
+        stop = stopInMilliseconds.takeUnless { it == 0L }
+            ?.let { Milliseconds(it) },
         isRegistered = registered == 1L
     )
 }
@@ -73,7 +74,7 @@ internal fun TimeInterval.toEntity() = TimeIntervalEntity(
     id = id,
     projectId = projectId,
     startInMilliseconds = start.value,
-    stopInMilliseconds = stopInMilliseconds,
+    stopInMilliseconds = stop?.value ?: 0,
     registered = if (isRegistered) {
         1
     } else {

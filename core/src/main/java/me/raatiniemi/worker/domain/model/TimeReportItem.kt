@@ -62,7 +62,7 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
     }
 
     private fun buildDateFromStopTime(): Date {
-        return buildDateFromMilliseconds(timeInterval.stopInMilliseconds)
+        return buildDateFromMilliseconds(timeInterval.stop?.value ?: 0)
     }
 
     fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {

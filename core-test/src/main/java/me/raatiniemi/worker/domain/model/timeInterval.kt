@@ -30,7 +30,8 @@ data class TimeIntervalBuilder(
             id = id,
             projectId = projectId,
             start = Milliseconds(startInMilliseconds),
-            stopInMilliseconds = stopInMilliseconds,
+            stop = stopInMilliseconds.takeUnless { 0L == it }
+                ?.let { Milliseconds(it) },
             isRegistered = isRegistered
         )
     }

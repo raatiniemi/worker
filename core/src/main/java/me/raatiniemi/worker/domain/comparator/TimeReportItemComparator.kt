@@ -23,7 +23,7 @@ import me.raatiniemi.worker.domain.model.TimeReportItem
 
 class TimeReportItemComparator : Comparator<TimeReportItem> {
     private fun isActive(timeInterval: TimeInterval): Boolean {
-        return 0L == timeInterval.stopInMilliseconds
+        return null == timeInterval.stop
     }
 
     private fun isBefore(lhs: Long, rhs: Long): Boolean {
@@ -35,7 +35,7 @@ class TimeReportItemComparator : Comparator<TimeReportItem> {
     }
 
     private fun compare(lhs: TimeInterval, rhs: TimeInterval): Int {
-        if (lhs.stopInMilliseconds != rhs.stopInMilliseconds) {
+        if (lhs.stop != rhs.stop) {
             if (isActive(lhs)) {
                 return -1
             }
@@ -53,11 +53,13 @@ class TimeReportItemComparator : Comparator<TimeReportItem> {
             return 1
         }
 
-        if (isAfter(lhs.stopInMilliseconds, rhs.stopInMilliseconds)) {
+        val lhsStop = lhs.stop?.value ?: 0
+        val rhsStop = rhs.stop?.value ?: 0
+        if (isAfter(lhsStop, rhsStop)) {
             return -1
         }
 
-        return if (isBefore(lhs.stopInMilliseconds, rhs.stopInMilliseconds)) {
+        return if (isBefore(lhsStop, rhsStop)) {
             1
         } else 0
     }

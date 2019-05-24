@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.InactiveProjectException
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import java.util.*
 
@@ -30,7 +31,7 @@ class ClockOut(private val timeIntervalRepository: TimeIntervalRepository) {
 
         timeIntervalRepository.update(
             timeInterval.copy(
-                stopInMilliseconds = date.time
+                stop = Milliseconds(date.time)
             )
         )
     }
