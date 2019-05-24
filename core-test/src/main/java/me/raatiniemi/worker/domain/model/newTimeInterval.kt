@@ -48,7 +48,7 @@ fun newTimeIntervalStartBefore(
     val builder = NewTimeIntervalBuilder()
     builder.configure()
 
-    val startInMilliseconds = startingPoint.calculateMilliseconds() - 3_600_000
+    val startInMilliseconds = before(startingPoint)
     val stopInMilliseconds = startInMilliseconds + (builder.stop?.time ?: 0)
 
     return builder.let {
@@ -66,7 +66,7 @@ fun newTimeIntervalStartAfter(
     val builder = NewTimeIntervalBuilder()
     builder.configure()
 
-    val startInMilliseconds = startingPoint.calculateMilliseconds() + 3_600_000
+    val startInMilliseconds = after(startingPoint)
     val stopInMilliseconds = startInMilliseconds + (builder.stop?.time ?: 0)
 
     return builder.let {

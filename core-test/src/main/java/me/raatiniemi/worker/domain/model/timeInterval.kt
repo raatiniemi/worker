@@ -51,7 +51,7 @@ fun timeIntervalStartAfter(
     val builder = TimeIntervalBuilder()
     builder.configure()
 
-    val startInMilliseconds = startingPoint.calculateMilliseconds() + 3_600_000
+    val startInMilliseconds = after(startingPoint)
     val stopInMilliseconds = startInMilliseconds + abs(builder.stopInMilliseconds)
 
     return builder.let {
