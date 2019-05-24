@@ -48,7 +48,7 @@ class RemoveTimeTest {
         val timeInterval = timeInterval {
             id = 1
             start = Milliseconds(1)
-            stopInMilliseconds = 10
+            stop = Milliseconds(10)
         }
         val expected = emptyList<TimeInterval>()
 
@@ -69,7 +69,7 @@ class RemoveTimeTest {
         val timeInterval = timeInterval {
             id = 1
             start = Milliseconds(1)
-            stopInMilliseconds = 10
+            stop = Milliseconds(10)
         }
         val expected = emptyList<TimeInterval>()
 

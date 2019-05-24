@@ -37,7 +37,7 @@ class TimeIntervalTest {
     fun isActive_whenInactive() {
         val timeInterval = timeInterval {
             start = Milliseconds(1)
-            stopInMilliseconds = 1
+            stop = Milliseconds(1)
         }
 
         assertFalse(timeInterval.isActive)
@@ -56,7 +56,7 @@ class TimeIntervalTest {
     fun getTime_whenInactive() {
         val timeInterval = timeInterval {
             start = Milliseconds(1)
-            stopInMilliseconds = 11
+            stop = Milliseconds(11)
         }
 
         assertEquals(10L, timeInterval.time)
@@ -77,7 +77,7 @@ class TimeIntervalTest {
     fun getInterval_whenInactive() {
         val timeInterval = timeInterval {
             start = Milliseconds(1)
-            stopInMilliseconds = 11
+            stop = Milliseconds(11)
         }
 
         assertEquals(10L, timeInterval.interval)
@@ -100,7 +100,7 @@ class TimeIntervalTest {
         val expected = 10L
         val timeInterval = timeInterval {
             start = Milliseconds(0)
-            stopInMilliseconds = 10
+            stop = Milliseconds(10)
         }
 
         val actual = timeInterval.calculateInterval()

@@ -56,7 +56,7 @@ class TimeReportItemGetTitleTest(
                     "08:00 - 11:30",
                     timeInterval {
                         start = Milliseconds(START.timeInMillis)
-                        stopInMilliseconds = STOP.timeInMillis
+                        stop = Milliseconds(STOP.timeInMillis)
                     }
                 )
             )

@@ -58,7 +58,7 @@ class GetProjectTimeSinceTest {
             timeInterval {
                 id = 2
                 start = newTimeInterval.start
-                stopInMilliseconds = requireNotNull(newTimeInterval.stop).value
+                stop = requireNotNull(newTimeInterval.stop)
             }
         )
 
@@ -84,7 +84,7 @@ class GetProjectTimeSinceTest {
             timeInterval {
                 id = 2
                 start = newTimeInterval.start
-                stopInMilliseconds = requireNotNull(newTimeInterval.stop).value
+                stop = requireNotNull(newTimeInterval.stop)
             }
         )
 
@@ -110,7 +110,7 @@ class GetProjectTimeSinceTest {
             timeInterval {
                 id = 2
                 start = newTimeInterval.start
-                stopInMilliseconds = requireNotNull(newTimeInterval.stop).value
+                stop = requireNotNull(newTimeInterval.stop)
             }
         )
 

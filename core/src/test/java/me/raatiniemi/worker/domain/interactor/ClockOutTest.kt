@@ -75,7 +75,7 @@ class ClockOutTest {
             timeInterval {
                 id = 1
                 start = Milliseconds(1)
-                stopInMilliseconds = date.time
+                stop = Milliseconds(date.time)
             }
         )
 

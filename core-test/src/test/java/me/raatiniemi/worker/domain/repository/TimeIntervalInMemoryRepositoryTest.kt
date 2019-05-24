@@ -82,7 +82,7 @@ class TimeIntervalInMemoryRepositoryTest {
             timeInterval {
                 id = 1
                 start = Milliseconds(10)
-                stopInMilliseconds = 15
+                stop = Milliseconds(15)
             }
         )
 
@@ -109,7 +109,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val expected = timeInterval {
             id = 1
             start = Milliseconds(1)
-            stopInMilliseconds = 10
+            stop = Milliseconds(10)
         }
 
         val actual = repository.findById(1)
@@ -160,7 +160,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val timeInterval = timeInterval {
             id = 1
             start = Milliseconds(1)
-            stopInMilliseconds = 10
+            stop = Milliseconds(10)
         }
 
         val actual = repository.update(timeInterval)
@@ -178,7 +178,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val expected = timeInterval {
             id = 1
             start = Milliseconds(1)
-            stopInMilliseconds = 5
+            stop = Milliseconds(5)
         }
 
         val actual = repository.update(expected)
@@ -192,7 +192,7 @@ class TimeIntervalInMemoryRepositoryTest {
             timeInterval {
                 id = 1
                 start = Milliseconds(1)
-                stopInMilliseconds = 10
+                stop = Milliseconds(10)
             }
         )
         val expected = emptyList<TimeInterval>()
@@ -213,7 +213,7 @@ class TimeIntervalInMemoryRepositoryTest {
             timeInterval {
                 id = 1
                 start = Milliseconds(1)
-                stopInMilliseconds = 5
+                stop = Milliseconds(5)
             }
         )
 
@@ -248,7 +248,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val timeInterval = timeInterval {
             id = 1
             start = Milliseconds(1)
-            stopInMilliseconds = 10
+            stop = Milliseconds(10)
         }
         val timeIntervals = listOf(timeInterval)
 
@@ -267,7 +267,7 @@ class TimeIntervalInMemoryRepositoryTest {
             timeInterval {
                 id = 1
                 start = Milliseconds(1)
-                stopInMilliseconds = 10
+                stop = Milliseconds(10)
             }
         )
         val expected = emptyList<TimeInterval>()

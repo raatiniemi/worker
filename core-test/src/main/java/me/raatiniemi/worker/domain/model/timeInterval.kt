@@ -20,7 +20,7 @@ data class TimeIntervalBuilder(
     var id: Long = 1,
     var projectId: Long = 1,
     var start: Milliseconds? = null,
-    var stopInMilliseconds: Long = 0,
+    var stop: Milliseconds? = null,
     var isRegistered: Boolean = false
 ) {
     fun build(): TimeInterval {
@@ -28,8 +28,7 @@ data class TimeIntervalBuilder(
             id = id,
             projectId = projectId,
             start = requireNotNull(start),
-            stop = stopInMilliseconds.takeUnless { 0L == it }
-                ?.let { Milliseconds(it) },
+            stop = stop,
             isRegistered = isRegistered
         )
     }

@@ -50,7 +50,7 @@ class ProjectsItemGetTimeSummaryTest(
                     listOf(
                         timeInterval {
                             start = Milliseconds(0)
-                            stopInMilliseconds = 3600000
+                            stop = Milliseconds(3600000)
                         }
                     )
                 ),
@@ -59,7 +59,7 @@ class ProjectsItemGetTimeSummaryTest(
                     listOf(
                         timeInterval {
                             start = Milliseconds(0)
-                            stopInMilliseconds = 9000000
+                            stop = Milliseconds(9000000)
                         }
                     )
                 ),
@@ -68,11 +68,11 @@ class ProjectsItemGetTimeSummaryTest(
                     listOf(
                         timeInterval {
                             start = Milliseconds(0)
-                            stopInMilliseconds = 3600000
+                            stop = Milliseconds(3600000)
                         },
                         timeInterval {
                             start = Milliseconds(0)
-                            stopInMilliseconds = 9000000
+                            stop = Milliseconds(9000000)
                         }
                     )
                 )

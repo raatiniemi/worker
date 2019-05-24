@@ -47,7 +47,7 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
                     DigitalHoursMinutesIntervalFormat(),
                     timeInterval {
                         start = Milliseconds(0)
-                        stopInMilliseconds = 3600000
+                        stop = Milliseconds(3600000)
                     }
                 ),
                 arrayOf(
@@ -55,7 +55,7 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
                     DigitalHoursMinutesIntervalFormat(),
                     timeInterval {
                         start = Milliseconds(0)
-                        stopInMilliseconds = 32400000
+                        stop = Milliseconds(32400000)
                     }
                 )
             )

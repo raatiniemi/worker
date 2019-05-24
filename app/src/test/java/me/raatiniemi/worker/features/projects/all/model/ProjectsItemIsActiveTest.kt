@@ -61,7 +61,6 @@ class ProjectsItemIsActiveTest(
                 return listOf(
                     timeInterval {
                         start = Milliseconds(1)
-                        stopInMilliseconds = 0
                     }
                 )
             }
