@@ -28,11 +28,6 @@ data class TimeInterval(
     val stop: Milliseconds? = null,
     val isRegistered: Boolean = false
 ) {
-    val time: Long
-        get() = if (isActive(this)) {
-            0L
-        } else calculateInterval(this, stop ?: Milliseconds.empty).value
-
     init {
         if (stop != null) {
             if (stop < start) {

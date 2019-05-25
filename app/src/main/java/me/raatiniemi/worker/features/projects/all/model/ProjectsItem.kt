@@ -18,10 +18,7 @@ package me.raatiniemi.worker.features.projects.all.model
 
 import android.content.res.Resources
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.calculateInterval
-import me.raatiniemi.worker.domain.model.isActive
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.util.DateIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat
@@ -83,7 +80,7 @@ data class ProjectsItem(
         private val intervalFormat: DateIntervalFormat = HoursMinutesIntervalFormat()
 
         private fun calculateSummaryFromRegisteredTime(registeredTime: List<TimeInterval>): Long {
-            return registeredTime.map { it.time }.sum()
+            return registeredTime.map { calculateTime(it) }.sum()
         }
 
         private fun findActiveTimeInterval(registeredTime: List<TimeInterval>): TimeInterval? {

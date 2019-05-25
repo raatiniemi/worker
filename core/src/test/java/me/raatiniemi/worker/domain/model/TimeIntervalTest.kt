@@ -50,22 +50,29 @@ class TimeIntervalTest {
     }
 
     @Test
-    fun getTime_whenActive() {
+    fun `calculate time for active`() {
+        val expected = 0L
         val timeInterval = timeInterval {
-            start = Milliseconds(1)
+            start = Milliseconds.now
         }
 
-        assertEquals(0L, timeInterval.time)
+        val actual = calculateTime(timeInterval)
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun getTime_whenInactive() {
+    fun `calculate time for inactive`() {
+        val now = Milliseconds.now
+        val expected = 1.hours
         val timeInterval = timeInterval {
-            start = Milliseconds(1)
-            stop = Milliseconds(11)
+            start = now - 1.hours
+            stop = now
         }
 
-        assertEquals(10L, timeInterval.time)
+        val actual = calculateTime(timeInterval)
+
+        assertEquals(expected, actual)
     }
 
     @Test

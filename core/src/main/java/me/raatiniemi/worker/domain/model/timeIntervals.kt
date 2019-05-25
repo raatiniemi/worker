@@ -18,6 +18,14 @@ package me.raatiniemi.worker.domain.model
 
 fun isActive(timeInterval: TimeInterval) = timeInterval.stop == null
 
+fun calculateTime(timeInterval: TimeInterval): Long {
+    if (isActive(timeInterval)) {
+        return 0
+    }
+
+    return calculateInterval(timeInterval, timeInterval.stop ?: Milliseconds.empty).value
+}
+
 fun calculateInterval(
     timeInterval: TimeInterval,
     stopForActive: Milliseconds = Milliseconds.now
