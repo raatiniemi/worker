@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.util
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
+import me.raatiniemi.worker.domain.model.Milliseconds
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +28,7 @@ import org.junit.runners.Parameterized.Parameters
 class CalculateTimeTest(private val expected: HoursMinutes, private val milliseconds: Long) {
     @Test
     fun calculateTime() {
-        val actual = CalculateTime.calculateHoursMinutes(milliseconds)
+        val actual = CalculateTime.calculateHoursMinutes(Milliseconds(milliseconds))
 
         assertEquals("$expected", expected, actual)
     }

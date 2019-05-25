@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.util
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
+import me.raatiniemi.worker.domain.model.Milliseconds
 import java.util.*
 
 /**
@@ -24,7 +25,7 @@ import java.util.*
  */
 class HoursMinutesIntervalFormat : DateIntervalFormat, HoursMinutesFormat {
     override fun format(milliseconds: Long): String {
-        val hoursMinutes = CalculateTime.calculateHoursMinutes(milliseconds)
+        val hoursMinutes = CalculateTime.calculateHoursMinutes(Milliseconds(milliseconds))
 
         return apply(hoursMinutes)
     }

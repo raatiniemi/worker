@@ -24,7 +24,8 @@ import java.util.*
 
 data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<TimeReportItem> {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
-    val hoursMinutes: HoursMinutes = CalculateTime.calculateHoursMinutes(timeInterval.interval)
+    val hoursMinutes: HoursMinutes =
+        CalculateTime.calculateHoursMinutes(Milliseconds(timeInterval.interval))
 
     val id = timeInterval.id
 
