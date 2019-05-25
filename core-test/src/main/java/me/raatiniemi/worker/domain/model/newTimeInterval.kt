@@ -22,14 +22,12 @@ data class NewTimeIntervalBuilder(
     var stop: Milliseconds? = null,
     var isRegistered: Boolean = false
 ) {
-    fun build(): NewTimeInterval {
-        return NewTimeInterval(
-            projectId = projectId,
-            start = requireNotNull(start),
-            stop = stop,
-            isRegistered = isRegistered
-        )
-    }
+    fun build() = NewTimeInterval(
+        projectId = projectId,
+        start = requireNotNull(start),
+        stop = stop,
+        isRegistered = isRegistered
+    )
 }
 
 fun newTimeInterval(configure: NewTimeIntervalBuilder.() -> Unit): NewTimeInterval {
