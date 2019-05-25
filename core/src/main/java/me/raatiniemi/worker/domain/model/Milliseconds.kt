@@ -18,10 +18,12 @@ package me.raatiniemi.worker.domain.model
 
 import java.util.*
 
-inline class Milliseconds(val value: Long) {
+inline class Milliseconds(val value: Long) : Comparable<Milliseconds> {
     operator fun plus(value: Long) = Milliseconds(this.value + value)
 
     operator fun minus(value: Long) = Milliseconds(this.value - value)
+
+    override fun compareTo(other: Milliseconds) = value.compareTo(other.value)
 
     companion object {
         val now: Milliseconds

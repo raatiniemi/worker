@@ -91,7 +91,7 @@ class TimeReportViewModelTest {
         vm.toggleRegisteredStateForSelectedItems()
 
         assertEquals(listOf(Event.TimeReportToggle(1)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, 0)
+        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
@@ -127,7 +127,7 @@ class TimeReportViewModelTest {
         vm.toggleRegisteredStateForSelectedItems()
 
         assertEquals(listOf(Event.TimeReportToggle(2)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, 0)
+        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
@@ -149,7 +149,7 @@ class TimeReportViewModelTest {
         vm.removeSelectedItems()
 
         assertEquals(listOf(Event.TimeReportRemove(1)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, 0)
+        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
@@ -184,7 +184,7 @@ class TimeReportViewModelTest {
         vm.removeSelectedItems()
 
         assertEquals(listOf(Event.TimeReportRemove(2)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, 0)
+        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

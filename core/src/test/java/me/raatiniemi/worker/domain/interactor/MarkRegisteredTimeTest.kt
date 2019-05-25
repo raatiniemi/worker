@@ -93,7 +93,7 @@ class MarkRegisteredTimeTest {
                 isRegistered = true
             }
         )
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
@@ -161,7 +161,7 @@ class MarkRegisteredTimeTest {
                 start = Milliseconds(1)
             }
         )
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
@@ -231,7 +231,7 @@ class MarkRegisteredTimeTest {
                 isRegistered = true
             }
         )
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

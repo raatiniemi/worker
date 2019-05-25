@@ -16,19 +16,16 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.NewTimeInterval
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import java.util.concurrent.atomic.AtomicLong
 
 class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     private val incrementedId = AtomicLong()
     private val timeIntervals = mutableListOf<TimeInterval>()
 
-    override fun findAll(project: Project, milliseconds: Long): List<TimeInterval> {
+    override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.filter {
-            it.projectId == project.id && it.start.value >= milliseconds
+            it.projectId == project.id && it.start >= milliseconds
         }
     }
 

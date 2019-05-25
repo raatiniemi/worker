@@ -64,7 +64,7 @@ class ClockInTest {
 
         clockIn(1, date)
 
-        val actual = repository.findAll(Project(1, "Project name"), 0)
+        val actual = repository.findAll(Project(1, "Project name"), Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

@@ -21,18 +21,19 @@ import java.util.*
 
 class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeIntervalRepository) :
     TimeReportRepository {
-    override fun count(project: Project): Int = timeIntervalRepository.findAll(project, 0)
-        .groupBy { resetToStartOfDay(it.start) }
-        .count()
+    override fun count(project: Project): Int =
+        timeIntervalRepository.findAll(project, Milliseconds(0))
+            .groupBy { resetToStartOfDay(it.start) }
+            .count()
 
     override fun countNotRegistered(project: Project): Int =
-        timeIntervalRepository.findAll(project, 0)
+        timeIntervalRepository.findAll(project, Milliseconds(0))
             .filter { !it.isRegistered }
             .groupBy { resetToStartOfDay(it.start) }
             .count()
 
     override fun findAll(project: Project, loadRange: LoadRange): List<TimeReportDay> {
-        val timeIntervals = timeIntervalRepository.findAll(project, 0)
+        val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds(0))
 
         return with(loadRange) {
             groupByDay(timeIntervals)
@@ -44,7 +45,7 @@ class TimeReportInMemoryRepository(private val timeIntervalRepository: TimeInter
     }
 
     override fun findNotRegistered(project: Project, loadRange: LoadRange): List<TimeReportDay> {
-        val timeIntervals = timeIntervalRepository.findAll(project, 0)
+        val timeIntervals = timeIntervalRepository.findAll(project, Milliseconds(0))
             .filter { !it.isRegistered }
 
         return with(loadRange) {

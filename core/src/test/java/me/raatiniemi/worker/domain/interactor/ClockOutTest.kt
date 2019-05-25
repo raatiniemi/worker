@@ -80,7 +80,7 @@ class ClockOutTest {
 
         clockOut(1, date)
 
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

@@ -38,7 +38,7 @@ class TimeIntervalInMemoryRepositoryTest {
     fun `find all without time intervals`() {
         val expected = emptyList<TimeInterval>()
 
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
 
         assertEquals(expected, actual)
     }
@@ -53,7 +53,7 @@ class TimeIntervalInMemoryRepositoryTest {
         val expected = emptyList<TimeInterval>()
 
         val anotherProject = project.copy(id = 2)
-        val actual = repository.findAll(anotherProject, 1)
+        val actual = repository.findAll(anotherProject, Milliseconds(1))
 
         assertEquals(expected, actual)
     }
@@ -68,7 +68,7 @@ class TimeIntervalInMemoryRepositoryTest {
         )
         val expected = emptyList<TimeInterval>()
 
-        val actual = repository.findAll(project, 15)
+        val actual = repository.findAll(project, Milliseconds(15))
 
         assertEquals(expected, actual)
     }
@@ -89,7 +89,7 @@ class TimeIntervalInMemoryRepositoryTest {
             }
         )
 
-        val actual = repository.findAll(project, 1)
+        val actual = repository.findAll(project, Milliseconds(1))
 
         assertEquals(expected, actual)
     }
@@ -242,7 +242,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
         repository.remove(1)
 
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
@@ -277,7 +277,7 @@ class TimeIntervalInMemoryRepositoryTest {
 
         repository.remove(timeIntervals)
 
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

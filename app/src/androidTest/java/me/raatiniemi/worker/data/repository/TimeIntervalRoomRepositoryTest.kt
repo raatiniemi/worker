@@ -67,7 +67,7 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun findAll_withoutTimeInterval() {
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
 
         assertEquals(emptyList<TimeInterval>(), actual)
     }
@@ -77,7 +77,7 @@ class TimeIntervalRoomRepositoryTest {
         timeIntervals.add(timeIntervalEntity())
         val project = Project(2, "Name #2")
 
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
 
         assertEquals(emptyList<TimeInterval>(), actual)
     }
@@ -95,7 +95,7 @@ class TimeIntervalRoomRepositoryTest {
             }
         )
 
-        val actual = repository.findAll(project, 0)
+        val actual = repository.findAll(project, Milliseconds(0))
 
         assertEquals(expected, actual)
     }
@@ -113,7 +113,7 @@ class TimeIntervalRoomRepositoryTest {
             }
         )
 
-        val actual = repository.findAll(project, 1)
+        val actual = repository.findAll(project, Milliseconds(1))
 
         assertEquals(expected, actual)
     }
@@ -122,7 +122,7 @@ class TimeIntervalRoomRepositoryTest {
     fun findAll_withTimeIntervalBeforeStart() {
         timeIntervals.add(timeIntervalEntity())
 
-        val actual = repository.findAll(project, 2)
+        val actual = repository.findAll(project, Milliseconds(2))
 
         assertEquals(emptyList<TimeInterval>(), actual)
     }
@@ -140,7 +140,7 @@ class TimeIntervalRoomRepositoryTest {
             }
         )
 
-        val actual = repository.findAll(project, 2)
+        val actual = repository.findAll(project, Milliseconds(2))
 
         assertEquals(expected, actual)
     }

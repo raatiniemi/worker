@@ -28,6 +28,6 @@ class GetProjectTimeSince(private val repository: TimeIntervalRepository) {
     ): List<TimeInterval> {
         val milliseconds = startingPoint.calculateMilliseconds()
 
-        return repository.findAll(project, milliseconds.value)
+        return repository.findAll(project, milliseconds)
     }
 }

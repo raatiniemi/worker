@@ -24,7 +24,7 @@ import java.util.*
 class CalculateTimeToday(private val repository: TimeIntervalRepository) {
     operator fun invoke(project: Project, stopForActive: Date = Date()): Long {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        val timeIntervals = repository.findAll(project, startingPoint.value)
+        val timeIntervals = repository.findAll(project, startingPoint)
         return timeIntervals.map { it.calculateInterval(stopForActive) }
             .sum()
     }
