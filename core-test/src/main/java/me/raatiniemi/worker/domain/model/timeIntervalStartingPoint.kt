@@ -19,10 +19,10 @@ package me.raatiniemi.worker.domain.model
 import me.raatiniemi.worker.domain.date.hours
 import java.lang.Math.abs
 
-fun before(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Long {
+fun before(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Milliseconds {
     return startingPoint.calculateMilliseconds() - abs(offset)
 }
 
-fun after(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Long {
+fun after(startingPoint: TimeIntervalStartingPoint, offset: Long = 1.hours): Milliseconds {
     return startingPoint.calculateMilliseconds() + abs(offset)
 }

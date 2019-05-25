@@ -36,7 +36,7 @@ enum class TimeIntervalStartingPoint(val rawValue: Int) {
             }
             MONTH -> set(Calendar.DAY_OF_MONTH, 1)
         }
-        timeInMillis
+        Milliseconds(timeInMillis)
     }
 
     companion object {

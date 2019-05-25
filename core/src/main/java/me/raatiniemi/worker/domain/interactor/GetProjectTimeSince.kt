@@ -17,13 +17,17 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 class GetProjectTimeSince(private val repository: TimeIntervalRepository) {
-    operator fun invoke(project: Project, startingPoint: TimeIntervalStartingPoint) =
-        repository.findAll(
-            project,
-            startingPoint.calculateMilliseconds()
-        )
+    operator fun invoke(
+        project: Project,
+        startingPoint: TimeIntervalStartingPoint
+    ): List<TimeInterval> {
+        val milliseconds = startingPoint.calculateMilliseconds()
+
+        return repository.findAll(project, milliseconds.value)
+    }
 }
