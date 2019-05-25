@@ -43,7 +43,7 @@ data class TimeInterval(
 
     init {
         if (stop != null) {
-            if (stop.value < start.value) {
+            if (stop < start) {
                 throw ClockOutBeforeClockInException()
             }
         }
