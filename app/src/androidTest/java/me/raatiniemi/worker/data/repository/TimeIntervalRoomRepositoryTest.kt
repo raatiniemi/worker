@@ -33,7 +33,6 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TimeIntervalRoomRepositoryTest {
@@ -206,7 +205,7 @@ class TimeIntervalRoomRepositoryTest {
         val newTimeInterval = newTimeInterval {
             projectId = 1
             start = Milliseconds(1)
-            stop = Date(2)
+            stop = Milliseconds(2)
         }
         val expected = timeInterval {
             projectId = 1

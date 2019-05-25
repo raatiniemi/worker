@@ -16,19 +16,17 @@
 
 package me.raatiniemi.worker.domain.model
 
-import java.util.*
-
 data class NewTimeIntervalBuilder(
     var projectId: Long = 1,
     var start: Milliseconds? = null,
-    var stop: Date? = null,
+    var stop: Milliseconds? = null,
     var isRegistered: Boolean = false
 ) {
     fun build(): NewTimeInterval {
         return NewTimeInterval(
             projectId = projectId,
             start = requireNotNull(start),
-            stop = stop?.let { Milliseconds(it.time) },
+            stop = stop,
             isRegistered = isRegistered
         )
     }

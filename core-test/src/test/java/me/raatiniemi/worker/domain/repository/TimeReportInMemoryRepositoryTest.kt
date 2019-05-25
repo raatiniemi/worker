@@ -23,7 +23,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportInMemoryRepositoryTest {
@@ -213,7 +212,7 @@ class TimeReportInMemoryRepositoryTest {
             newTimeInterval {
                 projectId = 2
                 start = Milliseconds(1)
-                stop = Date(20)
+                stop = Milliseconds(20)
             }
         )
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
@@ -229,13 +228,13 @@ class TimeReportInMemoryRepositoryTest {
             timeIntervalRepository.add(
                 newTimeInterval {
                     start = Milliseconds(1)
-                    stop = Date(10)
+                    stop = Milliseconds(10)
                 }
             ),
             timeIntervalRepository.add(
                 newTimeInterval {
                     start = Milliseconds(11)
-                    stop = Date(30)
+                    stop = Milliseconds(30)
                 }
             )
         )
@@ -258,13 +257,13 @@ class TimeReportInMemoryRepositoryTest {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(90000000)
-                stop = Date(93000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
@@ -293,13 +292,13 @@ class TimeReportInMemoryRepositoryTest {
         val firstTimeIntervals = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(90000000)
-                stop = Date(93000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
@@ -322,13 +321,13 @@ class TimeReportInMemoryRepositoryTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(90000000)
-                stop = Date(93000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
@@ -363,7 +362,7 @@ class TimeReportInMemoryRepositoryTest {
             newTimeInterval {
                 projectId = 2
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
@@ -378,19 +377,19 @@ class TimeReportInMemoryRepositoryTest {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(11)
-                stop = Date(30)
+                stop = Milliseconds(30)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(30)
-                stop = Date(45)
+                stop = Milliseconds(45)
                 isRegistered = true
             }
         )
@@ -415,19 +414,19 @@ class TimeReportInMemoryRepositoryTest {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(90000000)
-                stop = Date(93000000)
+                stop = Milliseconds(93000000)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(180000000)
-                stop = Date(183000000)
+                stop = Milliseconds(183000000)
                 isRegistered = true
             }
         )
@@ -457,13 +456,13 @@ class TimeReportInMemoryRepositoryTest {
         val firstTimeIntervals = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(90000000)
-                stop = Date(93000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
@@ -486,13 +485,13 @@ class TimeReportInMemoryRepositoryTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(90000000)
-                stop = Date(93000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
@@ -516,7 +515,7 @@ class TimeReportInMemoryRepositoryTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
                 isRegistered = true
             }
         )

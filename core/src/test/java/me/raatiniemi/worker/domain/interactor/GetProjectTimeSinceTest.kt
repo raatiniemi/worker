@@ -26,7 +26,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class GetProjectTimeSinceTest {
@@ -45,12 +44,12 @@ class GetProjectTimeSinceTest {
     fun `get project time since day`() {
         val newTimeInterval = newTimeInterval {
             start = Milliseconds(after(TimeIntervalStartingPoint.DAY))
-            stop = Date(after(TimeIntervalStartingPoint.DAY, 2.hours))
+            stop = Milliseconds(after(TimeIntervalStartingPoint.DAY, 2.hours))
         }
         repository.add(
             newTimeInterval {
                 start = Milliseconds(before(TimeIntervalStartingPoint.DAY))
-                stop = Date(before(TimeIntervalStartingPoint.DAY, 30.minutes))
+                stop = Milliseconds(before(TimeIntervalStartingPoint.DAY, 30.minutes))
             }
         )
         repository.add(newTimeInterval)
@@ -71,12 +70,12 @@ class GetProjectTimeSinceTest {
     fun `get project time since week`() {
         val newTimeInterval = newTimeInterval {
             start = Milliseconds(after(TimeIntervalStartingPoint.WEEK))
-            stop = Date(after(TimeIntervalStartingPoint.WEEK, 2.hours))
+            stop = Milliseconds(after(TimeIntervalStartingPoint.WEEK, 2.hours))
         }
         repository.add(
             newTimeInterval {
                 start = Milliseconds(before(TimeIntervalStartingPoint.WEEK))
-                stop = Date(before(TimeIntervalStartingPoint.WEEK, 30.minutes))
+                stop = Milliseconds(before(TimeIntervalStartingPoint.WEEK, 30.minutes))
             }
         )
         repository.add(newTimeInterval)
@@ -97,12 +96,12 @@ class GetProjectTimeSinceTest {
     fun `get project time since month`() {
         val newTimeInterval = newTimeInterval {
             start = Milliseconds(after(TimeIntervalStartingPoint.MONTH))
-            stop = Date(after(TimeIntervalStartingPoint.MONTH, 2.hours))
+            stop = Milliseconds(after(TimeIntervalStartingPoint.MONTH, 2.hours))
         }
         repository.add(
             newTimeInterval {
                 start = Milliseconds(before(TimeIntervalStartingPoint.MONTH))
-                stop = Date(before(TimeIntervalStartingPoint.MONTH, 30.minutes))
+                stop = Milliseconds(before(TimeIntervalStartingPoint.MONTH, 30.minutes))
             }
         )
         repository.add(newTimeInterval)

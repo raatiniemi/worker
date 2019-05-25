@@ -27,7 +27,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class FindActiveProjectsTest {
@@ -68,7 +67,7 @@ class FindActiveProjectsTest {
             newTimeInterval {
                 projectId = 1
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(

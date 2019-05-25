@@ -24,7 +24,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class RemoveTimeTest {
@@ -42,7 +41,7 @@ class RemoveTimeTest {
         repository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         val timeInterval = timeInterval {
@@ -63,7 +62,7 @@ class RemoveTimeTest {
         repository.add(
             newTimeInterval {
                 start = Milliseconds(1)
-                stop = Date(10)
+                stop = Milliseconds(10)
             }
         )
         val timeInterval = timeInterval {
