@@ -20,14 +20,14 @@ import java.util.*
 
 data class NewTimeIntervalBuilder(
     var projectId: Long = 1,
-    var start: Date = Date(),
+    var start: Milliseconds? = null,
     var stop: Date? = null,
     var isRegistered: Boolean = false
 ) {
     fun build(): NewTimeInterval {
         return NewTimeInterval(
             projectId = projectId,
-            start = Milliseconds(start.time),
+            start = requireNotNull(start),
             stop = stop?.let { Milliseconds(it.time) },
             isRegistered = isRegistered
         )

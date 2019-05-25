@@ -16,4 +16,15 @@
 
 package me.raatiniemi.worker.domain.model
 
-inline class Milliseconds(val value: Long)
+import java.util.*
+
+inline class Milliseconds(val value: Long) {
+    operator fun plus(value: Long) = Milliseconds(this.value + value)
+
+    operator fun minus(value: Long) = Milliseconds(this.value - value)
+
+    companion object {
+        val now: Milliseconds
+            get() = Milliseconds(Date().time)
+    }
+}

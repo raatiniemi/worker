@@ -41,7 +41,7 @@ class RemoveTimeTest {
     fun `remove with time interval`() {
         repository.add(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 stop = Date(10)
             }
         )
@@ -62,7 +62,7 @@ class RemoveTimeTest {
     fun `remove with time intervals`() {
         repository.add(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 stop = Date(10)
             }
         )

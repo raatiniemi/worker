@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.newTimeInterval
@@ -66,14 +67,14 @@ class FindActiveProjectsTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 1
-                start = Date(1)
+                start = Milliseconds(1)
                 stop = Date(10)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 2
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         val expected = listOf(Project(2, "Project name #2"))
@@ -90,13 +91,13 @@ class FindActiveProjectsTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 1
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 2
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         val expected = listOf(

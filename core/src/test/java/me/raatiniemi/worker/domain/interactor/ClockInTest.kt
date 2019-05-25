@@ -43,7 +43,11 @@ class ClockInTest {
 
     @Test(expected = ActiveProjectException::class)
     fun execute_withActiveTime() {
-        repository.add(newTimeInterval { })
+        repository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
 
         clockIn(1, Date())
     }

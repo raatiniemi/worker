@@ -136,7 +136,7 @@ class TimeIntervalRoomRepositoryTest {
             timeInterval {
                 projectId = entity.projectId
                 start = Milliseconds(entity.startInMilliseconds)
-                stop = Milliseconds(entity.stopInMilliseconds)
+                stop = null
                 isRegistered = entity.registered == 1L
             }
         )
@@ -192,7 +192,7 @@ class TimeIntervalRoomRepositoryTest {
         val expected = timeInterval {
             projectId = entity.projectId
             start = Milliseconds(entity.startInMilliseconds)
-            stop = Milliseconds(entity.stopInMilliseconds)
+            stop = null
             isRegistered = entity.registered == 1L
         }
 
@@ -205,7 +205,7 @@ class TimeIntervalRoomRepositoryTest {
     fun add() {
         val newTimeInterval = newTimeInterval {
             projectId = 1
-            start = Date(1)
+            start = Milliseconds(1)
             stop = Date(2)
         }
         val expected = timeInterval {

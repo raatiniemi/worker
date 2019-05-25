@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.date.plus
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.model.newTimeInterval
@@ -58,7 +59,7 @@ class CalculateTimeTodayTest {
         val startingPoint = Date(startingPointInMilliseconds)
         repository.add(
             newTimeInterval {
-                start = startingPoint
+                start = Milliseconds(startingPointInMilliseconds)
                 stop = startingPoint + 1.hours
             }
         )
@@ -75,7 +76,7 @@ class CalculateTimeTodayTest {
         val startingPoint = Date(startingPointInMilliseconds)
         repository.add(
             newTimeInterval {
-                start = startingPoint
+                start = Milliseconds(startingPointInMilliseconds)
             }
         )
         val stopForActive = startingPoint + 1.hours
@@ -92,13 +93,13 @@ class CalculateTimeTodayTest {
         val startingPoint = Date(startingPointInMilliseconds)
         repository.add(
             newTimeInterval {
-                start = startingPoint
+                start = Milliseconds(startingPointInMilliseconds)
                 stop = startingPoint + 1.hours
             }
         )
         repository.add(
             newTimeInterval {
-                start = startingPoint
+                start = Milliseconds(startingPointInMilliseconds)
             }
         )
         val stopForActive = Date(startingPointInMilliseconds + 1.hours)

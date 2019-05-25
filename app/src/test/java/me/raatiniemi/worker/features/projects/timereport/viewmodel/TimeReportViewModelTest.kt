@@ -37,7 +37,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportViewModelTest {
@@ -76,7 +75,7 @@ class TimeReportViewModelTest {
     fun `toggle registered state with selected item`() = runBlocking {
         timeIntervalRepository.add(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         val timeInterval = timeInterval {
@@ -100,12 +99,12 @@ class TimeReportViewModelTest {
     fun `toggle registered state for selected items`() = runBlocking {
         timeIntervalRepository.add(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         val firstTimeInterval = timeInterval {
@@ -136,7 +135,7 @@ class TimeReportViewModelTest {
     fun `remove with single item`() = runBlocking {
         timeIntervalRepository.add(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         val timeInterval = timeInterval {
@@ -158,12 +157,12 @@ class TimeReportViewModelTest {
     fun `remove with multiple items`() = runBlocking {
         timeIntervalRepository.add(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
             }
         )
         val firstTimeReportItem = TimeReportItem(

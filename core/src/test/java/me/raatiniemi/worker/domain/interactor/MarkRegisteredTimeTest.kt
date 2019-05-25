@@ -27,7 +27,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class MarkRegisteredTimeTest {
@@ -45,10 +44,10 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple unregistered items`() {
         val newTimeIntervals = listOf(
-            newTimeInterval { start = Date(1) },
-            newTimeInterval { start = Date(1) },
-            newTimeInterval { start = Date(1) },
-            newTimeInterval { start = Date(1) }
+            newTimeInterval { start = Milliseconds(1) },
+            newTimeInterval { start = Milliseconds(1) },
+            newTimeInterval { start = Milliseconds(1) },
+            newTimeInterval { start = Milliseconds(1) }
         )
         newTimeIntervals.forEach { repository.add(it) }
         val timeIntervals = listOf(
@@ -102,19 +101,19 @@ class MarkRegisteredTimeTest {
     fun `mark registered time with multiple registered items`() {
         val newTimeIntervals = listOf(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 isRegistered = true
             },
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 isRegistered = true
             },
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 isRegistered = true
             },
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 isRegistered = true
             }
         )
@@ -170,18 +169,18 @@ class MarkRegisteredTimeTest {
     fun `mark registered time with multiple items`() {
         val newTimeIntervals = listOf(
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
             },
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 isRegistered = true
             },
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 isRegistered = true
             },
             newTimeInterval {
-                start = Date(1)
+                start = Milliseconds(1)
                 isRegistered = true
             }
         )

@@ -44,12 +44,12 @@ class GetProjectTimeSinceTest {
     @Test
     fun `get project time since day`() {
         val newTimeInterval = newTimeInterval {
-            start = Date(after(TimeIntervalStartingPoint.DAY))
+            start = Milliseconds(after(TimeIntervalStartingPoint.DAY))
             stop = Date(after(TimeIntervalStartingPoint.DAY, 2.hours))
         }
         repository.add(
             newTimeInterval {
-                start = Date(before(TimeIntervalStartingPoint.DAY))
+                start = Milliseconds(before(TimeIntervalStartingPoint.DAY))
                 stop = Date(before(TimeIntervalStartingPoint.DAY, 30.minutes))
             }
         )
@@ -70,12 +70,12 @@ class GetProjectTimeSinceTest {
     @Test
     fun `get project time since week`() {
         val newTimeInterval = newTimeInterval {
-            start = Date(after(TimeIntervalStartingPoint.WEEK))
+            start = Milliseconds(after(TimeIntervalStartingPoint.WEEK))
             stop = Date(after(TimeIntervalStartingPoint.WEEK, 2.hours))
         }
         repository.add(
             newTimeInterval {
-                start = Date(before(TimeIntervalStartingPoint.WEEK))
+                start = Milliseconds(before(TimeIntervalStartingPoint.WEEK))
                 stop = Date(before(TimeIntervalStartingPoint.WEEK, 30.minutes))
             }
         )
@@ -96,12 +96,12 @@ class GetProjectTimeSinceTest {
     @Test
     fun `get project time since month`() {
         val newTimeInterval = newTimeInterval {
-            start = Date(after(TimeIntervalStartingPoint.MONTH))
+            start = Milliseconds(after(TimeIntervalStartingPoint.MONTH))
             stop = Date(after(TimeIntervalStartingPoint.MONTH, 2.hours))
         }
         repository.add(
             newTimeInterval {
-                start = Date(before(TimeIntervalStartingPoint.MONTH))
+                start = Milliseconds(before(TimeIntervalStartingPoint.MONTH))
                 stop = Date(before(TimeIntervalStartingPoint.MONTH, 30.minutes))
             }
         )
