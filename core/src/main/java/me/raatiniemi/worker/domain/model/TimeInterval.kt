@@ -33,7 +33,7 @@ data class TimeInterval(
     val time: Long
         get() = if (isActive) {
             0L
-        } else calculateInterval(stop ?: Milliseconds.empty).value
+        } else calculateInterval(this, stop ?: Milliseconds.empty).value
 
     init {
         if (stop != null) {
@@ -41,13 +41,5 @@ data class TimeInterval(
                 throw ClockOutBeforeClockInException()
             }
         }
-    }
-
-    fun calculateInterval(stopForActive: Milliseconds = Milliseconds.now): Milliseconds {
-        if (stop == null) {
-            return stopForActive - start
-        }
-
-        return stop - start
     }
 }

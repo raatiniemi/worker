@@ -20,6 +20,7 @@ import android.content.res.Resources
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.calculateInterval
 import me.raatiniemi.worker.domain.util.DateIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat
@@ -63,7 +64,7 @@ data class ProjectsItem(
             return registeredTimeSummary
         }
 
-        return registeredTimeSummary + activeTimeInterval.calculateInterval().value
+        return registeredTimeSummary + calculateInterval(activeTimeInterval).value
     }
 
     fun getClockedInSince(resources: Resources): String? {
@@ -73,7 +74,7 @@ data class ProjectsItem(
             Locale.forLanguageTag("en_US"),
             getClockedInSinceFormatTemplate(resources),
             formattedClockedInSince,
-            formattedElapsedTime(activeTimeInterval.calculateInterval().value)
+            formattedElapsedTime(calculateInterval(activeTimeInterval).value)
         )
     }
 

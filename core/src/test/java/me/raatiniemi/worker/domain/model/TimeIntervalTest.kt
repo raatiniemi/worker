@@ -70,7 +70,7 @@ class TimeIntervalTest {
             start = now - 1.hours
         }
 
-        val actual = timeInterval.calculateInterval(now)
+        val actual = calculateInterval(timeInterval, now)
 
         assertEquals(expected, actual)
     }
@@ -84,7 +84,7 @@ class TimeIntervalTest {
             stop = now
         }
 
-        val actual = timeInterval.calculateInterval()
+        val actual = calculateInterval(timeInterval)
 
         assertEquals(expected, actual)
     }
