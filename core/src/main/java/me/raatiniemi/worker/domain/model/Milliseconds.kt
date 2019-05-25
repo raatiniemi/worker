@@ -28,5 +28,7 @@ inline class Milliseconds(val value: Long) : Comparable<Milliseconds> {
     companion object {
         val now: Milliseconds
             get() = Milliseconds(Date().time)
+
+        val empty = Milliseconds(0)
     }
 }

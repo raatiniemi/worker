@@ -16,50 +16,38 @@
 
 package me.raatiniemi.worker.domain.comparator
 
-import java.util.Comparator
-
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
+import java.util.*
 
 class TimeReportItemComparator : Comparator<TimeReportItem> {
-    private fun isActive(timeInterval: TimeInterval): Boolean {
-        return null == timeInterval.stop
-    }
-
-    private fun isBefore(lhs: Long, rhs: Long): Boolean {
-        return lhs < rhs
-    }
-
-    private fun isAfter(lhs: Long, rhs: Long): Boolean {
-        return lhs > rhs
-    }
-
     private fun compare(lhs: TimeInterval, rhs: TimeInterval): Int {
         if (lhs.stop != rhs.stop) {
-            if (isActive(lhs)) {
+            if (null == lhs.stop) {
                 return -1
             }
 
-            if (isActive(rhs)) {
+            if (null == rhs.stop) {
                 return 1
             }
         }
 
-        if (isAfter(lhs.start.value, rhs.start.value)) {
+        if (lhs.start > rhs.start) {
             return -1
         }
 
-        if (isBefore(lhs.start.value, rhs.start.value)) {
+        if (lhs.start < rhs.start) {
             return 1
         }
 
-        val lhsStop = lhs.stop?.value ?: 0
-        val rhsStop = rhs.stop?.value ?: 0
-        if (isAfter(lhsStop, rhsStop)) {
+        val lhsStop = lhs.stop ?: Milliseconds.empty
+        val rhsStop = rhs.stop ?: Milliseconds.empty
+        if (lhsStop > rhsStop) {
             return -1
         }
 
-        return if (isBefore(lhsStop, rhsStop)) {
+        return if (lhsStop < rhsStop) {
             1
         } else 0
     }
