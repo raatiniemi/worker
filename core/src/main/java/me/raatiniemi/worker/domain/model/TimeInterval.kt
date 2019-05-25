@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.exception.ClockOutBeforeClockInException
-import java.util.*
 
 /**
  * Represent a time interval registered to a project.
@@ -34,12 +33,7 @@ data class TimeInterval(
     val time: Long
         get() = if (isActive) {
             0L
-        } else calculateInterval(stop?.value ?: 0)
-
-    val interval: Long
-        get() = if (isActive) {
-            calculateInterval(Date().time)
-        } else calculateInterval(stop?.value ?: 0)
+        } else calculateInterval(stop ?: Milliseconds.empty).value
 
     init {
         if (stop != null) {
@@ -49,15 +43,11 @@ data class TimeInterval(
         }
     }
 
-    fun calculateInterval(stopForActive: Date = Date()): Long {
-        if (isActive) {
-            return calculateInterval(stopForActive.time)
+    fun calculateInterval(stopForActive: Milliseconds = Milliseconds.now): Milliseconds {
+        if (stop == null) {
+            return stopForActive - start
         }
 
-        return calculateInterval(stop?.value ?: 0)
-    }
-
-    private fun calculateInterval(stopInMilliseconds: Long): Long {
-        return stopInMilliseconds - start.value
+        return stop - start
     }
 }

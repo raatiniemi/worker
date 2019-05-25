@@ -16,11 +16,11 @@
 
 package me.raatiniemi.worker.domain.model
 
+import me.raatiniemi.worker.domain.date.hours
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeIntervalTest {
@@ -63,44 +63,25 @@ class TimeIntervalTest {
     }
 
     @Test
-    fun getInterval_whenActive() {
-        val timeInterval = timeInterval {
-            start = Milliseconds(1)
-        }
-
-        // TODO: Fix better interval measurement when active.
-        // Currently unable because of the instantiation within getInterval.
-        assertTrue(1L < timeInterval.interval)
-    }
-
-    @Test
-    fun getInterval_whenInactive() {
-        val timeInterval = timeInterval {
-            start = Milliseconds(1)
-            stop = Milliseconds(11)
-        }
-
-        assertEquals(10L, timeInterval.interval)
-    }
-
-    @Test
     fun `calculate interval for active time interval`() {
-        val expected = 10L
+        val now = Milliseconds.now
+        val expected = Milliseconds(1.hours)
         val timeInterval = timeInterval {
-            start = Milliseconds(0)
+            start = now - 1.hours
         }
 
-        val actual = timeInterval.calculateInterval(stopForActive = Date(10))
+        val actual = timeInterval.calculateInterval(now)
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `calculate interval for inactive time interval`() {
-        val expected = 10L
+        val now = Milliseconds.now
+        val expected = Milliseconds(1.hours)
         val timeInterval = timeInterval {
-            start = Milliseconds(0)
-            stop = Milliseconds(10)
+            start = now - 1.hours
+            stop = now
         }
 
         val actual = timeInterval.calculateInterval()

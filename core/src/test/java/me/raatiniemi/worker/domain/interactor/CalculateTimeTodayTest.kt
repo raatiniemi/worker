@@ -17,7 +17,6 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.date.hours
-import me.raatiniemi.worker.domain.date.plus
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.model.newTimeInterval
@@ -28,7 +27,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class CalculateTimeTodayTest {
@@ -70,11 +68,10 @@ class CalculateTimeTodayTest {
 
     @Test
     fun `calculate time today with active time interval`() {
-        val startingPointInMilliseconds = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        val startingPoint = Date(startingPointInMilliseconds.value)
+        val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
             newTimeInterval {
-                start = startingPointInMilliseconds
+                start = startingPoint
             }
         )
         val stopForActive = startingPoint + 1.hours
@@ -99,7 +96,7 @@ class CalculateTimeTodayTest {
                 start = startingPoint
             }
         )
-        val stopForActive = Date(startingPoint.value + 1.hours)
+        val stopForActive = startingPoint + 1.hours
         val expected = 2.hours
 
         val actual = calculateTimeToday(project, stopForActive)

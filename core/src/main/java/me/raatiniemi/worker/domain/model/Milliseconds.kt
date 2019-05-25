@@ -19,6 +19,8 @@ package me.raatiniemi.worker.domain.model
 import java.util.*
 
 inline class Milliseconds(val value: Long) : Comparable<Milliseconds> {
+    operator fun minus(other: Milliseconds) = Milliseconds(value - other.value)
+
     operator fun plus(value: Long) = Milliseconds(this.value + value)
 
     operator fun minus(value: Long) = Milliseconds(this.value - value)

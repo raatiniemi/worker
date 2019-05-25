@@ -63,7 +63,7 @@ data class ProjectsItem(
             return registeredTimeSummary
         }
 
-        return registeredTimeSummary + activeTimeInterval.interval
+        return registeredTimeSummary + activeTimeInterval.calculateInterval().value
     }
 
     fun getClockedInSince(resources: Resources): String? {
@@ -73,7 +73,7 @@ data class ProjectsItem(
             Locale.forLanguageTag("en_US"),
             getClockedInSinceFormatTemplate(resources),
             formattedClockedInSince,
-            formattedElapsedTime(activeTimeInterval.interval)
+            formattedElapsedTime(activeTimeInterval.calculateInterval().value)
         )
     }
 
