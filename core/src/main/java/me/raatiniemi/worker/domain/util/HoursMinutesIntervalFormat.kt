@@ -24,8 +24,8 @@ import java.util.*
  * Format a time interval into hours and minutes, i.e. 1h 30m.
  */
 class HoursMinutesIntervalFormat : DateIntervalFormat, HoursMinutesFormat {
-    override fun format(milliseconds: Long): String {
-        val hoursMinutes = CalculateTime.calculateHoursMinutes(Milliseconds(milliseconds))
+    override fun format(milliseconds: Milliseconds): String {
+        val hoursMinutes = CalculateTime.calculateHoursMinutes(milliseconds)
 
         return apply(hoursMinutes)
     }

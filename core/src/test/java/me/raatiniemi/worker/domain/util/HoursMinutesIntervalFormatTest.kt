@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.util
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,8 +32,9 @@ class HoursMinutesIntervalFormatTest(
     @Test
     fun format() {
         val intervalFormat = HoursMinutesIntervalFormat()
+        val interval = Milliseconds(intervalInMilliseconds)
 
-        val actual = intervalFormat.format(intervalInMilliseconds)
+        val actual = intervalFormat.format(interval)
 
         assertEquals(expected, actual)
     }

@@ -29,7 +29,7 @@ data class ProjectsItem(
     private val registeredTime: List<TimeInterval>
 ) {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
-    private val registeredTimeSummary: Long
+    private val registeredTimeSummary: Milliseconds
     private val activeTimeInterval: TimeInterval?
 
     val title: String
@@ -57,12 +57,12 @@ data class ProjectsItem(
 
     fun asProject() = project
 
-    private fun calculateTimeSummary(): Long {
+    private fun calculateTimeSummary(): Milliseconds {
         if (activeTimeInterval == null) {
             return registeredTimeSummary
         }
 
-        return registeredTimeSummary + calculateInterval(activeTimeInterval).value
+        return registeredTimeSummary + calculateInterval(activeTimeInterval)
     }
 
     fun getClockedInSince(resources: Resources): String? {
@@ -72,25 +72,24 @@ data class ProjectsItem(
             Locale.forLanguageTag("en_US"),
             getClockedInSinceFormatTemplate(resources),
             formattedClockedInSince,
-            formattedElapsedTime(calculateInterval(activeTimeInterval).value)
+            formattedElapsedTime(calculateInterval(activeTimeInterval))
         )
     }
 
     companion object {
         private val intervalFormat: DateIntervalFormat = HoursMinutesIntervalFormat()
 
-        private fun calculateSummaryFromRegisteredTime(registeredTime: List<TimeInterval>): Long {
+        private fun calculateSummaryFromRegisteredTime(registeredTime: List<TimeInterval>): Milliseconds {
             return registeredTime.map { calculateTime(it) }
-                .map { it.value }
-                .sum()
+                .fold(Milliseconds.empty) { total, next -> total + next }
         }
 
         private fun findActiveTimeInterval(registeredTime: List<TimeInterval>): TimeInterval? {
             return registeredTime.firstOrNull { isActive(it) }
         }
 
-        private fun formattedElapsedTime(elapsedTimeInMilliseconds: Long): String {
-            return intervalFormat.format(elapsedTimeInMilliseconds)
+        private fun formattedElapsedTime(elapsedTime: Milliseconds): String {
+            return intervalFormat.format(elapsedTime)
         }
 
         private fun getClockedInSinceFormatTemplate(resources: Resources): String {
