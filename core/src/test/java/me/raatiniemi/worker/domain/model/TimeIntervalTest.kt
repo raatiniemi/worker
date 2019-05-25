@@ -17,7 +17,7 @@
 package me.raatiniemi.worker.domain.model
 
 import me.raatiniemi.worker.domain.date.hours
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -25,22 +25,28 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class TimeIntervalTest {
     @Test
-    fun isActive_whenActive() {
+    fun `is active for active`() {
+        val expected = true
         val timeInterval = timeInterval {
-            start = Milliseconds(1)
+            start = Milliseconds.now
         }
 
-        assertTrue(timeInterval.isActive)
+        val actual = isActive(timeInterval)
+
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun isActive_whenInactive() {
+    fun `is active for inactive`() {
+        val expected = false
         val timeInterval = timeInterval {
-            start = Milliseconds(1)
-            stop = Milliseconds(1)
+            start = Milliseconds.now - 1.hours
+            stop = Milliseconds.now
         }
 
-        assertFalse(timeInterval.isActive)
+        val actual = isActive(timeInterval)
+
+        assertEquals(expected, actual)
     }
 
     @Test

@@ -33,7 +33,7 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         timeIntervals.firstOrNull { it.id == id }
 
     override fun findActiveByProjectId(projectId: Long) =
-        timeIntervals.firstOrNull { it.projectId == projectId && it.isActive }
+        timeIntervals.firstOrNull { it.projectId == projectId && isActive(it) }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
         return timeInterval {

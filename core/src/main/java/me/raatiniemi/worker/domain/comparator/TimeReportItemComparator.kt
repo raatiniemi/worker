@@ -19,16 +19,17 @@ package me.raatiniemi.worker.domain.comparator
 import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.isActive
 import java.util.*
 
 class TimeReportItemComparator : Comparator<TimeReportItem> {
     private fun compare(lhs: TimeInterval, rhs: TimeInterval): Int {
         if (lhs.stop != rhs.stop) {
-            if (null == lhs.stop) {
+            if (isActive(lhs)) {
                 return -1
             }
 
-            if (null == rhs.stop) {
+            if (isActive(rhs)) {
                 return 1
             }
         }

@@ -21,6 +21,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
 import me.raatiniemi.worker.domain.model.calculateInterval
+import me.raatiniemi.worker.domain.model.isActive
 import me.raatiniemi.worker.domain.util.DateIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat
@@ -86,7 +87,7 @@ data class ProjectsItem(
         }
 
         private fun findActiveTimeInterval(registeredTime: List<TimeInterval>): TimeInterval? {
-            return registeredTime.firstOrNull { it.isActive }
+            return registeredTime.firstOrNull { isActive(it) }
         }
 
         private fun formattedElapsedTime(elapsedTimeInMilliseconds: Long): String {

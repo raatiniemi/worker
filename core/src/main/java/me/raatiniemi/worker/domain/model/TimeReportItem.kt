@@ -33,7 +33,7 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
         get() {
             val title = buildTitleFromStartTime()
 
-            if (!timeInterval.isActive) {
+            if (!isActive(timeInterval)) {
                 appendStopTimeWithSeparator(title)
             }
 
