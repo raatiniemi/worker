@@ -80,7 +80,9 @@ data class ProjectsItem(
         private val intervalFormat: DateIntervalFormat = HoursMinutesIntervalFormat()
 
         private fun calculateSummaryFromRegisteredTime(registeredTime: List<TimeInterval>): Long {
-            return registeredTime.map { calculateTime(it) }.sum()
+            return registeredTime.map { calculateTime(it) }
+                .map { it.value }
+                .sum()
         }
 
         private fun findActiveTimeInterval(registeredTime: List<TimeInterval>): TimeInterval? {

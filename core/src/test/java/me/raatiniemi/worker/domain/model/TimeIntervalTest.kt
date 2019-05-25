@@ -51,7 +51,7 @@ class TimeIntervalTest {
 
     @Test
     fun `calculate time for active`() {
-        val expected = 0L
+        val expected = Milliseconds.empty
         val timeInterval = timeInterval {
             start = Milliseconds.now
         }
@@ -64,7 +64,7 @@ class TimeIntervalTest {
     @Test
     fun `calculate time for inactive`() {
         val now = Milliseconds.now
-        val expected = 1.hours
+        val expected = Milliseconds(1.hours)
         val timeInterval = timeInterval {
             start = now - 1.hours
             stop = now
