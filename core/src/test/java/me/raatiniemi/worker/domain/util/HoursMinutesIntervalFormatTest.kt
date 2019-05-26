@@ -14,10 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.model
+package me.raatiniemi.worker.domain.util
 
-import me.raatiniemi.worker.domain.util.DigitalHoursMinutesIntervalFormat
-import me.raatiniemi.worker.domain.util.HoursMinutesFormat
+import me.raatiniemi.worker.domain.model.Milliseconds
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,16 +24,19 @@ import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
 @RunWith(Parameterized::class)
-class TimeReportItemGetTimeSummaryWithFormatterTest(
+class HoursMinutesIntervalFormatTest(
     private val expected: String,
-    private val formatter: HoursMinutesFormat,
-    private val timeInterval: TimeInterval
+    private val intervalInMilliseconds: Long
 ) {
-    @Test
-    fun getTimeSummary() {
-        val item = TimeReportItem.with(timeInterval)
 
-        assertEquals(expected, item.getTimeSummaryWithFormatter(formatter))
+    @Test
+    fun format() {
+        val intervalFormat = HoursMinutesIntervalFormat()
+        val interval = Milliseconds(intervalInMilliseconds)
+
+        val actual = intervalFormat.format(interval)
+
+        assertEquals(expected, actual)
     }
 
     companion object {
@@ -43,20 +45,36 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
             @Parameters
             get() = listOf(
                 arrayOf(
-                    "1:00",
-                    DigitalHoursMinutesIntervalFormat(),
-                    timeInterval {
-                        start = Milliseconds(0)
-                        stop = Milliseconds(3600000)
-                    }
+                    "1m",
+                    60_000
                 ),
                 arrayOf(
-                    "9:00",
-                    DigitalHoursMinutesIntervalFormat(),
-                    timeInterval {
-                        start = Milliseconds(0)
-                        stop = Milliseconds(32400000)
-                    }
+                    "10m",
+                    600_000
+                ),
+                arrayOf(
+                    "30m",
+                    1_800_000
+                ),
+                arrayOf(
+                    "1h 0m",
+                    3_600_000
+                ),
+                arrayOf(
+                    "7h 30m",
+                    27_000_000
+                ),
+                arrayOf(
+                    "30h 0m",
+                    108_000_000
+                ),
+                arrayOf(
+                    "56h 25m",
+                    203_100_000
+                ),
+                arrayOf(
+                    "1h 0m",
+                    3_580_000
                 )
             )
     }

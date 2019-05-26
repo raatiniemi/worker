@@ -36,12 +36,18 @@ class TimeReportDayIsRegisteredTest(
     }
 
     companion object {
-        private val NOT_REGISTERED_TIME = TimeReportItem.with(timeInterval {
-            isRegistered = false
-        })
-        private val REGISTERED_TIME = TimeReportItem.with(timeInterval {
-            isRegistered = true
-        })
+        private val NOT_REGISTERED_TIME = TimeReportItem.with(
+            timeInterval {
+                start = Milliseconds(1)
+                isRegistered = false
+            }
+        )
+        private val REGISTERED_TIME = TimeReportItem.with(
+            timeInterval {
+                start = Milliseconds(1)
+                isRegistered = true
+            }
+        )
 
         @Suppress("unused")
         @JvmStatic

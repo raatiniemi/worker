@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
@@ -47,8 +48,7 @@ class IsProjectActiveTest {
     @Test
     fun `is project active with active time interval`() {
         val newTimeInterval = newTimeInterval {
-            startInMilliseconds = 1
-            stopInMilliseconds = 0
+            start = Milliseconds(1)
         }
         repository.add(newTimeInterval)
 

@@ -17,13 +17,14 @@
 package me.raatiniemi.worker.domain.util
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
+import me.raatiniemi.worker.domain.model.Milliseconds
 import java.util.*
 
 /**
  * Format a time interval into hours and minutes, i.e. 1h 30m.
  */
 class HoursMinutesIntervalFormat : DateIntervalFormat, HoursMinutesFormat {
-    override fun format(milliseconds: Long): String {
+    override fun format(milliseconds: Milliseconds): String {
         val hoursMinutes = CalculateTime.calculateHoursMinutes(milliseconds)
 
         return apply(hoursMinutes)

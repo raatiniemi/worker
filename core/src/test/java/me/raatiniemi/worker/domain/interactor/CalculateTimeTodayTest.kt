@@ -27,7 +27,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class CalculateTimeTodayTest {
@@ -54,10 +53,12 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with registered time`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(newTimeInterval {
-            startInMilliseconds = startingPoint
-            stopInMilliseconds = startingPoint + 1.hours
-        })
+        repository.add(
+            newTimeInterval {
+                start = startingPoint
+                stop = startingPoint + 1.hours
+            }
+        )
         val expected = 1.hours
 
         val actual = calculateTimeToday(project)
@@ -68,10 +69,12 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with active time interval`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(newTimeInterval {
-            startInMilliseconds = startingPoint
-        })
-        val stopForActive = Date(startingPoint + 1.hours)
+        repository.add(
+            newTimeInterval {
+                start = startingPoint
+            }
+        )
+        val stopForActive = startingPoint + 1.hours
         val expected = 1.hours
 
         val actual = calculateTimeToday(project, stopForActive)
@@ -82,14 +85,18 @@ class CalculateTimeTodayTest {
     @Test
     fun `calculate time today with registered time and active time interval`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        repository.add(newTimeInterval {
-            startInMilliseconds = startingPoint
-            stopInMilliseconds = startingPoint + 1.hours
-        })
-        repository.add(newTimeInterval {
-            startInMilliseconds = startingPoint
-        })
-        val stopForActive = Date(startingPoint + 1.hours)
+        repository.add(
+            newTimeInterval {
+                start = startingPoint
+                stop = startingPoint + 1.hours
+            }
+        )
+        repository.add(
+            newTimeInterval {
+                start = startingPoint
+            }
+        )
+        val stopForActive = startingPoint + 1.hours
         val expected = 2.hours
 
         val actual = calculateTimeToday(project, stopForActive)

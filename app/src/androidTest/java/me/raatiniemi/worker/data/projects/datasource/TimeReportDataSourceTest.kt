@@ -17,12 +17,10 @@
 package me.raatiniemi.worker.data.projects.datasource
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.interactor.countTimeReports
 import me.raatiniemi.worker.domain.interactor.findTimeReports
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeReportDay
-import me.raatiniemi.worker.domain.model.TimeReportItem
-import me.raatiniemi.worker.domain.model.newTimeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.*
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
@@ -31,7 +29,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportDataSourceTest {
@@ -79,10 +76,14 @@ class TimeReportDataSourceTest {
     @Test
     fun loadInitial_withTimeInterval() {
         projectHolder += project
-        val timeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val timeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
+            }
+        )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(timeInterval.startInMilliseconds),
+                resetToStartOfDay(timeInterval.start),
                 listOf(TimeReportItem(timeInterval))
             )
         )
@@ -100,19 +101,23 @@ class TimeReportDataSourceTest {
     @Test
     fun loadInitial_withTimeIntervals() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now
             }
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -130,19 +135,23 @@ class TimeReportDataSourceTest {
     @Test
     fun loadInitial_withTimeIntervalsFilterUsingPosition() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now
             }
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -163,19 +172,23 @@ class TimeReportDataSourceTest {
     @Test
     fun loadInitial_withTimeIntervalsFilterUsingPageSize() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now
             }
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -212,10 +225,14 @@ class TimeReportDataSourceTest {
     @Test
     fun loadRange_withTimeInterval() {
         projectHolder += project
-        val timeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val timeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
+            }
+        )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(timeInterval.startInMilliseconds),
+                resetToStartOfDay(timeInterval.start),
                 listOf(TimeReportItem(timeInterval))
             )
         )
@@ -229,19 +246,23 @@ class TimeReportDataSourceTest {
     @Test
     fun loadRange_withTimeIntervals() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now
             }
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -255,19 +276,23 @@ class TimeReportDataSourceTest {
     @Test
     fun loadRange_withTimeIntervalsFilterUsingPosition() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now
             }
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )
@@ -284,19 +309,23 @@ class TimeReportDataSourceTest {
     @Test
     fun loadRange_withTimeIntervalsFilterUsingPageSize() {
         projectHolder += project
-        val firstTimeInterval = timeIntervalRepository.add(newTimeInterval { })
+        val firstTimeInterval = timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now - 25.hours
+            }
+        )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now
             }
         )
         val data = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(TimeReportItem(secondTimeInterval))
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(TimeReportItem(firstTimeInterval))
             )
         )

@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import java.util.*
 
 /**
@@ -32,12 +33,12 @@ internal fun indexWithCountCap(index: Int, count: Int): Int {
 /**
  * Reset timestamp in milliseconds to start of day.
  */
-fun resetToStartOfDay(timeInMilliseconds: Long): Date = Calendar.getInstance()
-    .apply { timeInMillis = timeInMilliseconds }
+fun resetToStartOfDay(time: Milliseconds): Date = Calendar.getInstance()
+    .apply { timeInMillis = time.value }
     .also {
         it.set(Calendar.HOUR_OF_DAY, 0)
         it.set(Calendar.MINUTE, 0)
         it.set(Calendar.SECOND, 0)
         it.set(Calendar.MILLISECOND, 0)
     }
-    .run { time }
+    .let { it.time }

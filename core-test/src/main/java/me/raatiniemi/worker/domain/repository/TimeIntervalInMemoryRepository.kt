@@ -16,18 +16,16 @@
 
 package me.raatiniemi.worker.domain.repository
 
-import me.raatiniemi.worker.domain.model.NewTimeInterval
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.*
 import java.util.concurrent.atomic.AtomicLong
 
 class TimeIntervalInMemoryRepository : TimeIntervalRepository {
     private val incrementedId = AtomicLong()
     private val timeIntervals = mutableListOf<TimeInterval>()
 
-    override fun findAll(project: Project, milliseconds: Long): List<TimeInterval> {
+    override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
         return timeIntervals.filter {
-            it.projectId == project.id && it.startInMilliseconds >= milliseconds
+            it.projectId == project.id && it.start >= milliseconds
         }
     }
 
@@ -35,16 +33,16 @@ class TimeIntervalInMemoryRepository : TimeIntervalRepository {
         timeIntervals.firstOrNull { it.id == id }
 
     override fun findActiveByProjectId(projectId: Long) =
-        timeIntervals.firstOrNull { it.projectId == projectId && it.isActive }
+        timeIntervals.firstOrNull { it.projectId == projectId && isActive(it) }
 
     override fun add(newTimeInterval: NewTimeInterval): TimeInterval {
-        return TimeInterval(
-            id = incrementedId.incrementAndGet(),
-            projectId = newTimeInterval.projectId,
-            startInMilliseconds = newTimeInterval.startInMilliseconds,
-            stopInMilliseconds = newTimeInterval.stopInMilliseconds,
+        return timeInterval {
+            id = incrementedId.incrementAndGet()
+            projectId = newTimeInterval.projectId
+            start = newTimeInterval.start
+            stop = newTimeInterval.stop
             isRegistered = newTimeInterval.isRegistered
-        ).also { timeIntervals.add(it) }
+        }.also { timeIntervals.add(it) }
     }
 
     override fun update(timeInterval: TimeInterval) =

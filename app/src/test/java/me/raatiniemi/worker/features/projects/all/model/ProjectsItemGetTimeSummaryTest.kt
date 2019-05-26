@@ -16,8 +16,10 @@
 
 package me.raatiniemi.worker.features.projects.all.model
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.timeInterval
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,6 +40,7 @@ class ProjectsItemGetTimeSummaryTest(
     }
 
     companion object {
+        @Suppress("unused")
         @JvmStatic
         val parameters: Collection<Array<Any>>
             @Parameters
@@ -45,28 +48,32 @@ class ProjectsItemGetTimeSummaryTest(
                 arrayOf(
                     "1h 0m",
                     listOf(
-                        TimeInterval.builder(1L, 1L)
-                            .stopInMilliseconds(3600000)
-                            .build()
+                        timeInterval {
+                            start = Milliseconds(0)
+                            stop = Milliseconds(3600000)
+                        }
                     )
                 ),
                 arrayOf(
                     "2h 30m",
                     listOf(
-                        TimeInterval.builder(1L, 1L)
-                            .stopInMilliseconds(9000000)
-                            .build()
+                        timeInterval {
+                            start = Milliseconds(0)
+                            stop = Milliseconds(9000000)
+                        }
                     )
                 ),
                 arrayOf(
                     "3h 30m",
                     listOf(
-                        TimeInterval.builder(1L, 1L)
-                            .stopInMilliseconds(3600000)
-                            .build(),
-                        TimeInterval.builder(1L, 1L)
-                            .stopInMilliseconds(9000000)
-                            .build()
+                        timeInterval {
+                            start = Milliseconds(0)
+                            stop = Milliseconds(3600000)
+                        },
+                        timeInterval {
+                            start = Milliseconds(0)
+                            stop = Milliseconds(9000000)
+                        }
                     )
                 )
             )

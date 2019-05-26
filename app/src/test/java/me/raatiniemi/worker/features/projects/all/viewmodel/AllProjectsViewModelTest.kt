@@ -22,10 +22,7 @@ import me.raatiniemi.worker.domain.interactor.ClockIn
 import me.raatiniemi.worker.domain.interactor.ClockOut
 import me.raatiniemi.worker.domain.interactor.GetProjectTimeSince
 import me.raatiniemi.worker.domain.interactor.RemoveProject
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.features.projects.all.model.AllProjectsViewActions
@@ -85,7 +82,7 @@ class AllProjectsViewModelTest {
             listOf(
                 timeInterval {
                     projectId = project.id
-                    startInMilliseconds = 1
+                    start = Milliseconds(1)
                 }
             )
         } else {
@@ -157,9 +154,11 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `toggle clock in with active project`() {
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
+            }
+        )
         val item = ProjectsItem(project, emptyList())
         val date = Date()
 
@@ -187,9 +186,11 @@ class AllProjectsViewModelTest {
     @Test
     fun `toggle clock out project without confirm clock out with active project`() = runBlocking {
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
+            }
+        )
         val item = getProjectsItem(project, true)
         val date = Date()
 
@@ -244,9 +245,11 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock in with already active project`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
+            }
+        )
 
         vm.clockIn(project, Date())
 
@@ -276,9 +279,11 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `clock out project`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval {
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
+            }
+        )
 
         vm.clockOut(project, Date())
 

@@ -16,23 +16,24 @@
 
 package me.raatiniemi.worker.domain.model
 
-data class NewTimeIntervalBuilder(
-    var projectId: Long = 1,
-    var start: Milliseconds? = null,
-    var stop: Milliseconds? = null,
-    var isRegistered: Boolean = false
-) {
-    fun build() = NewTimeInterval(
-        projectId = projectId,
-        start = requireNotNull(start),
-        stop = stop,
-        isRegistered = isRegistered
-    )
+fun isActive(timeInterval: TimeInterval) = timeInterval.stop == null
+
+fun calculateTime(timeInterval: TimeInterval): Milliseconds {
+    if (isActive(timeInterval)) {
+        return Milliseconds.empty
+    }
+
+    val stop = timeInterval.stop ?: Milliseconds.empty
+    return calculateInterval(timeInterval, stop)
 }
 
-fun newTimeInterval(configure: NewTimeIntervalBuilder.() -> Unit): NewTimeInterval {
-    val builder = NewTimeIntervalBuilder()
-    builder.configure()
+fun calculateInterval(
+    timeInterval: TimeInterval,
+    stopForActive: Milliseconds = Milliseconds.now
+): Milliseconds {
+    if (timeInterval.stop == null) {
+        return stopForActive - timeInterval.start
+    }
 
-    return builder.build()
+    return timeInterval.stop - timeInterval.start
 }

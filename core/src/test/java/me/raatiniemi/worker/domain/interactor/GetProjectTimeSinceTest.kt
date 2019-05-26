@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
@@ -39,12 +41,23 @@ class GetProjectTimeSinceTest {
     }
 
     @Test
-    fun execute_withDay() {
-        repository.add(newTimeIntervalStartBefore(TimeIntervalStartingPoint.DAY) { })
-        repository.add(newTimeIntervalStartAfter(TimeIntervalStartingPoint.DAY) { })
+    fun `get project time since day`() {
+        val newTimeInterval = newTimeInterval {
+            start = after(TimeIntervalStartingPoint.DAY)
+            stop = after(TimeIntervalStartingPoint.DAY, 2.hours)
+        }
+        repository.add(
+            newTimeInterval {
+                start = before(TimeIntervalStartingPoint.DAY)
+                stop = before(TimeIntervalStartingPoint.DAY, 30.minutes)
+            }
+        )
+        repository.add(newTimeInterval)
         val expected = listOf(
-            timeIntervalStartAfter(TimeIntervalStartingPoint.DAY) {
+            timeInterval {
                 id = 2
+                start = newTimeInterval.start
+                stop = requireNotNull(newTimeInterval.stop)
             }
         )
 
@@ -54,12 +67,23 @@ class GetProjectTimeSinceTest {
     }
 
     @Test
-    fun execute_withWeek() {
-        repository.add(newTimeIntervalStartBefore(TimeIntervalStartingPoint.WEEK) { })
-        repository.add(newTimeIntervalStartAfter(TimeIntervalStartingPoint.WEEK) { })
+    fun `get project time since week`() {
+        val newTimeInterval = newTimeInterval {
+            start = after(TimeIntervalStartingPoint.WEEK)
+            stop = after(TimeIntervalStartingPoint.WEEK, 2.hours)
+        }
+        repository.add(
+            newTimeInterval {
+                start = before(TimeIntervalStartingPoint.WEEK)
+                stop = before(TimeIntervalStartingPoint.WEEK, 30.minutes)
+            }
+        )
+        repository.add(newTimeInterval)
         val expected = listOf(
-            timeIntervalStartAfter(TimeIntervalStartingPoint.WEEK) {
+            timeInterval {
                 id = 2
+                start = newTimeInterval.start
+                stop = requireNotNull(newTimeInterval.stop)
             }
         )
 
@@ -69,12 +93,23 @@ class GetProjectTimeSinceTest {
     }
 
     @Test
-    fun execute_withMonth() {
-        repository.add(newTimeIntervalStartBefore(TimeIntervalStartingPoint.MONTH) { })
-        repository.add(newTimeIntervalStartAfter(TimeIntervalStartingPoint.MONTH) { })
+    fun `get project time since month`() {
+        val newTimeInterval = newTimeInterval {
+            start = after(TimeIntervalStartingPoint.MONTH)
+            stop = after(TimeIntervalStartingPoint.MONTH, 2.hours)
+        }
+        repository.add(
+            newTimeInterval {
+                start = before(TimeIntervalStartingPoint.MONTH)
+                stop = before(TimeIntervalStartingPoint.MONTH, 30.minutes)
+            }
+        )
+        repository.add(newTimeInterval)
         val expected = listOf(
-            timeIntervalStartAfter(TimeIntervalStartingPoint.MONTH) {
+            timeInterval {
                 id = 2
+                start = newTimeInterval.start
+                stop = requireNotNull(newTimeInterval.stop)
             }
         )
 

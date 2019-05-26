@@ -73,8 +73,15 @@ class TimeReportViewModelTest {
 
     @Test
     fun `toggle registered state with selected item`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval { })
-        val timeInterval = timeInterval { id = 1 }
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
+        val timeInterval = timeInterval {
+            id = 1
+            start = Milliseconds(1)
+        }
         val timeReportItem = TimeReportItem.with(timeInterval)
         val expected = listOf(
             timeInterval.copy(isRegistered = true)
@@ -84,16 +91,30 @@ class TimeReportViewModelTest {
         vm.toggleRegisteredStateForSelectedItems()
 
         assertEquals(listOf(Event.TimeReportToggle(1)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, 0)
+        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
     @Test
     fun `toggle registered state for selected items`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval { })
-        timeIntervalRepository.add(newTimeInterval { })
-        val firstTimeInterval = timeInterval { id = 1 }
-        val secondTimeInterval = timeInterval { id = 2 }
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
+        val firstTimeInterval = timeInterval {
+            id = 1
+            start = Milliseconds(1)
+        }
+        val secondTimeInterval = timeInterval {
+            id = 2
+            start = Milliseconds(1)
+        }
         val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
         val secondTimeReportItem = TimeReportItem.with(secondTimeInterval)
         val expected = listOf(
@@ -106,14 +127,21 @@ class TimeReportViewModelTest {
         vm.toggleRegisteredStateForSelectedItems()
 
         assertEquals(listOf(Event.TimeReportToggle(2)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, 0)
+        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with single item`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval { })
-        val timeInterval = timeInterval { id = 1 }
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
+        val timeInterval = timeInterval {
+            id = 1
+            start = Milliseconds(1)
+        }
         val timeReportItem = TimeReportItem(timeInterval)
         val expected = emptyList<TimeInterval>()
 
@@ -121,16 +149,34 @@ class TimeReportViewModelTest {
         vm.removeSelectedItems()
 
         assertEquals(listOf(Event.TimeReportRemove(1)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, 0)
+        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with multiple items`() = runBlocking {
-        timeIntervalRepository.add(newTimeInterval { })
-        timeIntervalRepository.add(newTimeInterval { })
-        val firstTimeReportItem = TimeReportItem(timeInterval { id = 1 })
-        val secondTimeReportItem = TimeReportItem(timeInterval { id = 2 })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
+        val firstTimeReportItem = TimeReportItem(
+            timeInterval {
+                id = 1
+                start = Milliseconds(1)
+            }
+        )
+        val secondTimeReportItem = TimeReportItem(
+            timeInterval {
+                id = 2
+                start = Milliseconds(1)
+            }
+        )
         val expected = emptyList<TimeInterval>()
 
         vm.consume(TimeReportLongPressAction.LongPressItem(firstTimeReportItem))
@@ -138,7 +184,7 @@ class TimeReportViewModelTest {
         vm.removeSelectedItems()
 
         assertEquals(listOf(Event.TimeReportRemove(2)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, 0)
+        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.util
 
 import me.raatiniemi.worker.domain.model.HoursMinutes
+import me.raatiniemi.worker.domain.model.Milliseconds
 
 class CalculateTime private constructor(private val milliseconds: Long) {
     private fun calculateHoursMinutes(): HoursMinutes {
@@ -65,8 +66,8 @@ class CalculateTime private constructor(private val milliseconds: Long) {
         private const val SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR
         private const val SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY
 
-        fun calculateHoursMinutes(milliseconds: Long): HoursMinutes {
-            val calculateTime = CalculateTime(milliseconds)
+        fun calculateHoursMinutes(milliseconds: Milliseconds): HoursMinutes {
+            val calculateTime = CalculateTime(milliseconds.value)
             return calculateTime.calculateHoursMinutes()
         }
     }

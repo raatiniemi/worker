@@ -24,7 +24,8 @@ import java.util.*
 
 data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<TimeReportItem> {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
-    val hoursMinutes: HoursMinutes = CalculateTime.calculateHoursMinutes(timeInterval.interval)
+    val hoursMinutes: HoursMinutes =
+        CalculateTime.calculateHoursMinutes(calculateInterval(timeInterval))
 
     val id = timeInterval.id
 
@@ -32,7 +33,7 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
         get() {
             val title = buildTitleFromStartTime()
 
-            if (!timeInterval.isActive) {
+            if (!isActive(timeInterval)) {
                 appendStopTimeWithSeparator(title)
             }
 
@@ -53,7 +54,7 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
     }
 
     private fun buildDateFromStartTime(): Date {
-        return buildDateFromMilliseconds(timeInterval.startInMilliseconds)
+        return buildDateFromMilliseconds(timeInterval.start.value)
     }
 
     private fun appendStopTimeWithSeparator(title: StringBuilder) {
@@ -62,7 +63,7 @@ data class TimeReportItem(private val timeInterval: TimeInterval) : Comparable<T
     }
 
     private fun buildDateFromStopTime(): Date {
-        return buildDateFromMilliseconds(timeInterval.stopInMilliseconds)
+        return buildDateFromMilliseconds(timeInterval.stop?.value ?: 0)
     }
 
     fun getTimeSummaryWithFormatter(formatter: HoursMinutesFormat): String {

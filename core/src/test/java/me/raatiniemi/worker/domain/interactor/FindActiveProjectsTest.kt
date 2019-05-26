@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.newTimeInterval
@@ -62,16 +63,19 @@ class FindActiveProjectsTest {
     fun `invoke with active project`() {
         projectRepository.add(NewProject("Project name #1"))
         projectRepository.add(NewProject("Project name #2"))
-        timeIntervalRepository.add(newTimeInterval {
-            projectId = 1
-            startInMilliseconds = 1
-            stopInMilliseconds = 10
-        })
-        timeIntervalRepository.add(newTimeInterval {
-            projectId = 2
-            startInMilliseconds = 1
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                projectId = 1
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                projectId = 2
+                start = Milliseconds(1)
+            }
+        )
         val expected = listOf(Project(2, "Project name #2"))
 
         val actual = findActiveProjects()
@@ -83,16 +87,18 @@ class FindActiveProjectsTest {
     fun `invoke with active projects`() {
         projectRepository.add(NewProject("Project name #1"))
         projectRepository.add(NewProject("Project name #2"))
-        timeIntervalRepository.add(newTimeInterval {
-            projectId = 1
-            startInMilliseconds = 1
-            stopInMilliseconds = 0
-        })
-        timeIntervalRepository.add(newTimeInterval {
-            projectId = 2
-            startInMilliseconds = 1
-            stopInMilliseconds = 0
-        })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                projectId = 1
+                start = Milliseconds(1)
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                projectId = 2
+                start = Milliseconds(1)
+            }
+        )
         val expected = listOf(
             Project(1, "Project name #1"),
             Project(2, "Project name #2")

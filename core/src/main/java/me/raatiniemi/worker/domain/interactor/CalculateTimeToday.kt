@@ -16,16 +16,18 @@
 
 package me.raatiniemi.worker.domain.interactor
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
+import me.raatiniemi.worker.domain.model.calculateInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import java.util.*
 
 class CalculateTimeToday(private val repository: TimeIntervalRepository) {
-    operator fun invoke(project: Project, stopForActive: Date = Date()): Long {
-        val startingPointInMilliseconds = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
-        val timeIntervals = repository.findAll(project, startingPointInMilliseconds)
-        return timeIntervals.map { it.calculateInterval(stopForActive) }
+    operator fun invoke(project: Project, stopForActive: Milliseconds = Milliseconds.now): Long {
+        val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
+        val timeIntervals = repository.findAll(project, startingPoint)
+        return timeIntervals.map { calculateInterval(it, stopForActive) }
+            .map { it.value }
             .sum()
     }
 }

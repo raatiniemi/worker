@@ -16,23 +16,23 @@
 
 package me.raatiniemi.worker.domain.model
 
-data class NewTimeIntervalBuilder(
-    var projectId: Long = 1,
-    var start: Milliseconds? = null,
-    var stop: Milliseconds? = null,
-    var isRegistered: Boolean = false
-) {
-    fun build() = NewTimeInterval(
-        projectId = projectId,
-        start = requireNotNull(start),
-        stop = stop,
-        isRegistered = isRegistered
-    )
-}
+import java.util.*
 
-fun newTimeInterval(configure: NewTimeIntervalBuilder.() -> Unit): NewTimeInterval {
-    val builder = NewTimeIntervalBuilder()
-    builder.configure()
+inline class Milliseconds(val value: Long) : Comparable<Milliseconds> {
+    operator fun plus(other: Milliseconds) = Milliseconds(value + other.value)
 
-    return builder.build()
+    operator fun minus(other: Milliseconds) = Milliseconds(value - other.value)
+
+    operator fun plus(value: Long) = Milliseconds(this.value + value)
+
+    operator fun minus(value: Long) = Milliseconds(this.value - value)
+
+    override fun compareTo(other: Milliseconds) = value.compareTo(other.value)
+
+    companion object {
+        val now: Milliseconds
+            get() = Milliseconds(Date().time)
+
+        val empty = Milliseconds(0)
+    }
 }

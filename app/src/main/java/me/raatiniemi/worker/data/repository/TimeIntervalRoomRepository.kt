@@ -18,6 +18,7 @@ package me.raatiniemi.worker.data.repository
 
 import me.raatiniemi.worker.data.projects.TimeIntervalDao
 import me.raatiniemi.worker.data.projects.toEntity
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
@@ -25,8 +26,8 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 internal class TimeIntervalRoomRepository(private val timeIntervals: TimeIntervalDao) :
     TimeIntervalRepository {
-    override fun findAll(project: Project, milliseconds: Long): List<TimeInterval> {
-        return timeIntervals.findAll(projectId = project.id, startInMilliseconds = milliseconds)
+    override fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval> {
+        return timeIntervals.findAll(project.id, milliseconds.value)
             .map { it.toTimeInterval() }
             .toList()
     }

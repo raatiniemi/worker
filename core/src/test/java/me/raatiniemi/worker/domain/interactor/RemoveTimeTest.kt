@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -41,41 +38,43 @@ class RemoveTimeTest {
 
     @Test
     fun `remove with time interval`() {
-        val newTimeInterval = newTimeInterval {
-            startInMilliseconds = 1
-            stopInMilliseconds = 10
-        }
-        repository.add(newTimeInterval)
+        repository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
+            }
+        )
         val timeInterval = timeInterval {
             id = 1
-            startInMilliseconds = 1
-            stopInMilliseconds = 10
+            start = Milliseconds(1)
+            stop = Milliseconds(10)
         }
         val expected = emptyList<TimeInterval>()
 
         removeTime(timeInterval)
 
-        val actual = repository.findAll(Project(1, "Project name"), 0)
+        val actual = repository.findAll(Project(1, "Project name"), Milliseconds(0))
         assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with time intervals`() {
-        val newTimeInterval = newTimeInterval {
-            startInMilliseconds = 1
-            stopInMilliseconds = 10
-        }
-        repository.add(newTimeInterval)
+        repository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
+            }
+        )
         val timeInterval = timeInterval {
             id = 1
-            startInMilliseconds = 1
-            stopInMilliseconds = 10
+            start = Milliseconds(1)
+            stop = Milliseconds(10)
         }
         val expected = emptyList<TimeInterval>()
 
         removeTime(listOf(timeInterval))
 
-        val actual = repository.findAll(Project(1, "Project name"), 0)
+        val actual = repository.findAll(Project(1, "Project name"), Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

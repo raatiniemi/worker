@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import java.util.*
@@ -33,7 +34,7 @@ class ClockIn(private val timeIntervalRepository: TimeIntervalRepository) {
 
         val newTimeInterval = NewTimeInterval(
             projectId = projectId,
-            startInMilliseconds = date.time
+            start = Milliseconds(date.time)
         )
 
         timeIntervalRepository.add(newTimeInterval)

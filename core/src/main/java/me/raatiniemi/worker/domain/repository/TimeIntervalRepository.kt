@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.model.Milliseconds
 import me.raatiniemi.worker.domain.model.NewTimeInterval
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.domain.model.TimeInterval
@@ -31,7 +32,7 @@ interface TimeIntervalRepository {
      * @param milliseconds Starting point in milliseconds.
      * @return Time intervals, or active time interval, for project since starting point.
      */
-    fun findAll(project: Project, milliseconds: Long): List<TimeInterval>
+    fun findAll(project: Project, milliseconds: Milliseconds): List<TimeInterval>
 
     /**
      * Get time interval by id.

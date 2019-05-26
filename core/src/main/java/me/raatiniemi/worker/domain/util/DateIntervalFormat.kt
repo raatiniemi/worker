@@ -16,6 +16,8 @@
 
 package me.raatiniemi.worker.domain.util
 
+import me.raatiniemi.worker.domain.model.Milliseconds
+
 /**
  * Interface for different date interval formatter implementations.
  */
@@ -27,5 +29,5 @@ interface DateIntervalFormat {
      * @param milliseconds Interval in milliseconds to format.
      * @return Formatted interval.
      */
-    fun format(milliseconds: Long): String
+    fun format(milliseconds: Milliseconds): String
 }

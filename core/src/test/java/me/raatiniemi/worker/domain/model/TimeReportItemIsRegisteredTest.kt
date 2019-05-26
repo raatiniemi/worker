@@ -43,15 +43,17 @@ class TimeReportItemIsRegisteredTest(
                 arrayOf(
                     "is registered",
                     true,
-                    TimeInterval.builder(1L, 1L)
-                        .register()
-                        .build()
+                    timeInterval {
+                        start = Milliseconds(1)
+                        isRegistered = true
+                    }
                 ),
                 arrayOf(
                     "is not registered",
                     false,
-                    TimeInterval.builder(1L, 1L)
-                        .build()
+                    timeInterval {
+                        start = Milliseconds(1)
+                    }
                 )
             )
     }

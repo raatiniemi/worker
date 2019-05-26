@@ -16,13 +16,13 @@
 
 package me.raatiniemi.worker.domain.repository
 
+import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportInMemoryRepositoryTest {
@@ -49,7 +49,11 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count with time interval`() {
         val expected = 1
-        timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
 
         val actual = repository.count(project)
 
@@ -59,8 +63,16 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count with time intervals on same day`() {
         val expected = 1
-        timeIntervalRepository.add(newTimeInterval { })
-        timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
 
         val actual = repository.count(project)
 
@@ -70,12 +82,15 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count with time intervals on different days`() {
         val expected = 2
-        timeIntervalRepository.add(newTimeInterval {
-            isRegistered = true
-        })
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now - 25.hours
+                isRegistered = true
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
             }
         )
 
@@ -98,6 +113,7 @@ class TimeReportInMemoryRepositoryTest {
         val expected = 0
         timeIntervalRepository.add(
             newTimeInterval {
+                start = Milliseconds(1)
                 isRegistered = true
             }
         )
@@ -110,7 +126,11 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count not registered with time interval`() {
         val expected = 1
-        timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
 
         val actual = repository.countNotRegistered(project)
 
@@ -120,8 +140,16 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count not registered with time intervals on same day`() {
         val expected = 1
-        timeIntervalRepository.add(newTimeInterval { })
-        timeIntervalRepository.add(newTimeInterval { })
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
+            }
+        )
 
         val actual = repository.countNotRegistered(project)
 
@@ -131,10 +159,14 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count not registered with registered time interval on different days`() {
         val expected = 1
-        timeIntervalRepository.add(newTimeInterval { })
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
                 isRegistered = true
             }
         )
@@ -147,10 +179,14 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `count not registered with time intervals on different days`() {
         val expected = 2
-        timeIntervalRepository.add(newTimeInterval { })
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = Date().time
+                start = Milliseconds.now - 25.hours
+            }
+        )
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds.now
             }
         )
 
@@ -175,8 +211,8 @@ class TimeReportInMemoryRepositoryTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 2
-                startInMilliseconds = 1
-                stopInMilliseconds = 20
+                start = Milliseconds(1)
+                stop = Milliseconds(20)
             }
         )
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
@@ -191,20 +227,20 @@ class TimeReportInMemoryRepositoryTest {
         val timeIntervals = listOf(
             timeIntervalRepository.add(
                 newTimeInterval {
-                    startInMilliseconds = 1
-                    stopInMilliseconds = 10
+                    start = Milliseconds(1)
+                    stop = Milliseconds(10)
                 }
             ),
             timeIntervalRepository.add(
                 newTimeInterval {
-                    startInMilliseconds = 11
-                    stopInMilliseconds = 30
+                    start = Milliseconds(11)
+                    stop = Milliseconds(30)
                 }
             )
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(1),
+                resetToStartOfDay(Milliseconds(1)),
                 timeIntervals.reversed()
                     .map { TimeReportItem(it) }
             )
@@ -220,25 +256,25 @@ class TimeReportInMemoryRepositoryTest {
     fun `find all with time intervals for different days`() {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 90000000
-                stopInMilliseconds = 93000000
+                start = Milliseconds(90000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval)
                 )
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     TimeReportItem(firstTimeInterval)
                 )
@@ -255,19 +291,19 @@ class TimeReportInMemoryRepositoryTest {
     fun `find all with position`() {
         val firstTimeIntervals = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 90000000
-                stopInMilliseconds = 93000000
+                start = Milliseconds(90000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(firstTimeIntervals.startInMilliseconds),
+                resetToStartOfDay(firstTimeIntervals.start),
                 listOf(
                     TimeReportItem(firstTimeIntervals)
                 )
@@ -284,19 +320,19 @@ class TimeReportInMemoryRepositoryTest {
     fun `find all with load size`() {
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 90000000
-                stopInMilliseconds = 93000000
+                start = Milliseconds(90000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval)
                 )
@@ -325,8 +361,8 @@ class TimeReportInMemoryRepositoryTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 2
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
             }
         )
         val loadRange = LoadRange(LoadPosition(0), LoadSize(10))
@@ -340,26 +376,26 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered with time intervals for same day`() {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 11
-                stopInMilliseconds = 30
+                start = Milliseconds(11)
+                stop = Milliseconds(30)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 30
-                stopInMilliseconds = 45
+                start = Milliseconds(30)
+                stop = Milliseconds(45)
                 isRegistered = true
             }
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval),
                     TimeReportItem(firstTimeInterval)
@@ -377,32 +413,32 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered with time interval for different days`() {
         val firstTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 90000000
-                stopInMilliseconds = 93000000
+                start = Milliseconds(90000000)
+                stop = Milliseconds(93000000)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 180000000
-                stopInMilliseconds = 183000000
+                start = Milliseconds(180000000)
+                stop = Milliseconds(183000000)
                 isRegistered = true
             }
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval)
                 )
             ),
             TimeReportDay(
-                resetToStartOfDay(firstTimeInterval.startInMilliseconds),
+                resetToStartOfDay(firstTimeInterval.start),
                 listOf(
                     TimeReportItem(firstTimeInterval)
                 )
@@ -419,19 +455,19 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered with position`() {
         val firstTimeIntervals = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 90000000
-                stopInMilliseconds = 93000000
+                start = Milliseconds(90000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(firstTimeIntervals.startInMilliseconds),
+                resetToStartOfDay(firstTimeIntervals.start),
                 listOf(
                     TimeReportItem(firstTimeIntervals)
                 )
@@ -448,19 +484,19 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered with load size`() {
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 90000000
-                stopInMilliseconds = 93000000
+                start = Milliseconds(90000000)
+                stop = Milliseconds(93000000)
             }
         )
         val expected = listOf(
             TimeReportDay(
-                resetToStartOfDay(secondTimeInterval.startInMilliseconds),
+                resetToStartOfDay(secondTimeInterval.start),
                 listOf(
                     TimeReportItem(secondTimeInterval)
                 )
@@ -478,8 +514,8 @@ class TimeReportInMemoryRepositoryTest {
         val expected = emptyList<TimeReportDay>()
         timeIntervalRepository.add(
             newTimeInterval {
-                startInMilliseconds = 1
-                stopInMilliseconds = 10
+                start = Milliseconds(1)
+                stop = Milliseconds(10)
                 isRegistered = true
             }
         )

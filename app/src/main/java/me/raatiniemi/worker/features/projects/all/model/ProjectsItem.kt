@@ -18,8 +18,7 @@ package me.raatiniemi.worker.features.projects.all.model
 
 import android.content.res.Resources
 import me.raatiniemi.worker.R
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.util.DateIntervalFormat
 import me.raatiniemi.worker.domain.util.HoursMinutesIntervalFormat
 import java.text.SimpleDateFormat
@@ -30,7 +29,7 @@ data class ProjectsItem(
     private val registeredTime: List<TimeInterval>
 ) {
     private val timeFormat = SimpleDateFormat("HH:mm", Locale.forLanguageTag("en_US"))
-    private val registeredTimeSummary: Long
+    private val registeredTimeSummary: Milliseconds
     private val activeTimeInterval: TimeInterval?
 
     val title: String
@@ -49,7 +48,7 @@ data class ProjectsItem(
         }
 
     val clockedInSinceInMilliseconds: Long
-        get() = activeTimeInterval?.startInMilliseconds ?: 0
+        get() = activeTimeInterval?.start?.value ?: 0
 
     init {
         registeredTimeSummary = calculateSummaryFromRegisteredTime(registeredTime)
@@ -58,12 +57,12 @@ data class ProjectsItem(
 
     fun asProject() = project
 
-    private fun calculateTimeSummary(): Long {
+    private fun calculateTimeSummary(): Milliseconds {
         if (activeTimeInterval == null) {
             return registeredTimeSummary
         }
 
-        return registeredTimeSummary + activeTimeInterval.interval
+        return registeredTimeSummary + calculateInterval(activeTimeInterval)
     }
 
     fun getClockedInSince(resources: Resources): String? {
@@ -73,23 +72,24 @@ data class ProjectsItem(
             Locale.forLanguageTag("en_US"),
             getClockedInSinceFormatTemplate(resources),
             formattedClockedInSince,
-            formattedElapsedTime(activeTimeInterval.interval)
+            formattedElapsedTime(calculateInterval(activeTimeInterval))
         )
     }
 
     companion object {
         private val intervalFormat: DateIntervalFormat = HoursMinutesIntervalFormat()
 
-        private fun calculateSummaryFromRegisteredTime(registeredTime: List<TimeInterval>): Long {
-            return registeredTime.map { it.time }.sum()
+        private fun calculateSummaryFromRegisteredTime(registeredTime: List<TimeInterval>): Milliseconds {
+            return registeredTime.map { calculateTime(it) }
+                .fold(Milliseconds.empty) { total, next -> total + next }
         }
 
         private fun findActiveTimeInterval(registeredTime: List<TimeInterval>): TimeInterval? {
-            return registeredTime.firstOrNull { it.isActive }
+            return registeredTime.firstOrNull { isActive(it) }
         }
 
-        private fun formattedElapsedTime(elapsedTimeInMilliseconds: Long): String {
-            return intervalFormat.format(elapsedTimeInMilliseconds)
+        private fun formattedElapsedTime(elapsedTime: Milliseconds): String {
+            return intervalFormat.format(elapsedTime)
         }
 
         private fun getClockedInSinceFormatTemplate(resources: Resources): String {
