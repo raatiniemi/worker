@@ -32,11 +32,6 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         configureView()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
         reloadOngoingNotifications()
     }
 
