@@ -27,6 +27,7 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.data.service.ongoing.DismissOngoingNotificationsService
+import me.raatiniemi.worker.data.service.ongoing.ReloadNotificationService
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.onCheckChange
@@ -104,7 +105,9 @@ class ProjectFragment : PreferenceFragmentCompat() {
 
             onCheckChange {
                 vm.ongoingNotificationEnabled = it
-                if (!vm.ongoingNotificationEnabled) {
+                if (vm.ongoingNotificationEnabled) {
+                    reloadOngoingNotifications()
+                } else {
                     dismissOngoingNotifications()
                 }
 
@@ -127,6 +130,11 @@ class ProjectFragment : PreferenceFragmentCompat() {
                 }
             }
         }
+    }
+
+    private fun reloadOngoingNotifications() {
+        Intent(requireContext(), ReloadNotificationService::class.java)
+            .let { requireContext().startService(it) }
     }
 
     private fun dismissOngoingNotifications() {
