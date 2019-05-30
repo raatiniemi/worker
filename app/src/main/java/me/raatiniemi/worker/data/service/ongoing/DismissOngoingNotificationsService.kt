@@ -14,24 +14,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.data.service.ongoing
 
-import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.Project
+import android.content.Intent
+import me.raatiniemi.worker.domain.interactor.FindAllProjects
+import me.raatiniemi.worker.domain.interactor.findAllProjects
 import me.raatiniemi.worker.domain.repository.ProjectRepository
+import org.koin.android.ext.android.inject
 
-typealias CountProjects = () -> Int
-typealias FindProjects = (LoadRange) -> List<Project>
-typealias FindAllProjects = () -> List<Project>
+class DismissOngoingNotificationsService : OngoingService("DismissOngoingNotificationsService") {
+    private val repository: ProjectRepository by inject()
+    private val findAllProjects: FindAllProjects by lazy {
+        findAllProjects(repository)
+    }
 
-fun countProjects(repository: ProjectRepository): CountProjects = {
-    repository.count()
-}
-
-fun findProjects(repository: ProjectRepository): FindProjects = {
-    repository.findAll(it)
-}
-
-fun findAllProjects(repository: ProjectRepository): FindAllProjects = {
-    repository.findAll()
+    override fun onHandleIntent(intent: Intent) {
+        findAllProjects()
+            .forEach { dismissNotification(it.id) }
+    }
 }
