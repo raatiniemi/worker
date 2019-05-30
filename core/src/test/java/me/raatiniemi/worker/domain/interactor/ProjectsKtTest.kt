@@ -31,6 +31,7 @@ class ProjectsKtTest {
 
     private lateinit var countProjects: CountProjects
     private lateinit var findProjects: FindProjects
+    private lateinit var findAllProjects: FindAllProjects
 
     @Before
     fun setUp() {
@@ -38,6 +39,7 @@ class ProjectsKtTest {
 
         countProjects = countProjects(repository)
         findProjects = findProjects(repository)
+        findAllProjects = findAllProjects(repository)
     }
 
     @Test
@@ -113,6 +115,41 @@ class ProjectsKtTest {
         )
 
         val actual = findProjects(loadRange)
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all projects without projects`() {
+        val expected = emptyList<Project>()
+
+        val actual = findAllProjects()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all projects with project`() {
+        repository.add(NewProject("Project #1"))
+        val expected = listOf(
+            Project(1, "Project #1")
+        )
+
+        val actual = findAllProjects()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `find all projects with projects`() {
+        repository.add(NewProject("Project #1"))
+        repository.add(NewProject("Project #2"))
+        val expected = listOf(
+            Project(1, "Project #1"),
+            Project(2, "Project #2")
+        )
+
+        val actual = findAllProjects()
 
         assertEquals(expected, actual)
     }

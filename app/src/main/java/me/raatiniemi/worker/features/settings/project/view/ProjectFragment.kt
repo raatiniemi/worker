@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.settings.project.view
 
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -25,6 +26,7 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.data.service.ongoing.DismissOngoingNotificationsService
 import me.raatiniemi.worker.features.settings.project.viewmodel.ProjectViewModel
 import me.raatiniemi.worker.features.shared.view.configurePreference
 import me.raatiniemi.worker.features.shared.view.onCheckChange
@@ -102,6 +104,9 @@ class ProjectFragment : PreferenceFragmentCompat() {
 
             onCheckChange {
                 vm.ongoingNotificationEnabled = it
+                if (!vm.ongoingNotificationEnabled) {
+                    dismissOngoingNotifications()
+                }
 
                 configurePreference<CheckBoxPreference>(ONGOING_NOTIFICATION_CHRONOMETER_KEY) {
                     isEnabled = vm.ongoingNotificationEnabled
@@ -122,6 +127,11 @@ class ProjectFragment : PreferenceFragmentCompat() {
                 }
             }
         }
+    }
+
+    private fun dismissOngoingNotifications() {
+        Intent(requireContext(), DismissOngoingNotificationsService::class.java)
+            .let { requireContext().startService(it) }
     }
 
     private fun observeViewModel() {
