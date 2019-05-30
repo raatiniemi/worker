@@ -24,20 +24,14 @@ typealias CountProjects = () -> Int
 typealias FindProjects = (LoadRange) -> List<Project>
 typealias FindAllProjects = () -> List<Project>
 
-fun countProjects(repository: ProjectRepository): CountProjects {
-    return {
-        repository.count()
-    }
+fun countProjects(repository: ProjectRepository): CountProjects = {
+    repository.count()
 }
 
-fun findProjects(repository: ProjectRepository): FindProjects {
-    return {
-        repository.findAll(it)
-    }
+fun findProjects(repository: ProjectRepository): FindProjects = {
+    repository.findAll(it)
 }
 
-fun findAllProjects(repository: ProjectRepository): FindAllProjects {
-    return {
-        repository.findAll()
-    }
+fun findAllProjects(repository: ProjectRepository): FindAllProjects = {
+    repository.findAll()
 }
