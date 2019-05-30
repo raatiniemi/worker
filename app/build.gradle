@@ -137,7 +137,7 @@ play {
 }
 
 dependencies {
-    kapt 'androidx.room:room-compiler:2.1.0-beta01'
+    kapt 'androidx.room:room-compiler:2.1.0-rc01'
 
     implementation project(':core')
     implementation 'androidx.annotation:annotation:1.0.2'
@@ -147,7 +147,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.room:room-runtime:2.1.0-beta01'
+    implementation 'androidx.room:room-runtime:2.1.0-rc01'
     implementation 'androidx.paging:paging-runtime:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
@@ -174,5 +174,5 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.1.0'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.room:room-testing:2.1.0-beta01'
+    androidTestImplementation 'androidx.room:room-testing:2.1.0-rc01'
 }
