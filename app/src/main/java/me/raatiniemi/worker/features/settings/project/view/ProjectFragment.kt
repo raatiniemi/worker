@@ -124,6 +124,7 @@ class ProjectFragment : PreferenceFragmentCompat() {
             onCheckChange {
                 if (vm.ongoingNotificationEnabled) {
                     vm.ongoingNotificationChronometerEnabled = it
+                    reloadOngoingNotifications()
                     true
                 } else {
                     false
