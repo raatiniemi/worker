@@ -1,1 +1,2 @@
 refresh active days in time report each minute
+reload ongoing notifications when feature is enabled or disabled
