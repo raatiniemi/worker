@@ -24,11 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_project_time_report.*
 import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportAction
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportViewModel
+import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
@@ -42,6 +45,8 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import java.util.*
+import kotlin.concurrent.schedule
 
 class TimeReportFragment : CoroutineScopedFragment() {
     private val eventBus = EventBus.getDefault()
@@ -54,6 +59,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
         TimeReportAdapter(get(), vm)
     }
 
+    private var refreshActiveTimeIntervalsTimer: Timer? = null
     private var actionMode: ActionMode? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +94,13 @@ class TimeReportFragment : CoroutineScopedFragment() {
         super.onResume()
 
         usageAnalytics.setCurrentScreen(this)
+        startRefreshTimer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        cancelRefreshTimer()
     }
 
     override fun onDestroy() {
@@ -141,7 +154,11 @@ class TimeReportFragment : CoroutineScopedFragment() {
         })
 
         vm.viewActions.observeAndConsume(this, Observer {
-            it.action(requireActivity())
+            when (it) {
+                is TimeReportViewActions.RefreshTimeReportDays -> it.action(timeReportAdapter)
+                is ActivityViewAction -> it.action(requireActivity())
+                else -> Timber.w("No observation for ${it.javaClass.simpleName}")
+            }
         })
     }
 
@@ -184,6 +201,24 @@ class TimeReportFragment : CoroutineScopedFragment() {
         vm.clearSelection()
 
         timeReportAdapter.notifyDataSetChanged()
+    }
+
+    private fun startRefreshTimer() {
+        cancelRefreshTimer()
+
+        refreshActiveTimeIntervalsTimer = Timer()
+        refreshActiveTimeIntervalsTimer?.schedule(Date(), 1.minutes) {
+            launch {
+                val timeReportDays = timeReportAdapter.currentList ?: return@launch
+
+                vm.refreshActiveTimeReportDay(timeReportDays)
+            }
+        }
+    }
+
+    private fun cancelRefreshTimer() {
+        refreshActiveTimeIntervalsTimer?.cancel()
+        refreshActiveTimeIntervalsTimer = null
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -19,9 +19,16 @@ package me.raatiniemi.worker.features.projects.timereport.model
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
+import me.raatiniemi.worker.features.projects.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 
-sealed class TimeReportViewActions : ActivityViewAction {
+internal sealed class TimeReportViewActions {
+    data class RefreshTimeReportDays(private val positions: List<Int>) : TimeReportViewActions() {
+        fun action(adapter: TimeReportAdapter) {
+            positions.forEach { adapter.notifyItemChanged(it) }
+        }
+    }
+
     object ShowUnableToRegisterErrorMessage : TimeReportViewActions(), ActivityViewAction {
         override fun action(activity: FragmentActivity) {
             val snackBar = Snackbar.make(

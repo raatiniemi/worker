@@ -22,9 +22,8 @@ data class TimeReportDay(val date: Date, val items: List<TimeReportItem>) {
     val isRegistered: Boolean
         get() = items.all { it.isRegistered }
 
-    val timeSummary: HoursMinutes by lazy {
-        accumulatedHoursMinutes()
-    }
+    val timeSummary: HoursMinutes
+        get() = accumulatedHoursMinutes()
 
     private fun accumulatedHoursMinutes(): HoursMinutes {
         return items.map { it.hoursMinutes }
