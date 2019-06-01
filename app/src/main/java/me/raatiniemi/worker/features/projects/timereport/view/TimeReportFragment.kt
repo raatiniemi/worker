@@ -29,7 +29,9 @@ import me.raatiniemi.worker.domain.model.Project
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportAction
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportViewModel
+import me.raatiniemi.worker.features.shared.model.ActivityViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
@@ -152,7 +154,11 @@ class TimeReportFragment : CoroutineScopedFragment() {
         })
 
         vm.viewActions.observeAndConsume(this, Observer {
-            it.action(requireActivity())
+            when (it) {
+                is TimeReportViewActions.RefreshTimeReportDays -> it.action(timeReportAdapter)
+                is ActivityViewAction -> it.action(requireActivity())
+                else -> Timber.w("No observation for ${it.javaClass.simpleName}")
+            }
         })
     }
 
@@ -202,7 +208,11 @@ class TimeReportFragment : CoroutineScopedFragment() {
 
         refreshActiveTimeIntervalsTimer = Timer()
         refreshActiveTimeIntervalsTimer?.schedule(Date(), 1.minutes) {
-            Timber.d("reloading active time intervals")
+            launch {
+                val timeReportDays = timeReportAdapter.currentList ?: return@launch
+
+                vm.refreshActiveTimeReportDay(timeReportDays)
+            }
         }
     }
 

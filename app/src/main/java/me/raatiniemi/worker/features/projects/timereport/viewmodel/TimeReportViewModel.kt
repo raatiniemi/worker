@@ -29,6 +29,7 @@ import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
+import me.raatiniemi.worker.domain.model.isActive
 import me.raatiniemi.worker.domain.repository.TimeReportRepository
 import me.raatiniemi.worker.features.projects.model.ProjectProvider
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
@@ -37,13 +38,14 @@ import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapActi
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.shared.model.ConsumableLiveData
 import me.raatiniemi.worker.features.shared.model.map
+import me.raatiniemi.worker.features.shared.model.plusAssign
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
 import me.raatiniemi.worker.util.AppKeys
 import me.raatiniemi.worker.util.KeyValueStore
 import timber.log.Timber
 
-class TimeReportViewModel internal constructor(
+internal class TimeReportViewModel internal constructor(
     private val usageAnalytics: UsageAnalytics,
     projectProvider: ProjectProvider,
     private val keyValueStore: KeyValueStore,
@@ -211,4 +213,18 @@ class TimeReportViewModel internal constructor(
         selectedItems.addAll(tap.items)
         _selectedItems.value = selectedItems
     }
+
+    suspend fun refreshActiveTimeReportDay(timeReportDays: List<TimeReportDay>) =
+        withContext(Dispatchers.Default) {
+            val positions = timeReportDays.filter(::isActive)
+                .map { timeReportDays.indexOf(it) }
+
+            if (positions.isEmpty()) {
+                return@withContext
+            }
+
+            viewActions += TimeReportViewActions.RefreshTimeReportDays(positions)
+        }
+
+    private fun isActive(day: TimeReportDay) = day.items.any { isActive(it.asTimeInterval()) }
 }

@@ -18,16 +18,18 @@ package me.raatiniemi.worker.features.projects.timereport.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
+import me.raatiniemi.worker.domain.date.hours
+import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
 import me.raatiniemi.worker.domain.model.*
-import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
-import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
-import me.raatiniemi.worker.domain.repository.TimeReportInMemoryRepository
-import me.raatiniemi.worker.domain.repository.TimeReportRepository
+import me.raatiniemi.worker.domain.repository.*
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportLongPressAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportTapAction
+import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
+import me.raatiniemi.worker.features.shared.model.observeNoValue
+import me.raatiniemi.worker.features.shared.model.observeNonNull
 import me.raatiniemi.worker.monitor.analytics.Event
 import me.raatiniemi.worker.monitor.analytics.InMemoryUsageAnalytics
 import me.raatiniemi.worker.util.InMemoryKeyValueStore
@@ -37,6 +39,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import java.util.*
 
 @RunWith(JUnit4::class)
 class TimeReportViewModelTest {
@@ -186,5 +189,96 @@ class TimeReportViewModelTest {
         assertEquals(listOf(Event.TimeReportRemove(2)), usageAnalytics.events)
         val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `refresh active time report day without day`() = runBlocking {
+        val timeReportDays = emptyList<TimeReportDay>()
+
+        vm.refreshActiveTimeReportDay(timeReportDays)
+
+        vm.viewActions.observeNoValue()
+    }
+
+    @Test
+    fun `refresh active time report day without active day`() = runBlocking {
+        val now = Milliseconds(Date().time)
+        val timeReportDays = listOf(
+            TimeReportDay(
+                resetToStartOfDay(now),
+                listOf(
+                    TimeReportItem(
+                        timeInterval {
+                            start = now - 20.minutes
+                            stop = now
+                        }
+                    )
+                )
+            )
+        )
+
+        vm.refreshActiveTimeReportDay(timeReportDays)
+
+        vm.viewActions.observeNoValue()
+    }
+
+    @Test
+    fun `refresh active time report day with day`() = runBlocking {
+        val now = Milliseconds(Date().time)
+        val timeReportDays = listOf(
+            TimeReportDay(
+                resetToStartOfDay(now),
+                listOf(
+                    TimeReportItem(
+                        timeInterval {
+                            start = now - 20.minutes
+                        }
+                    )
+                )
+            )
+        )
+
+        vm.refreshActiveTimeReportDay(timeReportDays)
+
+        vm.viewActions.observeNonNull {
+            val positions = listOf(0)
+            assertEquals(TimeReportViewActions.RefreshTimeReportDays(positions), it)
+        }
+    }
+
+    @Test
+    fun `refresh active time report day with days`() = runBlocking {
+        val now = Milliseconds(Date().time)
+        val yesterday = Milliseconds(Date().time) - 25.hours
+        val timeReportDays = listOf(
+            TimeReportDay(
+                resetToStartOfDay(now),
+                listOf(
+                    TimeReportItem(
+                        timeInterval {
+                            start = now - 20.minutes
+                            stop = now
+                        }
+                    )
+                )
+            ),
+            TimeReportDay(
+                resetToStartOfDay(yesterday),
+                listOf(
+                    TimeReportItem(
+                        timeInterval {
+                            start = yesterday - 20.minutes
+                        }
+                    )
+                )
+            )
+        )
+
+        vm.refreshActiveTimeReportDay(timeReportDays)
+
+        vm.viewActions.observeNonNull {
+            val positions = listOf(1)
+            assertEquals(TimeReportViewActions.RefreshTimeReportDays(positions), it)
+        }
     }
 }
