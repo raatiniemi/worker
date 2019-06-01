@@ -1,1 +1,1 @@
-resolve issue with application crashing on start up
+refresh active days in time report each minute
