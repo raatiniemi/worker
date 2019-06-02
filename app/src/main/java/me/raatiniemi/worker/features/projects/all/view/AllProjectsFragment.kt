@@ -53,7 +53,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: AllProjectsViewModel by viewModel()
     private val allProjectsAdapter: AllProjectsAdapter by lazy {
-        AllProjectsAdapter(vm, HintedImageButtonListener(requireActivity()))
+        AllProjectsAdapter(vm, HintedImageButtonListener())
     }
 
     private var refreshActiveProjectsTimer: Timer? = null
