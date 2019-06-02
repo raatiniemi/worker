@@ -23,7 +23,7 @@ import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.all.model.ProjectsItem
 import me.raatiniemi.worker.features.projects.all.view.AllProjectsActionListener
 import me.raatiniemi.worker.features.projects.all.view.ViewHolder
-import me.raatiniemi.worker.util.HintedImageButtonListener
+import me.raatiniemi.worker.features.shared.view.HintedImageButtonListener
 import java.util.*
 
 internal class AllProjectsAdapter(
