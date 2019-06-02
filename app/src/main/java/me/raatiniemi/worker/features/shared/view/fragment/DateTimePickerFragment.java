@@ -37,7 +37,7 @@ import timber.log.Timber;
 import static me.raatiniemi.worker.util.NullUtil.isNull;
 import static me.raatiniemi.worker.util.NullUtil.nonNull;
 
-public class DateTimePickerFragment extends BaseFragment
+public class DateTimePickerFragment extends Fragment
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String FRAGMENT_DATE_PICKER_TAG = "date picker";
 
