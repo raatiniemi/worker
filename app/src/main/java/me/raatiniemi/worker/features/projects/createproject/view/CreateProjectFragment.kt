@@ -95,8 +95,7 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
             return
         }
 
-        // Force the keyboard to show when the dialog is showing.
-        Keyboard.show(requireContext())
+        showKeyboard(etProjectName)
     }
 
     companion object {
