@@ -29,7 +29,6 @@ import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProj
 import me.raatiniemi.worker.features.shared.model.EditTextViewAction
 import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.Keyboard
 import me.raatiniemi.worker.util.NullUtil.isNull
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
