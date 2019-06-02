@@ -26,14 +26,15 @@ import java.util.*
 internal class TimePickerFragment : BaseDialogFragment() {
     private var onTimeSetListener: TimePickerDialog.OnTimeSetListener? = null
 
-    override fun isStateValid(): Boolean {
-        if (onTimeSetListener == null) {
-            Timber.w("No `OnTimeSetListener` have been supplied")
-            return false
+    override val isStateValid: Boolean
+        get() {
+            return if (onTimeSetListener == null) {
+                Timber.w("No `OnTimeSetListener` have been supplied")
+                false
+            } else {
+                true
+            }
         }
-
-        return true
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog = Calendar.getInstance()
         .run {

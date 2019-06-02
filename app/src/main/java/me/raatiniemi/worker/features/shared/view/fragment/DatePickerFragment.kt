@@ -28,14 +28,15 @@ internal class DatePickerFragment : BaseDialogFragment() {
     private var minDate: Calendar? = null
     private var maxDate: Calendar? = null
 
-    override fun isStateValid(): Boolean {
-        if (onDateSetListener == null) {
-            Timber.w("No `OnDateSetListener` have been supplied")
-            return false
+    override val isStateValid: Boolean
+        get() {
+            return if (onDateSetListener == null) {
+                Timber.w("No `OnDateSetListener` have been supplied")
+                false
+            } else {
+                true
+            }
         }
-
-        return true
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog = Calendar.getInstance()
         .run {

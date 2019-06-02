@@ -18,6 +18,7 @@ package me.raatiniemi.worker.features.shared.view.fragment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.TimePicker
@@ -87,7 +88,9 @@ internal open class DateTimePickerFragment : Fragment(), DatePickerDialog.OnDate
 
         datePicker = DatePickerFragment.newInstance(this)
             .also { fragment ->
-                fragment.setOnCancelListener { dismiss() }
+                fragment.setOnCancelListener(DialogInterface.OnCancelListener {
+                    dismiss()
+                })
 
                 minDate?.also { fragment.setMinDate(it) }
                 maxDate?.also { fragment.setMaxDate(it) }
@@ -164,7 +167,9 @@ internal open class DateTimePickerFragment : Fragment(), DatePickerDialog.OnDate
                 //
                 // Also, I was unable to get the TimePickerDialog to trigger the
                 // "onCancel"-event to the DialogFragment.
-                it.setOnDismissListener { dismiss() }
+                it.setOnDismissListener(DialogInterface.OnDismissListener {
+                    dismiss()
+                })
                 showFragmentWithTag(it, FRAGMENT_TIME_PICKER_TAG)
             }
     }
