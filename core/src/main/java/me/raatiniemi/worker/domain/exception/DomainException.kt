@@ -14,14 +14,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.exception
 
-public class DomainException extends RuntimeException {
-    DomainException() {
-        super();
-    }
+open class DomainException : RuntimeException {
+    internal constructor() : super()
 
-    DomainException(String message) {
-        super(message);
-    }
+    internal constructor(message: String) : super(message)
 }

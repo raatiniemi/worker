@@ -14,10 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.exception
 
-public class InvalidProjectNameException extends DomainException {
-    public InvalidProjectNameException() {
-        super("Project name is null or empty");
-    }
-}
+class InactiveProjectException : ClockActivityException("Project is not active")

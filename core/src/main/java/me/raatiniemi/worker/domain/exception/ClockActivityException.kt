@@ -14,10 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.exception
 
-public class ClockActivityException extends DomainException {
-    public ClockActivityException(String message) {
-        super(message);
-    }
-}
+open class ClockActivityException(message: String) : DomainException(message)

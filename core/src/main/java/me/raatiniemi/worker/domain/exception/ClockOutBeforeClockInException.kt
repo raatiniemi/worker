@@ -14,10 +14,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.exception
 
-public class ActiveProjectException extends ClockActivityException {
-    public ActiveProjectException() {
-        super("Project is active");
-    }
-}
+/**
+ * Exception for when clock out occur before clock in.
+ */
+class ClockOutBeforeClockInException : DomainException("Clock out occur before clock in")

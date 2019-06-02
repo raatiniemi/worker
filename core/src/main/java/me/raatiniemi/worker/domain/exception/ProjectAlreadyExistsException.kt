@@ -14,15 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.exception
 
-public class ProjectAlreadyExistsException extends DomainException {
-    /**
-     * Constructor.
-     *
-     * @param message Message thrown with the exception.
-     */
-    public ProjectAlreadyExistsException(String message) {
-        super(message);
-    }
-}
+class ProjectAlreadyExistsException(message: String) : DomainException(message)
