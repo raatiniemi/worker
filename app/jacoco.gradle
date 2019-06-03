@@ -29,8 +29,8 @@ task jacocoTestReport(type: JacocoReport) {
     description = 'Generates code coverage report for the test task.'
 
     reports {
-        xml.enabled = true
-        html.enabled = false
+        xml.enabled = jacocoReportFormats.contains('xml')
+        html.enabled = jacocoReportFormats.contains('html')
     }
 
     classDirectories = fileTree(dir: project.buildDir, excludes: androidExclusion).matching {
