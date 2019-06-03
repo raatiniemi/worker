@@ -26,6 +26,9 @@ sonarqube {
         properties['sonar.projectName'] = 'worker'
         properties['sonar.projectVersion'] = projectVersion
 
+        properties['sonar.java.source'] = sourceCompatibilityVersion
+        properties['sonar.java.target'] = targetCompatibilityVersion
+
         properties['sonar.sourceEncoding'] = 'UTF-8'
         properties['sonar.scm.provider'] = 'git'
 
@@ -41,9 +44,6 @@ sonarqube {
 project(':core') {
     sonarqube {
         properties {
-            properties['sonar.java.source'] = sourceCompatibilityVersion
-            properties['sonar.java.target'] = targetCompatibilityVersion
-
             properties['sonar.sources'] = 'src/main'
             properties['sonar.tests'] = 'src/test'
 
@@ -58,9 +58,6 @@ project(':core') {
 project(':core-test') {
     sonarqube {
         properties {
-            properties['sonar.java.source'] = sourceCompatibilityVersion
-            properties['sonar.java.target'] = targetCompatibilityVersion
-
             properties['sonar.sources'] = 'src/main'
             properties['sonar.tests'] = 'src/test'
 
@@ -84,9 +81,6 @@ project(':app') {
         def testBinaries = "$javaTestBinaries,$kotlinDirectory/releaseUnitTest"
 
         properties {
-            properties['sonar.java.source'] = sourceCompatibilityVersion
-            properties['sonar.java.target'] = targetCompatibilityVersion
-
             properties['sonar.sources'] = 'src/main'
             properties['sonar.tests'] = 'src/test'
 
