@@ -14,16 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.model;
+package me.raatiniemi.worker.domain.exception
 
-public class OngoingNotificationActionEvent {
-    private final long projectId;
-
-    public OngoingNotificationActionEvent(long projectId) {
-        this.projectId = projectId;
-    }
-
-    public long getProjectId() {
-        return projectId;
-    }
-}
+class InactiveProjectException : ClockActivityException("Project is not active")

@@ -14,12 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.shared.view.fragment;
+package me.raatiniemi.worker.domain.exception
 
-import androidx.fragment.app.Fragment;
-
-/**
- * Base for the application fragments.
- */
-public abstract class BaseFragment extends Fragment {
-}
+class InvalidProjectNameException : DomainException("Project name is null or empty")

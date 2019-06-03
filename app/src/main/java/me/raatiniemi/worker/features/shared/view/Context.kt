@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.features.shared.view
 
-public class ClockActivityException extends DomainException {
-    public ClockActivityException(String message) {
-        super(message);
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
+
+internal val Context.inputMethodManager: InputMethodManager?
+    get() {
+        return getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
     }
-}

@@ -15,7 +15,6 @@
  */
 
 plugins {
-    id 'java-library'
     id 'kotlin'
     id 'jacoco'
 }
@@ -31,14 +30,13 @@ compileKotlin {
 }
 
 jacoco {
-    toolVersion = '0.8.3'
+    toolVersion jacocoVersion
 }
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        csv.enabled false
-        html.enabled false
+        xml.enabled = jacocoReportFormats.contains('xml')
+        html.enabled = jacocoReportFormats.contains('html')
     }
 }
 

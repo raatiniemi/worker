@@ -14,10 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.exception
 
-public class InactiveProjectException extends ClockActivityException {
-    public InactiveProjectException() {
-        super("Project is not active");
-    }
-}
+open class ClockActivityException(message: String) : DomainException(message)

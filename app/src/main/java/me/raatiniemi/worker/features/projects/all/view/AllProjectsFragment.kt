@@ -35,9 +35,9 @@ import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
+import me.raatiniemi.worker.features.shared.view.HintedImageButtonListener
 import me.raatiniemi.worker.features.shared.view.visibleIf
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.HintedImageButtonListener
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -53,7 +53,7 @@ class AllProjectsFragment : CoroutineScopedFragment() {
     private val usageAnalytics: UsageAnalytics by inject()
     private val vm: AllProjectsViewModel by viewModel()
     private val allProjectsAdapter: AllProjectsAdapter by lazy {
-        AllProjectsAdapter(vm, HintedImageButtonListener(requireActivity()))
+        AllProjectsAdapter(vm, HintedImageButtonListener())
     }
 
     private var refreshActiveProjectsTimer: Timer? = null

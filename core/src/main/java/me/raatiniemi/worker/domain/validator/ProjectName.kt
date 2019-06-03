@@ -14,13 +14,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.validator
 
-/**
- * Exception for when clock out occur before clock in.
- */
-public class ClockOutBeforeClockInException extends DomainException {
-    public ClockOutBeforeClockInException() {
-        super("Clock out occur before clock in");
-    }
+object ProjectName {
+    fun isValid(name: String?): Boolean = !name.isNullOrEmpty()
 }

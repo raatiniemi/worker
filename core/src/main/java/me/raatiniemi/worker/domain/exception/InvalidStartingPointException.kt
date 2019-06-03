@@ -14,14 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.domain.exception
 
-public class DomainException extends RuntimeException {
-    DomainException() {
-        super();
-    }
-
-    DomainException(String message) {
-        super(message);
-    }
-}
+class InvalidStartingPointException(message: String) : RuntimeException(message)

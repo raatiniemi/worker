@@ -14,10 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.exception;
+package me.raatiniemi.worker.features.shared.model
 
-public class InvalidProjectNameException extends DomainException {
-    public InvalidProjectNameException() {
-        super("Project name is null or empty");
-    }
-}
+class OngoingNotificationActionEvent(val projectId: Long)

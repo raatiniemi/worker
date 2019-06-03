@@ -29,8 +29,6 @@ import me.raatiniemi.worker.features.projects.createproject.viewmodel.CreateProj
 import me.raatiniemi.worker.features.shared.model.EditTextViewAction
 import me.raatiniemi.worker.features.shared.view.*
 import me.raatiniemi.worker.monitor.analytics.UsageAnalytics
-import me.raatiniemi.worker.util.Keyboard
-import me.raatiniemi.worker.util.NullUtil.isNull
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -91,13 +89,12 @@ class CreateProjectFragment : CoroutineScopedDialogFragment(), DialogInterface.O
     override fun onShow(dialog: DialogInterface?) {
         // We might have dismissed the dialog, we have to make sure that the
         // dialog and activity are still available before we can continue.
-        if (isNull(dialog) || isNull(activity)) {
+        if (dialog == null || activity == null) {
             Timber.d("No dialog/activity available, exiting...")
             return
         }
 
-        // Force the keyboard to show when the dialog is showing.
-        Keyboard.show(requireContext())
+        showKeyboard(etProjectName)
     }
 
     companion object {
