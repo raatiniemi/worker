@@ -19,9 +19,8 @@ jacoco {
     toolVersion jacocoVersion
 }
 
-def javaDirectory = 'intermediates/javac/release/compileReleaseJavaWithJavac/classes'
-def kotlinDirectory = 'tmp/kotlin-classes/release'
-def classPattern = 'me/raatiniemi/worker/**/*.class'
+def packageDirectory = 'me/raatiniemi/worker'
+def classPattern = "$packageDirectory/**/*.class"
 
 def androidExclusion = ['**/R.class', '**/R$*.class', '**/BuildConfig.class']
 
@@ -35,9 +34,12 @@ task jacocoTestReport(type: JacocoReport) {
     }
 
     classDirectories = fileTree(dir: project.buildDir, excludes: androidExclusion).matching {
-        include "$javaDirectory/$classPattern"
-        include "$kotlinDirectory/$classPattern"
+        include "tmp/kotlin-classes/release/${classPattern}"
+        include "tmp/kotlin-classes/releaseUnitTest/${classPattern}"
     }
-    sourceDirectories = files('src/main/java/me/raatiniemi/worker')
-    executionData = files('build/jacoco/testReleaseUnitTest.exec')
+    sourceDirectories = files(
+            "${project.projectDir}/src/main/java/$packageDirectory",
+            "${project.projectDir}/src/test/java/$packageDirectory"
+    )
+    executionData = fileTree(dir: project.buildDir, includes: ["**/*.exec"])
 }
