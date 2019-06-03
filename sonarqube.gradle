@@ -34,10 +34,30 @@ sonarqube {
 
         def reportPaths = [
                 "$rootDir/app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml",
-                "$rootDir/core/build/reports/jacoco/test/jacocoTestReport.xml",
-                "$rootDir/core-test/build/reports/jacoco/test/jacocoTestReport.xml"
+                "$rootDir/core-test/build/reports/jacoco/test/jacocoTestReport.xml",
+                "$rootDir/core/build/reports/jacoco/test/jacocoTestReport.xml"
         ]
         properties['sonar.coverage.jacoco.xmlReportPaths'] = reportPaths.join(",")
+    }
+}
+
+project(':app') {
+    sonarqube {
+        def javaDirectory = 'build/intermediates/javac'
+        def javaBinaries = "$javaDirectory/release/compileReleaseJavaWithJavac/classes"
+        def javaTestBinaries = "$javaDirectory/releaseUnitTest/compileReleaseUnitTestJavaWithJavac/classes"
+
+        def kotlinDirectory = "build/tmp/kotlin-classes"
+
+        def binaries = "$javaBinaries,$kotlinDirectory/release"
+        def testBinaries = "$javaTestBinaries,$kotlinDirectory/releaseUnitTest"
+
+        properties {
+            properties['sonar.java.binaries'] = binaries
+            properties['sonar.java.test.binaries'] = testBinaries
+
+            properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
+        }
     }
 }
 
@@ -59,26 +79,6 @@ project(':core-test') {
             properties['sonar.java.test.binaries'] = 'build/classes'
 
             properties['sonar.junit.reportPaths'] = 'build/test-results/test'
-        }
-    }
-}
-
-project(':app') {
-    sonarqube {
-        def javaDirectory = 'build/intermediates/javac'
-        def javaBinaries = "$javaDirectory/release/compileReleaseJavaWithJavac/classes"
-        def javaTestBinaries = "$javaDirectory/releaseUnitTest/compileReleaseUnitTestJavaWithJavac/classes"
-
-        def kotlinDirectory = "build/tmp/kotlin-classes"
-
-        def binaries = "$javaBinaries,$kotlinDirectory/release"
-        def testBinaries = "$javaTestBinaries,$kotlinDirectory/releaseUnitTest"
-
-        properties {
-            properties['sonar.java.binaries'] = binaries
-            properties['sonar.java.test.binaries'] = testBinaries
-
-            properties['sonar.junit.reportPaths'] = 'build/test-results/testReleaseUnitTest'
         }
     }
 }
