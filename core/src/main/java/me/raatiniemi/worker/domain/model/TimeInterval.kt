@@ -29,10 +29,8 @@ data class TimeInterval(
     val isRegistered: Boolean = false
 ) {
     init {
-        if (stop != null) {
-            if (stop < start) {
-                throw ClockOutBeforeClockInException()
-            }
+        if (stop != null && stop < start) {
+            throw ClockOutBeforeClockInException()
         }
     }
 }
