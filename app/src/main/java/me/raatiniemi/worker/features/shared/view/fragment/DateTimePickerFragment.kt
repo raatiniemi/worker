@@ -36,7 +36,6 @@ internal open class DateTimePickerFragment : Fragment(), DatePickerDialog.OnDate
     private var onDateTimeSetListener: OnDateTimeSetListener? = null
 
     private var minDate: Calendar? = null
-    private var maxDate: Calendar? = null
 
     private var datePicker: DatePickerFragment? = null
     private var timePicker: TimePickerFragment? = null
@@ -58,24 +57,7 @@ internal open class DateTimePickerFragment : Fragment(), DatePickerDialog.OnDate
      * @param minDate Minimum date.
      */
     protected fun setMinDate(minDate: Calendar) {
-        if (minDate > maxDate) {
-            throw IllegalArgumentException("Minimum date occurs after maximum date")
-        }
-
         this.minDate = minDate
-    }
-
-    /**
-     * Set the maximum date for the date picker.
-     *
-     * @param maxDate Maximum date.
-     */
-    protected fun setMaxDate(maxDate: Calendar) {
-        if (maxDate < minDate) {
-            throw IllegalArgumentException("Maximum date occurs before minimum date")
-        }
-
-        this.maxDate = maxDate
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +75,6 @@ internal open class DateTimePickerFragment : Fragment(), DatePickerDialog.OnDate
                 })
 
                 minDate?.also { fragment.setMinDate(it) }
-                maxDate?.also { fragment.setMaxDate(it) }
             }
             .also {
                 showFragmentWithTag(it, FRAGMENT_DATE_PICKER_TAG)

@@ -26,7 +26,6 @@ internal class DatePickerFragment : BaseDialogFragment() {
     private var onDateSetListener: DatePickerDialog.OnDateSetListener? = null
 
     private var minDate: Calendar? = null
-    private var maxDate: Calendar? = null
 
     override val isStateValid: Boolean
         get() {
@@ -50,7 +49,6 @@ internal class DatePickerFragment : BaseDialogFragment() {
         }
         .also { dialog ->
             minDate?.let { dialog.datePicker.minDate = it.timeInMillis }
-            maxDate?.let { dialog.datePicker.maxDate = it.timeInMillis }
         }
 
     /**
@@ -59,24 +57,7 @@ internal class DatePickerFragment : BaseDialogFragment() {
      * @param minDate Minimum date.
      */
     fun setMinDate(minDate: Calendar) {
-        if (minDate > maxDate) {
-            throw IllegalArgumentException("Minimum date occurs after maximum date")
-        }
-
         this.minDate = minDate
-    }
-
-    /**
-     * Set the maximum date for the date picker.
-     *
-     * @param maxDate Maximum date.
-     */
-    fun setMaxDate(maxDate: Calendar) {
-        if (maxDate < minDate) {
-            throw IllegalArgumentException("Maximum date occurs before minimum date")
-        }
-
-        this.maxDate = maxDate
     }
 
     companion object {
