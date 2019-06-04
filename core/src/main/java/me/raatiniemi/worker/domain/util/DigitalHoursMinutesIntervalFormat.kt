@@ -34,9 +34,6 @@ class DigitalHoursMinutesIntervalFormat : HoursMinutesFormat {
     }
 
     private fun formatFor(hoursMinutes: HoursMinutes): String {
-        // TODO: use `hoursMinutes.positive` instead of checking both values.
-        // when using `hoursMinutes.positive` the kotlin compiler renames the
-        // method to `getPositive` instead of `isPositive`.
         if (hoursMinutes.hours >= 0 && hoursMinutes.minutes >= 0) {
             return FORMAT
         }

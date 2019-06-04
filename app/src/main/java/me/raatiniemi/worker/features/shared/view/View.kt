@@ -22,8 +22,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 fun View.onClick(action: suspend () -> Unit) {
-    // TODO: Replace use of GlobalScope with activity/fragment coroutine scope.
-    // TODO: Consume click using actor when stable.
     setOnClickListener {
         GlobalScope.launch(Dispatchers.Default) {
             action()

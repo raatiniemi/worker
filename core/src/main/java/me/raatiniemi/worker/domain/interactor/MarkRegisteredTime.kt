@@ -21,9 +21,6 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 /**
  * Use case for marking time as registered.
- *
- * TODO: Rename use case to something more descriptive.
- * The use case can also mark time as not registered.
  */
 open class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
     private fun collectTimeToUpdate(timeIntervals: List<TimeInterval>): List<TimeInterval> {

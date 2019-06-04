@@ -20,6 +20,5 @@ import android.content.Context
 import android.widget.EditText
 
 internal interface EditTextViewAction {
-    // TODO: Should we use `Context` as separate argument, or retrieve from `EditText`?
     fun action(context: Context, editText: EditText)
 }

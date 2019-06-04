@@ -28,7 +28,6 @@ fun EditText.onChange(onTextChanged: (String) -> Unit) {
 }
 
 fun EditText.on(action: EditorAction, cb: suspend () -> Unit) {
-    // TODO: Replace use of GlobalScope with activity/fragment coroutine scope.
     setOnEditorActionListener { _, actionId, event ->
         if (BuildConfig.DEBUG && event.isEnterKey) {
             GlobalScope.launch(Dispatchers.Default) { cb() }

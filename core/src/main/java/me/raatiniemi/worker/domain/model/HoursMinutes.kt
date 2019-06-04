@@ -62,9 +62,6 @@ data class HoursMinutes(val hours: Long, val minutes: Long) {
 
         val isNewValueNegative = milliseconds < 0
         if (isNewValueNegative) {
-            // TODO: Improve the way we handle negative values.
-            // Instead of having to prefix both hours and minutes with a sign,
-            // it should be stored in another property.
             minutes *= -1
             hours *= -1
         }
