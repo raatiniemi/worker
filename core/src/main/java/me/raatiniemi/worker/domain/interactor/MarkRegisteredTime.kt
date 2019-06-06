@@ -23,7 +23,7 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 /**
  * Use case for marking time as registered.
  */
-open class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
+class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
     private fun collectTimeToUpdate(timeIntervals: List<TimeInterval>): List<TimeInterval> {
         val shouldMarkAsRegistered = shouldMarkAsRegistered(timeIntervals)
         if (shouldMarkAsRegistered) {
