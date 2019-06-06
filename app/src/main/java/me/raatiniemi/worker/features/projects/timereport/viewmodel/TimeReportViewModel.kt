@@ -27,6 +27,7 @@ import kotlinx.coroutines.withContext
 import me.raatiniemi.worker.data.projects.datasource.TimeReportDataSourceFactory
 import me.raatiniemi.worker.domain.interactor.MarkRegisteredTime
 import me.raatiniemi.worker.domain.interactor.RemoveTime
+import me.raatiniemi.worker.domain.interactor.UnableToMarkActiveTimeIntervalAsRegisteredException
 import me.raatiniemi.worker.domain.model.TimeReportDay
 import me.raatiniemi.worker.domain.model.TimeReportItem
 import me.raatiniemi.worker.domain.model.isActive
@@ -108,6 +109,9 @@ internal class TimeReportViewModel internal constructor(
 
             usageAnalytics.log(Event.TimeReportToggle(timeIntervals.size))
             reloadTimeReport()
+        } catch (e: UnableToMarkActiveTimeIntervalAsRegisteredException) {
+            Timber.i(e, "Unable to toggle registered state with active items")
+            viewActions += TimeReportViewActions.ShowUnableToMarkActiveTimeIntervalsAsRegisteredErrorMessage
         } catch (e: Exception) {
             Timber.e(e, "Unable to toggle registered state with selected items")
             viewActions.postValue(TimeReportViewActions.ShowUnableToRegisterErrorMessage)

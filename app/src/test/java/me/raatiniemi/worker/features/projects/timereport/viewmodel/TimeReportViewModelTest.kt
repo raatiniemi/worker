@@ -79,11 +79,13 @@ class TimeReportViewModelTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
+                stop = Milliseconds(2)
             }
         )
         val timeInterval = timeInterval {
             id = 1
             start = Milliseconds(1)
+            stop = Milliseconds(2)
         }
         val timeReportItem = TimeReportItem.with(timeInterval)
         val expected = listOf(
@@ -103,20 +105,24 @@ class TimeReportViewModelTest {
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
+                stop = Milliseconds(2)
             }
         )
         timeIntervalRepository.add(
             newTimeInterval {
                 start = Milliseconds(1)
+                stop = Milliseconds(2)
             }
         )
         val firstTimeInterval = timeInterval {
             id = 1
             start = Milliseconds(1)
+            stop = Milliseconds(2)
         }
         val secondTimeInterval = timeInterval {
             id = 2
             start = Milliseconds(1)
+            stop = Milliseconds(2)
         }
         val firstTimeReportItem = TimeReportItem.with(firstTimeInterval)
         val secondTimeReportItem = TimeReportItem.with(secondTimeInterval)
@@ -132,6 +138,30 @@ class TimeReportViewModelTest {
         assertEquals(listOf(Event.TimeReportToggle(2)), usageAnalytics.events)
         val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `toggle registered state for active time interval`() = runBlocking {
+        timeIntervalRepository.add(
+            newTimeInterval {
+                start = Milliseconds(1)
+            }
+        )
+        val timeInterval = timeInterval {
+            id = 1
+            start = Milliseconds(1)
+        }
+        val timeReportItem = TimeReportItem.with(timeInterval)
+        vm.consume(TimeReportLongPressAction.LongPressItem(timeReportItem))
+
+        vm.toggleRegisteredStateForSelectedItems()
+
+        vm.viewActions.observeNonNull {
+            assertEquals(
+                TimeReportViewActions.ShowUnableToMarkActiveTimeIntervalsAsRegisteredErrorMessage,
+                it
+            )
+        }
     }
 
     @Test

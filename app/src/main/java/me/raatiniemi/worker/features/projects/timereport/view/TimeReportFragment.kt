@@ -32,6 +32,7 @@ import me.raatiniemi.worker.features.projects.timereport.model.TimeReportAction
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportViewActions
 import me.raatiniemi.worker.features.projects.timereport.viewmodel.TimeReportViewModel
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
+import me.raatiniemi.worker.features.shared.model.ContextViewAction
 import me.raatiniemi.worker.features.shared.model.OngoingNotificationActionEvent
 import me.raatiniemi.worker.features.shared.view.ConfirmAction
 import me.raatiniemi.worker.features.shared.view.CoroutineScopedFragment
@@ -157,6 +158,7 @@ class TimeReportFragment : CoroutineScopedFragment() {
             when (it) {
                 is TimeReportViewActions.RefreshTimeReportDays -> it.action(timeReportAdapter)
                 is ActivityViewAction -> it.action(requireActivity())
+                is ContextViewAction -> it.action(requireContext())
                 else -> Timber.w("No observation for ${it.javaClass.simpleName}")
             }
         })
