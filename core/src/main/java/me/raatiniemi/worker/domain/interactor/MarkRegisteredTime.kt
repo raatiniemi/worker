@@ -17,6 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.TimeInterval
+import me.raatiniemi.worker.domain.model.isActive
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 
 /**
@@ -25,6 +26,9 @@ import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 open class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
     private fun collectTimeToUpdate(timeIntervals: List<TimeInterval>): List<TimeInterval> {
         val shouldMarkAsRegistered = shouldMarkAsRegistered(timeIntervals)
+        if (shouldMarkAsRegistered) {
+            ensureNoTimeIntervalsIsActive(timeIntervals)
+        }
 
         return timeIntervals.map(toggleRegistered(shouldMarkAsRegistered))
     }
@@ -33,6 +37,11 @@ open class MarkRegisteredTime(private val repository: TimeIntervalRepository) {
         val timeInterval = timeIntervals.firstOrNull() ?: return false
 
         return !timeInterval.isRegistered
+    }
+
+    private fun ensureNoTimeIntervalsIsActive(timeIntervals: List<TimeInterval>) {
+        timeIntervals.firstOrNull { !isActive(it) }
+            ?: throw UnableToMarkActiveTimeIntervalAsRegisteredException()
     }
 
     private fun toggleRegistered(isRegistered: Boolean): (TimeInterval) -> TimeInterval {
