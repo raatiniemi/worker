@@ -60,6 +60,9 @@
 
     <string name="projects_time_report_unable_to_delete_message">Failed to delete item(s).</string>
 
+    <string name="projects_time_report_unable_to_mark_active_items_as_registered_title">Action is not allowed</string>
+    <string name="projects_time_report_unable_to_mark_active_items_as_registered_message">Mark as registered with active time interval(s) selected is not allowed.\n\nClock out and try again.</string>
+
     <string name="projects_time_report_confirm_delete_title">Delete time</string>
     <string name="projects_time_report_confirm_delete_message">Are you sure you want to delete the registered time?</string>
     <!--</editor-fold>-->

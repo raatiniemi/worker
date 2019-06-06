@@ -16,17 +16,33 @@
 
 package me.raatiniemi.worker.features.projects.timereport.model
 
+import android.content.Context
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.features.projects.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.shared.model.ActivityViewAction
+import me.raatiniemi.worker.features.shared.model.ContextViewAction
 
 internal sealed class TimeReportViewActions {
     data class RefreshTimeReportDays(private val positions: List<Int>) : TimeReportViewActions() {
         fun action(adapter: TimeReportAdapter) {
             positions.forEach { adapter.notifyItemChanged(it) }
         }
+    }
+
+    object ShowUnableToMarkActiveTimeIntervalsAsRegisteredErrorMessage : TimeReportViewActions(),
+        ContextViewAction {
+        override fun action(context: Context) = AlertDialog.Builder(context)
+            .setTitle(R.string.projects_time_report_unable_to_mark_active_items_as_registered_title)
+            .setMessage(R.string.projects_time_report_unable_to_mark_active_items_as_registered_message)
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                dialog?.dismiss()
+            }
+            .setCancelable(false)
+            .create()
+            .show()
     }
 
     object ShowUnableToRegisterErrorMessage : TimeReportViewActions(), ActivityViewAction {
