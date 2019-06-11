@@ -1,4 +1,4 @@
-image: raatiniemi/android-environment:26.1.1
+image: raatiniemi/android-environment:android-28-latest
 
 stages:
   - build
@@ -10,7 +10,6 @@ variables:
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
-  - bin/configure-android-environment
   - bin/configure-signing-environment
 
 cache:
@@ -92,7 +91,6 @@ integration test:
 deploy:
   stage: deploy
   before_script:
-    - bin/configure-android-environment
     - bin/configure-signing-environment
     - bin/configure-deploy-environment
   script:
