@@ -8,7 +8,6 @@ if [ -z $ANDROID_HOME ]; then
 fi
 
 ANDROID_BUILD_TOOLS="28.0.3";
-ANDROID_COMPILE_SDK="28";
 
 function accept_license_and_install {
   yes | "${ANDROID_HOME}/tools/bin/sdkmanager" $1 1>/dev/null;
@@ -20,4 +19,3 @@ function accept_license_and_install {
 
 echo "Installing Android API and build tools";
 accept_license_and_install "build-tools;${ANDROID_BUILD_TOOLS}";
-accept_license_and_install "platforms;android-${ANDROID_COMPILE_SDK}";
