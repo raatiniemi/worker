@@ -28,7 +28,7 @@ class DismissOngoingNotificationsService : OngoingService("DismissOngoingNotific
         findAllProjects(repository)
     }
 
-    override fun onHandleIntent(intent: Intent) {
+    override fun onHandleIntent(intent: Intent?) {
         findAllProjects()
             .forEach { dismissNotification(it.id) }
     }

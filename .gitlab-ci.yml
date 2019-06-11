@@ -1,4 +1,4 @@
-image: raatiniemi/android-environment:android-28-latest
+image: raatiniemi/android-environment:android-29-latest
 
 stages:
   - build
