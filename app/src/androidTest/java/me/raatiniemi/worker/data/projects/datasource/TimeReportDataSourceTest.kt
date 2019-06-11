@@ -16,6 +16,7 @@
 
 package me.raatiniemi.worker.data.projects.datasource
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.interactor.countTimeReports
@@ -27,11 +28,16 @@ import me.raatiniemi.worker.util.InMemoryKeyValueStore
 import me.raatiniemi.worker.util.KeyValueStore
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportDataSourceTest {
+    @JvmField
+    @Rule
+    val rule = InstantTaskExecutorRule()
+
     private val project = Project(1, "Project #1")
     private val projectHolder = ProjectHolder()
 
