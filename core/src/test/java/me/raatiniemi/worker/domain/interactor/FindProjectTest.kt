@@ -47,7 +47,7 @@ class FindProjectTest {
 
     @Test
     fun `invoke with projects`() {
-        val expected = Project(id = 1, name = "Name")
+        val expected = Project(id = 1, name = ProjectName("Name"))
         repository.add(NewProject(ProjectName("Name")))
 
         val actual = findProject("Name")
@@ -57,7 +57,7 @@ class FindProjectTest {
 
     @Test
     fun `invoke with lowercase project name`() {
-        val expected = Project(id = 1, name = "Name")
+        val expected = Project(id = 1, name = ProjectName("Name"))
         repository.add(NewProject(ProjectName("Name")))
 
         val actual = findProject("name")

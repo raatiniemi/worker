@@ -89,7 +89,7 @@ class ProjectsKtTest {
     fun `find projects with project`() {
         repository.add(NewProject(ProjectName("Project #1")))
         val expected = listOf(
-            Project(1, "Project #1")
+            Project(1, ProjectName("Project #1"))
         )
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -106,8 +106,8 @@ class ProjectsKtTest {
         repository.add(NewProject(ProjectName("Project #1")))
         repository.add(NewProject(ProjectName("Project #2")))
         val expected = listOf(
-            Project(1, "Project #1"),
-            Project(2, "Project #2")
+            Project(1, ProjectName("Project #1")),
+            Project(2, ProjectName("Project #2"))
         )
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -132,7 +132,7 @@ class ProjectsKtTest {
     fun `find all projects with project`() {
         repository.add(NewProject(ProjectName("Project #1")))
         val expected = listOf(
-            Project(1, "Project #1")
+            Project(1, ProjectName("Project #1"))
         )
 
         val actual = findAllProjects()
@@ -145,8 +145,8 @@ class ProjectsKtTest {
         repository.add(NewProject(ProjectName("Project #1")))
         repository.add(NewProject(ProjectName("Project #2")))
         val expected = listOf(
-            Project(1, "Project #1"),
-            Project(2, "Project #2")
+            Project(1, ProjectName("Project #1")),
+            Project(2, ProjectName("Project #2"))
         )
 
         val actual = findAllProjects()

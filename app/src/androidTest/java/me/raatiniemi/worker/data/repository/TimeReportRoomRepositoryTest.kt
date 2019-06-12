@@ -36,7 +36,7 @@ import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TimeReportRoomRepositoryTest {
-    private val project = Project(1, "Name")
+    private val project = Project(1, ProjectName("Name"))
 
     private lateinit var database: Database
     private lateinit var timeReport: TimeReportDao
@@ -54,7 +54,7 @@ class TimeReportRoomRepositoryTest {
             .add(
                 projectEntity {
                     id = project.id
-                    name = project.name
+                    name = project.name.value
                 }
             )
         timeReport = database.timeReport()

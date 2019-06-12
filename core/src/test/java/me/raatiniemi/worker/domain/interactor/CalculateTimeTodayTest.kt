@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.date.hours
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectName
 import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
 import me.raatiniemi.worker.domain.model.newTimeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
@@ -30,7 +31,7 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class CalculateTimeTodayTest {
-    private val project = Project(1, "Project name")
+    private val project = Project(1, ProjectName("Project name"))
 
     private lateinit var repository: TimeIntervalRepository
     private lateinit var calculateTimeToday: CalculateTimeToday

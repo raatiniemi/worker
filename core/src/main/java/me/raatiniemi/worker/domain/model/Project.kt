@@ -19,9 +19,9 @@ package me.raatiniemi.worker.domain.model
 import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.validator.ProjectName.isValid
 
-data class Project(val id: Long, val name: String) {
+data class Project(val id: Long, val name: ProjectName) {
     init {
-        if (!isValid(name)) {
+        if (!isValid(name.value)) {
             throw InvalidProjectNameException()
         }
     }

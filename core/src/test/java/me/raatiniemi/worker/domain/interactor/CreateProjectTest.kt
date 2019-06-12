@@ -53,7 +53,7 @@ class CreateProjectTest {
         createProject("Project Name")
 
         val expected = listOf(
-            Project(id = 1, name = "Project Name")
+            Project(id = 1, name = ProjectName("Project Name"))
         )
         val actual = repository.findAll()
         assertEquals(expected, actual)

@@ -41,7 +41,7 @@ class GetProjectTest {
     @Test
     fun execute() {
         repository.add(NewProject(ProjectName("Project name")))
-        val expected = Project(1L, "Project name")
+        val expected = Project(1L, ProjectName("Project name"))
 
         val actual = getProject(1)
 

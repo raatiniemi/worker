@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import me.raatiniemi.worker.R
 import me.raatiniemi.worker.domain.date.minutes
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectName
 import me.raatiniemi.worker.features.projects.model.ProjectHolder
 import me.raatiniemi.worker.features.projects.timereport.adapter.TimeReportAdapter
 import me.raatiniemi.worker.features.projects.timereport.model.TimeReportAction
@@ -69,10 +70,10 @@ class TimeReportFragment : CoroutineScopedFragment() {
         eventBus.register(this)
         projectHolder += Project(
             id = arguments.projectId,
-            name = arguments.projectName
+            name = ProjectName(arguments.projectName)
         )
         projectHolder.value.observe(this, Observer {
-            setTitle(it.name)
+            setTitle(it.name.value)
         })
     }
 

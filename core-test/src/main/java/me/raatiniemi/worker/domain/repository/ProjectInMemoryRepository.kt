@@ -32,14 +32,14 @@ class ProjectInMemoryRepository : ProjectRepository {
         val fromIndex = indexWithCountCap(position.value, count())
         val toIndex = indexWithCountCap(position.value + size.value, count())
 
-        return projects.sortedBy { it.name }
+        return projects.sortedBy { it.name.value }
             .subList(fromIndex, toIndex)
     }
 
-    override fun findAll(): List<Project> = projects.sortedBy { it.name }
+    override fun findAll(): List<Project> = projects.sortedBy { it.name.value }
 
     override fun findByName(projectName: String): Project? {
-        return projects.firstOrNull { it.name.equals(projectName, true) }
+        return projects.firstOrNull { it.name.value.equals(projectName, true) }
     }
 
     override fun findById(id: Long): Project? {
@@ -49,7 +49,7 @@ class ProjectInMemoryRepository : ProjectRepository {
     override fun add(newProject: NewProject): Project {
         val project = Project(
             id = incrementedId.incrementAndGet(),
-            name = newProject.name.value
+            name = newProject.name
         )
         projects.add(project)
 

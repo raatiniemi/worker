@@ -129,7 +129,7 @@ class CreateProjectViewModelTest {
         vm.createProject()
 
         assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
-        val project = Project(id = 1, name = "Name")
+        val project = Project(id = 1, name = ProjectName("Name"))
         vm.viewActions.observeNonNull {
             assertEquals(CreateProjectViewActions.CreatedProject(project), it)
         }

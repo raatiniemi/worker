@@ -47,7 +47,7 @@ internal abstract class OngoingNotification(
 
     init {
         builder = Notifications.ongoingBuilder(context)
-            .setContentTitle(project.name)
+            .setContentTitle(project.name.value)
             .setContentIntent(buildContentAction())
             .setOngoing(isOngoing)
     }
@@ -55,7 +55,7 @@ internal abstract class OngoingNotification(
     private fun buildContentAction(): PendingIntent {
         val arguments = Bundle().apply {
             putLong("projectId", project.id)
-            putString("projectName", project.name)
+            putString("projectName", project.name.value)
         }
 
         return NavDeepLinkBuilder(context)

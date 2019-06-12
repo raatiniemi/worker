@@ -26,14 +26,14 @@ import org.junit.runners.JUnit4
 class ProjectTest {
     @Test
     fun builder_withValues() {
-        val project = Project(2L, "Project name")
+        val project = Project(2L, ProjectName("Project name"))
 
-        assertEquals("Project name", project.name)
+        assertEquals("Project name", project.name.value)
         assertEquals(2L, project.id)
     }
 
     @Test(expected = InvalidProjectNameException::class)
     fun project_withEmptyName() {
-        Project(1, "")
+        Project(1, ProjectName(""))
     }
 }

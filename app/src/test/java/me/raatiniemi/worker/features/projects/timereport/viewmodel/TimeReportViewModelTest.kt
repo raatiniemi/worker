@@ -47,7 +47,7 @@ class TimeReportViewModelTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val project = Project(1, "Project name #1")
+    private val project = Project(1, ProjectName("Project name #1"))
     private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectHolder = ProjectHolder()
         .also { it += project }

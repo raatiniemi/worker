@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.all.model
 
-import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +30,7 @@ class ProjectsItemGetTimeSummaryTest(
 ) {
     @Test
     fun getTimeSummary() {
-        val project = Project(1, "Project name")
+        val project = Project(1, ProjectName("Project name"))
         val projectsItem = ProjectsItem(project, timeIntervals)
 
         assertEquals(expected, projectsItem.timeSummary)

@@ -40,7 +40,7 @@ class RemoveProjectTest {
     @Test
     fun `remove project with project`() {
         repository.add(NewProject(ProjectName("Project name")))
-        val project = Project(1L, "Project name")
+        val project = Project(1L, ProjectName("Project name"))
 
         removeProject(project)
 
@@ -52,8 +52,8 @@ class RemoveProjectTest {
     fun `remove project with projects`() {
         repository.add(NewProject(ProjectName("Project #1")))
         repository.add(NewProject(ProjectName("Project #2")))
-        val expected = listOf(Project(2L, "Project #2"))
-        val project = Project(1L, "Project #1")
+        val expected = listOf(Project(2L, ProjectName("Project #2")))
+        val project = Project(1L, ProjectName("Project #1"))
 
         removeProject(project)
 

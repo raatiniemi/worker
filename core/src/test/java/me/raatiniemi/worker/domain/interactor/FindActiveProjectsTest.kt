@@ -73,7 +73,7 @@ class FindActiveProjectsTest {
                 start = Milliseconds(1)
             }
         )
-        val expected = listOf(Project(2, "Project name #2"))
+        val expected = listOf(Project(2, ProjectName("Project name #2")))
 
         val actual = findActiveProjects()
 
@@ -97,8 +97,8 @@ class FindActiveProjectsTest {
             }
         )
         val expected = listOf(
-            Project(1, "Project name #1"),
-            Project(2, "Project name #2")
+            Project(1, ProjectName("Project name #1")),
+            Project(2, ProjectName("Project name #2"))
         )
 
         val actual = findActiveProjects()

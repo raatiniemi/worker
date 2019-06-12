@@ -49,7 +49,7 @@ internal sealed class AllProjectsViewActions {
         FragmentViewAction {
         override fun action(fragment: Fragment) {
             val destinationAction =
-                AllProjectsFragmentDirections.openTimeReport(project.id, project.name)
+                AllProjectsFragmentDirections.openTimeReport(project.id, project.name.value)
 
             fragment.findNavController()
                 .navigate(destinationAction)
