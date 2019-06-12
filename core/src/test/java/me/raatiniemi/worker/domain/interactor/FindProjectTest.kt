@@ -40,7 +40,7 @@ class FindProjectTest {
 
     @Test
     fun `invoke without projects`() {
-        val actual = findProject("Name")
+        val actual = findProject(ProjectName("Name"))
 
         assertNull(actual)
     }
@@ -50,7 +50,7 @@ class FindProjectTest {
         val expected = Project(id = 1, name = ProjectName("Name"))
         repository.add(NewProject(ProjectName("Name")))
 
-        val actual = findProject("Name")
+        val actual = findProject(ProjectName("Name"))
 
         assertEquals(expected, actual)
     }
@@ -60,7 +60,7 @@ class FindProjectTest {
         val expected = Project(id = 1, name = ProjectName("Name"))
         repository.add(NewProject(ProjectName("Name")))
 
-        val actual = findProject("name")
+        val actual = findProject(ProjectName("Name"))
 
         assertEquals(expected, actual)
     }

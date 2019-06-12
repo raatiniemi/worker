@@ -45,12 +45,12 @@ class CreateProjectTest {
     fun `invoke with existing project`() {
         repository.add(NewProject(ProjectName("Project Name")))
 
-        createProject("Project Name")
+        createProject(ProjectName("Project Name"))
     }
 
     @Test
     fun execute() {
-        createProject("Project Name")
+        createProject(ProjectName("Project Name"))
 
         val expected = listOf(
             Project(id = 1, name = ProjectName("Project Name"))

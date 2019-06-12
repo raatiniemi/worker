@@ -29,16 +29,16 @@ class CreateProject(
     private val findProject: FindProject,
     private val repository: ProjectRepository
 ) {
-    operator fun invoke(projectName: String): Project {
+    operator fun invoke(projectName: ProjectName): Project {
         if (isProjectNameInUse(projectName)) {
-            throw ProjectAlreadyExistsException("Project '$projectName' already exists")
+            throw ProjectAlreadyExistsException("Project '${projectName.value}' already exists")
         }
 
-        val newProject = NewProject(ProjectName(projectName))
+        val newProject = NewProject(projectName)
         return repository.add(newProject)
     }
 
-    private fun isProjectNameInUse(projectName: String): Boolean {
+    private fun isProjectNameInUse(projectName: ProjectName): Boolean {
         return null != findProject(projectName)
     }
 }

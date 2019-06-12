@@ -21,7 +21,7 @@ import me.raatiniemi.worker.domain.model.ProjectName
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 class FindProject(private val repository: ProjectRepository) {
-    operator fun invoke(projectName: String): Project? {
-        return repository.findByName(ProjectName(projectName))
+    operator fun invoke(projectName: ProjectName): Project? {
+        return repository.findByName(projectName)
     }
 }

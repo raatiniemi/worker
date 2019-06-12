@@ -25,6 +25,7 @@ import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.interactor.isValid
+import me.raatiniemi.worker.domain.model.ProjectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.*
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
@@ -49,7 +50,7 @@ internal class CreateProjectViewModel(
                 return@map true
             }
 
-            findProject(it) ?: return@map true
+            findProject(ProjectName(it)) ?: return@map true
 
             viewActions.postValue(CreateProjectViewActions.DuplicateNameErrorMessage)
             false
@@ -70,7 +71,7 @@ internal class CreateProjectViewModel(
 
     suspend fun createProject() = withContext(Dispatchers.IO) {
         val viewAction: CreateProjectViewActions = try {
-            val project = createProject(name)
+            val project = createProject(ProjectName(name))
 
             usageAnalytics.log(Event.ProjectCreate)
             CreateProjectViewActions.CreatedProject(project)
