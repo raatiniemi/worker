@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectName
 import java.util.concurrent.atomic.AtomicLong
 
 class ProjectInMemoryRepository : ProjectRepository {
@@ -38,8 +39,8 @@ class ProjectInMemoryRepository : ProjectRepository {
 
     override fun findAll(): List<Project> = projects.sortedBy { it.name.value }
 
-    override fun findByName(projectName: String): Project? {
-        return projects.firstOrNull { it.name.value.equals(projectName, true) }
+    override fun findByName(projectName: ProjectName): Project? {
+        return projects.firstOrNull { it.name.value.equals(projectName.value, true) }
     }
 
     override fun findById(id: Long): Project? {

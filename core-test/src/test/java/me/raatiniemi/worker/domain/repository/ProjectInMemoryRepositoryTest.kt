@@ -199,7 +199,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find by name without project`() {
-        val actual = repository.findByName("Project #1")
+        val actual = repository.findByName(ProjectName("Project #1"))
 
         assertNull(actual)
     }
@@ -208,7 +208,7 @@ class ProjectInMemoryRepositoryTest {
     fun `find by name without matching project`() {
         repository.add(NewProject(ProjectName("Project #1")))
 
-        val actual = repository.findByName("Project #2")
+        val actual = repository.findByName(ProjectName("Project #2"))
 
         assertNull(actual)
     }
@@ -218,7 +218,7 @@ class ProjectInMemoryRepositoryTest {
         repository.add(NewProject(ProjectName("Project #1")))
         val expected = Project(1, ProjectName("Project #1"))
 
-        val actual = repository.findByName("Project #1")
+        val actual = repository.findByName(ProjectName("Project #1"))
 
         assertEquals(expected, actual)
     }
@@ -228,7 +228,7 @@ class ProjectInMemoryRepositoryTest {
         repository.add(NewProject(ProjectName("Project #1")))
         val expected = Project(1, ProjectName("Project #1"))
 
-        val actual = repository.findByName("project #1")
+        val actual = repository.findByName(ProjectName("project #1"))
 
         assertEquals(expected, actual)
     }

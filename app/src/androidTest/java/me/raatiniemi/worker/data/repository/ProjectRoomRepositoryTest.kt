@@ -211,7 +211,7 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findByName_withoutProject() {
-        val actual = repository.findByName("Name")
+        val actual = repository.findByName(ProjectName("Name"))
 
         assertNull(actual)
     }
@@ -221,7 +221,7 @@ class ProjectRoomRepositoryTest {
         repository.add(NewProject(ProjectName("Name")))
         val expected = Project(1, ProjectName("Name"))
 
-        val actual = repository.findByName("Name")
+        val actual = repository.findByName(ProjectName("Name"))
 
         assertEquals(expected, actual)
     }
