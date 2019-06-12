@@ -35,3 +35,5 @@ fun findProjects(repository: ProjectRepository): FindProjects = {
 fun findAllProjects(repository: ProjectRepository): FindAllProjects = {
     repository.findAll()
 }
+
+fun isValid(name: String?): Boolean = !name.isNullOrEmpty()
