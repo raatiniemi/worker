@@ -53,7 +53,7 @@ class ProjectsKtTest {
 
     @Test
     fun `count projects with project`() {
-        repository.add(NewProject("Project #1"))
+        repository.add(NewProject(ProjectName("Project #1")))
         val expected = 1
 
         val actual = countProjects()
@@ -63,8 +63,8 @@ class ProjectsKtTest {
 
     @Test
     fun `count projects with projects`() {
-        repository.add(NewProject("Project #1"))
-        repository.add(NewProject("Project #2"))
+        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(ProjectName("Project #2")))
         val expected = 2
 
         val actual = countProjects()
@@ -87,7 +87,7 @@ class ProjectsKtTest {
 
     @Test
     fun `find projects with project`() {
-        repository.add(NewProject("Project #1"))
+        repository.add(NewProject(ProjectName("Project #1")))
         val expected = listOf(
             Project(1, "Project #1")
         )
@@ -103,8 +103,8 @@ class ProjectsKtTest {
 
     @Test
     fun `find projects with projects`() {
-        repository.add(NewProject("Project #1"))
-        repository.add(NewProject("Project #2"))
+        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(ProjectName("Project #2")))
         val expected = listOf(
             Project(1, "Project #1"),
             Project(2, "Project #2")
@@ -130,7 +130,7 @@ class ProjectsKtTest {
 
     @Test
     fun `find all projects with project`() {
-        repository.add(NewProject("Project #1"))
+        repository.add(NewProject(ProjectName("Project #1")))
         val expected = listOf(
             Project(1, "Project #1")
         )
@@ -142,8 +142,8 @@ class ProjectsKtTest {
 
     @Test
     fun `find all projects with projects`() {
-        repository.add(NewProject("Project #1"))
-        repository.add(NewProject("Project #2"))
+        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(ProjectName("Project #2")))
         val expected = listOf(
             Project(1, "Project #1"),
             Project(2, "Project #2")

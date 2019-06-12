@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.newTimeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import org.junit.Assert.assertEquals
@@ -51,7 +48,7 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke without active projects`() {
-        projectRepository.add(NewProject("Project name #1"))
+        projectRepository.add(NewProject(ProjectName("Project name #1")))
         val expected = emptyList<Project>()
 
         val actual = findActiveProjects()
@@ -61,8 +58,8 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active project`() {
-        projectRepository.add(NewProject("Project name #1"))
-        projectRepository.add(NewProject("Project name #2"))
+        projectRepository.add(NewProject(ProjectName("Project name #1")))
+        projectRepository.add(NewProject(ProjectName("Project name #2")))
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 1
@@ -85,8 +82,8 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active projects`() {
-        projectRepository.add(NewProject("Project name #1"))
-        projectRepository.add(NewProject("Project name #2"))
+        projectRepository.add(NewProject(ProjectName("Project name #1")))
+        projectRepository.add(NewProject(ProjectName("Project name #2")))
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 1

@@ -49,7 +49,7 @@ class ProjectInMemoryRepository : ProjectRepository {
     override fun add(newProject: NewProject): Project {
         val project = Project(
             id = incrementedId.incrementAndGet(),
-            name = newProject.name
+            name = newProject.name.value
         )
         projects.add(project)
 

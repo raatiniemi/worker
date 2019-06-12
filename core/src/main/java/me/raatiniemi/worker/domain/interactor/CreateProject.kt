@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.interactor
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectName
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 /**
@@ -33,7 +34,7 @@ class CreateProject(
             throw ProjectAlreadyExistsException("Project '$projectName' already exists")
         }
 
-        val newProject = NewProject(projectName)
+        val newProject = NewProject(ProjectName(projectName))
         return repository.add(newProject)
     }
 

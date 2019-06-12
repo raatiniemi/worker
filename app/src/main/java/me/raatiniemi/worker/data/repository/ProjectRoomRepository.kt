@@ -49,9 +49,9 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
     }
 
     override fun add(newProject: NewProject): Project {
-        projects.add(ProjectEntity(name = newProject.name))
+        projects.add(ProjectEntity(name = newProject.name.value))
 
-        return findByName(newProject.name) ?: throw UnableToFindNewProjectException()
+        return findByName(newProject.name.value) ?: throw UnableToFindNewProjectException()
     }
 
     override fun remove(id: Long) {

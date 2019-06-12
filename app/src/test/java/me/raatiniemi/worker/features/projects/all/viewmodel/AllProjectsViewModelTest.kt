@@ -305,7 +305,7 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `remove project with project`() = runBlocking {
-        projectRepository.add(NewProject("Project #1"))
+        projectRepository.add(NewProject(ProjectName("Project #1")))
         val project = Project(1, "Project #1")
         val expected = emptyList<Project>()
 

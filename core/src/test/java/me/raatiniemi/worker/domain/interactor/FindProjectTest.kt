@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectName
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -47,7 +48,7 @@ class FindProjectTest {
     @Test
     fun `invoke with projects`() {
         val expected = Project(id = 1, name = "Name")
-        repository.add(NewProject("Name"))
+        repository.add(NewProject(ProjectName("Name")))
 
         val actual = findProject("Name")
 
@@ -57,7 +58,7 @@ class FindProjectTest {
     @Test
     fun `invoke with lowercase project name`() {
         val expected = Project(id = 1, name = "Name")
-        repository.add(NewProject("Name"))
+        repository.add(NewProject(ProjectName("Name")))
 
         val actual = findProject("name")
 

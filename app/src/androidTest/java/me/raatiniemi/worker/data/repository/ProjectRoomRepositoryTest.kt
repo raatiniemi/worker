@@ -60,7 +60,7 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun count_withProject() {
-        repository.add(NewProject("Project name #1"))
+        repository.add(NewProject(ProjectName("Project name #1")))
         val expected = 1
 
         val actual = repository.count()
@@ -70,8 +70,8 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun count_withProjects() {
-        repository.add(NewProject("Project name #1"))
-        repository.add(NewProject("Project name #2"))
+        repository.add(NewProject(ProjectName("Project name #1")))
+        repository.add(NewProject(ProjectName("Project name #2")))
         val expected = 2
 
         val actual = repository.count()
@@ -94,7 +94,7 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findAll_pagingWithProject() {
-        repository.add(NewProject("Project name #1"))
+        repository.add(NewProject(ProjectName("Project name #1")))
         val expected = listOf(
             Project(1, "Project name #1")
         )
@@ -110,8 +110,8 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findAll_pagingWithProjects() {
-        repository.add(NewProject("Project name #1"))
-        repository.add(NewProject("Project name #2"))
+        repository.add(NewProject(ProjectName("Project name #1")))
+        repository.add(NewProject(ProjectName("Project name #2")))
         val expected = listOf(
             Project(1, "Project name #1"),
             Project(2, "Project name #2")
@@ -128,8 +128,8 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findAll_withProjectBeforePage() {
-        repository.add(NewProject("Project name #1"))
-        repository.add(NewProject("Project name #2"))
+        repository.add(NewProject(ProjectName("Project name #1")))
+        repository.add(NewProject(ProjectName("Project name #2")))
         val expected = listOf(
             Project(2, "Project name #2")
         )
@@ -145,8 +145,8 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findAll_withProjectAfterPage() {
-        repository.add(NewProject("Project name #1"))
-        repository.add(NewProject("Project name #2"))
+        repository.add(NewProject(ProjectName("Project name #1")))
+        repository.add(NewProject(ProjectName("Project name #2")))
         val expected = listOf(
             Project(1, "Project name #1")
         )
@@ -162,8 +162,8 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findAll_sortedPage() {
-        repository.add(NewProject("Project name #2"))
-        repository.add(NewProject("Project name #1"))
+        repository.add(NewProject(ProjectName("Project name #2")))
+        repository.add(NewProject(ProjectName("Project name #1")))
         val expected = listOf(
             Project(2, "Project name #1"),
             Project(1, "Project name #2")
@@ -187,7 +187,7 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findAll_withProject() {
-        repository.add(NewProject("Name"))
+        repository.add(NewProject(ProjectName("Name")))
         val expected = listOf(Project(1, "Name"))
 
         val actual = repository.findAll()
@@ -197,8 +197,8 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findAll_withProjects() {
-        repository.add(NewProject("Name #2"))
-        repository.add(NewProject("Name #1"))
+        repository.add(NewProject(ProjectName("Name #2")))
+        repository.add(NewProject(ProjectName("Name #1")))
         val expected = listOf(
             Project(2, "Name #1"),
             Project(1, "Name #2")
@@ -218,7 +218,7 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findByName_withProject() {
-        repository.add(NewProject("Name"))
+        repository.add(NewProject(ProjectName("Name")))
         val expected = Project(1, "Name")
 
         val actual = repository.findByName("Name")
@@ -235,7 +235,7 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findById_withProject() {
-        repository.add(NewProject("Name"))
+        repository.add(NewProject(ProjectName("Name")))
         val expected = Project(1, "Name")
 
         val actual = repository.findById(1)
@@ -245,8 +245,8 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun findById_withProjects() {
-        repository.add(NewProject("Name #2"))
-        repository.add(NewProject("Name #1"))
+        repository.add(NewProject(ProjectName("Name #2")))
+        repository.add(NewProject(ProjectName("Name #1")))
         val expected = Project(2, "Name #1")
 
         val actual = repository.findById(2)
@@ -261,7 +261,7 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun remove_withProject() {
-        repository.add(NewProject("Name"))
+        repository.add(NewProject(ProjectName("Name")))
 
         repository.remove(1)
 
@@ -271,8 +271,8 @@ class ProjectRoomRepositoryTest {
 
     @Test
     fun remove_withProjects() {
-        repository.add(NewProject("Name #2"))
-        repository.add(NewProject("Name #1"))
+        repository.add(NewProject(ProjectName("Name #2")))
+        repository.add(NewProject(ProjectName("Name #1")))
         val expected = listOf(
             Project(2, "Name #1")
         )

@@ -18,6 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectName
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -38,7 +39,7 @@ class RemoveProjectTest {
 
     @Test
     fun `remove project with project`() {
-        repository.add(NewProject("Project name"))
+        repository.add(NewProject(ProjectName("Project name")))
         val project = Project(1L, "Project name")
 
         removeProject(project)
@@ -49,8 +50,8 @@ class RemoveProjectTest {
 
     @Test
     fun `remove project with projects`() {
-        repository.add(NewProject("Project #1"))
-        repository.add(NewProject("Project #2"))
+        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(ProjectName("Project #2")))
         val expected = listOf(Project(2L, "Project #2"))
         val project = Project(1L, "Project #1")
 
