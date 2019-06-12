@@ -44,7 +44,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `count with project`() {
-        repository.add(NewProject(ProjectName("Project name #1")))
+        repository.add(NewProject(projectName("Project name #1")))
         val expected = 1
 
         val actual = repository.count()
@@ -54,8 +54,8 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `count with projects`() {
-        repository.add(NewProject(ProjectName("Project name #1")))
-        repository.add(NewProject(ProjectName("Project name #2")))
+        repository.add(NewProject(projectName("Project name #1")))
+        repository.add(NewProject(projectName("Project name #2")))
         val expected = 2
 
         val actual = repository.count()
@@ -78,9 +78,9 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find all paging with project`() {
-        repository.add(NewProject(ProjectName("Project name #1")))
+        repository.add(NewProject(projectName("Project name #1")))
         val expected = listOf(
-            Project(1, ProjectName("Project name #1"))
+            Project(1, projectName("Project name #1"))
         )
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -94,11 +94,11 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find all paging with projects`() {
-        repository.add(NewProject(ProjectName("Project name #1")))
-        repository.add(NewProject(ProjectName("Project name #2")))
+        repository.add(NewProject(projectName("Project name #1")))
+        repository.add(NewProject(projectName("Project name #2")))
         val expected = listOf(
-            Project(1, ProjectName("Project name #1")),
-            Project(2, ProjectName("Project name #2"))
+            Project(1, projectName("Project name #1")),
+            Project(2, projectName("Project name #2"))
         )
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -112,10 +112,10 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find all with project before page`() {
-        repository.add(NewProject(ProjectName("Project name #1")))
-        repository.add(NewProject(ProjectName("Project name #2")))
+        repository.add(NewProject(projectName("Project name #1")))
+        repository.add(NewProject(projectName("Project name #2")))
         val expected = listOf(
-            Project(2, ProjectName("Project name #2"))
+            Project(2, projectName("Project name #2"))
         )
         val loadRange = LoadRange(
             LoadPosition(1),
@@ -129,10 +129,10 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find all with project after page`() {
-        repository.add(NewProject(ProjectName("Project name #1")))
-        repository.add(NewProject(ProjectName("Project name #2")))
+        repository.add(NewProject(projectName("Project name #1")))
+        repository.add(NewProject(projectName("Project name #2")))
         val expected = listOf(
-            Project(1, ProjectName("Project name #1"))
+            Project(1, projectName("Project name #1"))
         )
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -146,11 +146,11 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find all sorted page`() {
-        repository.add(NewProject(ProjectName("Project name #2")))
-        repository.add(NewProject(ProjectName("Project name #1")))
+        repository.add(NewProject(projectName("Project name #2")))
+        repository.add(NewProject(projectName("Project name #1")))
         val expected = listOf(
-            Project(2, ProjectName("Project name #1")),
-            Project(1, ProjectName("Project name #2"))
+            Project(2, projectName("Project name #1")),
+            Project(1, projectName("Project name #2"))
         )
         val loadRange = LoadRange(
             LoadPosition(0),
@@ -173,9 +173,9 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find all with project`() {
-        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(projectName("Project #1")))
         val expected = listOf(
-            Project(1, ProjectName("Project #1"))
+            Project(1, projectName("Project #1"))
         )
 
         val actual = repository.findAll()
@@ -185,11 +185,11 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find all with projects`() {
-        repository.add(NewProject(ProjectName("Project #1")))
-        repository.add(NewProject(ProjectName("Project #2")))
+        repository.add(NewProject(projectName("Project #1")))
+        repository.add(NewProject(projectName("Project #2")))
         val expected = listOf(
-            Project(1, ProjectName("Project #1")),
-            Project(2, ProjectName("Project #2"))
+            Project(1, projectName("Project #1")),
+            Project(2, projectName("Project #2"))
         )
 
         val actual = repository.findAll()
@@ -199,36 +199,36 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find by name without project`() {
-        val actual = repository.findByName(ProjectName("Project #1"))
+        val actual = repository.findByName(projectName("Project #1"))
 
         assertNull(actual)
     }
 
     @Test
     fun `find by name without matching project`() {
-        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(projectName("Project #1")))
 
-        val actual = repository.findByName(ProjectName("Project #2"))
+        val actual = repository.findByName(projectName("Project #2"))
 
         assertNull(actual)
     }
 
     @Test
     fun `find by name with project`() {
-        repository.add(NewProject(ProjectName("Project #1")))
-        val expected = Project(1, ProjectName("Project #1"))
+        repository.add(NewProject(projectName("Project #1")))
+        val expected = Project(1, projectName("Project #1"))
 
-        val actual = repository.findByName(ProjectName("Project #1"))
+        val actual = repository.findByName(projectName("Project #1"))
 
         assertEquals(expected, actual)
     }
 
     @Test
     fun `find by name with lowercase project name`() {
-        repository.add(NewProject(ProjectName("Project #1")))
-        val expected = Project(1, ProjectName("Project #1"))
+        repository.add(NewProject(projectName("Project #1")))
+        val expected = Project(1, projectName("Project #1"))
 
-        val actual = repository.findByName(ProjectName("project #1"))
+        val actual = repository.findByName(projectName("project #1"))
 
         assertEquals(expected, actual)
     }
@@ -242,7 +242,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find by id without matching project`() {
-        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(projectName("Project #1")))
 
         val actual = repository.findById(2)
 
@@ -251,8 +251,8 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `find by id with project`() {
-        repository.add(NewProject(ProjectName("Project #1")))
-        val expected = Project(1, ProjectName("Project #1"))
+        repository.add(NewProject(projectName("Project #1")))
+        val expected = Project(1, projectName("Project #1"))
 
         val actual = repository.findById(1)
 
@@ -266,9 +266,9 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `remove without matching project`() {
-        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(projectName("Project #1")))
         val expected = listOf(
-            Project(1, ProjectName("Project #1"))
+            Project(1, projectName("Project #1"))
         )
 
         repository.remove(2)
@@ -279,7 +279,7 @@ class ProjectInMemoryRepositoryTest {
 
     @Test
     fun `remove with project`() {
-        repository.add(NewProject(ProjectName("Project #1")))
+        repository.add(NewProject(projectName("Project #1")))
         val expected = emptyList<Project>()
 
         repository.remove(1)

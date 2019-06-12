@@ -27,7 +27,7 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class MarkRegisteredTimeTest {
-    private val project = Project(1, ProjectName("Project name"))
+    private val project = Project(1, projectName("Project name"))
 
     private lateinit var repository: TimeIntervalRepository
     private lateinit var markRegisteredTime: MarkRegisteredTime

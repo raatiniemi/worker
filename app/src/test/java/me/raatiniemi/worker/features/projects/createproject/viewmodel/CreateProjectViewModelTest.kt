@@ -22,7 +22,7 @@ import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.model.projectName
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
@@ -68,7 +68,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `is create enabled with empty name`() = runBlocking {
-        repository.add(NewProject(ProjectName("Name")))
+        repository.add(NewProject(projectName("Name")))
         vm.name = ""
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
@@ -111,7 +111,7 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `create project with duplicated name`() = runBlocking {
-        repository.add(NewProject(ProjectName("Name")))
+        repository.add(NewProject(projectName("Name")))
         vm.name = "Name"
 
         vm.createProject()
@@ -129,7 +129,7 @@ class CreateProjectViewModelTest {
         vm.createProject()
 
         assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
-        val project = Project(id = 1, name = ProjectName("Name"))
+        val project = Project(id = 1, name = projectName("Name"))
         vm.viewActions.observeNonNull {
             assertEquals(CreateProjectViewActions.CreatedProject(project), it)
         }

@@ -58,7 +58,7 @@ class AllProjectsViewModelTest {
     private lateinit var removeProject: RemoveProject
     private lateinit var vm: AllProjectsViewModel
 
-    private val project = Project(1L, ProjectName("Project #1"))
+    private val project = Project(1L, projectName("Project #1"))
 
     @Before
     fun setUp() {
@@ -102,7 +102,7 @@ class AllProjectsViewModelTest {
     @Test
     fun `refresh active projects without active projects`() = runBlocking {
         val items = listOf(
-            getProjectsItem(Project(1, ProjectName("Project Name")))
+            getProjectsItem(Project(1, projectName("Project Name")))
         )
 
         vm.refreshActiveProjects(items)
@@ -113,8 +113,8 @@ class AllProjectsViewModelTest {
     @Test
     fun `refresh active projects with active project`() = runBlocking {
         val items = listOf(
-            getProjectsItem(Project(1, ProjectName("Project Name #1"))),
-            getProjectsItem(Project(2, ProjectName("Project Name #2")), true)
+            getProjectsItem(Project(1, projectName("Project Name #1"))),
+            getProjectsItem(Project(2, projectName("Project Name #2")), true)
         )
 
         vm.refreshActiveProjects(items)
@@ -305,8 +305,8 @@ class AllProjectsViewModelTest {
 
     @Test
     fun `remove project with project`() = runBlocking {
-        projectRepository.add(NewProject(ProjectName("Project #1")))
-        val project = Project(1, ProjectName("Project #1"))
+        projectRepository.add(NewProject(projectName("Project #1")))
+        val project = Project(1, projectName("Project #1"))
         val expected = emptyList<Project>()
 
         vm.remove(project)

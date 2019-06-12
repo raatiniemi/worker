@@ -30,7 +30,7 @@ class ProjectsItemGetTimeSummaryTest(
 ) {
     @Test
     fun getTimeSummary() {
-        val project = Project(1, ProjectName("Project name"))
+        val project = Project(1, projectName("Project name"))
         val projectsItem = ProjectsItem(project, timeIntervals)
 
         assertEquals(expected, projectsItem.timeSummary)

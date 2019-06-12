@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.interactor
 import me.raatiniemi.worker.domain.exception.NoProjectException
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.model.projectName
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -40,8 +40,8 @@ class GetProjectTest {
 
     @Test
     fun execute() {
-        repository.add(NewProject(ProjectName("Project name")))
-        val expected = Project(1L, ProjectName("Project name"))
+        repository.add(NewProject(projectName("Project name")))
+        val expected = Project(1L, projectName("Project name"))
 
         val actual = getProject(1)
 

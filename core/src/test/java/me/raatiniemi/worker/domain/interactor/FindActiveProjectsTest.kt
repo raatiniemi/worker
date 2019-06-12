@@ -48,7 +48,7 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke without active projects`() {
-        projectRepository.add(NewProject(ProjectName("Project name #1")))
+        projectRepository.add(NewProject(projectName("Project name #1")))
         val expected = emptyList<Project>()
 
         val actual = findActiveProjects()
@@ -58,8 +58,8 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active project`() {
-        projectRepository.add(NewProject(ProjectName("Project name #1")))
-        projectRepository.add(NewProject(ProjectName("Project name #2")))
+        projectRepository.add(NewProject(projectName("Project name #1")))
+        projectRepository.add(NewProject(projectName("Project name #2")))
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 1
@@ -73,7 +73,7 @@ class FindActiveProjectsTest {
                 start = Milliseconds(1)
             }
         )
-        val expected = listOf(Project(2, ProjectName("Project name #2")))
+        val expected = listOf(Project(2, projectName("Project name #2")))
 
         val actual = findActiveProjects()
 
@@ -82,8 +82,8 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active projects`() {
-        projectRepository.add(NewProject(ProjectName("Project name #1")))
-        projectRepository.add(NewProject(ProjectName("Project name #2")))
+        projectRepository.add(NewProject(projectName("Project name #1")))
+        projectRepository.add(NewProject(projectName("Project name #2")))
         timeIntervalRepository.add(
             newTimeInterval {
                 projectId = 1
@@ -97,8 +97,8 @@ class FindActiveProjectsTest {
             }
         )
         val expected = listOf(
-            Project(1, ProjectName("Project name #1")),
-            Project(2, ProjectName("Project name #2"))
+            Project(1, projectName("Project name #1")),
+            Project(2, projectName("Project name #2"))
         )
 
         val actual = findActiveProjects()

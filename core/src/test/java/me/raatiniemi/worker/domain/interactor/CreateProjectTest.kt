@@ -19,7 +19,7 @@ package me.raatiniemi.worker.domain.interactor
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.model.projectName
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -43,17 +43,17 @@ class CreateProjectTest {
 
     @Test(expected = ProjectAlreadyExistsException::class)
     fun `invoke with existing project`() {
-        repository.add(NewProject(ProjectName("Project Name")))
+        repository.add(NewProject(projectName("Project Name")))
 
-        createProject(ProjectName("Project Name"))
+        createProject(projectName("Project Name"))
     }
 
     @Test
     fun execute() {
-        createProject(ProjectName("Project Name"))
+        createProject(projectName("Project Name"))
 
         val expected = listOf(
-            Project(id = 1, name = ProjectName("Project Name"))
+            Project(id = 1, name = projectName("Project Name"))
         )
         val actual = repository.findAll()
         assertEquals(expected, actual)

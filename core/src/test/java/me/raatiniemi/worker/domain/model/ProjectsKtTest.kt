@@ -14,24 +14,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.model.LoadRange
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.repository.ProjectRepository
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 
-typealias CountProjects = () -> Int
-typealias FindProjects = (LoadRange) -> List<Project>
-typealias FindAllProjects = () -> List<Project>
+@RunWith(JUnit4::class)
+class ProjectsKtTest {
+    @Test(expected = InvalidProjectNameException::class)
+    fun `project name with null as project name`() {
+        projectName(null)
+    }
 
-fun countProjects(repository: ProjectRepository): CountProjects = {
-    repository.count()
-}
+    @Test(expected = InvalidProjectNameException::class)
+    fun `project name with empty project name`() {
+        projectName("")
+    }
 
-fun findProjects(repository: ProjectRepository): FindProjects = {
-    repository.findAll(it)
-}
-
-fun findAllProjects(repository: ProjectRepository): FindAllProjects = {
-    repository.findAll()
+    @Test
+    fun `project name with valid project name`() {
+        projectName("Project name")
+    }
 }

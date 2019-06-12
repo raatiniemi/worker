@@ -38,7 +38,7 @@ class TimeReportDataSourceTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val project = Project(1, ProjectName("Project name"))
+    private val project = Project(1, projectName("Project name"))
     private val projectHolder = ProjectHolder()
 
     private lateinit var keyValueStore: KeyValueStore

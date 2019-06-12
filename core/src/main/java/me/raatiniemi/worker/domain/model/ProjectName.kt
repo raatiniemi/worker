@@ -16,4 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-inline class ProjectName(val value: String)
+data class ProjectName internal constructor(val value: String)

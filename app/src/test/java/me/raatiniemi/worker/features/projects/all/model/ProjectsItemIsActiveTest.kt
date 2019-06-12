@@ -31,7 +31,7 @@ class ProjectsItemIsActiveTest(
 ) {
     @Test
     fun isActive() {
-        val project = Project(1, ProjectName("Project #1"))
+        val project = Project(1, projectName("Project #1"))
         val projectsItem = ProjectsItem(project, timeIntervals)
 
         assertEquals(expected, projectsItem.isActive)

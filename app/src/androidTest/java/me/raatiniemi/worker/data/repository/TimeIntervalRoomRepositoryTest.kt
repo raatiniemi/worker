@@ -36,7 +36,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TimeIntervalRoomRepositoryTest {
-    private val project = Project(1, ProjectName("Name"))
+    private val project = Project(1, projectName("Name"))
 
     private lateinit var database: Database
     private lateinit var timeIntervals: TimeIntervalDao
@@ -75,7 +75,7 @@ class TimeIntervalRoomRepositoryTest {
     @Test
     fun findAll_withoutTimeIntervalForProject() {
         timeIntervals.add(timeIntervalEntity())
-        val project = Project(2, ProjectName("Name #2"))
+        val project = Project(2, projectName("Name #2"))
 
         val actual = repository.findAll(project, Milliseconds(0))
 

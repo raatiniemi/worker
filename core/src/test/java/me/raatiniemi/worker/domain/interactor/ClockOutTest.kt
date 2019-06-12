@@ -31,7 +31,7 @@ import java.util.*
 
 @RunWith(JUnit4::class)
 class ClockOutTest {
-    private val project = Project(1, ProjectName("Project name"))
+    private val project = Project(1, projectName("Project name"))
 
     private lateinit var repository: TimeIntervalRepository
     private lateinit var clockOut: ClockOut
