@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,14 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.interactor
+package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.ProjectName
-import me.raatiniemi.worker.domain.repository.ProjectRepository
-
-class FindProject(private val repository: ProjectRepository) {
-    operator fun invoke(projectName: ProjectName): Project? {
-        return repository.findByName(projectName)
-    }
-}
+data class ProjectName internal constructor(val value: String)

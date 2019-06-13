@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,31 +14,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.features.projects.all.model
+package me.raatiniemi.worker.domain.model
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.projectName
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class ProjectsItemTest {
-    @Test
-    fun asProject() {
-        val project = Project(1, projectName("Project name"))
-        val projectsItem = ProjectsItem(project, emptyList())
+class ProjectsKtTest {
+    @Test(expected = InvalidProjectNameException::class)
+    fun `project name with null as project name`() {
+        projectName(null)
+    }
 
-        assertSame(project, projectsItem.asProject())
+    @Test(expected = InvalidProjectNameException::class)
+    fun `project name with empty project name`() {
+        projectName("")
     }
 
     @Test
-    fun getTitle() {
-        val project = Project(1, projectName("Project name"))
-        val projectsItem = ProjectsItem(project, emptyList())
-
-        assertEquals("Project name", projectsItem.title)
+    fun `project name with valid project name`() {
+        projectName("Project name")
     }
 }

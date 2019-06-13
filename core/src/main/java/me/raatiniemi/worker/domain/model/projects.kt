@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,8 +14,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package me.raatiniemi.worker.domain.validator
+package me.raatiniemi.worker.domain.model
 
-object ProjectName {
-    fun isValid(name: String?): Boolean = !name.isNullOrEmpty()
+import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
+
+fun projectName(value: String?): ProjectName {
+    if (value.isNullOrBlank()) {
+        throw InvalidProjectNameException()
+    }
+
+    return ProjectName(value)
 }
+
+fun isValid(name: String?): Boolean = !name.isNullOrEmpty()

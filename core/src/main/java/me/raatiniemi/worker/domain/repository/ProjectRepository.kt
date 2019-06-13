@@ -19,6 +19,7 @@ package me.raatiniemi.worker.domain.repository
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectName
 
 /**
  * Represent a unified interface for working with projects using different data sources.
@@ -41,7 +42,7 @@ interface ProjectRepository {
      * @param projectName Project name to search for.
      * @return Project with name, or null.
      */
-    fun findByName(projectName: String): Project?
+    fun findByName(projectName: ProjectName): Project?
 
     /**
      * Get project by id.

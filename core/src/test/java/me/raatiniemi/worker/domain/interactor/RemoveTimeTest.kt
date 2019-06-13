@@ -53,7 +53,7 @@ class RemoveTimeTest {
 
         removeTime(timeInterval)
 
-        val actual = repository.findAll(Project(1, "Project name"), Milliseconds(0))
+        val actual = repository.findAll(Project(1, projectName("Project name")), Milliseconds(0))
         assertEquals(expected, actual)
     }
 
@@ -74,7 +74,7 @@ class RemoveTimeTest {
 
         removeTime(listOf(timeInterval))
 
-        val actual = repository.findAll(Project(1, "Project name"), Milliseconds(0))
+        val actual = repository.findAll(Project(1, projectName("Project name")), Milliseconds(0))
         assertEquals(expected, actual)
     }
 }

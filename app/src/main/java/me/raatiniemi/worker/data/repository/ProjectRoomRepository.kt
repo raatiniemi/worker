@@ -21,6 +21,7 @@ import me.raatiniemi.worker.data.projects.ProjectEntity
 import me.raatiniemi.worker.domain.model.LoadRange
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.ProjectName
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 
 internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectRepository {
@@ -38,8 +39,8 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
             .toMutableList()
     }
 
-    override fun findByName(projectName: String): Project? {
-        return projects.findByName(projectName)
+    override fun findByName(projectName: ProjectName): Project? {
+        return projects.findByName(projectName.value)
             ?.run { toProject() }
     }
 
@@ -49,7 +50,7 @@ internal class ProjectRoomRepository(val projects: ProjectDao) : ProjectReposito
     }
 
     override fun add(newProject: NewProject): Project {
-        projects.add(ProjectEntity(name = newProject.name))
+        projects.add(ProjectEntity(name = newProject.name.value))
 
         return findByName(newProject.name) ?: throw UnableToFindNewProjectException()
     }

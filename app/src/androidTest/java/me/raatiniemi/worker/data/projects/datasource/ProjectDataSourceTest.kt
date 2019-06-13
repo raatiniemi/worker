@@ -21,6 +21,7 @@ import me.raatiniemi.worker.domain.interactor.countProjects
 import me.raatiniemi.worker.domain.interactor.findProjects
 import me.raatiniemi.worker.domain.model.NewProject
 import me.raatiniemi.worker.domain.model.Project
+import me.raatiniemi.worker.domain.model.projectName
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -54,7 +55,7 @@ class ProjectDataSourceTest {
     @Test
     fun loadInitial_withProject() {
         val projects = listOf(
-            repository.add(NewProject("Project #1"))
+            repository.add(NewProject(projectName("Project #1")))
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects,
@@ -70,15 +71,15 @@ class ProjectDataSourceTest {
     @Test
     fun loadInitial_withProjects() {
         val projects = listOf(
-            repository.add(NewProject("Project #1")),
-            repository.add(NewProject("Project #2")),
-            repository.add(NewProject("Project #3")),
-            repository.add(NewProject("Project #4")),
-            repository.add(NewProject("Project #5")),
-            repository.add(NewProject("Project #6")),
-            repository.add(NewProject("Project #7")),
-            repository.add(NewProject("Project #8")),
-            repository.add(NewProject("Project #9"))
+            repository.add(NewProject(projectName("Project #1"))),
+            repository.add(NewProject(projectName("Project #2"))),
+            repository.add(NewProject(projectName("Project #3"))),
+            repository.add(NewProject(projectName("Project #4"))),
+            repository.add(NewProject(projectName("Project #5"))),
+            repository.add(NewProject(projectName("Project #6"))),
+            repository.add(NewProject(projectName("Project #7"))),
+            repository.add(NewProject(projectName("Project #8"))),
+            repository.add(NewProject(projectName("Project #9")))
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects,
@@ -94,15 +95,15 @@ class ProjectDataSourceTest {
     @Test
     fun loadInitial_withProjectsBeyondPageSize() {
         val projects = listOf(
-            repository.add(NewProject("Project #1")),
-            repository.add(NewProject("Project #2")),
-            repository.add(NewProject("Project #3")),
-            repository.add(NewProject("Project #4")),
-            repository.add(NewProject("Project #5")),
-            repository.add(NewProject("Project #6")),
-            repository.add(NewProject("Project #7")),
-            repository.add(NewProject("Project #8")),
-            repository.add(NewProject("Project #9"))
+            repository.add(NewProject(projectName("Project #1"))),
+            repository.add(NewProject(projectName("Project #2"))),
+            repository.add(NewProject(projectName("Project #3"))),
+            repository.add(NewProject(projectName("Project #4"))),
+            repository.add(NewProject(projectName("Project #5"))),
+            repository.add(NewProject(projectName("Project #6"))),
+            repository.add(NewProject(projectName("Project #7"))),
+            repository.add(NewProject(projectName("Project #8"))),
+            repository.add(NewProject(projectName("Project #9")))
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects.take(5),
@@ -121,15 +122,15 @@ class ProjectDataSourceTest {
     @Test
     fun loadInitial_withProjectsAndPosition() {
         val projects = listOf(
-            repository.add(NewProject("Project #1")),
-            repository.add(NewProject("Project #2")),
-            repository.add(NewProject("Project #3")),
-            repository.add(NewProject("Project #4")),
-            repository.add(NewProject("Project #5")),
-            repository.add(NewProject("Project #6")),
-            repository.add(NewProject("Project #7")),
-            repository.add(NewProject("Project #8")),
-            repository.add(NewProject("Project #9"))
+            repository.add(NewProject(projectName("Project #1"))),
+            repository.add(NewProject(projectName("Project #2"))),
+            repository.add(NewProject(projectName("Project #3"))),
+            repository.add(NewProject(projectName("Project #4"))),
+            repository.add(NewProject(projectName("Project #5"))),
+            repository.add(NewProject(projectName("Project #6"))),
+            repository.add(NewProject(projectName("Project #7"))),
+            repository.add(NewProject(projectName("Project #8"))),
+            repository.add(NewProject(projectName("Project #9")))
         )
         val expected = PositionalDataSourceResult.Initial(
             data = projects.drop(5),
@@ -157,7 +158,7 @@ class ProjectDataSourceTest {
     @Test
     fun loadRange_withProject() {
         val projects = listOf(
-            repository.add(NewProject("Project #1"))
+            repository.add(NewProject(projectName("Project #1")))
         )
         val expected = PositionalDataSourceResult.Range(projects)
 
@@ -169,8 +170,8 @@ class ProjectDataSourceTest {
     @Test
     fun loadRange_withProjects() {
         val projects = listOf(
-            repository.add(NewProject("Project #1")),
-            repository.add(NewProject("Project #2"))
+            repository.add(NewProject(projectName("Project #1"))),
+            repository.add(NewProject(projectName("Project #2")))
         )
         val expected = PositionalDataSourceResult.Range(projects)
 
@@ -182,15 +183,15 @@ class ProjectDataSourceTest {
     @Test
     fun loadRange_withProjectsBeforePosition() {
         val projects = listOf(
-            repository.add(NewProject("Project #1")),
-            repository.add(NewProject("Project #2")),
-            repository.add(NewProject("Project #3")),
-            repository.add(NewProject("Project #4")),
-            repository.add(NewProject("Project #5")),
-            repository.add(NewProject("Project #6")),
-            repository.add(NewProject("Project #7")),
-            repository.add(NewProject("Project #8")),
-            repository.add(NewProject("Project #9"))
+            repository.add(NewProject(projectName("Project #1"))),
+            repository.add(NewProject(projectName("Project #2"))),
+            repository.add(NewProject(projectName("Project #3"))),
+            repository.add(NewProject(projectName("Project #4"))),
+            repository.add(NewProject(projectName("Project #5"))),
+            repository.add(NewProject(projectName("Project #6"))),
+            repository.add(NewProject(projectName("Project #7"))),
+            repository.add(NewProject(projectName("Project #8"))),
+            repository.add(NewProject(projectName("Project #9")))
         )
         val expected = PositionalDataSourceResult.Range(
             projects.drop(5)
@@ -204,15 +205,15 @@ class ProjectDataSourceTest {
     @Test
     fun loadRange_withProjectsBeyondPageSize() {
         val projects = listOf(
-            repository.add(NewProject("Project #1")),
-            repository.add(NewProject("Project #2")),
-            repository.add(NewProject("Project #3")),
-            repository.add(NewProject("Project #4")),
-            repository.add(NewProject("Project #5")),
-            repository.add(NewProject("Project #6")),
-            repository.add(NewProject("Project #7")),
-            repository.add(NewProject("Project #8")),
-            repository.add(NewProject("Project #9"))
+            repository.add(NewProject(projectName("Project #1"))),
+            repository.add(NewProject(projectName("Project #2"))),
+            repository.add(NewProject(projectName("Project #3"))),
+            repository.add(NewProject(projectName("Project #4"))),
+            repository.add(NewProject(projectName("Project #5"))),
+            repository.add(NewProject(projectName("Project #6"))),
+            repository.add(NewProject(projectName("Project #7"))),
+            repository.add(NewProject(projectName("Project #8"))),
+            repository.add(NewProject(projectName("Project #9")))
         )
         val expected = PositionalDataSourceResult.Range(
             projects.take(5)

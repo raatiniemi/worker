@@ -26,7 +26,7 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class TimeReportInMemoryRepositoryTest {
-    private val project = Project(1, "Project #1")
+    private val project = Project(1, projectName("Project #1"))
 
     private lateinit var timeIntervalRepository: TimeIntervalRepository
     private lateinit var repository: TimeReportRepository

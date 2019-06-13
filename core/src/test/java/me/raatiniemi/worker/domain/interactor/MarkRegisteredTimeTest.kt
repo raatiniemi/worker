@@ -16,10 +16,7 @@
 
 package me.raatiniemi.worker.domain.interactor
 
-import me.raatiniemi.worker.domain.model.Milliseconds
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.timeInterval
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -30,7 +27,7 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class MarkRegisteredTimeTest {
-    private val project = Project(1, "Project name")
+    private val project = Project(1, projectName("Project name"))
 
     private lateinit var repository: TimeIntervalRepository
     private lateinit var markRegisteredTime: MarkRegisteredTime

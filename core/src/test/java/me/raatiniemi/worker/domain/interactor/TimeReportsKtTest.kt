@@ -31,7 +31,7 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class TimeReportsKtTest {
-    private val project = Project(1, "Project #1")
+    private val project = Project(1, projectName("Project name"))
 
     private lateinit var keyValueStore: KeyValueStore
     private lateinit var timeIntervalRepository: TimeIntervalRepository

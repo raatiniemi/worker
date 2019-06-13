@@ -33,7 +33,7 @@ data class ProjectsItem(
     private val activeTimeInterval: TimeInterval?
 
     val title: String
-        get() = project.name
+        get() = project.name.value
 
     val isActive: Boolean
         get() = activeTimeInterval != null

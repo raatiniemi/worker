@@ -24,7 +24,8 @@ import me.raatiniemi.worker.domain.exception.InvalidProjectNameException
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
-import me.raatiniemi.worker.domain.validator.ProjectName
+import me.raatiniemi.worker.domain.model.isValid
+import me.raatiniemi.worker.domain.model.projectName
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.*
 import me.raatiniemi.worker.features.shared.viewmodel.CoroutineScopedViewModel
@@ -41,18 +42,18 @@ internal class CreateProjectViewModel(
         value = ""
     }
 
-    private val isNameValid = _name.map { ProjectName.isValid(it) }
+    private val isNameValid = _name.map { isValid(it) }
 
     private val isNameAvailable = _name.debounce(this)
         .map {
-            if (it.isNullOrBlank()) {
-                return@map true
+            try {
+                findProject(projectName(it)) ?: return@map true
+
+                viewActions += CreateProjectViewActions.DuplicateNameErrorMessage
+                false
+            } catch (e: InvalidProjectNameException) {
+                false
             }
-
-            findProject(it) ?: return@map true
-
-            viewActions.postValue(CreateProjectViewActions.DuplicateNameErrorMessage)
-            false
         }
 
     var name: String
@@ -70,7 +71,7 @@ internal class CreateProjectViewModel(
 
     suspend fun createProject() = withContext(Dispatchers.IO) {
         val viewAction: CreateProjectViewActions = try {
-            val project = createProject(name)
+            val project = createProject(projectName(name))
 
             usageAnalytics.log(Event.ProjectCreate)
             CreateProjectViewActions.CreatedProject(project)
