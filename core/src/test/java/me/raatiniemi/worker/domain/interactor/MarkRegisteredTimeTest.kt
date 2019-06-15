@@ -39,23 +39,19 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple unregistered items`() {
         val newTimeIntervals = listOf(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
@@ -127,26 +123,22 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple registered items`() {
         val newTimeIntervals = listOf(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
@@ -219,25 +211,21 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with multiple items`() {
         val newTimeIntervals = listOf(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             },
-            newTimeInterval {
-                projectId = android.id
-                start = Milliseconds(1)
-                stop = Milliseconds(2)
-                isRegistered = true
-            },
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
             },
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
+                start = Milliseconds(1)
+                stop = Milliseconds(2)
+                isRegistered = true
+            },
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
                 isRegistered = true
@@ -325,8 +313,7 @@ class MarkRegisteredTimeTest {
     @Test
     fun `mark registered time with registered active time interval`() {
         val newTimeIntervals = listOf(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )

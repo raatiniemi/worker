@@ -76,8 +76,7 @@ class TimeReportViewModelTest {
     fun `toggle registered state with selected item`() = runBlocking {
         projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
@@ -105,15 +104,13 @@ class TimeReportViewModelTest {
     fun `toggle registered state for selected items`() = runBlocking {
         projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
@@ -150,8 +147,7 @@ class TimeReportViewModelTest {
     fun `toggle registered state for active time interval`() = runBlocking {
         projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -177,8 +173,7 @@ class TimeReportViewModelTest {
     fun `remove with single item`() = runBlocking {
         projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -202,14 +197,12 @@ class TimeReportViewModelTest {
     fun `remove with multiple items`() = runBlocking {
         projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )

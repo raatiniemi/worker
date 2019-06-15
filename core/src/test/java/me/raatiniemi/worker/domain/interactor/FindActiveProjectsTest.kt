@@ -61,15 +61,13 @@ class FindActiveProjectsTest {
         projectRepository.add(NewProject(android.name))
         projectRepository.add(NewProject(cli.name))
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = cli.id
+            newTimeInterval(cli) {
                 start = Milliseconds(1)
             }
         )
@@ -85,14 +83,12 @@ class FindActiveProjectsTest {
         projectRepository.add(NewProject(android.name))
         projectRepository.add(NewProject(cli.name))
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = cli.id
+            newTimeInterval(cli) {
                 start = Milliseconds(1)
             }
         )

@@ -44,8 +44,7 @@ class ClockInTest {
     @Test(expected = ActiveProjectException::class)
     fun execute_withActiveTime() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )

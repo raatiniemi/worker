@@ -82,8 +82,7 @@ class TimeReportDataSourceTest {
     fun loadInitial_withTimeInterval() {
         projectHolder += android
         val timeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -108,14 +107,12 @@ class TimeReportDataSourceTest {
     fun loadInitial_withTimeIntervals() {
         projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -144,14 +141,12 @@ class TimeReportDataSourceTest {
     fun loadInitial_withTimeIntervalsFilterUsingPosition() {
         projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -183,14 +178,12 @@ class TimeReportDataSourceTest {
     fun loadInitial_withTimeIntervalsFilterUsingPageSize() {
         projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -238,8 +231,7 @@ class TimeReportDataSourceTest {
     fun loadRange_withTimeInterval() {
         projectHolder += android
         val timeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -260,14 +252,12 @@ class TimeReportDataSourceTest {
     fun loadRange_withTimeIntervals() {
         projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -292,14 +282,12 @@ class TimeReportDataSourceTest {
     fun loadRange_withTimeIntervalsFilterUsingPosition() {
         projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -327,14 +315,12 @@ class TimeReportDataSourceTest {
     fun loadRange_withTimeIntervalsFilterUsingPageSize() {
         projectHolder += android
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )

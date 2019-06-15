@@ -48,8 +48,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `count with time interval`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -63,14 +62,12 @@ class TimeReportInMemoryRepositoryTest {
     fun `count with time intervals on same day`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -84,15 +81,13 @@ class TimeReportInMemoryRepositoryTest {
     fun `count with time intervals on different days`() {
         val expected = 2
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
                 isRegistered = true
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -115,8 +110,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `count not registered with registered time interval`() {
         val expected = 0
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 isRegistered = true
             }
@@ -131,8 +125,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `count not registered with time interval`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -146,14 +139,12 @@ class TimeReportInMemoryRepositoryTest {
     fun `count not registered with time intervals on same day`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -167,14 +158,12 @@ class TimeReportInMemoryRepositoryTest {
     fun `count not registered with registered time interval on different days`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -189,14 +178,12 @@ class TimeReportInMemoryRepositoryTest {
     fun `count not registered with time intervals on different days`() {
         val expected = 2
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -223,8 +210,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `find all without time interval for project`() {
         val expected = emptyList<TimeReportDay>()
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = cli.id
+            newTimeInterval(cli) {
                 start = Milliseconds(1)
                 stop = Milliseconds(20)
             }
@@ -243,15 +229,13 @@ class TimeReportInMemoryRepositoryTest {
     fun `find all with time intervals for same day`() {
         val timeIntervals = listOf(
             timeIntervalRepository.add(
-                newTimeInterval {
-                    projectId = android.id
+                newTimeInterval(android) {
                     start = Milliseconds(1)
                     stop = Milliseconds(10)
                 }
             ),
             timeIntervalRepository.add(
-                newTimeInterval {
-                    projectId = android.id
+                newTimeInterval(android) {
                     start = Milliseconds(11)
                     stop = Milliseconds(30)
                 }
@@ -277,15 +261,13 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find all with time intervals for different days`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(90000000)
                 stop = Milliseconds(93000000)
             }
@@ -317,15 +299,13 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find all with position`() {
         val firstTimeIntervals = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(90000000)
                 stop = Milliseconds(93000000)
             }
@@ -351,15 +331,13 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find all with load size`() {
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(90000000)
                 stop = Milliseconds(93000000)
             }
@@ -399,8 +377,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered without time intervals for project`() {
         val expected = emptyList<TimeReportDay>()
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = cli.id
+            newTimeInterval(cli) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
@@ -418,22 +395,19 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find not registered with time intervals for same day`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(11)
                 stop = Milliseconds(30)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(30)
                 stop = Milliseconds(45)
                 isRegistered = true
@@ -461,22 +435,19 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find not registered with time interval for different days`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(90000000)
                 stop = Milliseconds(93000000)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(180000000)
                 stop = Milliseconds(183000000)
                 isRegistered = true
@@ -509,15 +480,13 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find not registered with position`() {
         val firstTimeIntervals = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(90000000)
                 stop = Milliseconds(93000000)
             }
@@ -543,15 +512,13 @@ class TimeReportInMemoryRepositoryTest {
     @Test
     fun `find not registered with load size`() {
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(90000000)
                 stop = Milliseconds(93000000)
             }
@@ -578,8 +545,7 @@ class TimeReportInMemoryRepositoryTest {
     fun `find not registered with registered time intervals`() {
         val expected = emptyList<TimeReportDay>()
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
                 isRegistered = true

@@ -40,14 +40,12 @@ class GetProjectTimeSinceTest {
 
     @Test
     fun `get project time since day`() {
-        val newTimeInterval = newTimeInterval {
-            projectId = android.id
+        val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.DAY)
             stop = after(TimeIntervalStartingPoint.DAY, 2.hours)
         }
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = before(TimeIntervalStartingPoint.DAY)
                 stop = before(TimeIntervalStartingPoint.DAY, 30.minutes)
             }
@@ -69,14 +67,12 @@ class GetProjectTimeSinceTest {
 
     @Test
     fun `get project time since week`() {
-        val newTimeInterval = newTimeInterval {
-            projectId = android.id
+        val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.WEEK)
             stop = after(TimeIntervalStartingPoint.WEEK, 2.hours)
         }
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = before(TimeIntervalStartingPoint.WEEK)
                 stop = before(TimeIntervalStartingPoint.WEEK, 30.minutes)
             }
@@ -98,14 +94,12 @@ class GetProjectTimeSinceTest {
 
     @Test
     fun `get project time since month`() {
-        val newTimeInterval = newTimeInterval {
-            projectId = android.id
+        val newTimeInterval = newTimeInterval(android) {
             start = after(TimeIntervalStartingPoint.MONTH)
             stop = after(TimeIntervalStartingPoint.MONTH, 2.hours)
         }
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = before(TimeIntervalStartingPoint.MONTH)
                 stop = before(TimeIntervalStartingPoint.MONTH, 30.minutes)
             }

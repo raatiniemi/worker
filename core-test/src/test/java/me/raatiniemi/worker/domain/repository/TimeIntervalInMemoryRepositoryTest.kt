@@ -46,8 +46,7 @@ class TimeIntervalInMemoryRepositoryTest {
     fun `find all without time interval for project`() {
         val expected = emptyList<TimeInterval>()
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -61,8 +60,7 @@ class TimeIntervalInMemoryRepositoryTest {
     fun `find all with time interval before starting point`() {
         val expected = emptyList<TimeInterval>()
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(10)
                 stop = Milliseconds(15)
             }
@@ -76,8 +74,7 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `find all with time interval after starting point`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(10)
                 stop = Milliseconds(15)
             }
@@ -106,8 +103,7 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `find by id with time interval`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
@@ -134,8 +130,7 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `find active by project id without active time interval`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
@@ -149,8 +144,7 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `find active by project id with active time interval`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -182,8 +176,7 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `update with time interval`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -219,8 +212,7 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `update with time intervals`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -246,8 +238,7 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `remove with time interval`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
@@ -276,8 +267,7 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `remove with time intervals`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }

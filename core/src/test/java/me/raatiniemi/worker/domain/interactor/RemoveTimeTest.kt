@@ -39,8 +39,7 @@ class RemoveTimeTest {
     @Test
     fun `remove with time interval`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
@@ -62,8 +61,7 @@ class RemoveTimeTest {
     @Test
     fun `remove with time intervals`() {
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }

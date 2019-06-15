@@ -61,8 +61,7 @@ class TimeReportsKtTest {
     fun `count time reports with unregistered time interval`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -76,14 +75,12 @@ class TimeReportsKtTest {
     fun `count time reports with unregistered time intervals on same day`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -97,14 +94,12 @@ class TimeReportsKtTest {
     fun `count time reports with unregistered time intervals on different days`() {
         val expected = 2
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -118,8 +113,7 @@ class TimeReportsKtTest {
     fun `count time reports with registered time interval`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -135,8 +129,7 @@ class TimeReportsKtTest {
         val expected = 0
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -152,15 +145,13 @@ class TimeReportsKtTest {
         val expected = 0
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -176,15 +167,13 @@ class TimeReportsKtTest {
         val expected = 0
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
                 isRegistered = true
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -199,14 +188,12 @@ class TimeReportsKtTest {
     fun `count time reports with time intervals on same day`() {
         val expected = 1
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 isRegistered = true
             }
@@ -221,14 +208,12 @@ class TimeReportsKtTest {
     fun `count time reports with time intervals on different days`() {
         val expected = 2
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -244,14 +229,12 @@ class TimeReportsKtTest {
         val expected = 1
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 isRegistered = true
             }
@@ -267,14 +250,12 @@ class TimeReportsKtTest {
         val expected = 1
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -298,8 +279,7 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with unregistered time interval`() {
         val timeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
@@ -321,14 +301,12 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with unregistered time intervals on same day`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(11)
             }
         )
@@ -351,14 +329,12 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with unregistered time intervals on different days`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -386,8 +362,7 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with registered time interval`() {
         val timeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -410,15 +385,13 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with registered time intervals on same day`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now + 1.minutes
                 isRegistered = true
             }
@@ -442,15 +415,13 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with registered time intervals on different days`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
                 isRegistered = true
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -479,14 +450,12 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with time intervals on same day`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(11)
                 isRegistered = true
             }
@@ -510,14 +479,12 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with time intervals on different days`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -547,14 +514,12 @@ class TimeReportsKtTest {
     fun `find time reports with time intervals on same day when hiding registered time`() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -578,14 +543,12 @@ class TimeReportsKtTest {
     fun `find time reports with time intervals on different days when hiding registered time`() {
         keyValueStore.set(AppKeys.HIDE_REGISTERED_TIME, true)
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
                 isRegistered = true
             }
@@ -608,14 +571,12 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with time intervals filter using position`() {
         val firstTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -637,14 +598,12 @@ class TimeReportsKtTest {
     @Test
     fun `find time reports with time intervals filter using page size`() {
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now - 25.hours
             }
         )
         val secondTimeInterval = timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )

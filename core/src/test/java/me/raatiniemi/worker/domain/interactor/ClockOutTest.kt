@@ -49,8 +49,7 @@ class ClockOutTest {
     fun `clock out with date before clock in`() {
         val date = Date()
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(date.time) + 1.hours
             }
         )
@@ -62,8 +61,7 @@ class ClockOutTest {
     fun `clock out with active project`() {
         val date = Date()
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )

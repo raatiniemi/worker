@@ -50,8 +50,7 @@ class CalculateTimeTodayTest {
     fun `calculate time today with registered time`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = startingPoint
                 stop = startingPoint + 1.hours
             }
@@ -67,8 +66,7 @@ class CalculateTimeTodayTest {
     fun `calculate time today with active time interval`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = startingPoint
             }
         )
@@ -84,15 +82,13 @@ class CalculateTimeTodayTest {
     fun `calculate time today with registered time and active time interval`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = startingPoint
                 stop = startingPoint + 1.hours
             }
         )
         repository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = startingPoint
             }
         )

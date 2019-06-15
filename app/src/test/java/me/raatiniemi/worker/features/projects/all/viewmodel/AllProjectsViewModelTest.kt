@@ -151,8 +151,7 @@ class AllProjectsViewModelTest {
     @Test
     fun `toggle clock in with active project`() {
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -184,8 +183,7 @@ class AllProjectsViewModelTest {
     fun `toggle clock out project without confirm clock out with active project`() = runBlocking {
         keyValueStore.set(AppKeys.CONFIRM_CLOCK_OUT, false)
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -244,8 +242,7 @@ class AllProjectsViewModelTest {
     @Test
     fun `clock in with already active project`() = runBlocking {
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )
@@ -279,8 +276,7 @@ class AllProjectsViewModelTest {
     @Test
     fun `clock out project`() = runBlocking {
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = android.id
+            newTimeInterval(android) {
                 start = Milliseconds.now
             }
         )

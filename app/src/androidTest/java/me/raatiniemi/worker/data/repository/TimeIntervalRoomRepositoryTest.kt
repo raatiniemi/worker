@@ -210,8 +210,7 @@ class TimeIntervalRoomRepositoryTest {
 
     @Test
     fun add() {
-        val newTimeInterval = newTimeInterval {
-            projectId = android.id
+        val newTimeInterval = newTimeInterval(android) {
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
