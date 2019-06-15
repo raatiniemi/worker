@@ -17,10 +17,7 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.date.hours
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.TimeIntervalStartingPoint
-import me.raatiniemi.worker.domain.model.newTimeInterval
-import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.model.*
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -31,8 +28,6 @@ import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
 class CalculateTimeTodayTest {
-    private val project = Project(1, projectName("Project name"))
-
     private lateinit var repository: TimeIntervalRepository
     private lateinit var calculateTimeToday: CalculateTimeToday
 
@@ -46,7 +41,7 @@ class CalculateTimeTodayTest {
     fun `calculate time today without registered time`() {
         val expected = 0L
 
-        val actual = calculateTimeToday(project)
+        val actual = calculateTimeToday(android)
 
         assertEquals(expected, actual)
     }
@@ -55,14 +50,14 @@ class CalculateTimeTodayTest {
     fun `calculate time today with registered time`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = startingPoint
                 stop = startingPoint + 1.hours
             }
         )
         val expected = 1.hours
 
-        val actual = calculateTimeToday(project)
+        val actual = calculateTimeToday(android)
 
         assertEquals(expected, actual)
     }
@@ -71,14 +66,14 @@ class CalculateTimeTodayTest {
     fun `calculate time today with active time interval`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = startingPoint
             }
         )
         val stopForActive = startingPoint + 1.hours
         val expected = 1.hours
 
-        val actual = calculateTimeToday(project, stopForActive)
+        val actual = calculateTimeToday(android, stopForActive)
 
         assertEquals(expected, actual)
     }
@@ -87,20 +82,20 @@ class CalculateTimeTodayTest {
     fun `calculate time today with registered time and active time interval`() {
         val startingPoint = TimeIntervalStartingPoint.DAY.calculateMilliseconds()
         repository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = startingPoint
                 stop = startingPoint + 1.hours
             }
         )
         repository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = startingPoint
             }
         )
         val stopForActive = startingPoint + 1.hours
         val expected = 2.hours
 
-        val actual = calculateTimeToday(project, stopForActive)
+        val actual = calculateTimeToday(android, stopForActive)
 
         assertEquals(expected, actual)
     }

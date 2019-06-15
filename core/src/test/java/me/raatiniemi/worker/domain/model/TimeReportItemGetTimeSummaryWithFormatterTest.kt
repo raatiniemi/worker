@@ -45,7 +45,7 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
                 arrayOf(
                     "1:00",
                     DigitalHoursMinutesIntervalFormat(),
-                    timeInterval {
+                    timeInterval(android) {
                         start = Milliseconds(0)
                         stop = Milliseconds(3600000)
                     }
@@ -53,7 +53,7 @@ class TimeReportItemGetTimeSummaryWithFormatterTest(
                 arrayOf(
                     "9:00",
                     DigitalHoursMinutesIntervalFormat(),
-                    timeInterval {
+                    timeInterval(android) {
                         start = Milliseconds(0)
                         stop = Milliseconds(32400000)
                     }

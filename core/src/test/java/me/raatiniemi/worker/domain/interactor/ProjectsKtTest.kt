@@ -53,7 +53,7 @@ class ProjectsKtTest {
 
     @Test
     fun `count projects with project`() {
-        repository.add(NewProject(projectName("Project #1")))
+        repository.add(NewProject(android.name))
         val expected = 1
 
         val actual = countProjects()
@@ -63,8 +63,8 @@ class ProjectsKtTest {
 
     @Test
     fun `count projects with projects`() {
-        repository.add(NewProject(projectName("Project #1")))
-        repository.add(NewProject(projectName("Project #2")))
+        repository.add(NewProject(android.name))
+        repository.add(NewProject(cli.name))
         val expected = 2
 
         val actual = countProjects()
@@ -87,10 +87,8 @@ class ProjectsKtTest {
 
     @Test
     fun `find projects with project`() {
-        repository.add(NewProject(projectName("Project #1")))
-        val expected = listOf(
-            Project(1, projectName("Project #1"))
-        )
+        repository.add(NewProject(android.name))
+        val expected = listOf(android)
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
@@ -103,12 +101,9 @@ class ProjectsKtTest {
 
     @Test
     fun `find projects with projects`() {
-        repository.add(NewProject(projectName("Project #1")))
-        repository.add(NewProject(projectName("Project #2")))
-        val expected = listOf(
-            Project(1, projectName("Project #1")),
-            Project(2, projectName("Project #2"))
-        )
+        repository.add(NewProject(android.name))
+        repository.add(NewProject(cli.name))
+        val expected = listOf(android, cli)
         val loadRange = LoadRange(
             LoadPosition(0),
             LoadSize(10)
@@ -130,10 +125,8 @@ class ProjectsKtTest {
 
     @Test
     fun `find all projects with project`() {
-        repository.add(NewProject(projectName("Project #1")))
-        val expected = listOf(
-            Project(1, projectName("Project #1"))
-        )
+        repository.add(NewProject(android.name))
+        val expected = listOf(android)
 
         val actual = findAllProjects()
 
@@ -142,12 +135,9 @@ class ProjectsKtTest {
 
     @Test
     fun `find all projects with projects`() {
-        repository.add(NewProject(projectName("Project #1")))
-        repository.add(NewProject(projectName("Project #2")))
-        val expected = listOf(
-            Project(1, projectName("Project #1")),
-            Project(2, projectName("Project #2"))
-        )
+        repository.add(NewProject(android.name))
+        repository.add(NewProject(cli.name))
+        val expected = listOf(android, cli)
 
         val actual = findAllProjects()
 

@@ -47,10 +47,8 @@ class TimeReportViewModelTest {
     @Rule
     val rule = InstantTaskExecutorRule()
 
-    private val project = Project(1, projectName("Project name #1"))
     private val usageAnalytics = InMemoryUsageAnalytics()
     private val projectHolder = ProjectHolder()
-        .also { it += project }
 
     private val keyValueStore = InMemoryKeyValueStore()
 
@@ -76,13 +74,14 @@ class TimeReportViewModelTest {
 
     @Test
     fun `toggle registered state with selected item`() = runBlocking {
+        projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
             start = Milliseconds(1)
             stop = Milliseconds(2)
@@ -96,30 +95,31 @@ class TimeReportViewModelTest {
         vm.toggleRegisteredStateForSelectedItems()
 
         assertEquals(listOf(Event.TimeReportToggle(1)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
+        val actual = timeIntervalRepository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `toggle registered state for selected items`() = runBlocking {
+        projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(2)
             }
         )
-        val firstTimeInterval = timeInterval {
+        val firstTimeInterval = timeInterval(android) {
             id = 1
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
-        val secondTimeInterval = timeInterval {
+        val secondTimeInterval = timeInterval(android) {
             id = 2
             start = Milliseconds(1)
             stop = Milliseconds(2)
@@ -136,18 +136,19 @@ class TimeReportViewModelTest {
         vm.toggleRegisteredStateForSelectedItems()
 
         assertEquals(listOf(Event.TimeReportToggle(2)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
+        val actual = timeIntervalRepository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `toggle registered state for active time interval`() = runBlocking {
+        projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
             start = Milliseconds(1)
         }
@@ -166,12 +167,13 @@ class TimeReportViewModelTest {
 
     @Test
     fun `remove with single item`() = runBlocking {
+        projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
             start = Milliseconds(1)
         }
@@ -182,30 +184,31 @@ class TimeReportViewModelTest {
         vm.removeSelectedItems()
 
         assertEquals(listOf(Event.TimeReportRemove(1)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
+        val actual = timeIntervalRepository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with multiple items`() = runBlocking {
+        projectHolder += android
         timeIntervalRepository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         val firstTimeReportItem = TimeReportItem(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
                 start = Milliseconds(1)
             }
         )
         val secondTimeReportItem = TimeReportItem(
-            timeInterval {
+            timeInterval(android) {
                 id = 2
                 start = Milliseconds(1)
             }
@@ -217,12 +220,13 @@ class TimeReportViewModelTest {
         vm.removeSelectedItems()
 
         assertEquals(listOf(Event.TimeReportRemove(2)), usageAnalytics.events)
-        val actual = timeIntervalRepository.findAll(project, Milliseconds(0))
+        val actual = timeIntervalRepository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `refresh active time report day without day`() = runBlocking {
+        projectHolder += android
         val timeReportDays = emptyList<TimeReportDay>()
 
         vm.refreshActiveTimeReportDay(timeReportDays)
@@ -232,13 +236,14 @@ class TimeReportViewModelTest {
 
     @Test
     fun `refresh active time report day without active day`() = runBlocking {
+        projectHolder += android
         val now = Milliseconds(Date().time)
         val timeReportDays = listOf(
             TimeReportDay(
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval {
+                        timeInterval(android) {
                             start = now - 20.minutes
                             stop = now
                         }
@@ -254,13 +259,14 @@ class TimeReportViewModelTest {
 
     @Test
     fun `refresh active time report day with day`() = runBlocking {
+        projectHolder += android
         val now = Milliseconds(Date().time)
         val timeReportDays = listOf(
             TimeReportDay(
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval {
+                        timeInterval(android) {
                             start = now - 20.minutes
                         }
                     )
@@ -278,6 +284,7 @@ class TimeReportViewModelTest {
 
     @Test
     fun `refresh active time report day with days`() = runBlocking {
+        projectHolder += android
         val now = Milliseconds(Date().time)
         val yesterday = Milliseconds(Date().time) - 25.hours
         val timeReportDays = listOf(
@@ -285,7 +292,7 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval {
+                        timeInterval(android) {
                             start = now - 20.minutes
                             stop = now
                         }
@@ -296,7 +303,7 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(yesterday),
                 listOf(
                     TimeReportItem(
-                        timeInterval {
+                        timeInterval(android) {
                             start = yesterday - 20.minutes
                         }
                     )

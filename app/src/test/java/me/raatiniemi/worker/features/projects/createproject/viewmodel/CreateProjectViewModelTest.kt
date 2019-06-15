@@ -21,8 +21,7 @@ import kotlinx.coroutines.runBlocking
 import me.raatiniemi.worker.domain.interactor.CreateProject
 import me.raatiniemi.worker.domain.interactor.FindProject
 import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.features.projects.createproject.model.CreateProjectViewActions
 import me.raatiniemi.worker.features.shared.model.observeNoValue
@@ -68,7 +67,6 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `is create enabled with empty name`() = runBlocking {
-        repository.add(NewProject(projectName("Name")))
         vm.name = ""
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
@@ -79,17 +77,20 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `is create enabled with duplicated name`() = runBlocking {
-        vm.name = "Name"
+        repository.add(NewProject(android.name))
+        vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
-            assertTrue(it)
+            assertFalse(it)
         }
-        vm.viewActions.observeNoValue(timeOutInMilliseconds = debounceDurationInMilliseconds)
+        vm.viewActions.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
+            assertEquals(CreateProjectViewActions.DuplicateNameErrorMessage, it)
+        }
     }
 
     @Test
     fun `is create enabled with valid name`() = runBlocking {
-        vm.name = "Name"
+        vm.name = android.name.value
 
         vm.isCreateEnabled.observeNonNull(timeOutInMilliseconds = debounceDurationInMilliseconds) {
             assertTrue(it)
@@ -111,8 +112,8 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `create project with duplicated name`() = runBlocking {
-        repository.add(NewProject(projectName("Name")))
-        vm.name = "Name"
+        repository.add(NewProject(android.name))
+        vm.name = android.name.value
 
         vm.createProject()
 
@@ -124,16 +125,15 @@ class CreateProjectViewModelTest {
 
     @Test
     fun `create project with valid name`() = runBlocking {
-        vm.name = "Name"
+        vm.name = android.name.value
 
         vm.createProject()
 
         assertEquals(listOf(Event.ProjectCreate), usageAnalytics.events)
-        val project = Project(id = 1, name = projectName("Name"))
         vm.viewActions.observeNonNull {
-            assertEquals(CreateProjectViewActions.CreatedProject(project), it)
+            assertEquals(CreateProjectViewActions.CreatedProject(android), it)
         }
         val actual = repository.findAll()
-        assertEquals(listOf(project), actual)
+        assertEquals(listOf(android), actual)
     }
 }

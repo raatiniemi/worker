@@ -16,8 +16,7 @@
 
 package me.raatiniemi.worker.features.projects.all.model
 
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.model.android
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Test
@@ -28,17 +27,15 @@ import org.junit.runners.JUnit4
 class ProjectsItemTest {
     @Test
     fun asProject() {
-        val project = Project(1, projectName("Project name"))
-        val projectsItem = ProjectsItem(project, emptyList())
+        val projectsItem = ProjectsItem(android, emptyList())
 
-        assertSame(project, projectsItem.asProject())
+        assertSame(android, projectsItem.asProject())
     }
 
     @Test
     fun getTitle() {
-        val project = Project(1, projectName("Project name"))
-        val projectsItem = ProjectsItem(project, emptyList())
+        val projectsItem = ProjectsItem(android, emptyList())
 
-        assertEquals("Project name", projectsItem.title)
+        assertEquals(android.name.value, projectsItem.title)
     }
 }

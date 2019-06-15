@@ -17,8 +17,8 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.model.ProjectName
+import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -40,28 +40,29 @@ class FindProjectTest {
 
     @Test
     fun `invoke without projects`() {
-        val actual = findProject(projectName("Name"))
+        val actual = findProject(android.name)
 
         assertNull(actual)
     }
 
     @Test
     fun `invoke with projects`() {
-        val expected = Project(id = 1, name = projectName("Name"))
-        repository.add(NewProject(projectName("Name")))
+        repository.add(NewProject(android.name))
 
-        val actual = findProject(projectName("Name"))
+        val actual = findProject(android.name)
 
-        assertEquals(expected, actual)
+        assertEquals(android, actual)
     }
 
     @Test
     fun `invoke with lowercase project name`() {
-        val expected = Project(id = 1, name = projectName("Name"))
-        repository.add(NewProject(projectName("Name")))
+        repository.add(NewProject(android.name))
 
-        val actual = findProject(projectName("Name"))
+        val actual = findProject(
+            android.name.value.toLowerCase()
+                .let { ProjectName(it) }
+        )
 
-        assertEquals(expected, actual)
+        assertEquals(android, actual)
     }
 }

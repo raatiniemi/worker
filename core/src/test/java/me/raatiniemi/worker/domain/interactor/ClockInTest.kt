@@ -17,7 +17,10 @@
 package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ActiveProjectException
-import me.raatiniemi.worker.domain.model.*
+import me.raatiniemi.worker.domain.model.Milliseconds
+import me.raatiniemi.worker.domain.model.android
+import me.raatiniemi.worker.domain.model.newTimeInterval
+import me.raatiniemi.worker.domain.model.timeInterval
 import me.raatiniemi.worker.domain.repository.TimeIntervalInMemoryRepository
 import me.raatiniemi.worker.domain.repository.TimeIntervalRepository
 import org.junit.Assert.assertEquals
@@ -41,27 +44,27 @@ class ClockInTest {
     @Test(expected = ActiveProjectException::class)
     fun execute_withActiveTime() {
         repository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
 
-        clockIn(1, Date())
+        clockIn(android.id, Date())
     }
 
     @Test
     fun execute() {
         val date = Date()
         val expected = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
                 start = Milliseconds(date.time)
             }
         )
 
-        clockIn(1, date)
+        clockIn(android.id, date)
 
-        val actual = repository.findAll(Project(1, projectName("Project name")), Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 }

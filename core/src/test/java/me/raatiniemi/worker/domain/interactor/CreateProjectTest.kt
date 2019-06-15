@@ -18,8 +18,7 @@ package me.raatiniemi.worker.domain.interactor
 
 import me.raatiniemi.worker.domain.exception.ProjectAlreadyExistsException
 import me.raatiniemi.worker.domain.model.NewProject
-import me.raatiniemi.worker.domain.model.Project
-import me.raatiniemi.worker.domain.model.projectName
+import me.raatiniemi.worker.domain.model.android
 import me.raatiniemi.worker.domain.repository.ProjectInMemoryRepository
 import me.raatiniemi.worker.domain.repository.ProjectRepository
 import org.junit.Assert.assertEquals
@@ -43,18 +42,17 @@ class CreateProjectTest {
 
     @Test(expected = ProjectAlreadyExistsException::class)
     fun `invoke with existing project`() {
-        repository.add(NewProject(projectName("Project Name")))
+        repository.add(NewProject(android.name))
 
-        createProject(projectName("Project Name"))
+        createProject(android.name)
     }
 
     @Test
     fun execute() {
-        createProject(projectName("Project Name"))
+        val expected = listOf(android)
 
-        val expected = listOf(
-            Project(id = 1, name = projectName("Project Name"))
-        )
+        createProject(android.name)
+
         val actual = repository.findAll()
         assertEquals(expected, actual)
     }

@@ -26,7 +26,7 @@ import org.junit.runners.JUnit4
 class TimeReportItemTest {
     @Test
     fun asTime() {
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             start = Milliseconds(1)
         }
         val item = TimeReportItem.with(timeInterval)
@@ -36,7 +36,7 @@ class TimeReportItemTest {
 
     @Test
     fun getId() {
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             start = Milliseconds(1)
         }
         val item = TimeReportItem.with(timeInterval)

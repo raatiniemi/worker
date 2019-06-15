@@ -39,12 +39,12 @@ class RemoveTimeTest {
     @Test
     fun `remove with time interval`() {
         repository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
             start = Milliseconds(1)
             stop = Milliseconds(10)
@@ -53,19 +53,19 @@ class RemoveTimeTest {
 
         removeTime(timeInterval)
 
-        val actual = repository.findAll(Project(1, projectName("Project name")), Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 
     @Test
     fun `remove with time intervals`() {
         repository.add(
-            newTimeInterval {
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
             start = Milliseconds(1)
             stop = Milliseconds(10)
@@ -74,7 +74,7 @@ class RemoveTimeTest {
 
         removeTime(listOf(timeInterval))
 
-        val actual = repository.findAll(Project(1, projectName("Project name")), Milliseconds(0))
+        val actual = repository.findAll(android, Milliseconds.empty)
         assertEquals(expected, actual)
     }
 }

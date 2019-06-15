@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Tobias Raatiniemi
+ * Copyright (C) 2019 Tobias Raatiniemi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +16,4 @@
 
 package me.raatiniemi.worker.domain.model
 
-data class TimeIntervalBuilder(
-    var id: Long = 1,
-    var start: Milliseconds? = null,
-    var stop: Milliseconds? = null,
-    var isRegistered: Boolean = false
-) {
-    internal fun build(project: Project) = TimeInterval(
-        id = id,
-        projectId = project.id,
-        start = requireNotNull(start),
-        stop = stop,
-        isRegistered = isRegistered
-    )
-}
-
-fun timeInterval(project: Project, configure: TimeIntervalBuilder.() -> Unit): TimeInterval {
-    val builder = TimeIntervalBuilder()
-    builder.configure()
-
-    return builder.build(project)
-}
+val cli = Project(2, projectName("cli"))

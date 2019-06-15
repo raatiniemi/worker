@@ -48,7 +48,7 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke without active projects`() {
-        projectRepository.add(NewProject(projectName("Project name #1")))
+        projectRepository.add(NewProject(android.name))
         val expected = emptyList<Project>()
 
         val actual = findActiveProjects()
@@ -58,22 +58,20 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active project`() {
-        projectRepository.add(NewProject(projectName("Project name #1")))
-        projectRepository.add(NewProject(projectName("Project name #2")))
+        projectRepository.add(NewProject(android.name))
+        projectRepository.add(NewProject(cli.name))
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = 1
+            newTimeInterval(android) {
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = 2
+            newTimeInterval(cli) {
                 start = Milliseconds(1)
             }
         )
-        val expected = listOf(Project(2, projectName("Project name #2")))
+        val expected = listOf(cli)
 
         val actual = findActiveProjects()
 
@@ -82,24 +80,19 @@ class FindActiveProjectsTest {
 
     @Test
     fun `invoke with active projects`() {
-        projectRepository.add(NewProject(projectName("Project name #1")))
-        projectRepository.add(NewProject(projectName("Project name #2")))
+        projectRepository.add(NewProject(android.name))
+        projectRepository.add(NewProject(cli.name))
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = 1
+            newTimeInterval(android) {
                 start = Milliseconds(1)
             }
         )
         timeIntervalRepository.add(
-            newTimeInterval {
-                projectId = 2
+            newTimeInterval(cli) {
                 start = Milliseconds(1)
             }
         )
-        val expected = listOf(
-            Project(1, projectName("Project name #1")),
-            Project(2, projectName("Project name #2"))
-        )
+        val expected = listOf(android, cli)
 
         val actual = findActiveProjects()
 
