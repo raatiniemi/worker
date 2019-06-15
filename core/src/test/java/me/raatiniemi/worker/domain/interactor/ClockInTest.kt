@@ -56,9 +56,8 @@ class ClockInTest {
     fun execute() {
         val date = Date()
         val expected = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
-                projectId = android.id
                 start = Milliseconds(date.time)
             }
         )

@@ -18,23 +18,22 @@ package me.raatiniemi.worker.domain.model
 
 data class TimeIntervalBuilder(
     var id: Long = 1,
-    var projectId: Long = 1,
     var start: Milliseconds? = null,
     var stop: Milliseconds? = null,
     var isRegistered: Boolean = false
 ) {
-    fun build() = TimeInterval(
+    internal fun build(project: Project) = TimeInterval(
         id = id,
-        projectId = projectId,
+        projectId = project.id,
         start = requireNotNull(start),
         stop = stop,
         isRegistered = isRegistered
     )
 }
 
-fun timeInterval(configure: TimeIntervalBuilder.() -> Unit): TimeInterval {
+fun timeInterval(project: Project, configure: TimeIntervalBuilder.() -> Unit): TimeInterval {
     val builder = TimeIntervalBuilder()
     builder.configure()
 
-    return builder.build()
+    return builder.build(project)
 }

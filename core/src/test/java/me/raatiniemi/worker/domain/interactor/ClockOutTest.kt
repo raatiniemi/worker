@@ -66,9 +66,8 @@ class ClockOutTest {
             }
         )
         val expected = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
-                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(date.time)
             }

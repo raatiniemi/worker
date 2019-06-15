@@ -55,7 +55,7 @@ class ProjectsItemIsActiveTest(
         private fun getTimeIntervals(isProjectActive: Boolean): List<TimeInterval> {
             if (isProjectActive) {
                 return listOf(
-                    timeInterval {
+                    timeInterval(android) {
                         start = Milliseconds(1)
                     }
                 )

@@ -44,8 +44,7 @@ class ProjectsItemGetTimeSummaryTest(
                 arrayOf(
                     "1h 0m",
                     listOf(
-                        timeInterval {
-                            projectId = android.id
+                        timeInterval(android) {
                             start = Milliseconds(0)
                             stop = Milliseconds(3600000)
                         }
@@ -54,8 +53,7 @@ class ProjectsItemGetTimeSummaryTest(
                 arrayOf(
                     "2h 30m",
                     listOf(
-                        timeInterval {
-                            projectId = android.id
+                        timeInterval(android) {
                             start = Milliseconds(0)
                             stop = Milliseconds(9000000)
                         }
@@ -64,13 +62,11 @@ class ProjectsItemGetTimeSummaryTest(
                 arrayOf(
                     "3h 30m",
                     listOf(
-                        timeInterval {
-                            projectId = android.id
+                        timeInterval(android) {
                             start = Milliseconds(0)
                             stop = Milliseconds(3600000)
                         },
-                        timeInterval {
-                            projectId = android.id
+                        timeInterval(android) {
                             start = Milliseconds(0)
                             stop = Milliseconds(9000000)
                         }

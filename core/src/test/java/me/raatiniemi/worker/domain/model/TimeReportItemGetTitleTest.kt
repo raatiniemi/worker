@@ -47,14 +47,14 @@ class TimeReportItemGetTitleTest(
                 arrayOf(
                     "active time interval",
                     "08:00",
-                    timeInterval {
+                    timeInterval(android) {
                         start = Milliseconds(START.timeInMillis)
                     }
                 ),
                 arrayOf(
                     "inactive time interval",
                     "08:00 - 11:30",
-                    timeInterval {
+                    timeInterval(android) {
                         start = Milliseconds(START.timeInMillis)
                         stop = Milliseconds(STOP.timeInMillis)
                     }

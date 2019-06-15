@@ -52,7 +52,7 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "1:00 (-7:00)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(3600000)
                         }
@@ -62,7 +62,7 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "8:00",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(28800000)
                         }
@@ -72,7 +72,7 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "9:00 (+1:00)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(32400000)
                         }
@@ -82,11 +82,11 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "9:07 (+1:07)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(14380327)
                         },
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(18407820)
                         }
@@ -96,11 +96,11 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "8:46 (+0:46)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(13956031)
                         },
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(17594386)
                         }
@@ -110,11 +110,11 @@ class TimeReportGroupGetTimeSummaryWithDifferenceTest(
                     "7:52 (-0:08)",
                     DigitalHoursMinutesIntervalFormat(),
                     listOf(
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(11661632)
                         },
-                        timeInterval {
+                        timeInterval(android) {
                             start = Milliseconds(1)
                             stop = Milliseconds(16707601)
                         }

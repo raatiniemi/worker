@@ -44,9 +44,8 @@ class RemoveTimeTest {
                 stop = Milliseconds(10)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(10)
         }
@@ -66,9 +65,8 @@ class RemoveTimeTest {
                 stop = Milliseconds(10)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(10)
         }

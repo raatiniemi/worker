@@ -52,9 +52,8 @@ class GetProjectTimeSinceTest {
         )
         repository.add(newTimeInterval)
         val expected = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 2
-                projectId = android.id
                 start = newTimeInterval.start
                 stop = requireNotNull(newTimeInterval.stop)
             }
@@ -79,9 +78,8 @@ class GetProjectTimeSinceTest {
         )
         repository.add(newTimeInterval)
         val expected = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 2
-                projectId = android.id
                 start = newTimeInterval.start
                 stop = requireNotNull(newTimeInterval.stop)
             }
@@ -106,9 +104,8 @@ class GetProjectTimeSinceTest {
         )
         repository.add(newTimeInterval)
         val expected = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 2
-                projectId = android.id
                 start = newTimeInterval.start
                 stop = requireNotNull(newTimeInterval.stop)
             }

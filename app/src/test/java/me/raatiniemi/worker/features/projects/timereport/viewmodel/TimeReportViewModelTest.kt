@@ -81,9 +81,8 @@ class TimeReportViewModelTest {
                 stop = Milliseconds(2)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
@@ -115,15 +114,13 @@ class TimeReportViewModelTest {
                 stop = Milliseconds(2)
             }
         )
-        val firstTimeInterval = timeInterval {
+        val firstTimeInterval = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
-        val secondTimeInterval = timeInterval {
+        val secondTimeInterval = timeInterval(android) {
             id = 2
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(2)
         }
@@ -151,9 +148,8 @@ class TimeReportViewModelTest {
                 start = Milliseconds(1)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
         }
         val timeReportItem = TimeReportItem.with(timeInterval)
@@ -177,9 +173,8 @@ class TimeReportViewModelTest {
                 start = Milliseconds(1)
             }
         )
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
         }
         val timeReportItem = TimeReportItem(timeInterval)
@@ -207,16 +202,14 @@ class TimeReportViewModelTest {
             }
         )
         val firstTimeReportItem = TimeReportItem(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
-                projectId = android.id
                 start = Milliseconds(1)
             }
         )
         val secondTimeReportItem = TimeReportItem(
-            timeInterval {
+            timeInterval(android) {
                 id = 2
-                projectId = android.id
                 start = Milliseconds(1)
             }
         )
@@ -250,8 +243,7 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval {
-                            projectId = android.id
+                        timeInterval(android) {
                             start = now - 20.minutes
                             stop = now
                         }
@@ -274,8 +266,7 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval {
-                            projectId = android.id
+                        timeInterval(android) {
                             start = now - 20.minutes
                         }
                     )
@@ -301,8 +292,7 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(now),
                 listOf(
                     TimeReportItem(
-                        timeInterval {
-                            projectId = android.id
+                        timeInterval(android) {
                             start = now - 20.minutes
                             stop = now
                         }
@@ -313,8 +303,7 @@ class TimeReportViewModelTest {
                 resetToStartOfDay(yesterday),
                 listOf(
                     TimeReportItem(
-                        timeInterval {
-                            projectId = android.id
+                        timeInterval(android) {
                             start = yesterday - 20.minutes
                         }
                     )

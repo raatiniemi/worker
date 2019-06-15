@@ -43,7 +43,7 @@ class TimeReportItemIsRegisteredTest(
                 arrayOf(
                     "is registered",
                     true,
-                    timeInterval {
+                    timeInterval(android) {
                         start = Milliseconds(1)
                         isRegistered = true
                     }
@@ -51,7 +51,7 @@ class TimeReportItemIsRegisteredTest(
                 arrayOf(
                     "is not registered",
                     false,
-                    timeInterval {
+                    timeInterval(android) {
                         start = Milliseconds(1)
                     }
                 )

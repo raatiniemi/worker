@@ -80,9 +80,8 @@ class TimeIntervalInMemoryRepositoryTest {
             }
         )
         val expected = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
-                projectId = android.id
                 start = Milliseconds(10)
                 stop = Milliseconds(15)
             }
@@ -108,9 +107,8 @@ class TimeIntervalInMemoryRepositoryTest {
                 stop = Milliseconds(10)
             }
         )
-        val expected = timeInterval {
+        val expected = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(10)
         }
@@ -148,9 +146,8 @@ class TimeIntervalInMemoryRepositoryTest {
                 start = Milliseconds(1)
             }
         )
-        val expected = timeInterval {
+        val expected = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
         }
 
@@ -161,9 +158,8 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `update without time interval`() {
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(10)
         }
@@ -180,9 +176,8 @@ class TimeIntervalInMemoryRepositoryTest {
                 start = Milliseconds(1)
             }
         )
-        val expected = timeInterval {
+        val expected = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(5)
         }
@@ -195,9 +190,8 @@ class TimeIntervalInMemoryRepositoryTest {
     @Test
     fun `update without time intervals`() {
         val timeIntervals = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
-                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
@@ -217,9 +211,8 @@ class TimeIntervalInMemoryRepositoryTest {
             }
         )
         val expected = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
-                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(5)
             }
@@ -253,9 +246,8 @@ class TimeIntervalInMemoryRepositoryTest {
 
     @Test
     fun `remove without time intervals`() {
-        val timeInterval = timeInterval {
+        val timeInterval = timeInterval(android) {
             id = 1
-            projectId = android.id
             start = Milliseconds(1)
             stop = Milliseconds(10)
         }
@@ -273,9 +265,8 @@ class TimeIntervalInMemoryRepositoryTest {
             }
         )
         val timeIntervals = listOf(
-            timeInterval {
+            timeInterval(android) {
                 id = 1
-                projectId = android.id
                 start = Milliseconds(1)
                 stop = Milliseconds(10)
             }
